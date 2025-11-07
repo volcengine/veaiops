@@ -13,15 +13,32 @@
 # limitations under the License.
 
 name: Bug Report
-about: Report a bug in veaiops
-title: '[Bug] '
-labels: bug
+description: Report a bug in veaiops
+title: "[Bug] "
+labels: ["bug"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! 🤗
+
   - type: textarea
     id: description
     attributes:
       label: Bug description
       description: Please provide a detailed description of the bug you encountered.
-      placeholder: When using veaiops, I encountered an error, the error message is ..., and the stack trace is ...
+      placeholder: |
+        When using veaiops, I encountered an error, the error message is ..., and the stack trace is ..., Steps to reproduce the behavior:
+          1.
+          2.
+          3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: "A clear and concise description of what you would expect to happen."
     validations:
       required: true
