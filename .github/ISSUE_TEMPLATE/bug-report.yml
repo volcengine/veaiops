@@ -26,14 +26,11 @@ body:
     attributes:
       label: Bug description
       description: Please provide a detailed description of the bug you encountered.
-      placeholder: When using veaiops, I encountered an error, the error message is ..., and the stack trace is ...
-
-    placeholder: |
-      Steps to reproduce the behavior:
-
-        1.
-        2.
-        3.
+      placeholder: |
+        When using veaiops, I encountered an error, the error message is ..., and the stack trace is ..., Steps to reproduce the behavior:
+          1.
+          2.
+          3.
     validations:
       required: true
 

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 name: Feature Request
+description: Suggest a new feature for veaiops
 title: "[Feature] "
 labels: ["enhancement"]
 body:

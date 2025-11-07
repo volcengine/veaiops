@@ -13,6 +13,7 @@
 # limitations under the License.
 
 name: Question
+description: Ask a question about veaiops
 title: "[Question] "
 labels: ["question"]
 body:
