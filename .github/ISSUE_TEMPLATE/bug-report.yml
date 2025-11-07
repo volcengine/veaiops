@@ -13,6 +13,7 @@
 # limitations under the License.
 
 name: Bug Report
+description: Report a bug in veaiops
 title: "[Bug] "
 labels: ["bug"]
 body:
