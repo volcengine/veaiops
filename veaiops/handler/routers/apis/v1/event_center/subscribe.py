@@ -107,6 +107,9 @@ async def get_subscribes(
         show_all (bool, optional): Defaults to None, not show disabled items.
         skip: The number of items to skip.
         limit: The maximum number of items to return.
+        get_subscribes: The function to retrieve subscription relations.
+        customers (List[str], optional): Interest customers. Defaults to None.
+        products (List[str], optional): Interest products. Defaults to None.
 
     Returns:
         A list of subscription relations with their attributes.

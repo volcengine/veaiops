@@ -108,3 +108,9 @@ repos:
               .*package-lock\.json|
               .*yarn\.lock
           )$
+
+  # Sensitive checking
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
+    hooks:
+      - id: gitleaks
