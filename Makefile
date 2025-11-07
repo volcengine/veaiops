@@ -9,7 +9,7 @@ PYTHON := .venv/bin/python
 # Project Information
 FRONTEND_DIR := frontend
 
-.PHONY: help install sync lint format test clean run setup-frontend dev-frontend dev-frontend-only build-frontend lint-frontend format-frontend type-check-frontend clean-frontend nx-frontend affected-frontend graph-frontend generate-api-frontend check-deps-frontend tsc-frontend setup-docs dev-docs build-docs generate-docs integrate-docs build-all
+.PHONY: help install sync lint format test clean run setup-frontend dev-frontend dev-frontend-only build-frontend build-frontend-with-docs lint-frontend format-frontend type-check-frontend clean-frontend nx-frontend affected-frontend graph-frontend generate-api-frontend check-deps-frontend tsc-frontend setup-docs dev-docs build-docs generate-docs integrate-docs build-all
 
 help:
 	@echo "Usage: make [target]"
@@ -29,7 +29,8 @@ help:
 	@echo "  setup-frontend         	Setup frontend environment (Nx Workspace + pnpm monorepo)"
 	@echo "  dev-frontend           	Start frontend + docs development servers"
 	@echo "  dev-frontend-only      	Start frontend only (without docs)"
-	@echo "  build-frontend         	Build frontend project (standard)"
+	@echo "  build-frontend         	Build frontend ONLY (不包含文档)"
+	@echo "  build-frontend-with-docs  Build frontend + docs (推荐用于 Docker 镜像)"
 	@echo "  build-frontend-production  Build frontend + docs (production)"
 	@echo "  lint-frontend          	Run frontend ESLint checking"
 	@echo "  format-frontend        	Format frontend code with Biome (⚠️ 使用 Biome，不是 Prettier)"
@@ -42,7 +43,7 @@ help:
 	@echo "  dev-docs               	Start documentation development server"
 	@echo "  build-docs             	Build documentation"
 	@echo "  generate-docs          	Generate documentation static files"
-	@echo "  integrate-docs         	Integrate docs into frontend build"
+	@echo "  integrate-docs         	Integrate docs into frontend build (完整流程)"
 	@echo "  build-all              	Build complete application with docs"
 	@echo ""
 	@echo "API Generation targets:"
@@ -274,7 +275,7 @@ dev-frontend-fast: ## Start frontend development server quickly (skipping docume
 		echo "⚠️  Frontend environment not available, skipping frontend dev server..."; \
 	fi
 
-build-frontend: ## Build frontend project (standard build, attempts to integrate existing documentation)
+build-frontend: ## Build frontend project (standard build, WITHOUT documentation)
 	@if [ -d "$(FRONTEND_DIR)" ] && command -v pnpm >/dev/null 2>&1; then \
 		echo "--> Building frontend project..."; \
 		(cd $(FRONTEND_DIR) && { \
@@ -306,14 +307,50 @@ build-frontend: ## Build frontend project (standard build, attempts to integrate
 				pnpm build; \
 			fi; \
 		}); \
+		echo ""; \
+		echo "⚠️  注意：此构建不包含文档！"; \
+		echo "💡 要包含文档，请使用: make integrate-docs 或 make build-frontend-with-docs"; \
 	else \
 		echo "⚠️  Frontend environment not available, skipping frontend build..."; \
 	fi
 
+build-frontend-with-docs: ## Build frontend + docs (推荐用于 Docker 镜像构建)
+	@echo "==> Building frontend with documentation..."
+	@$(MAKE) integrate-docs
+	@echo ""
+	@echo "✅ Build complete!"
+	@echo "📦 Output: $(FRONTEND_DIR)/apps/veaiops/output/"
+	@echo "📍 Frontend: /"
+	@echo "📍 Docs: /help/veaiops/"
+	@echo ""
+	@echo "💡 可以构建 Docker 镜像了："
+	@echo "   docker buildx build -f ./docker/frontend/Dockerfile \\"
+	@echo "     -t veaiops-registry-cn-beijing.cr.volces.com/veaiops/frontend:TAG \\"
+	@echo "     --platform=linux/amd64 . --push"
+
 build-frontend-production: ## Production build (includes frontend + documentation generation + integration)
 	@if [ -d "$(FRONTEND_DIR)" ] && command -v pnpm >/dev/null 2>&1; then \
 		echo "==> Building complete production application (frontend + docs)..."; \
-		(cd $(FRONTEND_DIR) && pnpm build:production); \
+		echo ""; \
+		echo "📋 Step 1/3: Building frontend (production mode)..."; \
+		echo "    NODE_ENV=production will be used for optimized build"; \
+		$(MAKE) build-frontend; \
+		echo ""; \
+		echo "📋 Step 2/3: Generating documentation..."; \
+		$(MAKE) integrate-docs SKIP_FRONTEND_BUILD=1; \
+		echo ""; \
+		echo "📋 Step 3/3: Verifying build output..."; \
+		if [ -d "$(FRONTEND_DIR)/apps/veaiops/output" ]; then \
+			echo "✅ Frontend build verified"; \
+		else \
+			echo "❌ Frontend build not found"; \
+			exit 1; \
+		fi; \
+		if [ -d "$(FRONTEND_DIR)/apps/veaiops/output/help/veaiops" ]; then \
+			echo "✅ Documentation integrated"; \
+		else \
+			echo "⚠️  Documentation not integrated (may be skipped due to platform limitations)"; \
+		fi; \
 		echo ""; \
 		echo "✅ Production build complete!"; \
 		echo "📦 Output: $(FRONTEND_DIR)/apps/veaiops/output/"; \
@@ -513,8 +550,18 @@ integrate-docs: ## Integrate documentation into frontend build artifacts
 		echo "⚠️  better-sqlite3 not found in node_modules"; \
 		echo "    Documentation generation will be skipped."; \
 	fi; \
-	echo "--> Building frontend..."; \
-	(cd $(FRONTEND_DIR) && pnpm build); \
+	if [ "$(SKIP_FRONTEND_BUILD)" != "1" ]; then \
+		echo "--> Building frontend..."; \
+		(cd $(FRONTEND_DIR) && pnpm build); \
+	else \
+		echo "--> Skipping frontend build (SKIP_FRONTEND_BUILD=1)..."; \
+		if [ ! -d "$(FRONTEND_DIR)/apps/veaiops/output" ]; then \
+			echo "❌ Error: Frontend build not found, but SKIP_FRONTEND_BUILD=1"; \
+			echo "    Please build frontend first: make build-frontend"; \
+			exit 1; \
+		fi; \
+		echo "✓ Using existing frontend build"; \
+	fi; \
 	echo "--> Preparing documentation build (SQLITE_BUILT=$$SQLITE_BUILT)..."; \
 	if [ ! -d "docs/.output/public" ]; then \
 		if [ $$SQLITE_BUILT -eq 1 ]; then \
@@ -534,9 +581,9 @@ integrate-docs: ## Integrate documentation into frontend build artifacts
 		if [ -d "docs/.output/public" ]; then \
 			echo "--> Integrating documentation into frontend build..."; \
 			rm -rf $(FRONTEND_DIR)/apps/veaiops/output/help; \
-			mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/help; \
-			cp -r docs/.output/public/* $(FRONTEND_DIR)/apps/veaiops/output/help/; \
-			echo "✓ Documentation integrated at: $(FRONTEND_DIR)/apps/veaiops/output/help/"; \
+			mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops; \
+			cp -r docs/.output/public/* $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops/; \
+			echo "✓ Documentation integrated at: $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops/"; \
 			echo "✓ Access at: /help/veaiops/ (to avoid conflict with Swagger /docs)"; \
 			echo "✓ Integration complete!"; \
 		else \
