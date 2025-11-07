@@ -12,57 +12,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Quick Checks
+name: pre-commit
 
 on:
+  push:
   pull_request:
-    paths:
-      - '**.py'
-      - '**.js'
-      - '**.ts'
-      - '**.html'
-      - '**.css'
-      - '**.yml'
-      - '**.yaml'
-      - '.pre-commit-config.yaml'
-      - 'pyproject.toml'
+  workflow_dispatch: # manual trigger
 
 jobs:
-  lint-only:
+  pre-commit:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Fetch all history for better diff detection
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-    - name: Install uv
-      uses: astral-sh/setup-uv@v3
+      - name: Install pre-commit
+        run: python -m pip install pre-commit
 
-    - name: Cache pre-commit
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pre-commit
-        key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Show installed packages (debug)
+        run: python -m pip freeze --local
 
-    - name: Install pre-commit
-      run: uv tool install pre-commit
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
 
-    - name: Run pre-commit on changed files
-      run: |
-        # Get changed files in this PR
-        git diff --name-only origin/${{ github.base_ref }}...HEAD > changed_files.txt
-
-        # Run pre-commit only on changed files
-        if [ -s changed_files.txt ]; then
-          uv tool run pre-commit run --files $(cat changed_files.txt | tr '\n' ' ')
-        else
-          echo "No files to check"
-        fi
+      - name: Run pre-commit
+        run: pre-commit run --show-diff-on-failure --color=always --all-files
