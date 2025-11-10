@@ -13,9 +13,9 @@
 # limitations under the License.
 
 name: Feature Request
-about: Request a new feature in veaiops
-title: '[Feature] '
-labels: enhancement
+description: Suggest a new feature for veaiops
+title: "[Feature] "
+labels: ["enhancement"]
 body:
   - type: textarea
     id: description

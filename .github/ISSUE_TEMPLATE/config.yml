@@ -12,16 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Question
-description: Ask a question about veaiops
-title: "[Question] "
-labels: ["question"]
-body:
-  - type: textarea
-    id: description
-    attributes:
-      label: Question description
-      description: Please provide a detailed description of your question.
-      placeholder: I am confused about how to use the ... module of veaiops ...
-    validations:
-      required: true
+blank_issues_enabled: true
+version: 0.1
