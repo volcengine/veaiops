@@ -25,8 +25,17 @@
     "noEmit": true,
     "baseUrl": ".",
     "types": ["node"],
-    "typeRoots": ["./node_modules/@types", "./node_modules"]
+    "typeRoots": ["./node_modules/@types", "./node_modules"],
+    "paths": {
+      "@veaiops/components": ["packages/components/src"],
+      "@veaiops/utils": ["packages/utils/src"],
+      "@veaiops/constants": ["packages/constants/src"],
+      "@veaiops/types": ["packages/types/src"],
+      "@veaiops/hooks": ["packages/hooks/src"],
+      "@veaiops/api-client": ["packages/api-client/src"]
+    }
   },
+  "include": ["global.d.ts"],
   "exclude": [
     "node_modules",
     "dist",
