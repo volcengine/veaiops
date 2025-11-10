@@ -79,4 +79,3 @@ async function generateTypeScriptCode(
 }
 
 module.exports = { generateTypeScriptCode };
-

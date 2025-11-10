@@ -121,4 +121,3 @@ function cleanupOldGeneration(outputDir) {
 }
 
 module.exports = { cleanupOldGeneration };
-

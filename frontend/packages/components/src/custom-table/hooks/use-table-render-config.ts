@@ -90,4 +90,3 @@ export function useTableRenderConfig<RecordType extends BaseRecord>({
     ],
   );
 }
-

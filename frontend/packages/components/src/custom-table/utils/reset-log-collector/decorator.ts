@@ -108,4 +108,3 @@ export function withResetLogging<T extends (...args: unknown[]) => unknown>(
 
   return descriptor;
 }
-

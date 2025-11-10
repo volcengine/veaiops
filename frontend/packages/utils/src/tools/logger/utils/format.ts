@@ -26,4 +26,3 @@ export function formatTimestamp(timestamp: number): string {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
-

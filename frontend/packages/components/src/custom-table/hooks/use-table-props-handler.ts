@@ -111,4 +111,3 @@ export function useTablePropsHandler<RecordType, QueryType>({
     finalRowKey,
   };
 }
-

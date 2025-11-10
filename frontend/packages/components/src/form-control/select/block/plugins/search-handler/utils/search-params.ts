@@ -72,4 +72,3 @@ export function getSearchParams(
     search: formattedValue,
   };
 }
-

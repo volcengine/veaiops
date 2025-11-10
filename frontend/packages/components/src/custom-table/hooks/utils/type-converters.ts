@@ -31,4 +31,3 @@ export const convertColumnsType = <
         ...col,
       }) as ColumnProps<ToType>,
   );
-

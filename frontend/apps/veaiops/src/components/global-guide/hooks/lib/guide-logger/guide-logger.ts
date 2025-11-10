@@ -356,4 +356,3 @@ class GuideLogger {
 }
 
 export { GuideLogger };
-

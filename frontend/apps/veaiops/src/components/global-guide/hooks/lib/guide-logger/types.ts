@@ -84,4 +84,3 @@ export interface LogErrorParams {
   error: Error | string;
   context?: any;
 }
-

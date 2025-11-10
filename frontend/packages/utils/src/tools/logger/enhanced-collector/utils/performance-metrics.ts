@@ -54,4 +54,3 @@ export const collectPerformanceMetrics = (): PerformanceMetrics => {
 
   return metrics;
 };
-

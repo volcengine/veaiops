@@ -68,4 +68,3 @@ export function processColumns<
     return Array.isArray(baseColumns) ? baseColumns : [];
   }
 }
-

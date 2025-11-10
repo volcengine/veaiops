@@ -280,4 +280,3 @@ export const setupGlobalExports = (logger: SelectBlockLogger): void => {
   window.exportAllComponentLogs = () => exportAllComponentLogs(logger);
   window.detectSelectBlockLoop = () => detectSelectBlockLoop(logger);
 };
-

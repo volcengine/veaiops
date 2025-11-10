@@ -65,4 +65,3 @@ export const setupErrorHandlers = (): void => {
     }
   });
 };
-
