@@ -12,31 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import type { MetricThresholdResult } from 'api-generate';
 import type { TimeseriesDataPoint } from '../../types';
 import { parseToNumber } from '../utils';
 
 /**
- * 处理阈值配置
+ * Process threshold configuration
  */
 export const processThresholds = ({
   metric,
 }: {
-  metric: import('api-generate').MetricThresholdResult;
+  metric: MetricThresholdResult;
 }): {
   upperBoundValue: number | undefined;
   lowerBoundValue: number;
   hasUpperBound: boolean;
   hasLowerBound: boolean;
 } => {
-  // 获取阈值配置
+  // Get threshold configuration
   const firstThreshold = metric.thresholds?.[0];
 
   const upperBoundValue = parseToNumber(firstThreshold?.upper_bound);
-  // 下限阈值未设置时默认为0
+  // Lower bound threshold defaults to 0 when not set
   const lowerBoundValue = parseToNumber(firstThreshold?.lower_bound) ?? 0;
   const hasUpperBound =
     upperBoundValue !== undefined && Number.isFinite(upperBoundValue);
-  // 下限阈值始终显示（未设置时默认为0）
+  // Lower bound threshold always displayed (defaults to 0 when not set)
   const hasLowerBound = true;
 
   return {
@@ -48,7 +49,7 @@ export const processThresholds = ({
 };
 
 /**
- * 为所有唯一的时间戳添加阈值线
+ * Add threshold lines for all unique timestamps
  */
 export const addThresholdLines = ({
   allTimestamps,

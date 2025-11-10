@@ -14,15 +14,14 @@
 
 /**
  * CustomTable main component
- * Highly customizable table component based on a plugin architecture — modular refactored version
+ * Highly customizable table component based on plugin architecture - modular refactored version
  *
-
  * @date 2025-12-19
  */
 
 import { logger } from '@veaiops/utils';
 import React, { forwardRef } from 'react';
-import { CustomLoading, TableTitle } from './components';
+import { MainContent } from './components/core/main-content';
 import { createTableRenderer } from './components/core/renderers';
 import type { TableRenderConfig } from './components/core/renderers/table-renderer.types';
 import { CustomTableContext } from './context';
@@ -33,8 +32,12 @@ import {
   useCustomTableRenderers,
   useEnhancedTableContext,
   usePluginManager,
+  usePluginWrapper,
+  useRenderMonitor,
+  useTablePropsHandler,
+  useTableRenderConfig,
+  useTableStateMonitor,
 } from './hooks';
-import { wrapWithPlugins } from './plugins';
 import type { CustomTableActionType } from './types/api/action-type';
 import type { BaseQuery, BaseRecord, ServiceRequestType } from './types/core';
 import type { CustomTableProps, PluginContext } from './types/index';
@@ -53,9 +56,9 @@ function CustomTableInner<
   props: CustomTableProps<RecordType, QueryType, ServiceType, FormatRecordType>,
   ref: React.Ref<CustomTableActionType<FormatRecordType, QueryType>>,
 ) {
-  // 🔍 Debug: log props received by CustomTable (component entry)
+  // 🔍 Debug: Record props received by CustomTable component (component entry)
   logger.debug({
-    message: '[CustomTable] 组件接收到的 props',
+    message: '[CustomTable] Component received props',
     data: {
       hasDataSource: Boolean(props.dataSource),
       dataSourceType: typeof props.dataSource,
@@ -70,55 +73,10 @@ function CustomTableInner<
     source: 'CustomTable',
     component: 'CustomTableInner',
   });
-  // 🚨 Infinite loop detection: render count monitoring
-  const renderCountRef = React.useRef(0);
-  const lastRenderTimeRef = React.useRef(Date.now());
-  const RENDER_WARNING_THRESHOLD = 10; // Warn if over 10 renders within 10 seconds
-  const RENDER_ERROR_THRESHOLD = 30; // 30 renders triggers a hard circuit-break
-  const RENDER_TIME_WINDOW = 10000; // 10-second window
 
-  React.useEffect(() => {
-    const now = Date.now();
+  useRenderMonitor({ title: props.title });
 
-    // Reset time window
-    if (now - lastRenderTimeRef.current > RENDER_TIME_WINDOW) {
-      renderCountRef.current = 0;
-      lastRenderTimeRef.current = now;
-    }
-
-    renderCountRef.current++;
-
-    // Warning check
-    if (renderCountRef.current === RENDER_WARNING_THRESHOLD) {
-      logger.warn({
-        message: `[CustomTable] ⚠️ 频繁渲染警告！${RENDER_TIME_WINDOW / 1000}秒内渲染了${renderCountRef.current}次`,
-        data: {
-          title: props.title,
-          renderCount: renderCountRef.current,
-          timeWindow: `${RENDER_TIME_WINDOW / 1000}秒`,
-        },
-        source: 'CustomTable',
-        component: 'RenderMonitor',
-      });
-    }
-
-    // Circuit-break check
-    if (renderCountRef.current > RENDER_ERROR_THRESHOLD) {
-      logger.error({
-        message: `[CustomTable] 🚨 死循环检测！${RENDER_TIME_WINDOW / 1000}秒内渲染了${renderCountRef.current}次，已超过阈值${RENDER_ERROR_THRESHOLD}`,
-        data: {
-          title: props.title,
-          renderCount: renderCountRef.current,
-          suggestion:
-            '请检查：1) handleColumns/handleFilters是否稳定 2) customTableProps是否每次都是新对象 3) useQuerySync是否循环',
-        },
-        source: 'CustomTable',
-        component: 'RenderMonitor',
-      });
-    }
-  });
-
-  // 🚀 New: auto log export (development only)
+  // 🚀 New: Auto log export (development only)
   const {
     exportLogs: _exportLogs,
     isExporting,
@@ -132,13 +90,13 @@ function CustomTableInner<
   const performance = usePerformanceLogging('CustomTable');
   const renderStartTime = performance.startTimer();
 
-  // Enable reset log collection in development
+  // Enable reset log collection in development environment
   React.useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
       resetLogCollector.enable();
       devLog.lifecycle({
         component: 'CustomTable',
-        event: '组件初始化完成',
+        event: 'Component initialization completed',
         data: {
           componentId: 'CustomTableInner',
           logCollectionEnabled: true,
@@ -153,7 +111,7 @@ function CustomTableInner<
     const durationValue = typeof duration === 'number' ? duration : 0;
     devLog.performance({
       component: 'CustomTable',
-      operation: '完整渲染周期',
+      operation: 'Complete render cycle',
       duration: durationValue,
       data: {
         componentId: 'CustomTableInner',
@@ -163,7 +121,7 @@ function CustomTableInner<
     });
   });
 
-  // Phase 1: create base context (without enhancements)
+  // Phase 1: Create base context (without enhanced properties)
   const baseContext = useCustomTable<
     RecordType,
     QueryType,
@@ -183,7 +141,7 @@ function CustomTableInner<
     },
   });
 
-  // Phase 2: create plugin manager
+  // Phase 2: Create plugin manager
   const { pluginManager, pluginsReady } = usePluginManager<
     RecordType,
     QueryType
@@ -195,12 +153,12 @@ function CustomTableInner<
     baseContext as any,
   );
 
-  // 🚀 New: plugin manager creation logs
+  // 🚀 New: Plugin manager creation log
   React.useEffect(() => {
     if (pluginManager) {
       devLog.lifecycle({
         component: 'PluginManager',
-        event: '插件管理器创建完成',
+        event: 'Plugin manager creation completed',
         data: {
           pluginsCount: pluginManager.getPlugins().length,
           features: props.features,
@@ -210,87 +168,14 @@ function CustomTableInner<
     }
   }, [pluginManager, props.features, pluginsReady]);
 
-  // Phase 3: apply plugin-based prop enhancements
+  // Phase 3: Apply plugin property enhancements
   const context = useEnhancedTableContext(baseContext, pluginManager);
 
-  // Auto-calculate scroll.y (supports sticky)
-  // ✅ Add error handling and detailed logs
-  let userTableProps: any;
-  try {
-    if (typeof props.tableProps === 'function') {
-      const loadingState = Boolean(context.state?.loading);
-      devLog.log({
-        component: 'CustomTable',
-        message: '调用 tableProps 函数',
-        data: {
-          loading: loadingState,
-          hasTableProps: Boolean(props.tableProps),
-        },
-      });
-      userTableProps = props.tableProps({ loading: loadingState });
-      devLog.log({
-        component: 'CustomTable',
-        message: 'tableProps 函数调用成功',
-        data: {
-          userTablePropsType: typeof userTableProps,
-          hasPagination: Boolean(userTableProps?.pagination),
-          rowKey: userTableProps?.rowKey,
-        },
-      });
-    } else {
-      userTableProps = props.tableProps;
-      devLog.log({
-        component: 'CustomTable',
-        message: '使用静态 tableProps',
-        data: {
-          hasPagination: Boolean(userTableProps?.pagination),
-          rowKey: userTableProps?.rowKey,
-        },
-      });
-    }
-  } catch (error: unknown) {
-    const errorObj = error instanceof Error ? error : new Error(String(error));
-    logger.error({
-      message: 'tableProps 调用失败',
-      data: {
-        error: errorObj.message,
-        stack: errorObj.stack,
-        errorObj,
-        tablePropsType: typeof props.tableProps,
-      },
-      source: 'CustomTable',
-      component: 'tablePropsHandler',
-    });
-    // Use default values
-    userTableProps = {};
-  }
-
-  // 🔧 Compatibility: support reading rowKey from tableProps
-  // Priority: top-level rowKey prop > tableProps.rowKey > default 'Id'
-  const finalRowKey = React.useMemo(() => {
-    const propRowKey = props.rowKey || 'Id';
-
-    // If an explicit rowKey (not default) is passed, use it
-    if (propRowKey !== 'Id') {
-      return propRowKey;
-    }
-
-    // Otherwise, try to extract rowKey from tableProps
-    const tablePropsRowKey =
-      userTableProps && typeof userTableProps === 'object'
-        ? (userTableProps as Record<string, unknown>).rowKey
-        : undefined;
-
-    if (
-      tablePropsRowKey &&
-      (typeof tablePropsRowKey === 'string' ||
-        typeof tablePropsRowKey === 'function')
-    ) {
-      return tablePropsRowKey;
-    }
-
-    return propRowKey;
-  }, [props.rowKey, userTableProps]);
+  const { userTableProps, finalRowKey } = useTablePropsHandler({
+    tableProps: props.tableProps,
+    context,
+    rowKey: props.rowKey,
+  });
 
   const _autoScrollConfig = useAutoScrollYWithCalc(
     {
@@ -318,7 +203,7 @@ function CustomTableInner<
     },
   });
 
-  // Phase 4: create renderer set (only when plugins are ready)
+  // Phase 4: Create renderer collection (only executed after plugins are ready)
   // Use BaseRecord to avoid object constraint issues
   const {
     NoDataElement,
@@ -330,15 +215,15 @@ function CustomTableInner<
     context as any,
     pluginManager,
     props.dataSource as any,
-    pluginsReady, // Pass plugin readiness status
+    pluginsReady, // Pass plugin ready state
   );
 
-  // 🚀 New: renderer set creation logs
+  // 🚀 New: Renderer collection creation log
   React.useEffect(() => {
     if (pluginsReady) {
       devLog.lifecycle({
         component: 'Renderers',
-        event: '渲染器集合创建完成',
+        event: 'Renderer collection creation completed',
         data: {
           hasNoDataElement: Boolean(NoDataElement),
           hasTableFilterComponent: Boolean(TableFilterComponent),
@@ -370,66 +255,55 @@ function CustomTableInner<
     },
     helpers: { setCurrent, setPageSize },
     props: {
-      // Title-related config
+      // Title-related configuration
       title,
       titleClassName,
       titleStyle,
       actions,
 
-      // Table core config
-      // rowKey compatibility handled earlier via finalRowKey
+      // Table core configuration
+      // rowKey will be handled by finalRowKey for compatibility
       pagination = {},
       tableClassName = '',
       baseColumns,
 
-      // Loading-related config
+      // Loading state related configuration
       useCustomLoading = false,
-      loadingTip = '加载中...',
+      loadingTip = 'Loading...', // UI text
       customLoading = false,
     },
   } = context;
 
-  // 🎯 Build semantic table render config
-  const tableRenderConfig: TableRenderConfig<RecordType> = {
-    style: {
-      className: tableClassName,
-      rowKey: finalRowKey as string | ((record: RecordType) => React.Key),
-    },
-    columns: {
-      baseColumns: baseColumns || [],
-    },
-    data: {
-      formattedData: formattedTableData,
-      total: tableTotal,
-      emptyStateElement: NoDataElement,
-    },
-    pagination: {
-      current,
-      pageSize,
-      config: pagination,
-      onPageChange: setCurrent as (page: number) => void,
-      onPageSizeChange: setPageSize as (size: number) => void,
-    },
-    loading: {
-      isLoading: loading,
-      useCustomLoader: useCustomLoading,
-    },
-  };
+  const tableRenderConfig = useTableRenderConfig<RecordType>({
+    tableClassName,
+    rowKey: finalRowKey,
+    baseColumns: baseColumns || [],
+    formattedData: formattedTableData,
+    total: tableTotal,
+    emptyStateElement: NoDataElement,
+    current,
+    pageSize,
+    pagination,
+    onPageChange: setCurrent as (page: number) => void,
+    onPageSizeChange: setPageSize as (size: number) => void,
+    loading,
+    useCustomLoader: useCustomLoading,
+  });
 
-  // Table renderer — based on semantic config
+  // Table renderer - based on semantic configuration
   const tableComponent: React.ReactNode = createTableRenderer<
     RecordType,
     QueryType
   >(pluginManager, context, tableRenderConfig);
 
-  // Use type-safe transformer to handle generic covariance
+  // Use type-safe converter to handle generic covariance
   const convertedContext = context as unknown as PluginContext<
     FormatRecordType,
     QueryType
   >;
   const safeFormattedData = formattedTableData as unknown as FormatRecordType[];
 
-  // Expose instance API — using type-safe conversion
+  // Expose instance API - use type-safe conversion
   useCustomTableImperativeHandle<FormatRecordType, QueryType>(
     ref,
     convertedContext,
@@ -444,28 +318,7 @@ function CustomTableInner<
     pluginManager,
   );
 
-  // 🚀 New: data state monitoring logs
-  React.useEffect(() => {
-    const dataLength = (formattedTableData as any[])?.length;
-    devLog.info({
-      component: 'DataState',
-      message: '表格数据状态更新',
-      data: {
-        dataLength,
-        loading,
-        total: tableTotal,
-        current,
-        pageSize,
-        hasSorter: Boolean(sorter),
-        hasFilters: Boolean(
-          filters && Object.keys(filters as Record<string, unknown>).length > 0,
-        ),
-        filtersCount: filters
-          ? Object.keys(filters as Record<string, unknown>).length
-          : 0,
-      },
-    });
-  }, [
+  useTableStateMonitor({
     formattedTableData,
     loading,
     tableTotal,
@@ -473,56 +326,37 @@ function CustomTableInner<
     pageSize,
     sorter,
     filters,
-  ]);
-
-  // 🚀 New: render performance monitoring
-  const renderStart = React.useRef<number>();
-  React.useEffect(() => {
-    renderStart.current = Date.now();
-    return () => {
-      if (renderStart.current) {
-        const duration = Date.now() - renderStart.current;
-        devLog.performance({
-          component: 'MainContent',
-          operation: '主内容渲染',
-          duration,
-          data: {
-            hasTitle: Boolean(title),
-            hasActions: Boolean(actions),
-            hasAlert: Boolean(AlertComponent),
-          },
-        });
-      }
-    };
+    title,
+    actions,
+    AlertComponent,
   });
 
-  // Main content — Alert should render here
   const mainContent = (
-    <div className="flex-1 flex flex-col gap-2">
-      <TableTitle
-        title={title}
-        actions={actions as React.ReactNode[]}
-        className={titleClassName as string}
-        titleStyle={titleStyle as React.CSSProperties}
-        actionClassName={props.actionClassName as string}
-      />
-
-      {/* 🐛 Alert component should be here: below the title, above the filters */}
-      {AlertComponent}
-
-      {TableFilterComponent as any}
-
-      {useCustomLoading && (loading || customLoading) && (
-        <CustomLoading
-          tip={typeof loadingTip === 'string' ? loadingTip : '加载中...'}
-        />
-      )}
-
-      {renderTableContent(tableComponent)}
-
-      {renderFooterContent()}
-    </div>
+    <MainContent
+      title={title}
+      actions={actions}
+      titleClassName={titleClassName}
+      titleStyle={titleStyle}
+      actionClassName={props.actionClassName}
+      AlertComponent={AlertComponent}
+      TableFilterComponent={TableFilterComponent}
+      useCustomLoading={useCustomLoading}
+      loading={loading}
+      customLoading={customLoading}
+      loadingTip={loadingTip}
+      renderTableContent={renderTableContent}
+      renderFooterContent={renderFooterContent}
+      tableComponent={tableComponent}
+    />
   );
+
+  // ✅ React Hooks must be called before any early returns
+  // Call usePluginWrapper before conditional return to comply with React Hooks rules
+  const wrappedContent = usePluginWrapper<RecordType, QueryType>({
+    pluginManager,
+    mainContent,
+    context,
+  });
 
   // Final render validation - only log in development
   devLog.log({
@@ -538,21 +372,21 @@ function CustomTableInner<
     },
   });
 
-  // If plugins aren't ready, show loading state
+  // If plugins are not ready yet, show loading state
   if (!pluginsReady) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div>正在初始化插件系统...</div>
+        <div>Initializing plugin system...</div>
       </div>
     );
   }
 
-  // 🐛 Deep debug Context Provider (avoid logging circular refs)
+  // 🐛 Deep debug Context Provider (avoid recording circular reference objects)
   devLog.log({
     component: 'CustomTable',
-    message: 'Context Provider调试',
+    message: 'Context Provider debug',
     data: {
-      // ✅ Log only safe information; avoid logging context with circular refs
+      // ✅ Only record safe information, avoid recording context objects containing circular references
       contextKeys: Object.keys(context || {}),
       hasContextProps: Boolean(context?.props),
       hasContextState: Boolean(context?.state),
@@ -563,58 +397,7 @@ function CustomTableInner<
     },
   });
 
-  // 🐛 Core fix: avoid context nesting issues; call wrapWithPlugins first, then provide Context
-  // ✅ Add error handling and detailed logs
-  let wrappedContent: React.ReactNode;
-  try {
-    devLog.log({
-      component: 'CustomTable',
-      message: '开始调用 wrapWithPlugins',
-      data: {
-        hasPluginManager: Boolean(pluginManager),
-        hasMainContent: Boolean(mainContent),
-        hasContext: Boolean(context),
-        mainContentType: typeof mainContent,
-        isValidMainContent: React.isValidElement(mainContent),
-      },
-    });
-
-    wrappedContent = wrapWithPlugins<RecordType, QueryType>({
-      pluginManager,
-      content: mainContent,
-      context,
-    });
-
-    devLog.log({
-      component: 'CustomTable',
-      message: 'wrapWithPlugins 调用成功',
-      data: {
-        wrappedContentType: typeof wrappedContent,
-        isValidElement: React.isValidElement(wrappedContent),
-        isNull: wrappedContent === null,
-        isUndefined: wrappedContent === undefined,
-      },
-    });
-  } catch (error: unknown) {
-    const errorObj = error instanceof Error ? error : new Error(String(error));
-    logger.error({
-      message: 'wrapWithPlugins 调用失败',
-      data: {
-        error: errorObj.message,
-        stack: errorObj.stack,
-        errorObj,
-        hasPluginManager: Boolean(pluginManager),
-        hasMainContent: Boolean(mainContent),
-        hasContext: Boolean(context),
-      },
-      source: 'CustomTable',
-      component: 'wrapWithPlugins',
-    });
-    // Use original content as a fallback
-    wrappedContent = mainContent;
-  }
-
-  // ✅ Add error handling for Context Provider rendering
+  // ✅ Add error capture for Context Provider rendering
   try {
     return (
       <div className="custom-table-wrapper">
@@ -626,7 +409,7 @@ function CustomTableInner<
   } catch (error: unknown) {
     const errorObj = error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: 'CustomTable Context Provider 渲染失败',
+      message: 'CustomTable Context Provider render failed',
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -638,7 +421,7 @@ function CustomTableInner<
       source: 'CustomTable',
       component: 'ContextProvider',
     });
-    // Fallback: return wrappedContent directly without Context Provider
+    // Fallback: directly return wrappedContent without Context Provider
     return <div className="custom-table-wrapper">{wrappedContent}</div>;
   }
 }

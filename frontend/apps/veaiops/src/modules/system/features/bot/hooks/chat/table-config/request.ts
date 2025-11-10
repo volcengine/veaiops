@@ -23,16 +23,16 @@ import type { Chat } from 'api-generate';
 import { useMemo } from 'react';
 
 /**
- * API请求配置Hook
+ * API request configuration Hook
  *
- * ✅ 已使用工具函数：
- * - createTableRequestWithResponseHandler: 自动处理分页参数和响应
- * - createServerPaginationDataSource: 创建服务器端分页数据源
+ * ✅ Tools used:
+ * - createTableRequestWithResponseHandler: Automatically handles pagination parameters and responses
+ * - createServerPaginationDataSource: Creates server-side pagination data source
  */
 export const useChatTableRequest = () => {
   /**
-   * CustomTable的request函数
-   * 使用工具函数自动处理分页参数、响应和错误
+   * CustomTable request function
+   * Uses utility functions to automatically handle pagination parameters, responses, and errors
    */
   const request = useMemo(
     () =>
@@ -47,7 +47,7 @@ export const useChatTableRequest = () => {
           enable_func_interest,
           enable_func_proactive_reply,
         }) => {
-          // 如果没有 uid，返回空数据
+          // If no uid, return empty data
           if (
             !uid ||
             (typeof uid === 'object' && Object.keys(uid || {}).length === 0)
@@ -68,28 +68,38 @@ export const useChatTableRequest = () => {
               typeof force_refresh === 'boolean'
                 ? force_refresh
                 : Boolean(force_refresh),
-            isActive:
-              typeof is_active === 'boolean'
-                ? is_active
-                : is_active !== undefined
-                  ? Boolean(is_active)
-                  : true, // ✅ 默认查询 is_active=true 的群聊（已经"删除"的不再默认展示）
+            isActive: (() => {
+              if (typeof is_active === 'boolean') {
+                return is_active;
+              }
+              if (is_active !== undefined) {
+                return Boolean(is_active);
+              }
+              // ✅ Default query is_active=true chats (already "deleted" ones are not shown by default)
+              return true;
+            })(),
             name:
               typeof name === 'string' && name.trim() ? name.trim() : undefined,
-            enableFuncInterest:
-              typeof enable_func_interest === 'boolean'
-                ? enable_func_interest
-                : enable_func_interest !== undefined
-                  ? Boolean(enable_func_interest)
-                  : undefined,
-            enableFuncProactiveReply:
-              typeof enable_func_proactive_reply === 'boolean'
-                ? enable_func_proactive_reply
-                : enable_func_proactive_reply !== undefined
-                  ? Boolean(enable_func_proactive_reply)
-                  : undefined,
+            enableFuncInterest: (() => {
+              if (typeof enable_func_interest === 'boolean') {
+                return enable_func_interest;
+              }
+              if (enable_func_interest !== undefined) {
+                return Boolean(enable_func_interest);
+              }
+              return undefined;
+            })(),
+            enableFuncProactiveReply: (() => {
+              if (typeof enable_func_proactive_reply === 'boolean') {
+                return enable_func_proactive_reply;
+              }
+              if (enable_func_proactive_reply !== undefined) {
+                return Boolean(enable_func_proactive_reply);
+              }
+              return undefined;
+            })(),
           });
-          // 类型转换：PaginatedAPIResponseChatList 与 StandardApiResponse<Chat[]> 结构兼容
+          // Type conversion: PaginatedAPIResponseChatList is compatible with StandardApiResponse<Chat[]> structure
           return response as unknown as StandardApiResponse<Chat[]>;
         },
         options: {
@@ -100,7 +110,7 @@ export const useChatTableRequest = () => {
     [],
   );
 
-  // ✅ 使用工具函数创建数据源
+  // ✅ Use utility function to create data source
   const dataSource = useMemo(
     () => createServerPaginationDataSource({ request }),
     [request],

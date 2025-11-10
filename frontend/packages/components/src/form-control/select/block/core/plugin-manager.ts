@@ -24,11 +24,11 @@ import type {
 } from '../types/plugin';
 import { ensureArray, removeUndefinedValues, splitPastedText } from '../util';
 
-// 🔧 状态订阅者类型定义
+// 🔧 State subscriber type definition
 type StateSubscriber = (newState: SelectBlockState) => void;
 
 /**
- * 插件管理器实现
+ * Plugin manager implementation
  */
 export class SelectBlockPluginManager implements PluginManager {
   plugins: Map<string, Plugin> = new Map();
@@ -37,7 +37,7 @@ export class SelectBlockPluginManager implements PluginManager {
 
   private managerTraceId: string;
 
-  // 🔧 状态订阅者列表
+  // 🔧 State subscriber list
   private stateSubscribers: StateSubscriber[] = [];
 
   constructor() {
@@ -45,13 +45,13 @@ export class SelectBlockPluginManager implements PluginManager {
 
     logger.info(
       'PluginManager',
-      '插件管理器初始化开始',
+      'Plugin manager initialization started',
       {},
       'constructor',
       this.managerTraceId,
     );
 
-    // 初始化插件上下文
+    // Initialize plugin context
     this.context = {
       props: {},
       state: {
@@ -71,7 +71,7 @@ export class SelectBlockPluginManager implements PluginManager {
 
     logger.debug(
       'PluginManager',
-      '插件上下文初始化完成',
+      'Plugin context initialization completed',
       {
         initialState: this.context.state,
       },
@@ -81,7 +81,7 @@ export class SelectBlockPluginManager implements PluginManager {
 
     logger.info(
       'PluginManager',
-      '插件管理器初始化完成',
+      'Plugin manager initialization completed',
       {
         contextReady: true,
       },
@@ -91,7 +91,7 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 创建插件工具函数
+   * Create plugin utility functions
    */
   private createUtils(): PluginUtils {
     return {
@@ -107,7 +107,7 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 更新状态
+   * Update state
    */
   setState(newState: Partial<SelectBlockState>): void {
     const oldState = { ...this.context.state };
@@ -115,12 +115,12 @@ export class SelectBlockPluginManager implements PluginManager {
       ...this.context.state,
       ...newState,
     };
-    // 🔧 立即通知所有订阅者状态变化
+    // 🔧 Immediately notify all subscribers of state changes
     this.notifyStateSubscribers(this.context.state);
 
     logger.debug(
       'PluginManager',
-      '状态更新',
+      'State updated',
       {
         oldState: {
           ...oldState,
@@ -144,12 +144,12 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 更新Props
+   * Update Props
    */
   setProps(props: veArchSelectBlockProps): void {
     logger.debug(
       'PluginManager',
-      'Props更新',
+      'Props updated',
       {
         newPropsKeys: Object.keys(props),
         hasDataSource: Boolean(props.dataSource),
@@ -163,13 +163,13 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 注册插件
+   * Register plugin
    */
   register<T extends Plugin>(plugin: T): void {
     if (this.plugins.has(plugin.name)) {
       logger.warn(
         'PluginManager',
-        `插件已存在，跳过注册: ${plugin.name}`,
+        `Plugin already exists, skipping registration: ${plugin.name}`,
         {
           pluginName: plugin.name,
         },
@@ -181,7 +181,7 @@ export class SelectBlockPluginManager implements PluginManager {
 
     logger.info(
       'PluginManager',
-      `开始注册插件: ${plugin.name}`,
+      `Starting plugin registration: ${plugin.name}`,
       {
         pluginName: plugin.name,
         hasInit: Boolean(plugin.init),
@@ -192,13 +192,13 @@ export class SelectBlockPluginManager implements PluginManager {
 
     this.plugins.set(plugin.name, plugin);
 
-    // 如果插件有初始化方法，则调用
+    // If plugin has init method, call it
     if (plugin.init) {
       try {
         plugin.init(this.context);
         logger.info(
           'PluginManager',
-          `插件初始化成功: ${plugin.name}`,
+          `Plugin initialization successful: ${plugin.name}`,
           {
             pluginName: plugin.name,
           },
@@ -208,7 +208,7 @@ export class SelectBlockPluginManager implements PluginManager {
       } catch (error) {
         logger.error(
           'PluginManager',
-          `插件初始化失败: ${plugin.name}`,
+          `Plugin initialization failed: ${plugin.name}`,
           error as Error,
           {
             pluginName: plugin.name,
@@ -221,7 +221,7 @@ export class SelectBlockPluginManager implements PluginManager {
 
     logger.info(
       'PluginManager',
-      `插件注册完成: ${plugin.name}`,
+      `Plugin registration completed: ${plugin.name}`,
       {
         pluginName: plugin.name,
         totalPlugins: this.plugins.size,
@@ -232,12 +232,12 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 注销插件
+   * Unregister plugin
    */
   unregister(pluginName: string): void {
     logger.info(
       'PluginManager',
-      `开始注销插件: ${pluginName}`,
+      `Starting plugin unregistration: ${pluginName}`,
       {
         pluginName,
         exists: this.plugins.has(pluginName),
@@ -248,13 +248,13 @@ export class SelectBlockPluginManager implements PluginManager {
 
     const plugin = this.plugins.get(pluginName);
     if (plugin) {
-      // 调用插件的销毁方法
+      // Call plugin's destroy method
       if (plugin.destroy) {
         try {
           plugin.destroy();
           logger.info(
             'PluginManager',
-            `插件销毁完成: ${pluginName}`,
+            `Plugin destruction completed: ${pluginName}`,
             {
               pluginName,
             },
@@ -264,7 +264,7 @@ export class SelectBlockPluginManager implements PluginManager {
         } catch (error) {
           logger.error(
             'PluginManager',
-            `插件销毁失败: ${pluginName}`,
+            `Plugin destruction failed: ${pluginName}`,
             error as Error,
             {
               pluginName,
@@ -278,7 +278,7 @@ export class SelectBlockPluginManager implements PluginManager {
 
       logger.info(
         'PluginManager',
-        `插件注销完成: ${pluginName}`,
+        `Plugin unregistration completed: ${pluginName}`,
         {
           pluginName,
           remainingPlugins: this.plugins.size,
@@ -289,7 +289,7 @@ export class SelectBlockPluginManager implements PluginManager {
     } else {
       logger.warn(
         'PluginManager',
-        `插件不存在，无法注销: ${pluginName}`,
+        `Plugin does not exist, cannot unregister: ${pluginName}`,
         {
           pluginName,
         },
@@ -300,13 +300,13 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 获取插件
+   * Get plugin
    */
   getPlugin<T extends Plugin>(pluginName: string): T | undefined {
     const plugin = this.plugins.get(pluginName) as T | undefined;
     logger.debug(
       'PluginManager',
-      `获取插件: ${pluginName}`,
+      `Getting plugin: ${pluginName}`,
       {
         pluginName,
         found: Boolean(plugin),
@@ -318,12 +318,12 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 初始化所有插件
+   * Initialize all plugins
    */
   async init(): Promise<void> {
     logger.info(
       'PluginManager',
-      '开始初始化所有插件',
+      'Starting initialization of all plugins',
       {
         pluginCount: this.plugins.size,
       },
@@ -336,21 +336,25 @@ export class SelectBlockPluginManager implements PluginManager {
       .map((plugin) => {
         logger.debug(
           'PluginManager',
-          `初始化插件: ${plugin.name}`,
+          `Initializing plugin: ${plugin.name}`,
           {
             pluginName: plugin.name,
           },
           'init',
           this.managerTraceId,
         );
-        return plugin.init!(this.context);
+        // Ensure all init results are Promises (plugin.init may return void | Promise<void>)
+        const initResult = plugin.init!(this.context);
+        return initResult instanceof Promise
+          ? initResult
+          : Promise.resolve(initResult);
       });
 
     try {
       await Promise.all(initPromises);
       logger.info(
         'PluginManager',
-        '所有插件初始化完成',
+        'All plugins initialized',
         {
           initializedCount: initPromises.length,
         },
@@ -360,7 +364,7 @@ export class SelectBlockPluginManager implements PluginManager {
     } catch (error) {
       logger.error(
         'PluginManager',
-        '插件初始化失败',
+        'Plugin initialization failed',
         error as Error,
         {
           pluginCount: initPromises.length,
@@ -372,28 +376,28 @@ export class SelectBlockPluginManager implements PluginManager {
     }
   }
 
-  // 🔧 状态订阅管理方法
+  // 🔧 State subscription management methods
 
   /**
-   * 订阅状态变化
+   * Subscribe to state changes
    */
   subscribe(subscriber: StateSubscriber): () => void {
     this.stateSubscribers.push(subscriber);
 
     logger.debug(
       'PluginManager',
-      '新增状态订阅者',
+      'New state subscriber added',
       { subscribersCount: this.stateSubscribers.length },
       'subscribe',
       this.managerTraceId,
     );
 
-    // 返回取消订阅函数
+    // Return unsubscribe function
     return () => this.unsubscribe(subscriber);
   }
 
   /**
-   * 取消订阅状态变化
+   * Unsubscribe from state changes
    */
   private unsubscribe(subscriber: StateSubscriber): void {
     const index = this.stateSubscribers.indexOf(subscriber);
@@ -402,7 +406,7 @@ export class SelectBlockPluginManager implements PluginManager {
 
       logger.debug(
         'PluginManager',
-        '移除状态订阅者',
+        'State subscriber removed',
         { subscribersCount: this.stateSubscribers.length },
         'unsubscribe',
         this.managerTraceId,
@@ -411,17 +415,17 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 通知所有订阅者状态变化
+   * Notify all subscribers of state changes
    */
   private notifyStateSubscribers(newState: SelectBlockState): void {
-    // 🔧 立即通知所有订阅者，绕过React批量更新
+    // 🔧 Immediately notify all subscribers, bypass React batch updates
     this.stateSubscribers.forEach((subscriber) => {
       try {
         subscriber(newState);
       } catch (error) {
         logger.error(
           'PluginManager',
-          '状态订阅者通知失败',
+          'State subscriber notification failed',
           error as Error,
           { error: String(error) },
           'notifyStateSubscribers',
@@ -432,12 +436,12 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 销毁所有插件
+   * Destroy all plugins
    */
   destroy(): void {
     logger.info(
       'PluginManager',
-      '开始销毁所有插件',
+      'Starting destruction of all plugins',
       {
         pluginCount: this.plugins.size,
       },
@@ -451,7 +455,7 @@ export class SelectBlockPluginManager implements PluginManager {
           plugin.destroy();
           logger.debug(
             'PluginManager',
-            `插件销毁成功: ${plugin.name}`,
+            `Plugin destruction successful: ${plugin.name}`,
             {
               pluginName: plugin.name,
             },
@@ -461,7 +465,7 @@ export class SelectBlockPluginManager implements PluginManager {
         } catch (error) {
           logger.error(
             'PluginManager',
-            `插件销毁失败: ${plugin.name}`,
+            `Plugin destruction failed: ${plugin.name}`,
             error as Error,
             {
               pluginName: plugin.name,
@@ -474,12 +478,12 @@ export class SelectBlockPluginManager implements PluginManager {
     });
     this.plugins.clear();
 
-    // 🔧 清理所有状态订阅者
+    // 🔧 Clear all state subscribers
     this.stateSubscribers.length = 0;
 
     logger.info(
       'PluginManager',
-      '所有插件销毁完成',
+      'All plugins destroyed',
       {
         remainingPlugins: this.plugins.size,
         remainingSubscribers: this.stateSubscribers.length,
@@ -490,12 +494,12 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 获取状态
+   * Get state
    */
   getState(): SelectBlockState {
     logger.debug(
       'PluginManager',
-      '获取状态',
+      'Getting state',
       {
         state: {
           ...this.context.state,
@@ -509,12 +513,12 @@ export class SelectBlockPluginManager implements PluginManager {
   }
 
   /**
-   * 获取Props
+   * Get Props
    */
   getProps(): veArchSelectBlockProps {
     logger.debug(
       'PluginManager',
-      '获取Props',
+      'Getting Props',
       {
         propsKeys: Object.keys(this.context.props),
       },

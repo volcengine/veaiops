@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { GlobalGuideStepNumber } from '@global-guide/enums/guide-steps.enum';
+import { GlobalGuideStepNumber } from '../../../enums/guide-steps.enum';
 import type { GlobalGuideStep } from '../../types';
 
 /**
- * 智能阈值模块引导步骤配置
- * 包含：智能阈值任务
+ * Intelligent threshold module guide step configuration
+ * Includes: Intelligent threshold tasks
  */
 export const thresholdSteps: GlobalGuideStep[] = [
   {
@@ -34,8 +34,8 @@ export const thresholdSteps: GlobalGuideStep[] = [
         description: '创建新的智能阈值任务',
         selector: '[data-testid="new-task-btn"]',
         tooltipContent: '点击这里可以创建新的智能阈值任务🌟',
-        actionType: 'navigation', // 直接触发新建弹窗
-        placement: 'bottom', // 箭头指向下方
+        actionType: 'navigation', // Directly trigger new modal
+        placement: 'bottom', // Arrow points downward
       },
       {
         id: 'batch-auto-update',
@@ -44,9 +44,9 @@ export const thresholdSteps: GlobalGuideStep[] = [
         selector: '[data-testid="batch-auto-update-btn"]',
         tooltipContent:
           '请先在列表中选择一条或多条任务记录，然后点击此处的批量更新按钮🌟',
-        actionType: 'direct', // 直接触发批量更新弹窗
-        allowDisabled: true, // 允许在按钮禁用时显示引导（提示用户需要先选择任务）
-        placement: 'bottom', // 箭头指向下方
+        actionType: 'direct', // Directly trigger batch update modal
+        allowDisabled: true, // Allow showing guide when button is disabled (prompt user to select task first)
+        placement: 'bottom', // Arrow points downward
       },
       {
         id: 'view-task-details',
@@ -54,8 +54,8 @@ export const thresholdSteps: GlobalGuideStep[] = [
         description: '查看任务的详细信息',
         selector: '[data-testid="view-task-details-btn"]',
         tooltipContent: '请先在列表中选择一条任务记录，然后点击此处查看详情🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        allowDisabled: true, // 允许在按钮禁用时显示引导（提示用户需要先选择任务）
+        actionType: 'navigation', // Need to navigate to page and highlight
+        allowDisabled: true, // Allow showing guide when button is disabled (prompt user to select task first)
       },
       {
         id: 'copy-task',
@@ -64,8 +64,8 @@ export const thresholdSteps: GlobalGuideStep[] = [
         selector: '[data-testid="copy-task-btn"]',
         tooltipContent:
           '请先在列表中选择一条任务记录，然后点击此处的复制按钮🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        allowDisabled: true, // 允许在按钮禁用时显示引导（提示用户需要先选择任务）
+        actionType: 'navigation', // Need to navigate to page and highlight
+        allowDisabled: true, // Allow showing guide when button is disabled (prompt user to select task first)
       },
       {
         id: 'delete-task',
@@ -74,8 +74,8 @@ export const thresholdSteps: GlobalGuideStep[] = [
         selector: '[data-testid="delete-task-btn"]',
         tooltipContent:
           '请先在列表中选择一条任务记录，然后点击此处的删除按钮🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        allowDisabled: true, // 允许在按钮禁用时显示引导（提示用户需要先选择任务）
+        actionType: 'navigation', // Need to navigate to page and highlight
+        allowDisabled: true, // Allow showing guide when button is disabled (prompt user to select task first)
       },
       {
         id: 'task-metric-template',
@@ -83,9 +83,9 @@ export const thresholdSteps: GlobalGuideStep[] = [
         description: '配置任务下的指标模板',
         selector: '[data-testid="view-task-metric-template-btn"]',
         tooltipContent: '点击此处配置指标模板🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        prerequisiteSteps: ['view-task-details'], // 前置步骤：需要先点击查看任务详情
-        allowDisabled: true, // 允许在按钮禁用时显示引导
+        actionType: 'navigation', // Need to navigate to page and highlight
+        prerequisiteSteps: ['view-task-details'], // Prerequisite step: need to click view task details first
+        allowDisabled: true, // Allow showing guide when button is disabled
       },
       {
         id: 're-execute-task',
@@ -93,10 +93,10 @@ export const thresholdSteps: GlobalGuideStep[] = [
         description: '重新执行任务',
         selector: '[data-testid="re-execute-task-btn"]',
         tooltipContent: '点击此处重新执行任务🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        prerequisiteSteps: ['view-task-details'], // 前置步骤：需要先点击查看任务详情
-        allowDisabled: true, // 允许在按钮禁用时显示引导（提示用户需要先选择任务）
-        placement: 'bottom', // 箭头指向下方
+        actionType: 'navigation', // Need to navigate to page and highlight
+        prerequisiteSteps: ['view-task-details'], // Prerequisite step: need to click view task details first
+        allowDisabled: true, // Allow showing guide when button is disabled (prompt user to select task first)
+        placement: 'bottom', // Arrow points downward
       },
       {
         id: 'view-cleaning-result',
@@ -104,9 +104,9 @@ export const thresholdSteps: GlobalGuideStep[] = [
         description: '查看任务结果',
         selector: '[data-testid="view-task-result-btn"]',
         tooltipContent: '点击此处查看任务结果🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        prerequisiteSteps: ['view-task-details'], // 前置步骤：需要先点击查看任务详情
-        allowDisabled: true, // 允许在按钮禁用时显示引导
+        actionType: 'navigation', // Need to navigate to page and highlight
+        prerequisiteSteps: ['view-task-details'], // Prerequisite step: need to click view task details first
+        allowDisabled: true, // Allow showing guide when button is disabled
       },
       {
         id: 'create-alert-rule',
@@ -114,10 +114,10 @@ export const thresholdSteps: GlobalGuideStep[] = [
         description: '为任务创建告警规则',
         selector: '[data-testid="create-alert-rule-btn"]',
         tooltipContent: '点击此处创建告警规则🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        prerequisiteSteps: ['view-task-details'], // 前置步骤：需要先点击查看任务详情
-        allowDisabled: true, // 允许在按钮禁用时显示引导（提示用户需要先选择任务）
-        placement: 'bottom', // 箭头指向下方
+        actionType: 'navigation', // Need to navigate to page and highlight
+        prerequisiteSteps: ['view-task-details'], // Prerequisite step: need to click view task details first
+        allowDisabled: true, // Allow showing guide when button is disabled (prompt user to select task first)
+        placement: 'bottom', // Arrow points downward
       },
       {
         id: 'view-time-series',
@@ -125,9 +125,9 @@ export const thresholdSteps: GlobalGuideStep[] = [
         description: '查看指标时序图',
         selector: '[data-testid="view-time-series-btn"]',
         tooltipContent: '点击此处查看时序图🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        prerequisiteSteps: ['view-task-details', 'view-cleaning-result'], // 前置步骤：需要先点击查看任务详情和查看任务结果
-        allowDisabled: true, // 允许在按钮禁用时显示引导
+        actionType: 'navigation', // Need to navigate to page and highlight
+        prerequisiteSteps: ['view-task-details', 'view-cleaning-result'], // Prerequisite steps: need to click view task details and view task result first
+        allowDisabled: true, // Allow showing guide when button is disabled
       },
     ],
     completionCriteria: ['任务创建成功', '训练完成并生成结果', '版本管理可用'],

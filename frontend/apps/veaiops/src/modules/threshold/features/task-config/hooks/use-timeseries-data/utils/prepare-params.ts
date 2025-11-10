@@ -13,7 +13,10 @@
 // limitations under the License.
 
 import { Message } from '@arco-design/web-react';
-import type { IntelligentThresholdTask } from 'api-generate';
+import type {
+  IntelligentThresholdTask,
+  MetricThresholdResult,
+} from 'api-generate';
 import type { RequestParams } from '../types';
 import {
   processMetricLabels,
@@ -22,23 +25,23 @@ import {
 } from './validators';
 
 /**
- * 验证和准备请求参数
+ * Validate and prepare request parameters
  */
 export const prepareRequestParams = ({
   metric,
   task,
   timeRange,
 }: {
-  metric?: import('api-generate').MetricThresholdResult;
+  metric?: MetricThresholdResult;
   task?: IntelligentThresholdTask;
   timeRange: [Date, Date];
 }): RequestParams | null => {
-  // 验证输入参数
+  // Validate input parameters
   if (!validateInputs({ metric, task })) {
     return null;
   }
 
-  // 验证时间范围
+  // Validate time range
   const timeValidation = validateTimeRange({ timeRange });
   if (!timeValidation) {
     return null;
@@ -46,13 +49,13 @@ export const prepareRequestParams = ({
 
   const { startTime, endTime } = timeValidation;
 
-  // 边界检查：task 必须存在
+  // Boundary check: task must exist
   if (!task) {
     Message.error('任务信息无效');
     return null;
   }
 
-  // 边界检查：数据源类型必须是字符串
+  // Boundary check: datasource type must be string
   const datasourceType = task.datasource_type;
   if (!datasourceType || typeof datasourceType !== 'string') {
     Message.error('数据源类型无效');
@@ -62,13 +65,13 @@ export const prepareRequestParams = ({
   const datasourceTypeNormalized = datasourceType.toLowerCase();
   const datasourceId = task.datasource_id;
 
-  // 边界检查：数据源ID必须存在
+  // Boundary check: datasource ID must exist
   if (!datasourceId || typeof datasourceId !== 'string') {
     Message.error('数据源ID无效');
     return null;
   }
 
-  // 处理 metric labels
+  // Process metric labels
   const instances = processMetricLabels({ metric });
 
   return {

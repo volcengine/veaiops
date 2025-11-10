@@ -12,28 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { GlobalGuideStepNumber } from '@global-guide/enums/guide-steps.enum';
+import { GlobalGuideStepNumber } from '../../../enums/guide-steps.enum';
 import type { GlobalGuideStep } from '../../types';
 
 /**
- * 基础设施模块引导步骤配置
- * 包含：连接管理、数据源、指标模板
+ * Infrastructure module guide step configuration
+ * Includes: Connection management, data source, metric template
  */
 export const basicSteps: GlobalGuideStep[] = [
   {
     number: GlobalGuideStepNumber.CONNECTION,
     title: '连接管理',
     description: '点击配置监控数据源连接',
-    route: '/system/datasource', // 🔥 去掉 URL 参数，只跳转到页面
+    route: '/system/datasource', // 🔥 Remove URL parameters, only navigate to page
     icon: 'IconLink',
     frontendFeatures: [
       {
         id: 'new-connection',
         name: '新建连接',
         description: '创建新的数据源连接',
-        selector: '[data-testid="new-connection-btn"]', // 新建连接按钮，位于连接管理抽屉内
+        selector: '[data-testid="new-connection-btn"]', // New connection button, located in connection management drawer
         tooltipContent: '点击此处创建数据源连接✨',
-        actionType: 'navigation', // 需要跳转到页面，打开连接管理抽屉并高亮显示
+        actionType: 'navigation', // Need to navigate to page, open connection management drawer and highlight
       },
       {
         id: 'edit-connection',
@@ -42,8 +42,8 @@ export const basicSteps: GlobalGuideStep[] = [
         selector: '[data-testid="edit-connection-btn"]',
         tooltipContent:
           '请先在列表中选择一条连接记录，然后点击此处的编辑按钮进行修改🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        allowDisabled: true, // 允许在按钮禁用时显示引导（提示用户需要先选择连接）
+        actionType: 'navigation', // Need to navigate to page and highlight
+        allowDisabled: true, // Allow showing guide when button is disabled (prompt user to select connection first)
       },
       {
         id: 'test-connection',
@@ -52,8 +52,8 @@ export const basicSteps: GlobalGuideStep[] = [
         selector: '[data-testid="test-connection-btn"]',
         tooltipContent:
           '请先在列表中选择一条连接记录，然后点击此处的测试按钮验证连接🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        allowDisabled: true, // 允许在按钮禁用时显示引导（提示用户需要先选择连接）
+        actionType: 'navigation', // Need to navigate to page and highlight
+        allowDisabled: true, // Allow showing guide when button is disabled (prompt user to select connection first)
       },
       {
         id: 'delete-connection',
@@ -62,8 +62,8 @@ export const basicSteps: GlobalGuideStep[] = [
         selector: '[data-testid="delete-connection-btn"]',
         tooltipContent:
           '请先在列表中选择一条连接记录，然后点击此处的删除按钮🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
-        allowDisabled: true, // 允许在按钮禁用时显示引导（提示用户需要先选择连接）
+        actionType: 'navigation', // Need to navigate to page and highlight
+        allowDisabled: true, // Allow showing guide when button is disabled (prompt user to select connection first)
       },
     ],
     completionCriteria: [
@@ -102,7 +102,7 @@ export const basicSteps: GlobalGuideStep[] = [
         description: '创建新的数据源配置',
         selector: '#new-datasource-btn',
         tooltipContent: '点击此按钮打开新增数据源向导🌟',
-        actionType: 'direct', // 🔥 只高亮，不自动触发
+        actionType: 'direct', // 🔥 Only highlight, do not auto-trigger
       },
       {
         id: 'delete-datasource',
@@ -110,7 +110,7 @@ export const basicSteps: GlobalGuideStep[] = [
         description: '删除不需要的数据源',
         selector: '[data-testid="delete-datasource-btn"]',
         tooltipContent: '点击此处可以删除数据源🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
+        actionType: 'navigation', // Need to navigate to page and highlight
       },
       {
         id: 'edit-datasource',
@@ -118,7 +118,7 @@ export const basicSteps: GlobalGuideStep[] = [
         description: '修改现有数据源配置',
         selector: '[data-testid="edit-datasource-btn"]',
         tooltipContent: '点击此处可以对数据源进行修改🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
+        actionType: 'navigation', // Need to navigate to page and highlight
       },
       {
         id: 'toggle-datasource',
@@ -126,7 +126,7 @@ export const basicSteps: GlobalGuideStep[] = [
         description: '启用或禁用数据源',
         selector: '[data-testid="toggle-datasource-btn"]',
         tooltipContent: '点击此处可以对数据源进行开启/停用🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
+        actionType: 'navigation', // Need to navigate to page and highlight
       },
     ],
     completionCriteria: [
@@ -165,8 +165,8 @@ export const basicSteps: GlobalGuideStep[] = [
         description: '创建新的指标配置',
         selector: '[data-testid="new-metric-template-btn"]',
         tooltipContent: '点击这里可以新增指标配置🌟',
-        actionType: 'navigation', // 直接触发新增弹窗
-        placement: 'bottom', // 箭头指向下方
+        actionType: 'navigation', // Directly trigger new modal
+        placement: 'bottom', // Arrow points downward
       },
       {
         id: 'edit-metric',
@@ -175,7 +175,7 @@ export const basicSteps: GlobalGuideStep[] = [
         selector: '[data-testid="edit-metric-template-btn"]',
         tooltipContent:
           '请先在列表中选择一条指标记录，然后点击此处的编辑按钮进行修改🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
+        actionType: 'navigation', // Need to navigate to page and highlight
       },
       {
         id: 'delete-metric',
@@ -184,7 +184,7 @@ export const basicSteps: GlobalGuideStep[] = [
         selector: '[data-testid="delete-metric-template-btn"]',
         tooltipContent:
           '请先在列表中选择一条指标记录，然后点击此处的删除按钮🌟',
-        actionType: 'navigation', // 需要跳转到页面并高亮显示
+        actionType: 'navigation', // Need to navigate to page and highlight
       },
     ],
     completionCriteria: [

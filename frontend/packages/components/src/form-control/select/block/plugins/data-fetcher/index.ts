@@ -29,7 +29,7 @@ import type {
 import { isDataSourceSetter, optionfy } from '../../util';
 
 /**
- * 数据获取插件实现
+ * Data fetcher plugin implementation
  */
 export class DataFetcherPluginImpl implements DataFetcherPlugin {
   name = 'data-fetcher';
@@ -40,7 +40,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
 
   private cacheHandlerRef?: CacheHandlerPlugin;
 
-  // 🔧 添加销毁标记
+  // 🔧 Add destruction flag
   private isDestroyed = false;
 
   constructor(config: DataFetcherConfig) {
@@ -51,7 +51,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
     this.context = context;
     logger.debug(
       'DataFetcher',
-      '插件初始化',
+      'Plugin initialized',
       {
         hasContext: Boolean(context),
       },
@@ -64,7 +64,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
   }
 
   /**
-   * 获取当前的 context（带防御性检查）
+   * Get current context (with defensive checks)
    */
   private getContext(): PluginContext | null {
     if (this.isDestroyed) {
@@ -79,17 +79,17 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
   }
 
   /**
-   * 通过数据设置器获取数据
-   * @param dataSource 数据源配置
-   * @param remoteSearchParams 搜索参数
-   * @param externalContext 可选的外部 context（用于防抖场景）
+   * Fetch data through data setter
+   * @param dataSource Data source configuration
+   * @param remoteSearchParams Search parameters
+   * @param externalContext Optional external context (for debounce scenarios)
    */
   async fetchByDataSetter(
     dataSource: DataSourceSetter,
     remoteSearchParams: Record<string, any>,
     externalContext?: PluginContext,
   ): Promise<SelectOption[]> {
-    // 优先使用外部传入的 context，其次使用内部 context
+    // Prefer external context, then use internal context
     const ctx = externalContext || this.getContext();
     if (!ctx) {
       logger.warn(
@@ -115,13 +115,13 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
     } = dataSource;
 
     const { limit, handleParams } = this.config;
-    const { state, utils } = ctx; // 🔧 使用传入的 ctx 而不是 this.context
-    const { props } = ctx; // 🔧 使用传入的 ctx 而不是 this.context
+    const { state, utils } = ctx; // 🔧 Use passed ctx instead of this.context
+    const { props } = ctx; // 🔧 Use passed ctx instead of this.context
 
     let _options: SelectOption[] = [];
 
     try {
-      // 检查payload中是否包含自定义的粘贴值字段（如accountIDs），如果有则不添加额外的value参数
+      // Check if payload contains custom paste value field (e.g., accountIDs), if so don't add additional value parameter
       const hasPasteValueKey =
         props.pasteValueKey && payload[props.pasteValueKey];
 
@@ -129,7 +129,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
         utils.removeUndefinedValues({
           ...payload,
           ...remoteSearchParams,
-          // 只有在没有使用pasteValueKey时才添加value参数
+          // Only add value parameter when pasteValueKey is not used
           ...(hasPasteValueKey ? {} : { value: props.value }),
           pageReq: {
             skip: state.skip,
@@ -138,10 +138,10 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
         }),
       );
 
-      // 🔧 添加请求开始日志
+      // 🔧 Add request start log
       logger.info(
         'DataFetcher',
-        `开始请求数据: ${api}`,
+        `Starting data request: ${api}`,
         {
           api,
           params: finalParams,
@@ -156,7 +156,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
       const response = await serviceInstance?.[api]?.(finalParams);
       const requestDuration = Date.now() - requestStartTime;
 
-      // 🔧 记录原始响应结构
+      // 🔧 Record original response structure
       const responseStructure = {
         api,
         hasResponse: Boolean(response),
@@ -164,12 +164,12 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
         responseKeys:
           response && typeof response === 'object' ? Object.keys(response) : [],
 
-        // 检查 response.result 路径
+        // Check response.result path
         hasResult: Boolean(response?.result),
         resultType: typeof response?.result,
         resultKeys: response?.result ? Object.keys(response.result) : [],
 
-        // 检查 response.result[responseEntityKey] 路径
+        // Check response.result[responseEntityKey] path
         hasResultEntity: Boolean(response?.result?.[responseEntityKey]),
         resultEntityType: typeof response?.result?.[responseEntityKey],
         resultEntityIsArray: Array.isArray(
@@ -179,7 +179,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
           ? response.result[responseEntityKey].length
           : 'N/A',
 
-        // 检查 response[responseEntityKey] 路径（直接访问）
+        // Check response[responseEntityKey] path (direct access)
         hasDirectEntity: Boolean(response?.[responseEntityKey]),
         directEntityType: typeof response?.[responseEntityKey],
         directEntityIsArray: Array.isArray(response?.[responseEntityKey]),
@@ -192,17 +192,17 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
 
       logger.info(
         'DataFetcher',
-        `响应结构分析: ${api}`,
+        `Response structure analysis: ${api}`,
         responseStructure,
         'fetchByDataSetter',
       );
 
-      // 🔧 修复：直接使用 response[responseEntityKey]（即 response.data）
+      // 🔧 Fix: Directly use response[responseEntityKey] (i.e., response.data)
       let ret = response?.[responseEntityKey];
 
       logger.debug(
         'DataFetcher',
-        `数据提取结果: ${api}`,
+        `Data extraction result: ${api}`,
         {
           api,
           responseEntityKey,
@@ -214,7 +214,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
       );
 
       if (isJsonParse) {
-        // 支持json解析
+        // Support JSON parsing
         const parsedData = safeJSONParse({ valueString: ret, empty: {} }) as {
           [key: string]: any;
         };
@@ -227,10 +227,10 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
         ...optionCfg,
       });
 
-      // 🔧 添加请求成功日志
+      // 🔧 Add request success log
       logger.info(
         'DataFetcher',
-        `请求成功: ${api}`,
+        `Request successful: ${api}`,
         {
           api,
           duration: `${requestDuration}ms`,
@@ -242,15 +242,15 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
         'fetchByDataSetter',
       );
 
-      // 处理数据源共享
+      // Handle data source sharing
       if (props.dataSourceShare && this.cacheHandlerRef) {
         this.cacheHandlerRef.setToCache(api, response);
       }
     } catch (error) {
-      // 🔧 添加请求失败日志
+      // 🔧 Add request failure log
       logger.error(
         'DataFetcher',
-        `请求失败: ${api}`,
+        `Request failed: ${api}`,
         error as Error,
         {
           api,
@@ -270,7 +270,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
           });
           logger.debug(
             'DataFetcher',
-            '延迟重置 loading 状态',
+            'Delayed reset loading state',
             {
               api,
             },
@@ -284,17 +284,17 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
   }
 
   /**
-   * 通过函数获取数据
-   * @param dataSource 数据源函数
-   * @param remoteSearchParams 搜索参数
-   * @param externalContext 可选的外部 context（用于防抖场景）
+   * Fetch data through function
+   * @param dataSource Data source function
+   * @param remoteSearchParams Search parameters
+   * @param externalContext Optional external context (for debounce scenarios)
    */
   async fetchByFunction(
     dataSource: (props: SelectDataSourceProps) => Promise<any> | any,
     remoteSearchParams: any,
     externalContext?: PluginContext,
   ): Promise<SelectOption[]> {
-    // 优先使用外部传入的 context
+    // Prefer externally passed context
     const ctx = externalContext || this.getContext();
     if (!ctx) {
       logger.warn(
@@ -314,14 +314,14 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
     const { props } = ctx;
 
     try {
-      // 检查remoteSearchParams中是否包含自定义的粘贴值字段，如果有则不添加额外的value参数
+      // Check if remoteSearchParams contains custom paste value field, if so don't add extra value parameter
       const hasPasteValueKey =
         props.pasteValueKey && remoteSearchParams[props.pasteValueKey];
 
       const finalParams = handleParams(
         utils.removeUndefinedValues({
           ...remoteSearchParams,
-          // 只有在没有使用pasteValueKey时才添加value参数
+          // Only add value parameter when pasteValueKey is not used
           ...(hasPasteValueKey ? {} : { value: props.value }),
           pageReq: {
             skip: state.skip,
@@ -330,10 +330,10 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
         }),
       );
 
-      // 🔧 添加函数请求开始日志
+      // 🔧 Add function request start log
       logger.info(
         'DataFetcher',
-        '开始执行数据源函数',
+        'Starting data source function execution',
         {
           params: finalParams,
           skip: state.skip,
@@ -348,15 +348,15 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
 
       let _options: SelectOption[] = [];
 
-      // 根据实际情况处理函数类型数据源返回的数据
+      // Process data returned by function type data source according to actual situation
       if (Array.isArray(response)) {
         _options = response;
       }
 
-      // 🔧 添加函数请求成功日志
+      // 🔧 Add function request success log
       logger.info(
         'DataFetcher',
-        '数据源函数执行成功',
+        'Data source function executed successfully',
         {
           duration: `${requestDuration}ms`,
           optionsCount: _options?.length || 0,
@@ -367,10 +367,10 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
 
       return _options;
     } catch (error) {
-      // 🔧 添加函数请求失败日志
+      // 🔧 Add function request failure log
       logger.error(
         'DataFetcher',
-        '数据源函数执行失败',
+        'Data source function execution failed',
         error as Error,
         {
           error: error instanceof Error ? error.message : String(error),
@@ -383,10 +383,10 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
   }
 
   /**
-   * 统一的数据获取方法
-   * @param dataSource 数据源配置或函数
-   * @param remoteSearchParams 搜索参数
-   * @param externalContext 可选的外部 context（用于防抖场景）
+   * Unified data fetching method
+   * @param dataSource Data source configuration or function
+   * @param remoteSearchParams Search parameters
+   * @param externalContext Optional external context (for debounce scenarios)
    */
   async fetchData(
     dataSource:
@@ -395,7 +395,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
     remoteSearchParams: Record<string, any>,
     externalContext?: PluginContext,
   ): Promise<SelectOption[]> {
-    // 优先使用外部传入的 context
+    // Prefer externally passed context
     const ctx = externalContext || this.getContext();
     if (!ctx) {
       logger.warn(
@@ -411,7 +411,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
       return [];
     }
 
-    // 🔧 详细记录 dataSource 信息
+    // 🔧 Record dataSource information in detail
     const dataSourceInfo: any = {
       typeofDataSource: typeof dataSource,
       isObject: typeof dataSource === 'object' && dataSource !== null,
@@ -447,16 +447,20 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
     const isValidDataSourceSetter = isDataSourceSetter(dataSource);
     const isValidFunction = isFunction(dataSource);
 
-    // 🔧 添加数据获取入口日志
+    // 🔧 Add data fetching entry log
     logger.info(
       'DataFetcher',
-      '数据获取入口',
+      'Data fetching entry',
       {
-        dataSourceType: isValidDataSourceSetter
-          ? 'DataSourceSetter'
-          : isValidFunction
-            ? 'Function'
-            : 'Invalid',
+        dataSourceType: (() => {
+          if (isValidDataSourceSetter) {
+            return 'DataSourceSetter';
+          }
+          if (isValidFunction) {
+            return 'Function';
+          }
+          return 'Invalid';
+        })(),
         isValidDataSourceSetter,
         isValidFunction,
         dataSourceInfo,
@@ -482,15 +486,15 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
 
     logger.warn(
       'DataFetcher',
-      'dataSource 验证失败，无法获取数据',
+      'dataSource validation failed, unable to fetch data',
       {
         dataSourceType: typeof dataSource,
         dataSourceInfo,
         possibleReasons: [
-          'api 包含 undefined 或 null',
-          'api 方法不存在于 serviceInstance',
-          'serviceInstance 为空',
-          'dataSource 配置不完整',
+          'api contains undefined or null',
+          'api method does not exist in serviceInstance',
+          'serviceInstance is empty',
+          'dataSource configuration incomplete',
         ],
       },
       'fetchData',
@@ -500,11 +504,11 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
   }
 
   /**
-   * 处理获取的选项数据
-   * @param options 原始选项数据
-   * @param isAppend 是否追加模式
-   * @param apiName API 名称
-   * @param externalContext 可选的外部 context（用于防抖场景）
+   * Process fetched option data
+   * @param options Original option data
+   * @param isAppend Whether append mode
+   * @param apiName API name
+   * @param externalContext Optional external context (for debounce scenarios)
    */
   processOptions(
     options: SelectOption[],
@@ -512,7 +516,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
     apiName?: string,
     externalContext?: PluginContext,
   ): SelectOption[] {
-    // 优先使用外部传入的 context
+    // Prefer externally passed context
     const ctx = externalContext || this.getContext();
     if (!ctx) {
       logger.warn(
@@ -532,10 +536,10 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
     const { handleOptions } = this.config;
     const { props } = ctx;
 
-    // 🔧 添加选项处理日志
+    // 🔧 Add option processing log
     logger.debug(
       'DataFetcher',
-      '处理选项数据',
+      'Processing option data',
       {
         apiName,
         optionsCount: options?.length || 0,
@@ -545,19 +549,19 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
       'processOptions',
     );
 
-    // 决定是否追加数据 - 使用cloneDeep确保深拷贝，与原始代码保持一致
+    // Decide whether to append data - use cloneDeep to ensure deep copy, consistent with original code
     const finalOptions = isAppend
       ? this.cloneDeep([...state.fetchOptions, ...options])
       : options;
 
-    // 应用用户自定义的处理函数
+    // Apply user-defined processing function
     const result = isFunction(handleOptions)
       ? handleOptions({ options: finalOptions, value: props.value })
       : finalOptions;
 
     logger.debug(
       'DataFetcher',
-      '选项处理完成',
+      'Option processing completed',
       {
         apiName,
         finalOptionsCount: result?.length || 0,
@@ -570,7 +574,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
   }
 
   /**
-   * 深拷贝函数，确保与原始代码行为一致
+   * Deep copy function, ensure consistent behavior with original code
    */
   private cloneDeep<T>(obj: T): T {
     if (obj === null || typeof obj !== 'object') {
@@ -593,7 +597,7 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
   }
 
   /**
-   * 更新分页相关状态
+   * Update pagination related state
    */
   updatePaginationState(options: SelectOption[]): void {
     const ctx = this.getContext();
@@ -611,14 +615,14 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
 
     const { limit } = this.config;
 
-    // 🔧 移除loading重置，由search-handler统一管理loading状态
+    // 🔧 Remove loading reset, let search-handler manage loading state uniformly
     ctx.setState({
       canTriggerLoadMore: options?.length >= limit,
     });
 
     logger.debug(
       'DataFetcher',
-      '更新分页状态',
+      'Updating pagination state',
       {
         optionsCount: options?.length || 0,
         limit,
@@ -630,8 +634,8 @@ export class DataFetcherPluginImpl implements DataFetcherPlugin {
 
   destroy(): void {
     this.isDestroyed = true;
-    logger.debug('DataFetcher', '插件销毁', {}, 'destroy');
-    // 清理资源
+    logger.debug('DataFetcher', 'Plugin destroyed', {}, 'destroy');
+    // Clean up resources
     this.context = null as any;
   }
 }

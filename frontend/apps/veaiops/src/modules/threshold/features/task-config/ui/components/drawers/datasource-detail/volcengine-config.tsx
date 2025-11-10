@@ -74,11 +74,15 @@ export const VolcengineConfig: React.FC<ConfigSectionProps> = ({
             },
             {
               label: '分组维度',
-              value: config.group_by
-                ? Array.isArray(config.group_by)
-                  ? config.group_by.join(', ')
-                  : String(config.group_by)
-                : '-',
+              value: (() => {
+                if (!config.group_by) {
+                  return '-';
+                }
+                if (Array.isArray(config.group_by)) {
+                  return config.group_by.join(', ');
+                }
+                return String(config.group_by);
+              })(),
             },
           ]}
           className="mb-0"

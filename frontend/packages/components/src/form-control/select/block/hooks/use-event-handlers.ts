@@ -23,10 +23,11 @@ import type { PasteHandlerPluginImpl } from '../plugins/paste-handler';
 import type { SearchHandlerPluginImpl } from '../plugins/search-handler';
 import type { SelectOption, veArchSelectBlockProps } from '../types/interface';
 import type { SelectBlockState } from '../types/plugin';
+import { handleVisibleChangeLogic } from './use-event-handlers.visible-change';
 
 /**
  * Event handlers Hook
- * Handles search, paste, visibility change, scroll and other events
+ * Responsible for handling search, paste, visibility change, scroll and other events
  */
 export function useEventHandlers(
   props: veArchSelectBlockProps,
@@ -52,7 +53,7 @@ export function useEventHandlers(
     options: initialOptions = [],
   } = props;
 
-  // Search handler - fix missing onSearch logic
+  // Search handler - Fix missing onSearch logic
   const onSearch = isDebouncedFetch
     ? (v: string, reason?: string) => {
         logger.info(
@@ -97,7 +98,7 @@ export function useEventHandlers(
           'onSearch',
         );
 
-        // 🔥 Key: Trigger data fetch (regardless of whether input is empty)
+        // 🔥 Key: Trigger data fetching (regardless of whether input is empty)
         const debouncedSearch = searchHandler?.createDebouncedSearch();
 
         logger.info(
@@ -121,7 +122,7 @@ export function useEventHandlers(
     : (searchValue: string) => {
         logger.debug(
           'UseEventHandlers',
-          'onSearch (非防抖模式)',
+          'onSearch (non-debounced mode)',
           {
             searchValue,
           },
@@ -133,53 +134,16 @@ export function useEventHandlers(
   // Internal method to fetch options - keep consistent with original file
   // 🔧 Fix infinite loop: Remove object dependencies, use ref to access latest state
   const _fetchOptions = useCallback(async () => {
-    // 🔍 Extract instance identifier
-    const instanceId =
-      props.id || (props as any).formItemProps?.field || 'unknown';
-
-    // 🔍 Extract complete dataSource information
-    const dataSourceInfo =
-      props.dataSource && typeof props.dataSource === 'object'
-        ? {
-            api: (props.dataSource as any).api,
-            hasServiceInstance: 'serviceInstance' in props.dataSource,
-            responseEntityKey: (props.dataSource as any).responseEntityKey,
-          }
-        : null;
-
-    // 🔍 Extract complete dependency information
-    const dependencyInfo = {
-      dependency: props.dependency,
-      dependencyString: JSON.stringify(props.dependency),
-      dependencyType: typeof props.dependency,
-      dependencyIsArray: Array.isArray(props.dependency),
-      dependencyLength: Array.isArray(props.dependency)
-        ? props.dependency.length
-        : 0,
-      dependencyFirstItem: Array.isArray(props.dependency)
-        ? props.dependency[0]
-        : undefined,
-    };
-
     logger.info(
       'UseEventHandlers',
       '_fetchOptions called',
       {
-        instanceId, // 🔍 Instance identifier
         hasDataFetcher: Boolean(dataFetcher),
         hasSearchHandler: Boolean(searchHandler),
         hasCurrentState: Boolean(currentState),
         shouldFetchOptionsWithDefaultValue,
         remoteSearchKey,
         value,
-        // 🔍 Complete dataSource information
-        dataSourceInfo,
-        dataSourceApi: dataSourceInfo?.api,
-        // 🔍 Complete dependency information
-        ...dependencyInfo,
-        // 🔍 Current status information
-        lastDataSourceApi: currentState?.lastDataSourceApi,
-        fetchOptionsCount: currentState?.fetchOptions?.length || 0,
       },
       '_fetchOptions',
     );
@@ -201,21 +165,6 @@ export function useEventHandlers(
         '_fetchOptions',
       );
       return;
-    }
-
-    // 🔧 Fix: Update PluginManager's context.props before creating debounced function
-    // Ensure debounced function captures the latest props (especially dataSource)
-    if (pluginManagerRef.current) {
-      pluginManagerRef.current.setProps(props);
-      logger.debug(
-        'UseEventHandlers',
-        'Updated PluginManager context.props',
-        {
-          dataSourceApi: dataSourceInfo?.api,
-          hasPluginManager: Boolean(pluginManagerRef.current),
-        },
-        '_fetchOptions',
-      );
     }
 
     logger.debug(
@@ -281,10 +230,7 @@ export function useEventHandlers(
     logger.info(
       'UseEventHandlers',
       '_fetchOptions execution completed',
-      {
-        instanceId, // 🔍 Instance identifier
-        dataSourceApi: dataSourceInfo?.api,
-      },
+      {},
       '_fetchOptions',
     );
   }, [
@@ -294,292 +240,34 @@ export function useEventHandlers(
     shouldFetchOptionsWithDefaultValue,
     remoteSearchKey,
     value,
-    // 🔍 Add key fields from props to dependency array to ensure using latest values
-    props.id,
-    JSON.stringify(props.dependency),
-    JSON.stringify(props.dataSource),
   ]);
 
-  // Visibility change handler - fix missing reset logic
-  // 🔧 Fix infinite loop: Simplify dependency array
   const handleVisibleChange = useCallback(
     (visible: boolean) => {
-      // 🔍 Extract instance identifier
-      const instanceId =
-        props.id || (props as any).formItemProps?.field || 'unknown';
-
-      // 🔍 Extract complete dataSource information
-      const dataSourceInfo =
-        props.dataSource && typeof props.dataSource === 'object'
-          ? {
-              api: (props.dataSource as any).api,
-              hasServiceInstance: 'serviceInstance' in props.dataSource,
-              responseEntityKey: (props.dataSource as any).responseEntityKey,
-            }
-          : null;
-
-      // 🔍 Extract complete dependency information
-      const dependencyInfo = {
-        dependency: props.dependency,
-        dependencyString: JSON.stringify(props.dependency),
-        dependencyType: typeof props.dependency,
-        dependencyIsArray: Array.isArray(props.dependency),
-        dependencyLength: Array.isArray(props.dependency)
-          ? props.dependency.length
-          : 0,
-        dependencyFirstItem: Array.isArray(props.dependency)
-          ? props.dependency[0]
-          : undefined,
+      const context = {
+        props,
+        currentState,
+        pluginManagerRef,
+        searchHandler,
+        _canFetch,
+        _fetchOptions,
+        logger,
+        addDebugLog,
       };
 
-      logger.info(
-        'UseEventHandlers',
-        'Visibility changed',
-        {
-          instanceId, // 🔍 Instance identifier
-          visible,
-          hasFetchOptions: !isEmpty(currentState?.fetchOptions),
-          fetchOptionsCount: currentState?.fetchOptions?.length || 0,
-          _canFetch,
-          // 🔍 Complete dataSource information
-          dataSourceInfo,
-          dataSourceApi: dataSourceInfo?.api,
-          // 🔍 Complete dependency information
-          ...dependencyInfo,
-          // 🔍 Current status information
-          lastDataSourceApi: currentState?.lastDataSourceApi,
-        },
-        'handleVisibleChange',
-      );
-
-      addDebugLog('VISIBLE_CHANGE', { visible });
-
-      if (visible && isEmpty(currentState?.fetchOptions) && _canFetch) {
-        // 🔧 Fix: Update PluginManager's context.props before fetching data
-        // Ensure debounced function captures the latest props (especially dataSource)
-        if (pluginManagerRef.current) {
-          pluginManagerRef.current.setProps(props);
-          logger.debug(
-            'UseEventHandlers',
-            'Dropdown opened - options empty, updated PluginManager context.props',
-            {
-              instanceId, // 🔍 Instance identifier
-              dataSourceApi: dataSourceInfo?.api,
-            },
-            'handleVisibleChange',
-          );
-        }
-
-        logger.info(
-          'UseEventHandlers',
-          'Dropdown opened - options empty, preparing to fetch data',
-          {
-            instanceId, // 🔍 Instance identifier
-            fetchOptionsEmpty: isEmpty(currentState?.fetchOptions),
-            _canFetch,
-            dataSourceInfo, // 🔍 Complete dataSource information
-            dataSourceApi: dataSourceInfo?.api,
-            ...dependencyInfo, // 🔍 Complete dependency information
-            lastDataSourceApi: currentState?.lastDataSourceApi,
-          },
-          'handleVisibleChange',
-        );
-        _fetchOptions();
-      } else if (visible && !isEmpty(currentState?.fetchOptions)) {
-        // 🔧 Fix: Check if dataSource has changed (by comparing api field)
-        // When dependency changes, dataSource also changes, old options may no longer be applicable
-
-        // 🔧 Edge case 1: Check if pluginManagerRef exists
-        if (!pluginManagerRef.current) {
-          logger.warn(
-            'UseEventHandlers',
-            '⚠️ Dropdown opened - pluginManagerRef.current does not exist',
-            {},
-            'handleVisibleChange',
-          );
-          return;
-        }
-
-        // 🔧 Edge case 2: Extract currentApi, handle various dataSource types
-        const currentApi =
-          props.dataSource &&
-          typeof props.dataSource === 'object' &&
-          'api' in props.dataSource
-            ? (props.dataSource as any).api
-            : undefined;
-
-        const lastApi = currentState?.lastDataSourceApi;
-
-        // 🔧 Edge case 3: Handle various change scenarios
-        // - lastApi doesn't exist && currentApi exists -> First open, need to fetch
-        // - lastApi exists && currentApi exists && different -> dataSource changed, need to refetch
-        // - lastApi exists && currentApi doesn't exist -> dataSource cleared, no need to fetch
-        // - Both don't exist -> No dataSource, no need to fetch
-        const dataSourceChanged = Boolean(
-          currentApi && (!lastApi || lastApi !== currentApi),
-        );
-
-        // 🔧 Detailed logging: Record API comparison process
-        logger.info(
-          'UseEventHandlers',
-          '🔍 Dropdown opened - detecting dataSource changes',
-          {
-            instanceId, // 🔍 Instance identifier
-            currentApi,
-            lastApi,
-            hasCurrentApi: Boolean(currentApi),
-            hasLastApi: Boolean(lastApi),
-            apiMatches: currentApi === lastApi,
-            dataSourceChanged,
-            fetchOptionsCount: currentState?.fetchOptions?.length || 0,
-            // 🔍 Complete dataSource information
-            dataSourceInfo,
-            // 🔍 Complete dependency information
-            ...dependencyInfo,
-            // 🔍 Current status information
-            currentStateLastApi: currentState?.lastDataSourceApi,
-          },
-          'handleVisibleChange',
-        );
-
-        if (dataSourceChanged) {
-          logger.info(
-            'UseEventHandlers',
-            '✅ Dropdown opened - dataSource changed, clearing options and refetching',
-            {
-              instanceId, // 🔍 Instance identifier
-              oldApi: lastApi,
-              newApi: currentApi,
-              // 🔍 Complete dataSource information
-              dataSourceInfo,
-              // 🔍 Complete dependency information
-              ...dependencyInfo,
-            },
-            'handleVisibleChange',
-          );
-
-          // 🔧 Edge case 4: Check if searchHandler exists before clearing old debounced function
-          if (searchHandler && 'clearDebouncedSearch' in searchHandler) {
-            (searchHandler as any).clearDebouncedSearch();
-            logger.info(
-              'UseEventHandlers',
-              '✅ Dropdown opened - dataSource changed, cleared old debounced function',
-              {
-                oldApi: lastApi,
-                newApi: currentApi,
-              },
-              'handleVisibleChange',
-            );
-          } else {
-            logger.warn(
-              'UseEventHandlers',
-              '⚠️ Dropdown opened - searchHandler does not exist or has no clearDebouncedSearch method',
-              {
-                hasSearchHandler: Boolean(searchHandler),
-                hasClearMethod:
-                  searchHandler && 'clearDebouncedSearch' in searchHandler,
-              },
-              'handleVisibleChange',
-            );
-          }
-
-          // 🔧 Fix: Update PluginManager's context.props before refetching data
-          // Ensure debounced function captures the latest props (especially dataSource)
-          if (pluginManagerRef.current) {
-            pluginManagerRef.current.setProps(props);
-            logger.debug(
-              'UseEventHandlers',
-              '✅ Dropdown opened - dataSource changed, updated PluginManager context.props',
-              {
-                oldApi: lastApi,
-                newApi: currentApi,
-                dataSourceApi: dataSourceInfo?.api,
-              },
-              'handleVisibleChange',
-            );
-          }
-
-          // 🔧 Edge case 5: Ensure pluginManagerRef.current exists before clearing options
-          if (pluginManagerRef.current) {
-            pluginManagerRef.current.setState({
-              fetchOptions: [],
-              initFetchOptions: [],
-              lastDataSourceApi: currentApi,
-            });
-          }
-
-          // 🔧 Edge case 6: Check conditions before refetching data
-          if (_canFetch && currentApi) {
-            logger.info(
-              'UseEventHandlers',
-              '✅ Dropdown opened - preparing to refetch data',
-              {
-                instanceId, // 🔍 Instance identifier
-                _canFetch,
-                currentApi,
-                // 🔍 Complete dataSource information
-                dataSourceInfo,
-                // 🔍 Complete dependency information
-                ...dependencyInfo,
-              },
-              'handleVisibleChange',
-            );
-            _fetchOptions();
-          } else {
-            logger.warn(
-              'UseEventHandlers',
-              '⚠️ Dropdown opened - unable to refetch data',
-              {
-                instanceId, // 🔍 Instance identifier
-                _canFetch,
-                currentApi,
-                reason: !_canFetch
-                  ? 'canFetch is false'
-                  : 'currentApi does not exist',
-                // 🔍 Complete dataSource information
-                dataSourceInfo,
-                // 🔍 Complete dependency information
-                ...dependencyInfo,
-              },
-              'handleVisibleChange',
-            );
-          }
-        } else {
-          logger.debug(
-            'UseEventHandlers',
-            'Dropdown opened - options already exist, no need to fetch',
-            {
-              instanceId, // 🔍 Instance identifier
-              fetchOptionsCount: currentState?.fetchOptions?.length || 0,
-              currentApi,
-              lastApi,
-              dataSourceChanged,
-              // 🔍 Complete dataSource information
-              dataSourceInfo,
-              // 🔍 Complete dependency information
-              ...dependencyInfo,
-            },
-            'handleVisibleChange',
-          );
-        }
-      } else if (!visible) {
+      if (!visible) {
         logger.debug(
           'UseEventHandlers',
           'Dropdown closed - resetting state',
           {},
           'handleVisibleChange',
         );
-        // 🔥 Key: Reset state when dropdown is hidden (consistent with original version)
-        paginationHandler?.resetPagination?.(); // Reset pagination state
-
-        // Reset loading/fetching state
+        paginationHandler?.resetPagination?.();
         pluginManagerRef.current?.setState({
           fetching: false,
         });
 
-        // If there are initial options, restore to initial state
         if (initialOptions && initialOptions.length > 0) {
-          // Ensure initialOptions are converted to correct SelectOption[] format
           const selectOptions: SelectOption[] = initialOptions.map((option) => {
             if (typeof option === 'string' || typeof option === 'number') {
               return { label: String(option), value: option };
@@ -596,16 +284,16 @@ export function useEventHandlers(
           reason: 'dropdown_hidden',
           resetStates: ['pagination', 'fetching', 'fetchOptions'],
         });
+        return;
       }
+
+      handleVisibleChangeLogic(context, visible);
     },
-    // 🔧 Add props.dataSource and props.dependency to dependency array to ensure using latest values
     [
       _canFetch,
       _fetchOptions,
       paginationHandler,
       initialOptions,
-      // 🔧 Add: Ensure handleVisibleChange is recreated when dataSource or dependency changes
-      // Use JSON.stringify to detect when object references change
       JSON.stringify(props.dataSource),
       JSON.stringify(props.dependency),
     ],
@@ -621,7 +309,7 @@ export function useEventHandlers(
 
       const { target } = e;
 
-      // Defensive check: Ensure target exists
+      // Defensive check: ensure target exists
       if (!target) {
         console.warn(
           '[ScrollHandler] Event target is undefined, skipping scroll handling',
@@ -649,7 +337,7 @@ export function useEventHandlers(
         const currentSearchValue = currentState?.searchValue || '';
         const formattedSearchValue = formatRemoteSearchKey(currentSearchValue);
 
-        // Trigger scroll to load more data
+        // Trigger scroll load more data
         const debouncedSearch = searchHandler?.createDebouncedSearch();
         debouncedSearch?.({
           scroll: true,
@@ -661,7 +349,7 @@ export function useEventHandlers(
     [isScrollFetching, paginationHandler, formatRemoteSearchKey, searchHandler],
   );
 
-  // Clear handler - trigger refetch when user clicks clear button
+  // Clear handler - Trigger refetch when user clicks clear button
   // 🔧 Fix infinite loop: Simplify dependencies
   const handleClear = useCallback(
     (visible: boolean) => {
@@ -671,7 +359,7 @@ export function useEventHandlers(
         hasDataSource: Boolean(props.dataSource),
       });
 
-      // Only trigger refetch when there is a data source and can fetch data
+      // Only trigger refetch when there is data source and can fetch data
       if (_canFetch && props.dataSource) {
         // Delay a short time to ensure value has been cleared
         setTimeout(() => {

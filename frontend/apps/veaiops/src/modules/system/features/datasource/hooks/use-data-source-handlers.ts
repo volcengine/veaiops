@@ -14,15 +14,13 @@
 
 import { Message } from '@arco-design/web-react';
 import { TAB_KEYS } from '@datasource/lib';
-import { logger, useManagementRefresh } from '@veaiops/utils';
+import { logger } from '@veaiops/utils';
 import type { DataSource } from 'api-generate';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import type { DataSourceType } from '../lib/types';
-import type { MonitorTableRef } from '../ui/components/tables/monitor-table';
+import { useDataSourceRefresh } from './use-data-source-refresh';
+import { useDataSourceState } from './use-data-source-state';
 
-/**
- * Delete parameters interface
- */
 interface HandleDeleteParams {
   id: string;
   datasourceType: DataSourceType;
@@ -33,9 +31,6 @@ interface UseDataSourceHandlersProps {
   handleTabChange?: (key: string) => void;
 }
 
-/**
- * Map data source type to tab key
- */
 const mapDataSourceTypeToTabKey = (type: string): string | null => {
   const normalizedType = type.toLowerCase();
   switch (normalizedType) {
@@ -50,9 +45,6 @@ const mapDataSourceTypeToTabKey = (type: string): string | null => {
   }
 };
 
-/**
- * Data source event handler Hook
- */
 export const useDataSourceHandlers = ({
   handleDelete,
   handleTabChange,
@@ -64,104 +56,13 @@ export const useDataSourceHandlers = ({
     component: 'init',
   });
 
-  // Connection management drawer state
-  const [connectionDrawerVisible, setConnectionDrawerVisible] = useState(false);
-
-  // Data source wizard state
-  const [wizardVisible, setWizardVisible] = useState(false);
-
-  // Currently editing data source
-  const [editingDataSource, setEditingDataSource] = useState<DataSource | null>(
-    null,
-  );
-
-  // Monitor connection management drawer state changes
-  useEffect(() => {
-    logger.info({
-      message: '📊 connectionDrawerVisible changed',
-      data: {
-        visible: connectionDrawerVisible,
-        timestamp: new Date().toISOString(),
-      },
-      source: 'useDataSourceHandlers',
-      component: 'connectionDrawerVisible-effect',
-    });
-  }, [connectionDrawerVisible]);
-
-  // Monitor data source wizard state changes
-  useEffect(() => {
-    logger.info({
-      message: '📊 wizardVisible changed',
-      data: {
-        visible: wizardVisible,
-        timestamp: new Date().toISOString(),
-      },
-      source: 'useDataSourceHandlers',
-      component: 'wizardVisible-effect',
-    });
-  }, [wizardVisible]);
-
-  // Table references
-  const volcengineTableRef = useRef<MonitorTableRef>(null);
-  const aliyunTableRef = useRef<MonitorTableRef>(null);
-  const zabbixTableRef = useRef<MonitorTableRef>(null);
-
-  // Use useManagementRefresh hook to uniformly manage refresh logic
-  const volcengineRefresh = useManagementRefresh(async () => {
-    if (volcengineTableRef.current?.refresh) {
-      const result = await volcengineTableRef.current.refresh();
-      if (!result.success && result.error) {
-        logger.warn({
-          message: 'Volcengine 表格刷新失败',
-          data: {
-            error: result.error.message,
-            stack: result.error.stack,
-            errorObj: result.error,
-          },
-          source: 'DataSource',
-          component: 'volcengineRefresh',
-        });
-      }
-    }
+  const state = useDataSourceState();
+  const refresh = useDataSourceRefresh({
+    volcengineTableRef: state.volcengineTableRef,
+    aliyunTableRef: state.aliyunTableRef,
+    zabbixTableRef: state.zabbixTableRef,
   });
 
-  const aliyunRefresh = useManagementRefresh(async () => {
-    if (aliyunTableRef.current?.refresh) {
-      const result = await aliyunTableRef.current.refresh();
-      if (!result.success && result.error) {
-        logger.warn({
-          message: 'Aliyun 表格刷新失败',
-          data: {
-            error: result.error.message,
-            stack: result.error.stack,
-            errorObj: result.error,
-          },
-          source: 'DataSource',
-          component: 'aliyunRefresh',
-        });
-      }
-    }
-  });
-
-  const zabbixRefresh = useManagementRefresh(async () => {
-    if (zabbixTableRef.current?.refresh) {
-      const result = await zabbixTableRef.current.refresh();
-      if (!result.success && result.error) {
-        logger.warn({
-          message: 'Zabbix 表格刷新失败',
-          data: {
-            error: result.error.message,
-            stack: result.error.stack,
-            errorObj: result.error,
-          },
-          source: 'DataSource',
-          component: 'zabbixRefresh',
-        });
-      }
-    }
-  });
-
-  // Create specific delete handler function for each data source type
   const handleDeleteZabbix = useCallback(
     async (monitorId: string, _dataSourceType?: DataSourceType) => {
       return await handleDelete({
@@ -192,19 +93,21 @@ export const useDataSourceHandlers = ({
     [handleDelete],
   );
 
-  // Override add handler, use data source wizard
   const handleAdd = () => {
     logger.info({
       message: '➕ handleAdd called - opening DataSourceWizard',
       data: {
-        currentState: { connectionDrawerVisible, wizardVisible },
+        currentState: {
+          connectionDrawerVisible: state.connectionDrawerVisible,
+          wizardVisible: state.wizardVisible,
+        },
       },
       source: 'useDataSourceHandlers',
       component: 'handleAdd',
     });
 
-    setEditingDataSource(null); // Clear edit state
-    setWizardVisible(true);
+    state.setEditingDataSource(null);
+    state.setWizardVisible(true);
     logger.info({
       message: '✅ setWizardVisible(true) executed',
       data: { wizardVisible: true },
@@ -213,23 +116,24 @@ export const useDataSourceHandlers = ({
     });
   };
 
-  // Handle edit data source
   const handleEditDataSource = (dataSource: DataSource) => {
-    // Only log key fields to avoid circular references
     logger.info({
       message: '✏️ handleEditDataSource called',
       data: {
         dataSourceId: dataSource?._id,
         dataSourceName: dataSource?.name,
         dataSourceType: dataSource?.type,
-        currentState: { connectionDrawerVisible, wizardVisible },
+        currentState: {
+          connectionDrawerVisible: state.connectionDrawerVisible,
+          wizardVisible: state.wizardVisible,
+        },
       },
       source: 'useDataSourceHandlers',
       component: 'handleEditDataSource',
     });
 
-    setEditingDataSource(dataSource);
-    setWizardVisible(true);
+    state.setEditingDataSource(dataSource);
+    state.setWizardVisible(true);
     logger.info({
       message: '✅ setWizardVisible(true) executed for edit mode',
       data: { wizardVisible: true },
@@ -238,7 +142,6 @@ export const useDataSourceHandlers = ({
     });
   };
 
-  // Handle data source wizard success
   const handleWizardSuccess = useCallback(
     async (dataSource: unknown) => {
       logger.info({
@@ -253,25 +156,8 @@ export const useDataSourceHandlers = ({
         component: 'handleWizardSuccess',
       });
 
-      // Check if there are returnUrl and datasource_type parameters (redirected from threshold/config page)
-      const searchParams = new URLSearchParams(window.location.search);
-      const returnUrl = searchParams.get('returnUrl');
-      const datasourceTypeParam = searchParams.get('datasource_type');
+      state.setWizardVisible(false);
 
-      logger.info({
-        message: '[handleWizardSuccess] 检查 URL 参数',
-        data: {
-          returnUrl,
-          datasourceTypeParam,
-          currentUrl: window.location.href,
-        },
-        source: 'useDataSourceHandlers',
-        component: 'handleWizardSuccess',
-      });
-
-      setWizardVisible(false);
-
-      // Refresh corresponding table based on data source type, use useManagementRefresh's afterCreate method
       const dataSourceInfo = dataSource as {
         type?: string;
         name?: string;
@@ -293,15 +179,16 @@ export const useDataSourceHandlers = ({
       if (dataSourceInfo?.type) {
         const normalizedType = dataSourceInfo.type.toLowerCase();
 
-        // Show success message
-        const dataSourceTypeText =
-          normalizedType === 'aliyun'
-            ? '阿里云'
-            : normalizedType === 'volcengine'
-              ? '火山引擎'
-              : normalizedType === 'zabbix'
-                ? 'Zabbix'
-                : dataSourceInfo.type;
+        let dataSourceTypeText: string;
+        if (normalizedType === 'aliyun') {
+          dataSourceTypeText = '阿里云';
+        } else if (normalizedType === 'volcengine') {
+          dataSourceTypeText = '火山引擎';
+        } else if (normalizedType === 'zabbix') {
+          dataSourceTypeText = 'Zabbix';
+        } else {
+          dataSourceTypeText = dataSourceInfo.type;
+        }
         const successMessage = dataSourceInfo.name
           ? `数据源 "${dataSourceInfo.name}" 创建成功`
           : `${dataSourceTypeText} 数据源创建成功`;
@@ -318,7 +205,6 @@ export const useDataSourceHandlers = ({
           component: 'handleWizardSuccess',
         });
 
-        // Refresh corresponding table
         logger.info({
           message: '[handleWizardSuccess] 准备刷新表格',
           data: {
@@ -336,7 +222,7 @@ export const useDataSourceHandlers = ({
               source: 'useDataSourceHandlers',
               component: 'handleWizardSuccess',
             });
-            await volcengineRefresh.afterCreate();
+            refresh.volcengineRefresh.afterCreate();
             break;
           case 'aliyun':
             logger.info({
@@ -345,7 +231,7 @@ export const useDataSourceHandlers = ({
               source: 'useDataSourceHandlers',
               component: 'handleWizardSuccess',
             });
-            await aliyunRefresh.afterCreate();
+            refresh.aliyunRefresh.afterCreate();
             break;
           case 'zabbix':
             logger.info({
@@ -354,7 +240,7 @@ export const useDataSourceHandlers = ({
               source: 'useDataSourceHandlers',
               component: 'handleWizardSuccess',
             });
-            await zabbixRefresh.afterCreate();
+            refresh.zabbixRefresh.afterCreate();
             break;
           default:
             logger.warn({
@@ -369,7 +255,6 @@ export const useDataSourceHandlers = ({
             break;
         }
 
-        // Switch to corresponding tab
         logger.info({
           message: '[handleWizardSuccess] 准备切换到对应的 tab',
           data: {
@@ -457,60 +342,6 @@ export const useDataSourceHandlers = ({
             component: 'handleWizardSuccess',
           });
         }
-
-        // If returnUrl and datasource_type parameters exist, redirect back to threshold/config page
-        if (returnUrl && datasourceTypeParam) {
-          logger.info({
-            message: '[handleWizardSuccess] 准备跳转回 threshold/config 页面',
-            data: {
-              returnUrl,
-              datasourceTypeParam,
-              createdDataSourceType: dataSourceInfo.type,
-            },
-            source: 'useDataSourceHandlers',
-            component: 'handleWizardSuccess',
-          });
-
-          // Build redirect URL, ensure datasource_type parameter is correct
-          try {
-            const returnUrlObj = new URL(returnUrl, window.location.origin);
-            returnUrlObj.searchParams.set(
-              'datasource_type',
-              datasourceTypeParam,
-            );
-            const finalUrl = returnUrlObj.pathname + returnUrlObj.search;
-
-            logger.info({
-              message: '[handleWizardSuccess] 执行页面跳转',
-              data: {
-                finalUrl,
-                datasourceType: datasourceTypeParam,
-              },
-              source: 'useDataSourceHandlers',
-              component: 'handleWizardSuccess',
-            });
-
-            // Use window.location.href for full page refresh to ensure data source list is updated
-            window.location.href = finalUrl;
-            // Do not execute subsequent logic after redirect
-          } catch (error: unknown) {
-            const errorObj =
-              error instanceof Error ? error : new Error(String(error));
-            logger.error({
-              message: '[handleWizardSuccess] 跳转 URL 构建失败',
-              data: {
-                error: errorObj.message,
-                stack: errorObj.stack,
-                errorObj,
-                returnUrl,
-                datasourceTypeParam,
-              },
-              source: 'useDataSourceHandlers',
-              component: 'handleWizardSuccess',
-            });
-            // When URL construction fails, continue executing original logic
-          }
-        }
       } else {
         logger.warn({
           message: '[handleWizardSuccess] 数据源信息中缺少 type 字段',
@@ -522,27 +353,24 @@ export const useDataSourceHandlers = ({
         });
       }
     },
-    [volcengineRefresh, aliyunRefresh, zabbixRefresh, handleTabChange],
+    [state, refresh, handleTabChange],
   );
 
-  /**
-   * Open connection management drawer
-   */
   const handleOpenConnectionManager = () => {
     logger.info({
       message:
         '🔗 handleOpenConnectionManager called - opening ConnectionManager',
       data: {
         currentState: {
-          connectionDrawerVisible,
-          wizardVisible,
+          connectionDrawerVisible: state.connectionDrawerVisible,
+          wizardVisible: state.wizardVisible,
         },
       },
       source: 'useDataSourceHandlers',
       component: 'handleOpenConnectionManager',
     });
 
-    setConnectionDrawerVisible(true);
+    state.setConnectionDrawerVisible(true);
     logger.info({
       message: '✅ setConnectionDrawerVisible(true) executed',
       data: { connectionDrawerVisible: true },
@@ -551,20 +379,20 @@ export const useDataSourceHandlers = ({
     });
   };
 
-  /**
-   * Close connection management drawer
-   */
   const handleCloseConnectionManager = () => {
     logger.info({
       message:
         '❌ handleCloseConnectionManager called - closing ConnectionManager',
       data: {
-        currentState: { connectionDrawerVisible, wizardVisible },
+        currentState: {
+          connectionDrawerVisible: state.connectionDrawerVisible,
+          wizardVisible: state.wizardVisible,
+        },
       },
       source: 'useDataSourceHandlers',
       component: 'handleCloseConnectionManager',
     });
-    setConnectionDrawerVisible(false);
+    state.setConnectionDrawerVisible(false);
     logger.info({
       message: '✅ setConnectionDrawerVisible(false) executed',
       data: { connectionDrawerVisible: false },
@@ -574,18 +402,15 @@ export const useDataSourceHandlers = ({
   };
 
   return {
-    // State
-    connectionDrawerVisible,
-    wizardVisible,
-    editingDataSource,
-    volcengineTableRef,
-    aliyunTableRef,
-    zabbixTableRef,
-    volcengineRefresh,
-    aliyunRefresh,
-    zabbixRefresh,
-
-    // Event handlers
+    connectionDrawerVisible: state.connectionDrawerVisible,
+    wizardVisible: state.wizardVisible,
+    editingDataSource: state.editingDataSource,
+    volcengineTableRef: state.volcengineTableRef,
+    aliyunTableRef: state.aliyunTableRef,
+    zabbixTableRef: state.zabbixTableRef,
+    volcengineRefresh: refresh.volcengineRefresh,
+    aliyunRefresh: refresh.aliyunRefresh,
+    zabbixRefresh: refresh.zabbixRefresh,
     handleDeleteZabbix,
     handleDeleteAliyun,
     handleDeleteVolcengine,
@@ -594,9 +419,7 @@ export const useDataSourceHandlers = ({
     handleWizardSuccess,
     handleOpenConnectionManager,
     handleCloseConnectionManager,
-
-    // Setters
-    setWizardVisible,
-    setEditingDataSource,
+    setWizardVisible: state.setWizardVisible,
+    setEditingDataSource: state.setEditingDataSource,
   };
 };

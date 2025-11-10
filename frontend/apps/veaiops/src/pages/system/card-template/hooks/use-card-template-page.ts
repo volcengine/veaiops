@@ -13,56 +13,58 @@
 // limitations under the License.
 
 import apiClient from '@/utils/api-client';
-import { Message } from '@arco-design/web-react';
+import { type Form, Message } from '@arco-design/web-react';
 import { useCardTemplateTableConfig } from '@card-template';
 import type { BaseQuery, CustomTableActionType } from '@veaiops/components';
 import { logger } from '@veaiops/utils';
-import type { AgentTemplate } from 'api-generate';
+import type {
+  AgentTemplate,
+  AgentTemplateCreateRequest,
+  AgentTemplateUpdateRequest,
+} from 'api-generate';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 /**
- * 卡片模板页面Hook返回值类型
+ * Card template page Hook return value type
  */
 export interface UseCardTemplatePageReturn {
-  // 表格引用
+  // Table reference
   tableRef: React.RefObject<CustomTableActionType<AgentTemplate, BaseQuery>>;
 
-  // 引导相关状态
+  // Guide related state
   showGuide: boolean;
   guideVisible: boolean;
   setGuideVisible: (visible: boolean) => void;
   shouldShowGuide: boolean; // showGuide && guideVisible
 
-  // 管理逻辑（弹窗、表单、事件处理器等）
+  // Management logic (modal, form, event handlers, etc.)
   managementLogic: {
     modalVisible: boolean;
     editingTemplate: AgentTemplate | null;
-    form: ReturnType<typeof import('@arco-design/web-react').Form.useForm>[0];
+    form: ReturnType<typeof Form.useForm>[0];
     handleCancel: () => void;
     handleSubmit: (
-      values:
-        | import('api-generate').AgentTemplateCreateRequest
-        | import('api-generate').AgentTemplateUpdateRequest,
+      values: AgentTemplateCreateRequest | AgentTemplateUpdateRequest,
     ) => Promise<boolean>;
   };
 
-  // 表格配置
+  // Table configuration
   dataSource: Record<string, unknown>;
   tableProps: Record<string, unknown>;
   handleColumns: ReturnType<typeof useCardTemplateTableConfig>['handleColumns'];
   handleFilters: ReturnType<typeof useCardTemplateTableConfig>['handleFilters'];
   queryFormat: ReturnType<typeof useCardTemplateTableConfig>['queryFormat'];
 
-  // 操作按钮配置
+  // Action button configuration
   actions: React.ReactNode[];
 }
 
 /**
- * 卡片模板页面Hook
- * 封装页面级别的所有逻辑和状态
+ * Card template page Hook
+ * Encapsulates all page-level logic and state
  */
 export const useCardTemplatePage = (): UseCardTemplatePageReturn => {
-  // ✅ 修复：tableRef 类型使用 AgentTemplate（单一数据源原则）
+  // ✅ Fix: tableRef type uses AgentTemplate (single source of truth principle)
   const tableRef =
     useRef<CustomTableActionType<AgentTemplate, BaseQuery>>(null);
   const [, setData] = useState<AgentTemplate[]>([]);
@@ -70,9 +72,9 @@ export const useCardTemplatePage = (): UseCardTemplatePageReturn => {
   const [showGuide, setShowGuide] = useState(false);
   const [guideVisible, setGuideVisible] = useState(false);
 
-  // 表格配置
-  // ✅ 使用 modules 版本的完整 Hook，支持 customTableProps 返回值结构
-  // ✅ 修复：传递 tableRef 给 useCardTemplateTableConfig，确保刷新时使用同一个 ref
+  // Table configuration
+  // ✅ Use modules version of complete Hook, supports customTableProps return value structure
+  // ✅ Fix: Pass tableRef to useCardTemplateTableConfig to ensure same ref is used on refresh
   const {
     customTableProps,
     handleColumns: tableHandleColumns,
@@ -88,7 +90,7 @@ export const useCardTemplatePage = (): UseCardTemplatePageReturn => {
     ref: tableRef,
   });
 
-  // ✅ 从 customTableProps 中提取 dataSource 和 tableProps
+  // ✅ Extract dataSource and tableProps from customTableProps
   const { dataSource, tableProps } = useMemo(() => {
     const extracted = customTableProps as {
       dataSource: Record<string, unknown>;
@@ -101,10 +103,10 @@ export const useCardTemplatePage = (): UseCardTemplatePageReturn => {
     };
   }, [customTableProps]);
 
-  // 🔍 调试：记录 useCardTemplateTableConfig 返回值
+  // 🔍 Debug: Log useCardTemplateTableConfig return value
   useEffect(() => {
     logger.debug({
-      message: '[useCardTemplatePage] useCardTemplateTableConfig 返回值',
+      message: '[useCardTemplatePage] useCardTemplateTableConfig return value',
       data: {
         hasCustomTableProps: Boolean(customTableProps),
         customTablePropsKeys: customTableProps
@@ -122,10 +124,10 @@ export const useCardTemplatePage = (): UseCardTemplatePageReturn => {
     });
   }, [customTableProps, dataSource, tableProps]);
 
-  // 🔍 调试：记录解构后的 dataSource
+  // 🔍 Debug: Log destructured dataSource
   useEffect(() => {
     logger.debug({
-      message: '[useCardTemplatePage] 解构后的 dataSource',
+      message: '[useCardTemplatePage] Destructured dataSource',
       data: {
         hasDataSource: Boolean(dataSource),
         dataSourceType: typeof dataSource,
@@ -141,10 +143,10 @@ export const useCardTemplatePage = (): UseCardTemplatePageReturn => {
     });
   }, [dataSource]);
 
-  // 操作按钮配置
+  // Action button configuration
   const actions = renderActions({});
 
-  // 检查是否需要显示引导页面
+  // Check if guide page should be displayed
   useEffect(() => {
     const checkInitialState = async () => {
       try {
@@ -163,13 +165,13 @@ export const useCardTemplatePage = (): UseCardTemplatePageReturn => {
         }
         setData(response.data || []);
       } catch (error: unknown) {
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '获取模版列表失败，请重试';
         Message.error(errorMessage);
         logger.error({
-          message: '检查初始状态失败',
+          message: 'Failed to check initial state',
           data: {
             error: errorObj.message,
             stack: errorObj.stack,
@@ -186,25 +188,25 @@ export const useCardTemplatePage = (): UseCardTemplatePageReturn => {
     checkInitialState();
   }, []);
 
-  // ✅ 计算是否应该显示引导页面
+  // ✅ Calculate whether guide page should be displayed
   const shouldShowGuide = useMemo(
     () => showGuide && guideVisible,
     [showGuide, guideVisible],
   );
 
-  // ✅ 使用 useMemo 稳定化返回值，避免每次渲染创建新对象引用
+  // ✅ Use useMemo to stabilize return value, avoid creating new object references on each render
   return useMemo(
     () => ({
-      // 表格引用
+      // Table reference
       tableRef,
 
-      // 引导相关状态
+      // Guide related state
       showGuide,
       guideVisible,
       setGuideVisible,
       shouldShowGuide,
 
-      // 管理逻辑（包含弹窗状态和处理器）
+      // Management logic (includes modal state and handlers)
       managementLogic: {
         modalVisible,
         editingTemplate,
@@ -213,14 +215,14 @@ export const useCardTemplatePage = (): UseCardTemplatePageReturn => {
         handleSubmit,
       },
 
-      // 表格配置
+      // Table configuration
       dataSource,
       tableProps,
       handleColumns: tableHandleColumns,
       handleFilters: tableHandleFilters,
       queryFormat: tableQueryFormat,
 
-      // 操作按钮配置
+      // Action button configuration
       actions,
     }),
     [

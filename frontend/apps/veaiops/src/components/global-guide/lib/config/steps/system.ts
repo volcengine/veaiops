@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { GlobalGuideStepNumber } from '@/components/global-guide/enums';
+import { GlobalGuideStepNumber } from '../../../enums/guide-steps.enum';
 import type { GlobalGuideStep } from '../../types';
 
 /**
  * System configuration module guide step configuration
- * Includes: Chat bot management, Card template management, Account management, Project management
+ * Includes: Bot management, card template management, account management, project management
  */
 export const systemSteps: GlobalGuideStep[] = [
-  // ========== System Configuration Module Guide ==========
+  // ========== System configuration module guide ==========
   {
     number: GlobalGuideStepNumber.BOT_MANAGEMENT,
     title: '群聊机器人管理',
@@ -35,7 +35,6 @@ export const systemSteps: GlobalGuideStep[] = [
         selector: '[data-testid="new-bot-btn"]',
         tooltipContent: '点击此处创建新的群聊机器人✨',
         actionType: 'navigation',
-        placement: 'bottom', // Arrow points downward
       },
       {
         id: 'edit-bot',
@@ -62,7 +61,7 @@ export const systemSteps: GlobalGuideStep[] = [
         description: '查看Bot的详细属性配置',
         selector: '[data-testid="view-bot-attributes-btn"]',
         tooltipContent:
-          '请先在列表中选择一条Bot记录，然后点击此处查看特别关注🌟',
+          '请先在列表中选择一条Bot记录，然后点击此处查看Bot属性🌟',
         actionType: 'navigation',
         allowDisabled: true,
       },

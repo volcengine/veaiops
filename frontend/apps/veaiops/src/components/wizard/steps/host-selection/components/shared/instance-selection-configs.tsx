@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 实例选择配置工厂
- * @description 为不同数据源提供预定义的配置
+ * Instance selection configuration factory
+ * @description Provides predefined configurations for different data sources
  */
 
 import { IconCloud, IconDesktop } from '@arco-design/web-react/icon';
@@ -23,7 +23,7 @@ import type { AliyunInstance, VolcengineInstance } from '../../../../types';
 import type { InstanceSelectionConfig } from './instance-selection-config';
 
 /**
- * 阿里云实例选择配置
+ * Aliyun instance selection configuration
  */
 export const createAliyunConfig = (
   selectionAction: (instances: AliyunInstance[]) => void,
@@ -36,22 +36,24 @@ export const createAliyunConfig = (
   itemType: '实例',
   icon: <IconCloud />,
   dataTransformer: (instance) => {
-    // 当只有 userId 而没有 instanceId 时，使用 userId 作为 id
-    // 这样可以确保标题和显示正确
+    // When only userId exists without instanceId, use userId as id
+    // This ensures title and display are correct
     const id =
       instance.instanceId ||
       instance.dimensions?.instanceId ||
       instance.dimensions?.userId ||
       instance.userId ||
       '';
-    const name =
-      instance.instanceName ||
-      instance.dimensions?.instanceName ||
-      (instance.dimensions?.userId
-        ? `userId: ${instance.dimensions.userId}`
-        : instance.dimensions?.instanceId
-          ? `instanceId: ${instance.dimensions.instanceId}`
-          : undefined);
+    let name = instance.instanceName || instance.dimensions?.instanceName;
+    if (!name) {
+      if (instance.dimensions?.userId) {
+        name = `userId: ${instance.dimensions.userId}`;
+      } else if (instance.dimensions?.instanceId) {
+        name = `instanceId: ${instance.dimensions.instanceId}`;
+      } else {
+        name = undefined;
+      }
+    }
 
     return {
       id,
@@ -67,7 +69,7 @@ export const createAliyunConfig = (
       (instance.instanceId?.toLowerCase() || '').includes(searchLower) ||
       (instance.instanceName?.toLowerCase() || '').includes(searchLower) ||
       (instance.region?.toLowerCase() || '').includes(searchLower) ||
-      // 当只有 userId 时，也支持搜索 userId
+      // When only userId exists, also support searching userId
       (instance.dimensions?.userId?.toLowerCase() || '').includes(
         searchLower,
       ) ||
@@ -83,7 +85,7 @@ export const createAliyunConfig = (
 });
 
 /**
- * 火山引擎实例选择配置
+ * Volcengine instance selection configuration
  */
 export const createVolcengineConfig = (
   selectionAction: (instances: VolcengineInstance[]) => void,
@@ -112,7 +114,7 @@ export const createVolcengineConfig = (
 });
 
 /**
- * Zabbix主机选择配置
+ * Zabbix host selection configuration
  */
 export const createZabbixConfig = (
   selectionAction: (hosts: ZabbixHost[]) => void,
@@ -124,15 +126,15 @@ export const createZabbixConfig = (
   itemType: '主机',
   icon: <IconDesktop />,
   dataTransformer: (host) => ({
-    id: host.host, // 使用 host 作为唯一标识
+    id: host.host, // Use host as unique identifier
     name: host.name,
-    region: undefined, // Zabbix没有region概念
-    dimensions: undefined, // Zabbix没有dimensions概念
+    region: undefined, // Zabbix doesn't have region concept
+    dimensions: undefined, // Zabbix doesn't have dimensions concept
   }),
   selectionAction,
   searchFilter: (host, searchValue) =>
     host.host.toLowerCase().includes(searchValue) ||
     host.name.toLowerCase().includes(searchValue),
-  getId: (host) => host.host, // 使用 host 作为唯一标识
-  useHostList: true, // 使用特殊的主机列表组件
+  getId: (host) => host.host, // Use host as unique identifier
+  useHostList: true, // Use special host list component
 });

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 公共组件
+// Common components
 import { Message, Popover } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import { type FC, useEffect, useState } from 'react';
 
-// 工具
+// Utilities
 import { useDebounceFn } from 'ahooks';
 import { get, omit } from 'lodash-es';
 
-// 常量// 样式
+// Constants and styles
 
 import type { TableColumnTitleProps } from '@/custom-table/types';
 import { Tip } from '@/tip';
@@ -51,17 +51,25 @@ const TitleSearch: FC<TableColumnTitleProps> = ({
   const value = dataIndex
     ? (get(filters, dataIndex) as string[] | number[] | undefined)
     : undefined;
-  const valueLength = Array.isArray(value) ? value.length : value ? 1 : 0;
+  const valueLength = (() => {
+    if (Array.isArray(value)) {
+      return value.length;
+    }
+    if (value) {
+      return 1;
+    }
+    return 0;
+  })();
 
   const { run: debouncedSearch } = useDebounceFn(
     async () => {
       try {
-        // 1. 传入的queryOptions函数有问题
+        // 1. Check if the passed queryOptions function is valid
         if (typeof queryOptions !== 'function') {
           throw new Error();
         }
 
-        // 2. 检索的字段为空字符串
+        // 2. Check if search field is empty
         const str = inputValue?.trim();
         if (!str) {
           setOptions(undefined);
@@ -69,7 +77,7 @@ const TitleSearch: FC<TableColumnTitleProps> = ({
           return;
         }
 
-        // 3. 检索的字符串有值
+        // 3. Search string has value, perform search
         setNotFoundStatus(NotFoundStatus.Start);
         const nextOptions = await queryOptions({
           inputValue: str,
@@ -82,11 +90,13 @@ const TitleSearch: FC<TableColumnTitleProps> = ({
           throw new Error();
         }
       } catch (error) {
-        // 4. 如果发生错误
+        // 4. Handle error if occurs
         const errorMessage =
-          error instanceof Error ? error.message : '表头组件发生错误';
+          error instanceof Error
+            ? error.message
+            : 'Header component error occurred';
         Message.error(
-          `表头组件title: ${title}, dataIndex: ${dataIndex} 发生错误: ${errorMessage}`,
+          `Header component title: ${title}, dataIndex: ${dataIndex} error occurred: ${errorMessage}`,
         );
         setNotFoundStatus(NotFoundStatus.RequestFail);
         setOptions(undefined);
@@ -103,12 +113,13 @@ const TitleSearch: FC<TableColumnTitleProps> = ({
     if (!onChange || !dataIndex) {
       return;
     }
-    // nextValue 可能是数组（多选模式）或单个值
-    const normalizedValue = Array.isArray(nextValue)
-      ? nextValue.length > 0
-        ? nextValue[0]
-        : null
-      : (nextValue as string | number | null);
+    // nextValue may be an array (multiple selection mode) or a single value
+    let normalizedValue: string | number | null;
+    if (Array.isArray(nextValue)) {
+      normalizedValue = nextValue.length > 0 ? nextValue[0] : null;
+    } else {
+      normalizedValue = nextValue as string | number | null;
+    }
     if (normalizedValue) {
       onChange('filters', {
         [dataIndex]: normalizedValue,

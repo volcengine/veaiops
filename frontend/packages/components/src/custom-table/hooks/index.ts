@@ -13,14 +13,11 @@
 // limitations under the License.
 
 /**
- * CustomTable Hooks 统一导出
- * 参考 pro-components 设计，提供统一的对外 API
- *
-
- *
+ * CustomTable Hooks unified exports
+ * Reference pro-components design, providing unified external API
  */
 
-// 核心 hooks
+// Core hooks
 export { useCustomTable } from './use-custom-table';
 export {
   useStableCallback,
@@ -28,9 +25,9 @@ export {
   useStableHandler,
   useStableProps,
 } from './use-stable-props';
-// export { useTableState } from './use-table-state'; // 注释掉避免与 internal 中的重复导出
+// export { useTableState } from './use-table-state'; // Commented out to avoid duplicate exports with internal
 
-// 业务表格统一 hook
+// Business table unified hook
 export {
   useBusinessTable,
   type BusinessTableConfigOptions,
@@ -38,14 +35,14 @@ export {
   type OperationWrappers,
 } from './use-business-table';
 
-// 刷新集成 hook
+// Refresh integration hook
 export {
   useTableRefreshIntegration,
   type TableRefreshIntegrationOptions,
   type TableRefreshIntegrationReturn,
 } from './use-table-refresh-integration';
 
-// 开箱即用的刷新处理器 hook
+// Ready-to-use refresh handler hooks
 export {
   useTableRefreshHandlers,
   useSimpleTableRefresh,
@@ -54,7 +51,7 @@ export {
   type UseTableRefreshHandlersReturn,
 } from './use-table-refresh-handlers';
 
-// 插件相关 hooks
+// Plugin-related hooks
 export { useDataSource } from './use-data-source';
 export { useAlert } from './use-alert';
 export { useAutoScrollYWithCalc } from './use-auto-scroll-y';
@@ -62,29 +59,34 @@ export { useTableColumns } from './use-table-columns';
 export { useQuerySync } from './use-query-sync';
 export { usePluginManager } from './use-plugin-manager';
 
-// 列配置管理Hook
+// Column configuration management Hook
 export { useColumns as useColumnConfig } from './use-column-config';
 
-// 渲染器 hooks
+// Renderer hooks
 export { useCustomTableRenderers } from './use-custom-table-renderers';
 
-// 上下文 hooks
+// Context hooks
 export {
   useCustomTableContext,
   useEnhancedTableContext,
 } from './use-custom-table-context';
 
-// 生命周期 hooks
+// Lifecycle hooks
 export { useLifecycleManager } from './use-lifecycle-manager';
 
-// 订阅机制 hooks
+// Subscription mechanism hooks
 export { SubscriptionProvider, useSubscription } from './use-subscription';
 
-// 工具 hooks
+// Utility hooks
 export { useImperativeHandle } from './use-imperative-handle';
+export { useRenderMonitor } from './use-render-monitor';
+export { useTablePropsHandler } from './use-table-props-handler';
+export { useTableRenderConfig } from './use-table-render-config';
+export { useTableStateMonitor } from './use-table-state-monitor';
+export { usePluginWrapper } from './use-plugin-wrapper';
 
-// 内部 hooks
+// Internal hooks
 export * from './internal';
 
-// 命令式 hooks
+// Imperative hooks
 export * from './imperative';

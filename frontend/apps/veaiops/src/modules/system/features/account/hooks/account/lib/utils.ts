@@ -17,24 +17,24 @@ import type { User } from 'api-generate';
 type UserTableData = User;
 
 /**
- * 转换用户数据为表格数据
+ * Transform user data to table data
  *
- * @param user - API 返回的用户数据（api-generate 中的 User 类型）
- * @returns 转换后的用户表格数据
+ * @param user - User data returned from API (User type from api-generate)
+ * @returns Transformed user table data
  */
 export const transformUserToTableData = (
-  user: import('api-generate').User,
+  user: User,
 ): UserTableData => {
   const now = new Date().toISOString();
   return {
     ...user,
     id: user._id || `temp-${Date.now()}-${Math.random()}`,
     key: user._id || `temp-${Date.now()}-${Math.random()}`,
-    // 将 API 字段映射到本地字段
+    // Map API fields to local fields
     role: user.is_supervisor ? 'admin' : 'user',
     status: user.is_active ? 'active' : 'inactive',
     is_system_admin: user.is_supervisor || false,
-    // 确保时间戳字段有默认值
+    // Ensure timestamp fields have default values
     created_at: user.created_at || now,
     updated_at: user.updated_at || now,
   };

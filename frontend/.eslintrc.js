@@ -127,27 +127,6 @@ module.exports = {
         // apps/veaiops/tsconfig.json includes "src/**/*" which contains the actual source files
         project: ['./tsconfig.json', './apps/veaiops/tsconfig.json'],
         tsconfigRootDir: __dirname,
-        createDefaultProgram: true,
-      },
-      rules: {
-        // Disable TypeScript-specific rules for files that may not be in the project
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
-      },
-    },
-    // Exception for specific files that may not be in the TypeScript project
-    {
-      files: [
-        'apps/veaiops/src/components/common/timezone-selector/index.tsx',
-        'apps/veaiops/src/modules/system/pages/account/index.tsx',
-      ],
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        ecmaVersion: 2022,
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
       },
     },
   ],

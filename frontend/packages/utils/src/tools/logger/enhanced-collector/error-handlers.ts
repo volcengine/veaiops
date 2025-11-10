@@ -1,0 +1,75 @@
+// Copyright 2025 Beijing Volcano Engine Technology Co., Ltd. and/or its affiliates
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import { getBrowserInfo, getPageInfo } from './utils';
+
+interface Logger {
+  error: (params: {
+    message: string;
+    data?: unknown;
+    source?: string;
+    component?: string;
+  }) => void;
+}
+
+export const setupErrorHandlers = (getLogger: () => Logger | null): void => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.addEventListener('error', (event) => {
+    const logger = getLogger();
+    if (logger) {
+      logger.error({
+        message: 'Uncaught JavaScript error',
+        data: {
+          error: event.message,
+          stack: event.error?.stack,
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+          errorObj: event.error,
+          browser: getBrowserInfo(),
+          page: getPageInfo(),
+        },
+        source: 'GlobalErrorHandler',
+        component: 'window.onerror',
+      });
+    }
+  });
+
+  window.addEventListener('unhandledrejection', (event) => {
+    const logger = getLogger();
+    if (logger) {
+      const error =
+        event.reason instanceof Error
+          ? event.reason
+          : new Error(String(event.reason));
+
+      logger.error({
+        message: 'Unhandled Promise rejection',
+        data: {
+          error: error.message,
+          stack: error.stack,
+          errorObj: error,
+          reason: event.reason,
+          browser: getBrowserInfo(),
+          page: getPageInfo(),
+        },
+        source: 'GlobalErrorHandler',
+        component: 'unhandledrejection',
+      });
+    }
+  });
+};

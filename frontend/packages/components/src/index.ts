@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * VolcAIOpsKit components unified export entry
+ * VolcAIOpsKit Component Library Unified Export Entry
  *
- * Export principles:
- * - Use selective exports to avoid type/name conflicts
- * - Group by feature modules to organize exports clearly
- * - Merge imports from the same source to improve readability
- * - Each directory exports via its own index.ts
+ * Export Principles:
+ * - Use selective exports to avoid type naming conflicts
+ * - Group by functional modules for clear organization
+ * - Merge imports from the same source to improve code readability
+ * - Each directory exports through its own index.ts
  */
 
-// ==================== Base components ====================
+// ==================== Basic Components ====================
 export * from './business';
 export * from './button';
 export * from './card';
@@ -34,23 +34,14 @@ export * from './subscription';
 export * from './tip';
 export * from './wrapper-with-title';
 
-// ==================== Timezone-aware components ====================
-// Explicitly export timezone-aware components to avoid conflicts with other exports
-export {
-  RangePicker,
-  DatePicker,
-  TimezoneAwareRangePicker,
-  TimezoneAwareDatePicker,
-} from './timezone-aware';
-
-// ==================== CustomFields components ====================
-// Note: Selective exports to avoid type conflicts
+// ==================== CustomFields Components ====================
+// Note: Use selective exports to avoid type conflicts
 export { CustomFields } from './custom-fields';
 export type * from './custom-fields/types';
 export * from './custom-fields/utils';
 
-// ==================== CustomTable components ====================
-// Note: Selective exports of common components and hooks to avoid type conflicts
+// ==================== CustomTable Components ====================
+// Note: Use selective exports for commonly used components and Hooks to avoid type conflicts
 export {
   CustomTable,
   SubscriptionProvider,
@@ -69,8 +60,8 @@ export type {
   QueryValue,
 } from './custom-table';
 
-// ==================== FormControl components ====================
-// Note: Selective exports to avoid Option type conflicts
+// ==================== FormControl Components ====================
+// Note: Use selective exports to avoid Option type conflicts
 export {
   FormItemWrapper,
   Input,
@@ -84,16 +75,21 @@ export type {
   SelectDataSourceProps,
 } from './form-control';
 
-// ==================== Filters components ====================
-// Note: Selective exports to avoid type conflicts
+// ==================== SelectBlock Logger Types ====================
+// Export SelectBlock logger types for global type definitions
+export type { SelectBlockLogger } from './form-control/select/block/logger';
+export type { LogEntry } from './form-control/select/block/types/logger';
+
+// ==================== Filters Components ====================
+// Note: Use selective exports to avoid type conflicts
 export type { FiltersProps } from './custom-table/types/core/common';
 export type { FieldItem } from './filters';
 
-// ==================== Other type exports ====================
+// ==================== Other Type Exports ====================
 export type { CustomTitleProps } from './custom-table/types/components/missing-types';
 
-// ==================== EventHistoryTable components ====================
-// Unified history event table component
+// ==================== EventHistoryTable Components ====================
+// Unified historical event table component
 export {
   EventHistoryTable,
   HistoryModuleType,
@@ -104,7 +100,7 @@ export type {
   EventHistoryFilters,
 } from './event-history-table';
 
-// ==================== XGuide components ====================
-// Note: Selective exports to avoid naming conflicts
+// ==================== XGuide Components ====================
+// Note: Use selective exports to avoid naming conflicts
 export { XGuide } from './x-guide';
 export type { IGuide, IStep } from './x-guide';

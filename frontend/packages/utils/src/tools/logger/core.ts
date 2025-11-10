@@ -13,44 +13,12 @@
 // limitations under the License.
 
 /**
- * Enhanced logging tool
+ * Enhanced logger utility
  * Provides unified logging functionality with support for multiple output formats and filtering
- * Integrates enhanced log collector to automatically collect context information, API requests, performance metrics, etc.
  */
 
-/**
- * Convert timestamp to yyyy-mm-dd hh:mm:ss format
- */
-const formatTimestamp = (timestamp: number): string => {
-  const date = new Date(timestamp);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-};
-
-/**
- * Enhanced collector lazy loader
- * Note: Use dynamic import to avoid circular dependency
- */
-let enhancedCollectorInstance: any = null;
-
-const getEnhancedCollector = () => {
-  if (enhancedCollectorInstance === null && typeof window !== 'undefined') {
-    try {
-      // Lazy import to avoid circular dependency
-      const imported = require('./enhanced-collector');
-      enhancedCollectorInstance = imported.enhancedCollector;
-    } catch {
-      enhancedCollectorInstance = false;
-    }
-  }
-  return enhancedCollectorInstance;
-};
+import { formatTimestamp } from './utils/format';
+import { safeSerializeData } from './utils/serialization';
 
 export interface LogEntry {
   timestamp: number;
@@ -101,64 +69,6 @@ class Logger {
     return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  /**
-   * Safely serialize data, remove circular references and non-serializable objects
-   */
-  private safeSerializeData(data: any): any {
-    if (data === null || data === undefined) {
-      return data;
-    }
-
-    // If it's a primitive type, return directly
-    if (typeof data !== 'object') {
-      return data;
-    }
-
-    try {
-      // Use JSON.parse(JSON.stringify) to detect circular references
-      // If there's a circular reference, it will throw an error
-      JSON.stringify(data);
-      return data;
-    } catch (error: unknown) {
-      // ✅ If there's a circular reference or serialization error, return safe simplified version
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      try {
-        if (Array.isArray(data)) {
-          return data.map((item) => this.safeSerializeData(item));
-        }
-
-        // Object type: Only extract serializable fields
-        const safeData: any = {};
-        for (const key in data) {
-          if (!Object.prototype.hasOwnProperty.call(data, key)) {
-            continue;
-          }
-
-          safeData[key] = this.serializeValue(data[key]);
-        }
-        return safeData;
-      } catch (innerError: unknown) {
-        // ✅ Complete failure, return string representation
-        // Note: Errors inside logger tool use console.warn (compliant with spec, as logger is the logging tool itself)
-        const innerErrorObj =
-          innerError instanceof Error
-            ? innerError
-            : new Error(String(innerError));
-        if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            '[Logger] Data serialization completely failed',
-            innerErrorObj.message,
-            {
-              originalError: errorObj.message,
-            },
-          );
-        }
-        return `[Unserializable: ${typeof data}]`;
-      }
-    }
-  }
-
   private addLog(
     level: LogEntry['level'],
     message: string,
@@ -166,33 +76,15 @@ class Logger {
     source?: string,
     component?: string,
   ) {
-    let entry: LogEntry = {
+    const entry: LogEntry = {
       timestamp: Date.now(),
       level,
       message,
-      data: this.safeSerializeData(data), // Use safe serialization
+      data: safeSerializeData(data), // 🔥 Use safe serialization
       source: source || 'VeArchAmap',
       component,
       sessionId: this.sessionId,
     };
-
-    // ✅ Use enhanced collector to automatically enhance log entries (add context information)
-    const collector = getEnhancedCollector();
-    if (collector && typeof collector.enhanceLogEntry === 'function') {
-      try {
-        entry = collector.enhanceLogEntry(entry);
-      } catch (error: unknown) {
-        // ✅ Silently handle enhancement failure, don't affect normal logging
-        const errorObj =
-          error instanceof Error ? error : new Error(String(error));
-        if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            '[Logger] Failed to enhance log entry',
-            errorObj.message,
-          );
-        }
-      }
-    }
 
     this.logs.push(entry);
 
@@ -252,7 +144,7 @@ class Logger {
   }
 
   /**
-   * Log message
+   * Log a message
    * @param params Log parameters object
    */
   log({ message, data, source, component }: LogParams): void {
@@ -260,7 +152,7 @@ class Logger {
   }
 
   /**
-   * Log info message
+   * Log an info message
    * @param params Log parameters object
    */
   info({ message, data, source, component }: LogParams): void {
@@ -268,7 +160,7 @@ class Logger {
   }
 
   /**
-   * Log warning message
+   * Log a warning message
    * @param params Log parameters object
    */
   warn({ message, data, source, component }: LogParams): void {
@@ -276,7 +168,7 @@ class Logger {
   }
 
   /**
-   * Log error message
+   * Log an error message
    * @param params Log parameters object
    */
   error({ message, data, source, component }: LogParams): void {
@@ -284,7 +176,7 @@ class Logger {
   }
 
   /**
-   * Log debug message
+   * Log a debug message
    * @param params Log parameters object
    */
   debug({ message, data, source, component }: LogParams): void {
@@ -296,7 +188,7 @@ class Logger {
     return [...this.logs];
   }
 
-  // Get logs in specified time range
+  // Get logs within specified time range
   getLogsInRange({
     startTime,
     endTime,
@@ -424,153 +316,18 @@ class Logger {
       this.sessionId = config.sessionId;
     }
   }
-
-  private serializeValue(value: any): any {
-    // Handle primitive types
-    if (
-      value === null ||
-      value === undefined ||
-      typeof value === 'string' ||
-      typeof value === 'number' ||
-      typeof value === 'boolean'
-    ) {
-      return value;
-    }
-
-    // Handle arrays
-    if (Array.isArray(value)) {
-      return value.map((item) => {
-        if (typeof item === 'object' && item !== null) {
-          return '[Object]';
-        }
-        return item;
-      });
-    }
-
-    // Handle objects
-    if (typeof value === 'object' && value !== null) {
-      return this.serializeObjectValue(value);
-    }
-
-    // Other types
-    return String(value);
-  }
-
-  /**
-   * Detect if object contains circular references
-   */
-  private hasCircularReference(
-    value: unknown,
-    seen = new WeakSet<object>(),
-  ): boolean {
-    if (typeof value !== 'object' || value === null) {
-      return false;
-    }
-
-    if (seen.has(value)) {
-      return true;
-    }
-
-    seen.add(value);
-
-    try {
-      for (const key in value) {
-        if (Object.prototype.hasOwnProperty.call(value, key)) {
-          const propValue = (value as Record<string, unknown>)[key];
-          if (this.hasCircularReference(propValue, seen)) {
-            return true;
-          }
-        }
-      }
-    } catch {
-      // If accessing property fails (e.g., accessor property throws error), consider it may have circular reference
-      return true;
-    }
-
-    // ✅ WeakSet doesn't need manual deletion, will be automatically cleaned when object is garbage collected
-    // But for accurate detection, we need to maintain seen state when recursively returning
-    return false;
-  }
-
-  /**
-   * Serialize object value, avoid deep nesting and circular references
-   */
-  private serializeObjectValue(value: any): string {
-    // Check if it's a DOM element or React element
-    if (value instanceof Element || value.$$typeof || value._owner) {
-      return '[React/DOM Element]';
-    }
-
-    // ✅ Prioritize detecting circular references (avoid JSON.stringify throwing error)
-    if (this.hasCircularReference(value)) {
-      return '[Circular Reference]';
-    }
-
-    // Check if it's a React Context (usually contains _context property causing circular reference)
-    if (
-      typeof value === 'object' &&
-      value !== null &&
-      ('_context' in value ||
-        '_currentValue' in value ||
-        '_currentValue2' in value)
-    ) {
-      return '[React Context]';
-    }
-
-    // Try to serialize nested object (at most one level)
-    try {
-      return JSON.parse(JSON.stringify(value));
-    } catch (error: unknown) {
-      // ✅ Return placeholder when serialization fails
-      // Note: Circular references have been detected and handled earlier, errors here are usually other reasons (e.g., contains functions)
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      const errorMessage = errorObj.message || String(error);
-
-      // Only print warning for non-circular reference errors (circular references are silently handled)
-      if (
-        process.env.NODE_ENV === 'development' &&
-        !errorMessage.includes('circular') &&
-        !errorMessage.includes('Converting circular structure')
-      ) {
-        console.warn('[Logger] Object serialization failed', errorMessage);
-      }
-
-      return '[Complex Object]';
-    }
-  }
 }
 
 // Create global logger instance
 export const logger = new Logger({
   maxLogs: 2000,
   enableConsole: true,
-  enableStorage: false, // Default: local storage not enabled
+  enableStorage: false, // Local storage disabled by default
 });
 
-// 🔥 Expose logger instance to window object for log export tools and enhanced collector
+// 🔥 Expose logger instance to window object for log export tools
 if (typeof window !== 'undefined') {
   (window as any).__veaiopsUtilsLogger = logger;
-
-  // ✅ Automatically start enhanced collector (development environment)
-  if (process.env.NODE_ENV === 'development') {
-    setTimeout(() => {
-      try {
-        const collector = getEnhancedCollector();
-        if (collector?.startCollection) {
-          collector.startCollection();
-        }
-      } catch (error) {
-        // If startup fails, silently handle (enhanced collector is optional)
-        if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            '[Logger] Enhanced collector startup failed (optional feature)',
-            error instanceof Error ? error.message : String(error),
-          );
-        }
-      }
-    }, 0);
-  }
 }
 
 // Export Logger class for creating independent instances elsewhere

@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { GlobalGuideStepNumber } from '@global-guide/enums/guide-steps.enum';
+import { GlobalGuideStepNumber } from '../../../enums/guide-steps.enum';
 import type { GlobalGuideStep } from '../../types';
 
 /**
- * Oncall change module guide step configuration
- * Includes: Content recognition rules, Content recognition rules, Oncall change history
+ * Oncall anomaly module guide step configuration
+ * Includes: Oncall anomaly configuration, Oncall anomaly rules, Oncall anomaly history
  */
 export const oncallSteps: GlobalGuideStep[] = [
-  // ========== Oncall Change Module Guide ==========
+  // ========== Oncall anomaly module guide ==========
   {
     number: GlobalGuideStepNumber.ONCALL_CONFIG,
-    title: '内容识别规则',
-    description: '点击配置内容识别规则，管理值班规则和通知策略',
+    title: 'Oncall异动配置',
+    description: '点击配置Oncall异动规则，管理值班规则和通知策略',
     route: '/oncall/config',
     icon: 'IconSettings',
     frontendFeatures: [
@@ -59,7 +59,7 @@ export const oncallSteps: GlobalGuideStep[] = [
       {
         id: 'new-oncall-rule',
         name: '新建规则',
-        description: '通过编辑现有规则或联系管理员创建新的内容识别规则',
+        description: '通过编辑现有规则或联系管理员创建新的Oncall异动规则',
         selector: '[data-testid="oncall-config-table"]',
         tooltipContent: '提示：新建规则功能可通过编辑空规则或联系管理员实现✨',
         actionType: 'direct',
@@ -81,17 +81,17 @@ export const oncallSteps: GlobalGuideStep[] = [
   },
   {
     number: GlobalGuideStepNumber.ONCALL_RULES,
-    title: '内容识别规则',
-    description: '点击查看和管理内容识别规则列表',
+    title: 'Oncall异动规则',
+    description: '点击查看和管理Oncall异动规则列表',
     route: '/oncall/rules',
     icon: 'IconList',
     frontendFeatures: [
       {
         id: 'view-oncall-rules-list',
         name: '查看规则列表',
-        description: '查看所有内容识别规则',
+        description: '查看所有Oncall异动规则',
         selector: '[data-testid="oncall-rules-table"]',
-        tooltipContent: '此处显示所有内容识别规则列表🌟',
+        tooltipContent: '此处显示所有Oncall异动规则列表🌟',
         actionType: 'direct',
       },
       {

@@ -26,7 +26,7 @@ enum TitleLevel {
 
 export type WrapperWithTitleProps = {
   style?: CSSProperties;
-  contentStyle?: CSSProperties; // 新增内容区域样式配置
+  contentStyle?: CSSProperties; // New content area style configuration
   title: string;
   level: 1 | 2 | 3 | 4;
   children?: JSX.Element | JSX.Element[];
@@ -59,9 +59,14 @@ const WrapperWithTitle: FC<WrapperWithTitleProps> = ({
     } else if (level === TitleLevel.fourTitle) {
       cls = styles.fourtitle;
     }
-    return cls
-      ? ` ${cls} ${cls === 'secondary' ? styles.secondary : cls}`
-      : cls;
+    if (!cls) {
+      return cls;
+    }
+    let secondaryCls = cls;
+    if (cls === 'secondary') {
+      secondaryCls = styles.secondary;
+    }
+    return ` ${cls} ${secondaryCls}`;
   }, [level]);
 
   const TitleComponent = useCallback(
@@ -69,7 +74,7 @@ const WrapperWithTitle: FC<WrapperWithTitleProps> = ({
       title: wrapperTitle,
       level: wrapperLevel,
       style: wrapperStyle,
-      contentStyle: wrapperContentStyle, // 新增参数
+      contentStyle: wrapperContentStyle, // New parameter
       noPadding: wrapperNoPadding,
       children: wrapperChildren,
     }: WrapperWithTitleProps) => {
@@ -85,7 +90,7 @@ const WrapperWithTitle: FC<WrapperWithTitleProps> = ({
           <div
             style={{
               padding: wrapperNoPadding ? 0 : '10px 0',
-              ...wrapperContentStyle, // 合并自定义样式
+              ...wrapperContentStyle, // Merge custom styles
             }}
           >
             {wrapperChildren}

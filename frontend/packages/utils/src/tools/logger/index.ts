@@ -13,23 +13,26 @@
 // limitations under the License.
 
 /**
- * Unified log tool exports
+ * Logger utilities unified exports
  *
  * ✅ Unified export of all logging-related functionality:
  * - core: Unified logger instance (main log collection)
- * - export: Log export tool (unified export of all logs)
- * - log-exporter: Log export tool (backward compatible)
- * - enhanced-collector: Enhanced log collector (auto-collect context, API, performance, etc.)
+ * - export: Log export utilities (unified export of all logs)
+ * - log-exporter: Log export utilities (backward compatible)
+ * - enhanced-collector: Enhanced log collector for global type definitions
  */
 
 // Export core logger
 export * from './core';
 
-// Export log export tool
+// Export log export utilities
 export * from './export';
 
 // Export log-exporter (backward compatible)
 export * from './log-exporter';
 
-// Export enhanced collector (optional, avoid circular dependency)
-export { enhancedCollector } from './enhanced-collector';
+// Export enhanced collector for global type definitions
+export {
+  enhancedCollector,
+  EnhancedLoggerCollector,
+} from './enhanced-collector/enhanced-collector';

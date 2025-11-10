@@ -14,11 +14,12 @@
 
 import apiClient from "@/utils/api-client";
 import { Message } from "@arco-design/web-react";
+import type { Project as ApiProject } from 'api-generate';
 import type { Project, ProjectFormData } from '@project/types';
 import { API_RESPONSE_CODE } from "@veaiops/constants";
 
 /**
- * 项目列表查询参数
+ * Project list query parameters
  */
 export interface ProjectListParams {
   skip?: number;
@@ -30,7 +31,7 @@ export interface ProjectListParams {
 }
 
 /**
- * 项目列表响应
+ * Project list response
  */
 export interface ProjectListResponse {
   data: Project[];
@@ -40,7 +41,7 @@ export interface ProjectListResponse {
 }
 
 /**
- * 导入日志
+ * Import log
  */
 export interface ImportLog {
   level: "info" | "warning" | "error";
@@ -49,7 +50,7 @@ export interface ImportLog {
 }
 
 /**
- * 导入结果
+ * Import result
  */
 export interface ImportResult {
   success: boolean;
@@ -60,13 +61,13 @@ export interface ImportResult {
 }
 
 /**
- * 获取项目列表
+ * Get project list
  */
 export const getProjectList = async (
   params: ProjectListParams = {}
 ): Promise<ProjectListResponse> => {
   try {
-    // 注意：空字符串应该被过滤掉，只传递有效的 name 值
+    // Note: Empty strings should be filtered out, only pass valid name values
     const nameParam =
       params.name && params.name.trim() !== ''
         ? params.name.trim()
@@ -81,10 +82,10 @@ export const getProjectList = async (
     if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
       const projects = Array.isArray(response.data) ? response.data : [];
 
-      // 转换后端数据格式到前端格式
-      // 注意：API 返回的是 api-generate 中的 Project 类型（包含 _id）
-      // Project 类型只有 _id 和 project_id 字段，没有 id 字段
-      const formattedProjects: Project[] = projects.map((item: import('api-generate').Project) => ({
+      // Convert backend data format to frontend format
+      // Note: API returns Project type from api-generate (contains _id)
+      // Project type only has _id and project_id fields, no id field
+      const formattedProjects: Project[] = projects.map((item: ApiProject) => ({
         _id: item._id,
         project_id: item.project_id,
         name: item.name || "",
@@ -103,13 +104,13 @@ export const getProjectList = async (
 
     throw new Error(response.message || "获取项目列表失败");
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: expose actual error information
     const errorMessage =
       error instanceof Error
         ? error.message
         : "获取项目列表失败，请重试";
     Message.error(errorMessage);
-    // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+    // ✅ Correct: convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     throw errorObj;
@@ -117,7 +118,7 @@ export const getProjectList = async (
 };
 
 /**
- * 创建项目
+ * Create project
  */
 export const createProject = async (
   data: Pick<ProjectFormData, "project_id" | "name">
@@ -137,7 +138,7 @@ export const createProject = async (
 
     throw new Error(response.message || "创建项目失败");
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: expose actual error information
     const errorMessage =
       error instanceof Error ? error.message : "创建项目失败";
     Message.error(errorMessage);
@@ -146,7 +147,7 @@ export const createProject = async (
 };
 
 /**
- * 删除项目
+ * Delete project
  */
 export const deleteProject = async (
   id: string
@@ -170,11 +171,11 @@ export const deleteProject = async (
 
     throw new Error(response.message || "删除项目失败");
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: expose actual error information
     const errorMessage =
       error instanceof Error ? error.message : "删除项目失败";
     Message.error(errorMessage);
-    // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+    // ✅ Correct: convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     throw errorObj;
@@ -182,20 +183,20 @@ export const deleteProject = async (
 };
 
 /**
- * 导入项目数据
- * 使用Python后端的专用导入接口，支持详细日志
+ * Import project data
+ * Uses Python backend's dedicated import interface, supports detailed logs
  */
 export const importProjects = async (
   file: File,
   _onProgress?: (logs: ImportLog[]) => void
 ): Promise<ImportResult> => {
   try {
-    // 检查文件类型
+    // Check file type
     if (!file.name.endsWith(".csv")) {
       throw new Error("只支持CSV文件格式");
     }
 
-    // 检查文件大小 (10MB限制)
+    // Check file size (10MB limit)
     if (file.size > 10 * 1024 * 1024) {
       throw new Error("文件大小不能超过10MB");
     }
@@ -209,7 +210,7 @@ export const importProjects = async (
       const result: ImportResult = {
         success: true,
         message: response.message || "导入成功",
-        imported_count: 0, // 从响应中获取实际数量
+        imported_count: 0, // Get actual count from response
         failed_count: 0,
         logs: [
           {
@@ -225,7 +226,7 @@ export const importProjects = async (
 
     throw new Error(response.message || "导入项目失败");
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: expose actual error information
     const errorMessage =
       error instanceof Error ? error.message : "导入项目失败";
     Message.error(errorMessage);
@@ -247,27 +248,27 @@ export const importProjects = async (
 };
 
 /**
- * 查询同步状态接口
+ * Query sync state interface
  *
- * 用于调试日志导出功能，包含表格的查询状态信息
+ * Used for debug log export functionality, contains table query state information
  */
 export interface QuerySyncState {
-  /** 当前页码 */
+  /** Current page number */
   current?: number;
-  /** 每页条数 */
+  /** Items per page */
   pageSize?: number;
-  /** 筛选条件 */
+  /** Filter conditions */
   filters?: Record<string, unknown>;
-  /** 排序信息 */
+  /** Sort information */
   sorter?: Record<string, unknown>;
-  /** URL 搜索参数 */
+  /** URL search parameters */
   searchParams?: Record<string, unknown>;
 }
 
 /**
- * 导出调试日志
+ * Export debug logs
  *
- * @param querySync - 查询同步状态对象，包含表格的当前查询状态
+ * @param querySync - Query sync state object, contains table's current query state
  */
 export const exportDebugLogs = (querySync: QuerySyncState) => {
   try {
@@ -299,7 +300,7 @@ export const exportDebugLogs = (querySync: QuerySyncState) => {
 
     Message.success("调试日志已导出");
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: expose actual error information
     const errorMessage =
       error instanceof Error
         ? error.message

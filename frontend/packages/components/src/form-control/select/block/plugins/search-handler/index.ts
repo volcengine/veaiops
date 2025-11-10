@@ -14,7 +14,6 @@
 
 import { debounce } from 'lodash-es';
 import { logger } from '../../logger';
-import type { SearchKeyConfig } from '../../types/interface';
 import type {
   CacheHandlerPlugin,
   DataFetcherPlugin,
@@ -24,13 +23,10 @@ import type {
   SearchParams,
 } from '../../types/plugin';
 import { isDataSourceSetter } from '../../util';
-
-/**
- * Check if input is numeric
- */
-function isNumericString(str: string): boolean {
-  return /^\d+$/.test(str);
-}
+import { executeDebouncedSearch } from './utils/debounced-search';
+import { DebugLogger } from './utils/debug';
+import { EmergencyStateHandler } from './utils/emergency';
+import { getSearchParams } from './utils/search-params';
 
 /**
  * Search handler plugin implementation
@@ -48,19 +44,11 @@ export class SearchHandlerPluginImpl implements SearchHandlerPlugin {
 
   private cacheHandlerRef?: CacheHandlerPlugin;
 
-  // 🔧 Add destroy flag to prevent execution after destruction
   private isDestroyed = false;
 
-  // 🔧 Add debug logging system
-  private debugLogs: Array<{
-    action: string;
-    data: any;
-    timestamp: number;
-    time: string;
-  }> = [];
+  private debugLogger: DebugLogger;
 
-  // 🔧 Loop detection flag
-  private isProcessingStateReset = false;
+  private emergencyHandler: EmergencyStateHandler;
 
   constructor(config: SearchHandlerConfig) {
     this.config = {
@@ -68,132 +56,23 @@ export class SearchHandlerPluginImpl implements SearchHandlerPlugin {
       ...config,
     };
 
-    // 🔧 Expose debug methods to global scope for debugging
-    this.exposeDebugMethods();
+    this.debugLogger = new DebugLogger();
+    this.emergencyHandler = new EmergencyStateHandler();
 
-    // 🔧 Setup emergency state reset listener
-    this.setupEmergencyStateResetListener();
+    this.debugLogger.exposeDebugMethods(this.config);
   }
 
-  /**
-   * Setup emergency state reset listener
-   * Used to handle React state and DOM synchronization issues
-   */
-  private setupEmergencyStateResetListener(): void {
-    if (typeof document !== 'undefined') {
-      document.addEventListener('forceStateReset', (event: any) => {
-        // 🚨 Prevent infinite loop: Skip if already processing state reset
-        if (this.isProcessingStateReset) {
-          this.addDebugLog('EMERGENCY_STATE_RESET_SKIPPED', {
-            reason: 'prevent infinite loop',
-            timestamp: Date.now(),
-          });
-          return;
-        }
-
-        try {
-          this.isProcessingStateReset = true;
-          const detail = event.detail || { loading: false, fetching: false };
-
-          this.addDebugLog('EMERGENCY_STATE_RESET', {
-            detail,
-            timestamp: Date.now(),
-          });
-
-          // Force reset state (React state only, don't call DOM sync to avoid loop)
-          if (this.context) {
-            this.context.setState({
-              loading: detail.loading,
-              fetching: detail.fetching,
-            });
-
-            // 🔧 Use fallback solution to directly manipulate DOM, avoid circular calls
-            this.fallbackDOMSync(detail.loading);
-
-            this.addDebugLog('EMERGENCY_STATE_RESET_SUCCESS', {
-              newState: detail,
-              timestamp: Date.now(),
-            });
-          }
-        } catch (error) {
-          this.addDebugLog('EMERGENCY_STATE_RESET_ERROR', {
-            error: error instanceof Error ? error.message : String(error),
-            timestamp: Date.now(),
-          });
-        } finally {
-          // 🔧 Reset loop detection flag
-          this.isProcessingStateReset = false;
-        }
-      });
-    }
-  }
-
-  /**
-   * 🔧 Add debug log
-   */
   private addDebugLog(action: string, data: any): void {
-    const logEntry = {
-      action: `[SearchHandler] ${action}`,
-      data,
-      timestamp: Date.now(),
-      time: new Date().toISOString(),
-    };
-
-    this.debugLogs.push(logEntry);
-    // Keep log count within reasonable range
-    if (this.debugLogs.length > 200) {
-      this.debugLogs = this.debugLogs.slice(-100);
-    }
-
-    // 🔧 Also use logger output to ensure it can be collected by log-exporter
-    logger.debug('SearchHandler', action, data, action);
-  }
-
-  /**
-   * 🔧 Expose debug methods to global scope
-   */
-  private exposeDebugMethods(): void {
-    // Get debug logs
-    (window as any).getSearchHandlerDebugLogs = () => {
-      return this.debugLogs;
-    };
-
-    // Clear debug logs
-    (window as any).clearSearchHandlerDebugLogs = () => {
-      this.debugLogs = [];
-    };
-
-    // Export debug logs
-    (window as any).exportSearchHandlerDebugLogs = () => {
-      const logData = {
-        plugin: 'SearchHandlerPluginImpl',
-        timestamp: new Date().toISOString(),
-        totalLogs: this.debugLogs.length,
-        config: this.config,
-        logs: this.debugLogs,
-      };
-
-      const jsonStr = JSON.stringify(logData, null, 2);
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const filename = `search-handler-debug-${timestamp}.json`;
-
-      // Create download link
-      const blob = new Blob([jsonStr], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      return logData;
-    };
+    this.debugLogger.addDebugLog(action, data);
   }
 
   init(context: PluginContext): void {
     this.context = context;
+    this.emergencyHandler.setupEmergencyStateResetListener(
+      this.context,
+      (action, data) => this.debugLogger.addDebugLog(action, data),
+      (loading) => this.emergencyHandler.fallbackDOMSync(loading),
+    );
   }
 
   /**
@@ -207,63 +86,8 @@ export class SearchHandlerPluginImpl implements SearchHandlerPlugin {
     this.cacheHandlerRef = cacheHandler;
   }
 
-  /**
-   * Get search parameters
-   */
   getSearchParams(inputValue: string): Record<string, any> {
-    if (!inputValue) {
-      return {};
-    }
-
-    const {
-      searchKey,
-      remoteSearchKey,
-      multiSearchKeys,
-      formatRemoteSearchKey = (v: string) => v,
-    } = this.config;
-
-    const formattedValue = formatRemoteSearchKey(inputValue);
-
-    // If multiSearchKeys array is set, use it first
-    if (multiSearchKeys && multiSearchKeys.length > 0) {
-      const params: Record<string, any> = {};
-
-      // Iterate through multi-search field configurations
-      multiSearchKeys.forEach((keyConfig: SearchKeyConfig) => {
-        // If it's an object configuration, contains key and valueType
-        if (typeof keyConfig === 'object' && keyConfig.key) {
-          const { key, valueType } = keyConfig;
-
-          // Process value based on valueType
-          if (valueType === 'number' && isNumericString(formattedValue)) {
-            params[key] = Number(formattedValue);
-          } else if (valueType === 'string' || !valueType) {
-            params[key] = formattedValue;
-          }
-        } else if (typeof keyConfig === 'string') {
-          // If it's a simple string configuration
-          params[keyConfig] = formattedValue;
-        }
-      });
-
-      return params;
-    }
-
-    // Compatible with original single search logic
-    // Prefer remoteSearchKey, then searchKey, finally default search
-    if (remoteSearchKey) {
-      return {
-        [remoteSearchKey]: formattedValue,
-      };
-    }
-
-    return searchKey
-      ? {
-          [searchKey]: formattedValue,
-        }
-      : {
-          search: formattedValue,
-        };
+    return getSearchParams(inputValue, this.config);
   }
 
   /**
@@ -294,325 +118,30 @@ export class SearchHandlerPluginImpl implements SearchHandlerPlugin {
     const capturedCacheHandler = this.cacheHandlerRef;
     const capturedAddDebugLog = this.addDebugLog.bind(this);
 
-    // 🔍 Extract captured dataSource API for debugging
-    const capturedDataSourceApi =
-      capturedContext?.props?.dataSource &&
-      typeof capturedContext.props.dataSource === 'object' &&
-      'api' in capturedContext.props.dataSource
-        ? (capturedContext.props.dataSource as any).api
-        : undefined;
-
-    // 🔧 Add logging when capturing
+    // 🔧 Add log when capturing
     logger.debug(
       'SearchHandler',
-      'Captured context reference',
+      '捕获 context 引用', // Keep Chinese error message in code string
       {
         hasCapturedContext: Boolean(capturedContext),
         capturedContextType: typeof capturedContext,
         hasCapturedDataFetcher: Boolean(capturedDataFetcher),
         hasCapturedCacheHandler: Boolean(capturedCacheHandler),
         isDestroyed: this.isDestroyed,
-        // 🔍 Record captured dataSource API
-        capturedDataSourceApi,
-        hasCapturedDataSource: Boolean(capturedContext?.props?.dataSource),
       },
       'createDebouncedSearch',
     );
 
-    this.debouncedSearchFn = debounce(
-      async ({
-        initValue,
-        inputValue,
-        scroll,
-        isOptionAppend = false,
-      }: SearchParams) => {
-        // 🔧 Note: Must use original addDebugLog here, as capturedAddDebugLog may access destroyed context
-        logger.debug(
-          'SearchHandler',
-          'DEBOUNCED_SEARCH_FUNCTION_EXECUTED',
-          {
-            initValue,
-            inputValue,
-            scroll,
-            isOptionAppend,
-            timestamp: Date.now(),
-            hasCapturedContext: Boolean(capturedContext),
-            capturedContextType: typeof capturedContext,
-            // 🔍 Record captured dataSource API (closure variable)
-            capturedDataSourceApi,
-          },
-          'createDebouncedSearch',
-        );
-
-        // 🔧 Use captured context instead of this.context
-        if (!capturedContext) {
-          logger.warn(
-            'SearchHandler',
-            'DEBOUNCED_SEARCH_ABORT - capturedContext is null',
-            {
-              timestamp: Date.now(),
-              capturedContextType: typeof capturedContext,
-              capturedContextIsNull: capturedContext === null,
-              capturedContextIsUndefined: capturedContext === undefined,
-            },
-            'createDebouncedSearch',
-          );
-          return false;
-        }
-
-        const { props } = capturedContext;
-
-        // 🔍 Extract currently used dataSource API for debugging
-        const currentDataSourceApi =
-          props?.dataSource &&
-          typeof props.dataSource === 'object' &&
-          'api' in props.dataSource
-            ? (props.dataSource as any).api
-            : undefined;
-
-        // 🔧 Record search start
-        logger.info(
-          'SearchHandler',
-          'DEBOUNCED_SEARCH_START',
-          {
-            initValue,
-            inputValue,
-            scroll,
-            isOptionAppend,
-            dataSource: props.dataSource ? 'present' : 'missing',
-            // 🔍 Record currently used dataSource API
-            currentDataSourceApi,
-            // 🔍 Compare captured API with currently used API
-            apiMatches: currentDataSourceApi === capturedDataSourceApi,
-          },
-          'createDebouncedSearch',
-        );
-
-        if (!props.dataSource) {
-          logger.warn(
-            'SearchHandler',
-            'DEBOUNCED_SEARCH_ABORT - no dataSource',
-            {},
-            'createDebouncedSearch',
-          );
-          return false;
-        }
-
-        // 🔧 Record loading start time to ensure minimum loading duration
-        const loadingStartTime = Date.now();
-
-        // 🔧 Record loading state setting
-        logger.debug(
-          'SearchHandler',
-          'LOADING_STATE_SET_TRUE',
-          {
-            loadingStartTime,
-            timestamp: Date.now(),
-          },
-          'createDebouncedSearch',
-        );
-
-        // 🔧 Merge state updates to avoid multiple re-renders - use captured context
-        const { state } = capturedContext;
-        const { limit } = capturedContext.props.pageReq || { limit: 100 };
-        const newSkip = scroll ? state.skip + limit : 0;
-
-        capturedContext.setState({
-          loading: true,
-          fetching: true,
-          skip: newSkip,
-        });
-        // Check cache
-        if (props.cacheKey !== undefined && capturedCacheHandler) {
-          const optionsInCache = capturedCacheHandler.getFromCache(
-            props.cacheKey,
-          );
-          if (optionsInCache) {
-            // Schedule delayed cache removal
-            capturedCacheHandler.scheduleRemoval(props.cacheKey);
-            return optionsInCache;
-          }
-        }
-
-        // Build search parameters
-        let remoteSearchParams = {};
-
-        // case 1: Initial value echo
-        if (initValue && this.config.remoteSearchKey) {
-          remoteSearchParams = { [this.config.remoteSearchKey]: initValue };
-        }
-
-        // case 2: Input value search
-        if (inputValue) {
-          remoteSearchParams = this.getSearchParams(inputValue);
-        }
-
-        try {
-          // Use captured dataFetcher
-          const dataFetcher = capturedDataFetcher;
-          if (!dataFetcher) {
-            logger.warn(
-              'SearchHandler',
-              'DEBOUNCED_SEARCH_ABORT - no dataFetcher',
-              {},
-              'createDebouncedSearch',
-            );
-            return false;
-          }
-
-          // Get API name for debugging
-          const apiName = isDataSourceSetter(props.dataSource)
-            ? props.dataSource.api
-            : 'Function';
-
-          // 🔧 Record API request start
-          logger.info(
-            'SearchHandler',
-            'API_REQUEST_START',
-            {
-              apiName,
-              remoteSearchParams,
-              timestamp: Date.now(),
-              timeSinceLoadingStart: Date.now() - loadingStartTime,
-            },
-            'createDebouncedSearch',
-          );
-
-          // Fetch options data - pass captured context
-          const options = await dataFetcher.fetchData(
-            props.dataSource,
-            remoteSearchParams,
-            capturedContext,
-          );
-
-          // 🔧 Record API request completion
-          logger.info(
-            'SearchHandler',
-            'API_REQUEST_COMPLETE',
-            {
-              apiName,
-              optionsCount: options?.length || 0,
-              timestamp: Date.now(),
-              apiDuration: Date.now() - loadingStartTime,
-            },
-            'createDebouncedSearch',
-          );
-
-          // Process options data - pass captured context
-          const processedOptions = dataFetcher.processOptions(
-            options,
-            scroll || isOptionAppend,
-            apiName,
-            capturedContext,
-          );
-
-          // Update state - ensure atomic state updates - use captured context
-          const { state: currentState } = capturedContext;
-          const limit = props?.pageReq?.limit || 100;
-
-          // 🔧 Record current dataSource API for detecting dataSource changes
-          const currentDataSourceApi = isDataSourceSetter(props.dataSource)
-            ? props.dataSource.api
-            : undefined;
-
-          const newState: any = {
-            fetchOptions: processedOptions,
-            canTriggerLoadMore: options?.length >= limit,
-            // 🔧 Merge loading state reset to avoid multiple re-renders
-            loading: false,
-            fetching: false,
-            // 🔧 Record dataSource API for detecting dataSource changes
-            lastDataSourceApi: currentDataSourceApi,
-          };
-
-          if (!currentState.mounted) {
-            newState.initFetchOptions = processedOptions;
-            newState.mounted = true;
-          }
-
-          // 🔧 Immediately reset loading state - remove delay to ensure state sync
-          const elapsedTime = Date.now() - loadingStartTime;
-
-          // 🔧 Record loading reset - no delay version
-          logger.debug(
-            'SearchHandler',
-            'LOADING_STATE_SET_FALSE_SUCCESS',
-            {
-              elapsedTime,
-              totalDuration: elapsedTime,
-              timestamp: Date.now(),
-            },
-            'createDebouncedSearch',
-          );
-
-          // 🔧 Record state update
-          logger.info(
-            'SearchHandler',
-            'STATE_UPDATE_OPTIONS',
-            {
-              processedOptionsCount: processedOptions?.length || 0,
-              mounted: newState.mounted,
-              canTriggerLoadMore: newState.canTriggerLoadMore,
-              timestamp: Date.now(),
-            },
-            'createDebouncedSearch',
-          );
-
-          // 🔧 Update all state at once to avoid multiple re-renders - use captured context
-          capturedContext.setState(newState);
-
-          // 🔧 Also use direct options passing mechanism to bypass React state async issues
-          try {
-            const setDirectOptionsFunc = (window as any)[
-              `setDirectOptions_${apiName}`
-            ];
-            if (setDirectOptionsFunc) {
-              setDirectOptionsFunc(processedOptions);
-            }
-          } catch (error) {}
-
-          // Only log pagination state, no longer duplicate state updates
-
-          return true;
-        } catch (error) {
-          // 🔧 Record API request error
-          logger.error(
-            'SearchHandler',
-            'API_REQUEST_ERROR',
-            error as Error,
-            {
-              error: error instanceof Error ? error.message : String(error),
-              timestamp: Date.now(),
-              errorDuration: Date.now() - loadingStartTime,
-            },
-            'createDebouncedSearch',
-          );
-
-          // 🔧 Immediately reset loading state - no delay even on error
-          const elapsedTime = Date.now() - loadingStartTime;
-
-          // 🔧 Record loading state reset on error
-          logger.debug(
-            'SearchHandler',
-            'LOADING_STATE_SET_FALSE_ERROR',
-            {
-              elapsedTime,
-              totalDuration: elapsedTime,
-              timestamp: Date.now(),
-            },
-            'createDebouncedSearch',
-          );
-          // Immediately reset state to ensure correct reset on error - use captured context
-          capturedContext.setState({
-            loading: false,
-            fetching: false,
-          });
-
-          return false;
-        }
-      },
-      this.config.debounceDelay,
-    );
+    this.debouncedSearchFn = debounce(async (searchParams: SearchParams) => {
+      return await executeDebouncedSearch(searchParams, {
+        capturedContext,
+        capturedDataFetcher,
+        capturedCacheHandler,
+        config: this.config,
+        getSearchParams: (inputValue: string) =>
+          this.getSearchParams(inputValue),
+      });
+    }, this.config.debounceDelay);
 
     return this.debouncedSearchFn;
   }
@@ -669,7 +198,7 @@ export class SearchHandlerPluginImpl implements SearchHandlerPlugin {
         props._onSearch({ search: v });
       }
 
-      // 🔧 Record about to trigger debounced search
+      // 🔧 Record debounced search about to trigger
       this.addDebugLog('DEBOUNCED_SEARCH_TRIGGER', {
         inputValue: v,
         debounceDelay: this.config.debounceDelay,
@@ -703,7 +232,7 @@ export class SearchHandlerPluginImpl implements SearchHandlerPlugin {
   }
 
   /**
-   * Clear debounced function, force recreation
+   * Clear debounced function, force recreate
    * 🔧 Called when dependency changes to ensure new debounced function uses latest dataSource
    */
   clearDebouncedSearch(): void {
@@ -720,31 +249,10 @@ export class SearchHandlerPluginImpl implements SearchHandlerPlugin {
     this.debouncedSearchFn = undefined;
     logger.info(
       'SearchHandler',
-      'Debounced function cleared, will be recreated on next createDebouncedSearch call',
+      'Debounced function cleared, will recreate on next createDebouncedSearch call',
       {},
       'clearDebouncedSearch',
     );
-  }
-
-  /**
-   * Fallback solution: Direct DOM manipulation
-   */
-  private fallbackDOMSync(loading: boolean): void {
-    requestAnimationFrame(() => {
-      const selectElements = document.querySelectorAll('.arco-select');
-      selectElements.forEach((element) => {
-        if (loading) {
-          element.classList.add('arco-select-loading');
-        } else {
-          element.classList.remove('arco-select-loading');
-        }
-
-        const placeholder = element.querySelector('.arco-select-placeholder');
-        if (placeholder) {
-          placeholder.textContent = loading ? '搜索中...' : '请选择';
-        }
-      });
-    });
   }
 
   destroy(): void {

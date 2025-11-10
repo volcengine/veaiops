@@ -38,12 +38,11 @@ interface HandleUnauthorizedErrorParams<T> {
   options: ApiRequestOptions;
   /**
    * Promise resolve function
-   * Why use (value: T | PromiseLike<T>) => void:
+   * Why use (value: T) => void:
    * - resolve is the standard Promise resolve function type
-   * - Accepts a result value of generic type T or PromiseLike<T>
-   * - Matches the resolve type in CancelablePromise executor
+   * - Accepts a result value of generic type T
    */
-  resolve: (value: T | PromiseLike<T>) => void;
+  resolve: (value: T) => void;
   /**
    * Promise reject function
    * Why use (reason?: unknown) => void:
@@ -78,17 +77,13 @@ interface HandleServerErrorParams {
   error: ApiError;
 }
 
-interface HandleApiErrorParams<T> {
+interface HandleApiErrorParams {
   error: ApiError;
   options: ApiRequestOptions;
   /**
    * Promise resolve function
-   * Why use (value: T | PromiseLike<T>) => void:
-   * - resolve is the standard Promise resolve function type
-   * - Accepts a result value of generic type T or PromiseLike<T>
-   * - Matches the resolve type in CancelablePromise executor
    */
-  resolve: (value: T | PromiseLike<T>) => void;
+  resolve: (value: unknown) => void;
   /**
    * Promise reject function
    */
@@ -160,15 +155,15 @@ class CustomFetchHttpRequest extends FetchHttpRequest {
     return handleOtherHttpErrorsFn(error);
   }
 
-  private async handleApiError<T>({
+  private async handleApiError({
     error,
     options,
     resolve,
     reject,
     onCancel,
-  }: HandleApiErrorParams<T>): Promise<void> {
+  }: HandleApiErrorParams): Promise<void> {
     const apiClient = this.apiClient || getApiClient();
-    await handleApiErrorFn<T>({
+    await handleApiErrorFn({
       error,
       options,
       resolve,
@@ -335,10 +330,7 @@ const apiClient = new VolcAIOpsApi(
 apiClientInstance = apiClient;
 (window as any).__volcaiopsApiClient = apiClient;
 
-// 注意：使用类型断言是因为 apiClient.request 的类型是 BaseHttpRequest，
-// 但实际运行时是 CustomFetchHttpRequest 实例，它扩展了 FetchHttpRequest 并添加了 setApiClient 方法
-// TODO: 如果 openapi-typescript-codegen 支持扩展 BaseHttpRequest 接口，可以移除类型断言
-const httpRequest = apiClient.request as CustomFetchHttpRequest;
+const httpRequest = apiClient.request as any;
 if (httpRequest?.setApiClient) {
   httpRequest.setApiClient(apiClient);
 }
