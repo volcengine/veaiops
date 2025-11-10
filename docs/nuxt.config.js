@@ -16,7 +16,7 @@
 export default {
   extends: ['docus'],
   app: {
-    baseURL: '/veaiops/'
+    baseURL: '/help/veaiops/'
   },
   image: {
     provider: 'none'
