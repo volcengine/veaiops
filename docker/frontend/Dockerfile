@@ -21,11 +21,9 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Remove default Nginx configuration
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Copy custom Nginx configuration
-COPY ./docker/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+# Note: Nginx configuration is provided by Kubernetes ConfigMap at runtime
+# See: charts/veaiops/templates/frontend/configmap.yaml
+# The ConfigMap will be mounted to /etc/nginx/conf.d/default.conf
 
 # Copy the built files (includes frontend + docs)
 COPY ./frontend/apps/veaiops/output /var/www

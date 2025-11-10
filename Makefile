@@ -321,7 +321,7 @@ build-frontend-with-docs: ## Build frontend + docs (推荐用于 Docker 镜像�
 	@echo "✅ Build complete!"
 	@echo "📦 Output: $(FRONTEND_DIR)/apps/veaiops/output/"
 	@echo "📍 Frontend: /"
-	@echo "📍 Docs: /help/veaiops/"
+	@echo "📍 Docs: /veaiops/"
 	@echo ""
 	@echo "💡 可以构建 Docker 镜像了："
 	@echo "   docker buildx build -f ./docker/frontend/Dockerfile \\"
@@ -346,7 +346,7 @@ build-frontend-production: ## Production build (includes frontend + documentatio
 			echo "❌ Frontend build not found"; \
 			exit 1; \
 		fi; \
-		if [ -d "$(FRONTEND_DIR)/apps/veaiops/output/help/veaiops" ]; then \
+		if [ -d "$(FRONTEND_DIR)/apps/veaiops/output/veaiops" ]; then \
 			echo "✅ Documentation integrated"; \
 		else \
 			echo "⚠️  Documentation not integrated (may be skipped due to platform limitations)"; \
@@ -355,8 +355,8 @@ build-frontend-production: ## Production build (includes frontend + documentatio
 		echo "✅ Production build complete!"; \
 		echo "📦 Output: $(FRONTEND_DIR)/apps/veaiops/output/"; \
 		echo "📍 Frontend: /"; \
-		echo "📍 Docs: /help/veaiops/"; \
-		echo "⚠️  Note: Using /help to avoid conflict with Swagger /docs"; \
+		echo "📍 Docs: /veaiops/"; \
+		echo "✅ 使用统一路径 /veaiops/"; \
 	else \
 		echo "⚠️  Frontend environment not available, cannot build production..."; \
 	fi
@@ -580,11 +580,11 @@ integrate-docs: ## Integrate documentation into frontend build artifacts
 	if [ -d "$(FRONTEND_DIR)/apps/veaiops/output" ]; then \
 		if [ -d "docs/.output/public" ]; then \
 			echo "--> Integrating documentation into frontend build..."; \
-			rm -rf $(FRONTEND_DIR)/apps/veaiops/output/help; \
-			mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops; \
-			cp -r docs/.output/public/* $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops/; \
-			echo "✓ Documentation integrated at: $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops/"; \
-			echo "✓ Access at: /help/veaiops/ (to avoid conflict with Swagger /docs)"; \
+			rm -rf $(FRONTEND_DIR)/apps/veaiops/output/veaiops; \
+			mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/veaiops; \
+			cp -r docs/.output/public/* $(FRONTEND_DIR)/apps/veaiops/output/veaiops/; \
+			echo "✓ Documentation integrated at: $(FRONTEND_DIR)/apps/veaiops/output/veaiops/"; \
+			echo "✓ Access at: /veaiops/ (统一路径)"; \
 			echo "✓ Integration complete!"; \
 		else \
 			echo "⚠️  Documentation build not available (likely due to better-sqlite3 compilation issues on this platform)."; \
@@ -602,11 +602,11 @@ build-all: ## Build complete application (including documentation)
 	@echo "--> Step 1: Building frontend..."
 	@(cd $(FRONTEND_DIR) && pnpm build)
 	@echo "--> Step 2: Generating documentation..."
-	@(cd docs && pnpm run build)
+	@(cd docs && pnpm run generate)
 	@echo "--> Step 3: Integrating documentation..."
-	@rm -rf $(FRONTEND_DIR)/apps/veaiops/output/help
-	@mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops
-	@cp -r docs/.output/public/* $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops/
+	@rm -rf $(FRONTEND_DIR)/apps/veaiops/output/veaiops
+	@mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/veaiops
+	@cp -r docs/.output/public/* $(FRONTEND_DIR)/apps/veaiops/output/veaiops/
 	@echo "==> Build complete! Output at: $(FRONTEND_DIR)/apps/veaiops/output/"
 	@echo "    Frontend: /"
-	@echo "    Docs: /help/veaiops/"
+	@echo "    Docs: /veaiops/"

@@ -39,7 +39,6 @@ import { SubscribeService } from './services/subscribe-service';
 import { UsersService } from './services/users-service';
 import { WebhookService } from './services/webhook-service';
 import { ZabbixService } from './services/zabbix-service';
-
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class VolcAIOpsApi {
   public readonly agentTemplate: AgentTemplateService;

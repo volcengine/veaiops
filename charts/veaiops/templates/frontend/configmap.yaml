@@ -63,7 +63,7 @@ data:
         # Priority: ^~ prefix matching, stops regex matching
         # ✅ Fix: Nuxt.js generates resource paths as /veaiops/_nuxt/, needs to map to actual file location
         location ^~ /veaiops/_nuxt/ {
-            alias /var/www/help/veaiops/_nuxt/;
+            alias /var/www/veaiops/_nuxt/;
             include /etc/nginx/mime.types;
             default_type application/javascript;
             expires 30d;
@@ -76,7 +76,7 @@ data:
         # Document static resources - /veaiops/_payload.json and /veaiops/_nuxt/builds/ etc.
         # ✅ Fix: Handle other Nuxt.js resource paths
         location ^~ /veaiops/_payload.json {
-            alias /var/www/help/veaiops/_payload.json;
+            alias /var/www/veaiops/_payload.json;
             include /etc/nginx/mime.types;
             default_type application/json;
             expires 30d;
@@ -87,7 +87,7 @@ data:
         }
 
         location ^~ /veaiops/_nuxt/builds/ {
-            alias /var/www/help/veaiops/_nuxt/builds/;
+            alias /var/www/veaiops/_nuxt/builds/;
             include /etc/nginx/mime.types;
             default_type application/json;
             expires 30d;
@@ -102,7 +102,7 @@ data:
         # ✅ Fix: Nuxt.js generates resource paths as /veaiops/, needs to map to actual file location
         # Note: Cannot use alias directly in regex matching, need to use rewrite + root or use root directly
         location ~ ^/veaiops/(.*\.(js|css|json|map|woff|woff2|ttf|eot|otf|jpg|jpeg|png|gif|ico|svg|webp))$ {
-            root /var/www/help;
+            root /var/www;
             include /etc/nginx/mime.types;
             expires 30d;
             add_header Cache-Control "public, immutable" always;
@@ -111,54 +111,21 @@ data:
             access_log off;
         }
 
-        # Document static resources - /help/veaiops/_nuxt/ directory (fallback path)
+        # Document main path - /veaiops/ (primary path)
         # Priority: ^~ prefix matching, stops regex matching
-        location ^~ /help/veaiops/_nuxt/ {
-            alias /var/www/help/veaiops/_nuxt/;
+        # ✅ Fix: Use alias to map /veaiops/ to actual file location
+        location ^~ /veaiops/ {
+            alias /var/www/veaiops/;
             include /etc/nginx/mime.types;
-            default_type application/octet-stream;
-            expires 30d;
-            add_header Cache-Control "public, immutable" always;
-            add_header X-Matched-Location "help-veaiops-nuxt" always;
-            try_files $uri =404;
-            access_log off;
-        }
-
-        # Document static resources - static files under /help/veaiops/ (js, css, images, etc.)
-        # Priority: regex matching, matches before document main location
-        location ~ ^/help/veaiops/.*\.(js|css|json|map|woff|woff2|ttf|eot|otf|jpg|jpeg|png|gif|ico|svg|webp)$ {
-            root /var/www;
-            include /etc/nginx/mime.types;
-            expires 30d;
-            add_header Cache-Control "public, immutable" always;
-            add_header X-Matched-Location "help-veaiops-static-resources" always;
-            try_files $uri =404;
-            access_log off;
-        }
-
-        # Document main path - /help/veaiops/
-        # Priority: ^~ prefix matching, stops regex matching
-        # ✅ Fix: Use alias instead of root, fix try_files configuration
-        location ^~ /help/veaiops/ {
-            alias /var/www/help/veaiops/;
-            include /etc/nginx/mime.types;
-            add_header X-Matched-Location "help-veaiops" always;
+            add_header X-Matched-Location "veaiops-main" always;
             index index.html;
-            # ✅ Fixed try_files:
-            # 1. Try to access file path $uri
-            # 2. Try to access as directory $uri/
-            # 3. Try index.html under directory $uri/index.html
-            # 4. If none exists, fallback to root index.html
-            # 5. If still not found, return 404
+            # Try files in order:
+            # 1. Exact file path
+            # 2. Directory with trailing slash
+            # 3. index.html under directory
+            # 4. Fallback to root index.html
             try_files $uri $uri/ $uri/index.html index.html =404;
             add_header Cache-Control "no-cache" always;
-        }
-
-        location /help/ {
-            alias /var/www/help/;
-            expires 30d;
-            add_header Cache-Control "public, immutable" always;
-            try_files $uri $uri/ =404;
         }
 
         location / {
