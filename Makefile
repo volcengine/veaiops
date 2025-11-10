@@ -557,9 +557,9 @@ build-all: ## Build complete application (including documentation)
 	@echo "--> Step 2: Generating documentation..."
 	@(cd docs && pnpm run build)
 	@echo "--> Step 3: Integrating documentation..."
-	@rm -rf $(FRONTEND_DIR)/apps/veaiops/output/help
-	@mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops
-	@cp -r docs/.output/public/* $(FRONTEND_DIR)/apps/veaiops/output/help/veaiops/
+	@rm -rf $(FRONTEND_DIR)/apps/veaiops/output/veaiops
+	@mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/veaiops
+	@cp -r docs/.output/public/* $(FRONTEND_DIR)/apps/veaiops/output/veaiops/
 	@echo "==> Build complete! Output at: $(FRONTEND_DIR)/apps/veaiops/output/"
 	@echo "    Frontend: /"
-	@echo "    Docs: /help/veaiops/"
+	@echo "    Docs: /veaiops/"

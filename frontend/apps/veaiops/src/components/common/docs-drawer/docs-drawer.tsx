@@ -37,8 +37,8 @@ export const DocsDrawer: React.FC<DocsDrawerProps> = ({ visible, onClose }) => {
       return 'http://localhost:4000/';
     }
     // 生产环境：使用绝对路径（避免相对路径在子路由下出错）
-    // 使用 /help 路径避免与 Swagger /docs 冲突
-    return '/help/veaiops/';
+    // 使用 /veaiops/ 路径与文档 baseURL 保持一致
+    return '/veaiops/';
   };
 
   useEffect(() => {
