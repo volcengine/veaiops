@@ -48,4 +48,6 @@ class ChannelMsg(BaseModel):
 
     channel: ChannelType = Field(..., description="The channel type for the message.")
     template_id: Optional[str] = Field(default=None, description="The template ID for the message.")
-    template_variables: Optional[Any] = Field(None, description="The variables for the message template.")
+    template_variables: Optional[TemplateVariable | Any] = Field(
+        None, description="The variables for the message template."
+    )
