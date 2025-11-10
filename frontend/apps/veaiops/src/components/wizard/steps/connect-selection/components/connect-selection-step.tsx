@@ -37,10 +37,10 @@ import { ConnectList } from './connect-list';
 const { Title, Text } = Typography;
 
 /**
- * 将向导的 DataSourceType（小写）转换为 API 的 DataSourceType（首字母大写）
+ * Convert wizard's DataSourceType (lowercase) to API's DataSourceType (capitalized)
  *
- * @param wizardType - 向导中的 DataSourceType（小写：'zabbix', 'aliyun', 'volcengine'）
- * @returns API 的 DataSourceType（首字母大写：'Zabbix', 'Aliyun', 'Volcengine'）
+ * @param wizardType - DataSourceType in wizard (lowercase: 'zabbix', 'aliyun', 'volcengine')
+ * @returns API's DataSourceType (capitalized: 'Zabbix', 'Aliyun', 'Volcengine')
  */
 const convertWizardTypeToApiType = (
   wizardType: DataSource.type | null,
@@ -76,21 +76,24 @@ const ConnectSelectionStep: React.FC<ConnectSelectionStepProps> = ({
 }) => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
 
-  // 将向导的 DataSourceType 转换为 API 的 DataSourceType
+  // Convert wizard's DataSourceType to API's DataSourceType
   const apiDataSourceType = useMemo(
     () => convertWizardTypeToApiType(state.dataSourceType),
     [state.dataSourceType],
   );
 
-  // 获取创建连接的方法（需要 API 的 DataSourceType）
-  const { create } = useConnections(apiDataSourceType!);
+  // Get connection creation method (requires API's DataSourceType)
+  // ✅ Fixed: Remove unnecessary type assertion, use default value instead
+  const { create } = useConnections(
+    apiDataSourceType ?? ApiDataSourceType.ZABBIX,
+  );
 
-  // 根据数据源类型判断是否需要显示 Region 输入
+  // Determine if Region input should be displayed based on data source type
   const showRegionInput =
     state.dataSourceType === DataSource.type.ALIYUN ||
     state.dataSourceType === DataSource.type.VOLCENGINE;
 
-  // 获取当前的 Region 值（避免嵌套三元表达式）
+  // Get current Region value (avoid nested ternary expressions)
   let currentRegion = '';
   if (state.dataSourceType === DataSource.type.VOLCENGINE) {
     currentRegion = state.volcengine.region || '';
@@ -98,7 +101,7 @@ const ConnectSelectionStep: React.FC<ConnectSelectionStepProps> = ({
     currentRegion = state.aliyun.region || '';
   }
 
-  // 获取 Region 修改处理器（避免嵌套三元表达式）
+  // Get Region change handler (avoid nested ternary expressions)
   let handleRegionChange: ((region: string) => void) | undefined;
   if (state.dataSourceType === DataSource.type.VOLCENGINE) {
     handleRegionChange = actions.setVolcengineRegion;
@@ -106,23 +109,23 @@ const ConnectSelectionStep: React.FC<ConnectSelectionStepProps> = ({
     handleRegionChange = actions.setAliyunRegion;
   }
 
-  // 获取 provider 类型
+  // Get provider type
   const regionProvider =
     state.dataSourceType === DataSource.type.VOLCENGINE
       ? 'volcengine'
       : 'aliyun';
 
-  // 打开创建连接弹窗
+  // Open create connection modal
   const handleOpenCreateModal = useCallback(() => {
     setCreateModalVisible(true);
   }, []);
 
-  // 取消创建连接
+  // Cancel connection creation
   const handleCancelCreate = useCallback(() => {
     setCreateModalVisible(false);
   }, []);
 
-  // 提交创建连接
+  // Submit connection creation
   const handleCreateSubmit = useCallback(
     async (values: ConnectCreateRequest): Promise<boolean> => {
       try {
@@ -132,10 +135,10 @@ const ConnectSelectionStep: React.FC<ConnectSelectionStepProps> = ({
           Message.success(`连接 "${response.name}" 创建成功`);
           setCreateModalVisible(false);
 
-          // 刷新连接列表（使用向导的 DataSourceType）
+          // Refresh connection list (using wizard's DataSourceType)
           await actions.fetchConnects(state.dataSourceType ?? undefined);
 
-          // 自动选中新创建的连接
+          // Automatically select newly created connection
           actions.setSelectedConnect(response);
 
           return true;
@@ -162,7 +165,7 @@ const ConnectSelectionStep: React.FC<ConnectSelectionStepProps> = ({
 
         Message.error(errorObj.message || '创建连接失败，请重试');
 
-        // 将错误转换为 Error 对象再抛出（符合规范）
+        // Convert error to Error object before throwing (complies with specification)
         throw errorObj;
       }
     },
@@ -172,7 +175,7 @@ const ConnectSelectionStep: React.FC<ConnectSelectionStepProps> = ({
   return (
     <>
       <Card className={styles.configCard}>
-        {/* Region 配置区域（仅阿里云和火山引擎需要） */}
+        {/* Region configuration area (only required for Aliyun and Volcengine) */}
         {showRegionInput && handleRegionChange && (
           <>
             <div className={styles.configHeader}>
@@ -230,7 +233,7 @@ const ConnectSelectionStep: React.FC<ConnectSelectionStepProps> = ({
         </div>
       </Card>
 
-      {/* 创建连接弹窗 */}
+      {/* Create connection modal */}
       {apiDataSourceType && (
         <CreateConnectionModal
           type={apiDataSourceType}

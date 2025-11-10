@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * Unified exports for time utilities
+ * Time utility module unified export
  *
- * Split into submodules for better maintainability:
+ * Split into multiple sub-modules for better maintainability:
  * - constants: Constants and type definitions
  * - utils: Basic utility functions
  * - format: Time formatting functions
@@ -38,15 +38,13 @@ dayjs.extend(duration);
 export * from './constants';
 
 // Export utility functions
-// Do not export utils because canConvertToNumber duplicates the one in common.ts
+// Do not export utils, because canConvertToNumber duplicates with common.ts
 // export * from './utils';
-export * from './convert';
+
+// Export formatting functions (only once)
 export * from './format';
 
-// Export formatting functions
-export * from './format';
-
-// Export conversion functions
+// Export conversion functions (only once)
 export * from './convert';
 
 // Export calculation functions

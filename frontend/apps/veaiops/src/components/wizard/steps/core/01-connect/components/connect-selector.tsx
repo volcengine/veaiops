@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 连接选择器组件
- * @description 连接选择步骤，支持搜索、自动选择和状态提示
+ * Connection selector component
+ * @description Connection selection step with search, auto-selection, and status prompts
  */
 
 import { useConnections } from '@/hooks/use-connections';
@@ -38,10 +38,10 @@ import { ConnectList } from './connect-list';
 const { Title, Text } = Typography;
 
 /**
- * 将向导的 DataSourceType（小写）转换为 API 的 DataSourceType（首字母大写）
+ * Convert wizard's DataSourceType (lowercase) to API's DataSourceType (capitalized)
  *
- * @param wizardType - 向导中的 DataSourceType（小写：'zabbix', 'aliyun', 'volcengine'）
- * @returns API 的 DataSourceType（首字母大写：'Zabbix', 'Aliyun', 'Volcengine'）
+ * @param wizardType - DataSourceType in wizard (lowercase: 'zabbix', 'aliyun', 'volcengine')
+ * @returns API's DataSourceType (capitalized: 'Zabbix', 'Aliyun', 'Volcengine')
  */
 const convertWizardTypeToApiType = (
   wizardType: DataSource.type | null,
@@ -70,7 +70,7 @@ export interface ConnectSelectorProps {
 }
 
 /**
- * 连接选择器组件
+ * Connection selector component
  */
 export const ConnectSelector: React.FC<ConnectSelectorProps> = ({
   connects,
@@ -80,26 +80,29 @@ export const ConnectSelector: React.FC<ConnectSelectorProps> = ({
 }) => {
   const [createModalVisible, setCreateModalVisible] = useState(false);
 
-  // 将向导的 DataSourceType 转换为 API 的 DataSourceType
+  // Convert wizard's DataSourceType to API's DataSourceType
   const apiDataSourceType = useMemo(
     () => convertWizardTypeToApiType(state.dataSourceType),
     [state.dataSourceType],
   );
 
-  // 获取创建连接的方法（需要 API 的 DataSourceType）
-  const { create } = useConnections(apiDataSourceType!);
+  // Get connection creation method (requires API's DataSourceType)
+  // ✅ Fixed: Remove unnecessary type assertion, use default value instead
+  const { create } = useConnections(
+    apiDataSourceType ?? ApiDataSourceType.ZABBIX,
+  );
 
-  // 打开创建连接弹窗
+  // Open create connection modal
   const handleOpenCreateModal = useCallback(() => {
     setCreateModalVisible(true);
   }, []);
 
-  // 取消创建连接
+  // Cancel connection creation
   const handleCancelCreate = useCallback(() => {
     setCreateModalVisible(false);
   }, []);
 
-  // 提交创建连接
+  // Submit connection creation
   const handleCreateSubmit = useCallback(
     async (values: ConnectCreateRequest): Promise<boolean> => {
       try {
@@ -109,10 +112,10 @@ export const ConnectSelector: React.FC<ConnectSelectorProps> = ({
           Message.success(`连接 "${response.name}" 创建成功`);
           setCreateModalVisible(false);
 
-          // 刷新连接列表（使用向导的 DataSourceType）
+          // Refresh connection list (using wizard's DataSourceType)
           await actions.fetchConnects(state.dataSourceType ?? undefined);
 
-          // 自动选中新创建的连接
+          // Automatically select newly created connection
           actions.setSelectedConnect(response);
 
           return true;
@@ -139,7 +142,7 @@ export const ConnectSelector: React.FC<ConnectSelectorProps> = ({
 
         Message.error(errorObj.message || '创建连接失败，请重试');
 
-        // 将错误转换为 Error 对象再抛出（符合规范）
+        // Convert error to Error object before throwing (complies with specification)
         throw errorObj;
       }
     },
@@ -178,7 +181,7 @@ export const ConnectSelector: React.FC<ConnectSelectorProps> = ({
         </div>
       </Card>
 
-      {/* 创建连接弹窗 */}
+      {/* Create connection modal */}
       {apiDataSourceType && (
         <CreateConnectionModal
           type={apiDataSourceType}

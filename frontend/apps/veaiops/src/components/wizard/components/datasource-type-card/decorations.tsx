@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 数据源装饰元素组件
- * @description 各数据源类型的品牌装饰元素
+ * Data source decoration element components
+ * @description Brand decoration elements for each data source type
  */
 
 import type React from 'react';
 import styles from './styles.module.less';
 
-/** 火山引擎装饰 - 三角形/山峰 */
+/** Volcengine decoration - triangles/mountains */
 export const VolcengineDecoration: React.FC = () => (
   <>
     <div className={`${styles.decorationTriangle} ${styles.triangle1}`} />
@@ -29,7 +29,7 @@ export const VolcengineDecoration: React.FC = () => (
   </>
 );
 
-/** 阿里云装饰 - 云朵/波浪 */
+/** Aliyun decoration - clouds/waves */
 export const AliyunDecoration: React.FC = () => (
   <>
     <div className={`${styles.decorationWave} ${styles.wave1}`} />
@@ -38,7 +38,7 @@ export const AliyunDecoration: React.FC = () => (
   </>
 );
 
-/** Zabbix装饰 - 方形/网格 */
+/** Zabbix decoration - squares/grid */
 export const ZabbixDecoration: React.FC = () => (
   <>
     <div className={`${styles.decorationSquare} ${styles.square1}`} />

@@ -44,7 +44,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   dataSourceTypeText,
   isEditMode = false,
 }) => {
-  // Render corresponding detail component based on data source type
+  // Render corresponding details component based on data source type
   const renderDetails = () => {
     switch (selectedType) {
       case DataSource.type.ZABBIX:
@@ -61,7 +61,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   return (
     <div style={{ paddingTop: 4 }}>
       <Space direction="vertical" size={16} style={{ width: '100%' }}>
-        {/* Basic Information */}
+        {/* Basic information */}
         <div>
           <div
             style={{
@@ -103,7 +103,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
           />
         </div>
 
-        {/* Configuration Details */}
+        {/* Configuration details */}
         <div>
           <div
             style={{
@@ -131,7 +131,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
           </div>
         </div>
       </Space>
-      {/* Notification Message */}
+      {/* Hint information */}
       <div className="text-gray-600 text-sm leading-[22px] mt-4 py-3 px-4 bg-gray-100 rounded border-l-[3px] border-l-blue-500">
         {isEditMode
           ? '您即将更新以下数据源，请确认信息无误后点击"确定"继续更新。'

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 指标选择步骤数据管理Hook
- * @description 处理不同数据源的指标数据获取
+ * Metric selection step data management Hook
+ * @description Handles metric data fetching for different data sources
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -34,7 +34,7 @@ import type {
   WizardActions,
 } from '../../../types';
 
-// 定义 ZabbixMetric 类型别名
+// Define ZabbixMetric type alias
 type ZabbixMetric = ZabbixTemplateMetric;
 
 export interface UseMetricDataProps {
@@ -58,7 +58,7 @@ export const useMetricData = ({
   loading,
   actions,
 }: UseMetricDataProps) => {
-  // 使用 useRef 来跟踪请求状态，防止重复请求
+  // Use useRef to track request state, prevent duplicate requests
   const requestTracker = useRef<{
     zabbix: string | null;
     aliyun: string | null;
@@ -69,9 +69,9 @@ export const useMetricData = ({
     volcengine: false,
   });
 
-  // 使用 useEffect 来处理数据获取
+  // Use useEffect to handle data fetching
   useEffect(() => {
-    // ✅ 添加调试日志（使用 logger 替代 console）
+    // ✅ Add debug logging (using logger instead of console)
     logger.debug({
       message: 'useMetricData effect triggered',
       data: {
@@ -85,7 +85,7 @@ export const useMetricData = ({
       component: 'effect',
     });
 
-    // Zabbix 数据源处理
+    // Zabbix data source handling
     if (
       dataSourceType === DataSource.type.ZABBIX &&
       connect?.name &&
@@ -95,14 +95,14 @@ export const useMetricData = ({
     ) {
       const requestKey = `${connect.name}-${selectedTemplate.templateid}`;
 
-      // 检查是否已经发起过相同的请求
+      // Check if same request has already been made
       if (requestTracker.current.zabbix !== requestKey) {
         requestTracker.current.zabbix = requestKey;
         actions.fetchZabbixMetrics(connect.name, selectedTemplate.templateid);
       }
     }
 
-    // 阿里云数据源处理
+    // Aliyun data source handling
     else if (
       dataSourceType === DataSource.type.ALIYUN &&
       connect?.name &&
@@ -113,11 +113,15 @@ export const useMetricData = ({
 
       if (requestTracker.current.aliyun !== requestKey) {
         requestTracker.current.aliyun = requestKey;
-        actions.fetchAliyunMetrics((connect.id || connect._id)!);
+        // ✅ Fixed: Remove unnecessary type assertion, use conditional check instead
+        const connectId = connect.id || connect._id;
+        if (connectId) {
+          actions.fetchAliyunMetrics(connectId);
+        }
       }
     }
 
-    // 火山引擎数据源处理
+    // Volcengine data source handling
     else if (
       dataSourceType === DataSource.type.VOLCENGINE &&
       volcengineMetrics.length === 0 &&
@@ -139,7 +143,7 @@ export const useMetricData = ({
     actions,
   ]);
 
-  // 重置请求跟踪器当数据源类型或连接改变时
+  // Reset request tracker when data source type or connection changes
   useEffect(() => {
     requestTracker.current = {
       zabbix: null,

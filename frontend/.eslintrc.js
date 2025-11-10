@@ -87,8 +87,6 @@ module.exports = {
     '**/*.tsbuildinfo',
     '**/*.css',
     '**/*.less',
-    '**/*.debug.ts', // Debug files - exclude from ESLint checks
-    '**/*.debug.tsx', // Debug files - exclude from ESLint checks
   ],
   overrides: [
     {
@@ -116,17 +114,19 @@ module.exports = {
       },
     },
     // Specify correct project config for TypeScript files under apps
-    // ✅ Fixed: Use explicit path to apps/veaiops/tsconfig.json
-    // Root tsconfig.json includes "apps/**/*" and references apps/veaiops/tsconfig.json
-    // apps/veaiops/tsconfig.json includes "src/**/*" which contains the actual source files
+    // Note: apps/veaiops/tsconfig.json includes "src/**/*", which covers all files in apps/veaiops/src/
+    // ✅ Fixed: Use correct project path relative to tsconfigRootDir
+    // Root tsconfig.json includes "apps/**/*", so it should cover all app files
+    // apps/veaiops/tsconfig.json includes "src/**/*", which covers all files in apps/veaiops/src/
     {
       files: ['apps/**/*.ts', 'apps/**/*.tsx'],
       parserOptions: {
-        // ✅ Fixed: Include both root and app-specific tsconfig to ensure all files are found
-        // Root tsconfig.json includes "global.d.ts" and base paths
-        // apps/veaiops/tsconfig.json includes "src/**/*" which contains the actual source files
+        // ✅ Fixed: Use relative paths from tsconfigRootDir
+        // Both root tsconfig.json and apps/veaiops/tsconfig.json should be checked
         project: ['./tsconfig.json', './apps/veaiops/tsconfig.json'],
         tsconfigRootDir: __dirname,
+        // ✅ Fixed: Ensure parser can find files in both projects
+        // Root tsconfig.json includes "apps/**/*", apps/veaiops/tsconfig.json includes "src/**/*"
       },
     },
   ],

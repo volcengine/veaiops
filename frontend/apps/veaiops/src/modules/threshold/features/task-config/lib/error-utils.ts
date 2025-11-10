@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Error message utility functions
+ * Error information utility functions
  */
 
 export interface ErrorSummary {
@@ -27,7 +27,7 @@ export interface ErrorSummary {
  * Extract error summary and detailed information
  *
  * Optimization strategy:
- * 1. Extract the first line of error as summary (usually error type and brief message)
+ * 1. Extract first line of error as summary (usually error type and brief message)
  * 2. Identify common error formats (Error:, Exception:, etc.)
  * 3. If error message is short (<=100 characters), display all directly
  * 4. If error message is long, summary shows key information, details used for scrollable area
@@ -60,7 +60,7 @@ export const extractErrorSummary = (error: string): ErrorSummary => {
     // If first line contains colon, extract part before colon (usually exception type)
     const colonIndex = firstLine.indexOf(':');
     if (colonIndex > 0 && colonIndex < firstLine.length - 1) {
-      summary = `${firstLine.substring(0, colonIndex + 1)  } ${  firstLine.substring(colonIndex + 1).trim()}`;
+      summary = `${firstLine.substring(0, colonIndex + 1)} ${firstLine.substring(colonIndex + 1).trim()}`;
     }
   }
 
@@ -69,9 +69,9 @@ export const extractErrorSummary = (error: string): ErrorSummary => {
     return { summary: error, details: '' };
   }
 
-  // Details are complete content (used for scrollable area)
+  // Detailed information is complete content (for scrollable area)
   return {
-    summary: summary || `${error.substring(0, 100)  }...`,
+    summary: summary || `${error.substring(0, 100)}...`,
     details: error,
   };
 };

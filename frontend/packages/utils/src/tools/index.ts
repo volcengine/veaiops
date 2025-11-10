@@ -20,10 +20,33 @@
 
 export * from './common';
 export * from './date';
-export * from './drawer-form';
-export * from './form';
 export * from './format';
-export * from './logger';
+// export * from './query'; // Commented out to avoid conflicts with functions in common.ts
+// Export logger utilities (unified export from logger directory)
+export * from './logger/index';
 export * from './search-params';
 export * from './table';
-export * from './time';
+// Export time utilities (via time/index.ts to avoid circular dependencies)
+// Note: time/index.ts already exports convert and format, so we don't need to export them separately
+export * from './time/index';
+// Export log-exporter module (exported from logger directory, backward compatible)
+// Note: If the directory pointed to by log-exporter does not exist, these exports may fail
+// Temporarily commented, waiting for log-exporter directory structure to be finalized before enabling
+// export {
+//   LogCollector,
+//   logCollector,
+//   useAutoLogExport,
+// } from './logger/log-exporter';
+// export type {
+//   AutoSaveConfig,
+//   LogEntry as LogExporterEntry,
+// } from './logger/log-exporter/types';
+// export * from './logger/log-exporter/collection-control';
+// export * from './logger/log-exporter/export-functions';
+// export * from './logger/log-exporter/auto-save';
+// export * from './logger/log-exporter/log-matchers';
+// export * from './logger/log-exporter/log-parsers';
+// Export form utilities
+export * from './form/autofill-blocker';
+// Export drawer form utilities
+export * from './drawer-form';

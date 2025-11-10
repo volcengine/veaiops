@@ -14,7 +14,7 @@
 
 /**
  * Boundary condition checking utilities
- * @description Checks various boundary conditions to ensure data validity
+ * @description Checks various boundary cases to ensure data validity
  */
 
 import { DataSource } from '@veaiops/api-client';
@@ -135,13 +135,10 @@ export const checkConfigCompleteness = (
   }
 
   if (!isDataSourceNameValid(state)) {
-    return {
-      valid: false,
-      message: '请输入有效的数据源名称（2-100字符）',
-    };
+    return { valid: false, message: '请输入有效的数据源名称（2-100字符）' };
   }
 
-  // Check specific configuration based on type
+  // Check type-specific configuration
   switch (dataSourceType) {
     case DataSource.type.ZABBIX:
       return isZabbixConfigComplete(state);

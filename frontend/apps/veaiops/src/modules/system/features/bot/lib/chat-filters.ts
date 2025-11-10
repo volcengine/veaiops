@@ -58,16 +58,12 @@ export const getChatFilters = ({
       // ✅ Fix: Convert boolean to string, because Select component's convertToSelectValue doesn't support boolean
       // undefined -> undefined (allows clearing, means all), true -> 'true', false -> 'false'
       // ✅ Initial state controlled by initQuery (is_active: true), becomes undefined after user clears
-      value: (() => {
-        if (query?.is_active === undefined) {
-          // ✅ Allow clearing, display as empty
-          return undefined;
-        }
-        if (query.is_active === true) {
-          return 'true';
-        }
-        return 'false';
-      })(),
+      value:
+        query?.is_active === undefined
+          ? undefined // ✅ Allow clearing, display as empty
+          : query.is_active === true
+            ? 'true'
+            : 'false',
       allowClear: true, // ✅ Allow clearing, after clearing means all (no parameter passed)
       options: [
         { label: '是', value: 'true' },
@@ -79,14 +75,8 @@ export const getChatFilters = ({
         if (v === undefined || v === null || v === '') {
           handleChange({ key: 'is_active', value: undefined });
         } else {
-          let boolValue: boolean;
-          if (v === 'true') {
-            boolValue = true;
-          } else if (v === 'false') {
-            boolValue = false;
-          } else {
-            boolValue = Boolean(v);
-          }
+          const boolValue =
+            v === 'true' ? true : v === 'false' ? false : Boolean(v);
           handleChange({ key: 'is_active', value: boolValue });
         }
       },
@@ -100,16 +90,12 @@ export const getChatFilters = ({
       placeholder: '请选择状态',
       // ✅ No need for "all" option, default is all (no parameter passed)
       // undefined -> undefined (no parameter passed, means all), true -> 'true', false -> 'false'
-      value: (() => {
-        if (query?.enable_func_interest === undefined) {
-          // Default no parameter passed, means all
-          return undefined;
-        }
-        if (query.enable_func_interest === true) {
-          return 'true';
-        }
-        return 'false';
-      })(),
+      value:
+        query?.enable_func_interest === undefined
+          ? undefined // Default no parameter passed, means all
+          : query.enable_func_interest === true
+            ? 'true'
+            : 'false',
       allowClear: true, // ✅ Allow clearing, after clearing means all (no parameter passed)
       options: [
         { label: '开启', value: 'true' },
@@ -120,14 +106,8 @@ export const getChatFilters = ({
         if (v === undefined || v === null || v === '') {
           handleChange({ key: 'enable_func_interest', value: undefined });
         } else {
-          let boolValue: boolean;
-          if (v === 'true') {
-            boolValue = true;
-          } else if (v === 'false') {
-            boolValue = false;
-          } else {
-            boolValue = Boolean(v);
-          }
+          const boolValue =
+            v === 'true' ? true : v === 'false' ? false : Boolean(v);
           handleChange({ key: 'enable_func_interest', value: boolValue });
         }
       },
@@ -141,16 +121,12 @@ export const getChatFilters = ({
       placeholder: '请选择状态',
       // ✅ No need for "all" option, default is all (no parameter passed)
       // undefined -> undefined (no parameter passed, means all), true -> 'true', false -> 'false'
-      value: (() => {
-        if (query?.enable_func_proactive_reply === undefined) {
-          // Default no parameter passed, means all
-          return undefined;
-        }
-        if (query.enable_func_proactive_reply === true) {
-          return 'true';
-        }
-        return 'false';
-      })(),
+      value:
+        query?.enable_func_proactive_reply === undefined
+          ? undefined // Default no parameter passed, means all
+          : query.enable_func_proactive_reply === true
+            ? 'true'
+            : 'false',
       allowClear: true, // ✅ Allow clearing, after clearing means all (no parameter passed)
       options: [
         { label: '开启', value: 'true' },
@@ -161,14 +137,8 @@ export const getChatFilters = ({
         if (v === undefined || v === null || v === '') {
           handleChange({ key: 'enable_func_proactive_reply', value: undefined });
         } else {
-          let boolValue: boolean;
-          if (v === 'true') {
-            boolValue = true;
-          } else if (v === 'false') {
-            boolValue = false;
-          } else {
-            boolValue = Boolean(v);
-          }
+          const boolValue =
+            v === 'true' ? true : v === 'false' ? false : Boolean(v);
           handleChange({ key: 'enable_func_proactive_reply', value: boolValue });
         }
       },
@@ -195,14 +165,8 @@ export const getChatFilters = ({
       onChange: (v: string | boolean) => {
         // ✅ Fix: Convert string value back to boolean
         // 'true' -> true, 'false' -> false, true -> true, false -> false
-        let boolValue: boolean;
-        if (v === 'true') {
-          boolValue = true;
-        } else if (v === 'false') {
-          boolValue = false;
-        } else {
-          boolValue = Boolean(v);
-        }
+        const boolValue =
+          v === 'true' ? true : v === 'false' ? false : Boolean(v);
         handleChange({ key: 'force_refresh', value: boolValue });
       },
     },

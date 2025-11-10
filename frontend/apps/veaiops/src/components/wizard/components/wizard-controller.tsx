@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Data source wizard controller (refactored version)
- * @description Provides core control logic for the wizard, improving readability through module separation
+ * Data source wizard controller (refactored)
+ * @description Provides core control logic for the wizard, improving readability through modularization
  * @author AI Assistant
  * @date 2025-01-15
  */
@@ -27,12 +27,8 @@ import {
   guardVolcengineConnectRegion,
 } from '../hooks/navigation/use-next-step-guard';
 import { useWizardNavigation } from '../hooks/navigation/use-wizard-navigation';
-import {
-  type DataSourceType,
-  type WizardActions,
-  type WizardState,
-  WizardStep,
-} from '../types';
+import type { DataSourceType, WizardActions, WizardState } from '../types';
+import { WizardStep } from '../types';
 import { CreationConfirmModal } from './modals/creation-confirm-modal';
 
 export interface WizardControllerProps {
@@ -53,16 +49,16 @@ const getDataSourceTypeText = (type: DataSourceType): string => {
     case DataSource.type.ZABBIX:
       return 'Zabbix';
     case DataSource.type.ALIYUN:
-      return '阿里云';
+      return 'Aliyun';
     case DataSource.type.VOLCENGINE:
-      return '火山引擎';
+      return 'Volcengine';
     default:
       return type;
   }
 };
 
 /**
- * Check if current step is the last step (creation step)
+ * Check if it's the last step (creation step)
  */
 const isLastStep = (
   selectedType: DataSourceType,
@@ -80,7 +76,7 @@ const isDataSourceNameValid = (state: WizardState): boolean => {
 };
 
 /**
- * Render Aliyun Region empty prompt modal
+ * Render Aliyun Region not filled prompt modal
  */
 const renderAliyunRegionModal = () => <AliyunRegionPrompt />;
 
@@ -119,7 +115,7 @@ export const useWizardController = ({
       return;
     }
 
-    // If still in type selection phase, proceed to first step
+    // If still in type selection phase, enter first step
     if (state.currentStep === WizardStep.TYPE_SELECTION) {
       await navigation.handleNext();
       return;

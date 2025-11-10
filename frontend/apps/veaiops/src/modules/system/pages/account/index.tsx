@@ -16,67 +16,11 @@ import type React from 'react';
 import { AccountManagement } from '../../features/account';
 
 /**
- * 系统配置 - 账号管理页面
- * @description 支持系统管理员(密码变更登录)和非管理员成员(增删改查)权限管控
+ * System Configuration - Account Management Page
+ * @description Supports permission control for system administrators (password change login) and non-administrator members (CRUD operations)
  */
-const AccountManagement: React.FC = () => {
-  const {
-    users,
-    loading,
-    modalVisible,
-    editingUser,
-    pagination,
-    fetchUsers,
-    handleSubmit,
-    setModalVisible,
-    setEditingUser,
-    deleteUser,
-  } = useUserManagement();
-
-  // 处理分页变化
-  const handlePageChange = (page: number, pageSize: number) => {
-    fetchUsers(page, pageSize);
-  };
-
-  // 处理编辑账号
-  const handleEdit = (user: any) => {
-    setEditingUser(user);
-    setModalVisible(true);
-  };
-
-  // 处理创建账号
-  const handleCreate = () => {
-    setEditingUser(null);
-    setModalVisible(true);
-  };
-
-  // 处理取消操作
-  const handleCancel = () => {
-    setModalVisible(false);
-    setEditingUser(null);
-  };
-
-  return (
-    <div className="pr-6 pb-6 pl-6">
-      <UserTable
-        users={users}
-        loading={loading}
-        pagination={pagination}
-        onEdit={handleEdit}
-        onDelete={deleteUser}
-        onRefresh={() => fetchUsers()}
-        onCreate={handleCreate}
-        onPageChange={handlePageChange}
-      />
-
-      <UserModal
-        visible={modalVisible}
-        editingUser={editingUser}
-        onCancel={handleCancel}
-        onSubmit={handleSubmit}
-      />
-    </div>
-  );
+const AccountManagementPage: React.FC = () => {
+  return <AccountManagement />;
 };
 
-export default AccountManagement;
+export default AccountManagementPage;

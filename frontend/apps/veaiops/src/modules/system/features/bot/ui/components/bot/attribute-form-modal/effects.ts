@@ -43,7 +43,7 @@ export const useAttributeFormModalEffects = ({
         value: attribute.value,
       });
       setSelectedAttributeName(attribute.name);
-      // Load corresponding value options
+      // Load corresponding content options
       loadAttributeValues(attribute.name);
     } else if (type === 'create') {
       form.resetFields();

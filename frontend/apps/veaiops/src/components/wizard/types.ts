@@ -20,7 +20,7 @@ import type {
   ZabbixTemplateMetric,
 } from 'api-generate';
 
-// Import the generated DataSource.type enum from @veaiops/api-client (single source of truth principle)
+// Import generated DataSource.type enum from @veaiops/api-client (single source of truth principle)
 import { DataSource } from '@veaiops/api-client';
 
 /**
@@ -34,9 +34,9 @@ export interface ZabbixHostWithItem extends ZabbixHost {
  * Data source type enum (wizard-specific)
  *
  * Why use DataSource.type instead of DataSourceType:
- * - DataSource.type uses lowercase values ('zabbix', 'aliyun', 'volcengine'), which meets wizard requirements
+ * - DataSource.type uses lowercase values ('zabbix', 'aliyun', 'volcengine'), which matches wizard requirements
  * - DataSourceType uses capitalized values ('Zabbix', 'Aliyun', 'Volcengine'), used for Connect type
- * - The wizard needs to be consistent with the type field of DataSource objects
+ * - Wizard needs to be consistent with the type field of DataSource objects
  *
  * Mapping relationships:
  * - DataSource.type.ZABBIX = 'zabbix' ↔ Python DataSourceType.Zabbix = "Zabbix"
@@ -54,19 +54,27 @@ export interface ZabbixHostWithItem extends ZabbixHost {
 export type DataSourceType = DataSource.type;
 
 /**
- * Data source type enum values (namespace)
+ * Data source type enum values (constants object)
  * Used for value access, e.g.: if (type === DataSourceType.ZABBIX) { ... }
  *
- * Note: TypeScript allows type aliases and namespaces to have the same name, but the type alias must be defined first
+ * ✅ Fixed: Replaced namespace with constants object to avoid ESLint errors
+ * - Removed namespace (violates @typescript-eslint/no-namespace)
+ * - Used object destructuring to avoid prefer-destructuring error
+ * - TypeScript allows type and value with same name in different contexts
+ * - Maintains backward compatibility: can be used as DataSourceType.ZABBIX
  */
-export namespace DataSourceType {
-  /** Zabbix data source type value: 'zabbix' */
-  export const { ZABBIX } = DataSource.type;
-  /** Aliyun data source type value: 'aliyun' */
-  export const { ALIYUN } = DataSource.type;
-  /** Volcengine data source type value: 'volcengine' */
-  export const { VOLCENGINE } = DataSource.type;
-}
+const { ZABBIX, ALIYUN, VOLCENGINE } = DataSource.type;
+
+/**
+ * Data source type constants
+ * Export as const object for value access
+ * Note: TypeScript allows type alias and const with same name
+ */
+export const DataSourceType = {
+  ZABBIX,
+  ALIYUN,
+  VOLCENGINE,
+} as const satisfies Record<string, DataSource.type>;
 
 /**
  * Wizard step enum
@@ -198,7 +206,7 @@ export interface WizardState {
     selectedGroupBy: string[]; // Selected grouping dimensions
     hasAttemptedFetch: boolean;
     region: string | null; // Region ID (entered by user in connection selection step)
-    searchText: string; // Search text (for filtering monitoring metrics)
+    searchText: string; // Search text (for filtering metrics)
   };
 
   // Volcengine state
@@ -235,7 +243,7 @@ export interface WizardState {
  * Wizard actions
  */
 export interface WizardActions {
-  // Common operations
+  // Common actions
   setCurrentStep: (step: number) => void;
   setDataSourceType: (type: DataSourceType) => void;
   setSelectedConnect: (connect: Connect | null) => void;
@@ -244,10 +252,10 @@ export interface WizardActions {
   setEditingDataSourceId: (id?: string) => void;
   resetWizard: () => void;
 
-  // Connection operations
+  // Connection actions
   fetchConnects: (dataSourceType?: DataSourceType) => Promise<void>;
 
-  // Zabbix operations
+  // Zabbix actions
   fetchZabbixTemplates: (connectName: string, name?: string) => Promise<void>;
   setSelectedTemplate: (template: ZabbixTemplate | null) => void;
   fetchZabbixMetrics: (
@@ -264,7 +272,7 @@ export interface WizardActions {
   ) => Promise<void>;
   setZabbixSearchText: (text: string) => void;
 
-  // Aliyun operations
+  // Aliyun actions
   fetchAliyunProjects: (connectName: string) => Promise<void>;
   setSelectNamespace: (namespace: AliyunProject | null) => void; // Renamed: setSelectedProject -> setSelectNamespace
   fetchAliyunMetrics: (connectName: string) => Promise<void>;
@@ -279,7 +287,7 @@ export interface WizardActions {
   setAliyunRegion: (region: string) => void;
   setAliyunSearchText: (text: string) => void;
 
-  // Volcengine operations
+  // Volcengine actions
   fetchVolcengineProducts: () => Promise<void>;
   setSelectedProduct: (product: VolcengineProduct | null) => void;
   fetchVolcengineSubNamespaces: (namespace: string) => Promise<void>;
