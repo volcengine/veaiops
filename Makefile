@@ -602,7 +602,7 @@ build-all: ## Build complete application (including documentation)
 	@echo "--> Step 1: Building frontend..."
 	@(cd $(FRONTEND_DIR) && pnpm build)
 	@echo "--> Step 2: Generating documentation..."
-	@(cd docs && pnpm run build)
+	@(cd docs && pnpm run generate)
 	@echo "--> Step 3: Integrating documentation..."
 	@rm -rf $(FRONTEND_DIR)/apps/veaiops/output/veaiops
 	@mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/veaiops
