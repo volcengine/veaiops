@@ -600,13 +600,49 @@ integrate-docs: ## Integrate documentation into frontend build artifacts
 build-all: ## Build complete application (including documentation)
 	@echo "==> Building complete application with documentation..."
 	@echo "--> Step 1: Building frontend..."
-	@(cd $(FRONTEND_DIR) && pnpm build)
+	@if [ -d "$(FRONTEND_DIR)" ] && command -v pnpm >/dev/null 2>&1; then \
+		(cd $(FRONTEND_DIR) && { \
+			echo "    🔍 Checking if @veaiops/api-client exists..."; \
+			if [ -d "packages/api-client/src/models" ] && [ -d "packages/api-client/src/services" ]; then \
+				API_CLIENT_FILES=$$(find packages/api-client/src -name '*.ts' -type f 2>/dev/null | wc -l | tr -d ' '); \
+				echo "    📊 Found $$API_CLIENT_FILES TypeScript files in api-client"; \
+				if [ "$$API_CLIENT_FILES" -gt 10 ]; then \
+					echo "    ✓ @veaiops/api-client already exists ($$API_CLIENT_FILES files), skipping API generation"; \
+					echo "    💡 To regenerate API client, run: make generate-api-complete"; \
+					echo "    🔧 Building packages (excluding openapi-specs)..."; \
+					(pnpm --filter '@veaiops/api-client' build && \
+					 pnpm --filter '@veaiops/components' build && \
+					 pnpm --filter '@veaiops/constants' build && \
+					 pnpm --filter '@veaiops/types' build && \
+					 pnpm --filter '@veaiops/utils' build) 2>/dev/null && \
+					echo "    ✓ Packages built (api-client generation skipped)" || \
+					echo "    ⚠️  Some packages may need manual build"; \
+					echo "    🔧 Building apps..."; \
+					pnpm run build:apps; \
+				else \
+					echo "    ℹ️  @veaiops/api-client exists but seems incomplete (only $$API_CLIENT_FILES files)"; \
+					echo "    🔧 Running full build including API generation..."; \
+					pnpm build; \
+				fi; \
+			else \
+				echo "    ℹ️  @veaiops/api-client not found or incomplete"; \
+				echo "    🔧 Running full build including API generation..."; \
+				pnpm build; \
+			fi; \
+		}); \
+	else \
+		echo "⚠️  Frontend environment not available, skipping frontend build..."; \
+		exit 1; \
+	fi
+	@echo ""
 	@echo "--> Step 2: Generating documentation..."
 	@(cd docs && pnpm run generate)
+	@echo ""
 	@echo "--> Step 3: Integrating documentation..."
 	@rm -rf $(FRONTEND_DIR)/apps/veaiops/output/veaiops
 	@mkdir -p $(FRONTEND_DIR)/apps/veaiops/output/veaiops
 	@cp -r docs/.output/public/* $(FRONTEND_DIR)/apps/veaiops/output/veaiops/
+	@echo ""
 	@echo "==> Build complete! Output at: $(FRONTEND_DIR)/apps/veaiops/output/"
 	@echo "    Frontend: /"
 	@echo "    Docs: /veaiops/"
