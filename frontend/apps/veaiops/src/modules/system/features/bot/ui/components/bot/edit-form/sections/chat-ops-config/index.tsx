@@ -27,7 +27,7 @@ import { type UrlValidator, useSecretViewer, useUrlValidator } from './hooks';
 const { Text } = Typography;
 
 /**
- * ChatOps配置组件的 Props
+ * Props for ChatOps configuration component
  */
 interface ChatOpsConfigProps {
   form: FormInstance;
@@ -48,13 +48,13 @@ interface ChatOpsConfigProps {
 }
 
 /**
- * ChatOps扩展配置组件（编辑表单专用）
+ * ChatOps extended configuration component (for edit form only)
  *
  *
- * 拆分说明：
- * - 大模型配置（ModelConfig）：模型名称、Embedding模型名称、API Base URL、API Key
- * - 知识库配置（KnowledgeBaseConfig）：Access Key、Secret Key、TOS区域、网络类型、知识库集合
- * - 共享逻辑（hooks）：加密信息查看、URL验证
+ * Component structure:
+ * - LLM configuration (ModelConfig): Model name, embedding model name, API base URL, API key
+ * - Knowledge base configuration (KnowledgeBaseConfig): Access key, secret key, TOS region, network type, knowledge base collections
+ * - Shared logic (hooks): Secret viewing, URL validation
  */
 export const ChatOpsConfig: React.FC<ChatOpsConfigProps> = ({
   form,

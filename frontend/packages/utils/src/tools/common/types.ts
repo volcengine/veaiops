@@ -17,7 +17,7 @@
  */
 
 /**
- * 从对象中移除指定的键的参数接口
+ * Parameters interface for removing specified keys from an object
  */
 export interface OmitObjectKeysParams<T extends Record<string, any>> {
   obj: T;
@@ -25,7 +25,7 @@ export interface OmitObjectKeysParams<T extends Record<string, any>> {
 }
 
 /**
- * 表单数据属性类型
+ * Form table data properties type
  */
 export interface FormTableDataProps<
   RecordType = unknown,
@@ -37,7 +37,7 @@ export interface FormTableDataProps<
 }
 
 /**
- * 安全JSON解析参数接口
+ * Safe JSON parse parameters interface
  */
 export interface SafeJSONParseParams {
   valueString: undefined | string;

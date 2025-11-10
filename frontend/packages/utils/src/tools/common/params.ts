@@ -108,7 +108,7 @@ export const convertQueryParamsTypes = (
 };
 
 /**
- * 将 URLSearchParams 转化为包含所有查询参数的对象
+ * Convert URLSearchParams to an object containing all query parameters
  */
 export const parseURLSearchParams = ({
   searchParams,
