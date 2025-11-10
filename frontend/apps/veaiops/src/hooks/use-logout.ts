@@ -15,6 +15,7 @@
 import { Message } from '@arco-design/web-react';
 import { useEffect, useState } from 'react';
 import { authConfig, useAuth } from '../config/auth';
+import { TokenManager } from '../utils/api-client';
 
 export interface LogoutOptions {
   showConfirm?: boolean;
@@ -34,8 +35,8 @@ export const useLogout = () => {
     const onStorage = (e: StorageEvent) => {
       if (e.key === BROADCAST_KEY && e.newValue) {
         // Received logout broadcast from other tab
-        // Fix: Clear authentication info from localStorage, not sessionStorage
-        localStorage.removeItem(authConfig.storageKeys.token);
+        // Fix: Use TokenManager to clear tokens consistently
+        TokenManager.clearTokens();
         localStorage.removeItem(authConfig.storageKeys.username);
         localStorage.removeItem(authConfig.storageKeys.isSupervisor);
         localStorage.removeItem(authConfig.storageKeys.userData);

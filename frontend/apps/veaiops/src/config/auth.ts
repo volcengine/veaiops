@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { useEffect, useState } from 'react';
+import { TokenManager } from '../utils/api-client';
 
 // Authentication state interface
 export interface AuthState {
@@ -61,10 +62,9 @@ export const useAuth = () => {
 
   // Initialize authentication state
   useEffect(() => {
-    // Fix: Use localStorage instead of sessionStorage to support cross-tab authentication state sharing
-    // Reason: sessionStorage is session-based, each tab has independent storage space
-    // When opening a new tab with target="_blank", the new tab cannot access the parent tab's sessionStorage
-    const token = localStorage.getItem(authConfig.storageKeys.token);
+    // Fix: Use TokenManager to get token consistently
+    // TokenManager uses 'volcaiops_token' key which is also used by API client
+    const token = TokenManager.getToken();
     const username = localStorage.getItem(authConfig.storageKeys.username);
 
     if (token && username) {
@@ -89,8 +89,8 @@ export const useAuth = () => {
   }
 
   const login = ({ username, token }: LoginParams) => {
-    // Fix: Use localStorage instead of sessionStorage to support cross-tab authentication state sharing
-    localStorage.setItem(authConfig.storageKeys.token, token);
+    // Fix: Use TokenManager to set token consistently
+    TokenManager.setToken(token);
     localStorage.setItem(authConfig.storageKeys.username, username);
 
     setAuthState({
@@ -102,8 +102,8 @@ export const useAuth = () => {
 
   // Logout
   const logout = () => {
-    // Fix: Use localStorage instead of sessionStorage
-    localStorage.removeItem(authConfig.storageKeys.token);
+    // Fix: Use TokenManager to clear tokens consistently
+    TokenManager.clearTokens();
     localStorage.removeItem(authConfig.storageKeys.username);
     localStorage.removeItem(authConfig.storageKeys.isSupervisor);
     localStorage.removeItem(authConfig.storageKeys.userData);

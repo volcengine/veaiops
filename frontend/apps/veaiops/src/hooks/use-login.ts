@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { authConfig } from '@/config/auth';
-import apiClient from '@/utils/api-client';
+import apiClient, { TokenManager } from '@/utils/api-client';
 import { Form, type FormInstance, Message } from '@arco-design/web-react';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
 import { logger } from '@veaiops/utils';
@@ -48,7 +48,9 @@ export const useLogin = (): {
         // When opening a new tab with target="_blank", the new tab cannot access the parent tab's sessionStorage
         const { data } = response;
         if (data.access_token) {
-          localStorage.setItem(authConfig.storageKeys.token, data.access_token);
+          // Fix: Use TokenManager.setToken() to ensure consistent token storage key
+          // TokenManager uses 'volcaiops_token' key which is also used by API client
+          TokenManager.setToken(data.access_token);
         }
 
         // Store username
