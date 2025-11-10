@@ -84,10 +84,10 @@ export const getTaskVersionFilters = ({
     },
     {
       field: 'create_time_range',
-      label: 'Created Time',
+      label: '创建时间',
       type: 'RangePicker',
       componentProps: {
-        placeholder: ['Start Time', 'End Time'],
+        placeholder: ['开始时间', '结束时间'],
         // Display: UTC → Local Time
         value:
           query?.createdAtStart && query?.createdAtEnd
@@ -128,10 +128,10 @@ export const getTaskVersionFilters = ({
     },
     {
       field: 'update_time_range',
-      label: 'Updated Time',
+      label: '更新时间',
       type: 'RangePicker',
       componentProps: {
-        placeholder: ['Start Time', 'End Time'],
+        placeholder: ['开始时间', '结束时间'],
         // Display: UTC → Local Time
         value:
           query?.updatedAtStart && query?.updatedAtEnd
