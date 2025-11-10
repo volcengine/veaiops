@@ -14,9 +14,9 @@
 
 import { authConfig } from '@/config/auth';
 import apiClient from '@/utils/api-client';
-import { authErrorHandler } from '@/utils/error-handler';
 import { Form, type FormInstance, Message } from '@arco-design/web-react';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
+import { logger } from '@veaiops/utils';
 import type { APIResponseLoginToken, LoginRequest } from 'api-generate';
 import { useState } from 'react';
 
@@ -43,26 +43,26 @@ export const useLogin = (): {
         });
 
       if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
-        // 修复：使用 localStorage 替代 sessionStorage，以支持跨标签页共享认证状态
-        // 原因：sessionStorage 是基于浏览器会话的，每个标签页都有独立的存储空间
-        // 当使用 target="_blank" 打开新标签页时，新标签页无法访问父标签页的 sessionStorage
+        // Fix: Use localStorage instead of sessionStorage to support cross-tab authentication state sharing
+        // Reason: sessionStorage is session-based, each tab has independent storage space
+        // When opening a new tab with target="_blank", the new tab cannot access the parent tab's sessionStorage
         const { data } = response;
         if (data.access_token) {
           localStorage.setItem(authConfig.storageKeys.token, data.access_token);
         }
 
-        // 存储用户名
+        // Store username
         localStorage.setItem(authConfig.storageKeys.username, values.username);
 
         Message.success('登录成功');
 
-        // 使用完整的URL路径进行重定向，确保正确跳转
+        // Use full URL path for redirect to ensure correct navigation
         window.location.href = `${window.location.origin}${authConfig.defaultRedirectPath}`;
 
-        // ✅ 返回成功结果
+        // ✅ Return success result
         return { success: true };
       } else if (response.code === API_RESPONSE_CODE.ERROR) {
-        // ✅ 根据错误码显示中文提示，并返回错误结果
+        // ✅ Display error message based on error code and return error result
         const errorMessage = '用户名或密码错误';
         Message.error(errorMessage);
         return {
@@ -71,7 +71,7 @@ export const useLogin = (): {
         };
       }
 
-      // ✅ 未知响应码，返回错误结果
+      // ✅ Unknown response code, return error result
       const errorMessage = response.message || '登录失败，请重试';
       Message.error(errorMessage);
       return {
@@ -79,12 +79,25 @@ export const useLogin = (): {
         error: new Error(errorMessage),
       };
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
-      authErrorHandler.login(errorObj);
+      const errorMessage = errorObj.message || '登录失败，请检查网络连接后重试';
+      Message.error(errorMessage);
+      // ✅ Correct: Use logger to record error (object destructuring parameters)
+      logger.error({
+        message: 'Login failed',
+        data: {
+          error: errorObj.message,
+          stack: errorObj.stack,
+          errorObj,
+          username: values.username,
+        },
+        source: 'useLogin',
+        component: 'handleSubmit',
+      });
 
-      // ✅ 返回错误结果，符合异步方法错误处理规范
+      // ✅ Return error result, conforming to async method error handling specification
       return { success: false, error: errorObj };
     } finally {
       setLoading(false);
