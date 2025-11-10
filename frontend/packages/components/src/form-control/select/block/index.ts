@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 主组件导出 - 使用重构后的版本
-// StateSync 工具导出（从 logger 实例导出）
-// 注意：使用 logger 实例而不是 SelectBlockLogger 类
+// Main component export - use refactored version
+// StateSync utility export (from logger instance)
+// Note: Use logger instance instead of SelectBlockLogger class
 import { SelectBlockLogger } from './logger';
 
 export { SelectBlock } from './select-block';
 
-// 插件系统导出 - 从专门的导出文件中导入
+// Plugin system exports - import from dedicated export file
 export * from './exports';
 
-// 工具函数导出
+// Utility function exports
 export {
   getFrontEnumsOptions,
   getFrontEnumsByKey,
@@ -36,13 +36,13 @@ export {
   canConvertToNumber,
 } from './util';
 
-// 分隔符工具导出
+// Token separator utility export
 export { TokenSeparatorUtils } from './plugins/paste-handler';
 
-// 缓存存储导出
+// Cache storage export
 export { sessionStore } from './cache-store';
 
-// 日志系统导出
+// Logging system export
 export { logger, SelectBlockLogger, LogLevel } from './logger';
 export type { LogEntry, LoggerConfig } from './logger';
 
@@ -52,7 +52,7 @@ export const StateSync = {
   checkStateConsistency: SelectBlockLogger.checkStateConsistency,
 };
 
-// 类型导出 - 组件相关
+// Type exports - component related
 export type {
   VeArchSelectBlockProps,
   OptionfyProps,

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源创建向导组件 - 重构版本
- * @description 支持 Zabbix、阿里云、火山引擎三种数据源的创建流程，使用模块化组件结构
+ * Data source creation wizard component - refactored version
+ * @description Supports creation flow for three data source types: Zabbix, Aliyun, and Volcengine, using modular component structure
  * @author AI Assistant
  * @date 2025-01-15
  */
@@ -44,7 +44,7 @@ export interface DataSourceWizardProps {
   visible: boolean;
   onClose: () => void;
   onSuccess?: (dataSource: unknown) => void;
-  editingDataSource?: any; // 正在编辑的数据源（用于编辑模式）
+  editingDataSource?: any; // Data source being edited (for edit mode)
 }
 
 export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
@@ -53,7 +53,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
   onSuccess: _onSuccess,
   editingDataSource,
 }) => {
-  // 🔥 只记录关键字段，避免循环引用
+  // Only log key fields to avoid circular references
   logger.info({
     message: '🎨 DataSourceWizard component rendering',
     data: {
@@ -71,7 +71,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
   const [hasInitializedEditMode, setHasInitializedEditMode] = useState(false);
   const { state, actions } = useDataSourceWizard();
 
-  // 🔥 监控组件挂载和卸载
+  // Monitor component mount and unmount
   useEffect(() => {
     logger.info({
       message: '✨ DataSourceWizard mounted',
@@ -89,7 +89,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     };
   }, []);
 
-  // 🔥 监控 visible 属性变化
+  // Monitor visible prop changes
   useEffect(() => {
     logger.info({
       message: '📊 visible prop changed',
@@ -118,7 +118,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     }
   }, [visible]);
 
-  // 🔥 监控 selectedType 变化
+  // Monitor selectedType changes
   useEffect(() => {
     logger.info({
       message: '📑 selectedType changed',
@@ -128,7 +128,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     });
   }, [selectedType]);
 
-  // 🔥 监控 state.currentStep 变化
+  // Monitor state.currentStep changes
   useEffect(() => {
     logger.info({
       message: '📍 currentStep changed',
@@ -138,7 +138,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     });
   }, [state.currentStep]);
 
-  // 使用向导控制器
+  // Use wizard controller
   const {
     handleTypeSelect,
     handleNext,
@@ -158,44 +158,44 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     editingDataSource,
   });
 
-  // 处理编辑模式初始化
+  // Handle edit mode initialization
   useEffect(() => {
     if (visible && editingDataSource && !hasInitializedEditMode) {
-      // 编辑模式：自动设置数据源类型并进入第一步
-      // 将类型转换为小写以匹配 DataSourceType 枚举值
+      // Edit mode: automatically set data source type and enter first step
+      // Convert type to lowercase to match DataSourceType enum value
       const dataSourceType =
         editingDataSource.type?.toLowerCase() as DataSourceType;
 
       setSelectedType(dataSourceType);
       actions.setDataSourceType(dataSourceType);
 
-      // 编辑模式下直接跳到第一步，让用户可以看到和修改配置
+      // In edit mode, directly jump to first step so user can see and modify configuration
       actions.setCurrentStep(WizardStep.FIRST_STEP);
 
-      // 重置预填充标记
+      // Reset prefill flag
       setHasPrefilled(false);
 
-      // 标记已初始化编辑模式
+      // Mark edit mode as initialized
       setHasInitializedEditMode(true);
 
       actions.setEditingDataSourceId(
         editingDataSource._id || editingDataSource.id,
       );
 
-      // 预填充数据源名称
+      // Prefill data source name
       if (editingDataSource.name) {
         actions.setDataSourceName(editingDataSource.name);
       }
 
-      // 预填充数据源描述
+      // Prefill data source description
       if (editingDataSource.description) {
         actions.setDataSourceDescription(editingDataSource.description);
       }
 
-      // 编辑模式下也需要加载连接列表
+      // Edit mode also needs to load connection list
 
       actions.fetchConnects(dataSourceType).catch((_error) => {
-        // 忽略连接获取错误
+        // Ignore connection fetch errors
       });
     } else if (
       visible &&
@@ -203,8 +203,8 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
       state.currentStep === WizardStep.TYPE_SELECTION &&
       !selectedType
     ) {
-      // 只有在向导完全关闭后重新打开时才重置状态
-      // 避免在用户操作过程中意外重置
+      // Only reset state when wizard is fully closed and reopened
+      // Avoid accidentally resetting during user operations
 
       actions.resetWizard();
       setSelectedType(null);
@@ -217,9 +217,9 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     state.currentStep,
     selectedType,
     hasInitializedEditMode,
-  ]); // 依赖检查条件中使用的变量
+  ]); // Variables used in dependency check conditions
 
-  // 预填充配置数据（在连接列表加载后）
+  // Prefill configuration data (after connection list is loaded)
   useEffect(() => {
     if (
       visible &&
@@ -239,10 +239,10 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     hasPrefilled,
   ]);
 
-  // 防止意外的键盘事件触发按钮点击
+  // Prevent accidental keyboard events triggering button clicks
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // 如果用户在类型选择阶段按 Enter 键，不要自动进入下一步
+      // If user presses Enter key during type selection stage, don't automatically proceed to next step
       if (
         event.key === 'Enter' &&
         state.currentStep === WizardStep.TYPE_SELECTION &&
@@ -262,10 +262,10 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     };
   }, [selectedType, state.currentStep, visible]);
 
-  // Drawer 组件的回调函数，用于处理键盘事件
+  // Drawer component callback function for handling keyboard events
 
   const handleDrawerKeyDown = (event: React.KeyboardEvent) => {
-    // 检查事件是否由 Drawer 组件自身触发，并处理 Enter 键
+    // Check if event is triggered by Drawer component itself and handle Enter key
     if (
       event.key === 'Enter' &&
       state.currentStep === WizardStep.TYPE_SELECTION &&
@@ -276,7 +276,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     }
   };
 
-  // 处理关闭事件
+  // Handle close event
   const handleClose = useCallback(() => {
     logger.info({
       message: '🚪 handleClose called - Drawer onCancel triggered',
@@ -299,7 +299,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     });
   }, [onClose, state.currentStep, selectedType, state.dataSourceType]);
 
-  // 处理抽屉完全关闭后的清理工作（Arco Design Drawer 的 afterClose 回调）
+  // Handle cleanup work after drawer is fully closed (Arco Design Drawer's afterClose callback)
   const handleAfterClose = useCallback(() => {
     logger.info({
       message: '🧹 handleAfterClose called - Drawer afterClose triggered',
@@ -308,12 +308,12 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
       component: 'handleAfterClose',
     });
 
-    // 重置所有本地状态
+    // Reset all local state
     setSelectedType(null);
     setHasPrefilled(false);
     setHasInitializedEditMode(false);
 
-    // 重置向导状态（包括所有步骤数据、选择项等）
+    // Reset wizard state (including all step data, selections, etc.)
     actions.resetWizard();
     logger.info({
       message: '✅ Wizard state reset completed',
@@ -346,7 +346,9 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
             type="primary"
             disabled={!canProceedToNext()}
             onClick={handleNext}
-            title={!selectedType ? '请先选择数据源类型' : ''}
+            title={
+              !selectedType ? 'Please select a data source type first' : ''
+            }
             className={styles.wizardButton}
           >
             {getNextButtonText()}
@@ -361,7 +363,11 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
     <>
       <Drawer
         width={1200}
-        title={editingDataSource ? '编辑监控数据源' : '新增监控数据源'}
+        title={
+          editingDataSource
+            ? 'Edit Monitoring Data Source'
+            : 'Add Monitoring Data Source'
+        }
         visible={visible}
         onCancel={handleClose}
         afterClose={handleAfterClose}
@@ -375,7 +381,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
         focusLock={false}
       >
         <div className={styles.wizardContainer}>
-          {/* 步骤指示器 */}
+          {/* Step indicator */}
           {selectedType && state.currentStep >= WizardStep.FIRST_STEP && (
             <StepIndicator
               selectedType={selectedType}
@@ -383,7 +389,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
             />
           )}
 
-          {/* 步骤内容 */}
+          {/* Step content */}
           <div style={{ flex: 1, overflow: 'auto' }}>
             {selectedType && state.currentStep >= WizardStep.FIRST_STEP ? (
               <StepContent
@@ -402,7 +408,7 @@ export const DataSourceWizard: React.FC<DataSourceWizardProps> = ({
         </div>
       </Drawer>
 
-      {/* 创建确认弹窗 */}
+      {/* Creation confirmation modal */}
       {CreationConfirmModalComponent}
     </>
   );

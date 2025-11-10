@@ -21,24 +21,24 @@ import type {
 } from './interface';
 
 /**
- * 插件类型枚举
- * 统一管理所有插件的标识符，提高类型安全性和可维护性
+ * Plugin type enumeration
+ * Unified management of all plugin identifiers, improving type safety and maintainability
  */
 export enum PluginType {
-  /** 数据获取插件 */
+  /** Data fetch plugin */
   DATA_FETCHER = 'data-fetcher',
-  /** 搜索处理插件 */
+  /** Search handler plugin */
   SEARCH_HANDLER = 'search-handler',
-  /** 分页插件 */
+  /** Pagination plugin */
   PAGINATION = 'pagination',
-  /** 粘贴处理插件 */
+  /** Paste handler plugin */
   PASTE_HANDLER = 'paste-handler',
-  /** 缓存处理插件 */
+  /** Cache handler plugin */
   CACHE_HANDLER = 'cache-handler',
 }
 
 /**
- * 插件基础接口
+ * Plugin base interface
  */
 export interface Plugin<T = any> {
   name: string;
@@ -48,7 +48,7 @@ export interface Plugin<T = any> {
 }
 
 /**
- * 插件上下文，包含组件的状态和方法
+ * Plugin context, containing component state and methods
  */
 export interface PluginContext {
   props: veArchSelectBlockProps;
@@ -59,7 +59,7 @@ export interface PluginContext {
 }
 
 /**
- * 组件状态接口
+ * Component state interface
  */
 export interface SelectBlockState {
   fetchOptions: SelectOption[];
@@ -70,12 +70,12 @@ export interface SelectBlockState {
   searchValue: string;
   canTriggerLoadMore: boolean;
   mounted: boolean;
-  stateVersion?: number; // 🔧 用于强制重新渲染的版本号
-  lastDataSourceApi?: string; // 🔧 用于追踪上一次的 dataSource API，检测 dataSource 变化
+  stateVersion?: number; // 🔧 Version number for forcing re-render
+  lastDataSourceApi?: string; // 🔧 Track last dataSource API to detect dataSource changes
 }
 
 /**
- * 插件工具函数
+ * Plugin utility functions
  */
 export interface PluginUtils {
   ensureArray: <T>(value: T | T[] | null | undefined) => T[];
@@ -89,7 +89,7 @@ export interface PluginUtils {
 }
 
 /**
- * 数据获取插件接口
+ * Data fetch plugin interface
  */
 export interface DataFetcherPlugin extends Plugin<DataFetcherConfig> {
   fetchByDataSetter: (
@@ -127,7 +127,7 @@ export interface DataFetcherConfig {
 }
 
 /**
- * 搜索处理插件接口
+ * Search handler plugin interface
  */
 export interface SearchHandlerPlugin extends Plugin<SearchHandlerConfig> {
   getSearchParams: (inputValue: string) => Record<string, any>;
@@ -155,7 +155,7 @@ export interface SearchParams {
 }
 
 /**
- * 分页插件接口
+ * Pagination plugin interface
  */
 export interface PaginationPlugin extends Plugin<PaginationConfig> {
   handlePopupScroll: (element: HTMLElement) => Promise<boolean>;
@@ -170,7 +170,7 @@ export interface PaginationConfig {
 }
 
 /**
- * 粘贴处理插件接口
+ * Paste handler plugin interface
  */
 export interface PasteHandlerPlugin extends Plugin<PasteHandlerConfig> {
   handlePaste: (event: ClipboardEvent) => void;
@@ -186,7 +186,7 @@ export interface PasteHandlerConfig {
 }
 
 /**
- * 缓存处理插件接口
+ * Cache handler plugin interface
  */
 export interface CacheHandlerPlugin extends Plugin<CacheHandlerConfig> {
   getFromCache: (key: string) => any;
@@ -203,7 +203,7 @@ export interface CacheHandlerConfig {
 }
 
 /**
- * 插件管理器接口
+ * Plugin manager interface
  */
 export interface PluginManager {
   plugins: Map<string, Plugin>;

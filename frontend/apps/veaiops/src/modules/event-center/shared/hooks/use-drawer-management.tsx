@@ -21,19 +21,19 @@ import { useProjectImport } from './use-project-import';
 import { useStrategyCreate } from './use-strategy-create';
 
 /**
- * 抽屉管理Hook
- * 组合项目导入和策略创建功能，提供统一的接口
+ * Drawer management Hook
+ * Combines project import and strategy creation functionality, provides unified interface
  */
 export const useDrawerManagement = (
   config: UseDrawerManagementConfig = {},
 ): UseDrawerManagementReturn => {
   const { onProjectImportSuccess, onStrategyCreateSuccess } = config;
 
-  // Tooltip状态管理
+  // Tooltip state management
   const [showProjectTooltip, setShowProjectTooltip] = useState(false);
   const [showStrategyTooltip, setShowStrategyTooltip] = useState(false);
 
-  // 使用项目导入Hook
+  // Use project import Hook
   const projectImport = useProjectImport({
     onSuccess: () => {
       setShowProjectTooltip(true);
@@ -41,17 +41,17 @@ export const useDrawerManagement = (
     },
   });
 
-  // 使用策略创建Hook - 使用较小的宽度（与项目导入抽屉相同）
+  // Use strategy create Hook - Use smaller width (same as project import drawer)
   const strategyCreate = useStrategyCreate({
     onSuccess: () => {
       setShowStrategyTooltip(true);
       onStrategyCreateSuccess?.();
     },
-    width: 520, // 与项目导入抽屉相同的宽度
+    width: 520, // Same width as project import drawer
   });
 
   return {
-    // 项目导入相关
+    // Project import related
     projectImportVisible: projectImport.visible,
     projectImportLoading: projectImport.loading,
     projectRefreshTrigger: projectImport.refreshTrigger,
@@ -59,18 +59,18 @@ export const useDrawerManagement = (
     closeProjectImport: projectImport.close,
     handleProjectImport: projectImport.handleImport,
 
-    // 策略创建相关
+    // Strategy create related
     strategyCreateVisible: strategyCreate.visible,
     strategyRefreshTrigger: strategyCreate.refreshTrigger,
     openStrategyCreate: strategyCreate.open,
     closeStrategyCreate: strategyCreate.close,
     handleStrategyCreate: strategyCreate.handleCreate,
 
-    // 渲染组件
+    // Render components
     renderProjectImportDrawer: projectImport.renderDrawer,
     renderStrategyCreateDrawer: strategyCreate.renderDrawer,
 
-    // Tooltip状态
+    // Tooltip state
     showProjectTooltip,
     showStrategyTooltip,
     hideProjectTooltip: () => setShowProjectTooltip(false),

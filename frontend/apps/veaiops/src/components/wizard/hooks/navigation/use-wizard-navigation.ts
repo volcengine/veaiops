@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * useWizardNavigation - 向导导航逻辑（拆分Hook）
- * @description 将 handleNext、handlePrev、handleClose 的核心逻辑抽离，提升 wizard-controller 可读性
+ * useWizardNavigation - Wizard navigation logic (extracted Hook)
+ * @description Extracts core logic of handleNext, handlePrev, handleClose to improve wizard-controller readability
  */
 
 import { useCallback } from 'react';
@@ -48,7 +48,7 @@ export interface UseWizardNavigationReturn {
 }
 
 /**
- * 向导导航 Hook
+ * Wizard navigation Hook
  */
 export const useWizardNavigation = ({
   selectedType,
@@ -57,15 +57,15 @@ export const useWizardNavigation = ({
   actions,
   onClose,
 }: UseWizardNavigationParams): UseWizardNavigationReturn => {
-  // 处理数据源类型选择
+  // Handle data source type selection
   const handleTypeSelect = useCallback(
     (type: DataSourceType) => {
       try {
-        // 先设置数据源类型到状态中
+        // First set data source type in state
         actions.setDataSourceType(type);
-        // 然后设置本地选中类型
+        // Then set local selected type
         setSelectedType(type);
-        // 确保步骤从-1开始，准备进入配置流程
+        // Ensure step starts from -1, ready to enter configuration flow
         if (state.currentStep !== -1) {
           actions.setCurrentStep(WizardStep.TYPE_SELECTION);
         }
@@ -74,7 +74,7 @@ export const useWizardNavigation = ({
     [selectedType, state.currentStep, setSelectedType, actions],
   );
 
-  // 处理下一步
+  // Handle next step
   const handleNext = useCallback(async () => {
     if (!selectedType) {
       return;
@@ -85,17 +85,17 @@ export const useWizardNavigation = ({
       return;
     }
 
-    // 如果还在类型选择阶段，进入第一步
+    // If still in type selection phase, enter first step
     if (state.currentStep === WizardStep.TYPE_SELECTION) {
-      // 添加额外的确认，确保用户真的想要进入下一步
+      // Add extra confirmation to ensure user really wants to proceed
       if (!selectedType) {
         return;
       }
 
-      // 设置步骤
+      // Set step
       actions.setCurrentStep(WizardStep.FIRST_STEP);
 
-      // 获取第一步的配置并处理数据获取
+      // Get first step configuration and handle data fetching
       const firstStepConfig = getCurrentStepConfig(
         selectedType,
         WizardStep.FIRST_STEP,
@@ -122,7 +122,7 @@ export const useWizardNavigation = ({
     }
 
     try {
-      // 处理步骤数据获取
+      // Handle step data fetching
       await handleStepDataFetch(
         selectedType,
         state,
@@ -130,51 +130,51 @@ export const useWizardNavigation = ({
         currentStepConfig.key,
       );
 
-      // 进入下一步
+      // Enter next step
       const nextStep = Math.min(state.currentStep + 1, config.steps.length - 1);
       actions.setCurrentStep(nextStep);
     } catch (error) {}
   }, [selectedType, state, actions]);
 
-  // 处理上一步
+  // Handle previous step
   const handlePrev = useCallback(() => {
     if (state.currentStep === WizardStep.FIRST_STEP) {
-      // 回到类型选择阶段
+      // Return to type selection phase
       setSelectedType(null);
       actions.resetWizard();
     } else {
-      // 回到上一步
+      // Return to previous step
       const prevStep = Math.max(state.currentStep - 1, WizardStep.FIRST_STEP);
       actions.setCurrentStep(prevStep);
     }
   }, [state.currentStep, selectedType, setSelectedType, actions]);
 
-  // 处理关闭
+  // Handle close
   const handleClose = useCallback(() => {
     actions.resetWizard();
     setSelectedType(null);
     onClose();
   }, [state.currentStep, selectedType, actions, setSelectedType, onClose]);
 
-  // 检查是否可以继续
+  // Check if can proceed
   const canProceedToNext = useCallback(() => {
     return canProceed(selectedType, state);
   }, [selectedType, state]);
 
-  // 获取按钮文本
+  // Get button text
   const getNextButtonText = useCallback(() => {
     return getButtonText(selectedType, state.currentStep);
   }, [selectedType, state.currentStep]);
 
-  // 获取上一步按钮文本
+  // Get previous button text
   const getPrevButtonText = useCallback(() => {
-    return '上一步';
+    return 'Previous';
   }, [selectedType, state.currentStep]);
 
-  // 检查是否显示上一步按钮
+  // Check if should show previous button
   const shouldShowPrevButton = useCallback(() => {
-    // 只有在真正进入配置步骤时才显示上一步按钮
-    // 在类型选择阶段（TYPE_SELECTION）不显示上一步按钮
+    // Only show previous button when actually entering configuration steps
+    // Do not show previous button in type selection phase (TYPE_SELECTION)
     return state.currentStep > WizardStep.TYPE_SELECTION;
   }, [state.currentStep]);
 

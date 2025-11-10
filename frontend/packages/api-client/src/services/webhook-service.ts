@@ -20,8 +20,8 @@ export class WebhookService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
   /**
    * Payload Webhook
-   * 接收来自不同提供商的 Webhook 负载
-   * @returns APIResponse Webhook 处理成功
+   * Receive webhook payloads from different providers
+   * @returns APIResponse Webhook processed successfully
    * @throws ApiError
    */
   public postApisV1Hook({
@@ -29,7 +29,7 @@ export class WebhookService {
     requestBody,
   }: {
     /**
-     * Webhook 提供商
+     * Webhook provider
      */
     provider: string,
     requestBody: Record<string, any>,

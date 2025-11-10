@@ -17,7 +17,7 @@ import type { UserProgress } from '../store';
 import type { StepIssue } from './types';
 
 /**
- * Get incomplete items for current step
+ * Get current step's incomplete items
  *
  * @param currentStep - Current step number
  * @param userProgress - User progress data

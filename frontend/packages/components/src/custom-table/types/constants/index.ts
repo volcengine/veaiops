@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * CustomTable 常量类型统一导出
+ * CustomTable constant types unified export
  */
 
-// ==================== 功能特性相关类型 ====================
+// ==================== Feature-related types ====================
 export * from './features';
 
-// ==================== 枚举类型 ====================
+// ==================== Enum types ====================
 export * from './enum';

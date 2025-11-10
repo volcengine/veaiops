@@ -22,7 +22,7 @@ import type {
 import { renderCellByValueType } from './cell-renderers';
 
 /**
- * 生成Arco Table的列配置
+ * Generate Arco Table column configuration
  */
 export const generateTableColumns = (
   columns: ColumnSchema[],

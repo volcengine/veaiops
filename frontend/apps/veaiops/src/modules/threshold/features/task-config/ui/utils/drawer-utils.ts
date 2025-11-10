@@ -18,7 +18,7 @@ import {
 } from '@task-config/lib';
 
 /**
- * 获取抽屉标题
+ * Get drawer title
  */
 export const getDrawerTitle = (operationType: OperationType): string => {
   switch (operationType) {
@@ -40,7 +40,7 @@ export const getDrawerTitle = (operationType: OperationType): string => {
 };
 
 /**
- * 获取抽屉宽度
+ * Get drawer width
  */
 export const getDrawerWidth = (operationType: OperationType): number => {
   return operationType === 'detail'
@@ -49,7 +49,7 @@ export const getDrawerWidth = (operationType: OperationType): number => {
 };
 
 /**
- * 获取按钮文本
+ * Get button text
  */
 export const getButtonText = (operationType: OperationType): string => {
   switch (operationType) {
@@ -65,14 +65,14 @@ export const getButtonText = (operationType: OperationType): string => {
 };
 
 /**
- * 判断是否为只读操作
+ * Check if operation is read-only
  */
 export const isReadOnlyOperation = (operationType: OperationType): boolean => {
   return operationType === 'versions' || operationType === 'results';
 };
 
 /**
- * 判断是否为表单操作（需要显示 loading）
+ * Check if operation is form operation (needs to show loading)
  */
 export const isFormOperation = (operationType: OperationType): boolean => {
   return (

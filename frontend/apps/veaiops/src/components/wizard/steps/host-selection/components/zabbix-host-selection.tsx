@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Zabbix主机选择组件
- * @description 专门处理Zabbix数据源的主机选择
+ * Zabbix host selection component
+ * @description Handles host selection specifically for Zabbix data sources
  * @author AI Assistant
  * @date 2025-01-16
  */

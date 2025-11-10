@@ -13,10 +13,7 @@
 // limitations under the License.
 
 /**
- * 列宽持久化插件工具函数
- *
-
- *
+ * Column Width Persistence Plugin Utility Functions
  */
 
 import { debounce } from 'lodash-es';
@@ -24,7 +21,7 @@ import { PLUGIN_CONSTANTS } from './config';
 import type { ColumnWidthInfo, ColumnWidthPersistenceConfig } from './types';
 
 /**
- * generateTableId 参数接口
+ * generateTableId parameter interface
  */
 export interface GenerateTableIdParams {
   title?: string;
@@ -32,13 +29,13 @@ export interface GenerateTableIdParams {
 }
 
 /**
- * 自动生成表格ID
+ * Auto-generate table ID
  */
 export function generateTableId({
   title,
   pathname,
 }: GenerateTableIdParams = {}): string {
-  // 优先使用标题生成ID
+  // Priority: use title to generate ID
   if (title && typeof title === 'string') {
     return title
       .replace(/[\s\-()（）[\]【】]/g, '-')
@@ -48,7 +45,7 @@ export function generateTableId({
       .substring(0, 50);
   }
 
-  // 其次使用路径生成ID
+  // Secondary: use pathname to generate ID
   if (pathname) {
     return pathname
       .split('/')
@@ -59,12 +56,12 @@ export function generateTableId({
       .substring(0, 50);
   }
 
-  // 最后使用时间戳
+  // Fallback: use timestamp
   return `table-${Date.now()}`;
 }
 
 /**
- * 生成存储键的参数接口
+ * Generate storage key parameter interface
  */
 export interface GenerateStorageKeyParams {
   prefix?: string;
@@ -73,7 +70,7 @@ export interface GenerateStorageKeyParams {
 }
 
 /**
- * 生成存储键
+ * Generate storage key
  */
 export function generateStorageKey({
   prefix,
@@ -100,7 +97,7 @@ export function generateStorageKey({
 }
 
 /**
- * 验证列宽度值的参数接口
+ * Validate column width value parameter interface
  */
 export interface ValidateColumnWidthParams {
   width: number;
@@ -108,7 +105,7 @@ export interface ValidateColumnWidthParams {
 }
 
 /**
- * 验证列宽度值
+ * Validate column width value
  */
 export function validateColumnWidth({
   width,
@@ -124,9 +121,9 @@ export function validateColumnWidth({
 }
 
 /**
- * 从DOM元素检测列宽度
+ * Detect column width from DOM element
  */
-// 支持 Arco Table Ref 对象：getRootDomElement/getRootDOMNode
+// Support Arco Table Ref objects: getRootDomElement/getRootDOMNode
 type RootDomElementProvider = { getRootDomElement: () => HTMLElement };
 type RootDOMNodeProvider = { getRootDOMNode: () => HTMLElement };
 type TableContainerLike =
@@ -182,12 +179,12 @@ function resolveContainerElement(
     }
     return null;
   } catch (error: unknown) {
-    // ✅ 静默处理 DOM 操作错误（避免阻塞功能），可选记录警告
+    // ✅ Silently handle DOM operation errors (avoid blocking functionality), optionally log warnings
     if (process.env.NODE_ENV === 'development') {
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       console.warn(
-        '[ColumnWidthPersistence] 获取根DOM节点失败',
+        '[ColumnWidthPersistence] Failed to get root DOM node',
         errorObj.message,
       );
     }
@@ -196,7 +193,7 @@ function resolveContainerElement(
 }
 
 /**
- * 从DOM元素检测列宽度的参数接口
+ * Detect column width from DOM element parameter interface
  */
 export interface DetectColumnWidthFromDOMParams {
   tableContainer: TableContainerLike;
@@ -212,7 +209,7 @@ export function detectColumnWidthFromDOM({
     if (!containerEl) {
       return null;
     }
-    // 查找对应的列头元素
+    // Find corresponding column header element
     const headerCell = containerEl.querySelector(
       `th[data-index="${dataIndex}"]`,
     ) as HTMLElement;
@@ -220,17 +217,17 @@ export function detectColumnWidthFromDOM({
       return null;
     }
 
-    // 获取计算后的宽度
+    // Get computed width
     const rect = headerCell.getBoundingClientRect();
     return rect.width;
   } catch (error) {
-    // 检测列宽失败，返回 null（静默处理，不记录日志）
+    // Column width detection failed, return null (silently handle, no logging)
     return null;
   }
 }
 
 /**
- * 批量检测所有列宽度的参数接口
+ * Batch detect all column widths parameter interface
  */
 export interface DetectAllColumnWidthsFromDOMParams {
   tableContainer: TableContainerLike;
@@ -238,7 +235,7 @@ export interface DetectAllColumnWidthsFromDOMParams {
 }
 
 /**
- * 批量检测所有列宽度
+ * Batch detect all column widths
  */
 export function detectAllColumnWidthsFromDOM({
   tableContainer,
@@ -251,7 +248,7 @@ export function detectAllColumnWidthsFromDOM({
     return widths;
   }
 
-  // 优先使用索引映射：thead 下所有 th 与 dataIndexList 一一对应
+  // Priority: use index mapping - all th elements under thead correspond one-to-one with dataIndexList
   const headerCells = Array.from(
     containerEl.querySelectorAll('thead th.arco-table-th, thead th'),
   );
@@ -267,7 +264,7 @@ export function detectAllColumnWidthsFromDOM({
           continue;
         }
       }
-      // 回退到逐列选择器检测
+      // Fallback to per-column selector detection
       const fallbackWidth = detectColumnWidthFromDOM({
         tableContainer: containerEl,
         dataIndex,
@@ -279,7 +276,7 @@ export function detectAllColumnWidthsFromDOM({
     return widths;
   }
 
-  // 回退方案：逐列选择器检测
+  // Fallback solution: per-column selector detection
   dataIndexList.forEach((dataIndex) => {
     const width = detectColumnWidthFromDOM({
       tableContainer: containerEl,
@@ -294,7 +291,7 @@ export function detectAllColumnWidthsFromDOM({
 }
 
 /**
- * 创建防抖的列宽检测函数的参数接口
+ * Create debounced column width detector parameter interface
  */
 export interface CreateDebouncedWidthDetectorParams {
   detectFunction: () => void;
@@ -302,7 +299,7 @@ export interface CreateDebouncedWidthDetectorParams {
 }
 
 /**
- * 创建防抖的列宽检测函数
+ * Create debounced column width detector function
  */
 export function createDebouncedWidthDetector({
   detectFunction,
@@ -315,50 +312,50 @@ export function createDebouncedWidthDetector({
 }
 
 /**
- * 本地存储操作工具
+ * Local storage operation utilities
  */
 export const localStorageUtils = {
   /**
-   * 保存数据到本地存储
+   * Save data to local storage
    */
   save<T>(key: string, data: T): boolean {
     try {
       localStorage.setItem(key, JSON.stringify(data));
       return true;
     } catch (error) {
-      // 保存到本地存储失败（可能是存储空间不足或权限问题）
+      // Failed to save to local storage (may be due to insufficient storage space or permission issues)
       return false;
     }
   },
 
   /**
-   * 从本地存储读取数据
+   * Load data from local storage
    */
   load<T>(key: string): T | null {
     try {
       const item = localStorage.getItem(key);
       return item ? JSON.parse(item) : null;
     } catch (error) {
-      // 从本地存储读取失败（可能是数据格式错误）
+      // Failed to read from local storage (may be due to data format error)
       return null;
     }
   },
 
   /**
-   * 删除本地存储数据
+   * Remove local storage data
    */
   remove(key: string): boolean {
     try {
       localStorage.removeItem(key);
       return true;
     } catch (error) {
-      // 保存到本地存储失败（可能是存储空间不足或权限问题）
+      // Failed to remove from local storage (may be due to insufficient storage space or permission issues)
       return false;
     }
   },
 
   /**
-   * 检查本地存储是否可用
+   * Check if local storage is available
    */
   isAvailable(): boolean {
     try {
@@ -367,15 +364,15 @@ export const localStorageUtils = {
       localStorage.removeItem(testKey);
       return true;
     } catch (error: unknown) {
-      // ✅ 静默处理 localStorage 测试错误（这是预期的，当 localStorage 不可用时）
-      // 不需要记录警告，因为这是正常的检测流程
+      // ✅ Silently handle localStorage test errors (this is expected when localStorage is unavailable)
+      // No need to log warnings, as this is a normal detection flow
       return false;
     }
   },
 };
 
 /**
- * 创建列宽信息对象的参数接口
+ * Create column width info object parameter interface
  */
 export interface CreateColumnWidthInfoParams {
   dataIndex: string;
@@ -383,7 +380,7 @@ export interface CreateColumnWidthInfoParams {
 }
 
 /**
- * 创建列宽信息对象
+ * Create column width info object
  */
 export function createColumnWidthInfo({
   dataIndex,
@@ -397,7 +394,7 @@ export function createColumnWidthInfo({
 }
 
 /**
- * 比较两个列宽映射是否相等
+ * Compare if two column width mappings are equal
  */
 export interface CompareColumnWidthsParams {
   widths1: Record<string, number>;
@@ -421,7 +418,7 @@ export function compareColumnWidths({
 }
 
 /**
- * 过滤有效的列宽数据的参数接口
+ * Filter valid column width data parameter interface
  */
 export interface FilterValidColumnWidthsParams {
   widths: Record<string, number>;
@@ -429,7 +426,7 @@ export interface FilterValidColumnWidthsParams {
 }
 
 /**
- * 过滤有效的列宽数据
+ * Filter valid column width data
  */
 export function filterValidColumnWidths({
   widths,

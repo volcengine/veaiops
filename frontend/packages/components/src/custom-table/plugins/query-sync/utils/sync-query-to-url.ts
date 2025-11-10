@@ -16,11 +16,11 @@ import type { QuerySyncConfig, QuerySyncContext } from '@/custom-table/types';
 import { resetLogCollector } from '@/custom-table/utils';
 
 /**
- * 同步查询参数到URL的辅助函数
+ * Helper functions for syncing query parameters to URL
  */
 
 /**
- * 更新React Router的searchParams
+ * Update React Router's searchParams
  */
 export function updateSearchParams<QueryType extends Record<string, unknown>>(
   searchParams: URLSearchParams,
@@ -30,7 +30,7 @@ export function updateSearchParams<QueryType extends Record<string, unknown>>(
     return;
   }
 
-  // 如果 resetEmptyData 被设置为 false（表明 reset 不应清空），则保留原 URL 中的参数未被 query 映射覆盖
+  // If resetEmptyData is set to false (indicating reset should not clear), preserve original URL parameters not covered by query mapping
   if (context && context.resetEmptyData === false) {
     // merge with existing context.searchParams to avoid dropping params
     const merged = new URLSearchParams(
@@ -46,7 +46,7 @@ export function updateSearchParams<QueryType extends Record<string, unknown>>(
 }
 
 /**
- * 同步查询参数到URL
+ * Sync query parameters to URL
  */
 export function syncQueryToUrl<QueryType extends Record<string, unknown>>(
   queryParam: Record<string, unknown> | undefined,
@@ -56,10 +56,10 @@ export function syncQueryToUrl<QueryType extends Record<string, unknown>>(
   const { href: _currentUrl } = window.location;
   const { href: _oldUrl } = window.location;
 
-  // 🚨 重要调试：记录syncQueryToUrl被调用的堆栈信息
+  // 🚨 Important debug: Record stack trace when syncQueryToUrl is called
   const { stack } = new Error();
 
-  // 同时输出到console以便立即看到
+  // Also output to console for immediate viewing
 
   if (!config.syncQueryOnSearchParams) {
     return;
@@ -78,17 +78,17 @@ export function syncQueryToUrl<QueryType extends Record<string, unknown>>(
     const searchParams = new URLSearchParams(baseSearch);
     const query = queryParam || context.query || {};
 
-    // 🔧 关键修复：如果query为空对象，但URL中已有参数，保持现有参数
+    // 🔧 Critical fix: If query is empty object but URL has parameters, preserve existing parameters
     const currentUrlParams = new URLSearchParams(window.location.search);
     const hasCurrentParams = currentUrlParams.toString() !== '';
     const isQueryEmpty = Object.keys(query).length === 0;
 
-    // 如果query为空但URL中有参数，保持现有参数不变
+    // If query is empty but URL has parameters, keep existing parameters unchanged
     if (hasCurrentParams && isQueryEmpty) {
-      return; // 直接返回，不做任何URL修改
+      return; // Return directly without any URL modification
     }
 
-    // 处理查询参数
+    // Process query parameters
     Object.entries(query).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
         const formatter = config.querySearchParamsFormat?.[key];
@@ -120,15 +120,15 @@ export function syncQueryToUrl<QueryType extends Record<string, unknown>>(
     }${window.location.hash}`;
 
     if (windowLocationHref !== newUrl) {
-      // 使用 history.replaceState 更新URL
+      // Use history.replaceState to update URL
       window.history.replaceState(window.history.state, '', newUrl);
 
-      // 同时更新 React Router 的 searchParams
+      // Also update React Router's searchParams
       updateSearchParams(searchParams, context);
     }
   } catch (error: unknown) {
-    // ✅ 正确：使用 resetLogCollector 记录错误，并透出实际错误信息
-    // 记录错误但不中断流程（URL同步失败不应影响主流程）
+    // ✅ Correct: Use resetLogCollector to log errors and expose actual error information
+    // Log errors but don't interrupt flow (URL sync failure should not affect main flow)
     const errorObj = error instanceof Error ? error : new Error(String(error));
     resetLogCollector.log({
       component: 'QuerySyncUtils',

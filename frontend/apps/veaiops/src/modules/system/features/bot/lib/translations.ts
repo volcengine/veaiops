@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 翻译工具函数
+ * Translation utility functions
  */
 
 import { ChannelType } from "api-generate";
 
 /**
- * 获取频道类型翻译
+ * Get channel type translation
  */
 export const getChannelTypeTranslation = (type: ChannelType): string => {
   const translations: Record<ChannelType, string> = {

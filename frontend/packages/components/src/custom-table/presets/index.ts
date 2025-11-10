@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * CustomTable 预设组件统一导出
+ * CustomTable preset components unified export
  */
 
-// 导出 Schema 表格预设
+// Export Schema table preset
 export * from './schema-table';

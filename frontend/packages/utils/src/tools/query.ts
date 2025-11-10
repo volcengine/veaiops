@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 检查对象是否为空
+ * Check if object is empty
  */
 function isEmpty(obj: any): boolean {
   if (obj == null) {
@@ -34,7 +34,7 @@ interface OmitParams<T extends Record<string, any>, K extends keyof T> {
 }
 
 /**
- * 从对象中省略指定的键（内部辅助函数）
+ * Omit specified keys from object (internal helper function)
  */
 function omit<T extends Record<string, any>, K extends keyof T>({
   obj,
@@ -48,9 +48,9 @@ function omit<T extends Record<string, any>, K extends keyof T>({
 }
 
 /**
- * 获取参数对象，过滤空值
- * @param params 原始参数对象
- * @returns 过滤后的参数对象
+ * Get parameter object, filter empty values
+ * @param params Original parameter object
+ * @returns Filtered parameter object
  */
 export function getParamsObject<T extends Record<string, any>>(
   params: T,
@@ -59,7 +59,7 @@ export function getParamsObject<T extends Record<string, any>>(
 
   for (const [key, value] of Object.entries(params)) {
     if (value !== null && value !== undefined && value !== '') {
-      // 对于数组，只保留非空数组
+      // For arrays, only keep non-empty arrays
       if (Array.isArray(value)) {
         if (value.length > 0) {
           (result as any)[key] = value;
@@ -74,7 +74,7 @@ export function getParamsObject<T extends Record<string, any>>(
 }
 
 /**
- * 根据指定的键过滤空数据的参数接口
+ * FilterEmptyDataByKeys parameter interface
  */
 export interface FilterEmptyDataByKeysParams<T extends Record<string, any>> {
   data: T;
@@ -82,9 +82,9 @@ export interface FilterEmptyDataByKeysParams<T extends Record<string, any>> {
 }
 
 /**
- * 根据指定的键过滤空数据
- * @param params 包含 data 和 keys 的参数对象
- * @returns 过滤后的数据对象
+ * Filter empty data by specified keys
+ * @param params Parameter object containing data and keys
+ * @returns Filtered data object
  */
 export function filterEmptyDataByKeys<T extends Record<string, any>>({
   data,
@@ -109,7 +109,7 @@ export function filterEmptyDataByKeys<T extends Record<string, any>>({
 }
 
 /**
- * 从对象中省略指定的键的参数接口
+ * OmitKeysFromObject parameter interface
  */
 export interface OmitKeysFromObjectParams<
   T extends Record<string, any>,
@@ -120,9 +120,9 @@ export interface OmitKeysFromObjectParams<
 }
 
 /**
- * 从对象中省略指定的键
- * @param params 包含 obj 和 keys 的参数对象
- * @returns 省略指定键后的新对象
+ * Omit specified keys from object
+ * @param params Parameter object containing obj and keys
+ * @returns New object with specified keys omitted
  */
 export function omitKeysFromObject<
   T extends Record<string, any>,
@@ -132,7 +132,7 @@ export function omitKeysFromObject<
 }
 
 /**
- * 转换参数类型的参数接口
+ * ConvertParamsTypes parameter interface
  */
 export interface ConvertParamsTypesParams<T extends Record<string, any>> {
   params: T;
@@ -140,9 +140,9 @@ export interface ConvertParamsTypesParams<T extends Record<string, any>> {
 }
 
 /**
- * 转换参数类型
- * @param paramObj 包含 params 和 typeMap 的参数对象
- * @returns 转换后的参数对象
+ * Convert parameter types
+ * @param paramObj Parameter object containing params and typeMap
+ * @returns Converted parameter object
  */
 export function convertParamsTypes<T extends Record<string, any>>({
   params,
@@ -196,7 +196,7 @@ export function convertParamsTypes<T extends Record<string, any>>({
 }
 
 /**
- * 深度合并查询参数的参数接口
+ * MergeQueryParams parameter interface
  */
 export interface MergeQueryParamsParams<T extends Record<string, any>> {
   target: T;
@@ -204,9 +204,9 @@ export interface MergeQueryParamsParams<T extends Record<string, any>> {
 }
 
 /**
- * 深度合并查询参数
- * @param paramObj 包含 target 和 source 的参数对象
- * @returns 合并后的对象
+ * Deep merge query parameters
+ * @param paramObj Parameter object containing target and source
+ * @returns Merged object
  */
 export function mergeQueryParams<T extends Record<string, any>>({
   target,
@@ -224,9 +224,9 @@ export function mergeQueryParams<T extends Record<string, any>>({
 }
 
 /**
- * 标准化查询参数，确保类型一致性
- * @param params 查询参数
- * @returns 标准化后的参数
+ * Normalize query parameters, ensure type consistency
+ * @param params Query parameters
+ * @returns Normalized parameters
  */
 export function normalizeQueryParams<T extends Record<string, any>>(
   params: T,
@@ -234,7 +234,7 @@ export function normalizeQueryParams<T extends Record<string, any>>(
   const result = { ...params } as any;
 
   Object.entries(result).forEach(([key, value]) => {
-    // 处理字符串化的数组
+    // Handle stringified arrays
     if (
       typeof value === 'string' &&
       value.startsWith('[') &&
@@ -243,20 +243,20 @@ export function normalizeQueryParams<T extends Record<string, any>>(
       try {
         result[key] = JSON.parse(value);
       } catch (error: unknown) {
-        // ✅ 静默处理 JSON.parse 错误（如果解析失败，保持原值）
-        // 不需要记录警告，因为这是正常的容错处理
-        // 如果解析失败，保持原值
+        // ✅ Silently handle JSON.parse error (if parsing fails, keep original value)
+        // No need to log warning, as this is normal error handling
+        // If parsing fails, keep original value
       }
     }
 
-    // 处理字符串化的布尔值
+    // Handle stringified boolean values
     if (value === 'true') {
       result[key] = true;
     } else if (value === 'false') {
       result[key] = false;
     }
 
-    // 处理字符串化的数字
+    // Handle stringified numbers
     if (typeof value === 'string' && /^\d+$/.test(value)) {
       const numValue = Number(value);
       if (!Number.isNaN(numValue)) {

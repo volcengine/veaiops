@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * CustomTable 组件属性类型定义
+ * CustomTable component property type definitions
  */
 import type { FeatureFlags } from '@/custom-table/constants/features';
 import type { PaginationProps } from '@arco-design/web-react/es/Pagination/pagination';
@@ -29,18 +29,18 @@ import type {
   QueryFormat,
   ServiceRequestType,
 } from '../core/common';
-// 使用相对路径避免跨层级导入（遵循 .cursorrules 规范）
+// Use relative paths to avoid cross-level imports (following .cursorrules standards)
 import type { LifecyclePhase } from '../hooks/lifecycle';
 import type { CustomTableLifecycleConfig } from '../plugins/lifecycle';
 import type { QuerySyncConfig } from '../plugins/query-sync';
 
 import type { FieldItem } from '@/filters/core/types';
 import type { SearchConfig } from '../plugins/table-toolbar';
-// SearchConfig 已移动到 plugins/table-toolbar.ts，此处删除重复定义
-// 重新导入使用
+// SearchConfig has been moved to plugins/table-toolbar.ts, remove duplicate definition here
+// Re-import for use
 
 /**
- * CustomTable 基础属性接口
+ * CustomTable base properties interface
  */
 export interface CustomTableProps<
   RecordType extends BaseRecord = BaseRecord,
@@ -48,93 +48,93 @@ export interface CustomTableProps<
   ServiceType extends ServiceRequestType = ServiceRequestType,
   FormatRecordType extends BaseRecord = RecordType,
 > {
-  // 基础表格配置
-  /** 行唯一标识符 */
+  // Basic table configuration
+  /** Row unique identifier */
   rowKey?: string | ((record: RecordType) => string);
-  /** 表格基础列配置 */
+  /** Table base column configuration */
   baseColumns?: ModernTableColumnProps<FormatRecordType>[];
-  /** 表格额外属性 */
+  /** Table additional properties */
   tableProps?:
     | ExtendedTableProps<FormatRecordType>
     | ((ctx: { loading: boolean }) => ExtendedTableProps<FormatRecordType>);
-  /** 表格样式类名 */
+  /** Table style class name */
   tableClassName?: string;
-  /** 表格样式 */
+  /** Table style */
   tableStyle?: CSSProperties;
-  /** Sticky 配置 - 控制表头和过滤器的固定行为 */
+  /** Sticky configuration - controls header and filter fixed behavior */
   stickyConfig?: {
-    /** 是否启用表头固定，默认 true */
+    /** Whether to enable header sticky, default true */
     enableHeaderSticky?: boolean;
-    /** 是否启用过滤器固定，默认 true */
+    /** Whether to enable filters sticky, default true */
     enableFiltersSticky?: boolean;
-    /** 表头 sticky 时距离顶部的距离，默认 0 */
+    /** Header sticky distance from top, default 0 */
     headerTopOffset?: number;
-    /** 过滤器 sticky 时距离顶部的距离，默认 0 */
+    /** Filters sticky distance from top, default 0 */
     filtersTopOffset?: number;
-    /** 表头 z-index 值，默认 100 */
+    /** Header z-index value, default 100 */
     headerZIndex?: number;
-    /** 过滤器 z-index 值，默认 99 */
+    /** Filters z-index value, default 99 */
     filtersZIndex?: number;
   };
-  /** 自动计算 scroll.y 配置 - 默认启用 */
+  /** Auto calculate scroll.y configuration - enabled by default */
   autoScrollY?: {
-    /** 是否启用自动计算，默认 true */
+    /** Whether to enable auto calculation, default true */
     enabled?: boolean;
-    /** 固定高度偏移量（像素），默认 350 */
+    /** Fixed height offset (pixels), default 350 */
     offset?: number;
-    /** 最小高度（像素），默认 300 */
+    /** Minimum height (pixels), default 300 */
     minHeight?: number;
-    /** 最大高度（像素），默认 undefined */
+    /** Maximum height (pixels), default undefined */
     maxHeight?: number;
   };
 
-  // 数据源配置
-  /** 数据源配置 */
+  // Data source configuration
+  /** Data source configuration */
   dataSource?: TableDataSource<RecordType, Record<string, unknown>>;
 
-  // 分页配置
-  /** 分页配置 */
+  // Pagination configuration
+  /** Pagination configuration */
   pagination?: PaginationProps | boolean;
 
-  // 标题配置
-  /** 表格标题 */
+  // Title configuration
+  /** Table title */
   title?: string;
-  /** 标题样式类名 */
+  /** Title style class name */
   titleClassName?: string;
-  /** 标题样式 */
+  /** Title style */
   titleStyle?: CSSProperties;
-  /** 标题操作按钮 */
+  /** Title action buttons */
   actions?: ReactNode[];
-  /** 操作按钮样式类名 */
+  /** Action button style class name */
   actionClassName?: string;
 
-  // 过滤器配置
-  /** 过滤器属性 */
+  // Filter configuration
+  /** Filter properties */
   tableFilterProps?: Record<string, unknown>;
-  /** 是否显示过滤器 */
+  /** Whether to show filter */
   isFilterShow?: boolean;
-  /** 过滤器是否固定 */
+  /** Whether filter is fixed */
   isFilterAffixed?: boolean;
-  /** 过滤器是否收集 */
+  /** Whether filter is collected */
   isFilterCollection?: boolean;
-  /** 过滤器样式配置 */
+  /** Filter style configuration */
   filterStyleCfg?: { isWithBackgroundAndBorder: boolean };
-  /** 过滤器包装器样式类名 */
+  /** Filter wrapper style class name */
   tableFilterWrapperClassName?: string;
-  /** 自定义操作样式 */
+  /** Custom action style */
   customActionsStyle?: CSSProperties;
-  /** 启用自定义字段入口（兼容 legacy） */
+  /** Enable custom fields entry (compatible with legacy) */
   enableCustomFields?: boolean;
-  /** 自定义字段配置（兼容 legacy） */
+  /** Custom fields configuration (compatible with legacy) */
   customFieldsProps?: {
     disabledFields: Map<string, string | undefined>;
     value?: string[];
     initialFields?: string[];
     confirm: (value: string[]) => void;
   };
-  /** 启用过滤器设置功能 */
+  /** Enable filter setting feature */
   enableFilterSetting?: boolean;
-  /** 过滤器设置配置 */
+  /** Filter setting configuration */
   filterSettingProps?: {
     fixedOptions?: string[];
     allOptions?: string[];
@@ -153,94 +153,94 @@ export interface CustomTableProps<
       hidden_fields?: string[];
     }) => void;
   };
-  /** 是否显示重置按钮 */
+  /** Whether to show reset button */
   showReset?: boolean;
-  /** 操作按钮 */
+  /** Action buttons */
   operations?: ReactNode[];
-  /** 自定义操作按钮 */
+  /** Custom action buttons */
   customActions?: ReactNode[] | ReactNode;
 
-  // 警告配置
-  /** 是否显示警告 */
+  // Alert configuration
+  /** Whether to show alert */
   isAlertShow?: boolean;
-  /** 警告类型 */
+  /** Alert type */
   alertType?: 'info' | 'success' | 'warning' | 'error';
-  /** 警告内容 */
+  /** Alert content */
   alertContent?: ReactNode;
-  /** 自定义警告节点 */
+  /** Custom alert node */
   customAlertNode?: ReactNode;
 
-  // 加载配置
-  /** 是否使用自定义加载 */
+  // Loading configuration
+  /** Whether to use custom loading */
   useCustomLoading?: boolean;
-  /** 加载提示文字 */
+  /** Loading tip text */
   loadingTip?: string;
-  /** 自定义加载状态 */
+  /** Custom loading state */
   customLoading?: boolean;
 
-  // 空数据配置
-  /** 没有数据时显示的元素 */
+  // Empty data configuration
+  /** Element to display when there is no data */
   noDataElement?: ReactNode;
 
-  // 查询配置
-  /** 初始查询参数 */
+  // Query configuration
+  /** Initial query parameters */
   initQuery?: QueryType;
-  /** 初始过滤器 */
+  /** Initial filters */
   initFilters?: Record<string, unknown>;
-  /** 查询格式配置 */
+  /** Query format configuration */
   queryFormat?: QueryFormat;
-  /** 查询转搜索格式函数 */
+  /** Query to search format function */
   queryToSearchFormat?: (query: QueryType) => string;
 
-  // 处理函数
-  /** 处理列配置函数 */
+  // Handler functions
+  /** Column configuration handler function */
   handleColumns?: (
     props: Record<string, unknown>,
   ) => ModernTableColumnProps<FormatRecordType>[];
-  /** 处理过滤器函数（返回 FieldItem[] 类型） */
+  /** Filter handler function (returns FieldItem[] type) */
   handleFilters?: (props: HandleFilterProps<QueryType>) => FieldItem[];
-  /** 处理列配置属性 */
+  /** Column configuration handler properties */
   handleColumnsProps?: Record<string, unknown>;
-  /** 处理过滤器属性 */
+  /** Filter handler properties */
   handleFiltersProps?: Record<string, unknown>;
 
-  // 排序配置
-  /** 排序字段映射 */
+  // Sorting configuration
+  /** Sort field mapping */
   sortFieldMap?: Record<string, string>;
-  /** 是否支持多列排序（兼容 legacy 的 supportSortColumns） */
+  /** Whether to support multi-column sorting (compatible with legacy supportSortColumns) */
   supportSortColumns?: boolean;
-  /** 是否显示刷新按钮 */
+  /** Whether to show refresh button */
   showRefresh?: boolean;
 
-  // 缓存配置
-  /** 分页是否缓存 */
+  // Cache configuration
+  /** Whether pagination is cached */
   isPaginationInCache?: boolean;
 
-  // 查询参数同步配置
-  /** 是否同步查询到搜索参数 */
+  // Query parameter sync configuration
+  /** Whether to sync query to search parameters */
   syncQueryOnSearchParams?: boolean;
-  /** 权限相关的查询前缀配置，用于过滤敏感参数 */
+  /** Auth-related query prefix configuration, used to filter sensitive parameters */
   authQueryPrefixOnSearchParams?: Record<string, string | undefined>;
-  /** 查询参数转搜索参数的格式化配置 */
+  /** Query parameter to search parameter format configuration */
   querySearchParamsFormat?: Record<string, (value: unknown) => string>;
-  /** 是否使用 activeKey Hook */
+  /** Whether to use activeKey Hook */
   useActiveKeyHook?: boolean;
-  /** 自定义重置逻辑 */
+  /** Custom reset logic */
   customReset?: (params: {
     resetEmptyData: boolean;
     setQuery: (query: QueryType) => void;
   }) => void;
 
-  // 过滤器相关
-  /** 过滤器是否有效 */
+  // Filter related
+  /** Whether filter is effective */
   isFilterEffective?: boolean;
-  /** 过滤器重置键 */
+  /** Filter reset keys */
   filterResetKeys?: string[];
 
-  // 自定义渲染
-  /** 自定义组件渲染 */
+  // Custom rendering
+  /** Custom component rendering */
   customComponentRender?: (props: { table: ReactNode }) => ReactNode;
-  /** 自定义底部 */
+  /** Custom footer */
   customFooter?:
     | ReactNode
     | ((props: {
@@ -248,7 +248,7 @@ export interface CustomTableProps<
         needContinue?: boolean;
         onLoadMore: () => void;
       }) => ReactNode);
-  /** 自定义渲染配置 */
+  /** Custom rendering configuration */
   customRender?: {
     table?: (table: ReactNode) => ReactNode;
     footer?: (props: {
@@ -259,21 +259,21 @@ export interface CustomTableProps<
     [key: string]: unknown;
   };
 
-  // 事件回调
-  /** 查询变化回调 */
+  // Event callbacks
+  /** Query change callback */
   onQueryChange?: (query: QueryType) => void;
-  /** 加载状态变化回调 */
+  /** Loading state change callback */
   onLoadingChange?: (loading: boolean) => void;
 
-  // 功能开关
-  /** 功能配置 */
+  // Feature flags
+  /** Feature configuration */
   features?: Partial<FeatureFlags>;
-  /** 插件配置 */
+  /** Plugin configuration */
   plugins?: string[];
 }
 
 /**
- * 过滤器配置项类型
+ * Filter configuration item type
  */
 export interface FilterConfigItem {
   type: 'input' | 'select' | 'dateRange' | 'number' | 'cascader';
@@ -287,69 +287,69 @@ export interface FilterConfigItem {
   [key: string]: unknown;
 }
 
-// FeatureFlags类型从constants中导入
+// FeatureFlags type imported from constants
 
 /**
- * 表格配置化属性
+ * Table configuration properties
  */
 export interface TableConfigProps<
   RecordType extends BaseRecord = BaseRecord,
   ServiceType extends ServiceRequestType = ServiceRequestType,
   FormatRecordType extends BaseRecord = RecordType,
 > {
-  /** 标题配置 */
+  /** Title configuration */
   titleConfig?: TitleConfig;
-  /** 搜索配置 */
+  /** Search configuration */
   searchConfig?: SearchConfig;
-  /** 工具栏配置 */
+  /** Toolbar configuration */
   toolbarConfig?: ToolbarConfig;
-  /** 过滤器配置 */
+  /** Filter configuration */
   filterConfig?: FilterConfig;
-  /** 提示信息配置 */
+  /** Alert information configuration */
   alertConfig?: AlertConfig;
-  /** 加载状态配置 */
+  /** Loading state configuration */
   loadingConfig?: LoadingConfig;
-  /** 分页配置 */
+  /** Pagination configuration */
   paginationConfig?: PaginationConfig;
-  /** 底部配置 */
+  /** Footer configuration */
   footerConfig?: FooterConfig;
-  /** 表格配置 */
+  /** Table configuration */
   tableConfig?: TableConfig<FormatRecordType>;
-  /** 数据源配置 */
+  /** Data source configuration */
   dataSourceConfig?: DataSourceConfig<
     ServiceType,
     RecordType,
     Record<string, unknown>,
     FormatRecordType
   >;
-  /** 功能开关配置 */
+  /** Feature flag configuration */
   featureConfig?: FeatureConfig;
-  /** 查询参数同步配置 */
+  /** Query parameter sync configuration */
   querySyncConfig?: QuerySyncConfig;
 
-  // ========== 生命周期配置 ==========
-  /** 插件生命周期配置 */
+  // ========== Lifecycle Configuration ==========
+  /** Plugin lifecycle configuration */
   lifecycleConfig?: CustomTableLifecycleConfig;
 
-  /** 组件挂载前的回调 */
+  /** Callback before component mount */
   onBeforeMount?: (context: PluginContext) => void | Promise<void>;
 
-  /** 组件挂载后的回调 */
+  /** Callback after component mount */
   onAfterMount?: (context: PluginContext) => void | Promise<void>;
 
-  /** 组件更新前的回调 */
+  /** Callback before component update */
   onBeforeUpdate?: (context: PluginContext) => void | Promise<void>;
 
-  /** 组件更新后的回调 */
+  /** Callback after component update */
   onAfterUpdate?: (context: PluginContext) => void | Promise<void>;
 
-  /** 组件卸载前的回调 */
+  /** Callback before component unmount */
   onBeforeUnmount?: (context: PluginContext) => void | Promise<void>;
 
-  /** 插件卸载时的回调 */
+  /** Callback when plugin is uninstalled */
   onUninstall?: (context: PluginContext) => void | Promise<void>;
 
-  /** 生命周期执行错误处理 */
+  /** Lifecycle execution error handling */
   onLifecycleError?: (
     error: Error,
     phase: LifecyclePhase,
@@ -358,7 +358,7 @@ export interface TableConfigProps<
 }
 
 /**
- * 标题配置
+ * Title configuration
  */
 export interface TitleConfig {
   title?: string;
@@ -368,7 +368,7 @@ export interface TitleConfig {
 }
 
 /**
- * 工具栏配置
+ * Toolbar configuration
  */
 export interface ToolbarConfig {
   operations?: ReactNode[];
@@ -377,7 +377,7 @@ export interface ToolbarConfig {
 }
 
 /**
- * 过滤器配置
+ * Filter configuration
  */
 export interface FilterConfig {
   isFilterShow?: boolean;
@@ -392,7 +392,7 @@ export interface FilterConfig {
 }
 
 /**
- * 警告配置
+ * Alert configuration
  */
 export interface AlertConfig {
   isAlertShow?: boolean;
@@ -402,7 +402,7 @@ export interface AlertConfig {
 }
 
 /**
- * 加载配置
+ * Loading configuration
  */
 export interface LoadingConfig {
   useCustomLoading?: boolean;
@@ -411,14 +411,14 @@ export interface LoadingConfig {
 }
 
 /**
- * 分页配置
+ * Pagination configuration
  */
 export interface PaginationConfig extends PaginationProps {
   position?: 'top' | 'bottom' | 'both';
 }
 
 /**
- * 底部配置
+ * Footer configuration
  */
 export interface FooterConfig {
   customFooter?: ReactNode | ((props: Record<string, unknown>) => ReactNode);
@@ -427,7 +427,7 @@ export interface FooterConfig {
 }
 
 /**
- * 表格配置
+ * Table configuration
  */
 export interface TableConfig<RecordType extends BaseRecord = BaseRecord> {
   rowKey?: string | ((record: RecordType) => string);
@@ -437,7 +437,7 @@ export interface TableConfig<RecordType extends BaseRecord = BaseRecord> {
 }
 
 /**
- * 数据源配置
+ * Data source configuration
  */
 export interface ComponentDataSourceConfig<
   ServiceType extends ServiceRequestType = ServiceRequestType,
@@ -445,11 +445,11 @@ export interface ComponentDataSourceConfig<
   QueryParams extends Record<string, unknown> = Record<string, unknown>,
   FormatRecordType extends BaseRecord = RecordType,
 > extends Partial<TableDataSource<RecordType, QueryParams>> {
-  /** 是否启用 */
+  /** Whether enabled */
   enabled?: boolean;
 }
 
-// 保持向后兼容性
+// Maintain backward compatibility
 export type DataSourceConfig<
   ServiceType extends ServiceRequestType = ServiceRequestType,
   RecordType extends BaseRecord = BaseRecord,
@@ -463,12 +463,12 @@ export type DataSourceConfig<
 >;
 
 /**
- * 功能配置
+ * Feature configuration
  */
 /**
- * FeatureConfig 已在 core/common.ts 中定义，此处移除避免重复
- * 如需使用，请从 '@/custom-table/types/core' 或 '@/custom-table/types' 导入
+ * FeatureConfig is already defined in core/common.ts, removed here to avoid duplication
+ * If needed, please import from '@/custom-table/types/core' or '@/custom-table/types'
  */
 
-// QuerySyncConfig 已移动到 plugins/query-sync.ts，此处移除导出避免重复
-// 如需使用，请从 '@/custom-table/types/plugins' 或 '@/custom-table/types' 导入
+// QuerySyncConfig has been moved to plugins/query-sync.ts, removed export here to avoid duplication
+// If needed, please import from '@/custom-table/types/plugins' or '@/custom-table/types'

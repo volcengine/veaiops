@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 命名空间选择步骤组件导出
+ * Namespace selection step component export
  */
 
 export { NamespaceSelectionStep } from './components/namespace-selection-step';

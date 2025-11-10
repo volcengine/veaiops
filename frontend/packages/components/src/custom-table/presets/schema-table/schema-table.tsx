@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Schema驱动的表格组件
- * @description 通过配置化+Schema的方式快速搭建表格，支持筛选等功能
+ * Schema-driven table component
+ * @description Quickly build tables through configuration + Schema approach, supports filtering and other features
 
  * @date 2025-12-19
  */
@@ -44,11 +44,11 @@ import { useSchemaTableInstance } from './hooks/use-schema-table-instance';
 import { applyPreset, validateTableSchema } from './utils';
 
 /**
- * SchemaTable组件实现
+ * SchemaTable component implementation
  */
 export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
   ({ schema: propSchema, className, style, onReady }, ref) => {
-    // 应用预设模板
+    // Apply preset template
     const schema = useMemo(() => {
       if (propSchema.preset) {
         return applyPreset(propSchema, propSchema.preset);
@@ -56,7 +56,7 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
       return propSchema;
     }, [propSchema]);
 
-    // 验证Schema
+    // Validate Schema
     useEffect(() => {
       const validation = validateTableSchema(schema);
       if (!validation.valid) {
@@ -67,10 +67,10 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
       }
     }, [schema]);
 
-    // 表单实例
+    // Form instance
     const [searchForm] = Form.useForm();
 
-    // 数据管理
+    // Data management
     const {
       dataSource,
       loading,
@@ -82,13 +82,13 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
       loadData,
     } = useSchemaTableData({ schema });
 
-    // 行选择状态
+    // Row selection state
     const [selectedRowKeys, setSelectedRowKeys] = useState<(string | number)[]>(
       [],
     );
     const [selectedRows, setSelectedRows] = useState<BaseRecord[]>([]);
 
-    // 搜索处理
+    // Search handling
     const handleSearch = useCallback(
       (values: Record<string, unknown>) => {
         setFilters(values);
@@ -99,7 +99,7 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
       [loadData, schema.events],
     );
 
-    // 重置搜索
+    // Reset search
     const handleReset = useCallback(() => {
       searchForm.resetFields();
       setFilters({});
@@ -108,7 +108,7 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
       loadData();
     }, [searchForm, loadData, schema.events]);
 
-    // 分页变化
+    // Pagination change
     const handleTableChange = useCallback(
       (paginationInfo: unknown, sorter: unknown, filterInfo: unknown) => {
         const pagination =
@@ -136,7 +136,7 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
       [loadData, schema.events],
     );
 
-    // 行选择
+    // Row selection
     const handleRowSelectionChange = useCallback(
       (keys: (string | number)[], rows: BaseRecord[]) => {
         setSelectedRowKeys(keys);
@@ -149,14 +149,14 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
       [schema.features?.rowSelection],
     );
 
-    // 生成表格列
+    // Generate table columns
     const tableColumns = useMemo(() => {
       const columns = generateTableColumns(schema.columns);
 
-      // 添加操作列
+      // Add action column
       if (schema.actions && schema.actions.items.length > 0) {
         columns.push({
-          title: '操作',
+          title: 'Actions',
           key: 'actions',
           width: schema.actions.width || 150,
           fixed: schema.actions.fixed,
@@ -199,7 +199,7 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
       return columns;
     }, [schema.columns, schema.actions]);
 
-    // 暴露实例方法
+    // Expose instance methods
     const instance = useSchemaTableInstance({
       dataSource,
       filters,
@@ -217,14 +217,14 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
 
     useImperativeHandle(ref, () => instance, [instance]);
 
-    // 组件就绪回调
+    // Component ready callback
     useEffect(() => {
       onReady?.(instance);
     }, [instance, onReady]);
 
     return (
       <div className={className} style={style}>
-        {/* 标题区域 */}
+        {/* Title area */}
         {(schema.title || schema.description) && (
           <div style={{ marginBottom: 16 }}>
             {schema.title && <h3>{schema.title}</h3>}
@@ -234,7 +234,7 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
           </div>
         )}
 
-        {/* 搜索区域 */}
+        {/* Search area */}
         <SearchSection
           schema={schema}
           searchForm={
@@ -246,10 +246,10 @@ export const SchemaTable = forwardRef<SchemaTableInstance, SchemaTableProps>(
           onReset={handleReset}
         />
 
-        {/* 工具栏区域 */}
+        {/* Toolbar area */}
         <ToolbarSection schema={schema} onReload={() => loadData()} />
 
-        {/* 表格区域 */}
+        {/* Table area */}
         <Table
           columns={tableColumns}
           data={dataSource}

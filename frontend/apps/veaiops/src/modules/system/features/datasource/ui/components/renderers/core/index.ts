@@ -13,17 +13,17 @@
 // limitations under the License.
 
 /**
- * Core renderers - 统一导出入口
- * 职责：提供配置项渲染的核心组件和函数
+ * Core renderers - Unified export entry
+ * Responsibility: Provide core components and functions for config item rendering
  */
 
-// 导出类型
+// Export types
 export type { ConfigItem } from '@datasource/types';
 
-// 导出核心渲染函数
+// Export core rendering functions
 export { renderAllConfigItems } from './render-functions';
 
-// 导出核心组件
+// Export core components
 export { ConfigKeyLabel } from './config-key-label';
 export { ConfigValueRenderer } from './config-value-renderer';
 export { ConfigValueContent } from './config-value-content';

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格分页插件生命周期方法
+ * Table pagination plugin lifecycle methods
  */
 import { createPaginationStateManager } from '@/custom-table/types/utils/state-managers';
 import { createPaginationHelpers } from './helpers';
@@ -21,17 +21,17 @@ import type { ExtendedPaginationConfig } from './types';
 import { getStateNumber } from './utils';
 
 /**
- * 插件安装
+ * Plugin installation
  */
 export function install(_context: any) {
-  // 安装时的操作
+  // Operations during installation
 }
 
 /**
- * 插件设置
+ * Plugin setup
  */
 /**
- * setup 参数接口
+ * Setup parameters interface
  */
 export interface SetupParams {
   context: any;
@@ -39,10 +39,10 @@ export interface SetupParams {
 }
 
 /**
- * 插件设置
+ * Plugin setup
  */
 export function setup({ context, finalConfig }: SetupParams): void {
-  // 初始化分页处理
+  // Initialize pagination handling
   const currentPage = getStateNumber({
     value: context.state.current,
     defaultValue: 1,
@@ -52,39 +52,39 @@ export function setup({ context, finalConfig }: SetupParams): void {
     defaultValue: finalConfig.defaultPageSize || 10,
   });
 
-  // 插件设置逻辑 - 不调用 Hook，只进行配置
-  // Hook 调用已移到组件层面
-  // 分页状态由外层组件管理，这里只设置默认值
+  // Plugin setup logic - don't call Hooks, only configure
+  // Hook calls have been moved to component level
+  // Pagination state is managed by outer component, here only set default values
   Object.assign(context.state, {
     current: currentPage || 1,
     pageSize: currentPageSize || finalConfig.defaultPageSize || 10,
     isChangingPage: false,
   });
 
-  // 添加分页相关方法到上下文
+  // Add pagination-related methods to context
   Object.assign(context.helpers, createPaginationHelpers(context));
 }
 
 /**
- * 插件更新后
+ * After plugin update
  */
 export function afterUpdate(context: any) {
-  // 当配置或数据更新时的操作
-  // 更新分页相关方法
+  // Operations when configuration or data updates
+  // Update pagination-related methods
   Object.assign(context.helpers, createPaginationHelpers(context));
 }
 
 /**
- * 插件卸载
+ * Plugin uninstallation
  */
 export function uninstall(context: any) {
-  // 卸载时的清理操作
-  // 使用类型安全的状态管理器清理分页状态
+  // Cleanup operations during uninstallation
+  // Use type-safe state manager to clean up pagination state
   const paginationManager = createPaginationStateManager();
-  // 类型断言以兼容不同的 PluginContext 泛型参数
+  // Type assertion to be compatible with different PluginContext generic parameters
   paginationManager.cleanupPaginationState(context);
 
-  // 清理额外的分页方法
+  // Clean up additional pagination methods
   const { helpers } = context;
   const helpersRecord = helpers as unknown as Record<string, unknown>;
 

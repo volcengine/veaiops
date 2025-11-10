@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出类型
+// Export types
 export type {
   DataSourceSetter,
   FinalSelectBlockProps,
@@ -25,7 +25,7 @@ export type {
   VeArchSelectBlockProps,
 } from './select';
 
-// 导出组件
+// Export components
 export {
   Select,
   SelectBlock,
@@ -33,5 +33,5 @@ export {
   WrappedSelectBlock,
 } from './select';
 
-// 从 block 中导出 SelectBlock 组件（用于直接使用）
+// Export SelectBlock component from block (for direct use)
 export { SelectBlock as SelectBlockComponent } from './block';

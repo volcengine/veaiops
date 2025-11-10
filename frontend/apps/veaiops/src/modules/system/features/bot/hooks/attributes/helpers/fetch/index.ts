@@ -19,7 +19,7 @@ import { buildFetchAttributesParams } from './params-builder';
 import { useFetchAttributesRefs } from './refs';
 
 /**
- * 使用 ref 来稳定参数引用
+ * Use ref to stabilize parameter references
  */
 interface UseFetchAttributesParams {
   botId: string;
@@ -30,13 +30,13 @@ interface UseFetchAttributesParams {
 }
 
 /**
- * 获取特别关注列表 Hook
+ * Fetch special attention list Hook
  *
- * 拆分说明：
- * - refs.ts: ref 管理（botIdRef、channelRef）
- * - params-builder.ts: 参数构建和日志记录
- * - api-call.ts: API调用和数据处理
- * - index.ts: 主入口，组合所有逻辑
+ * Split explanation:
+ * - refs.ts: ref management (botIdRef, channelRef)
+ * - params-builder.ts: parameter building and logging
+ * - api-call.ts: API calls and data processing
+ * - index.ts: main entry, combines all logic
  */
 export function useFetchAttributes({
   botId,
@@ -45,18 +45,18 @@ export function useFetchAttributes({
   setLoading,
   setAttributes,
 }: UseFetchAttributesParams) {
-  // ref 管理
+  // Ref management
   const { botIdRef, channelRef } = useFetchAttributesRefs({ botId, channel });
 
   const fetchAttributes = useCallback(
     async (requestParams?: FetchAttributesParams) => {
-      // 构建API请求参数
+      // Build API request parameters
       const params = buildFetchAttributesParams({
         requestParams,
         lastRequestParamsRef,
       });
 
-      // 调用API获取数据
+      // Call API to get data
       return await callFetchAttributesApi({
         params,
         botIdRef,

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Tip 组件统一导出
+ * Tip component unified exports
  */
 
-// 重新导出组件
+// Re-export component
 export { Tip } from './tip';

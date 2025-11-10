@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 列宽辅助工具类型定义
- * 提供列宽计算、分配、持久化等工具函数类型
+ * Column width helper utility type definitions
+ * Provides type definitions for column width calculation, allocation, persistence and other utility functions
  */
 
 import type { ColumnProps } from '@arco-design/web-react/es/Table/interface';
@@ -22,31 +22,31 @@ import type { BaseRecord } from '../core/common';
 import type { ColumnResizeEvent, ResizeEvent } from './resize-event';
 
 /**
- * 列宽信息
+ * Column width information
  */
 export interface ColumnWidthInfo {
-  /** 列标识 */
+  /** Column identifier */
   dataIndex: string;
-  /** 当前宽度 */
+  /** Current width */
   width: number;
-  /** 最小宽度 */
+  /** Minimum width */
   minWidth?: number;
-  /** 最大宽度 */
+  /** Maximum width */
   maxWidth?: number;
-  /** 是否可调整大小 */
+  /** Whether resizable */
   resizable?: boolean;
-  /** 是否固定宽度 */
+  /** Whether fixed width */
   fixed?: boolean;
-  /** 宽度类型 */
+  /** Width type */
   widthType?: 'auto' | 'fixed' | 'percentage' | 'flex';
-  /** 百分比宽度（0-100） */
+  /** Percentage width (0-100) */
   percentage?: number;
-  /** Flex 比例 */
+  /** Flex ratio */
   flex?: number;
 }
 
 /**
- * 列宽分配策略
+ * Column width allocation strategy
  */
 export type ColumnWidthStrategy =
   | 'auto'
@@ -57,18 +57,18 @@ export type ColumnWidthStrategy =
   | 'custom';
 
 /**
- * 列宽分配配置
+ * Column width allocation configuration
  */
 export interface ColumnWidthAllocation {
-  /** 分配策略 */
+  /** Allocation strategy */
   strategy: ColumnWidthStrategy;
-  /** 最小总宽度 */
+  /** Minimum total width */
   minTotalWidth?: number;
-  /** 最大总宽度 */
+  /** Maximum total width */
   maxTotalWidth?: number;
-  /** 是否允许超出容器 */
+  /** Whether to allow overflow */
   allowOverflow?: boolean;
-  /** 自定义分配函数 */
+  /** Custom allocation function */
   customAllocator?: (
     columns: ColumnWidthInfo[],
     containerWidth: number,
@@ -76,14 +76,14 @@ export interface ColumnWidthAllocation {
 }
 
 /**
- * 列宽约束
+ * Column width constraints
  */
 export interface ColumnWidthConstraints {
-  /** 全局最小列宽 */
+  /** Global minimum column width */
   globalMinWidth?: number;
-  /** 全局最大列宽 */
+  /** Global maximum column width */
   globalMaxWidth?: number;
-  /** 特定列的约束 */
+  /** Column-specific constraints */
   columnConstraints?: Record<
     string,
     {
@@ -92,7 +92,7 @@ export interface ColumnWidthConstraints {
       fixed?: boolean;
     }
   >;
-  /** 总宽度约束 */
+  /** Total width constraints */
   totalWidthConstraints?: {
     min?: number;
     max?: number;
@@ -101,56 +101,56 @@ export interface ColumnWidthConstraints {
 }
 
 /**
- * 列宽持久化选项
+ * Column width persistence options
  */
 export interface ColumnWidthPersistenceOptions {
-  /** 存储键前缀 */
+  /** Storage key prefix */
   storageKey: string;
-  /** 存储方式 */
+  /** Storage type */
   storageType?: 'localStorage' | 'sessionStorage' | 'custom';
-  /** 自定义存储方法 */
+  /** Custom storage methods */
   customStorage?: {
     get: (key: string) => string | null;
     set: (key: string, value: string) => void;
     remove: (key: string) => void;
   };
-  /** 版本控制 */
+  /** Version control */
   version?: string;
-  /** 过期时间 (ms) */
+  /** Expiration time (ms) */
   expireTime?: number;
 }
 
 /**
- * 列宽状态
+ * Column width state
  */
 export interface ColumnWidthState {
-  /** 当前列宽映射 */
+  /** Current column width mapping */
   widths: Record<string, number>;
-  /** 列宽历史 */
+  /** Column width history */
   history: ColumnWidthInfo[][];
-  /** 是否已初始化 */
+  /** Whether initialized */
   initialized: boolean;
-  /** 上次更新时间 */
+  /** Last update time */
   lastUpdated: number;
-  /** 容器宽度 */
+  /** Container width */
   containerWidth: number;
-  /** 总列宽 */
+  /** Total column width */
   totalWidth: number;
 }
 
 /**
- * 列宽计算结果
+ * Column width calculation result
  */
 export interface ColumnWidthCalculation {
-  /** 分配后的列宽信息 */
+  /** Column width information after allocation */
   columns: ColumnWidthInfo[];
-  /** 总宽度 */
+  /** Total width */
   totalWidth: number;
-  /** 是否发生变化 */
+  /** Whether changes occurred */
   hasChanges: boolean;
-  /** 变化的列 */
+  /** Changed columns */
   changedColumns: string[];
-  /** 计算元数据 */
+  /** Calculation metadata */
   metadata: {
     strategy: ColumnWidthStrategy;
     containerWidth: number;
@@ -161,10 +161,10 @@ export interface ColumnWidthCalculation {
 }
 
 /**
- * 列宽辅助工具函数类型
+ * Column width helper utility function types
  */
 export interface ColumnWidthHelpers {
-  /** 计算列宽分配 */
+  /** Calculate column width allocation */
   calculateColumnWidths: (
     columns: ColumnProps<BaseRecord>[],
     containerWidth: number,
@@ -172,39 +172,39 @@ export interface ColumnWidthHelpers {
     constraints?: ColumnWidthConstraints,
   ) => ColumnWidthCalculation;
 
-  /** 应用列宽约束 */
+  /** Apply column width constraints */
   applyConstraints: (
     widthInfo: ColumnWidthInfo,
     constraints: ColumnWidthConstraints,
   ) => ColumnWidthInfo;
 
-  /** 自动调整列宽 */
+  /** Auto-fit column widths */
   autoFitColumns: (
     columns: ColumnProps<BaseRecord>[],
     containerWidth: number,
     strategy?: ColumnWidthStrategy,
   ) => ColumnWidthInfo[];
 
-  /** 均匀分配列宽 */
+  /** Distribute equal column widths */
   distributeEqualWidth: (
     columns: ColumnProps<BaseRecord>[],
     availableWidth: number,
   ) => ColumnWidthInfo[];
 
-  /** 基于内容计算列宽 */
+  /** Calculate column width based on content */
   calculateContentWidth: (
     column: ColumnProps<BaseRecord>,
     data: BaseRecord[],
     maxRows?: number,
   ) => number;
 
-  /** 百分比转像素 */
+  /** Convert percentage to pixels */
   percentageToPixels: (percentage: number, containerWidth: number) => number;
 
-  /** 像素转百分比 */
+  /** Convert pixels to percentage */
   pixelsToPercentage: (pixels: number, containerWidth: number) => number;
 
-  /** 验证列宽配置 */
+  /** Validate column width configuration */
   validateColumnWidths: (
     widths: ColumnWidthInfo[],
     constraints?: ColumnWidthConstraints,
@@ -214,40 +214,40 @@ export interface ColumnWidthHelpers {
     warnings: string[];
   };
 
-  /** 合并列宽配置 */
+  /** Merge column width configurations */
   mergeColumnWidths: (
     defaultWidths: ColumnWidthInfo[],
     userWidths: Partial<ColumnWidthInfo>[],
   ) => ColumnWidthInfo[];
 
-  /** 持久化列宽 */
+  /** Persist column widths */
   persistColumnWidths: (
     widths: ColumnWidthInfo[],
     options: ColumnWidthPersistenceOptions,
   ) => void;
 
-  /** 恢复列宽 */
+  /** Restore column widths */
   restoreColumnWidths: (
     defaultWidths: ColumnWidthInfo[],
     options: ColumnWidthPersistenceOptions,
   ) => ColumnWidthInfo[];
 
-  /** 清除持久化列宽 */
+  /** Clear persisted column widths */
   clearPersistedWidths: (options: ColumnWidthPersistenceOptions) => void;
 
-  /** 创建列宽调整处理器 */
+  /** Create column width resize handler */
   createResizeHandler: (
     onResize: (event: ColumnResizeEvent) => void,
     debounceMs?: number,
   ) => (dataIndex: string, newWidth: number) => void;
 
-  /** 获取响应式列宽 */
+  /** Get responsive column widths */
   getResponsiveColumnWidths: (
     widths: ColumnWidthInfo[],
     breakpoint: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl',
   ) => ColumnWidthInfo[];
 
-  /** 优化列宽性能 */
+  /** Optimize column width performance */
   optimizeColumnWidths: (
     widths: ColumnWidthInfo[],
     performanceOptions?: {
@@ -259,34 +259,34 @@ export interface ColumnWidthHelpers {
 }
 
 /**
- * 扩展的表格属性（包含列宽功能）
+ * Extended table properties (including column width functionality)
  */
 export interface TablePropsWithColumnWidth<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 列宽配置 */
+  /** Column width configuration */
   columnWidth?: {
-    /** 列宽分配配置 */
+    /** Column width allocation configuration */
     allocation?: ColumnWidthAllocation;
-    /** 列宽约束 */
+    /** Column width constraints */
     constraints?: ColumnWidthConstraints;
-    /** 持久化选项 */
+    /** Persistence options */
     persistence?: ColumnWidthPersistenceOptions;
-    /** 响应式断点配置 */
+    /** Responsive breakpoint configuration */
     responsive?: Record<string, Partial<ColumnWidthAllocation>>;
-    /** 调整大小事件处理 */
+    /** Resize event handling */
     onResize?: (event: ResizeEvent) => void;
   };
 
-  /** 是否启用列宽调整 */
+  /** Whether column width adjustment is enabled */
   resizable?: boolean;
 
-  /** 默认列宽 */
+  /** Default column width */
   defaultColumnWidth?: number;
 
-  /** 最小列宽 */
+  /** Minimum column width */
   minColumnWidth?: number;
 
-  /** 最大列宽 */
+  /** Maximum column width */
   maxColumnWidth?: number;
 }

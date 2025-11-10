@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== 组件导出 ====================
+// ==================== Component exports ====================
 export { default as ChatTable } from './chat-table';
 export type { ChatTableRef } from './ref-handlers';
 
-// ==================== Hook 导出 ====================
+// ==================== Hook exports ====================
 export { useChatTableConfigWrapper } from './config';
 export { useChatTableHandlers } from './handlers';
 export { useChatTableRefHandler } from './ref-handlers';

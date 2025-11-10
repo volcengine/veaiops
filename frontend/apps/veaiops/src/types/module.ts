@@ -13,38 +13,38 @@
 // limitations under the License.
 
 /**
- * 模块类型枚举
- * 用于区分不同模块的订阅关系管理
+ * Module type enumeration
+ * Used to distinguish subscription relationship management for different modules
  */
 export enum ModuleType {
-  /** 事件中心 */
+  /** Event center */
   EVENT_CENTER = 'event-center',
-  /** 时序异常检测 */
+  /** Time series anomaly detection */
   TIMESERIES = 'timeseries',
-  /** 智能阈值 */
+  /** Intelligent threshold */
   INTELLIGENT_THRESHOLD = 'intelligent-threshold',
-  /** Oncall异动 */
+  /** Oncall anomaly */
   ONCALL = 'oncall',
 }
 
 /**
- * 模块类型配置
+ * Module type configuration
  */
 export interface ModuleConfig {
-  /** 模块类型 */
+  /** Module type */
   type: ModuleType;
-  /** 显示名称 */
+  /** Display name */
   displayName: string;
-  /** 页面标题 */
+  /** Page title */
   pageTitle: string;
-  /** 描述 */
+  /** Description */
   description: string;
-  /** 路由路径匹配模式 */
+  /** Route path matching pattern */
   pathPattern: string;
 }
 
 /**
- * 模块配置映射
+ * Module configuration mapping
  */
 export const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
   [ModuleType.EVENT_CENTER]: {
@@ -78,9 +78,9 @@ export const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
 };
 
 /**
- * 根据路径检测模块类型
- * @param pathname 当前路径
- * @returns 检测到的模块类型
+ * Detect module type from path
+ * @param pathname Current path
+ * @returns Detected module type
  */
 export function detectModuleTypeFromPath(pathname: string): ModuleType {
   for (const config of Object.values(MODULE_CONFIGS)) {
@@ -92,17 +92,17 @@ export function detectModuleTypeFromPath(pathname: string): ModuleType {
 }
 
 /**
- * 获取模块配置
- * @param moduleType 模块类型
- * @returns 模块配置
+ * Get module configuration
+ * @param moduleType Module type
+ * @returns Module configuration
  */
 export function getModuleConfig(moduleType: ModuleType): ModuleConfig {
   return MODULE_CONFIGS[moduleType];
 }
 
 /**
- * 获取所有模块类型
- * @returns 模块类型数组
+ * Get all module types
+ * @returns Array of module types
  */
 export function getAllModuleTypes(): ModuleType[] {
   return Object.values(ModuleType);

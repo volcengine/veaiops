@@ -22,18 +22,18 @@ import type { FormatDurationProps } from './constants';
 import { DEFAULT_TIME_FORMAT_TEMPLATE } from './constants';
 import { isMillisecondTimestamp } from './utils';
 
-// Apply Day.js plugin(s)
+// Apply Day.js plugins
 dayjs.extend(duration);
 
 /**
- * @description Format a standard timestamp.
+ * @description Format standard timestamp.
  *
- * In our business context, negative timestamps shouldn't occur; non-positive values return an empty string.
+ * In business, negative timestamps usually don't occur, so non-positive values return empty string.
  *
- * @param targetMoment Timestamp in milliseconds or seconds
- * @param template Format template, default 'YYYY-MM-DD HH:mm:ss'
- * @param compareMoment Timestamp to compare against, used to compute a time difference
- * @returns Formatted time string or difference
+ * @param targetMoment Timestamp, unit is milliseconds or seconds
+ * @param template Format template, defaults to 'YYYY-MM-DD HH:mm:ss'
+ * @param compareMoment Compare timestamp, used for calculating time difference
+ * @returns Formatted time string or time difference
  */
 export function formatTimestamp(
   targetMoment?: number,
@@ -62,13 +62,13 @@ export function formatTimestamp(
     return asString ? EMPTY_CONTENT_TEXT : EMPTY_CONTENT;
   }
 
-  // Validate timestamp unit of targetMoment
+  // Validate targetMoment timestamp unit
   const normalizedTargetMoment = !isMillisecondTimestamp(targetMoment)
     ? targetMoment * 1000
     : targetMoment;
 
   if (compareMoment) {
-    // Validate timestamp unit of compareMoment
+    // Validate compareMoment timestamp unit
     const normalizedCompareMoment = !isMillisecondTimestamp(compareMoment)
       ? compareMoment * 1000
       : compareMoment;
@@ -78,17 +78,17 @@ export function formatTimestamp(
     ); // Calculate time difference
 
     if (template === 'year') {
-      return `${diff.years()}年`;
+      return `${diff.years()} year${diff.years() !== 1 ? 's' : ''}`;
     } else if (template === 'month') {
-      return `${diff.months()}月`;
+      return `${diff.months()} month${diff.months() !== 1 ? 's' : ''}`;
     } else if (template === 'day') {
-      return `${diff.days()}天`;
+      return `${diff.days()} day${diff.days() !== 1 ? 's' : ''}`;
     } else if (template === 'hour') {
-      const roundedDiff = Math.round(diff.asHours()); // Round to the nearest whole hour
-      return `${roundedDiff}小时`;
+      const roundedDiff = Math.round(diff.asHours()); // Round to nearest integer hour
+      return `${roundedDiff} hour${roundedDiff !== 1 ? 's' : ''}`;
     } else if (template === 'second') {
-      const roundedDiff = Math.round(diff.asSeconds()); // Round to the nearest whole second
-      return `${roundedDiff}秒`;
+      const roundedDiff = Math.round(diff.asSeconds()); // Round to nearest integer second
+      return `${roundedDiff} second${roundedDiff !== 1 ? 's' : ''}`;
     }
   }
 
@@ -99,12 +99,12 @@ export function formatTimestamp(
 }
 
 /**
- * @description Format a Unix timestamp (seconds).
+ * @description Format unix timestamp in seconds.
  *
- * In our business context, negative timestamps shouldn't occur; non-positive values return an empty string.
+ * In business, negative timestamps usually don't occur, so non-positive values return empty string.
  *
  * @param n Unix timestamp (seconds)
- * @param template Format template; default 'YYYY-MM-DD HH:mm:ss'
+ * @param template Format template, defaults to 'YYYY-MM-DD HH:mm:ss'
  */
 export const formatUnixTimestamp = (
   n: number | string | undefined | null,
@@ -122,11 +122,11 @@ export const formatUnixTimestamp = (
 };
 
 /**
- * Convert a timestamp to `${hours} hours ${minutes} minutes ${seconds} seconds` format.
- * @param timestamp - Timestamp value; milliseconds or seconds.
- * @param isMilliseconds - Whether the input is in milliseconds; default true.
- * @param isReturnTypeObject - Return type: object or string; default string
- * @returns Formatted string; returns undefined if timestamp is NaN, undefined, or null.
+ * Convert timestamp to format `${hours} hours ${minutes} minutes ${seconds} seconds`.
+ * @param duration - Duration value, can be millisecond timestamp or second timestamp.
+ * @param isMilliseconds - Whether the passed value is millisecond timestamp, defaults to true.
+ * @param isReturnTypeObject - Return type is object or string, defaults to string
+ * @returns Formatted time string, if duration is NaN, undefined or null, returns undefined.
  */
 export const formatDuration = ({
   duration: durationValue,
@@ -160,5 +160,5 @@ export const formatDuration = ({
       seconds,
     };
   }
-  return `${hours} 小时 ${minutes} 分钟 ${seconds} 秒`;
+  return `${hours} hour${hours !== 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''} ${seconds} second${seconds !== 1 ? 's' : ''}`;
 };

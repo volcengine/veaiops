@@ -24,8 +24,8 @@ import React, { useMemo } from 'react';
 import { transformSubscriptionToTableData } from './lib/utils';
 
 /**
- * 订阅关系表格配置Hook
- * 提供数据源配置等（列配置已移至组件中处理）
+ * Subscription relation table configuration Hook
+ * Provides data source configuration, etc. (column configuration has been moved to component handling)
  */
 export const useSubscriptionTableConfig = ({
   handleEdit: _handleEdit,
@@ -34,12 +34,12 @@ export const useSubscriptionTableConfig = ({
   handleEdit: (subscription: SubscribeRelationWithAttributes) => void;
   handleDelete: (subscriptionId: string) => Promise<boolean>;
 }) => {
-  // 🔍 Hook 执行计数（用于调试）
+  // 🔍 Hook execution count (for debugging)
   const hookExecutionRef = React.useRef(0);
   hookExecutionRef.current++;
 
   logger.debug({
-    message: '[useSubscriptionTableConfig] Hook 执行',
+    message: '[useSubscriptionTableConfig] Hook execution',
     data: {
       executionCount: hookExecutionRef.current,
       handleEditRef: _handleEdit,
@@ -50,14 +50,14 @@ export const useSubscriptionTableConfig = ({
   });
 
   /**
-   * CustomTable的request函数
-   * 🔧 使用 useMemo 稳定化函数引用，避免触发不必要的表格刷新
-   * 直接调用API获取数据
+   * CustomTable request function
+   * 🔧 Use useMemo to stabilize function reference, avoid triggering unnecessary table refresh
+   * Directly call API to fetch data
    */
   const request = useMemo(
     () => {
       logger.debug({
-        message: '[useSubscriptionTableConfig] request 函数创建',
+        message: '[useSubscriptionTableConfig] Request function created',
         data: {
           executionCount: hookExecutionRef.current,
         },
@@ -73,12 +73,12 @@ export const useSubscriptionTableConfig = ({
           total: number;
         }> => {
           try {
-            // ✅ 修复：传递所有查询参数（agents、event_levels 等）
+            // ✅ Fix: Pass all query parameters (agents, event_levels, etc.)
             const response: PaginatedAPIResponseSubscribeRelationList =
               await apiClient.subscribe.getApisV1ManagerEventCenterSubscribe({
                 skip: (params.skip as number) || 0,
                 limit: (params.limit as number) || 10,
-                ...params, // ✅ 传递其他查询参数，如 agents、event_levels、enable_webhook 等
+                ...params, // ✅ Pass other query parameters, such as agents, event_levels, enable_webhook, etc.
               });
 
             if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
@@ -87,11 +87,11 @@ export const useSubscriptionTableConfig = ({
               );
               return {
                 data: tableData,
-                // response 类型已明确为 PaginatedAPIResponseSubscribeRelationList，有 total 字段
+                // response type is explicitly PaginatedAPIResponseSubscribeRelationList, has total field
                 total: response.total ?? tableData.length,
               };
             } else {
-              throw new Error(response.message || '获取订阅关系列表失败');
+              throw new Error(response.message || 'Failed to fetch subscription relation list');
             }
           } catch (error) {
             Message.error('加载订阅关系列表失败，请重试');
@@ -104,13 +104,13 @@ export const useSubscriptionTableConfig = ({
         defaultLimit: 10,
       });
     },
-    [], // request 函数不依赖任何外部变量，使用空依赖数组
+    [], // request function doesn't depend on any external variables, use empty dependency array
   );
 
-  // 🔧 使用 useMemo 稳定化 dataSource 对象引用，避免触发不必要的表格刷新
+  // 🔧 Use useMemo to stabilize dataSource object reference, avoid triggering unnecessary table refresh
   const dataSource = useMemo(() => {
     logger.debug({
-      message: '[useSubscriptionTableConfig] dataSource 对象创建',
+      message: '[useSubscriptionTableConfig] DataSource object created',
       data: {
         executionCount: hookExecutionRef.current,
         requestRef: request,
@@ -126,7 +126,7 @@ export const useSubscriptionTableConfig = ({
     };
   }, [request]);
 
-  // 🔧 使用 useMemo 稳定化 tableProps 对象引用
+  // 🔧 Use useMemo to stabilize tableProps object reference
   const tableProps = useMemo(
     () => ({
       rowKey: '_id',

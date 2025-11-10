@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 测试状态内容组件
+ * Test status content component
  */
 
 import { Typography } from '@arco-design/web-react';

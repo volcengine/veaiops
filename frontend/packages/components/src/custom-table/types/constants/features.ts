@@ -13,41 +13,41 @@
 // limitations under the License.
 
 /**
- * CustomTable 功能常量类型定义
+ * CustomTable feature constant type definitions
  *
 
  * @date 2025-12-19
  */
 
 /**
- * @name 功能开关类型
- * @description 基于 DEFAULT_FEATURES 常量推断的功能开关类型
+ * @name Feature flags type
+ * @description Feature flags type inferred from DEFAULT_FEATURES constant
  */
 export type FeatureFlags = {
-  /** @name 是否启用分页功能 */
+  /** @name Whether to enable pagination feature */
   enablePagination: boolean;
-  /** @name 是否启用筛选功能 */
+  /** @name Whether to enable filter feature */
   enableFilter: boolean;
-  /** @name 是否启用排序功能 */
+  /** @name Whether to enable sorting feature */
   enableSorting: boolean;
-  /** @name 是否启用选择功能 */
+  /** @name Whether to enable selection feature */
   enableSelection: boolean;
-  /** @name 是否启用搜索功能 */
+  /** @name Whether to enable search feature */
   enableSearch: boolean;
-  /** @name 是否启用工具栏功能 */
+  /** @name Whether to enable toolbar feature */
   enableToolbar: boolean;
-  /** @name 是否启用警告提示功能 */
+  /** @name Whether to enable alert feature */
   enableAlert: boolean;
-  /** @name 是否启用查询同步功能 */
+  /** @name Whether to enable query sync feature */
   enableQuerySync: boolean;
-  /** @name 是否启用数据源功能 */
+  /** @name Whether to enable data source feature */
   enableDataSource: boolean;
-  /** @name 是否启用列管理功能 */
+  /** @name Whether to enable column management feature */
   enableColumns: boolean;
-  /** @name 是否启用自定义加载功能 */
+  /** @name Whether to enable custom loading feature */
   enableCustomLoading: boolean;
-  /** @name 是否启用行选择功能 */
+  /** @name Whether to enable row selection feature */
   enableRowSelection: boolean;
-  /** @name 是否启用列宽持久化功能 */
+  /** @name Whether to enable column width persistence feature */
   enableColumnWidthPersistence: boolean;
 };

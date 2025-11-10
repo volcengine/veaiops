@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * Tables - 统一导出入口
- * 职责：导出所有表格组件及其相关配置
+ * Tables - Unified export entry
+ * Responsibility: Export all table components and related configurations
  */
 
-// 导出表格组件
+// Export table components
 export { DataSourceTable } from './data-source-table';
 export { MonitorTable } from './monitor-table';
 export type { MonitorTableRef } from './monitor-table';
 
-// 导出列配置
+// Export column configuration
 export {
   getCommonColumns,
   getZabbixColumns,
@@ -32,5 +32,5 @@ export {
   getActionColumn,
 } from './columns';
 
-// 导出类型
+// Export types
 export type { DeleteHandler, ViewHandler, EditHandler } from './columns';

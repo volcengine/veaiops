@@ -16,8 +16,8 @@ import { Button } from '@arco-design/web-react';
 import { IconPlus } from '@arco-design/web-react/icon';
 
 /**
- * Bot操作按钮配置Hook
- * 提供表格工具栏操作按钮配置
+ * Bot action button configuration Hook
+ * Provides table toolbar action button configuration
  */
 export const useBotActionConfig = (onAdd: () => void) => {
   const actions = [
@@ -28,7 +28,7 @@ export const useBotActionConfig = (onAdd: () => void) => {
       onClick={onAdd}
       data-testid="new-bot-btn"
     >
-      新增群聊机器人
+      Add Chat Bot
     </Button>,
   ];
 

@@ -87,3 +87,4 @@ function countGeneratedFiles(outputDir) {
 }
 
 module.exports = { validateResult, countGeneratedFiles };
+

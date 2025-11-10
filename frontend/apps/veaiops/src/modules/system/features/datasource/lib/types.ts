@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 监控介入相关类型定义
+ * Monitor intervention related type definitions
  */
 
-// 从api-generate导入数据源类型
+// Import data source type from api-generate
 import type { DataSourceType as ApiDataSourceType } from "api-generate";
 
 export interface MonitorIntervention {
@@ -48,16 +48,16 @@ export interface MonitorInterventionTableData extends MonitorIntervention {
 }
 
 /**
- * 数据源类型（扩展版本，包含更多类型）
+ * Data source type (extended version, includes more types)
  */
 export type DataSourceType = ApiDataSourceType | "prometheus" | "influxdb";
 
-// 注意：DataSourceResponse 接口已在重构中移除
-// 当前分支统一使用 api-generate 中的 DataSource 类型（符合单一数据源原则）
-// 如果未来需要，应使用 api-generate/models/data-source.ts 中的类型定义
+// Note: DataSourceResponse interface has been removed in refactoring
+// Current branch uniformly uses DataSource type from api-generate (complies with single data source principle)
+// If needed in the future, should use type definitions from api-generate/models/data-source.ts
 
 /**
- * 监控接入组件属性接口
+ * Monitor access component properties interface
  */
 export interface MonitorAccessProps {
   moduleType?: "timeseries" | "threshold" | "common";
@@ -67,7 +67,7 @@ export interface MonitorAccessProps {
 }
 
 /**
- * 数据源接口（从injection模块迁移）
+ * Data source interface (migrated from injection module)
  */
 export interface DataSource {
   id: string;
@@ -95,27 +95,27 @@ export interface DataSourceConfig {
 }
 
 /**
- * 删除处理函数类型
+ * Delete handler function type
  *
- * ✅ 符合异步方法错误处理规范：
- * - 支持返回 { success: boolean; error?: Error } 格式的结果对象
- * - 同时也支持 Promise<void> 格式（向后兼容）
+ * ✅ Complies with async method error handling specification:
+ * - Supports returning result object in format { success: boolean; error?: Error }
+ * - Also supports Promise<void> format (backward compatibility)
  */
 export type DeleteHandler = (
   id: string,
 ) => Promise<boolean> | Promise<{ success: boolean; error?: Error }>;
 
 /**
- * 编辑处理函数类型
+ * Edit handler function type
  */
 export type EditHandler = (item: DataSource) => void;
 
 /**
- * 查看详情处理函数类型
+ * View details handler function type
  */
 export type ViewHandler = (item: DataSource) => void;
 
 /**
- * 监控项类型（别名，用于兼容旧代码）
+ * Monitor item type (alias, for backward compatibility with old code)
  */
 export type MonitorItem = DataSource;

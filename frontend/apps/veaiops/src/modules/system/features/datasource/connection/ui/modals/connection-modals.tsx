@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接面板弹窗组件集合
+ * Connection panel modal component collection
  */
 
 import type {
@@ -56,7 +56,7 @@ export const ConnectionModals: React.FC<ConnectionModalsProps> = ({
 }) => {
   return (
     <>
-      {/* 创建连接弹窗 */}
+      {/* Create connection modal */}
       <CreateConnectionModal
         type={type}
         visible={createModalVisible}
@@ -64,7 +64,7 @@ export const ConnectionModals: React.FC<ConnectionModalsProps> = ({
         onCancel={onCreateCancel}
       />
 
-      {/* 编辑连接弹窗 */}
+      {/* Edit connection modal */}
       <EditConnectionModal
         type={type}
         visible={editModalVisible}
@@ -73,7 +73,7 @@ export const ConnectionModals: React.FC<ConnectionModalsProps> = ({
         onCancel={onEditCancel}
       />
 
-      {/* 测试连接弹窗 */}
+      {/* Test connection modal */}
       <ConnectTestModal
         visible={testModalVisible}
         connect={testingConnect}

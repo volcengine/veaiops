@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 指标列表组件
- * @description 展示所有可用指标的列表
+ * Metric list component
+ * @description Displays a list of all available metrics
  */
 
 import { Empty, Radio, Space } from '@arco-design/web-react';

@@ -20,8 +20,8 @@ const path = require('path');
  */
 const toKebabCase = (str) => {
   return str
-    .replace(/([a-z])([A-Z])/g, '$1-$2') // 在小写字母和大写字母之间插入连字符
-    .replace(/([A-Z])([A-Z][a-z])/g, '$1-$2') // 处理连续大写字母的情况
+    .replace(/([a-z])([A-Z])/g, '$1-$2') // Insert hyphen between lowercase and uppercase letters
+    .replace(/([A-Z])([A-Z][a-z])/g, '$1-$2') // Handle consecutive uppercase letters
     .toLowerCase();
 };
 

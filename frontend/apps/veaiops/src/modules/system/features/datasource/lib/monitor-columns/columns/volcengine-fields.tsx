@@ -21,7 +21,7 @@ import type React from 'react';
 import { getConfigData } from '../../config-data-utils';
 
 /**
- * 创建火山引擎特定字段列
+ * Create Volcengine specific field columns
  */
 export const createVolcengineSpecificFields = (
   dataSourceType: DataSourceType,
@@ -74,7 +74,7 @@ export const createVolcengineSpecificFields = (
       render: (_: unknown, record: DataSource) => {
         const configData = getConfigData({ record, dsType: dataSourceType });
         const instances = (configData as Record<string, unknown>)?.instances;
-        // 简化渲染，如果有实例列表则显示数量
+        // Simplified rendering, show count if instance list exists
         if (Array.isArray(instances) && instances.length > 0) {
           return <Ellipsis text={`${instances.length} 个实例`} />;
         }

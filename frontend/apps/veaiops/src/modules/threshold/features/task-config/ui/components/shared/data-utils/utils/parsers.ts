@@ -15,19 +15,19 @@
 import type { GetLabelValueParams } from '../types';
 
 /**
- * 安全的数值解析函数
+ * Safe number parsing function
  */
 export const parseToNumber = (value: unknown): number | undefined => {
   if (value === null || value === undefined) {
     return undefined;
   }
 
-  // 边界检查：已经是数字
+  // Boundary check: already a number
   if (typeof value === 'number') {
     return Number.isFinite(value) ? value : undefined;
   }
 
-  // 边界检查：字符串转数字
+  // Boundary check: string to number conversion
   if (typeof value === 'string') {
     const numericValue = Number(value);
     return Number.isFinite(numericValue) ? numericValue : undefined;
@@ -37,14 +37,14 @@ export const parseToNumber = (value: unknown): number | undefined => {
 };
 
 /**
- * 获取标签值
+ * Get label value
  */
 export const getLabelValue = ({ obj, key }: GetLabelValueParams): string => {
   const value = obj[key];
   if (value === null || value === undefined) {
     return '';
   }
-  // 确保值可以安全转换为字符串
+  // Ensure value can be safely converted to string
   if (typeof value === 'object' && value !== null) {
     return JSON.stringify(value);
   }

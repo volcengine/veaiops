@@ -43,10 +43,10 @@ const CardTemplateDrawer: React.FC<CardTemplateModalProps> = ({
       const values = await form.validate();
       const success = await onSubmit(values);
       if (success) {
-        // 成功后会在 hook 中处理关闭弹窗和重置表单
+        // Success handling (close modal and reset form) is done in the hook
       }
     } catch (error) {
-      // 表单提交错误已在 hook 中处理，此处静默处理
+      // Form submission errors are handled in the hook, silently handle here
     }
   };
   return (

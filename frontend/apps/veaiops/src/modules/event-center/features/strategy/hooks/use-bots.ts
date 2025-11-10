@@ -23,7 +23,7 @@ const useBotsList = () => {
       limit: 100,
     });
     if (res.code !== API_RESPONSE_CODE.SUCCESS) {
-      throw new Error(res.message || '获取机器人列表失败');
+      throw new Error(res.message || 'Failed to fetch bot list');
     }
     const options = (res?.data || [])?.map((item) => ({
       label: item.name,

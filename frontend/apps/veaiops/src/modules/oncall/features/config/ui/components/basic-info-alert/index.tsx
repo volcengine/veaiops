@@ -20,8 +20,8 @@ import type { BasicInfoAlertProps } from './types';
 import { formatActionCategoryText, formatInspectCategoryText } from './utils';
 
 /**
- * 基本信息 Alert 组件
- * 显示只读信息：告警类别、检测类别、版本
+ * Basic info Alert component
+ * Displays read-only information: action category, inspect category, version
  */
 export const BasicInfoAlert: React.FC<BasicInfoAlertProps> = ({ rule }) => {
   return (

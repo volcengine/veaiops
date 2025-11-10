@@ -16,48 +16,48 @@ import type { TableProps } from '@arco-design/web-react';
 import type { ReactNode } from 'react';
 
 /**
- * 列配置接口
+ * Column configuration interface
  */
 export interface ColumnConfig<T = any> {
-  /** 列标题 */
+  /** Column title */
   title: string;
-  /** 数据字段 */
+  /** Data field */
   dataIndex?: keyof T;
-  /** 列宽度 */
+  /** Column width */
   width?: number;
-  /** 是否可排序 */
+  /** Whether sortable */
   sortable?: boolean;
-  /** 是否可筛选 */
+  /** Whether filterable */
   filterable?: boolean;
-  /** 自定义渲染 */
+  /** Custom render */
   render?: (value: any, record: T, index: number) => ReactNode;
-  /** 列对齐方式 */
+  /** Column alignment */
   align?: 'left' | 'center' | 'right';
-  /** 是否固定列 */
+  /** Whether fixed column */
   fixed?: 'left' | 'right';
-  /** 是否可调整宽度 */
+  /** Whether resizable */
   resizable?: boolean;
 }
 
 /**
- * 操作按钮配置
+ * Action button configuration
  */
 export interface ActionConfig<T = any> {
-  /** 按钮文本 */
+  /** Button text */
   text: string;
-  /** 按钮类型 */
+  /** Button type */
   type?: 'primary' | 'secondary' | 'outline' | 'text';
-  /** 按钮状态 */
+  /** Button status */
   status?: 'default' | 'warning' | 'danger' | 'success';
-  /** 图标 */
+  /** Icon */
   icon?: ReactNode;
-  /** 点击事件 */
+  /** Click event */
   onClick: (record: T, index: number) => void;
-  /** 是否显示 */
+  /** Whether to show */
   visible?: (record: T) => boolean;
-  /** 是否禁用 */
+  /** Whether disabled */
   disabled?: (record: T) => boolean;
-  /** 确认提示 */
+  /** Confirm prompt */
   confirm?: {
     title: string;
     content?: string;
@@ -65,76 +65,76 @@ export interface ActionConfig<T = any> {
 }
 
 /**
- * 分页配置
+ * Pagination configuration
  */
 export interface PaginationConfig {
-  /** 当前页 */
+  /** Current page */
   current?: number;
-  /** 每页条数 */
+  /** Page size */
   pageSize?: number;
-  /** 总条数 */
+  /** Total count */
   total?: number;
-  /** 是否显示总数 */
+  /** Whether to show total */
   showTotal?: boolean;
-  /** 是否显示快速跳转 */
+  /** Whether to show quick jumper */
   showJumper?: boolean;
-  /** 是否可以改变每页条数 */
+  /** Whether page size can be changed */
   sizeCanChange?: boolean;
-  /** 每页条数选项 */
+  /** Page size options */
   pageSizeOptions?: number[];
-  /** 页码改变回调 */
+  /** Page change callback */
   onChange?: (page: number, pageSize: number) => void;
 }
 
 /**
- * 数据表格属性
+ * Data table properties
  */
 export interface DataTableProps<T = any>
   extends Omit<TableProps, 'columns' | 'data' | 'footer' | 'title'> {
-  /** 表格数据 */
+  /** Table data */
   data: T[];
-  /** 列配置 */
+  /** Column configuration */
   columns: ColumnConfig<T>[];
-  /** 加载状态 */
+  /** Loading state */
   loading?: boolean;
-  /** 分页配置 */
+  /** Pagination configuration */
   pagination?: PaginationConfig | false;
-  /** 操作列配置 */
+  /** Action column configuration */
   actions?: ActionConfig<T>[];
-  /** 操作列标题 */
+  /** Action column title */
   actionTitle?: string;
-  /** 操作列宽度 */
+  /** Action column width */
   actionWidth?: number;
-  /** 是否显示序号列 */
+  /** Whether to show index column */
   showIndex?: boolean;
-  /** 序号列标题 */
+  /** Index column title */
   indexTitle?: string;
-  /** 是否可选择行 */
+  /** Whether rows can be selected */
   rowSelection?: {
-    /** 选择类型 */
+    /** Selection type */
     type?: 'checkbox' | 'radio';
-    /** 已选择的行 */
+    /** Selected rows */
     selectedRowKeys?: (string | number)[];
-    /** 选择改变回调 */
+    /** Selection change callback */
     onChange?: (
       selectedRowKeys: (string | number)[],
       selectedRows: T[],
     ) => void;
-    /** 是否可选择 */
+    /** Whether selectable */
     checkboxProps?: (record: T) => { disabled?: boolean };
   };
-  /** 行唯一标识字段 */
+  /** Row unique identifier field */
   rowKey?: string | ((record: T) => string);
-  /** 空数据提示 */
+  /** Empty data prompt */
   emptyText?: ReactNode;
-  /** 表格尺寸 */
+  /** Table size */
   size?: 'mini' | 'small' | 'default' | 'middle';
-  /** 是否显示边框 */
+  /** Whether to show border */
   border?: boolean;
-  /** 是否显示斑马纹 */
+  /** Whether to show stripe */
   stripe?: boolean;
-  /** 表格标题 */
+  /** Table title */
   title?: ReactNode;
-  /** 表格底部 */
+  /** Table footer */
   footer?: ReactNode;
 }

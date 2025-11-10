@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * CustomTable API类型统一导出
+ * CustomTable API types unified export
  */
 
-// ==================== 实例API类型 ====================
+// ==================== Instance API types ====================
 export * from './action-type';
 
-// ==================== Imperative Actions 类型 ====================
+// ==================== Imperative Actions types ====================
 export * from './imperative-actions';

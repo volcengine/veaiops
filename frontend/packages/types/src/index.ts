@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // VolcAIOpsKit Shared Types
-// 导出所有类型定义
+// Export all type definitions
 export * from './common';
 export * from './form-item';
 export * from './monitor';

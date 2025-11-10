@@ -18,7 +18,7 @@ import { logger } from '@veaiops/utils';
 import { AttributeKey } from 'api-generate';
 
 /**
- * 构建API请求参数
+ * Build API request parameters
  */
 export const buildFetchAttributesParams = ({
   requestParams,
@@ -27,10 +27,10 @@ export const buildFetchAttributesParams = ({
   requestParams?: FetchAttributesParams;
   lastRequestParamsRef: React.MutableRefObject<LastRequestParams>;
 }) => {
-  // 记录函数调用和传入的参数
-  // 避免循环引用：只记录数组/对象的值，不记录整个对象
+  // Log function call and incoming parameters
+  // Avoid circular references: only log array/object values, not entire objects
   logger.info({
-    message: 'fetchAttributes 被调用',
+    message: 'fetchAttributes called',
     data: {
       hasRequestParams: requestParams !== undefined,
       names: Array.isArray(requestParams?.names)
@@ -46,24 +46,24 @@ export const buildFetchAttributesParams = ({
     component: 'fetchAttributes',
   });
 
-  // 提取筛选参数
+  // Extract filter parameters
   const { names, value, ...otherParams } = requestParams || {};
 
-  // 如果有传入新参数，更新保存的参数
-  // 注意：只有当 requestParams 不是 undefined 时才更新（区分"有参数但值为空"和"无参数"）
+  // If new parameters are passed, update saved parameters
+  // Note: Only update when requestParams is not undefined (distinguish "has params but value is empty" from "no params")
   if (requestParams !== undefined) {
     const oldParams = { ...lastRequestParamsRef.current };
     lastRequestParamsRef.current = {
-      // 如果传入的 names 存在则使用，否则保持上一次的值
+      // If incoming names exists, use it; otherwise keep previous value
       names: names !== undefined ? names : lastRequestParamsRef.current.names,
-      // value 如果是 undefined 表示未传入，使用上一次的值；如果是空字符串则使用空字符串
+      // If value is undefined, it means not passed, use previous value; if empty string, use empty string
       value: value !== undefined ? value : lastRequestParamsRef.current.value,
     };
 
-    // 记录参数更新
-    // 避免循环引用：只记录数组的值
+    // Log parameter updates
+    // Avoid circular references: only log array values
     logger.info({
-      message: '更新保存的筛选参数',
+      message: 'Update saved filter parameters',
       data: {
         oldNames: Array.isArray(oldParams.names)
           ? [...oldParams.names]
@@ -81,7 +81,7 @@ export const buildFetchAttributesParams = ({
     });
   } else {
     logger.info({
-      message: '未传入参数，使用保存的参数',
+      message: 'No parameters passed, use saved parameters',
       data: {
         savedNames: Array.isArray(lastRequestParamsRef.current.names)
           ? [...lastRequestParamsRef.current.names]
@@ -93,8 +93,8 @@ export const buildFetchAttributesParams = ({
     });
   }
 
-  // 构建 API 请求参数
-  // 优先使用传入的参数，如果未传入则使用保存的参数，最后使用默认值
+  // Build API request parameters
+  // Prioritize incoming parameters, if not provided use saved parameters, finally use default values
   const finalNames =
     names !== undefined
       ? names
@@ -105,14 +105,14 @@ export const buildFetchAttributesParams = ({
   const params = {
     skip: otherParams.skip || 0,
     limit: otherParams.limit || 100,
-    names: finalNames, // 类目筛选（多选），确保始终有值
-    value: finalValue || undefined, // 内容筛选（模糊搜索）
+    names: finalNames, // Category filter (multi-select), ensure always has value
+    value: finalValue || undefined, // Content filter (fuzzy search)
   };
 
-  // 记录最终构建的 API 请求参数
-  // 避免循环引用：只记录数组的值
+  // Log final built API request parameters
+  // Avoid circular references: only log array values
   logger.info({
-    message: '构建 API 请求参数',
+    message: 'Build API request parameters',
     data: {
       skip: params.skip,
       limit: params.limit,
@@ -120,8 +120,10 @@ export const buildFetchAttributesParams = ({
       value: finalValue,
       finalNames: Array.isArray(finalNames) ? [...finalNames] : finalNames,
       finalValue,
-      namesSource: names !== undefined ? '传入参数' : '保存的参数',
-      valueSource: value !== undefined ? '传入参数' : '保存的参数',
+      namesSource:
+        names !== undefined ? 'Incoming parameters' : 'Saved parameters',
+      valueSource:
+        value !== undefined ? 'Incoming parameters' : 'Saved parameters',
     },
     source: 'useBotAttributes',
     component: 'fetchAttributes',

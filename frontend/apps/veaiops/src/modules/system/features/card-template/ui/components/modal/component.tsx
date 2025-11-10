@@ -40,12 +40,12 @@ const CardTemplateDrawer: React.FC<CardTemplateModalProps> = ({
   onSubmit,
   form,
 }) => {
-  // 使用公共的抽屉表单提交 Hook
+  // Use common drawer form submit Hook
   const { submitting, handleSubmit } = useDrawerFormSubmit({
     form,
     onSubmit,
     resetOnSuccess: true,
-    closeOnSuccess: false, // 不自动关闭，由父组件控制
+    closeOnSuccess: false, // Don't auto-close, controlled by parent component
   });
 
   return (

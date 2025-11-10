@@ -29,19 +29,19 @@ import type React from 'react';
 import { useCallback, useRef, useState } from 'react';
 
 /**
- * Oncall 配置页面
- * 对应路由: /oncall/config
- * 功能: Oncall 规则配置管理（包含表格、抽屉等所有 UI）
+ * Oncall configuration page
+ * Corresponding route: /oncall/config
+ * Functionality: Oncall rule configuration management (includes all UI such as table, drawer, etc.)
  *
- * 重构说明：
- * - 原分支 (feat/web-v2): 使用 useOncallRules hook 和独立的表格组件
- * - 当前分支: 使用 CustomTable 标准化架构
- * - 功能等价性: ✅ 已实现所有原分支功能
- *   - 规则列表获取 ✅
- *   - 规则状态切换 ✅
- *   - 规则编辑 ✅
- *   - 规则详情查看 ✅
- *   - 表格刷新 ✅
+ * Refactoring notes:
+ * - Original branch (feat/web-v2): Used useOncallRules hook and independent table component
+ * - Current branch: Uses CustomTable standardized architecture
+ * - Functional equivalence: ✅ All original branch functionality implemented
+ *   - Rule list retrieval ✅
+ *   - Rule status toggle ✅
+ *   - Rule editing ✅
+ *   - Rule detail viewing ✅
+ *   - Table refresh ✅
  */
 export const OncallConfigPage: React.FC = () => {
   const { bots } = useBotList();
@@ -50,10 +50,10 @@ export const OncallConfigPage: React.FC = () => {
   const [currentRule, setCurrentRule] = useState<Interest | undefined>();
   const [form] = Form.useForm();
 
-  // CustomTable ref用于获取刷新函数
+  // CustomTable ref for getting refresh function
   const tableRef = useRef<RulesTableRef>(null);
 
-  // 获取表格刷新函数
+  // Get table refresh function
   const getRefreshTable = useCallback(async () => {
     if (tableRef.current?.refresh) {
       const result = await tableRef.current.refresh();
@@ -72,10 +72,10 @@ export const OncallConfigPage: React.FC = () => {
     }
   }, []);
 
-  // 使用管理刷新 Hook，提供编辑后刷新功能
+  // Use management refresh Hook to provide refresh functionality after editing
   const { afterUpdate } = useManagementRefresh(getRefreshTable);
 
-  // 状态切换处理 - 实现真实的API调用
+  // Status toggle handling - implements actual API call
   interface HandleToggleStatusParams {
     ruleUuid: string;
     isActive: boolean;
@@ -96,7 +96,7 @@ export const OncallConfigPage: React.FC = () => {
             content: isActive ? '规则已启用' : '规则已停止',
             duration: 20000,
           });
-          // 刷新表格
+          // Refresh table
           await getRefreshTable();
           return true;
         }
@@ -113,7 +113,7 @@ export const OncallConfigPage: React.FC = () => {
         });
         return false;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '更新规则状态失败，请重试';
@@ -130,21 +130,21 @@ export const OncallConfigPage: React.FC = () => {
     [getRefreshTable],
   );
 
-  // 查看详情
+  // View details
   const handleViewDetails = useCallback((rule: Interest) => {
     setCurrentRule(rule);
     setIsEdit(false);
     setDrawerVisible(true);
   }, []);
 
-  // 编辑规则
+  // Edit rule
   const handleEdit = useCallback((rule: Interest) => {
     setCurrentRule(rule);
     setIsEdit(true);
     setDrawerVisible(true);
   }, []);
 
-  // 关闭抽屉
+  // Close drawer
   const handleCloseDrawer = useCallback(() => {
     setDrawerVisible(false);
     setCurrentRule(undefined);
@@ -152,7 +152,7 @@ export const OncallConfigPage: React.FC = () => {
     form.resetFields();
   }, [form]);
 
-  // 提交表单 - 实现真实的API调用
+  // Submit form - implements actual API call
   const handleSubmit = useCallback(
     async (values: RuleFormData) => {
       if (!currentRule?.uuid) {
@@ -161,7 +161,7 @@ export const OncallConfigPage: React.FC = () => {
       }
 
       try {
-        // 根据检测类别处理表单数据
+        // Process form data based on inspect category
         const inspectCategory = currentRule.inspect_category;
         const updateData: RuleSubmitData = {
           name: values.name,
@@ -172,7 +172,7 @@ export const OncallConfigPage: React.FC = () => {
           inspect_history: values.inspect_history,
         };
 
-        // 根据检测类别添加对应的可编辑字段
+        // Add corresponding editable fields based on inspect category
         if (inspectCategory === Interest.inspect_category.SEMANTIC) {
           updateData.examples_positive = values.examples_positive
             ? values.examples_positive
@@ -198,19 +198,19 @@ export const OncallConfigPage: React.FC = () => {
             content: '规则更新成功',
             duration: 20000,
           });
-          // 使用 useManagementRefresh 的 afterUpdate 方法刷新表格
+          // Use useManagementRefresh's afterUpdate method to refresh table
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
-            logger.warn({
-              message: '更新后刷新表格失败',
-              data: {
-                error: refreshResult.error.message,
-                stack: refreshResult.error.stack,
-                errorObj: refreshResult.error,
-              },
-              source: 'OncallConfigPage',
-              component: 'handleSubmit',
-            });
+        logger.warn({
+          message: '更新后刷新表格失败',
+          data: {
+            error: refreshResult.error.message,
+            stack: refreshResult.error.stack,
+            errorObj: refreshResult.error,
+          },
+          source: 'OncallConfigPage',
+          component: 'handleSubmit',
+        });
           }
           handleCloseDrawer();
         } else {
@@ -243,7 +243,7 @@ export const OncallConfigPage: React.FC = () => {
 
   return (
     <>
-      {/* 规则表格 */}
+      {/* Rules table */}
       <RulesTable
         ref={tableRef}
         bots={bots}
@@ -252,7 +252,7 @@ export const OncallConfigPage: React.FC = () => {
         onEdit={handleEdit}
       />
 
-      {/* 规则抽屉 */}
+      {/* Rule drawer */}
       <RuleDrawer
         visible={drawerVisible}
         isEdit={isEdit}

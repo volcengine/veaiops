@@ -15,13 +15,12 @@
 import type React from 'react';
 import { DocsButton } from '../docs-button';
 import { Logo, Navigation } from '../navigation';
-import { TimezoneSelector } from '../timezone-selector';
 import { UserDropdown } from '../user-dropdown';
 import type { AppHeaderProps } from './types';
 
 /**
  * Application header component
- * Contains Logo, navigation menu, documentation button, and user dropdown menu
+ * Includes Logo, navigation menu, documentation button, and user dropdown menu
  */
 export const AppHeader: React.FC<AppHeaderProps> = ({
   activeModule,
@@ -42,7 +41,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
       <div className="flex items-center space-x-4">
         {/* <ThemeToggle /> */}
         <DocsButton />
-        <TimezoneSelector />
         <UserDropdown />
       </div>
     </div>

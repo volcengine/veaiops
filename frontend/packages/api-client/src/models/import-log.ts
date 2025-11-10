@@ -15,25 +15,25 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ImportLog = {
   /**
-   * 日志时间戳
+   * Log timestamp
    */
   timestamp: string;
   /**
-   * 日志级别
+   * Log level
    */
   level: ImportLog.level;
   /**
-   * 日志消息
+   * Log message
    */
   message: string;
   /**
-   * 详细信息
+   * Additional details
    */
   details?: Record<string, any>;
 };
 export namespace ImportLog {
   /**
-   * 日志级别
+   * Log level
    */
   export enum level {
     INFO = 'INFO',

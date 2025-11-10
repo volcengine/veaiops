@@ -18,15 +18,15 @@ import React from "react";
 import type { ChannelType } from "api-generate";
 import { getChannelTypeTranslation } from "./translations";
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 /**
- * 渲染频道类型标签
+ * Render channel type tag
  */
 export const renderChannelTag = (channel: ChannelType) => {
-  // CustomOutlineTag 不支持 color 属性，但支持 style
-  // 使用 style 来设置颜色，或者移除 color 属性
+  // CustomOutlineTag does not support color prop, but supports style
+  // Use style to set color, or remove color prop
   return (
     <CustomOutlineTag>
       {getChannelTypeTranslation(channel)}

@@ -19,22 +19,22 @@ import { DetailView, EditForm } from '@oncall-config/ui';
 import { DrawerFormContent } from '@veaiops/utils';
 
 /**
- * 规则抽屉组件 - 详情查看和编辑
+ * Rule drawer component - detail view and editing
  *
- * 重构说明：
- * - 原分支 (feat/web-v2): rule-details-drawer.tsx 和 rule-edit-drawer.tsx 分别处理详情和编辑
- * - 当前分支: 重构为统一的 rule-drawer.tsx，支持详情查看和编辑两种模式
- * - 功能等价性: ✅ 已对齐原分支的所有功能
- *   - 告警等级字段 (level) ✅
- *   - 条件显示逻辑 (根据 inspect_category) ✅
- *   - 时间格式支持 (silence_delta) ✅
- *   - 正面/反面示例字段 (SEMANTIC模式) ✅
+ * Refactoring notes:
+ * - Original branch (feat/web-v2): rule-details-drawer.tsx and rule-edit-drawer.tsx handled detail and edit separately
+ * - Current branch: Refactored to unified rule-drawer.tsx, supports both detail view and edit modes
+ * - Functional equivalence: ✅ All original branch functionality aligned
+ *   - Alert level field (level) ✅
+ *   - Conditional display logic (based on inspect_category) ✅
+ *   - Time format support (silence_delta) ✅
+ *   - Positive/negative example fields (SEMANTIC mode) ✅
  *
- * 拆分说明：
- * - lib/types.ts: 类型定义
- * - hooks/use-rule-drawer.ts: 业务逻辑和状态管理
- * - ui/components/rule-detail-view.tsx: 详情查看组件
- * - ui/components/rule-edit-form.tsx: 编辑表单组件
+ * Split notes:
+ * - lib/types.ts: Type definitions
+ * - hooks/use-rule-drawer.ts: Business logic and state management
+ * - ui/components/rule-detail-view.tsx: Detail view component
+ * - ui/components/rule-edit-form.tsx: Edit form component
  */
 export const RuleDrawer = ({
   visible,
@@ -57,7 +57,7 @@ export const RuleDrawer = ({
     form,
   });
 
-  // 详情查看模式
+  // Detail view mode
   if (!isEdit && rule) {
     return (
       <Drawer
@@ -76,7 +76,7 @@ export const RuleDrawer = ({
     );
   }
 
-  // 编辑模式
+  // Edit mode
   return (
     <Drawer
       title={isEdit ? '编辑规则' : '新增规则'}

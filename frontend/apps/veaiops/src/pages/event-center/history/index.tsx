@@ -19,9 +19,9 @@ import { EventHistoryTable, HistoryModuleType } from '@veaiops/components';
 import { useState } from 'react';
 
 /**
- * 事件中心 - 历史事件页面
- * 使用统一的历史事件表格组件，支持所有智能体类型
- * 保留事件详情抽屉功能
+ * Event center - History events page
+ * Uses unified history events table component, supports all agent types
+ * Retains event detail drawer functionality
  */
 const HistoryPage = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);

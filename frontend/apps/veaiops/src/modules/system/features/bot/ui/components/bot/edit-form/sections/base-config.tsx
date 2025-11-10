@@ -46,7 +46,7 @@ interface BaseConfigProps {
 }
 
 /**
- * 基础配置区块组件
+ * Base configuration block component
  */
 export const BaseConfig: React.FC<BaseConfigProps> = ({
   form,
@@ -58,8 +58,8 @@ export const BaseConfig: React.FC<BaseConfigProps> = ({
   const [showSecretTooltip, setShowSecretTooltip] = useState(false);
 
   /**
-   * 查看加密信息
-   * 通过API获取解密后的secret值并填充到表单
+   * View encrypted information
+   * Get decrypted secret value through API and fill into form
    */
   const handleViewSecret = useCallback(async () => {
     if (!bot._id) {
@@ -74,23 +74,23 @@ export const BaseConfig: React.FC<BaseConfigProps> = ({
         fieldName: 'secret',
       });
 
-      // 处理返回的数据：response.data 可能是字符串（包括空字符串）
-      // 检查数据是否存在（不为 null 或 undefined）
+      // Handle returned data: response.data may be a string (including empty string)
+      // Check if data exists (not null or undefined)
       if (secretValue !== null && secretValue !== undefined) {
         const trimmedValue = String(secretValue).trim();
-        // 只有非空字符串才回填
+        // Only fill back non-empty strings
         if (trimmedValue) {
-          // 使用 setFieldsValue 确保表单正确更新
+          // Use setFieldsValue to ensure form updates correctly
           form.setFieldsValue({
             secret: trimmedValue,
           });
-          // 使用 setTimeout 确保表单更新后再显示 Tooltip
+          // Use setTimeout to ensure Tooltip is shown after form update
           setTimeout(() => {
             setShowSecretTooltip(true);
           }, 100);
           Message.success('已获取加密信息');
         } else {
-          // 返回空字符串表示该字段未配置
+          // Empty string indicates the field is not configured
           Message.warning('该Bot的App Secret未配置');
         }
       } else {
@@ -106,8 +106,8 @@ export const BaseConfig: React.FC<BaseConfigProps> = ({
   }, [bot._id, form]);
 
   /**
-   * 自动隐藏 Tooltip
-   * 当成功回填 App Secret 后，显示 3 秒后自动隐藏
+   * Auto-hide Tooltip
+   * When App Secret is successfully filled back, show for 3 seconds then auto-hide
    */
   useEffect(() => {
     if (showSecretTooltip) {
@@ -122,12 +122,12 @@ export const BaseConfig: React.FC<BaseConfigProps> = ({
 
   return (
     <CardWithTitle title="基础配置" className="mb-4">
-      {/* 只读显示：企业协同工具（不可编辑） */}
+      {/* Read-only display: Enterprise collaboration tool (not editable) */}
       <Form.Item label="企业协同工具" field="channel">
         <Input value={bot.channel} disabled />
       </Form.Item>
 
-      {/* 只读显示：App ID（不可编辑） */}
+      {/* Read-only display: App ID (not editable) */}
       <Form.Item label="App ID" field="bot_id">
         <Input value={bot.bot_id} disabled />
       </Form.Item>
@@ -139,7 +139,7 @@ export const BaseConfig: React.FC<BaseConfigProps> = ({
           rules={[
             {
               validator: (_value, cb) => {
-                // 编辑态下允许留空，表示不修改密钥；若填写则按长度校验（最少1个字符避免意外空串）
+                // In edit mode, allow empty to indicate no change to secret; if filled, validate length (minimum 1 character to avoid accidental empty string)
                 if (!_value) {
                   cb();
                   return;
@@ -224,7 +224,7 @@ export const BaseConfig: React.FC<BaseConfigProps> = ({
         )}
       </div>
 
-      {/* 飞书配置指引 - 使用当前 bot 的 ID */}
+      {/* Lark configuration guide - Use current bot's ID */}
       {bot.bot_id && <LarkConfigGuide currentBotId={bot.bot_id} />}
     </CardWithTitle>
   );

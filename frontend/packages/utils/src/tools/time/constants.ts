@@ -21,7 +21,7 @@ export interface TimeRange {
 }
 
 /**
- * Props for converting string time to Unix timestamp input
+ * Convert string type time to Unix timestamp parameter type
  */
 export interface ConvertToUnixTimestampProps {
   time: string | number;
@@ -31,7 +31,7 @@ export interface ConvertToUnixTimestampProps {
 }
 
 /**
- * Format duration props
+ * Format duration parameter
  */
 export interface FormatDurationProps {
   duration: number;

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Card Template 模块类型定义导出
- * 统一从types.ts导出所有类型
+ * Card Template module type definition exports
+ * Unified export of all types from types.ts
  */
 
 export * from '../types';

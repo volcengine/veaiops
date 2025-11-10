@@ -14,7 +14,7 @@
 
 import type { RouteConfig } from '@/types/route';
 
-// 静态导入路由配置（使用明确的相对路径，避免循环引用）
+// Static import route configuration (use explicit relative paths to avoid circular references)
 import { baseRoutes, notFoundRoute } from './base';
 import {
   eventCenterRoutes,
@@ -25,30 +25,30 @@ import {
 } from './modules';
 
 /**
- * 路由配置统一导出入口
+ * Route configuration unified export entry
  *
- * 目录结构（按职能边界分组）：
- * - config/         配置层：懒加载组件配置、页面路径配置
- * - base/           基础路由层：根路径、登录、404 等框架级路由
- * - modules/        模块路由层：各业务模块的路由定义（system、threshold、event-center、oncall、statistics）
- * - utils/          工具层：路由创建工具、类型定义、组件等
+ * Directory structure (grouped by functional boundaries):
+ * - config/         Configuration layer: lazy-loaded component configuration, page path configuration
+ * - base/           Base route layer: root path, login, 404, and other framework-level routes
+ * - modules/        Module route layer: route definitions for each business module (system, threshold, event-center, oncall, statistics)
+ * - utils/          Utility layer: route creation tools, type definitions, components, etc.
  *
- * 使用规范：
- * - 从顶层 index.ts 导入 routesConfig 获取完整路由配置
- * - 从各子目录的 index.ts 导入特定层的配置（如从 ./config 导入懒加载组件）
- * - 新增模块路由时，在 modules/ 目录下创建对应文件，并在 modules/index.ts 中导出
+ * Usage guidelines:
+ * - Import routesConfig from top-level index.ts to get complete route configuration
+ * - Import specific layer configurations from each subdirectory's index.ts (e.g., import lazy-loaded components from ./config)
+ * - When adding new module routes, create corresponding file in modules/ directory and export in modules/index.ts
  *
- * ⚠️ 循环引用修复说明：
- * - 所有路由模块文件（base-routes.ts、system.ts 等）必须从 '../config' 导入懒加载组件
- * - '../config' 会解析到 routes/config/index.ts，不会经过 config/index.ts，避免循环
- * - utils/route.ts 必须从 '../config/routes/index' 直接导入，不能通过 config/index.ts
+ * ⚠️ Circular reference fix notes:
+ * - All route module files (base-routes.ts, system.ts, etc.) must import lazy-loaded components from '../config'
+ * - '../config' resolves to routes/config/index.ts, does not go through config/index.ts, avoiding circular references
+ * - utils/route.ts must import directly from '../config/routes/index', cannot go through config/index.ts
  */
 export const routesConfig: RouteConfig[] = [
   ...baseRoutes,
-  ...statisticsRoutes, // 统计概览
-  ...systemRoutes, // 系统配置
-  ...oncallRoutes, // Oncall异动
-  ...thresholdRoutes, // 智能阈值
-  ...eventCenterRoutes, // 事件中心
-  notFoundRoute, // 404 兜底路由 - 必须放在最后
+  ...statisticsRoutes, // Statistics overview
+  ...systemRoutes, // System configuration
+  ...oncallRoutes, // Oncall alerts
+  ...thresholdRoutes, // Intelligent threshold
+  ...eventCenterRoutes, // Event center
+  notFoundRoute, // 404 fallback route - must be placed last
 ];

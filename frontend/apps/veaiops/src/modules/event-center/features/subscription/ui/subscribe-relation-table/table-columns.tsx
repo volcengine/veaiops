@@ -20,7 +20,7 @@ import { EMPTY_CONTENT_TEXT } from '@veaiops/constants';
 import type { SubscribeRelationWithAttributes } from 'api-generate';
 import { isEmpty } from 'lodash-es';
 import { useMemo } from 'react';
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender components to avoid repeated calls
 const { CustomOutlineTag, StampTime, CopyableText } = CellRender;
 
 export interface TableColumnsProps {
@@ -31,7 +31,7 @@ export interface TableColumnsProps {
 }
 
 /**
- * 获取订阅关系表格列配置
+ * Get subscription relation table column configuration
  */
 export const useTableColumns = ({
   showModuleTypeColumn,
@@ -82,7 +82,7 @@ export const useTableColumns = ({
           if (isEmpty(value)) {
             return EMPTY_CONTENT_TEXT;
           }
-          // CustomOutlineTag 不支持 color 属性，直接显示值
+          // CustomOutlineTag doesn't support color prop, display value directly
           return <CustomOutlineTag>{value}</CustomOutlineTag>;
         },
       },

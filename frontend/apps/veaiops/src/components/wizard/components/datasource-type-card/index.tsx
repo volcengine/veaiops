@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源类型卡片组件
- * @description 展示单个数据源类型的精美卡片，支持品牌化视觉设计
+ * Data source type card component
+ * @description Displays a beautiful card for a single data source type, supporting branded visual design
  * @author AI Assistant
  * @date 2025-01-15
  */
@@ -26,20 +26,20 @@ import { AliyunLogo, VolcengineLogo, ZabbixLogo } from './logos';
 import styles from './styles.module.less';
 
 export interface DataSourceTypeCardProps {
-  /** 数据源类型 */
+  /** Data source type */
   type: DataSourceType;
-  /** 数据源名称 */
+  /** Data source name */
   name: string;
-  /** 数据源描述 */
+  /** Data source description */
   description: string;
-  /** 是否选中 */
+  /** Whether selected */
   selected: boolean;
-  /** 点击事件处理 */
+  /** Click event handler */
   onClick: () => void;
 }
 
 /**
- * 渲染数据源Logo
+ * Render data source logo
  */
 const renderLogo = (type: DataSourceType) => {
   switch (type) {
@@ -55,7 +55,7 @@ const renderLogo = (type: DataSourceType) => {
 };
 
 /**
- * 数据源类型卡片组件
+ * Data source type card component
  */
 export const DataSourceTypeCard: React.FC<DataSourceTypeCardProps> = ({
   type,
@@ -77,20 +77,20 @@ export const DataSourceTypeCard: React.FC<DataSourceTypeCardProps> = ({
         onClick();
       }}
     >
-      {/* Logo区域 - 暂时隐藏 */}
+      {/* Logo area - temporarily hidden */}
       {/* <div className={styles.logoContainer}>
         <div className={`${styles.logoWrapper} ${brandConfig.iconClass}`}>
           <div className={styles.logoInner}>{renderLogo(type)}</div>
         </div>
       </div> */}
 
-      {/* 内容区域 */}
+      {/* Content area */}
       <div className={styles.content}>
         <div className={styles.name}>{name}</div>
         <div className={styles.description}>{description}</div>
       </div>
 
-      {/* 选中标识 */}
+      {/* Selection indicator */}
       {selected && (
         <div className={styles.selectedBadge}>
           <svg viewBox="0 0 24 24" className={styles.checkIcon}>

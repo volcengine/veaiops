@@ -14,14 +14,14 @@
 
 import { PluginNames, RendererNames } from '@/custom-table/constants/enum';
 /**
- * CustomTable 组件渲染器
- * 负责渲染表格相关的各种组件
+ * CustomTable component renderer
+ * Responsible for rendering various table-related components
  */
 import type React from 'react';
 import { useCallback, useMemo } from 'react';
 
 /**
- * 表格组件渲染器Hook的参数接口
+ * Table component renderer Hook parameter interface
  */
 export interface UseTableRenderersParams<
   RecordType extends Record<string, unknown> = Record<string, unknown>,
@@ -53,7 +53,7 @@ export interface UseTableRenderersParams<
 }
 
 /**
- * 表格组件渲染器Hook
+ * Table component renderer Hook
  */
 export const useTableRenderers = <
   RecordType extends Record<string, unknown> = Record<string, unknown>,
@@ -66,7 +66,7 @@ export const useTableRenderers = <
   const { error, dataSource, loadMoreData } = state;
   const { customRender, customComponentRender, customFooter } = props;
 
-  // 空数据或错误状态元素
+  // Empty data or error state element
   const NoDataElement = useMemo(() => {
     if (error) {
       return (pluginManager.render as any)(
@@ -82,7 +82,7 @@ export const useTableRenderers = <
     );
   }, [pluginManager, context, error]);
 
-  // 使用插件系统渲染组件
+  // Use plugin system to render components
   const TableFilterComponent = useMemo(
     () =>
       (pluginManager.render as any)(
@@ -99,17 +99,17 @@ export const useTableRenderers = <
     [pluginManager, context],
   );
 
-  // 处理加载更多
+  // Handle load more
   const handleLoadMore = useCallback(() => {
     if (loadMoreData) {
       loadMoreData();
     }
   }, [loadMoreData]);
 
-  // 渲染表格内容
+  // Render table content
   const renderTableContent = useCallback(
     (tableComponent: React.ReactNode) => {
-      // ⚠️ 不修改 context，只渲染内容
+      // ⚠️ Do not modify context, only render content
       if (customRender?.table) {
         return customRender.table(tableComponent);
       }
@@ -121,7 +121,7 @@ export const useTableRenderers = <
     [customRender, customComponentRender],
   );
 
-  // 渲染底部内容
+  // Render footer content
   const renderFooterContent = useCallback(() => {
     if (customRender?.footer) {
       return (

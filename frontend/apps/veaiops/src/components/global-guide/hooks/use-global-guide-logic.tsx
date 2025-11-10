@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { logger } from '@veaiops/utils';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { GlobalGuideStepNumber } from '../enums/guide-steps.enum';
 import type { GlobalGuideStep } from '../lib';
@@ -54,13 +54,13 @@ interface HandleFrontendFeatureClickParams {
 
 /**
  * Main business logic Hook for global guide component
- * Combines various sub-hooks to provide complete business logic
+ * Combines various sub-Hooks to provide complete business logic
  */
 export const useGlobalGuideLogic = () => {
   const { currentStep, stepStatusMap, userProgress, sideGuidePanelVisible } =
     useGlobalGuideStore();
 
-  // Use various sub-hooks
+  // Use various sub-Hooks
   const frontendInteraction = useFrontendInteraction();
 
   const handleAutoHighlightFeature = useCallback(
@@ -71,7 +71,7 @@ export const useGlobalGuideLogic = () => {
       placement,
     }: HandleAutoHighlightFeatureParams) => {
       logger.info({
-        message: '[GlobalGuide] Auto highlight frontend feature',
+        message: '[GlobalGuide] 自动高亮前端功能',
         data: {
           featureId,
           selector,
@@ -84,7 +84,7 @@ export const useGlobalGuideLogic = () => {
         component: 'handleAutoHighlightFeature',
       });
 
-      // Only show highlight and guide tooltip when tooltipContent exists
+      // Only show highlight and guide tip if tooltipContent exists
       if (tooltipContent) {
         frontendInteraction.highlightAndGuide({
           selector,
@@ -94,7 +94,7 @@ export const useGlobalGuideLogic = () => {
         });
       } else {
         logger.info({
-          message: '[GlobalGuide] No need to show tooltip, skip auto highlight',
+          message: '[GlobalGuide] 无需显示提示，跳过自动高亮',
           data: {
             featureId,
             selector,
@@ -113,27 +113,22 @@ export const useGlobalGuideLogic = () => {
   const panelState = usePanelState();
   // const routeListener = useRouteListener(); // Temporarily commented out unused variable
 
-  // Wrap frontend feature click handler, add manual trigger marker
+  // Wrap frontend feature click handling, add manual trigger marker
   const handleFrontendFeatureClickWithMark = useCallback(
     (params: HandleFrontendFeatureClickParams) => {
       // Mark as manually triggered
       stepNavigation.markManualHighlight(params.featureId);
 
-      // Call original frontend feature click handler
+      // Call original frontend feature click handling
       frontendInteraction.handleFrontendFeatureClick(params);
     },
     [frontendInteraction, stepNavigation],
   );
 
-  // Record initial state (only execute on first mount, avoid repeated triggers)
-  const hasInitializedRef = useRef(false);
+  // Log initial state
   useEffect(() => {
-    if (hasInitializedRef.current) {
-      return; // Already initialized, no longer execute
-    }
-
     logger.info({
-      message: '[GlobalGuide] Hook initialization',
+      message: '[GlobalGuide] Hook初始化',
       data: {
         currentStep,
         stepStatusMap,
@@ -144,16 +139,13 @@ export const useGlobalGuideLogic = () => {
       component: 'useGlobalGuideLogic',
     });
 
-    // Ensure first step is activated by default (only on first mount and when current step is empty or invalid)
-    const isValidStep =
-      currentStep && GUIDE_STEPS_CONFIG.some((s) => s.number === currentStep);
+    // Ensure first step is activated by default
     if (
-      !isValidStep &&
+      currentStep === GlobalGuideStepNumber.CONNECTION &&
       stepStatusMap[GlobalGuideStepNumber.CONNECTION] !== 'active'
     ) {
       logger.info({
-        message:
-          '[GlobalGuide] Initialization - ensure first step is activated',
+        message: '[GlobalGuide] 初始化 - 确保第一步激活',
         data: {
           currentStep,
           stepStatusMap,
@@ -164,14 +156,18 @@ export const useGlobalGuideLogic = () => {
 
       stepNavigation.handleStepSelect(GlobalGuideStepNumber.CONNECTION);
     }
+  }, [
+    currentStep,
+    stepStatusMap,
+    stepNavigation,
+    sideGuidePanelVisible,
+    userProgress,
+  ]);
 
-    hasInitializedRef.current = true;
-  }, []); // Only execute on first mount
-
-  // Record sub-hook state
+  // Log sub-Hook state
   useEffect(() => {
     logger.info({
-      message: '[GlobalGuide] Sub-hook state update',
+      message: '[GlobalGuide] 子Hook状态更新',
       data: {
         stepNavigation: {
           currentStep: stepNavigation.currentStep,
@@ -202,11 +198,11 @@ export const useGlobalGuideLogic = () => {
   // Step configuration
   const steps: GlobalGuideStep[] = GUIDE_STEPS_CONFIG;
 
-  // Get incomplete items for current step
+  // Get current step's incomplete items
   const getCurrentStepIssuesCallback = useCallback(() => {
     const issues = getCurrentStepIssues(currentStep, userProgress);
     logger.info({
-      message: '[GlobalGuide] Get incomplete items for current step',
+      message: '[GlobalGuide] 获取当前步骤未完成项',
       data: {
         currentStep,
         issuesCount: issues.length,
@@ -222,7 +218,7 @@ export const useGlobalGuideLogic = () => {
   const handleStepSelect = useCallback(
     (stepNumber: GlobalGuideStepNumber) => {
       logger.info({
-        message: '[GlobalGuide] Step selection started',
+        message: '[GlobalGuide] 步骤选择开始',
         data: {
           stepNumber,
           previousStep: currentStep,
@@ -237,7 +233,7 @@ export const useGlobalGuideLogic = () => {
       panelState.handleOpenPanelContent();
 
       logger.info({
-        message: '[GlobalGuide] Step selection completed',
+        message: '[GlobalGuide] 步骤选择完成',
         data: {
           stepNumber,
           newCurrentStep: stepNavigation.currentStep,
@@ -260,7 +256,7 @@ export const useGlobalGuideLogic = () => {
     const shouldShowHint = issues.length > 0;
 
     logger.info({
-      message: '[GlobalGuide] Hint card state update',
+      message: '[GlobalGuide] 提示卡片状态更新',
       data: {
         sideGuidePanelVisible,
         issuesCount: issues.length,
@@ -275,32 +271,15 @@ export const useGlobalGuideLogic = () => {
   }, [sideGuidePanelVisible, getCurrentStepIssuesCallback, panelState]);
 
   // Calculate current step configuration (based on current step, not affected by panel visibility)
-  const currentStepConfig = useMemo(() => {
-    const config = steps.find((s) => s.number === currentStep) || null;
-    logger.info({
-      message: '[GlobalGuide] Calculate current step configuration',
-      data: {
-        currentStep,
-        foundConfig: Boolean(config),
-        configNumber: config?.number,
-        configTitle: config?.title,
-        configFeaturesCount: config?.frontendFeatures?.length || 0,
-        totalSteps: steps.length,
-        allStepNumbers: steps.map((s) => s.number),
-      },
-      source: 'GlobalGuide',
-      component: 'currentStepConfig',
-    });
-    return config;
-  }, [currentStep, steps]);
+  const currentStepConfig = steps.find((s) => s.number === currentStep) || null;
 
   // Only calculate issues when side guide panel is open
   const issues = sideGuidePanelVisible ? getCurrentStepIssuesCallback() : [];
 
-  // Record state changes
+  // Log state changes
   useEffect(() => {
     logger.info({
-      message: '[GlobalGuide] State change',
+      message: '[GlobalGuide] 状态变化',
       data: {
         currentStep,
         currentStepConfig: currentStepConfig

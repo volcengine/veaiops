@@ -24,21 +24,21 @@ import type {
 } from '@/custom-table/types';
 import { devLog } from '@/custom-table/utils';
 /**
- * 智能单元格 Hook
- * 基于 EPS 平台的智能空值处理
+ * Smart cell Hook
+ * Based on EPS platform's smart empty value handling
  */
 import React, { useMemo, useCallback } from 'react';
 
 export interface UseSmartCellOptions<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 表格数据 */
+  /** Table data */
   data: RecordType[];
-  /** 配置 */
+  /** Configuration */
   config: SmartCellConfig;
-  /** 用户角色 */
+  /** User role */
   userRole?: UserRole;
-  /** 获取上下文信息 */
+  /** Get context information */
   getContext?: (params: {
     record: RecordType;
     field: string;
@@ -48,17 +48,17 @@ export interface UseSmartCellOptions<
 export interface UseSmartCellReturn<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 当前状态 */
+  /** Current state */
   state: SmartCellState;
-  /** 智能单元格方法 */
+  /** Smart cell methods */
   methods: SmartCellMethods<RecordType>;
-  /** 获取字段配置 */
+  /** Get field configuration */
   getFieldConfig: (field: string) => EmptyValueConfig;
-  /** 渲染智能单元格 */
+  /** Render smart cell */
   renderSmartCell: (params: CellRenderParams<RecordType>) => React.ReactElement;
-  /** 判断是否为空值 */
+  /** Check if value is empty */
   isEmpty: (value: unknown) => boolean;
-  /** 获取上下文信息 */
+  /** Get context information */
   getContextInfo: (params: {
     record: RecordType;
     field: string;
@@ -71,7 +71,7 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
   userRole = 'viewer',
   getContext,
 }: UseSmartCellOptions<RecordType>): UseSmartCellReturn<RecordType> => {
-  // 计算状态
+  // Calculate state
   const state: SmartCellState = useMemo(() => {
     const emptyFields = new Set<string>();
     const fieldStats = new Map<string, { total: number; empty: number }>();
@@ -108,7 +108,7 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
     };
   }, [data, userRole]);
 
-  // 判断是否为空值
+  // Check if value is empty
   const isEmptyValue = useCallback((value: unknown): boolean => {
     if (value === null || value === undefined) {
       return true;
@@ -125,7 +125,7 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
     return false;
   }, []);
 
-  // 获取字段配置
+  // Get field configuration
   const getFieldConfig = useCallback(
     (field: string): EmptyValueConfig => {
       const fieldConfig = config.fieldConfigs?.[field];
@@ -144,7 +144,7 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
     [config],
   );
 
-  // 获取上下文信息
+  // Get context information
   const getContextInfo = useCallback(
     ({
       record,
@@ -154,7 +154,7 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
         return getContext({ record, field });
       }
 
-      // 默认上下文信息
+      // Default context information
       const fieldStat = state.fieldStats?.get(field);
       const emptyRate = fieldStat ? fieldStat.empty / fieldStat.total : 0;
 
@@ -169,8 +169,8 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
           }
           return 'small';
         })(),
-        hasRelatedData: false, // 需要业务逻辑判断
-        isRequired: false, // 需要字段配置判断
+        hasRelatedData: false, // Requires business logic judgment
+        isRequired: false, // Requires field configuration judgment
         emptyRate,
         rowIndex: data.findIndex((item) => item === record),
       };
@@ -178,7 +178,7 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
     [data, state.fieldStats, getContext],
   );
 
-  // 处理空值点击
+  // Handle empty value click
   const handleEmptyValueClick = useCallback(
     (params: CellRenderParams<RecordType>) => {
       const { field, record } = params;
@@ -193,12 +193,12 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
         },
       });
 
-      // 触发配置的回调
+      // Trigger configured callback
       if (config.onEmptyValueClick) {
         config.onEmptyValueClick(params as unknown as Record<string, unknown>);
       }
 
-      // 触发字段特定的回调
+      // Trigger field-specific callback
       const fieldConfig = getFieldConfig(field);
       if (fieldConfig.onClick) {
         fieldConfig.onClick(params as unknown as Record<string, unknown>);
@@ -207,14 +207,14 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
     [config, userRole, getFieldConfig],
   );
 
-  // 渲染智能单元格
+  // Render smart cell
   const renderSmartCell = useCallback(
     (params: CellRenderParams<RecordType>): React.ReactElement => {
       const { record, field } = params;
       const fieldConfig = getFieldConfig(field);
       const contextInfo = getContextInfo({ record, field });
 
-      // 如果单元格渲染被配置覆盖
+      // If cell render is overridden by configuration
       if (config.onCellRender) {
         const customRender = config.onCellRender(
           params,
@@ -226,22 +226,22 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
         }
       }
 
-      // 占位返回，真实渲染由上层组件完成
+      // Placeholder return, actual rendering completed by upper component
       return React.createElement(React.Fragment);
     },
     [config, getFieldConfig, getContextInfo],
   );
 
-  // 智能单元格方法
+  // Smart cell methods
   const methods: SmartCellMethods<RecordType> = useMemo(
     () => ({
       renderSmartCell: (params: CellRenderParams<RecordType>) =>
         renderSmartCell(params) as unknown as React.ReactElement,
       checkFieldPermission: (_fieldName: string, _record: RecordType) =>
-        // 简单的权限检查逻辑
+        // Simple permission check logic
         true,
       checkEditPermission: (_fieldName: string, _record: RecordType) =>
-        // 简单的编辑权限检查逻辑
+        // Simple edit permission check logic
         true,
       getEmptyConfig: getFieldConfig,
       handleEmptyClick: (_fieldName: string, record: RecordType) => {
@@ -253,7 +253,7 @@ export const useSmartCell = <RecordType extends BaseRecord = BaseRecord>({
         handleEmptyValueClick(params);
       },
       updateUserRole: (role: UserRole) => {
-        // 更新用户角色的逻辑
+        // Update user role logic
         config.userRole = role;
       },
       getEmptyStats: () => ({

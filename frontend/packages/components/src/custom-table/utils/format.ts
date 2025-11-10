@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * CustomTable 格式化工具函数
+ * CustomTable formatting utility functions
  */
 import { isEmpty, snakeCase } from 'lodash-es';
 
 /**
- * 格式化过滤列
+ * Format filter columns
  */
 export const formatFilterColumns = (
   filters: Record<string, unknown>,

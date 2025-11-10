@@ -15,49 +15,49 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ListIntelligentThresholdTaskRequest = {
   /**
-   * 项目名称列表
+   * List of project names
    */
   projects?: Array<string>;
   /**
-   * 任务名称过滤
+   * Task name filter
    */
   task_name?: string;
   /**
-   * 数据源类型
+   * Data source type
    */
   datasource_type?: ListIntelligentThresholdTaskRequest.datasource_type;
   /**
-   * 自动更新开关
+   * Auto update switch
    */
   auto_update?: boolean;
   /**
-   * 创建时间范围开始
+   * Creation time range start
    */
   created_at_start?: string;
   /**
-   * 创建时间范围结束
+   * Creation time range end
    */
   created_at_end?: string;
   /**
-   * 更新时间范围开始
+   * Update time range start
    */
   updated_at_start?: string;
   /**
-   * 更新时间范围结束
+   * Update time range end
    */
   updated_at_end?: string;
   /**
-   * 跳过的记录数
+   * Number of records to skip
    */
   skip?: number;
   /**
-   * 每页大小
+   * Page size
    */
   limit?: number;
 };
 export namespace ListIntelligentThresholdTaskRequest {
   /**
-   * 数据源类型
+   * Data source type
    */
   export enum datasource_type {
     ZABBIX = 'Zabbix',

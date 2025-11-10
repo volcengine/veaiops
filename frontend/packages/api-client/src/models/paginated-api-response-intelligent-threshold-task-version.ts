@@ -19,15 +19,15 @@ export type PaginatedAPIResponseIntelligentThresholdTaskVersion = {
   message?: string;
   data?: Array<IntelligentThresholdTaskVersion>;
   /**
-   * 每页大小
+   * Page size
    */
   limit?: number;
   /**
-   * 跳过的记录数
+   * Number of records to skip
    */
   skip?: number;
   /**
-   * 总记录数
+   * Total number of records
    */
   total?: number;
 };

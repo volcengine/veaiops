@@ -28,8 +28,8 @@ interface UseUrlParamHandlersProps {
 }
 
 /**
- * URL 参数管理 Hook
- * 职责：管理 URL 参数与抽屉/向导状态的同步
+ * URL parameter management Hook
+ * Responsibility: Manage synchronization between URL parameters and drawer/wizard state
  */
 export const useUrlParamHandlers = ({
   connectionDrawerVisible,
@@ -42,7 +42,7 @@ export const useUrlParamHandlers = ({
 }: UseUrlParamHandlersProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // 监听 URL 参数 connectDrawerShow，自动打开连接管理抽屉
+  // Listen to URL parameter connectDrawerShow, automatically open connection manager drawer
   useEffect(() => {
     const connectDrawerShow = searchParams.get('connectDrawerShow');
     logger.info({
@@ -88,7 +88,7 @@ export const useUrlParamHandlers = ({
     handleCloseConnectionManager,
   ]);
 
-  // 监听 URL 参数 dataSourceWizardShow，自动打开数据源向导
+  // Listen to URL parameter dataSourceWizardShow, automatically open data source wizard
   useEffect(() => {
     const dataSourceWizardShow = searchParams.get('dataSourceWizardShow');
     logger.info({
@@ -129,7 +129,7 @@ export const useUrlParamHandlers = ({
     }
   }, [searchParams, wizardVisible, setWizardVisible]);
 
-  // 包装打开连接管理抽屉的函数，同时清除数据源向导的 URL 参数（互斥）
+  // Wrap function to open connection manager drawer, also clear data source wizard URL parameter (mutually exclusive)
   const wrappedHandleOpenConnectionManager = useCallback(() => {
     logger.info({
       message: '🔗 wrappedHandleOpenConnectionManager called',
@@ -158,7 +158,7 @@ export const useUrlParamHandlers = ({
     handleOpenConnectionManager();
   }, [handleOpenConnectionManager, searchParams, setSearchParams]);
 
-  // 包装关闭连接管理抽屉的函数，同时清除 URL 参数
+  // Wrap function to close connection manager drawer, also clear URL parameter
   const wrappedHandleCloseConnectionManager = useCallback(() => {
     logger.info({
       message: '🔗 wrappedHandleCloseConnectionManager called',
@@ -196,7 +196,7 @@ export const useUrlParamHandlers = ({
     setSearchParams(newParams);
   }, [handleCloseConnectionManager, searchParams, setSearchParams]);
 
-  // 包装打开数据源向导的函数，同时清除连接管理的 URL 参数（互斥）
+  // Wrap function to open data source wizard, also clear connection manager URL parameter (mutually exclusive)
   const wrappedHandleAdd = useCallback(() => {
     logger.info({
       message: '➕ wrappedHandleAdd called',
@@ -225,7 +225,7 @@ export const useUrlParamHandlers = ({
     handleAdd();
   }, [handleAdd, searchParams, setSearchParams]);
 
-  // 包装编辑数据源的函数，同时清除连接管理的 URL 参数（互斥）
+  // Wrap function to edit data source, also clear connection manager URL parameter (mutually exclusive)
   const wrappedHandleEditDataSource = useCallback(
     (dataSource: DataSource) => {
       logger.info({
@@ -257,7 +257,7 @@ export const useUrlParamHandlers = ({
     [handleEditDataSource, searchParams, setSearchParams],
   );
 
-  // 包装关闭数据源向导的函数，同时清除 URL 参数
+  // Wrap function to close data source wizard, also clear URL parameter
   const wrappedSetWizardVisible = useCallback(
     (visible: boolean) => {
       logger.info({

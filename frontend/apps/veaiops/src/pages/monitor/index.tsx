@@ -16,8 +16,8 @@ import { MonitorAccessManagement } from '@/modules/system/features/datasource';
 import type React from 'react';
 
 /**
- * 监控接入页面
- * @description 提供时序异常、智能阈值和数据源的监控接入管理功能
+ * Monitor access page
+ * @description Provides monitoring access management for time series anomalies, intelligent thresholds, and data sources
  */
 const MonitorPage: React.FC = () => {
   return <MonitorAccessManagement title="监控接入管理" />;

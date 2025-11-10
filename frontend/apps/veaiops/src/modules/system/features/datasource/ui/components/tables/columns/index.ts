@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 监控数据源管理表格列配置 - 主入口文件
+ * Monitor data source management table column configuration - Main entry file
  */
 
 import type { DeleteHandler, EditHandler } from '@datasource/types';
@@ -23,7 +23,7 @@ import { getActionColumn } from './action-column';
 import { getBaseColumns } from './base-columns';
 
 /**
- * 获取通用表格列配置
+ * Get common table column configuration
  */
 export const getCommonColumns = (
   dataSourceType: DataSourceType,
@@ -38,7 +38,7 @@ export const getCommonColumns = (
 };
 
 /**
- * 获取Zabbix专用列配置
+ * Get Zabbix-specific column configuration
  */
 export const getZabbixColumns = (
   onDelete: DeleteHandler,
@@ -49,7 +49,7 @@ export const getZabbixColumns = (
 };
 
 /**
- * 获取阿里云专用列配置
+ * Get Aliyun-specific column configuration
  */
 export const getAliyunColumns = (
   onDelete: DeleteHandler,
@@ -60,7 +60,7 @@ export const getAliyunColumns = (
 };
 
 /**
- * 获取火山引擎专用列配置
+ * Get Volcengine-specific column configuration
  */
 export const getVolcengineColumns = (
   onDelete: DeleteHandler,
@@ -75,13 +75,13 @@ export const getVolcengineColumns = (
   );
 };
 
-// 重新导出类型
+// Re-export types
 export type {
   DeleteHandler,
   ViewHandler,
   EditHandler,
 } from '@datasource/types';
 
-// 导出单独的列配置
+// Export individual column configurations
 export { getBaseColumns } from './base-columns';
 export { getActionColumn } from './action-column';

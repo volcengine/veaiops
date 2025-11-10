@@ -13,32 +13,31 @@
 // limitations under the License.
 
 /**
- * 插件事件系统模块
- * 负责插件间的事件通信
+ * Plugin event system module
+ * Responsible for event communication between plugins
  *
-
  * @date 2025-12-19
  */
 import { devLog } from '@/custom-table/utils/log-utils';
 
 /**
- * @name 事件监听器类型
+ * @name Event listener type
  */
 export type EventListener = (...args: unknown[]) => void;
 
 /**
- * @name 事件取消函数类型
+ * @name Event unsubscribe function type
  */
 export type UnsubscribeFunction = () => void;
 
 /**
- * @name 插件事件系统
+ * @name Plugin event system
  */
 export class PluginEventSystem {
   private eventListeners: Record<string, EventListener[]> = {};
 
   /**
-   * @name 触发事件
+   * @name Emit event
    */
   emit(event: string, ...args: unknown[]): void {
     const listeners = this.eventListeners[event] || [];
@@ -47,13 +46,13 @@ export class PluginEventSystem {
       try {
         listener(...args);
       } catch (error: unknown) {
-        // ✅ 正确：记录错误但不中断其他监听器的执行，透出实际错误信息
-        // 事件监听器错误不应中断其他监听器，但仍需记录日志用于调试
+        // ✅ Correct: Record error but don't interrupt other listeners' execution, expose actual error information
+        // Event listener errors should not interrupt other listeners, but still need to log for debugging
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         devLog.warn({
           component: 'PluginEventSystem',
-          message: `事件监听器执行失败 (event: "${event}")`,
+          message: `Event listener execution failed (event: "${event}")`,
           data: {
             event,
             error: errorObj.message,
@@ -66,7 +65,7 @@ export class PluginEventSystem {
   }
 
   /**
-   * @name 监听事件
+   * @name Listen to event
    */
   on({
     event,
@@ -81,14 +80,14 @@ export class PluginEventSystem {
 
     this.eventListeners[event].push(listener);
 
-    // 返回取消监听的函数
+    // Return unsubscribe function
     return () => {
       this.off({ event, listener });
     };
   }
 
   /**
-   * @name 监听事件一次
+   * @name Listen to event once
    */
   once({
     event,
@@ -106,7 +105,7 @@ export class PluginEventSystem {
   }
 
   /**
-   * @name 取消监听事件
+   * @name Unsubscribe from event
    */
   off({
     event,
@@ -120,7 +119,7 @@ export class PluginEventSystem {
     }
 
     if (!listener) {
-      // 移除该事件的所有监听器
+      // Remove all listeners for this event
       delete this.eventListeners[event];
       return;
     }
@@ -130,49 +129,49 @@ export class PluginEventSystem {
       this.eventListeners[event].splice(index, 1);
     }
 
-    // 如果没有监听器了，删除事件
+    // If no listeners left, delete event
     if (this.eventListeners[event].length === 0) {
       delete this.eventListeners[event];
     }
   }
 
   /**
-   * @name 获取事件监听器数量
+   * @name Get event listener count
    */
   getListenerCount(event: string): number {
     return this.eventListeners[event]?.length || 0;
   }
 
   /**
-   * @name 获取所有事件名称
+   * @name Get all event names
    */
   getEventNames(): string[] {
     return Object.keys(this.eventListeners);
   }
 
   /**
-   * @name 检查是否有监听器
+   * @name Check if has listeners
    */
   hasListeners(event: string): boolean {
     return this.getListenerCount(event) > 0;
   }
 
   /**
-   * @name 清空所有事件监听器
+   * @name Remove all event listeners
    */
   removeAllListeners(): void {
     this.eventListeners = {};
   }
 
   /**
-   * @name 清空指定事件的所有监听器
+   * @name Remove all listeners for specified event
    */
   removeAllListenersForEvent(event: string): void {
     delete this.eventListeners[event];
   }
 
   /**
-   * @name 获取事件系统状态
+   * @name Get event system status
    */
   getStatus(): {
     totalEvents: number;

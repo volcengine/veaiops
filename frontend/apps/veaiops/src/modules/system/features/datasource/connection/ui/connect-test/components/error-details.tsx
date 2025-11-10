@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 错误详情组件
+ * Error details component
  */
 
 import { Button, Card, Typography } from '@arco-design/web-react';
@@ -47,7 +47,7 @@ export const ErrorDetails: React.FC<ErrorDetailsProps> = ({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({

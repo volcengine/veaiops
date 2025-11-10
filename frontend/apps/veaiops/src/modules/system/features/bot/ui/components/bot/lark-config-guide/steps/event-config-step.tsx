@@ -25,7 +25,7 @@ interface EventConfigStepProps {
 }
 
 /**
- * 事件配置步骤组件
+ * Event configuration step component
  */
 export const EventConfigStep: React.FC<EventConfigStepProps> = ({
   hookUrl,

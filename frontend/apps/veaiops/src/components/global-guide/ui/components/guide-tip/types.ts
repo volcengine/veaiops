@@ -13,29 +13,29 @@
 // limitations under the License.
 
 /**
- * 引导提示组件类型定义
+ * Guide tip component type definitions
  */
 
 export interface GuideTipOptions {
-  /** 提示内容 */
+  /** Tip content */
   content: string;
-  /** 目标元素选择器 */
+  /** Target element selector */
   selector: string;
-  /** 提示位置 */
+  /** Tip placement */
   placement?: 'top' | 'bottom' | 'left' | 'right';
-  /** 是否显示箭头 */
+  /** Whether to show arrow */
   showArrow?: boolean;
-  /** 自定义样式 */
+  /** Custom styles */
   customStyle?: Partial<CSSStyleDeclaration>;
-  /** 按钮文本 */
+  /** Button text */
   buttonText?: string;
-  /** 是否自动关闭 */
+  /** Whether to auto close */
   autoClose?: boolean;
-  /** 自动关闭延迟时间（毫秒） */
+  /** Auto close delay time (milliseconds) */
   autoCloseDelay?: number;
-  /** 是否点击外部区域关闭 */
+  /** Whether to close on outside click */
   closeOnOutsideClick?: boolean;
-  /** 关闭回调 */
+  /** Close callback */
   onClose?: () => void;
 }
 

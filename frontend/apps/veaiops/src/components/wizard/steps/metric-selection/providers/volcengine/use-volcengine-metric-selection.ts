@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 火山引擎指标选择业务逻辑 Hook
- * @description 处理火山引擎指标选择的核心业务逻辑
+ * Volcengine metric selection business logic Hook
+ * @description Handles core business logic for Volcengine metric selection
  */
 
 import { useCallback } from 'react';

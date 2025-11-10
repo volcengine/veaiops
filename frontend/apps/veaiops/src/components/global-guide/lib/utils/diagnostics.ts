@@ -17,14 +17,14 @@ import { logger } from '@veaiops/utils';
 import type { GlobalGuideStore } from './types';
 
 /**
- * 快速诊断 GlobalGuide 状态
+ * Quick diagnose GlobalGuide status
  *
- * 检查内容：
- * 1. localStorage 中是否错误持久化了 guideVisible
- * 2. DOM 中是否存在可见的引导元素
+ * Check content:
+ * 1. Whether guideVisible is incorrectly persisted in localStorage
+ * 2. Whether visible guide elements exist in DOM
  */
 export const quickDiagnoseGlobalGuide = (): void => {
-  // 检查 localStorage
+  // Check localStorage
   const guideStore = localStorage.getItem('global-guide-store');
   if (guideStore) {
     try {
@@ -57,7 +57,7 @@ export const quickDiagnoseGlobalGuide = (): void => {
     }
   }
 
-  // 检查 DOM
+  // Check DOM
   const visibleGuideElements = document.querySelectorAll(
     '[class*="global-guide"]:not([style*="display: none"])',
   );
@@ -78,16 +78,16 @@ export const quickDiagnoseGlobalGuide = (): void => {
 };
 
 /**
- * 导出所有 GlobalGuide 相关日志
+ * Export all GlobalGuide related logs
  *
- * @param filename - 可选的文件名
+ * @param filename - Optional filename
  */
 export const exportAllGlobalGuideLogs = (filename?: string): void => {
   const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
   const finalFilename =
     filename || `global-guide-complete-analysis-${timestamp}.log`;
 
-  // TODO: 实现实际的日志导出逻辑
+  // TODO: Implement actual log export logic
   logger.info({
     message: '[GlobalGuide] 导出日志',
     data: {
@@ -100,9 +100,9 @@ export const exportAllGlobalGuideLogs = (filename?: string): void => {
 };
 
 /**
- * 综合分析 GlobalGuide 状态
+ * Comprehensive analysis of GlobalGuide status
  *
- * 先执行诊断，2秒后导出日志
+ * Execute diagnosis first, export logs after 2 seconds
  */
 export const analyzeGlobalGuide = (): void => {
   quickDiagnoseGlobalGuide();

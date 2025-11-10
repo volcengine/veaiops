@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * CustomLoading 组件类型定义
- * 从 components/custom-loading/types.ts 迁移而来
+ * CustomLoading component type definitions
+ * Migrated from components/custom-loading/types.ts
  */
 
 /**
- * @name 自定义加载组件属性
+ * @name Custom loading component properties
  */
 export interface CustomLoadingProps {
-  /** @name 加载提示文本 */
+  /** @name Loading tip text */
   tip?: string;
-  /** @name 容器样式类名 */
+  /** @name Container style class name */
   className?: string;
 }

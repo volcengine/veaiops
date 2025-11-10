@@ -15,8 +15,8 @@
 import { useCallback } from 'react';
 
 /**
- * 管理刷新 Hook
- * 提供统一的刷新管理功能
+ * Management refresh Hook
+ * Provides unified refresh management functionality
  */
 export interface UseManagementRefreshReturn {
   refresh: () => void;

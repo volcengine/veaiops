@@ -15,40 +15,38 @@
 import type { ReactNode } from 'react';
 
 /**
- * 组件基础类型定义
- * @description 提供组件库的基础通用类型
-
- *
+ * Component base type definitions
+ * @description Provides base common types for the component library
  */
 
-// ===== 基础类型定义 =====
+// ===== Base Type Definitions =====
 
-/** 通用选项类型，支持扩展数据 */
+/** Common option type, supports extended data */
 export type Option<T = Record<string, any>> = {
-  /** 显示标签，支持 React 节点 */
+  /** Display label, supports React nodes */
   label: ReactNode;
-  /** 选项值 */
+  /** Option value */
   value: string | number;
-  /** 是否禁用 */
+  /** Whether disabled */
   disabled?: boolean;
-  /** 扩展数据 */
+  /** Extended data */
   extra?: T;
 };
 
-/** 事件处理器类型 */
+/** Event handler type */
 export type EventHandler = (...args: unknown[]) => void;
 
-/** 表单实例类型 - 兼容 Arco Design 的 FormInstance */
+/** Form instance type - Compatible with Arco Design's FormInstance */
 export interface FormInstance {
   setFieldsValue: (values: Record<string, unknown>) => void;
   getFieldsValue: () => Record<string, unknown>;
   resetFields: () => void;
   validateFields?: () => Promise<Record<string, unknown>>;
-  // 添加 Arco Design FormInstance 的其他方法
+  // Add other methods from Arco Design FormInstance
   [key: string]: unknown;
 }
 
-/** 全局配置类型 */
+/** Global configuration type */
 export interface GlobalConfig {
   filterStyle?: {
     isWithBackgroundAndBorder?: boolean;

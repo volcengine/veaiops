@@ -17,75 +17,75 @@ import type {
   FieldItem as PluginFieldItem,
 } from '@veaiops/types';
 /**
- * 筛选器核心类型定义
+ * Filter Core Type Definitions
  */
 import type { CSSProperties, ReactNode } from 'react';
 
 /**
- * 筛选器组件属性接口
+ * Filter Component Props Interface
  */
 export interface FiltersComponentProps {
-  /** 自定义类名 */
+  /** Custom class name */
   className?: string;
-  /** 包装器类名 */
+  /** Wrapper class name */
   wrapperClassName?: string;
-  /** 筛选器样式配置 */
+  /** Filter style configuration */
   filterStyle?: FilterStyle;
-  /** 字段配置列表 */
+  /** Field configuration list */
   config?: FieldItem[];
-  /** 操作按钮列表 */
+  /** Action buttons list */
   actions?: ReactNode[];
-  /** 自定义操作按钮 */
+  /** Custom action buttons */
   customActions?: ReactNode[] | ReactNode;
-  /** 自定义操作按钮样式 */
+  /** Custom action buttons style */
   customActionsStyle?: CSSProperties;
-  /** 重置筛选值回调 */
+  /** Reset filter values callback */
   resetFilterValues?: (props: { resetEmptyData?: boolean }) => void;
-  /** 查询对象 */
+  /** Query object */
   query: Record<string, unknown>;
-  /** 是否显示重置按钮 */
+  /** Whether to show reset button */
   showReset?: boolean;
 }
 
 /**
- * 筛选器样式配置
+ * Filter Style Configuration
  */
 export interface FilterStyle {
-  /** 是否显示背景和边框 */
+  /** Whether to show background and border */
   isWithBackgroundAndBorder: boolean;
-  /** 自定义样式 */
+  /** Custom style */
   style?: CSSProperties;
 }
 
 /**
- * 字段项配置（扩展插件字段项）
+ * Field Item Configuration (extends plugin field item)
  */
 export interface FieldItem extends PluginFieldItem {
-  /** 插件特定配置 */
+  /** Plugin-specific configuration */
   pluginConfig?: PluginConfig;
-  /** 预设配置 */
+  /** Preset configuration */
   preset?: string;
   /**
-   * Label 转换目标属性
-   * 指定将 label 字段转换为哪个组件属性（addBefore/addAfter/prefix/suffix）
-   * 如果不指定，则根据组件类型自动选择（Select 用 addBefore，Input 用 prefix）
+   * Label conversion target property
+   * Specifies which component property the label field should be converted to (addBefore/addAfter/prefix/suffix)
+   * If not specified, automatically selects based on component type (Select uses addBefore, Input uses prefix)
    */
   labelAs?: 'addBefore' | 'addAfter' | 'prefix' | 'suffix';
 }
 
 /**
- * 固定筛选控件类名配置
+ * Fixed filter control class name configuration
  */
 export interface FixFilterControlCls {
   className: string;
 }
 
 /**
- * 重置筛选参数
+ * Reset filter parameters
  */
 export interface ResetFilterParams {
   resetEmptyData?: boolean;
 }
 
-// 重新导出插件系统类型
+// Re-export plugin system types
 export * from '../plugins';

@@ -18,14 +18,14 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import type { UserFormData } from '../../types';
 
 /**
- * 创建用户参数接口
+ * Create user parameter interface
  */
 export interface CreateUserParams {
   userData: UserFormData;
 }
 
 /**
- * 更新用户参数接口
+ * Update user parameter interface
  */
 export interface UpdateUserParams {
   userId: string;
@@ -33,20 +33,20 @@ export interface UpdateUserParams {
 }
 
 /**
- * 创建用户
+ * Create user
  */
 export const createUser = async ({
   userData,
 }: CreateUserParams): Promise<boolean> => {
   try {
-    // 使用 Users API
+    // Use Users API
     const response = await apiClient.users.postApisV1ManagerUsers({
       requestBody: {
         username: userData.username,
         email: userData.email,
-        password: userData.password || 'defaultPassword123', // 提供默认密码
+        password: userData.password || 'defaultPassword123', // Provide default password
         is_supervisor:
-          userData.role === 'admin' || userData.is_system_admin, // 从 role 转换为 is_supervisor
+          userData.role === 'admin' || userData.is_system_admin, // Convert from role to is_supervisor
       },
     });
 
@@ -54,27 +54,27 @@ export const createUser = async ({
       Message.success('用户创建成功');
       return true;
     } else {
-      throw new Error(response.message || '创建用户失败');
+      throw new Error(response.message || 'Failed to create user');
     }
   } catch (error: unknown) {
-    // ✅ 正确：透出实际错误信息
+    // ✅ Correct: Extract actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
-    const errorMessage = errorObj.message || '创建用户失败';
+    const errorMessage = errorObj.message || 'Failed to create user';
     Message.error(errorMessage);
     return false;
   }
 };
 
 /**
- * 更新用户
+ * Update user
  */
 export const updateUser = async ({
   userId,
   updateData,
 }: UpdateUserParams): Promise<boolean> => {
   try {
-    // 使用 Users API
+    // Use Users API
     const response = await apiClient.users.putApisV1ManagerUsers({
       userId,
       requestBody: {
@@ -89,19 +89,19 @@ export const updateUser = async ({
       return true;
     }
 
-    throw new Error(response.message || '更新用户失败');
+    throw new Error(response.message || 'Failed to update user');
   } catch (error: unknown) {
-    // ✅ 正确：透出实际错误信息
+    // ✅ Correct: Extract actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
-    const errorMessage = errorObj.message || '更新用户失败';
+    const errorMessage = errorObj.message || 'Failed to update user';
     Message.error(errorMessage);
     return false;
   }
 };
 
 /**
- * 删除用户
+ * Delete user
  */
 export const deleteUser = async ({
   userId,
@@ -109,7 +109,7 @@ export const deleteUser = async ({
   userId: string;
 }): Promise<boolean> => {
   try {
-    // 使用 Users API
+    // Use Users API
     const response = await apiClient.users.deleteApisV1ManagerUsers({
       userId,
     });
@@ -119,12 +119,12 @@ export const deleteUser = async ({
       return true;
     }
 
-    throw new Error(response.message || '删除用户失败');
+    throw new Error(response.message || 'Failed to delete user');
   } catch (error: unknown) {
-    // ✅ 正确：透出实际错误信息
+    // ✅ Correct: Extract actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
-    const errorMessage = errorObj.message || '删除用户失败';
+    const errorMessage = errorObj.message || 'Failed to delete user';
     Message.error(errorMessage);
     return false;
   }

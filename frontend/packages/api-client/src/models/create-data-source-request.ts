@@ -15,29 +15,29 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type CreateDataSourceRequest = {
   /**
-   * 数据源名称
+   * Data source name
    */
   name: string;
   /**
-   * 数据源类型
+   * Data source type
    */
   type: CreateDataSourceRequest.type;
   /**
-   * 数据源配置
+   * Data source configuration
    */
   config: Record<string, any>;
   /**
-   * 数据源描述
+   * Data source description
    */
   description?: string;
   /**
-   * 是否激活
+   * Whether the data source is active
    */
   is_active?: boolean;
 };
 export namespace CreateDataSourceRequest {
   /**
-   * 数据源类型
+   * Data source type
    */
   export enum type {
     ZABBIX = 'zabbix',

@@ -21,7 +21,7 @@ interface FormActionsProps {
 }
 
 /**
- * 表单操作区块组件
+ * Form actions section component
  */
 export const FormActions: React.FC<FormActionsProps> = ({
   onCancel,

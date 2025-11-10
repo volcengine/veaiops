@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Custom Fields 插件 Hooks 导出
+ * Custom Fields plugin Hooks exports
  */
 export { useCustomFields } from './use-custom-fields';
 export type {

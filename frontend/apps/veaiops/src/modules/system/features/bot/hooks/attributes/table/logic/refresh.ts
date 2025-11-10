@@ -20,11 +20,11 @@ import type React from 'react';
 import { useCallback } from 'react';
 
 /**
- * 刷新属性表格的辅助函数Hook
+ * Refresh attributes table helper function Hook
  */
 export const useRefreshAttributesTable = () => {
-  // 刷新表格的辅助函数
-  // 注意：接收 tableRef 作为参数，而不是从内部创建，避免与 config Hook 中的 tableRef 冲突
+  // Helper function to refresh table
+  // Note: Receive tableRef as parameter instead of creating internally, avoid conflict with tableRef in config Hook
   const refreshTable = useCallback(
     async (
       tableRef: React.RefObject<
@@ -32,12 +32,12 @@ export const useRefreshAttributesTable = () => {
       > | null,
     ) => {
       if (tableRef?.current?.refresh) {
-        // ✅ 正确：处理刷新方法的返回值
+        // ✅ Correct: Handle refresh method return value
         const result = await tableRef.current.refresh();
         if (!result.success && result.error) {
-          // 刷新失败，但不影响主操作，仅记录警告
+          // Refresh failed, but does not affect main operation, only log warning
           logger.warn({
-            message: '属性表格刷新失败',
+            message: 'Failed to refresh attributes table',
             data: {
               error: result.error.message,
               stack: result.error.stack,

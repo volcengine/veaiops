@@ -16,33 +16,33 @@
  * Global guide step enumeration
  */
 export enum GlobalGuideStepNumber {
-  /** Step 1: Connection Management */
+  /** Step 1: Connection management */
   CONNECTION = 1,
-  /** Step 2: Data Source */
+  /** Step 2: Data source */
   DATASOURCE = 2,
-  /** Step 3: Metric Template */
+  /** Step 3: Metric template */
   TEMPLATE = 3,
-  /** Step 4: Metric Configuration */
+  /** Step 4: Metric configuration */
   METRIC_CONFIG = 4,
-  /** Step 5: Intelligent Threshold Task */
+  /** Step 5: Intelligent threshold task */
   TASK = 5,
-  /** Step 6: Inject Alert Rule */
+  /** Step 6: Inject alert rule */
   INJECTION = 6,
-  /** Step 7: Chat Bot Management */
+  /** Step 7: Bot management */
   BOT_MANAGEMENT = 7,
-  /** Step 8: Card Template Management */
+  /** Step 8: Card template management */
   CARD_TEMPLATE = 8,
-  /** Step 9: Account Management */
+  /** Step 9: Account management */
   ACCOUNT = 9,
-  /** Step 10: Project Management */
+  /** Step 10: Project management */
   PROJECT = 10,
-  /** Step 11: Content Recognition Rule */
+  /** Step 11: Oncall anomaly configuration */
   ONCALL_CONFIG = 11,
-  /** Step 12: Content Recognition Rule */
+  /** Step 12: Oncall anomaly rules */
   ONCALL_RULES = 12,
-  /** Step 13: Oncall Change History */
+  /** Step 13: Oncall anomaly history */
   ONCALL_HISTORY = 13,
-  /** Step 14: Oncall Change Statistics */
+  /** Step 14: Oncall anomaly statistics */
   ONCALL_STATS = 14,
 }
 
@@ -58,7 +58,7 @@ export enum GlobalGuideStepPath {
   TEMPLATE = '/threshold/template',
   /** Intelligent threshold task path */
   METRIC_CONFIG = '/threshold/config',
-  /** Chat bot management path */
+  /** Bot management path */
   BOT_MANAGEMENT = '/system/bot-management',
   /** Card template management path */
   CARD_TEMPLATE = '/system/card-template',
@@ -66,19 +66,19 @@ export enum GlobalGuideStepPath {
   ACCOUNT = '/system/account',
   /** Project management path */
   PROJECT = '/system/project',
-  /** Content recognition rule path */
+  /** Oncall anomaly configuration path */
   ONCALL_CONFIG = '/oncall/config',
-  /** Content recognition rule path */
+  /** Oncall anomaly rules path */
   ONCALL_RULES = '/oncall/rules',
-  /** Oncall change history path */
+  /** Oncall anomaly history path */
   ONCALL_HISTORY = '/oncall/history',
-  /** Oncall change statistics path */
+  /** Oncall anomaly statistics path */
   ONCALL_STATS = '/oncall/stats',
 }
 
 /**
  * Global guide step parameters enumeration
- * 🔥 Deprecated: No longer use URL parameters to automatically open drawer, changed to only highlight button
+ * 🔥 Deprecated: No longer use URL parameters to auto-open drawers, changed to only highlight buttons
  */
 export enum GlobalGuideStepParams {
   /** Connection management parameter (deprecated) */

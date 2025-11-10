@@ -13,19 +13,19 @@
 // limitations under the License.
 
 /**
- * 数据源向导业务逻辑工具函数 - 向后兼容导出
- * @description 该文件已被拆分并重组为模块化结构，此文件仅用于向后兼容
+ * Data source wizard business logic utility functions - backward compatible export
+ * @description This file has been split and reorganized into a modular structure, this file is only for backward compatibility
  *
- * 新的文件结构：
- * - steps/          步骤相关（验证、数据获取、工具函数）
- * - data/           数据处理（预填充、转换器）
- * - validation/     验证相关
- * - error-handling/ 错误处理
- * - helpers/        通用辅助函数
+ * New file structure:
+ * - steps/          Step-related (validation, data fetching, utility functions)
+ * - data/           Data processing (prefill, converters)
+ * - validation/     Validation-related
+ * - error-handling/ Error handling
+ * - helpers/        General helper functions
  *
- * @deprecated 请直接从 '../utils' 或子模块导入所需函数
+ * @deprecated Please import required functions directly from '../utils' or sub-modules
  * @example
- * // 推荐用法
+ * // Recommended usage
  * import { canProceed, handleStepDataFetch } from '../utils/steps';
  * import { prefillDataSourceConfig } from '../utils/data';
  *
@@ -33,13 +33,13 @@
  * @date 2025-01-19
  */
 
-// 重新导出所有函数以保持向后兼容性
+// Re-export all functions to maintain backward compatibility
 export {
-  // 步骤验证器
+  // Step validators
   canProceed,
-  // 步骤数据获取器
+  // Step data fetchers
   handleStepDataFetch,
-  // 步骤工具函数
+  // Step utility functions
   getButtonText,
   getCurrentStepConfig,
   getDataSourceTypeDisplayName,

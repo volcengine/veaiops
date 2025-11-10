@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * UI 组件统一导出
+ * Unified UI component exports
  */
 
 // Tables
@@ -56,5 +56,5 @@ export { ConnectTestModal } from './connect-test/connect-test-modal';
 export * from './connect-test/components';
 
 // Shared components
-// 注意：shared 模块已移除
+// Note: shared module has been removed
 // export * from './shared';

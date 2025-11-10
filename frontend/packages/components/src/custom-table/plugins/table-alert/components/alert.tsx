@@ -14,7 +14,7 @@
 
 import { Alert } from '@arco-design/web-react';
 /**
- * 表格提示信息组件
+ * Table alert info component
  */
 import type React from 'react';
 import '../style/alert.less';

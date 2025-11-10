@@ -26,18 +26,18 @@ interface AlertMethodsSelectorProps {
 }
 
 /**
- * 告警通知方式选择器组件
+ * Alert notification method selector component
  *
- * Volcengine 和 Zabbix 数据源需要此配置
- * - Volcengine: 选择告警通知方式后，将通过选中的联系组发送通知
- * - Zabbix: 选择媒介类型(mediatypes)后，将通过选中的用户组发送通知
+ * Volcengine and Zabbix data sources require this configuration
+ * - Volcengine: After selecting alert notification method, notifications will be sent through selected contact group
+ * - Zabbix: After selecting media type (mediatypes), notifications will be sent through selected user group
  */
 export const AlertMethodsSelector: React.FC<AlertMethodsSelectorProps> = ({
   loading,
   datasourceType,
   datasourceId,
 }) => {
-  // 创建组件实例ID
+  // Create component instance ID
   const componentIdRef = useRef(
     `AlertMethodsSelector_${Date.now()}_${Math.random()
       .toString(36)
@@ -59,10 +59,10 @@ export const AlertMethodsSelector: React.FC<AlertMethodsSelectorProps> = ({
     component: 'AlertMethodsSelector',
   });
 
-  // 判断数据源类型，使用不同的数据源
+  // Determine datasource type, use different data sources
   const isZabbix = datasourceType === 'Zabbix';
 
-  // 🔧 修复：使用useMemo缓存dataSource，避免每次渲染都创建新的函数引用导致Select组件重建
+  // 🔧 Fix: Use useMemo to cache dataSource, avoid creating new function reference on every render causing Select component rebuild
   const dataSource = useMemo(() => {
     const ds = isZabbix
       ? getZabbixAlertMethodsDataSource(datasourceId || '')
@@ -81,7 +81,7 @@ export const AlertMethodsSelector: React.FC<AlertMethodsSelectorProps> = ({
     return ds;
   }, [isZabbix, datasourceId]);
 
-  // 🔧 修复：使用useMemo缓存dependency数组，避免每次渲染都创建新数组导致Select组件重建
+  // 🔧 Fix: Use useMemo to cache dependency array, avoid creating new array on every render causing Select component rebuild
   const dependency = useMemo(() => {
     const dep = [datasourceId, datasourceType];
     logger.debug({
@@ -103,7 +103,7 @@ export const AlertMethodsSelector: React.FC<AlertMethodsSelectorProps> = ({
     ? '选择Zabbix的媒介类型作为告警通知方式'
     : '选择告警通知方式后，将通过选中的联系组发送通知';
 
-  // 如果是Volcengine，使用静态选项
+  // If Volcengine, use static options
   if (!isZabbix) {
     return (
       <Select.Block
@@ -125,7 +125,7 @@ export const AlertMethodsSelector: React.FC<AlertMethodsSelectorProps> = ({
     );
   }
 
-  // 如果是Zabbix，使用动态数据源
+  // If Zabbix, use dynamic data source
   return (
     <Select.Block
       isControl

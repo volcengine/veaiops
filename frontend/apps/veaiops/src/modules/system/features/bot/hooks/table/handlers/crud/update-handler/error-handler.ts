@@ -17,7 +17,7 @@ import type { Bot } from '@bot/lib';
 import { logger } from '@veaiops/utils';
 
 /**
- * 更新错误处理
+ * Update error handling
  */
 export const handleUpdateError = ({
   error,

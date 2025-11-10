@@ -27,7 +27,7 @@
 // limitations under the License.
 
 /**
- * 监控表格配置常量
+ * Monitor table configuration constants
  */
 export const MONITOR_TABLE_CONFIG = {
   rowKey: '_id',

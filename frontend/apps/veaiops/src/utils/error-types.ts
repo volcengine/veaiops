@@ -13,26 +13,26 @@
 // limitations under the License.
 
 /**
- * API 错误类型定义
+ * API error type definition
  */
 export interface ApiError {
   status: number;
   message?: string;
-  // 支持API返回的错误格式
+  // Support API error response format
   code?: number;
   data?: any;
 }
 
 /**
- * 错误处理配置
+ * Error handling configuration
  */
 export interface ErrorHandlerConfig {
-  /** 401 错误消息 */
+  /** 401 Unauthorized error message */
   unauthorizedMessage?: string;
-  /** 404 错误消息 */
+  /** 404 Not Found error message */
   notFoundMessage?: string;
-  /** 409 错误消息 */
+  /** 409 Conflict error message */
   conflictMessage?: string;
-  /** 默认错误消息 */
+  /** Default error message */
   defaultMessage?: string;
 }

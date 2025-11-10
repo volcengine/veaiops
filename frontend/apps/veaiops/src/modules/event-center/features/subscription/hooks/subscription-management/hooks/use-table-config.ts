@@ -21,7 +21,7 @@ import React, { useMemo } from 'react';
 import { transformSubscriptionToTableData } from '../utils';
 
 /**
- * 订阅关系表格配置Hook参数接口
+ * Subscription relation table configuration Hook parameter interface
  */
 export interface UseSubscriptionTableConfigParams {
   handleEdit: (subscription: SubscribeRelationWithAttributes) => void;
@@ -29,14 +29,14 @@ export interface UseSubscriptionTableConfigParams {
 }
 
 /**
- * 订阅关系表格配置Hook
- * 提供数据源配置等（列配置已移至组件中处理）
+ * Subscription relation table configuration Hook
+ * Provides data source configuration, etc. (column configuration has been moved to component handling)
  */
 export const useSubscriptionTableConfig = ({
   handleEdit: _handleEdit,
   handleDelete: _handleDelete,
 }: UseSubscriptionTableConfigParams) => {
-  // 🔍 Hook 执行计数（用于调试）
+  // 🔍 Hook execution count (for debugging)
   const hookExecutionRef = React.useRef(0);
   hookExecutionRef.current++;
 
@@ -52,9 +52,9 @@ export const useSubscriptionTableConfig = ({
   });
 
   /**
-   * CustomTable的request函数
-   * 🔧 使用 useMemo 稳定化函数引用，避免触发不必要的表格刷新
-   * 直接调用API获取数据
+   * CustomTable request function
+   * 🔧 Use useMemo to stabilize function reference, avoid triggering unnecessary table refresh
+   * Directly call API to fetch data
    */
   const request = useMemo(
     () => {
@@ -90,7 +90,7 @@ export const useSubscriptionTableConfig = ({
               throw new Error(response.message || '获取订阅关系列表失败');
             }
           } catch (error: unknown) {
-            // ✅ 正确：透出实际的错误信息
+            // ✅ Correct: Expose actual error information
             const errorObj =
               error instanceof Error ? error : new Error(String(error));
             const errorMessage =
@@ -105,10 +105,10 @@ export const useSubscriptionTableConfig = ({
         defaultLimit: 10,
       });
     },
-    [], // request 函数不依赖任何外部变量，使用空依赖数组
+    [], // request function doesn't depend on any external variables, use empty dependency array
   );
 
-  // 🔧 使用 useMemo 稳定化 dataSource 对象引用，避免触发不必要的表格刷新
+  // 🔧 Use useMemo to stabilize dataSource object reference, avoid triggering unnecessary table refresh
   const dataSource = useMemo(() => {
     logger.debug({
       message: '[useSubscriptionTableConfig] dataSource 对象创建',
@@ -127,7 +127,7 @@ export const useSubscriptionTableConfig = ({
     };
   }, [request]);
 
-  // 🔧 使用 useMemo 稳定化 tableProps 对象引用
+  // 🔧 Use useMemo to stabilize tableProps object reference
   const tableProps = useMemo(
     () => ({
       rowKey: '_id',

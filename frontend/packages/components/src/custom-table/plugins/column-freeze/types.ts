@@ -14,64 +14,64 @@
 
 import type { ColumnProps } from '@arco-design/web-react/es/Table/interface';
 /**
- * 列冻结插件类型定义
- * 基于 Arco Table sticky 能力和 EPS 平台冻结功能
+ * Column freeze plugin type definitions
+ * Based on Arco Table sticky capability and EPS platform freeze functionality
  */
 import type { ReactNode } from 'react';
 
 /**
- * 冻结位置
+ * Freeze position
  */
 export type FreezePosition = 'left' | 'right';
 
 /**
- * 冻结列配置
+ * Freeze column configuration
  */
 export interface FreezeColumnConfig {
-  /** 列的 dataIndex */
+  /** Column's dataIndex */
   dataIndex: string;
-  /** 冻结位置 */
+  /** Freeze position */
   position: FreezePosition;
-  /** 冻结优先级，数字越小越靠边 */
+  /** Freeze priority, smaller numbers are closer to edge */
   priority?: number;
 }
 
 /**
- * 冻结样式配置
+ * Freeze style configuration
  */
 export interface FreezeStyleConfig {
-  /** 冻结列的背景色 */
+  /** Frozen column background color */
   backgroundColor?: string;
-  /** 冻结列的阴影 */
+  /** Frozen column shadow */
   boxShadow?: string;
-  /** 冻结列的 z-index */
+  /** Frozen column z-index */
   zIndex?: number;
-  /** 自定义冻结样式类名 */
+  /** Custom freeze style class name */
   freezeClassName?: string;
 }
 
 /**
- * 列冻结配置
+ * Column freeze configuration
  */
 export interface ColumnFreezeConfig {
-  /** 是否启用插件 */
+  /** Whether to enable plugin */
   enabled?: boolean;
-  /** 插件优先级 */
+  /** Plugin priority */
   priority?: number;
-  /** 默认冻结的列 */
+  /** Default frozen columns */
   defaultFrozenColumns?: FreezeColumnConfig[];
-  /** 是否允许用户动态冻结 */
+  /** Whether to allow user to dynamically freeze */
   allowUserFreeze?: boolean;
-  /** 冻结样式配置 */
+  /** Freeze style configuration */
   styleConfig?: FreezeStyleConfig;
-  /** 最大冻结列数 */
+  /** Maximum frozen column count */
   maxFrozenColumns?: {
     left?: number;
     right?: number;
   };
-  /** 冻结变化回调 */
+  /** Freeze change callback */
   onFreezeChange?: (frozenColumns: FreezeColumnConfig[]) => void;
-  /** 自定义冻结操作渲染 */
+  /** Custom freeze action render */
   renderFreezeAction?: <RecordType = Record<string, unknown>>(
     column: ColumnProps<RecordType>,
     isFrozen: boolean,
@@ -79,16 +79,16 @@ export interface ColumnFreezeConfig {
 }
 
 /**
- * 插件状态
+ * Plugin state
  */
 export interface ColumnFreezeState {
-  /** 左侧冻结的列 */
+  /** Left frozen columns */
   leftFrozenColumns: FreezeColumnConfig[];
-  /** 右侧冻结的列 */
+  /** Right frozen columns */
   rightFrozenColumns: FreezeColumnConfig[];
-  /** 所有冻结的列 */
+  /** All frozen columns */
   allFrozenColumns: FreezeColumnConfig[];
-  /** 冻结列的偏移量 */
+  /** Frozen column offsets */
   frozenOffsets: {
     left: Record<string, number>;
     right: Record<string, number>;

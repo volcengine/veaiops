@@ -34,13 +34,13 @@ interface LarkConfigGuideProps {
 }
 
 /**
- * 飞书配置指引组件
+ * Lark configuration guide component
  *
- * 拆分说明：
- * - steps/event-config-step.tsx: 事件配置步骤（步骤1）
- * - steps/callback-config-step.tsx: 回调配置步骤（步骤2）
- * - steps/permission-config-step.tsx: 权限配置步骤（步骤3）
- * - index.tsx: 主入口组件，负责组装和渲染
+ * Split explanation:
+ * - steps/event-config-step.tsx: Event configuration step (Step 1)
+ * - steps/callback-config-step.tsx: Callback configuration step (Step 2)
+ * - steps/permission-config-step.tsx: Permission configuration step (Step 3)
+ * - index.tsx: Main entry component, responsible for assembly and rendering
  */
 export const LarkConfigGuide: React.FC<LarkConfigGuideProps> = ({
   currentBotId,
@@ -58,7 +58,7 @@ export const LarkConfigGuide: React.FC<LarkConfigGuideProps> = ({
         Message.success('已复制到剪贴板');
         return true;
       } else if (copyResult.error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           copyResult.error instanceof Error
             ? copyResult.error.message
@@ -68,7 +68,7 @@ export const LarkConfigGuide: React.FC<LarkConfigGuideProps> = ({
       }
       return false;
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息（兼容旧版本可能抛出错误的情况）
+      // ✅ Correct: Expose actual error information (compatible with old versions that may throw errors)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || '复制失败，请重试';

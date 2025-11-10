@@ -19,21 +19,21 @@ import { useCallback } from 'react';
 import type { UpdateUserParams, UserFormData } from '../types';
 
 /**
- * CRUD 操作 Hook
+ * CRUD operations Hook
  */
 export const useCrudOperations = () => {
   /**
-   * 创建用户
+   * Create user
    */
   const createUser = useCallback(
     async (userData: UserFormData): Promise<boolean> => {
       try {
-        // 使用 Users API
+        // Use Users API
         const response = await apiClient.users.postApisV1ManagerUsers({
           requestBody: {
             username: userData.username,
             email: userData.email,
-            password: userData.password || 'defaultPassword123', // 提供默认密码
+            password: userData.password || 'defaultPassword123', // Provide default password
           },
         });
 
@@ -44,7 +44,7 @@ export const useCrudOperations = () => {
           throw new Error(response.message || '创建用户失败');
         }
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '创建用户失败';
@@ -56,12 +56,12 @@ export const useCrudOperations = () => {
   );
 
   /**
-   * 更新用户信息
+   * Update user information
    */
   const updateUser = useCallback(
     async ({ userId, updateData }: UpdateUserParams): Promise<boolean> => {
       try {
-        // 使用 Users API - 更新用户基本信息（非密码）
+        // Use Users API - Update user basic information (non-password)
         const response = await apiClient.users.putApisV1ManagerUsers({
           userId,
           requestBody: {
@@ -77,7 +77,7 @@ export const useCrudOperations = () => {
 
         throw new Error(response.message || '更新用户失败');
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '更新用户失败';
@@ -89,11 +89,11 @@ export const useCrudOperations = () => {
   );
 
   /**
-   * 删除用户
+   * Delete user
    */
   const deleteUser = useCallback(async (userId: string): Promise<boolean> => {
     try {
-      // 使用 Users API
+      // Use Users API
       const response = await apiClient.users.deleteApisV1ManagerUsers({
         userId,
       });
@@ -105,7 +105,7 @@ export const useCrudOperations = () => {
 
       throw new Error(response.message || '删除用户失败');
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Extract actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || '删除用户失败';

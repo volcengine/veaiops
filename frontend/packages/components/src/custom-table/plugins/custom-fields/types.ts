@@ -15,52 +15,52 @@
 import type { BaseRecord, ModernTableColumnProps } from '@/custom-table/types';
 import type { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 /**
- * Custom Fields 插件类型定义
+ * Custom Fields plugin type definitions
  */
 import type { ReactElement } from 'react';
 
 /**
- * CustomFields 组件属性
+ * CustomFields component props
  */
 export interface CustomFieldsProps<T extends BaseRecord = BaseRecord> {
-  /** 禁止选择的字段 */
+  /** Disabled fields */
   disabledFields: Map<string, string | undefined>;
-  /** 基础的列 */
+  /** Base columns */
   columns: ModernTableColumnProps<T>[];
-  /** 当前选中的值 */
+  /** Currently selected value */
   value: string[] | undefined;
-  /** 初始字段 */
+  /** Initial fields */
   initialFields?: string[];
-  /** 确认回调 */
+  /** Confirm callback */
   confirm: (value: string[]) => void;
 }
 
 /**
- * Custom Fields 插件配置
+ * Custom Fields plugin configuration
  */
 export interface CustomFieldsConfig {
-  /** 是否启用插件 */
+  /** Whether to enable plugin */
   enabled?: boolean;
-  /** 插件优先级 */
+  /** Plugin priority */
   priority?: PluginPriorityEnum;
-  /** 是否启用自定义字段功能 */
+  /** Whether to enable custom fields functionality */
   enableCustomFields?: boolean;
-  /** CustomFields 组件属性 */
+  /** CustomFields component props */
   customFieldsProps?: Partial<CustomFieldsProps>;
-  /** 自定义渲染函数 */
+  /** Custom render function */
   customRender?: (props: CustomFieldsProps) => ReactElement | null;
 }
 
 /**
- * 插件状态
+ * Plugin state
  */
 export interface CustomFieldsState<T extends BaseRecord = BaseRecord> {
-  /** 是否显示 CustomFields */
+  /** Whether to show CustomFields */
   showCustomFields: boolean;
-  /** 当前选中的字段 */
+  /** Currently selected fields */
   selectedFields: string[];
-  /** 可用的列 */
+  /** Available columns */
   availableColumns: ModernTableColumnProps<T>[];
-  /** 禁用的字段 */
+  /** Disabled fields */
   disabledFields: string[];
 }

@@ -27,13 +27,13 @@ export const API_ENDPOINTS = {
   },
 } as const;
 
-// API 响应状态码
+// API response status codes
 export const API_RESPONSE_CODE = {
   SUCCESS: 0,
   ERROR: 1,
 } as const;
 
-// 分页相关常量
+// Pagination related constants
 export const PAGINATION = {
   DEFAULT_PAGE_SIZE: 10,
   DEFAULT_LIMIT: 100,

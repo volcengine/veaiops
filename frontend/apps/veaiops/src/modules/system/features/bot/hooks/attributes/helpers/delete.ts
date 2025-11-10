@@ -19,7 +19,7 @@ import type { BotAttribute } from 'api-generate';
 import { useCallback } from 'react';
 
 /**
- * 使用 ref 来稳定参数引用
+ * Use ref to stabilize parameter references
  */
 interface UseDeleteAttributeParams {
   lastRequestParamsRef: React.MutableRefObject<LastRequestParams>;
@@ -27,7 +27,7 @@ interface UseDeleteAttributeParams {
 }
 
 /**
- * 删除特别关注 Hook
+ * Delete special attention Hook
  */
 export function useDeleteAttribute({
   lastRequestParamsRef,
@@ -48,8 +48,8 @@ export function useDeleteAttribute({
 
         if (success) {
           Message.success('特别关注删除成功');
-          // 记录：删除成功，由组件负责刷新表格
-          // 注意：将复杂对象参数提取为变量，避免 TypeScript 解析错误（TS1136）
+          // Log: delete successful, component responsible for refreshing table
+          // Note: extract complex object parameters as variables to avoid TypeScript parsing errors (TS1136)
           const savedNamesForDelete = Array.isArray(
             lastRequestParamsRef.current.names,
           )
@@ -65,7 +65,7 @@ export function useDeleteAttribute({
             source: 'useBotAttributes',
             component: 'deleteAttribute',
           });
-          // ✅ 返回 true 表示删除成功
+          // ✅ Return true to indicate delete success
           return true;
         } else {
           Message.error('删除失败');

@@ -21,7 +21,7 @@ import { updateUserPassword } from '../lib/api';
 import type { ExtendedUser, UserFormData } from '../lib/types';
 
 /**
- * usePasswordUpdate Hook 参数
+ * Parameters for usePasswordUpdate Hook
  */
 export interface UsePasswordUpdateParams {
   editingUser: ExtendedUser;
@@ -29,12 +29,12 @@ export interface UsePasswordUpdateParams {
 }
 
 /**
- * 密码更新逻辑 Hook
+ * Password update logic Hook
  *
- * 功能：
- * - 验证密码更新表单数据
- * - 调用密码更新 API
- * - 更新成功后自动退出登录
+ * Features:
+ * - Validate password update form data
+ * - Call password update API
+ * - Automatically logout after successful update
  */
 export const usePasswordUpdate = ({
   editingUser,
@@ -45,17 +45,17 @@ export const usePasswordUpdate = ({
   const handleUpdate = useCallback(
     async (values: UserFormData): Promise<boolean> => {
       if (!editingUser || !editingUser.id) {
-        Message.error('用户 ID 不能为空');
+        Message.error('User ID cannot be empty');
         return false;
       }
 
-      // 验证必需字段
+      // Validate required fields
       if (!values.old_password || !values.new_password) {
-        Message.error('旧密码和新密码不能为空');
+        Message.error('Old password and new password cannot be empty');
         return false;
       }
 
-      // UpdatePasswordRequest 类型包含 old_password, new_password, confirm_password
+      // UpdatePasswordRequest type includes old_password, new_password, confirm_password
       const updatePasswordData: UpdatePasswordRequest = {
         old_password: values.old_password || '',
         new_password: values.new_password || '',
@@ -71,19 +71,19 @@ export const usePasswordUpdate = ({
         if (success) {
           onSuccess?.();
 
-          // 更新成功后自动退出登录
+          // Automatically logout after successful update
           const logoutResult = await logout({
             showMessage: true,
             redirectToLogin: true,
             onBeforeLogout: () => {
-              // 空函数，用于满足 logout 接口要求
+              // Empty function to satisfy logout interface requirements
             },
           });
 
           if (!logoutResult.success && logoutResult.error) {
-            // 退出登录失败，但不影响密码更新操作本身，仅记录警告
+            // Logout failed, but does not affect the password update operation itself, only log warning
             logger.warn({
-              message: '密码更新后退出登录失败',
+              message: 'Failed to logout after password update',
               data: {
                 error: logoutResult.error.message,
                 stack: logoutResult.error.stack,
@@ -99,7 +99,8 @@ export const usePasswordUpdate = ({
       } catch (error: unknown) {
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '更新失败，请重试';
+        const errorMessage =
+          errorObj.message || 'Update failed, please try again';
         Message.error(errorMessage);
         return false;
       }

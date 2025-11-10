@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 火山引擎认证字段组件
+ * Volcengine credentials form component
  */
 
 import { Form, Input } from '@arco-design/web-react';

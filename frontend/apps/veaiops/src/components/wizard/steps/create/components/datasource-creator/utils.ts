@@ -13,19 +13,19 @@
 // limitations under the License.
 
 /**
- * 数据源创建器工具函数
+ * Data source creator utility functions
  */
 
 import { logger } from '@veaiops/utils';
 
 /**
- * 处理 API 错误，转换为用户友好的错误消息
+ * Process API errors, convert to user-friendly error messages
  *
- * @param error - 捕获的错误对象
- * @param operation - 操作类型（create/update）
- * @param component - 组件名称（用于日志记录）
- * @param config - 配置对象（用于日志记录）
- * @returns 处理后的用户友好错误消息
+ * @param error - Caught error object
+ * @param operation - Operation type (create/update)
+ * @param component - Component name (for logging)
+ * @param config - Configuration object (for logging)
+ * @returns Processed user-friendly error message
  */
 export const processApiError = ({
   error,
@@ -43,7 +43,7 @@ export const processApiError = ({
     errorObj.message ||
     (operation === 'create' ? '创建失败，请重试' : '更新失败，请重试');
 
-  // 记录原始错误信息
+  // Log original error information
   logger.error({
     message: `[Wizard - ${component}] 捕获到错误`,
     data: {
@@ -57,12 +57,12 @@ export const processApiError = ({
     component,
   });
 
-  // ✅ 处理常见的 4xx 客户端错误
+  // ✅ Handle common 4xx client errors
   if (
     errorMessage.includes('duplicate key') ||
     errorMessage.includes('E11000')
   ) {
-    // 409 Conflict - 重复键错误
+    // 409 Conflict - Duplicate key error
     const nameMatch = errorMessage.match(/name.*?:\s*"([^"]+)"/);
     if (nameMatch?.[1]) {
       errorMessage = `数据源名称 "${nameMatch[1]}" 已存在，请使用其他名称`;
@@ -84,7 +84,7 @@ export const processApiError = ({
     errorMessage = '数据格式错误，请检查输入信息';
   }
 
-  // 记录处理后的错误信息
+  // Log processed error information
   logger.error({
     message: `[Wizard - ${component}] 处理后的错误信息`,
     data: {

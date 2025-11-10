@@ -22,15 +22,15 @@ const { Text } = Typography;
 const { CustomOutlineTag, CustomOutlineTagList } = CellRender;
 
 /**
- * 基础信息组件属性接口
+ * Basic info component props interface
  */
 interface BasicInfoProps {
   selectedRecord: Event;
 }
 
 /**
- * 基础信息组件
- * 显示事件的基础信息，包括项目信息
+ * Basic info component
+ * Displays basic information of the event, including project information
  */
 export const BasicInfo: React.FC<BasicInfoProps> = ({ selectedRecord }) => {
   return (

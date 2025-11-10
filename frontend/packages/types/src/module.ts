@@ -13,74 +13,74 @@
 // limitations under the License.
 
 /**
- * 模块类型枚举
- * 用于区分不同模块的订阅关系管理
+ * Module type enumeration
+ * Used to distinguish subscription relationship management for different modules
  */
 export enum ModuleType {
-  /** 事件中心 */
+  /** Event Center */
   EVENT_CENTER = 'event-center',
-  /** 时序异常检测 */
+  /** Time Series Anomaly Detection */
   TIMESERIES = 'timeseries',
-  /** 智能阈值 */
+  /** Intelligent Threshold */
   INTELLIGENT_THRESHOLD = 'intelligent-threshold',
-  /** Oncall异动 */
+  /** Oncall Anomaly */
   ONCALL = 'oncall',
 }
 
 /**
- * 模块类型配置
+ * Module type configuration
  */
 export interface ModuleConfig {
-  /** 模块类型 */
+  /** Module type */
   type: ModuleType;
-  /** 显示名称 */
+  /** Display name */
   displayName: string;
-  /** 页面标题 */
+  /** Page title */
   pageTitle: string;
-  /** 描述 */
+  /** Description */
   description: string;
-  /** 路由路径匹配模式 */
+  /** Route path matching pattern */
   pathPattern: string;
 }
 
 /**
- * 模块配置映射
+ * Module configuration mapping
  */
 export const MODULE_CONFIGS: Record<ModuleType, ModuleConfig> = {
   [ModuleType.EVENT_CENTER]: {
     type: ModuleType.EVENT_CENTER,
-    displayName: '事件中心',
-    pageTitle: '订阅关系管理',
-    description: '管理事件中心的订阅关系',
+    displayName: 'Event Center',
+    pageTitle: 'Subscription Relationship Management',
+    description: 'Manage subscription relationships for Event Center',
     pathPattern: '/event-center/',
   },
   [ModuleType.TIMESERIES]: {
     type: ModuleType.TIMESERIES,
-    displayName: '时序异常',
-    pageTitle: '订阅规则管理',
-    description: '管理时序异常检测的订阅规则',
+    displayName: 'Time Series Anomaly',
+    pageTitle: 'Subscription Rule Management',
+    description: 'Manage subscription rules for time series anomaly detection',
     pathPattern: '/timeseries/',
   },
   [ModuleType.INTELLIGENT_THRESHOLD]: {
     type: ModuleType.INTELLIGENT_THRESHOLD,
-    displayName: '智能阈值',
-    pageTitle: '阈值订阅管理',
-    description: '管理智能阈值的订阅关系',
+    displayName: 'Intelligent Threshold',
+    pageTitle: 'Threshold Subscription Management',
+    description: 'Manage subscription relationships for Intelligent Threshold',
     pathPattern: '/threshold/',
   },
   [ModuleType.ONCALL]: {
     type: ModuleType.ONCALL,
-    displayName: 'Oncall异动',
-    pageTitle: 'Oncall订阅管理',
-    description: '管理Oncall异动的订阅关系',
+    displayName: 'Oncall Anomaly',
+    pageTitle: 'Oncall Subscription Management',
+    description: 'Manage subscription relationships for Oncall Anomaly',
     pathPattern: '/oncall/',
   },
 };
 
 /**
- * 根据路径检测模块类型
- * @param pathname 当前路径
- * @returns 检测到的模块类型
+ * Detect module type from path
+ * @param pathname Current path
+ * @returns Detected module type
  */
 export function detectModuleTypeFromPath(pathname: string): ModuleType {
   for (const config of Object.values(MODULE_CONFIGS)) {
@@ -92,17 +92,17 @@ export function detectModuleTypeFromPath(pathname: string): ModuleType {
 }
 
 /**
- * 获取模块配置
- * @param moduleType 模块类型
- * @returns 模块配置
+ * Get module configuration
+ * @param moduleType Module type
+ * @returns Module configuration
  */
 export function getModuleConfig(moduleType: ModuleType): ModuleConfig {
   return MODULE_CONFIGS[moduleType];
 }
 
 /**
- * 获取所有模块类型
- * @returns 模块类型数组
+ * Get all module types
+ * @returns Module type array
  */
 export function getAllModuleTypes(): ModuleType[] {
   return Object.values(ModuleType);

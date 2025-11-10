@@ -13,64 +13,64 @@
 // limitations under the License.
 
 /**
- * Agent 类型相关常量定义
- * 统一的 Agent 类型配置，供全局使用
+ * Agent type related constant definitions
+ * Unified Agent type configuration for global use
  */
 
 /**
- * ⚠️ 注意：AgentType 枚举定义在 @veaiops/api-client
+ * ⚠️ Note: AgentType enum is defined in @veaiops/api-client
  *
- * ✅ 单一数据源原则：
- * - AgentType 枚举从 @veaiops/api-client 导入（不在此处重新导出，避免中转）
- * - AGENT_TYPE_OPTIONS 等配置常量在此处定义（UI 展示配置）
+ * ✅ Single source of truth principle:
+ * - AgentType enum is imported from @veaiops/api-client (not re-exported here to avoid intermediary)
+ * - Configuration constants like AGENT_TYPE_OPTIONS are defined here (UI display configuration)
  *
- * 使用方式：
+ * Usage:
  * ```typescript
- * // 导入枚举
+ * // Import enum
  * import { AgentType } from '@veaiops/api-client';
- * // 导入配置常量
+ * // Import configuration constants
  * import { AGENT_TYPE_OPTIONS } from '@veaiops/constants';
  *
- * // 使用枚举值
+ * // Use enum value
  * const type = AgentType.CHATOPS_INTEREST_AGENT;
- * // 查找配置
+ * // Find configuration
  * const config = AGENT_TYPE_OPTIONS.find(opt => opt.value === AgentType.CHATOPS_INTEREST_AGENT);
  * ```
  */
 
-// ✅ 作为使用方，导入 AgentType 用于类型定义和值比较
+// ✅ As a consumer, import AgentType for type definitions and value comparisons
 import { AgentType } from '@veaiops/api-client';
 
 /**
- * Agent 类型选项配置（带颜色和中文标签）
+ * Agent type option configuration (with color and labels)
  *
- * 注意：value 值使用 AgentType 枚举
+ * Note: value uses AgentType enum
  */
 export const AGENT_TYPE_OPTIONS = [
   {
-    label: '内容识别Agent',
+    label: 'Content Recognition Agent',
     value: AgentType.CHATOPS_INTEREST_AGENT,
     color: 'blue',
   },
   {
-    label: '主动回复Agent',
+    label: 'Proactive Reply Agent',
     value: AgentType.CHATOPS_PROACTIVE_REPLY_AGENT,
     color: 'green',
   },
   {
-    label: '被动回复Agent',
+    label: 'Reactive Reply Agent',
     value: AgentType.CHATOPS_REACTIVE_REPLY_AGENT,
     color: 'orange',
   },
   {
-    label: '智能阈值Agent',
+    label: 'Intelligent Threshold Agent',
     value: AgentType.INTELLIGENT_THRESHOLD_AGENT,
     color: 'purple',
   },
 ] as const;
 
 /**
- * Agent 类型映射
+ * Agent type mapping
  */
 export const AGENT_TYPE_MAP = AGENT_TYPE_OPTIONS.reduce(
   (acc, cur) => {
@@ -81,21 +81,21 @@ export const AGENT_TYPE_MAP = AGENT_TYPE_OPTIONS.reduce(
 );
 
 /**
- * Agent 过滤选项（不包含智能阈值）
+ * Agent filter options (excluding intelligent threshold)
  */
 export const AGENT_OPTIONS_FILTER = AGENT_TYPE_OPTIONS.filter(
   (item) => item.value !== AgentType.INTELLIGENT_THRESHOLD_AGENT,
 );
 
 /**
- * 智能阈值筛选选项
+ * Intelligent threshold filter options
  */
 export const AGENT_OPTIONS_THRESHOLD_FILTER = AGENT_TYPE_OPTIONS.filter(
   (item) => item.value === AgentType.INTELLIGENT_THRESHOLD_AGENT,
 );
 
 /**
- * 事件中心订阅选项
+ * Event center subscription options
  */
 export const AGENT_OPTIONS_EVENT_CENTER_SUBSCRIPTION =
   AGENT_TYPE_OPTIONS.filter(
@@ -105,20 +105,20 @@ export const AGENT_OPTIONS_EVENT_CENTER_SUBSCRIPTION =
   );
 
 /**
- * Oncall 订阅选项
+ * Oncall subscription options
  */
 export const AGENT_OPTIONS_ONCALL_SUBSCRIPTION = AGENT_TYPE_OPTIONS.filter(
   (item) => item.value === AgentType.CHATOPS_INTEREST_AGENT,
 );
 
 /**
- * Oncall 历史选项
+ * Oncall history options
  */
 export const AGENT_OPTIONS_ONCALL_HISTORY = AGENT_TYPE_OPTIONS.filter(
   (item) => item.value !== AgentType.INTELLIGENT_THRESHOLD_AGENT,
 );
 
 /**
- * 事件中心历史选项（全部）
+ * Event center history options (all)
  */
 export const AGENT_OPTIONS_EVENT_CENTER_HISTORY = AGENT_TYPE_OPTIONS;

@@ -30,36 +30,36 @@ import { BasicFields, InterestFields, WebhookFields } from './components';
 import { useFormInitializer, useFormLogic } from './hooks';
 
 /**
- * 订阅关系表单组件属性
+ * Subscription relation form component props
  */
 interface SubscribeRelationFormProps {
-  /** 抽屉是否可见 */
+  /** Whether drawer is visible */
   visible: boolean;
-  /** 关闭抽屉的回调 */
+  /** Callback to close drawer */
   onClose: () => void;
-  /** 提交表单的回调 */
+  /** Callback to submit form */
   onSubmit: (
     data: SubscribeRelationCreate | SubscribeRelationUpdate,
   ) => Promise<boolean>;
-  /** 编辑的订阅关系数据，为空时表示新建 */
+  /** Subscription relation data for editing, null means creating new */
   editData?: SubscribeRelationWithAttributes | null;
-  /** 表单标题 */
+  /** Form title */
   title?: string;
-  /** 模块类型，用于决定显示哪些Agent选项 */
+  /** Module type, used to determine which Agent options to display */
   moduleType?: ModuleType;
-  /** 是否显示项目导入tooltip */
+  /** Whether to show project import tooltip */
   showProjectTooltip?: boolean;
-  /** 是否显示策略创建tooltip */
+  /** Whether to show strategy creation tooltip */
   showStrategyTooltip?: boolean;
-  /** 隐藏项目tooltip的回调 */
+  /** Callback to hide project tooltip */
   hideProjectTooltip?: () => void;
-  /** 隐藏策略tooltip的回调 */
+  /** Callback to hide strategy tooltip */
   hideStrategyTooltip?: () => void;
 }
 
 /**
- * 订阅关系表单抽屉组件
- * @description 用于新建和编辑订阅关系的抽屉表单
+ * Subscription relation form drawer component
+ * @description Drawer form for creating and editing subscription relations
  */
 const SubscribeRelationForm: React.FC<SubscribeRelationFormProps> = ({
   visible,
@@ -77,7 +77,7 @@ const SubscribeRelationForm: React.FC<SubscribeRelationFormProps> = ({
   const { agentTypeOptions, eventLevelOptions } =
     useSubscribeRelationFormLogic(moduleType);
 
-  // 表单逻辑
+  // Form logic
   const { loading, handleSubmit, handleCancel, resetForm } = useFormLogic({
     form,
     onSubmit,
@@ -85,14 +85,14 @@ const SubscribeRelationForm: React.FC<SubscribeRelationFormProps> = ({
     editData,
   });
 
-  // 表单初始化
+  // Form initialization
   const { initializeForm } = useFormInitializer({
     form,
     visible,
     editData,
   });
 
-  // 当编辑数据变化时，填充表单
+  // Fill form when edit data changes
   useEffect(() => {
     initializeForm();
 
@@ -108,7 +108,7 @@ const SubscribeRelationForm: React.FC<SubscribeRelationFormProps> = ({
         component: 'useEffect',
       });
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.debug({

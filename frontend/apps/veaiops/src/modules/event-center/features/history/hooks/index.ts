@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 历史事件 Hooks 统一导出
+ * History event Hooks unified export
  */
 
 export {

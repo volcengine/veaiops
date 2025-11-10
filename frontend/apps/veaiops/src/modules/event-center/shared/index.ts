@@ -13,20 +13,20 @@
 // limitations under the License.
 
 /**
- * Event Center 共享资源导出
+ * Event Center shared resources export
  */
 
-// 导出常量
+// Export constants
 export * from './constants';
 
-// 导出类型
+// Export types
 export * from './types';
 
-// 导出工具函数
+// Export utility functions
 export * from './utils';
 
-// 导出 Hooks
+// Export Hooks
 export * from './hooks';
 
-// 导出 History 功能模块的共享资源（层层导出优化）
+// Export History feature module shared resources (layered export optimization)
 export * from '../features/history/ui/shared';

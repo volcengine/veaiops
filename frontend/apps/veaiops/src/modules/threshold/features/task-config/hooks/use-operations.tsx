@@ -35,7 +35,7 @@ interface UseTaskOperationsProps {
 }
 
 /**
- * 任务操作相关的 Hook
+ * Hook for task operations
  */
 export const useTaskOperations = ({
   setOperationType: _setOperationType,
@@ -48,39 +48,39 @@ export const useTaskOperations = ({
   selectedTasks,
   taskList: _taskList,
 }: UseTaskOperationsProps) => {
-  // 处理添加任务
+  // Handle add task
   const handleAdd = useCallback(async (): Promise<boolean> => {
     const { openTaskDrawer } = useTaskConfigStore.getState();
     openTaskDrawer({ type: TaskOperateType.CREATE, record: undefined });
     form.resetFields();
-    return true; // 添加操作成功
+    return true; // Add operation successful
   }, [form]);
 
-  // 处理查看任务详情
+  // Handle view task detail
   const handleTaskDetail = useCallback((task: IntelligentThresholdTask) => {
-    // 直接调用 Zustand store 的 openTaskDrawer 方法
+    // Directly call Zustand store's openTaskDrawer method
     const { openTaskDrawer } = useTaskConfigStore.getState();
     openTaskDrawer({ type: TaskOperateType.DETAIL, record: task });
   }, []);
 
-  // 处理重新执行任务
+  // Handle rerun task
   const handleRerun = useCallback((task: IntelligentThresholdTask) => {
-    // 直接调用 Zustand store 的 openTaskDrawer 方法
+    // Directly call Zustand store's openTaskDrawer method
     const { openTaskDrawer } = useTaskConfigStore.getState();
     openTaskDrawer({ type: TaskOperateType.RERUN, record: task });
   }, []);
 
-  // 处理查看任务版本
+  // Handle view task versions
   const handleViewVersions = useCallback((task: IntelligentThresholdTask) => {
-    // 直接调用 Zustand store 的 openTaskDrawer 方法
+    // Directly call Zustand store's openTaskDrawer method
     const { openTaskDrawer } = useTaskConfigStore.getState();
     openTaskDrawer({ type: TaskOperateType.VERSIONS, record: task });
   }, []);
 
-  // 处理创建告警规则
+  // Handle create alarm rule
   const handleCreateAlarm = useCallback(
     (task: IntelligentThresholdTask) => {
-      // 优先使用 props 提供的方法以保持组件内解耦
+      // Prefer using method provided by props to maintain component decoupling
       if (setAlarmDrawerVisible) {
         setAlarmDrawerVisible(true);
       } else {
@@ -91,12 +91,12 @@ export const useTaskOperations = ({
     [setAlarmDrawerVisible],
   );
 
-  // 处理复制任务
+  // Handle copy task
   const handleCopy = useCallback(async (task: IntelligentThresholdTask) => {
     try {
-      // 🎯 先调用详情接口获取完整的任务信息（包含 latest_version）
+      // 🎯 First call detail API to get complete task information (including latest_version)
       logger.info({
-        message: '📋 开始获取任务详情（复制任务）',
+        message: '📋 Starting to fetch task detail (copy task)',
         data: { taskId: task._id },
         source: 'useTaskOperations',
         component: 'handleCopy',
@@ -119,7 +119,7 @@ export const useTaskOperations = ({
 
       const taskDetail = detailResponse.data;
       logger.info({
-        message: '📋 任务详情获取成功',
+        message: '📋 Task detail fetched successfully',
         data: {
           taskId: task._id,
           hasLatestVersion: Boolean(taskDetail.latest_version),
@@ -131,27 +131,27 @@ export const useTaskOperations = ({
         component: 'handleCopy',
       });
 
-      // 直接调用 Zustand store 的 openTaskDrawer 方法
+      // Directly call Zustand store's openTaskDrawer method
       const { openTaskDrawer } = useTaskConfigStore.getState();
 
-      // 构造复制的任务数据（使用详情数据）
+      // Construct copied task data (using detail data)
       const originalTaskName = taskDetail.task_name;
       const copyRecord = {
         ...taskDetail,
-        _id: undefined, // 清空 ID，表示新建
+        _id: undefined, // Clear ID, indicating new creation
         task_name: originalTaskName
           ? `${originalTaskName}_副本`
           : '新建任务_副本',
       };
 
-      // 使用 'copy' 操作类型打开抽屉，标题将显示"复制任务"
-      // 表单会通过 TaskBasicForm 的 useEffect 自动填充
+      // Use 'copy' operation type to open drawer, title will display "Copy Task"
+      // Form will be automatically filled through TaskBasicForm's useEffect
       openTaskDrawer({ type: TaskOperateType.COPY, record: copyRecord });
     } catch (error: unknown) {
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
-        message: '获取任务详情失败',
+        message: 'Failed to fetch task detail',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
@@ -161,45 +161,45 @@ export const useTaskOperations = ({
         source: 'useTaskOperations',
         component: 'handleCopy',
       });
-      Message.error(`获取任务详情失败：${errorObj.message}`);
+      Message.error(`获取任务详情失败: ${errorObj.message}`);
     }
   }, []);
 
-  // 处理批量重新执行 - 打开确认 modal
+  // Handle batch rerun - Open confirmation modal
   const handleBatchRerun = useCallback(() => {
     if (selectedTasks.length === 0) {
-      Message.warning('请选择要重新执行的任务');
+      Message.warning('请选择要重跑的任务');
       return;
     }
-    // 打开批量重新执行确认弹窗
+    // Open batch rerun confirmation modal
     setBatchRerunModalVisible(true);
   }, [selectedTasks, setBatchRerunModalVisible]);
 
-  // 处理删除任务
+  // Handle delete task
   const handleDelete = useCallback(async (taskId: string): Promise<boolean> => {
     try {
       logger.info({
-        message: '🗑️ 开始删除任务',
+        message: '🗑️ Starting to delete task',
         data: { taskId },
         source: 'useTaskOperations',
         component: 'handleDelete',
       });
-      // ✅ 使用静态导入，避免动态 import（违反规范）
+      // ✅ Use static import, avoid dynamic import (violates specification)
       const success = await deleteTask(taskId);
       logger.info({
-        message: '🗑️ 删除任务完成',
+        message: '🗑️ Task deletion completed',
         data: { taskId, success },
         source: 'useTaskOperations',
         component: 'handleDelete',
       });
-      // 🎯 返回 success，wrappedHandlers.delete 会在成功时自动刷新
+      // 🎯 Return success, wrappedHandlers.delete will auto-refresh on success
       return success;
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
-        message: '删除任务失败',
+        message: 'Failed to delete task',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接管理Hook
+ * Connection management Hook
  */
 
 import apiClient from '@/utils/api-client';
@@ -59,7 +59,7 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
     error: null,
   });
 
-  // 刷新连接列表
+  // Refresh connection list
   const refresh = useCallback(async (): Promise<{
     success: boolean;
     error?: Error;
@@ -74,11 +74,11 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
         });
 
       if (response.code === API_RESPONSE_CODE.SUCCESS) {
-        // 临时方案：仍然使用前端过滤，直到API重新生成
+        // Temporary solution: still use frontend filtering until API is regenerated
         const allConnections = response.data || [];
         const filteredConnections = allConnections
           .filter((connect: Connect) => connect.type === type)
-          // 过滤掉没有ID的连接，防止后续操作失败
+          // Filter out connections without ID to prevent subsequent operation failures
           .filter((connect: Connect) => {
             if (!connect.id && !connect._id) {
               return false;
@@ -93,11 +93,11 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
         }));
 
         return { success: true };
-      } else {
-        throw new Error(response.message || '获取连接列表失败');
-      }
+        } else {
+          throw new Error(response.message || '获取连接列表失败');
+        }
     } catch (error: unknown) {
-      // ✅ 正确：透出实际错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message;
@@ -114,7 +114,7 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
     }
   }, [type]);
 
-  // 创建连接
+  // Create connection
   const create = useCallback(
     async (data: ConnectCreateRequest): Promise<Connect> => {
       try {
@@ -124,19 +124,19 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
           });
 
         if (response.code === API_RESPONSE_CODE.SUCCESS) {
-          // 刷新连接列表（错误已在 refresh 中处理）
+          // Refresh connection list (errors are handled in refresh)
           await refresh();
           return response.data!;
         } else {
           throw new Error(response.message || '创建连接失败');
         }
       } catch (error) {
-        // 增强错误信息，帮助上层组件做出更好的判断
+        // Enhance error information to help upper components make better decisions
         if (error instanceof Error) {
           const enhancedError = new Error(error.message);
           enhancedError.name = error.name;
           enhancedError.stack = error.stack;
-          // 添加自定义属性来帮助上层组件判断错误类型
+          // Add custom properties to help upper components determine error type
           (enhancedError as any).originalError = error;
           (enhancedError as any).context = {
             operation: 'create_connection',
@@ -146,7 +146,7 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
           throw enhancedError;
         }
 
-        // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+        // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         throw errorObj;
@@ -155,7 +155,7 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
     [type, refresh],
   );
 
-  // 更新连接
+  // Update connection
   const update = useCallback(
     async ({
       id,
@@ -169,20 +169,20 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
           });
 
         if (response.code === API_RESPONSE_CODE.SUCCESS) {
-          // 刷新连接列表（错误已在 refresh 中处理）
+          // Refresh connection list (errors are handled in refresh)
           await refresh();
           return response.data!;
         } else {
           throw new Error(response.message || '更新连接失败');
         }
       } catch (error) {
-        // 增强错误信息，帮助上层组件做出更好的判断
+        // Enhance error information to help upper components make better decisions
         if (error instanceof Error) {
-          // 保持原始错误信息，但添加更多上下文
+          // Preserve original error information but add more context
           const enhancedError = new Error(error.message);
           enhancedError.name = error.name;
           enhancedError.stack = error.stack;
-          // 添加自定义属性来帮助上层组件判断错误类型
+          // Add custom properties to help upper components determine error type
           (enhancedError as any).originalError = error;
           (enhancedError as any).context = {
             operation: 'update_connection',
@@ -192,7 +192,7 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
           throw enhancedError;
         }
 
-        // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+        // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         throw errorObj;
@@ -201,7 +201,7 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
     [refresh],
   );
 
-  // 删除连接
+  // Delete connection
   const deleteConnect = useCallback(
     async (id: string): Promise<boolean> => {
       try {
@@ -211,19 +211,19 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
           });
 
         if (response.code === API_RESPONSE_CODE.SUCCESS) {
-          // 刷新连接列表（错误已在 refresh 中处理）
+          // Refresh connection list (errors are handled in refresh)
           await refresh();
           return true;
         } else {
           throw new Error(response.message || '删除连接失败');
         }
       } catch (error) {
-        // 增强错误信息，帮助上层组件做出更好的判断
+        // Enhance error information to help upper components make better decisions
         if (error instanceof Error) {
           const enhancedError = new Error(error.message);
           enhancedError.name = error.name;
           enhancedError.stack = error.stack;
-          // 添加自定义属性来帮助上层组件判断错误类型
+          // Add custom properties to help upper components determine error type
           (enhancedError as any).originalError = error;
           (enhancedError as any).context = {
             operation: 'delete_connection',
@@ -233,7 +233,7 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
           throw enhancedError;
         }
 
-        // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+        // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         throw errorObj;
@@ -242,7 +242,7 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
     [refresh],
   );
 
-  // 批量切换状态
+  // Batch toggle status
   const batchToggleStatus = useCallback(
     async ({
       ids,
@@ -259,10 +259,10 @@ export const useConnections = (type: DataSourceType): UseConnectionsReturn => {
         const results = await Promise.all(promises);
         return { success: true, results };
       } catch (error: unknown) {
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : '批量切换状态失败，请重试';
         Message.error(errorMessage);

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 事件中心订阅规则相关类型定义
+ * Event Center subscription rule related type definitions
  */
 
 export interface SubscriptionRule {
@@ -53,7 +53,7 @@ export interface NotificationChannel {
 
 export interface ThrottleConfig {
   enabled: boolean;
-  interval: number; // 秒
+  interval: number; // seconds
   max_count: number;
 }
 
@@ -90,7 +90,7 @@ export interface SubscriptionRuleQuery {
 }
 
 /**
- * 订阅关系筛选条件接口
+ * Subscription relation filter conditions interface
  */
 export interface SubscriptionFilters {
   name?: string;

@@ -22,19 +22,19 @@ import { EMPTY_CONTENT } from '@veaiops/constants';
 import './index.module.less';
 import { IconDoubleDown, IconDoubleUp } from '@arco-design/web-react/icon';
 
-// 定义组件属性类型
+// Define component property types
 interface BatchArrayRenderProps<T> {
-  data: T[]; // 数据数组
-  renderItem: (item: T, index: number) => ReactNode; // 渲染每个数组元素的函数
-  emptyContent?: JSX.Element; // 空内容的占位元素
-  direction?: 'vertical' | 'horizontal'; // 排列方向，可选值为 'vertical' 或 'horizontal'
-  wrap?: boolean; // 是否换行，仅在 direction 为 'horizontal' 时生效
-  maxDisplay?: number; // 最大展示数量
+  data: T[]; // Data array
+  renderItem: (item: T, index: number) => ReactNode; // Function to render each array element
+  emptyContent?: JSX.Element; // Placeholder element for empty content
+  direction?: 'vertical' | 'horizontal'; // Arrangement direction, optional values are 'vertical' or 'horizontal'
+  wrap?: boolean; // Whether to wrap, only effective when direction is 'horizontal'
+  maxDisplay?: number; // Maximum display count
   style?: CSSProperties;
   className?: string;
 }
 
-// 批量数组渲染组件
+// Batch array rendering component
 const CustomBatchRender = <T extends ReactNode>({
   data,
   renderItem = (item) => item,

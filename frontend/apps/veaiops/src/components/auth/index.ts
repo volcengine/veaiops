@@ -12,6 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 认证组件统一导出
+// Unified authentication component exports
 export { AuthGuard } from './auth-guard';
 export { AuthRoutes } from './auth-routes';

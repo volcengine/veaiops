@@ -18,79 +18,79 @@ import { useCallback, useState } from 'react';
 import { logger } from '../logger';
 
 /**
- * 抽屉表单提交配置选项
+ * Drawer form submission configuration options
  */
 export interface UseDrawerFormSubmitOptions<T = Record<string, unknown>> {
   /**
-   * 表单实例
+   * Form instance
    */
   form: FormInstance;
 
   /**
-   * 提交处理函数
-   * @param values - 表单验证通过后的值
-   * @returns Promise<boolean> - 返回 true 表示成功，false 表示失败
+   * Submit handler function
+   * @param values - Form values after validation passes
+   * @returns Promise<boolean> - Returns true for success, false for failure
    */
   onSubmit: (values: T) => Promise<boolean>;
 
   /**
-   * 提交成功后的回调
-   * @param values - 表单值
+   * Callback after successful submission
+   * @param values - Form values
    */
   onSuccess?: (values: T) => void;
 
   /**
-   * 提交失败后的回调
-   * @param error - 错误对象
+   * Callback after failed submission
+   * @param error - Error object
    */
   onError?: (error: unknown) => void;
 
   /**
-   * 是否在成功后重置表单
+   * Whether to reset form after success
    * @default true
    */
   resetOnSuccess?: boolean;
 
   /**
-   * 是否在成功后关闭抽屉
+   * Whether to close drawer after success
    * @default false
    */
   closeOnSuccess?: boolean;
 
   /**
-   * 关闭抽屉的回调（仅在 closeOnSuccess 为 true 时使用）
+   * Callback to close drawer (only used when closeOnSuccess is true)
    */
   onClose?: () => void;
 }
 
 /**
- * 抽屉表单提交返回值
+ * Drawer form submission return value
  */
 export interface UseDrawerFormSubmitReturn {
   /**
-   * 提交中状态
+   * Submitting state
    */
   submitting: boolean;
 
   /**
-   * 提交处理函数
+   * Submit handler function
    */
   handleSubmit: () => Promise<void>;
 
   /**
-   * 手动设置提交状态（用于外部控制）
+   * Manually set submitting state (for external control)
    */
   setSubmitting: (loading: boolean) => void;
 }
 
 /**
- * 抽屉表单提交 Hook
+ * Drawer form submission Hook
  *
- * 封装抽屉表单的提交逻辑，包括：
- * 1. 表单验证
- * 2. Loading 状态管理
- * 3. 错误处理
- * 4. 成功后的回调处理
+ * Encapsulates drawer form submission logic, including:
+ * 1. Form validation
+ * 2. Loading state management
+ * 3. Error handling
+ * 4. Success callback handling
  *
  * @example
  * ```tsx
@@ -101,18 +101,18 @@ export interface UseDrawerFormSubmitReturn {
  *     return success;
  *   },
  *   onSuccess: () => {
- *     Message.success('创建成功');
+ *     Message.success('Created successfully');
  *   },
  *   resetOnSuccess: true,
  *   closeOnSuccess: true,
  *   onClose: handleClose,
  * });
  *
- * // 在抽屉中使用
+ * // Use in drawer
  * <Drawer
  *   footer={
  *     <Button onClick={handleSubmit} loading={submitting}>
- *       提交
+ *       Submit
  *     </Button>
  *   }
  * >
@@ -135,51 +135,51 @@ export const useDrawerFormSubmit = <T = Record<string, unknown>>({
 
   const handleSubmit = useCallback(async () => {
     try {
-      // 步骤 1: 验证表单
+      // Step 1: Validate form
       const values = await form.validate();
 
-      // 步骤 2: 开始提交，设置 loading 状态
+      // Step 2: Start submission, set loading state
       setSubmitting(true);
 
-      // 步骤 3: 调用提交函数
+      // Step 3: Call submit function
       const success = await onSubmit(values as T);
 
-      // 步骤 4: 处理成功情况
+      // Step 4: Handle success case
       if (success) {
-        // 执行成功回调
+        // Execute success callback
         if (onSuccess) {
           onSuccess(values as T);
         }
 
-        // 重置表单（如果需要）
+        // Reset form (if needed)
         if (resetOnSuccess) {
           form.resetFields();
         }
 
-        // 关闭抽屉（如果需要）
+        // Close drawer (if needed)
         if (closeOnSuccess && onClose) {
           onClose();
         }
       }
     } catch (error: unknown) {
-      // 处理错误情况
+      // Handle error case
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
 
-      // 如果是表单验证错误，不记录日志（表单会自动显示错误信息）
+      // If it's a form validation error, don't log (form will automatically display error message)
       if (
         errorObj.message &&
         (errorObj.message.includes('validation') ||
-          errorObj.message.includes('验证') ||
+          errorObj.message.includes('validate') ||
           errorObj.message.includes('required'))
       ) {
-        // 表单验证失败，静默处理（表单会自动显示错误）
+        // Form validation failed, silently handle (form will automatically display error)
         return;
       }
 
-      // 其他错误，记录日志并调用错误回调
+      // Other errors, log and call error callback
       logger.error({
-        message: '抽屉表单提交失败',
+        message: 'Drawer form submission failed',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
@@ -189,12 +189,12 @@ export const useDrawerFormSubmit = <T = Record<string, unknown>>({
         component: 'handleSubmit',
       });
 
-      // 调用错误回调
+      // Call error callback
       if (onError) {
         onError(error);
       }
     } finally {
-      // 步骤 5: 无论成功还是失败，都要停止 loading
+      // Step 5: Stop loading regardless of success or failure
       setSubmitting(false);
     }
   }, [
@@ -214,6 +214,6 @@ export const useDrawerFormSubmit = <T = Record<string, unknown>>({
   };
 };
 
-// 导出组件
+// Export component
 export { DrawerFormContent } from './content';
 export type { DrawerFormContentProps } from './content';

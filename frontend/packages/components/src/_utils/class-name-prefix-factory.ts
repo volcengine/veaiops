@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 类名前缀工厂函数
- * @param componentName 组件名称
- * @returns 返回一个模板字符串函数，用于生成带前缀的类名
+ * Class name prefix factory function
+ * @param componentName Component name
+ * @returns Returns a template string function for generating class names with prefix
  */
 const classNamePrefixFactory = (componentName: string) => {
   const prefix = `c-m-${componentName}`;

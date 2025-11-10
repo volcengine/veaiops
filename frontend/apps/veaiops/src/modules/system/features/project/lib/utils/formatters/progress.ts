@@ -15,7 +15,7 @@
 import { PROJECT_PROGRESS_COLORS } from '../../constants';
 
 /**
- * 格式化进度显示
+ * Format progress display
  */
 export const formatProgress = (
   progress: number,

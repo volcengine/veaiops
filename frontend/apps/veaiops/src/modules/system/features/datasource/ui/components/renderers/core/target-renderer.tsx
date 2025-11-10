@@ -19,18 +19,18 @@ import * as React from 'react';
 const { Text } = Typography;
 
 /**
- * Zabbix 主机列表组件（点击弹出 Modal）
+ * Zabbix hosts list component (click to open Modal)
  */
 const ZabbixTargetsListModal: React.FC<{ value: unknown[] }> = ({ value }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
 
-  // 生成表格列配置
+  // Generate table column configuration
   const columns = React.useMemo(() => {
     if (!value || value.length === 0) {
       return [];
     }
 
-    // 从第一个目标获取所有键
+    // Get all keys from the first target
     const firstTarget = value[0];
     if (typeof firstTarget !== 'object' || firstTarget === null) {
       return [
@@ -42,7 +42,7 @@ const ZabbixTargetsListModal: React.FC<{ value: unknown[] }> = ({ value }) => {
       ];
     }
 
-    // 为每个键创建一列
+    // Create a column for each key
     return Object.keys(firstTarget).map((key) => ({
       title: key,
       dataIndex: key,
@@ -52,7 +52,7 @@ const ZabbixTargetsListModal: React.FC<{ value: unknown[] }> = ({ value }) => {
     }));
   }, [value]);
 
-  // 处理表格数据
+  // Process table data
   const tableData = React.useMemo(() => {
     if (!value) {
       return [];
@@ -101,7 +101,7 @@ const ZabbixTargetsListModal: React.FC<{ value: unknown[] }> = ({ value }) => {
 };
 
 /**
- * 渲染targets字段 - 点击弹出 Modal
+ * Render targets field - click to open Modal
  */
 export const renderTargets = (targets: unknown) => {
   if (!targets || !Array.isArray(targets)) {

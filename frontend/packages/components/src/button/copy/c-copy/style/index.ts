@@ -12,6 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 用于样式的按需加载
-// 如此组件依赖了 B 组件，则需要将 B 组件的样式也引用进来，如: import '../../ComponentB/style'
+// For on-demand style loading
+// If this component depends on component B, then component B's styles should also be imported, e.g.: import '../../ComponentB/style'
 import './index.less';

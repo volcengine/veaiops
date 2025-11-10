@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 确认弹窗事件处理 Hook
- * @description 处理确认和取消事件的逻辑
+ * Confirmation modal event handlers Hook
+ * @description Handles confirm and cancel event logic
  */
 
 import { Message } from '@arco-design/web-react';
@@ -39,7 +39,7 @@ export interface UseModalHandlersProps {
 }
 
 /**
- * 确认弹窗事件处理 Hook
+ * Confirmation modal event handlers Hook
  */
 export const useModalHandlers = ({
   selectedType,
@@ -63,7 +63,7 @@ export const useModalHandlers = ({
         component: 'handleOk',
       });
 
-      // 执行创建数据源的逻辑，返回创建结果
+      // Execute data source creation logic, return creation result
       const result = await handleStepDataFetch(
         selectedType,
         state,
@@ -82,7 +82,7 @@ export const useModalHandlers = ({
         component: 'handleOk',
       });
 
-      // 判断创建是否成功
+      // Check if creation was successful
       if (result?.success) {
         logger.info({
           message: '[CreationConfirmModal] 创建成功，准备关闭向导',
@@ -94,8 +94,8 @@ export const useModalHandlers = ({
           component: 'handleOk',
         });
 
-        // 创建成功后关闭向导
-        // 传递数据源信息给回调，触发页面刷新
+        // Close wizard after successful creation
+        // Pass data source info to callback to trigger page refresh
         const dataSourceInfo = {
           name: state.dataSourceName,
           type: selectedType,
@@ -104,7 +104,7 @@ export const useModalHandlers = ({
         };
         onConfirm(dataSourceInfo);
       } else {
-        // ✅ 修复：创建失败时显示错误消息
+        // ✅ Fix: Show error message when creation fails
         const errorMessage = result?.message || '创建数据源失败，请重试';
 
         logger.error({
@@ -120,10 +120,10 @@ export const useModalHandlers = ({
         });
 
         Message.error(errorMessage);
-        // 创建失败，不关闭向导，让用户可以重试
+        // Creation failed, don't close wizard, allow user to retry
       }
     } catch (error: unknown) {
-      // ✅ 修复：创建失败时显示错误消息
+      // ✅ Fix: Show error message when creation fails
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || '创建数据源失败，请重试';
@@ -139,9 +139,9 @@ export const useModalHandlers = ({
         component: 'handleOk',
       });
 
-      // ✅ 修复：显示错误消息给用户
+      // ✅ Fix: Show error message to user
       Message.error(errorMessage);
-      // 创建失败时不调用 onConfirm，保持弹窗打开状态
+      // Don't call onConfirm on creation failure, keep modal open
     }
   }, [selectedType, state, actions, currentStepConfig, onConfirm]);
 

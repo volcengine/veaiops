@@ -20,7 +20,7 @@ import type React from 'react';
 import { useCallback } from 'react';
 
 /**
- * Bot属性表格删除处理Hook
+ * Bot attribute table delete handler Hook
  */
 export const useBotAttributesTableDeleteHandler = ({
   deleteAttribute,
@@ -34,8 +34,8 @@ export const useBotAttributesTableDeleteHandler = ({
   ) => Promise<boolean>;
 }) => {
   /**
-   * 处理删除操作
-   * 注意：接收 tableRef 参数用于刷新表格
+   * Handle delete operation
+   * Note: Receive tableRef parameter for refreshing table
    */
   const handleDelete = useCallback(
     async (
@@ -47,17 +47,17 @@ export const useBotAttributesTableDeleteHandler = ({
       try {
         const success = await deleteAttribute(attribute);
         if (success) {
-          // 删除成功后刷新表格
+          // Refresh table after successful delete
           const refreshSuccess = await refreshTable(tableRef);
           return refreshSuccess;
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
-          message: '删除属性失败',
+          message: 'Failed to delete attribute',
           data: {
             error: errorObj.message,
             stack: errorObj.stack,

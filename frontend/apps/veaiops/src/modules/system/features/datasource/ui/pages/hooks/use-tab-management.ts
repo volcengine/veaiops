@@ -19,25 +19,25 @@ import { logger } from '@veaiops/utils';
 import { useCallback, useEffect } from 'react';
 
 /**
- * Tab 管理 Hook
- * 职责：管理 Tab 的切换和 URL 状态同步
+ * Tab management Hook
+ * Responsibility: Manage Tab switching and URL state synchronization
  */
 export const useTabManagement = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { channels, createChannel } = useSubscription();
 
-  // 确保 activeKeyChange 通道已创建
+  // Ensure activeKeyChange channel is created
   useEffect(() => {
     createChannel('activeKeyChange');
   }, [createChannel]);
 
-  // 从URL读取activeTab参数，没有则使用默认值
+  // Read activeTab parameter from URL, use default value if not present
   const activeTab = searchParams.get('activeTab') || TAB_KEYS.VOLCENGINE;
 
-  // 监控 activeTab 变化
+  // Monitor activeTab changes
   useEffect(() => {
     logger.info({
-      message: '[useTabManagement] activeTab 值变化',
+      message: '[useTabManagement] activeTab value changed',
       data: {
         activeTab,
         urlActiveTab: searchParams.get('activeTab'),
@@ -49,11 +49,11 @@ export const useTabManagement = () => {
     });
   }, [activeTab, searchParams]);
 
-  // 处理Tab切换
+  // Handle Tab switching
   const handleTabChange = useCallback(
     (key: string) => {
       logger.info({
-        message: '[useTabManagement] handleTabChange 被调用',
+        message: '[useTabManagement] handleTabChange called',
         data: {
           key,
           currentActiveTab: activeTab,
@@ -64,9 +64,9 @@ export const useTabManagement = () => {
         component: 'handleTabChange',
       });
 
-      // 更新URL参数
+      // Update URL parameters
       logger.info({
-        message: '[useTabManagement] 准备更新 URL 参数',
+        message: '[useTabManagement] Prepare to update URL parameters',
         data: {
           key,
           currentSearchParams: Object.fromEntries(searchParams.entries()),
@@ -78,7 +78,7 @@ export const useTabManagement = () => {
       setSearchParams({ activeTab: key });
 
       logger.info({
-        message: '[useTabManagement] URL 参数已更新',
+        message: '[useTabManagement] URL parameters updated',
         data: {
           key,
         },
@@ -86,10 +86,10 @@ export const useTabManagement = () => {
         component: 'handleTabChange',
       });
 
-      // 发布activeKey变化事件
+      // Publish activeKey change event
       if (channels.activeKeyChange) {
         logger.info({
-          message: '[useTabManagement] 发布 activeKey 变化事件',
+          message: '[useTabManagement] Publish activeKey change event',
           data: {
             key,
             hasChannel: Boolean(channels.activeKeyChange),
@@ -101,7 +101,7 @@ export const useTabManagement = () => {
         channels.activeKeyChange.publish({ activeKey: key });
 
         logger.info({
-          message: '[useTabManagement] activeKey 变化事件已发布',
+          message: '[useTabManagement] activeKey change event published',
           data: {
             key,
           },
@@ -110,7 +110,7 @@ export const useTabManagement = () => {
         });
       } else {
         logger.warn({
-          message: '[useTabManagement] activeKeyChange 通道不存在',
+          message: '[useTabManagement] activeKeyChange channel does not exist',
           data: {
             key,
             availableChannels: Object.keys(channels),

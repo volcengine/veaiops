@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * TableTitle 组件类型定义
+ * TableTitle component type definitions
  *
 
  * @date 2025-12-19
@@ -22,18 +22,18 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 /**
- * @name TableTitle 组件属性接口
- * @description 表格标题组件的属性定义
+ * @name TableTitle component properties interface
+ * @description Table title component property definitions
  */
 export interface TableTitleProps {
-  /** @name 表格标题文本 */
+  /** @name Table title text */
   title?: ReactNode;
-  /** @name 标题右侧操作按钮组 */
+  /** @name Action button group on the right side of the title */
   actions?: ReactNode[];
-  /** @name 容器样式类名 */
+  /** @name Container style class name */
   className?: string;
-  /** @name 标题容器内联样式 */
+  /** @name Title container inline styles */
   titleStyle?: CSSProperties;
-  /** @name 操作按钮样式类名 */
+  /** @name Action button style class name */
   actionClassName?: string;
 }

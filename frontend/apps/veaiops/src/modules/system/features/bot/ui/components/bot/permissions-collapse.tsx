@@ -29,7 +29,7 @@ export const PermissionsCollapse: React.FC = () => {
       if (copyResult.success) {
         Message.success('已复制权限配置到剪贴板');
       } else if (copyResult.error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           copyResult.error instanceof Error
             ? copyResult.error.message
@@ -37,7 +37,7 @@ export const PermissionsCollapse: React.FC = () => {
         Message.error(errorMessage);
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息（兼容旧版本可能抛出错误的情况）
+      // ✅ Correct: Expose actual error information (compatible with old versions that may throw errors)
       const errorMessage =
         error instanceof Error ? error.message : '复制失败，请重试';
       Message.error(errorMessage);

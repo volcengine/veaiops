@@ -14,12 +14,12 @@
 
 import type { RouteConfig } from '@/types/route';
 import React from 'react';
-// 直接从 routes/config 目录导入，避免通过 config/index.ts 造成循环引用
-// 使用 ../config 会解析到 routes/config/index.ts，不会经过 config/index.ts
+// Import directly from routes/config directory to avoid circular dependency through config/index.ts
+// Using ../config will resolve to routes/config/index.ts, not through config/index.ts
 import { EventCenterPages } from '../config';
 
 /**
- * 事件中心路由配置
+ * Event center route configuration
  */
 export const eventCenterRoutes: RouteConfig[] = [
   {

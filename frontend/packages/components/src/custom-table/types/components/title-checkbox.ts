@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * Title Checkbox 组件类型定义
- * 从 components/title-checkbox/index.tsx 迁移而来
+ * Title Checkbox component type definitions
+ * Migrated from components/title-checkbox/index.tsx
  */
 
 /**
- * 自定义复选框属性
+ * Custom checkbox properties
  */
 export interface CustomCheckBoxProps {
   title?: string;

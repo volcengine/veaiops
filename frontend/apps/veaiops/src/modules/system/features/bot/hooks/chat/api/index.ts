@@ -18,13 +18,13 @@ import { useFetchBotOptions } from './fetch-options';
 import { useUpdateChatConfig } from './update-chat-config';
 
 /**
- * Bot聊天管理API调用Hook
+ * Bot chat management API call Hook
  *
- * 拆分说明：
- * - fetch-bot-options.ts: 获取机器人选项
- * - fetch-chats.ts: 获取群列表
- * - update-chat-config.ts: 更新群配置
- * - index.ts: 统一导出，组合所有API调用
+ * Split description:
+ * - fetch-bot-options.ts: Fetch bot options
+ * - fetch-chats.ts: Fetch chat list
+ * - update-chat-config.ts: Update chat configuration
+ * - index.ts: Unified export, combine all API calls
  */
 export const useBotChatApi = ({
   setChats,

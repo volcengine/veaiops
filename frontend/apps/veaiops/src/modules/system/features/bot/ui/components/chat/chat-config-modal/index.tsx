@@ -28,14 +28,14 @@ interface ChatConfigModalProps {
 }
 
 /**
- * 群配置编辑模态框
+ * Chat configuration edit modal
  *
- * 拆分说明：
- * - sections/chat-info-section.tsx: 群信息区块（群名称、群ID、企业协同工具）
- * - sections/agent-config-section.tsx: Agent功能配置区块（主动回复Agent、内容识别Agent）
- * - index.tsx: 主入口组件，负责组装和渲染
+ * Split explanation:
+ * - sections/chat-info-section.tsx: Chat info section (chat name, chat ID, enterprise collaboration tool)
+ * - sections/agent-config-section.tsx: Agent functionality configuration section (proactive reply Agent, content recognition Agent)
+ * - index.tsx: Main entry component, responsible for assembly and rendering
  *
- * 对应 origin/feat/web-v2 分支的实现，确保功能一致性
+ * Corresponds to origin/feat/web-v2 branch implementation, ensures functional consistency
  */
 export const ChatConfigModal: React.FC<ChatConfigModalProps> = ({
   visible,
@@ -45,7 +45,7 @@ export const ChatConfigModal: React.FC<ChatConfigModalProps> = ({
 }) => {
   const [form] = Form.useForm();
 
-  // 当chat变化时，更新表单值
+  // Update form values when chat changes
   useEffect(() => {
     if (chat && visible) {
       form.setFieldsValue({
@@ -63,7 +63,7 @@ export const ChatConfigModal: React.FC<ChatConfigModalProps> = ({
         form.resetFields();
       }
     } catch (error) {
-      // 表单验证失败，静默处理
+      // Form validation failed, silently handle
     }
   };
 

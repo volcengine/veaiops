@@ -20,10 +20,10 @@ import { createTableRequestWithResponseHandler } from '@veaiops/utils';
 import type { Project } from 'api-generate';
 
 /**
- * 表格请求逻辑 Hook
+ * Table request logic Hook
  */
 export const useTableRequest = () => {
-  // 🎯 数据请求逻辑 - 使用工具函数
+  // 🎯 Data request logic - use utility function
   const request = createTableRequestWithResponseHandler<Project[]>({
     apiCall: async ({ skip, limit, name }) => {
       const response =
@@ -33,8 +33,8 @@ export const useTableRequest = () => {
           name: name as string | undefined,
         });
 
-      // 强制类型兼容：PaginatedAPIResponseProjectList -> StandardApiResponse<Project[]>
-      // 保证 code 为 number，满足 StandardApiResponse 要求
+      // Force type compatibility: PaginatedAPIResponseProjectList -> StandardApiResponse<Project[]>
+      // Ensure code is number, satisfy StandardApiResponse requirements
       return {
         code: response.code ?? API_RESPONSE_CODE.SUCCESS,
         data: response.data ?? [],

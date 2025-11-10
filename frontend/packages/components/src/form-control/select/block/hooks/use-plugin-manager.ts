@@ -25,8 +25,8 @@ import type { SelectOption, veArchSelectBlockProps } from '../types/interface';
 import { PluginType } from '../types/plugin';
 
 /**
- * 插件管理器Hook
- * 负责插件管理器的初始化、插件注册和生命周期管理
+ * Plugin manager Hook
+ * Responsible for plugin manager initialization, plugin registration and lifecycle management
  */
 export function usePluginManager(
   props: veArchSelectBlockProps,
@@ -55,14 +55,14 @@ export function usePluginManager(
   } = props;
   const pluginManagerRef = useRef<SelectBlockPluginManager>();
 
-  // 🔧 添加早期诊断日志
+  // 🔧 Add early diagnostic logging
   const currentPluginCount = pluginManagerRef.current?.plugins?.size || 0;
   const needsInitialization =
     !pluginManagerRef.current || currentPluginCount === 0;
 
   logger.debug(
     'UsePluginManager',
-    'Hook 执行开始',
+    'Hook execution started',
     {
       hasPluginManagerRef: Boolean(pluginManagerRef),
       hasPluginManagerCurrent: Boolean(pluginManagerRef.current),
@@ -73,13 +73,13 @@ export function usePluginManager(
     hookTraceId,
   );
 
-  // 🔧 同步初始化插件管理器 - 如果不存在或插件被清空，都需要重新初始化
+  // 🔧 Synchronously initialize plugin manager - if it doesn't exist or plugins are cleared, need to reinitialize
   if (needsInitialization) {
-    // 如果 pluginManager 存在但插件被清空，先销毁旧的
+    // If pluginManager exists but plugins are cleared, destroy old one first
     if (pluginManagerRef.current) {
       logger.warn(
         'UsePluginManager',
-        '检测到空的插件管理器，先销毁再重建',
+        'Empty plugin manager detected, destroying and rebuilding',
         {
           oldPluginCount: pluginManagerRef.current.plugins?.size || 0,
         },
@@ -91,7 +91,7 @@ export function usePluginManager(
     }
     logger.info(
       'UsePluginManager',
-      '准备创建新的插件管理器',
+      'Preparing to create new plugin manager',
       {},
       'usePluginManager',
       hookTraceId,
@@ -101,7 +101,7 @@ export function usePluginManager(
 
     logger.debug(
       'UsePluginManager',
-      '插件管理器对象已创建',
+      'Plugin manager object created',
       {
         hasManager: Boolean(manager),
         managerType: typeof manager,
@@ -110,9 +110,9 @@ export function usePluginManager(
       hookTraceId,
     );
 
-    // 🔧 现在使用内置的订阅机制，不需要手动重写setState
+    // 🔧 Now use built-in subscription mechanism, no need to manually rewrite setState
 
-    // 设置初始状态
+    // Set initial state
     manager.setState({
       fetchOptions: initialOptions || [],
       initFetchOptions: initialOptions || [],
@@ -124,12 +124,12 @@ export function usePluginManager(
       mounted: false,
     });
 
-    // 设置初始Props
+    // Set initial Props
     manager.setProps(props);
 
     logger.debug(
       'UsePluginManager',
-      'Props 已设置，准备注册插件',
+      'Props set, ready to register plugins',
       {
         hasManager: Boolean(manager),
         managerPluginCount: manager.plugins?.size || 0,
@@ -138,20 +138,20 @@ export function usePluginManager(
       hookTraceId,
     );
 
-    // 注册所有插件
+    // Register all plugins
     logger.info(
       'UsePluginManager',
-      '开始注册插件',
+      'Starting plugin registration',
       { limit },
       'usePluginManager',
       hookTraceId,
     );
 
     try {
-      // 注册数据获取插件
+      // Register data fetching plugin
       logger.debug(
         'UsePluginManager',
-        '创建 DataFetcher 插件',
+        'Creating DataFetcher plugin',
         {},
         'usePluginManager',
         hookTraceId,
@@ -163,25 +163,25 @@ export function usePluginManager(
       });
       manager.register(dataFetcher);
 
-      // 注册搜索处理插件
-      // 🔧 减少防抖延迟到 100ms，避免在防抖等待期间组件被重新渲染导致插件销毁
+      // Register search handler plugin
+      // 🔧 Reduce debounce delay to 100ms to avoid component re-render during debounce wait causing plugin destruction
       const searchHandler = new SearchHandlerPluginImpl({
         searchKey,
         remoteSearchKey,
         multiSearchKeys,
         formatRemoteSearchKey,
-        debounceDelay: 100, // 从 500ms 降低到 100ms
+        debounceDelay: 100, // Reduced from 500ms to 100ms
       });
       manager.register(searchHandler);
 
-      // 注册分页插件
+      // Register pagination plugin
       const pagination = new PaginationPluginImpl({
         limit,
         enabled: isScrollFetching,
       });
       manager.register(pagination);
 
-      // 注册粘贴处理插件
+      // Register paste handler plugin
       const pasteHandler = new PasteHandlerPluginImpl({
         allowPasteMultiple,
         tokenSeparators,
@@ -191,7 +191,7 @@ export function usePluginManager(
       });
       manager.register(pasteHandler);
 
-      // 注册缓存处理插件
+      // Register cache handler plugin
       const cacheHandler = new CacheHandlerPluginImpl({
         cacheKey,
         dataSourceShare,
@@ -200,7 +200,7 @@ export function usePluginManager(
       });
       manager.register(cacheHandler);
 
-      // 🔧 设置插件间的引用关系
+      // 🔧 Set reference relationships between plugins
       if (searchHandler && dataFetcher) {
         searchHandler.setDataFetcher(dataFetcher);
       }
@@ -218,7 +218,7 @@ export function usePluginManager(
 
       logger.info(
         'UsePluginManager',
-        '插件管理器初始化完成',
+        'Plugin manager initialization completed',
         {
           pluginCount: manager.plugins.size,
           registeredPlugins: Array.from(manager.plugins.keys()),
@@ -229,7 +229,7 @@ export function usePluginManager(
     } catch (error) {
       logger.error(
         'UsePluginManager',
-        '插件管理器初始化失败',
+        'Plugin manager initialization failed',
         error as Error,
         { error: String(error) },
         'usePluginManager',
@@ -242,7 +242,7 @@ export function usePluginManager(
 
     logger.info(
       'UsePluginManager',
-      'pluginManagerRef.current 已赋值',
+      'pluginManagerRef.current assigned',
       {
         hasPluginManagerCurrent: Boolean(pluginManagerRef.current),
         finalPluginCount: pluginManagerRef.current?.plugins?.size || 0,
@@ -253,7 +253,7 @@ export function usePluginManager(
   } else {
     logger.debug(
       'UsePluginManager',
-      'pluginManager 已存在，跳过初始化',
+      'pluginManager already exists, skipping initialization',
       {
         pluginCount: pluginManagerRef.current?.plugins?.size || 0,
         registeredPlugins: pluginManagerRef.current
@@ -265,18 +265,18 @@ export function usePluginManager(
     );
   }
 
-  // 更新插件管理器的props
-  // 🔧 修复死循环：完全移除 props 自动更新逻辑
-  // pluginManager 在初始化时已经获取了 props 的引用
-  // 后续通过 context 共享，不需要手动同步
-  // 如果需要更新，应该由具体的业务逻辑触发，而不是在每次渲染时检查
+  // Update plugin manager props
+  // 🔧 Fix infinite loop: Completely remove props auto-update logic
+  // pluginManager already gets props reference during initialization
+  // Subsequent sharing through context, no need for manual synchronization
+  // If update needed, should be triggered by specific business logic, not checked on every render
 
-  // 清理插件管理器
+  // Cleanup plugin manager
   useEffect(() => {
     const currentTraceId = hookTraceId;
     logger.info(
       'UsePluginManager',
-      '组件挂载 - 插件管理器激活',
+      'Component mounted - plugin manager activated',
       {
         hasPluginManager: Boolean(pluginManagerRef.current),
         pluginCount: pluginManagerRef.current?.plugins?.size || 0,
@@ -289,7 +289,7 @@ export function usePluginManager(
     return () => {
       logger.warn(
         'UsePluginManager',
-        '组件即将卸载 - 准备销毁插件管理器',
+        'Component about to unmount - preparing to destroy plugin manager',
         {
           hasPluginManager: Boolean(pluginManagerRef.current),
           pluginCount: pluginManagerRef.current?.plugins?.size || 0,
@@ -301,14 +301,14 @@ export function usePluginManager(
 
       if (pluginManagerRef.current) {
         pluginManagerRef.current.destroy();
-        // 🔧 销毁后清除引用，避免下次渲染时误认为"已存在"
+        // 🔧 Clear reference after destruction to avoid mistakenly thinking "already exists" on next render
         pluginManagerRef.current = undefined;
       }
     };
-  }, []); // ⚠️ 必须是空依赖，否则每次渲染都会触发销毁
+  }, []); // ⚠️ Must be empty dependencies, otherwise will trigger destruction on every render
 
-  // 获取各个插件的引用 - 总是从当前的 pluginManagerRef 获取，确保获取到最新的插件实例
-  // 不能用 useMemo([])，因为那样会缓存旧的插件
+  // Get references to each plugin - always get from current pluginManagerRef to ensure getting latest plugin instance
+  // Cannot use useMemo([]), as that would cache old plugins
   const dataFetcher = pluginManagerRef.current?.getPlugin(
     PluginType.DATA_FETCHER,
   );
@@ -322,11 +322,11 @@ export function usePluginManager(
     PluginType.PASTE_HANDLER,
   );
 
-  // 🔧 添加插件引用获取日志（仅在没有插件时记录警告）
+  // 🔧 Add plugin reference acquisition log (only log warning when plugins are missing)
   if (!dataFetcher || !searchHandler) {
     logger.warn(
       'UsePluginManager',
-      '插件引用获取失败',
+      'Plugin reference acquisition failed',
       {
         hasPluginManager: Boolean(pluginManagerRef.current),
         hasDataFetcher: Boolean(dataFetcher),

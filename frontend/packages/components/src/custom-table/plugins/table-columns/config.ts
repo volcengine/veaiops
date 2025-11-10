@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格列管理插件默认配置
+ * Table column management plugin default configuration
  */
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 import type { TableColumnsConfig } from './types';
@@ -21,8 +21,8 @@ import type { TableColumnsConfig } from './types';
 export const DEFAULT_TABLE_COLUMNS_CONFIG: TableColumnsConfig = {
   enabled: true,
   priority: PluginPriorityEnum.HIGH,
-  // enableColumnVisibility: true, // 移除不存在的属性
-  // enableColumnResize: false, // 移除不存在的属性
-  // enableColumnReorder: false, // 移除不存在的属性
-  // enableAutoWidth: false, // 移除不存在的属性
+  // enableColumnVisibility: true, // Remove non-existent property
+  // enableColumnResize: false, // Remove non-existent property
+  // enableColumnReorder: false, // Remove non-existent property
+  // enableAutoWidth: false, // Remove non-existent property
 };

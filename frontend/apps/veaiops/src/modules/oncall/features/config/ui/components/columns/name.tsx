@@ -17,7 +17,7 @@ import type { Interest } from 'api-generate';
 import type React from 'react';
 
 /**
- * 规则名称列渲染组件
+ * Rule name column render component
  */
 export const RuleNameColumn: React.FC<{
   name: string;

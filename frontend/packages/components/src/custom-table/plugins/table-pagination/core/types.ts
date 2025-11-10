@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格分页插件类型定义
+ * Table pagination plugin type definitions
  */
 import type {
   TablePaginationConfig as PaginationConfig,
@@ -21,7 +21,7 @@ import type {
 } from '@/custom-table/types';
 
 /**
- * 扩展的分页配置类型，包含插件需要的额外属性
+ * Extended pagination configuration type, includes additional properties needed by plugin
  */
 export interface ExtendedPaginationConfig extends PaginationConfig {
   defaultPageSize?: number;

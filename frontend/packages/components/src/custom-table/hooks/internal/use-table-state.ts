@@ -16,10 +16,9 @@ import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
 import { useSearchParams } from '@modern-js/runtime/router';
 
 /**
- * CustomTable 状态管理 Hook
- * 负责处理表格的基础状态管理
+ * CustomTable State Management Hook
+ * Responsible for handling basic state management of the table
  *
-
  * @date 2025-12-19
  */
 import type { BaseQuery } from '@/custom-table/types';
@@ -28,95 +27,67 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useCallback, useRef, useState } from 'react';
 
 /**
- * @name 表格状态集合
+ * @name Table state collection
  */
 export interface TableState<QueryType extends BaseQuery> {
-  // 分页状态
+  // Pagination state
   current: number;
   setCurrent: (page: number) => void;
   pageSize: number;
   setPageSize: (size: number) => void;
 
-  // 查询状态
+  // Query state
   query: QueryType;
   setQuery: Dispatch<SetStateAction<QueryType>>;
 
-  // 排序状态
+  // Sorter state
   sorter: SorterInfo;
   setSorter: (sorter: SorterInfo) => void;
 
-  // URL参数状态
+  // URL parameter state
   searchParams: URLSearchParams;
   setSearchParams: (params: URLSearchParams) => void;
 
-  // 其他状态
+  // Other state
   resetEmptyData: boolean;
   setResetEmptyData: (reset: boolean) => void;
   expandedRowKeys: (string | number)[];
   setExpandedRowKeys: (keys: (string | number)[]) => void;
 
-  // 标记状态
+  // Marker state
   isQueryChangeRef: React.MutableRefObject<boolean>;
 }
 
 /**
- * @name 状态管理配置
+ * @name State management configuration
  */
 export interface TableStateConfig<QueryType extends BaseQuery> {
-  /** @name 初始查询参数 */
+  /** @name Initial query parameters */
   initQuery?: Partial<QueryType>;
-  /** @name 分页配置 */
+  /** @name Pagination configuration */
   pagination?: { pageSize?: number };
 }
 
 /**
- * @name 创建表格状态管理
- * @description 提供表格所需的所有基础状态管理
+ * @name Create table state management
+ * @description Provide all basic state management required by the table
  */
 export const useTableState = <QueryType extends BaseQuery = BaseQuery>(
   config: TableStateConfig<QueryType> = {},
 ): TableState<QueryType> => {
   const { initQuery = {}, pagination = {} } = config;
 
-  // 🔍 记录 useTableState 初始化
-  logger.info({
-    message: '[useTableState] ========== 初始化开始 ==========',
-    data: {
-      initQuery,
-      initQueryKeys: Object.keys(initQuery),
-      initQueryDatasourceType: (initQuery as Record<string, unknown>)
-        .datasource_type,
-      pagination,
-      timestamp: new Date().toISOString(),
-    },
-    source: 'CustomTable',
-    component: 'useTableState/init',
-  });
-
-  // 基础状态管理
+  // Basic state management
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(
     (typeof pagination === 'object' && pagination?.pageSize) || 10,
   );
   const [query, setQueryState] = useState(initQuery as QueryType);
-
-  // 🔍 记录初始 query 状态
-  logger.info({
-    message: '[useTableState] 初始 query 状态',
-    data: {
-      initialQuery: query,
-      initialQueryKeys: Object.keys(query),
-      initialQueryDatasourceType: query.datasource_type,
-      timestamp: new Date().toISOString(),
-    },
-    source: 'CustomTable',
-    component: 'useTableState/initialState',
-  });
   const [sorter, setSorterState] = useState<SorterInfo>({} as SorterInfo);
   const [searchParams, setSearchParams] = useSearchParams();
   const [resetEmptyData, setResetEmptyData] = useState(false);
 
-  // 包装 setSorter 以添加日志
+  // Wrap setSorter to add logging
   const setSorter = useCallback(
     (newSorter: SorterInfo | ((prev: SorterInfo) => SorterInfo)) => {
       logger.log({
@@ -157,104 +128,56 @@ export const useTableState = <QueryType extends BaseQuery = BaseQuery>(
     [sorter],
   );
 
-  // 🔍 包装setQuery以添加日志
-  // ⚠️ 修复：使用 useRef 获取最新 query，避免依赖数组导致循环
-  const queryRef = useRef(query);
-  queryRef.current = query;
-
+  // Wrap setQuery to add logging
   const setQuery = useCallback<Dispatch<SetStateAction<QueryType>>>(
     (newQuery) => {
       if (typeof newQuery === 'function') {
         setQueryState((prevQuery) => {
           const updatedQuery = newQuery(prevQuery);
 
-          // 只在真正需要更新时才记录日志（避免日志过多）
-          const prevQueryStr = JSON.stringify(prevQuery);
-          const updatedQueryStr = JSON.stringify(updatedQuery);
-          if (prevQueryStr !== updatedQueryStr) {
-            // 🔍 记录函数式更新
-            logger.info({
-              message: '[useTableState] setQuery 函数式更新',
-              data: {
-                prevQueryKeys: Object.keys(prevQuery || {}),
-                prevQueryDatasourceType: prevQuery?.datasource_type,
-                updatedQueryKeys: Object.keys(updatedQuery || {}),
-                updatedQueryDatasourceType: updatedQuery?.datasource_type,
-                updatedQueryDatasourceTypeType:
-                  typeof updatedQuery?.datasource_type,
-                timestamp: new Date().toISOString(),
-              },
-              source: 'CustomTable',
-              component: 'useTableState/setQuery',
-            });
-          }
-
           return updatedQuery;
         });
       } else {
-        // 只在真正需要更新时才记录日志和更新（避免循环）
-        const prevQuery = queryRef.current;
-        const prevQueryStr = JSON.stringify(prevQuery);
-        const newQueryStr = JSON.stringify(newQuery);
-
-        if (prevQueryStr !== newQueryStr) {
-          // 🔍 记录直接更新
-          logger.info({
-            message: '[useTableState] setQuery 直接更新',
-            data: {
-              prevQueryKeys: Object.keys(prevQuery || {}),
-              prevQueryDatasourceType: prevQuery?.datasource_type,
-              newQueryKeys: Object.keys(newQuery || {}),
-              newQueryDatasourceType: newQuery?.datasource_type,
-              newQueryDatasourceTypeType: typeof newQuery?.datasource_type,
-              timestamp: new Date().toISOString(),
-            },
-            source: 'CustomTable',
-            component: 'useTableState/setQuery',
-          });
-
-          setQueryState(newQuery);
-        }
+        setQueryState(newQuery);
       }
     },
-    // ⚠️ 修复：移除 query 依赖，使用 useRef 获取最新值（避免循环）
     [],
   );
 
-  // 展开行状态管理 - 参考 pro-components 设计
+  // Expanded row state management - reference pro-components design
   const [expandedRowKeys, setExpandedRowKeys] = useState<(string | number)[]>(
     [],
   );
 
-  // 查询变更标记
+  // Query change marker
   const isQueryChangeRef = useRef<boolean>(false);
 
   return {
-    // 分页状态
+    // Pagination state
     current,
     setCurrent,
     pageSize,
     setPageSize,
 
-    // 查询状态
+    // Query state
     query,
     setQuery,
 
-    // 排序状态
+    // Sorter state
     sorter,
     setSorter,
 
-    // URL参数状态
+    // URL parameter state
     searchParams,
     setSearchParams,
 
-    // 其他状态
+    // Other state
     resetEmptyData,
     setResetEmptyData,
     expandedRowKeys,
     setExpandedRowKeys,
 
-    // 标记状态
+    // Marker state
     isQueryChangeRef,
   };
 };

@@ -21,7 +21,7 @@ import {
   Space,
 } from '@arco-design/web-react';
 import { TASK_CONFIG_MANAGEMENT_CONFIG } from '@task-config/lib';
-import { DrawerFormContent } from '@veaiops/utils';
+import { DrawerFormContent, logger } from '@veaiops/utils';
 import type { SyncAlarmRulesPayload } from 'api-generate';
 import type React from 'react';
 import { AlarmConfigForm, buildAlarmSubmitData } from '../components/alarm';
@@ -29,7 +29,7 @@ import { TaskInfoCard } from '../components/displays';
 import type { AlarmDrawerProps } from '../components/shared';
 
 /**
- * 告警规则创建抽屉组件
+ * Alarm rule creation drawer component
  */
 export const AlarmDrawer: React.FC<AlarmDrawerProps> = ({
   visible,
@@ -40,14 +40,14 @@ export const AlarmDrawer: React.FC<AlarmDrawerProps> = ({
 }) => {
   const [form] = Form.useForm();
 
-  // 获取数据源类型
+  // Get datasource type
   const datasourceType = task?.datasource_type || '';
   const datasourceId = task?.datasource_id || '';
 
-  // 提交告警规则
+  // Submit alarm rule
   const handleSubmit = async (): Promise<boolean> => {
     try {
-      // 步骤1: 验证表单字段
+      // Step 1: Validate form fields
       const validateResult = await form
         .validate(['alarmLevel'])
         .then(() => ({ success: true }))
@@ -59,11 +59,11 @@ export const AlarmDrawer: React.FC<AlarmDrawerProps> = ({
         return false;
       }
 
-      // 步骤2: 获取表单值
+      // Step 2: Get form values
       const values = form.getFieldsValue();
 
-      // 步骤3: 构建提交数据
-      // task 类型是 IntelligentThresholdTask | null，需要转换为 Record<string, unknown>
+      // Step 3: Build submission data
+      // task type is IntelligentThresholdTask | null, need to convert to Record<string, unknown>
       const buildResult = buildAlarmSubmitData(
         values,
         (task ? { ...task } : {}) as Record<string, unknown>,
@@ -79,17 +79,17 @@ export const AlarmDrawer: React.FC<AlarmDrawerProps> = ({
         Message.error('构建的数据为空，无法提交');
         return false;
       }
-      // buildAlarmSubmitData 返回类型已明确定义为 SyncAlarmRulesPayload，无需类型断言
+      // buildAlarmSubmitData return type is explicitly defined as SyncAlarmRulesPayload, no type assertion needed
       const success = await onSubmit(buildResult.data);
 
-      // 步骤5: 成功后重置表单
+      // Step 5: Reset form after success
       if (success) {
         form.resetFields();
       }
 
       return success;
     } catch (error: unknown) {
-      // ✅ 正确：透出实际错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || '提交告警规则失败';
@@ -130,19 +130,19 @@ export const AlarmDrawer: React.FC<AlarmDrawerProps> = ({
     >
       <DrawerFormContent loading={Boolean(loading)}>
         <div>
-          {/* 任务信息 */}
+          {/* Task information */}
           {task && (
             <TaskInfoCard task={task as unknown as Record<string, any>} />
           )}
 
-          {/* 提示信息 */}
+          {/* Hint information */}
           <Alert
             type="info"
             content="告警事件默认会通过 Webhook 投递到事件中心"
             className="mb-4"
           />
 
-          {/* 全局告警配置 */}
+          {/* Global alarm configuration */}
           <AlarmConfigForm
             form={form}
             loading={loading}

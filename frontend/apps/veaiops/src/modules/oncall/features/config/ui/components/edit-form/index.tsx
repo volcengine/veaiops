@@ -38,17 +38,17 @@ import type { EditFormProps } from './types';
 import { formatActionCategoryText, formatInspectCategoryText } from './utils';
 
 /**
- * 编辑表单组件
+ * Edit form component
  *
- * 重构说明：
- * - 原分支 (feat/web-v2): rule-edit-drawer.tsx 中包含 Alert 组件显示只读基本信息
- * - 当前分支: 在 edit-form.tsx 中添加 Alert 组件，显示告警类别、检测类别、版本
- * - 功能等价性: ✅ 已对齐原分支的所有功能
+ * Refactoring notes:
+ * - Original branch (feat/web-v2): rule-edit-drawer.tsx contained Alert component displaying read-only basic information
+ * - Current branch: Added Alert component in edit-form.tsx, displays alert category, inspect category, version
+ * - Functional equivalence: ✅ All original branch functionality aligned
  *
- * 样式优化：
- * - 正面/反面示例添加实时预览卡片
- * - 使用颜色区分正面和反面示例
- * - 添加序号标识和hover效果
+ * Style optimizations:
+ * - Added real-time preview cards for positive/negative examples
+ * - Use colors to distinguish positive and negative examples
+ * - Added sequence numbers and hover effects
  */
 export const EditForm: React.FC<EditFormProps> = ({
   form,
@@ -57,13 +57,13 @@ export const EditForm: React.FC<EditFormProps> = ({
   rule,
   onSilenceDeltaChange,
 }) => {
-  // 监听表单值变化，实时显示示例预览
+  // Watch form value changes, display example preview in real-time
   const examplesPositiveValue = Form.useWatch('examples_positive', form);
   const examplesNegativeValue = Form.useWatch('examples_negative', form);
 
   return (
     <>
-      {/* 只读信息 */}
+      {/* Read-only information */}
       {rule && (
         <Alert
           type="info"
@@ -98,7 +98,7 @@ export const EditForm: React.FC<EditFormProps> = ({
       )}
 
       <Form form={form} layout="vertical" autoComplete="off">
-        {/* 公共可编辑字段 */}
+        {/* Common editable fields */}
         <Form.Item
           label="规则名称"
           field="name"
@@ -158,7 +158,7 @@ export const EditForm: React.FC<EditFormProps> = ({
           <Input
             placeholder="例如: 6h, 30m, 1d, 1d12h"
             onChange={(value) => {
-              // 实时更新解析预览
+              // Update parsing preview in real-time
               onSilenceDeltaChange(value || rule?.silence_delta);
             }}
           />
@@ -189,7 +189,7 @@ export const EditForm: React.FC<EditFormProps> = ({
           <Switch />
         </Form.Item>
 
-        {/* 根据检测类别显示不同的可编辑字段 */}
+        {/* Display different editable fields based on inspect category */}
         {inspectCategory === Interest.inspect_category.SEMANTIC && (
           <>
             <Form.Item

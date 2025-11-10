@@ -15,15 +15,15 @@
 import type { RouteConfig } from '@/types/route';
 import { Navigate, useLocation } from '@modern-js/runtime/router';
 import React from 'react';
-// 直接从 routes/config 目录导入，避免通过 config/index.ts 造成循环引用
-// 使用 ../config 会解析到 routes/config/index.ts，不会经过 config/index.ts
+// Import directly from routes/config directory to avoid circular dependency through config/index.ts
+// Using ../config will resolve to routes/config/index.ts, not through config/index.ts
 import { SystemPages } from '../config';
 
 /**
- * 系统配置模块路由配置
+ * System configuration module route configuration
  */
 export const systemRoutes: RouteConfig[] = [
-  // 系统模块默认重定向到Bot管理页面
+  // System module defaults to redirect to Bot management page
   {
     path: '/system',
     element: React.createElement(() => {

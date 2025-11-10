@@ -27,7 +27,7 @@ export type Interest = {
    */
   description?: string;
   /**
-   * 告警等级
+   * Alert level
    */
   level?: Interest.level;
   /**
@@ -55,7 +55,7 @@ export type Interest = {
    */
   inspect_history?: number;
   /**
-   * 告警抑制间隔
+   * Alert suppression interval
    */
   silence_delta?: string;
   /**
@@ -77,7 +77,7 @@ export type Interest = {
 };
 export namespace Interest {
   /**
-   * 告警等级
+   * Alert level
    */
   export enum level {
     P0 = 'P0',

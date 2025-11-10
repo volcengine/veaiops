@@ -26,7 +26,7 @@ import type { Bot, Interest } from 'api-generate';
 import { useCallback, useMemo } from 'react';
 
 /**
- * 切换状态参数接口
+ * Toggle status parameters interface
  */
 interface HandleToggleStatusParams {
   ruleUuid: string;
@@ -41,8 +41,8 @@ export interface UseRulesTableProps {
 }
 
 /**
- * 内聚型Hook - 规则表格配置
- * 负责表格相关的配置：列配置、筛选器配置、表格属性配置
+ * Cohesive Hook - rule table configuration
+ * Responsible for table-related configuration: column configuration, filter configuration, table property configuration
  */
 export const useRulesTable = ({
   bots,
@@ -50,13 +50,13 @@ export const useRulesTable = ({
   onViewDetails,
   onEdit,
 }: UseRulesTableProps) => {
-  // 🎯 状态切换处理器
+  // 🎯 Status toggle handler
   const handleStatusToggle = useMemo(
     () => createStatusToggleHandler({ onToggleStatus }),
     [onToggleStatus],
   );
 
-  // 🎯 列配置
+  // 🎯 Column configuration
   const handleColumns = useCallback((): ModernTableColumnProps<Interest>[] => {
     return getRulesTableColumns({
       onToggleStatus: handleStatusToggle,
@@ -65,7 +65,7 @@ export const useRulesTable = ({
     });
   }, [handleStatusToggle, onViewDetails, onEdit]);
 
-  // 🎯 筛选器配置 - 机器人选择器
+  // 🎯 Filter configuration - bot selector
   const handleFilters = useCallback(
     ({ query, handleChange }: HandleFilterProps<BaseQuery>): FieldItem[] => [
       {
@@ -90,7 +90,7 @@ export const useRulesTable = ({
     [bots],
   );
 
-  // 🎯 表格属性配置
+  // 🎯 Table property configuration
   const tableProps = useMemo(
     () => ({
       scroll: { x: 1700 },

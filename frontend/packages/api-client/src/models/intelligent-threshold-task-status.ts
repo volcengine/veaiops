@@ -14,7 +14,7 @@
 
 /* generated using openapi-typescript-codegen -- do not edit */
 /**
- * 智能阈值任务状态
+ * Intelligent threshold task status
  */
 export enum IntelligentThresholdTaskStatus {
   LAUNCHING = 'Launching',

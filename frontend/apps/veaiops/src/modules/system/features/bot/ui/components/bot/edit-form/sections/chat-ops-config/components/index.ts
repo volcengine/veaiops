@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 统一导出组件
+ * Unified export of components
  */
 export { ModelConfig } from './model-config';
 export { KnowledgeBaseConfig } from './knowledge-base-config';

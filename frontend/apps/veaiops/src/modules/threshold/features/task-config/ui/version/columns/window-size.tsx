@@ -19,7 +19,7 @@ import type { FlattenedVersion } from './types';
 const { Ellipsis, RowSpan } = CellRender;
 
 /**
- * 窗口大小列配置
+ * Window size column configuration
  */
 export const getWindowSizeColumn = (): ColumnProps<FlattenedVersion> => ({
   title: '窗口大小',

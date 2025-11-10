@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 插件生命周期增强器
- * 为插件注入用户配置的生命周期回调
+ * Plugin lifecycle enhancer
+ * Inject user-configured lifecycle callbacks into plugins
  */
 import type { PluginLifecycle } from '@/custom-table/plugins';
 import type { PluginContext } from '@/custom-table/types/plugins/core/context';
@@ -30,7 +30,7 @@ import {
 import { devLog } from './log-utils';
 
 /**
- * 增强插件的生命周期方法的参数接口
+ * Parameters interface for enhancing plugin lifecycle methods
  */
 export interface EnhancePluginLifecycleParams<
   Config = Record<string, unknown>,
@@ -41,24 +41,24 @@ export interface EnhancePluginLifecycleParams<
 }
 
 /**
- * 增强插件的生命周期方法
+ * Enhance plugin lifecycle methods
  */
 export function enhancePluginLifecycle<Config = Record<string, unknown>>({
   plugin,
   lifecycleConfig,
   lifecycleManager,
 }: EnhancePluginLifecycleParams<Config>): Plugin<Config> {
-  // 如果没有生命周期配置，直接返回原插件
+  // If no lifecycle configuration, return original plugin directly
   if (!lifecycleConfig) {
     return plugin;
   }
 
   const manager = lifecycleManager || createLifecycleManager();
 
-  // 创建增强后的插件
+  // Create enhanced plugin
   const enhancedPlugin: Plugin<Config> = {
     ...plugin,
-    // 增强 beforeMount
+    // Enhance beforeMount
     beforeMount: createEnhancedLifecycleMethod({
       originalMethod: plugin.beforeMount,
       phase: 'beforeMount',
@@ -66,7 +66,7 @@ export function enhancePluginLifecycle<Config = Record<string, unknown>>({
       manager,
       lifecycleConfig,
     }),
-    // 增强 afterMount
+    // Enhance afterMount
     afterMount: createEnhancedLifecycleMethod({
       originalMethod: plugin.afterMount,
       phase: 'afterMount',
@@ -74,7 +74,7 @@ export function enhancePluginLifecycle<Config = Record<string, unknown>>({
       manager,
       lifecycleConfig,
     }),
-    // 增强 beforeUpdate
+    // Enhance beforeUpdate
     beforeUpdate: createEnhancedLifecycleMethod({
       originalMethod: plugin.beforeUpdate,
       phase: 'beforeUpdate',
@@ -82,7 +82,7 @@ export function enhancePluginLifecycle<Config = Record<string, unknown>>({
       manager,
       lifecycleConfig,
     }),
-    // 增强 afterUpdate
+    // Enhance afterUpdate
     afterUpdate: createEnhancedLifecycleMethod({
       originalMethod: plugin.afterUpdate,
       phase: 'afterUpdate',
@@ -90,7 +90,7 @@ export function enhancePluginLifecycle<Config = Record<string, unknown>>({
       manager,
       lifecycleConfig,
     }),
-    // 增强 beforeUnmount
+    // Enhance beforeUnmount
     beforeUnmount: createEnhancedLifecycleMethod({
       originalMethod: plugin.beforeUnmount,
       phase: 'beforeUnmount',
@@ -98,7 +98,7 @@ export function enhancePluginLifecycle<Config = Record<string, unknown>>({
       manager,
       lifecycleConfig,
     }),
-    // 增强 uninstall
+    // Enhance uninstall method
     uninstall: createEnhancedLifecycleMethod({
       originalMethod: plugin.uninstall,
       phase: 'uninstall',
@@ -112,7 +112,7 @@ export function enhancePluginLifecycle<Config = Record<string, unknown>>({
 }
 
 /**
- * 创建增强的生命周期方法的参数接口
+ * Parameters interface for creating enhanced lifecycle method
  */
 interface CreateEnhancedLifecycleMethodParams {
   originalMethod: ((context: PluginContext) => void) | undefined;
@@ -123,7 +123,7 @@ interface CreateEnhancedLifecycleMethodParams {
 }
 
 /**
- * 创建增强的生命周期方法
+ * Create enhanced lifecycle method
  */
 function createEnhancedLifecycleMethod({
   originalMethod,
@@ -136,7 +136,7 @@ function createEnhancedLifecycleMethod({
 ) => Promise<void> {
   return async (context: PluginContext): Promise<void> => {
     try {
-      // 1. 执行用户配置的前置回调
+      // 1. Execute user-configured pre-callbacks
       await manager.executeLifecycle({
         phase,
         pluginName,
@@ -144,20 +144,20 @@ function createEnhancedLifecycleMethod({
         lifecycleConfig,
       });
 
-      // 2. 执行原始的插件生命周期方法
+      // 2. Execute original plugin lifecycle method
       if (originalMethod) {
         await Promise.resolve(originalMethod(context));
       }
     } catch (error: unknown) {
-      // 根据错误处理策略决定是否重新抛出错误
+      // Decide whether to re-throw error based on error handling strategy
       const errorHandling = lifecycleConfig.errorHandling || 'warn';
       if (errorHandling === 'throw') {
         throw error;
       }
-      // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
-      // 如果错误处理策略不是 'throw'，记录错误日志（不透出到用户界面）
-      // 注意：这是插件生命周期增强器的内部错误处理，错误已经在插件内部处理
-      // 这里只记录日志，不显示错误消息给用户
+      // ✅ Correct: Use devLog to record errors and show actual error information
+      // If error handling strategy is not 'throw', record error log (not shown to user interface)
+      // Note: This is internal error handling for plugin lifecycle enhancer, errors are already handled within plugin
+      // Here only log, don't show error message to user
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       devLog.warn({
@@ -176,7 +176,7 @@ function createEnhancedLifecycleMethod({
 }
 
 /**
- * 批量增强插件列表的参数接口
+ * Parameters interface for batch enhancing plugin list
  */
 export interface EnhancePluginsLifecycleParams<
   Config = Record<string, unknown>,
@@ -187,7 +187,7 @@ export interface EnhancePluginsLifecycleParams<
 }
 
 /**
- * 批量增强插件列表
+ * Batch enhance plugin list
  */
 export function enhancePluginsLifecycle<Config = Record<string, unknown>>({
   plugins,
@@ -210,7 +210,7 @@ export function enhancePluginsLifecycle<Config = Record<string, unknown>>({
 }
 
 /**
- * 为插件上下文添加生命周期触发器的参数接口
+ * Parameters interface for adding lifecycle trigger to plugin context
  */
 export interface AddLifecycleTriggerToContextParams {
   context: PluginContext;
@@ -219,7 +219,7 @@ export interface AddLifecycleTriggerToContextParams {
 }
 
 /**
- * 为插件上下文添加生命周期触发器
+ * Add lifecycle trigger to plugin context
  */
 export function addLifecycleTriggerToContext({
   context,
@@ -228,7 +228,7 @@ export function addLifecycleTriggerToContext({
 }: AddLifecycleTriggerToContextParams): PluginContext {
   const enhancedContext = { ...context };
 
-  // 添加生命周期触发器到 helpers
+  // Add lifecycle trigger to helpers
   if (!enhancedContext.helpers.lifecycle) {
     enhancedContext.helpers.lifecycle = {
       trigger: async ({
@@ -270,7 +270,7 @@ export function addLifecycleTriggerToContext({
 }
 
 /**
- * 检查插件是否支持生命周期
+ * Check if plugin supports lifecycle
  */
 export function hasLifecycleSupport(plugin: Plugin): boolean {
   return Boolean(
@@ -284,7 +284,7 @@ export function hasLifecycleSupport(plugin: Plugin): boolean {
 }
 
 /**
- * 获取插件支持的生命周期阶段
+ * Get lifecycle phases supported by plugin
  */
 export function getPluginLifecyclePhases(plugin: Plugin): LifecyclePhase[] {
   const phases: LifecyclePhase[] = [];

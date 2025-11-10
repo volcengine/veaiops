@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ✅ 统一导出所有常量（使用 export * 确保所有导出都被包含）
+// ✅ Unified export of all constants (use export * to ensure all exports are included)
 export * from './options';

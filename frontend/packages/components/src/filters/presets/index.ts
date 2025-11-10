@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 预设系统导出
+ * Preset system exports
  */
 
-// 导出类型
+// Export types
 export * from './types';
 
-// 导出业务预设
+// Export business presets
 export * from './business';
 
-// 导出注册器
+// Export registry
 export * from './registry';

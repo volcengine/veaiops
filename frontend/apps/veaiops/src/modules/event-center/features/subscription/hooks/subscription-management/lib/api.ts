@@ -21,7 +21,7 @@ import type {
 } from 'api-generate';
 
 /**
- * 创建订阅关系
+ * Create subscription relation
  */
 export const createSubscription = async (
   subscriptionData: SubscribeRelationCreate,
@@ -36,18 +36,18 @@ export const createSubscription = async (
       Message.success('事件订阅创建成功');
       return true;
     } else {
-      throw new Error(response.message || '创建订阅关系失败');
+      throw new Error(response.message || 'Failed to create subscription relation');
     }
   } catch (error) {
     const errorMessage =
-      error instanceof Error ? error.message : '创建订阅关系失败';
+      error instanceof Error ? error.message : 'Failed to create subscription relation';
     Message.error(errorMessage);
     return false;
   }
 };
 
 /**
- * 更新订阅关系
+ * Update subscription relation
  */
 export const updateSubscription = async (
   subscriptionId: string,
@@ -65,17 +65,17 @@ export const updateSubscription = async (
       return true;
     }
 
-    throw new Error(response.message || '更新订阅关系失败');
+    throw new Error(response.message || 'Failed to update subscription relation');
   } catch (error) {
     const errorMessage =
-      error instanceof Error ? error.message : '更新订阅关系失败';
+      error instanceof Error ? error.message : 'Failed to update subscription relation';
     Message.error(errorMessage);
     return false;
   }
 };
 
 /**
- * 删除订阅关系
+ * Delete subscription relation
  */
 export const deleteSubscription = async (
   subscriptionId: string,
@@ -91,10 +91,10 @@ export const deleteSubscription = async (
       return true;
     }
 
-    throw new Error(response.message || '删除订阅关系失败');
+    throw new Error(response.message || 'Failed to delete subscription relation');
   } catch (error) {
     const errorMessage =
-      error instanceof Error ? error.message : '删除订阅关系失败';
+      error instanceof Error ? error.message : 'Failed to delete subscription relation';
     Message.error(errorMessage);
     return false;
   }

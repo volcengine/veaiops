@@ -22,12 +22,12 @@ import type {
 import { useCallback } from 'react';
 
 /**
- * CRUD操作Hook
- * 提供订阅关系的创建、更新、删除操作
+ * CRUD operations Hook
+ * Provides create, update, delete operations for subscription relations
  */
 export const useCrudOperations = () => {
   /**
-   * 创建订阅关系
+   * Create subscription relation
    */
   const createSubscription = useCallback(
     async (subscriptionData: SubscribeRelationCreate): Promise<boolean> => {
@@ -41,13 +41,13 @@ export const useCrudOperations = () => {
           Message.success('事件订阅创建成功');
           return true;
         } else {
-          throw new Error(response.message || '创建订阅关系失败');
+          throw new Error(response.message || 'Failed to create subscription relation');
         }
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '创建订阅关系失败';
+        const errorMessage = errorObj.message || 'Failed to create subscription relation';
         Message.error(errorMessage);
         return false;
       }
@@ -56,7 +56,7 @@ export const useCrudOperations = () => {
   );
 
   /**
-   * 更新订阅关系参数接口
+   * Update subscription relation parameter interface
    */
   interface UpdateSubscriptionParams {
     subscriptionId: string;
@@ -64,7 +64,7 @@ export const useCrudOperations = () => {
   }
 
   /**
-   * 更新订阅关系
+   * Update subscription relation
    */
   const updateSubscription = useCallback(
     async ({
@@ -82,13 +82,13 @@ export const useCrudOperations = () => {
           Message.success('订阅关系更新成功');
           return true;
         } else {
-          throw new Error(response.message || '更新订阅关系失败');
+          throw new Error(response.message || 'Failed to update subscription relation');
         }
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '更新订阅关系失败';
+        const errorMessage = errorObj.message || 'Failed to update subscription relation';
         Message.error(errorMessage);
         return false;
       }
@@ -97,7 +97,7 @@ export const useCrudOperations = () => {
   );
 
   /**
-   * 删除订阅关系
+   * Delete subscription relation
    */
   const deleteSubscription = useCallback(
     async (subscriptionId: string): Promise<boolean> => {
@@ -111,13 +111,13 @@ export const useCrudOperations = () => {
           Message.success('订阅关系删除成功');
           return true;
         } else {
-          throw new Error(response.message || '删除订阅关系失败');
+          throw new Error(response.message || 'Failed to delete subscription relation');
         }
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '删除订阅关系失败';
+        const errorMessage = errorObj.message || 'Failed to delete subscription relation';
         Message.error(errorMessage);
         return false;
       }

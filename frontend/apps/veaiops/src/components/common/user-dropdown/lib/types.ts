@@ -15,13 +15,13 @@
 import type { User } from '@veaiops/api-client';
 
 /**
- * 用户表单数据（用于密码修改表单）
+ * User form data (for password change form)
  *
- * 为什么自定义：
- * - 用于表单验证和UI交互，扩展了 API 生成的 UpdatePasswordRequest 类型
- * - 包含前端特有的表单字段（如 confirm_password 用于前端验证）
+ * Why custom:
+ * - Used for form validation and UI interaction, extends API-generated UpdatePasswordRequest type
+ * - Contains frontend-specific form fields (e.g., confirm_password for frontend validation)
  *
- * 对应 API 类型：UpdatePasswordRequest (from @veaiops/api-client)
+ * Corresponding API type: UpdatePasswordRequest (from @veaiops/api-client)
  */
 export interface UserFormData {
   old_password?: string;
@@ -30,11 +30,11 @@ export interface UserFormData {
 }
 
 /**
- * 扩展的用户类型（包含前端额外字段）
+ * Extended user type (includes frontend additional fields)
  *
- * 为什么扩展：
- * - 前端需要 id 字段（从 _id 映射）和 role 字段（从 is_supervisor 派生）
- * - 用于本地存储和UI展示
+ * Why extend:
+ * - Frontend needs id field (mapped from _id) and role field (derived from is_supervisor)
+ * - Used for local storage and UI display
  */
 export type ExtendedUser = Partial<User> & {
   id?: string;

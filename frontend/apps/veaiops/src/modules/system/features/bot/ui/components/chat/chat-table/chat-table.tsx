@@ -31,19 +31,19 @@ interface ChatTableProps {
 export type { ChatTableRef };
 
 /**
- * 群管理表格组件
+ * Chat management table component
  *
- * 拆分说明：
- * - chat-table/ref-handlers.ts: Ref 处理（useImperativeHandle）
- * - chat-table/config.ts: 配置获取（useChatTableConfig调用和日志记录）
- * - chat-table/handlers.ts: handleColumns 和 handleFilters 处理函数
- * - chat-table/chat-table.tsx: 主组件，负责组装和渲染
+ * Split explanation:
+ * - chat-table/ref-handlers.ts: Ref handling (useImperativeHandle)
+ * - chat-table/config.ts: Configuration retrieval (useChatTableConfig call and logging)
+ * - chat-table/handlers.ts: handleColumns and handleFilters handler functions
+ * - chat-table/chat-table.tsx: Main component, responsible for assembly and rendering
  */
 export const ChatTable = forwardRef<ChatTableRef, ChatTableProps>(
   ({ uid }, ref) => {
-    // ✅ 添加组件渲染开始日志
+    // ✅ Add component render start log - Keep Chinese error message in code string
     logger.info({
-      message: '[ChatTable] 组件开始渲染',
+      message: '[ChatTable] 组件开始渲染', // Keep Chinese error message in code string
       data: {
         uid,
         uidType: typeof uid,
@@ -52,13 +52,13 @@ export const ChatTable = forwardRef<ChatTableRef, ChatTableProps>(
       component: 'ChatTable',
     });
 
-    // CustomTable ref用于调用refresh方法
+    // CustomTable ref for calling refresh method
     const tableRef = useRef<CustomTableActionType<Chat>>(null);
 
-    // Ref 处理
+    // Ref handling
     useChatTableRefHandler({ ref, tableRef });
 
-    // 更新单个配置字段的函数
+    // Function to update a single configuration field
     const handleUpdateConfig = useCallback(
       async (params: {
         chatId: string;
@@ -67,7 +67,7 @@ export const ChatTable = forwardRef<ChatTableRef, ChatTableProps>(
         currentRecord: Chat;
       }): Promise<boolean> => {
         try {
-          // 构建更新配置，保持其他字段不变
+          // Build update configuration, keeping other fields unchanged
           const config = {
             enable_func_proactive_reply:
               params.field === 'enable_func_proactive_reply'
@@ -79,7 +79,7 @@ export const ChatTable = forwardRef<ChatTableRef, ChatTableProps>(
                 : (params.currentRecord.enable_func_interest ?? false),
           };
 
-          // 调用 API 更新配置
+          // Call API to update configuration
           const response = await apiClient.chats.putApisV1ConfigChatsConfig({
             uid: params.chatId,
             requestBody: config,
@@ -87,7 +87,7 @@ export const ChatTable = forwardRef<ChatTableRef, ChatTableProps>(
 
           if (response.code === API_RESPONSE_CODE.SUCCESS) {
             Message.success('配置更新成功');
-            // 刷新表格
+            // Refresh table
             if (tableRef.current?.refresh) {
               await tableRef.current.refresh();
             }
@@ -118,28 +118,28 @@ export const ChatTable = forwardRef<ChatTableRef, ChatTableProps>(
       [],
     );
 
-    // 表格配置
+    // Table configuration
     const { customTableProps } = useChatTableConfigWrapper({
       tableRef,
     });
 
-    // 处理函数
+    // Handler functions
     const { handleColumns, handleFilters } = useChatTableHandlers({
       onUpdateConfig: handleUpdateConfig,
     });
 
-    // ✅ 使用 useMemo 稳定化 initQuery 对象，避免每次渲染创建新引用
-    // ✅ 默认查询 is_active=true 的群聊（已经"删除"的不再默认展示）
+    // ✅ Use useMemo to stabilize initQuery object, avoid creating new reference on each render
+    // ✅ Default query for is_active=true chats (deleted ones are no longer shown by default)
     const initQuery = useMemo(
       () => ({
         force_refresh: false,
         uid,
-        is_active: true, // 默认只显示已入群的群聊
+        is_active: true, // Only show active chats by default
       }),
       [uid],
     );
 
-    // ✅ 添加渲染前日志
+    // ✅ Add pre-render log
     logger.info({
       message: '[ChatTable] 准备渲染 CustomTable',
       data: {
@@ -158,9 +158,9 @@ export const ChatTable = forwardRef<ChatTableRef, ChatTableProps>(
       component: 'render',
     });
 
-    // ✅ 添加错误边界，捕获渲染错误
-    // 注意：React 组件渲染错误无法用 try-catch 捕获，需要使用 Error Boundary
-    // 但我们可以在这里添加详细的日志，帮助定位问题
+    // ✅ Add error boundary to catch rendering errors
+    // Note: React component rendering errors cannot be caught with try-catch, need to use Error Boundary
+    // But we can add detailed logs here to help locate issues
     return (
       <div className="chat-table-container">
         <CustomTable<Chat>

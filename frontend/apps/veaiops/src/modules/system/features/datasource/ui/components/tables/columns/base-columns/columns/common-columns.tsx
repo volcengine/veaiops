@@ -17,11 +17,11 @@ import { CellRender } from '@veaiops/components';
 import { EMPTY_CONTENT } from '@veaiops/constants';
 import type { DataSource } from 'api-generate';
 
-// 解构组件，避免重复调用
+// Destructure components to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 /**
- * 名称/ID列配置
+ * Name/ID column configuration
  */
 export const getNameColumn = (): ModernTableColumnProps<DataSource> => ({
   title: '数据源名称/ID',
@@ -35,7 +35,7 @@ export const getNameColumn = (): ModernTableColumnProps<DataSource> => ({
 });
 
 /**
- * 数据源类型列配置
+ * Data source type column configuration
  */
 export const getTypeColumn = (): ModernTableColumnProps<DataSource> => ({
   title: '数据源类型',
@@ -52,7 +52,7 @@ export const getTypeColumn = (): ModernTableColumnProps<DataSource> => ({
 });
 
 /**
- * 状态列配置
+ * Status column configuration
  */
 export const getStatusColumn = (): ModernTableColumnProps<DataSource> => ({
   title: '状态',
@@ -66,23 +66,31 @@ export const getStatusColumn = (): ModernTableColumnProps<DataSource> => ({
 });
 
 /**
- * 创建时间列配置
+ * Created at column configuration
  */
 export const getCreatedAtColumn = (): ModernTableColumnProps<DataSource> => ({
   title: '创建时间',
   dataIndex: 'created_at',
   key: 'created_at',
   width: 180,
-  render: (createdAt: string) => <CellRender.StampTime time={createdAt} />,
+  render: (createdAt: string) => (
+    <CellRender.StampTime
+      time={createdAt ? new Date(createdAt).getTime() : undefined}
+    />
+  ),
 });
 
 /**
- * 更新时间列配置
+ * Updated at column configuration
  */
 export const getUpdatedAtColumn = (): ModernTableColumnProps<DataSource> => ({
   title: '更新时间',
   dataIndex: 'updated_at',
   key: 'updated_at',
   width: 180,
-  render: (updatedAt: string) => <CellRender.StampTime time={updatedAt} />,
+  render: (updatedAt: string) => (
+    <CellRender.StampTime
+      time={updatedAt ? new Date(updatedAt).getTime() : undefined}
+    />
+  ),
 });

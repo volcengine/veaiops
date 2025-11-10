@@ -18,8 +18,8 @@ export * from './lib/types';
 export * from './lib/constants';
 export * from './lib/utils';
 
-// API 服务
+// API service
 export { DataSourceApiService as ThresholdDataSourceApiService } from './lib/api-service';
 
-// 导出 hooks（用于优化路径）
+// Export hooks (for path optimization)
 export * from './hooks';

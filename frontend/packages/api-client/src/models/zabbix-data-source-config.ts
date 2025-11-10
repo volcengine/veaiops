@@ -16,23 +16,23 @@
 import type { ZabbixTarget } from './zabbix-target';
 export type ZabbixDataSourceConfig = {
   /**
-   * 数据源名称
+   * Data source name
    */
   name?: string;
   /**
-   * 连接名称
+   * Connection name
    */
   connect_name: string;
   /**
-   * Zabbix 目标列表
+   * Zabbix target list
    */
   targets?: Array<ZabbixTarget>;
   /**
-   * 指标名称
+   * Metric name
    */
   metric_name?: string;
   /**
-   * 历史类型
+   * History type
    */
   history_type?: number;
 };

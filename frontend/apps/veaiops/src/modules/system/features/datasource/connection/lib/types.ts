@@ -13,18 +13,18 @@
 // limitations under the License.
 
 /**
- * 数据源连接管理类型定义
+ * Data source connection management type definitions
  */
 
 import { FormInstance } from "@arco-design/web-react";
 import type { Connect, DataSourceType } from "api-generate";
 
-// 数据源连接面板Props
+// Data source connection panel Props
 export interface DataSourceConnectionPanelProps {
   type: DataSourceType;
 }
 
-// 数据源连接表格Props
+// Data source connection table Props
 export interface DataSourceConnectionTableProps {
   type: DataSourceType;
   connects: Connect[];
@@ -38,7 +38,7 @@ export interface DataSourceConnectionTableProps {
   onCreateMonitor?: (connect: Connect) => void;
 }
 
-// 连接表单Props
+// Connection form Props
 export interface ConnectFormProps {
   type: DataSourceType;
   initialValues?: Partial<Connect>;
@@ -47,7 +47,7 @@ export interface ConnectFormProps {
   form: FormInstance;
 }
 
-// 连接测试弹窗Props
+// Connection test modal Props
 export interface ConnectTestModalProps {
   visible: boolean;
   connect: Connect | null;
@@ -56,66 +56,66 @@ export interface ConnectTestModalProps {
   externalTesting?: boolean;
 }
 
-// 连接统计信息
+// Connection statistics
 export interface ConnectionStats {
   total: number;
   active: number;
   inactive: number;
 }
 
-// 全局连接统计
+// Global connection statistics
 export interface GlobalConnectionStats {
   zabbix: ConnectionStats;
   aliyun: ConnectionStats;
   volcengine: ConnectionStats;
 }
 
-// 连接测试结果
+// Connection test result
 export interface TestResult {
   success: boolean;
   message: string;
   details?: any;
 }
 
-// 连接创建请求
+// Connection create request
 export interface ConnectCreateRequest {
   name: string;
   type: DataSourceType;
   is_active?: boolean;
-  // Zabbix 字段
+  // Zabbix fields
   zabbix_api_url?: string;
   zabbix_api_user?: string;
   zabbix_api_password?: string;
-  // 阿里云字段
+  // Aliyun fields
   aliyun_access_key_id?: string;
   aliyun_access_key_secret?: string;
-  // 火山引擎字段
+  // Volcengine fields
   volcengine_access_key_id?: string;
   volcengine_access_key_secret?: string;
 }
 
-// 连接更新请求
+// Connection update request
 export interface ConnectUpdateRequest {
   name?: string;
   is_active?: boolean;
-  // Zabbix 字段
+  // Zabbix fields
   zabbix_api_url?: string;
   zabbix_api_user?: string;
   zabbix_api_password?: string;
-  // 阿里云字段
+  // Aliyun fields
   aliyun_access_key_id?: string;
   aliyun_access_key_secret?: string;
-  // 火山引擎字段
+  // Volcengine fields
   volcengine_access_key_id?: string;
   volcengine_access_key_secret?: string;
 }
 
-// 页面组件Props
+// Page component Props
 export interface ConnectionPageProps {
   className?: string;
 }
 
-// 表格列配置Props
+// Table column configuration Props
 export interface TableColumnsProps {
   type: DataSourceType;
   onEdit?: (connect: Connect) => void;
@@ -124,7 +124,7 @@ export interface TableColumnsProps {
   onCreateMonitor?: (connect: Connect) => void;
 }
 
-// 表格过滤器Props
+// Table filter Props
 export interface TableFiltersProps {
   type: DataSourceType;
   onFilter?: (filters: Record<string, any>) => void;

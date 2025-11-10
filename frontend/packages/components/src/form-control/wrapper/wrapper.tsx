@@ -48,16 +48,16 @@ export const FormItemWrapper = <T,>(
             formItemProps?.formItemProps?.label ||
             baseFormItemProps?.label ||
             baseFormItemProps?.requiredLabel
-          }必填`,
+          } is required`,
         },
       ]
     : [];
 
-  // 获取controlProps
+  // Get controlProps
   const controlProps = getControlProps(props);
   const style = {};
 
-  // form-item模式
+  // Form-item mode
   if (isControl) {
     const _children = (isValidElement(children)
       ? cloneElement(
@@ -95,7 +95,7 @@ export const FormItemWrapper = <T,>(
     componentsProps.addBefore = controlProps?.addBefore;
   }
 
-  // 使用 Object.assign 合并 controlProps 和 componentsProps 中的 style 属性，如果属性不存在则不会合并
+  // Use Object.assign to merge style properties from controlProps and componentsProps, if properties don't exist they won't be merged
   Object.assign(
     style,
     inline ? { width: 250, ...(controlProps.style || {}) } : controlProps.style,
@@ -104,7 +104,7 @@ export const FormItemWrapper = <T,>(
       : componentsProps.style,
   );
 
-  // 非form-item模式
+  // Non-form-item mode
   return isValidElement(children) ? (
     cloneElement(children, { ...controlProps, ...componentsProps, style })
   ) : (

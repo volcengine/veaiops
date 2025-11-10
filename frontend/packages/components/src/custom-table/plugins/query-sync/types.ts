@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 查询参数同步插件类型定义
- * 类型已迁移到 ../../types/plugins/query-sync.ts
- * 此文件保留以兼容现有引用，实际类型请从types目录导入
+ * Query parameter synchronization plugin type definitions
+ * Types have been migrated to ../../types/plugins/query-sync.ts
+ * This file is kept for backward compatibility with existing references, actual types should be imported from types directory
  */
 export type {
   QuerySyncConfig,

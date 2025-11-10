@@ -20,7 +20,7 @@ import { useAttributesTableLogicHandlers } from './handlers';
 import { useAttributesTableLogicState } from './state';
 
 /**
- * Bot属性表格业务逻辑Hook参数
+ * Bot attributes table business logic Hook parameters
  */
 interface UseAttributesTableLogicParams {
   botId?: string;
@@ -31,10 +31,10 @@ interface UseAttributesTableLogicParams {
 }
 
 /**
- * Bot属性表格业务逻辑Hook返回值
+ * Bot attributes table business logic Hook return value
  */
 export interface UseAttributesTableLogicReturn {
-  // 状态
+  // State
   editingAttribute: ReturnType<
     typeof useAttributesTableLogicState
   >['editingAttribute'];
@@ -44,7 +44,7 @@ export interface UseAttributesTableLogicReturn {
   modalType: ReturnType<typeof useAttributesTableLogicState>['modalType'];
   loading: ReturnType<typeof useAttributesTableLogicState>['loading'];
 
-  // 业务逻辑
+  // Business logic
   createAttribute: ReturnType<
     typeof useAttributesTableLogicState
   >['createAttribute'];
@@ -55,7 +55,7 @@ export interface UseAttributesTableLogicReturn {
     typeof useAttributesTableLogicState
   >['deleteAttribute'];
 
-  // 事件处理
+  // Event handling
   handleOpenCreateModal: ReturnType<
     typeof useAttributesTableLogicHandlers
   >['handleOpenCreateModal'];
@@ -75,25 +75,25 @@ export interface UseAttributesTableLogicReturn {
 }
 
 /**
- * Bot属性表格业务逻辑Hook
+ * Bot attributes table business logic Hook
  *
- * 拆分说明：
- * - state.ts: 状态管理和业务逻辑Hook调用
- * - handlers.ts: 事件处理函数（handleOpenCreateModal、handleCloseModal、handleFormSubmit、handleDelete、handleEdit）
- * - index.ts: 主入口，组合所有逻辑
+ * Split description:
+ * - state.ts: State management and business logic Hook calls
+ * - handlers.ts: Event handler functions (handleOpenCreateModal, handleCloseModal, handleFormSubmit, handleDelete, handleEdit)
+ * - index.ts: Main entry, combines all logic
  */
 export const useAttributesTableLogic = ({
   botId,
   channel,
   tableRef,
 }: UseAttributesTableLogicParams): UseAttributesTableLogicReturn => {
-  // 状态管理
+  // State management
   const state = useAttributesTableLogicState({ botId, channel });
 
-  // 刷新表格的辅助函数
+  // Helper function to refresh table
   const refreshTable = useCallback(async () => {
     logger.info({
-      message: '[refreshTable] 🔄 refreshTable 被调用',
+      message: '[refreshTable] 🔄 refreshTable called',
       data: {
         hasTableRef: Boolean(tableRef),
         hasTableRefCurrent: Boolean(tableRef?.current),
@@ -105,21 +105,21 @@ export const useAttributesTableLogic = ({
 
     if (tableRef?.current?.refresh) {
       logger.info({
-        message: '[refreshTable] ✅ 准备调用 tableRef.current.refresh()',
+        message: '[refreshTable] ✅ Ready to call tableRef.current.refresh()',
         data: {},
         source: 'BotAttributesTable',
         component: 'refreshTable',
       });
       await tableRef.current.refresh();
       logger.info({
-        message: '[refreshTable] ✅ tableRef.current.refresh() 完成',
+        message: '[refreshTable] ✅ tableRef.current.refresh() completed',
         data: {},
         source: 'BotAttributesTable',
         component: 'refreshTable',
       });
     } else {
       logger.warn({
-        message: '[refreshTable] ⚠️ tableRef.current.refresh 不存在',
+        message: '[refreshTable] ⚠️ tableRef.current.refresh does not exist',
         data: {
           tableRefKeys: tableRef?.current ? Object.keys(tableRef.current) : [],
         },
@@ -129,7 +129,7 @@ export const useAttributesTableLogic = ({
     }
   }, [tableRef]);
 
-  // 事件处理
+  // Event handling
   const handlers = useAttributesTableLogicHandlers({
     editingAttribute: state.editingAttribute,
     setEditingAttribute: state.setEditingAttribute,
@@ -144,18 +144,18 @@ export const useAttributesTableLogic = ({
   });
 
   return {
-    // 状态
+    // State
     editingAttribute: state.editingAttribute,
     isModalVisible: state.isModalVisible,
     modalType: state.modalType,
     loading: state.loading,
 
-    // 业务逻辑
+    // Business logic
     createAttribute: state.createAttribute,
     updateAttribute: state.updateAttribute,
     deleteAttribute: state.deleteAttribute,
 
-    // 事件处理
+    // Event handling
     handleOpenCreateModal: handlers.handleOpenCreateModal,
     handleCloseModal: handlers.handleCloseModal,
     handleFormSubmit: handlers.handleFormSubmit,

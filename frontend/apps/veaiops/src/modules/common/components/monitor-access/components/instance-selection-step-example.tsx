@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 实例选择步骤组件使用示例
- * 展示如何在新增监控数据源向导的第5步"选择实例"中使用空数据提示
+ * Instance selection step component usage example
+ * Demonstrates how to use empty data prompt in step 5 "Select Instances" of the add monitoring data source wizard
  */
 
 import { Checkbox, Input, Space, Typography } from '@arco-design/web-react';
@@ -33,17 +33,17 @@ interface Instance {
 }
 
 interface InstanceSelectionStepProps {
-  /** 所有实例列表 */
+  /** All instance list */
   allInstances: Instance[];
-  /** 已选择的实例ID列表 */
+  /** Selected instance ID list */
   selectedInstanceIds: string[];
-  /** 选择变更回调 */
+  /** Selection change callback */
   onSelectionChange: (selectedIds: string[]) => void;
 }
 
 /**
- * 实例选择步骤组件
- * 用于新增监控数据源向导的第5步
+ * Instance selection step component
+ * Used in step 5 of the add monitoring data source wizard
  */
 export const InstanceSelectionStep: React.FC<InstanceSelectionStepProps> = ({
   allInstances = [],
@@ -52,7 +52,7 @@ export const InstanceSelectionStep: React.FC<InstanceSelectionStepProps> = ({
 }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
 
-  // 根据搜索关键词过滤实例
+  // Filter instances based on search keyword
   const filteredInstances = useMemo(() => {
     if (!searchKeyword.trim()) {
       return allInstances;
@@ -66,12 +66,12 @@ export const InstanceSelectionStep: React.FC<InstanceSelectionStepProps> = ({
     );
   }, [allInstances, searchKeyword]);
 
-  // 全选/取消全选
+  // Select all / Deselect all
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
       onSelectionChange(filteredInstances.map((inst) => inst.id));
     } else {
-      // 只取消当前筛选结果的选中状态
+      // Only deselect current filtered results
       const filteredIds = filteredInstances.map((inst) => inst.id);
       onSelectionChange(
         selectedInstanceIds.filter((id) => !filteredIds.includes(id)),
@@ -79,7 +79,7 @@ export const InstanceSelectionStep: React.FC<InstanceSelectionStepProps> = ({
     }
   };
 
-  // 单个实例选择
+  // Single instance selection
   const handleInstanceToggle = (instanceId: string, checked: boolean) => {
     if (checked) {
       onSelectionChange([...selectedInstanceIds, instanceId]);
@@ -88,12 +88,12 @@ export const InstanceSelectionStep: React.FC<InstanceSelectionStepProps> = ({
     }
   };
 
-  // 判断当前筛选结果是否全部选中
+  // Check if all current filtered results are selected
   const isAllSelected =
     filteredInstances.length > 0 &&
     filteredInstances.every((inst) => selectedInstanceIds.includes(inst.id));
 
-  // 判断是否有部分选中
+  // Check if partially selected
   const isIndeterminate =
     filteredInstances.some((inst) => selectedInstanceIds.includes(inst.id)) &&
     !isAllSelected;
@@ -108,7 +108,7 @@ export const InstanceSelectionStep: React.FC<InstanceSelectionStepProps> = ({
           选择要监控的火山引擎实例, 可以选择多个实例
         </Text>
 
-        {/* 搜索框 */}
+        {/* Search box */}
         <Search
           placeholder="搜索实例"
           value={searchKeyword}
@@ -118,7 +118,7 @@ export const InstanceSelectionStep: React.FC<InstanceSelectionStepProps> = ({
         />
       </div>
 
-      {/* 选择摘要 */}
+      {/* Selection summary */}
       <div style={{ marginBottom: '16px' }}>
         <Space direction="vertical" size={4}>
           <Checkbox
@@ -138,7 +138,7 @@ export const InstanceSelectionStep: React.FC<InstanceSelectionStepProps> = ({
         </Space>
       </div>
 
-      {/* 实例列表或空数据提示 */}
+      {/* Instance list or empty data prompt */}
       {filteredInstances.length === 0 ? (
         <EmptyInstanceList
           searchKeyword={searchKeyword}

@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 自动初始化日志收集（副作用导入）
+// Auto initialize log collection (side effect import)
 import './lib/auto-log-init';
 
 /**
- * GlobalGuide 模块统一导出
+ * GlobalGuide module unified export
  *
- * 架构说明（符合 .cursorrules Feature-Based 架构）：
- * - lib/ - 配置、状态、工具（统一从 lib/index.ts 导出）
- * - ui/ - UI 组件（统一从 ui/index.ts 导出）
- * - hooks/ - 业务逻辑 Hooks（统一从 hooks/index.ts 导出）
- * - enums/ - 枚举定义
+ * Architecture notes (conforms to .cursorrules Feature-Based architecture):
+ * - lib/ - Configuration, state, utilities (unified export from lib/index.ts)
+ * - ui/ - UI components (unified export from ui/index.ts)
+ * - hooks/ - Business logic Hooks (unified export from hooks/index.ts)
+ * - enums/ - Enum definitions
  *
- * 层层导出原则：
- * - 统一从各模块的 index.ts 导出
- * - 根 index.ts 统一重新导出所有模块
+ * Layered export principle:
+ * - Unified export from each module's index.ts
+ * - Root index.ts unified re-export of all modules
  */
 
-// 导出 lib（配置、状态、工具）- 统一从 lib 导出（层层导出）
+// Export lib (configuration, state, utilities) - unified export from lib (layered export)
 export * from './lib';
 
-// 导出 UI 组件（统一从 ui 导出，包含主组件和子组件）
+// Export UI components (unified export from ui, includes main components and sub-components)
 export * from './ui';
 
-// 导出 hooks（统一从 hooks 导出）
+// Export hooks (unified export from hooks)
 export * from './hooks';
 
-// 导出 enums（统一从 enums 导出）
+// Export enums (unified export from enums)
 export * from './enums';

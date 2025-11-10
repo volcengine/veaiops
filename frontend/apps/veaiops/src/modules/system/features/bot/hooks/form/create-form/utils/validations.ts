@@ -17,31 +17,31 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import { logger } from '@veaiops/utils';
 
 /**
- * 检查 App ID 是否重复
- * @param appId - 待检查的 App ID
- * @returns 如果重复返回错误消息，否则返回 undefined
+ * Check if App ID is duplicate
+ * @param appId - App ID to check
+ * @returns Error message if duplicate, otherwise undefined
  */
 export const checkAppIdDuplicate = async (
   appId: string,
 ): Promise<string | undefined> => {
-  // 如果 App ID 为空，不进行检查
+  // If App ID is empty, skip validation
   if (!appId || appId.trim() === '') {
     return undefined;
   }
 
   try {
-    // 调用 API 获取机器人列表（limit 为 1000）
+    // Call API to get bot list (limit is 1000)
     const response = await apiClient.bots.getApisV1ManagerSystemConfigBots({
       limit: 1000,
     });
 
-    // 检查 API 响应是否成功
+    // Check if API response is successful
     if (
       response.code === API_RESPONSE_CODE.SUCCESS &&
       response.data &&
       Array.isArray(response.data)
     ) {
-      // 检查是否存在相同的 bot_id
+      // Check if there is a duplicate bot_id
       const isDuplicate = response.data.some(
         (bot) => bot.bot_id === appId.trim(),
       );
@@ -51,10 +51,10 @@ export const checkAppIdDuplicate = async (
       }
     }
 
-    // 没有重复，返回 undefined
+    // No duplicate, return undefined
     return undefined;
   } catch (error) {
-    // 错误处理：记录日志但不阻止用户继续操作
+    // Error handling: log error but don't block user from continuing
     const errorObj = error instanceof Error ? error : new Error(String(error));
     logger.error({
       message: '检查 App ID 重复失败',
@@ -67,7 +67,7 @@ export const checkAppIdDuplicate = async (
       source: 'useBotCreateForm',
       component: 'checkAppIdDuplicate',
     });
-    // 网络错误时，不阻止用户继续操作，返回 undefined
+    // On network error, don't block user from continuing, return undefined
     return undefined;
   }
 };

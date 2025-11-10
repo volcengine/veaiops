@@ -18,7 +18,7 @@ import { useRequest } from 'ahooks';
 import type { Chat } from 'api-generate';
 
 /**
- * 下拉框选项的类型定义
+ * Dropdown option type definition
  */
 interface SelectOption {
   label: string;
@@ -26,9 +26,9 @@ interface SelectOption {
 }
 
 /**
- * 将 Chat API 返回的数据项转换为适用于 Select 组件的格式
- * @param item - 单个 Chat 对象
- * @returns SelectOption 格式的对象
+ * Transform Chat API returned data item to format suitable for Select component
+ * @param item - Single Chat object
+ * @returns SelectOption format object
  */
 const transformDataToOption = (item: Chat): SelectOption => ({
   label: item.name || item.chat_id,
@@ -46,23 +46,23 @@ const useChatsList = () => {
       const res = await apiClient.chats.getApisV1ConfigChats({
         uid,
         skip: 0,
-        limit: 100, // 对于下拉列表，通常获取一个固定的较长列表是可接受的
+        limit: 100, // For dropdown lists, fetching a fixed longer list is usually acceptable
       });
       if (res.code !== API_RESPONSE_CODE.SUCCESS) {
-        throw new Error(res.message || '获取飞书群列表失败');
+        throw new Error(res.message || 'Failed to fetch Lark chat list');
       }
-      // 使用可选链和空值合并操作符确保安全，并进行数据转换
+      // Use optional chaining and nullish coalescing operator to ensure safety, and perform data transformation
       return (res.data ?? []).map(transformDataToOption);
     },
     {
       manual: true,
-      // 建议：可以根据业务需求开启缓存，避免重复请求
+      // Suggestion: Can enable caching based on business needs to avoid duplicate requests
       // cacheKey: 'chats-list',
-      // staleTime: 5 * 60 * 1000, // 5分钟内数据被认为是新鲜的
+      // staleTime: 5 * 60 * 1000, // Data is considered fresh within 5 minutes
     },
   );
 
-  // 返回更明确的接口，而不是 ahooks 的所有返回项
+  // Return more explicit interface, not all return items from ahooks
   return {
     chatOptions: data,
     loadingChats: loading,

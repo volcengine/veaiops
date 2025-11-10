@@ -13,20 +13,19 @@
 // limitations under the License.
 
 /**
- * CustomTable 内部 Hooks 导出
+ * CustomTable internal Hooks exports
  *
-
  * @date 2025-12-19
  */
 
-// 导出状态管理 hook
+// Export state management hook
 export { useTableState } from './use-table-state';
 export type { TableState, TableStateConfig } from './use-table-state';
 
-// 导出 Helper 方法 hook
+// Export Helper methods hook
 export { useTableHelpers } from './use-table-helpers';
 export type { TableHelpers, TableHelpersConfig } from './use-table-helpers';
 
-// 导出 QuerySync Logger
+// Export QuerySync Logger
 export { querySyncLogger, QuerySyncLogger } from './query-sync-logger';
 export type { QuerySyncLogEntry } from './query-sync-logger';

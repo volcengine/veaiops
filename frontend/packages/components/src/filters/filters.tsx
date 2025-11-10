@@ -15,10 +15,10 @@
 import { logger } from '@veaiops/utils';
 import React, { type FC, useMemo, useEffect, useRef } from 'react';
 
-// 导入类型定义
+// Import type definitions
 import type { FiltersComponentProps } from './core/types';
 
-// 导入自定义钩子
+// Import custom hooks
 import {
   useFieldRenderer,
   useFilterConfig,
@@ -29,7 +29,7 @@ import {
   usePluginSystem,
 } from './core/hooks';
 
-// 导入子组件
+// Import child components
 import {
   ActionsArea,
   FieldsArea,
@@ -37,20 +37,20 @@ import {
   RightActionsArea,
 } from './components';
 
-// 导入日志工具
+// Import logging utilities
 import { filterLogger } from './utils/logger';
 // import { useAutoLogExport } from '@veaiops/utils';
 
-// 导出工具函数和常量
+// Export utility functions and constants
 export * from './core/constants';
 export * from './core/utils';
 export * from './core/renderer';
 
-// 导出 label 转换相关的类型和函数
+// Export label conversion related types and functions
 export type { LabelAsType } from './core/utils';
 export { processLabelAsComponentProp } from './core/utils';
 
-// 选择性导出插件系统，避免类型冲突
+// Selectively export plugin system to avoid type conflicts
 export {
   filterPluginRegistry,
   initializeCorePlugins,
@@ -59,14 +59,14 @@ export {
   corePlugins,
 } from './plugins';
 
-// 导出核心类型，避免与插件类型重复
+// Export core types to avoid duplication with plugin types
 export type {
   FiltersComponentProps,
   FilterStyle,
   FieldItem,
 } from './core/types';
 
-// 导出插件系统的类型
+// Export plugin system types
 export type {
   FilterPlugin,
   FilterPluginContext,
@@ -76,11 +76,11 @@ export type {
 } from '@veaiops/types';
 
 /**
- * 筛选器主组件内部实现
- * 使用插件化架构和组件化结构，支持多种筛选组件类型
+ * Filter main component internal implementation
+ * Uses plugin-based architecture and componentized structure, supports multiple filter component types
  */
 const FiltersInner: FC<FiltersComponentProps> = (props) => {
-  // 🚀 新增：自动日志导出（仅在开发环境）
+  // 🚀 New: Auto log export (development only)
   // Note: useAutoLogExport not available in current build context
   const exportLogs = () => Promise.resolve();
   const getLogCount = () => 0;
@@ -98,13 +98,13 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
     showReset,
   } = props;
 
-  // 🔧 使用 useMemo 稳定 config 引用，避免因对象重建导致的重渲染
+  // 🔧 Use useMemo to stabilize config reference, avoid re-renders caused by object recreation
   const stableConfig = useMemo(() => config, [config]);
 
-  // 初始化插件系统
+  // Initialize plugin system
   const { pluginSystemStats } = usePluginSystem();
 
-  // 🔧 修复死循环：使用 useRef 追踪渲染次数，避免每次渲染都记录日志
+  // 🔧 Fix infinite loop: use useRef to track render count, avoid logging on every render
   const renderCountRef = useRef(0);
   const lastRenderTimeRef = useRef(Date.now());
   const mountTimestamp = useRef(Date.now());
@@ -114,7 +114,7 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
       .substr(2, 9)}`,
   );
 
-  // 🚨 渲染监控
+  // 🚨 Render monitoring
   const now_render = Date.now();
   if (now_render - lastRenderTimeRef.current > 10000) {
     renderCountRef.current = 0;
@@ -125,7 +125,7 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
 
   if (renderCountRef.current > 15) {
     logger.error({
-      message: '[Filters] 🚨 渲染超限！可能存在死循环',
+      message: '[Filters] 🚨 Render limit exceeded! Possible infinite loop',
       data: {
         renderCount: renderCountRef.current,
         configLength: config?.length,
@@ -138,7 +138,7 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
 
   if (renderCountRef.current === 10) {
     logger.warn({
-      message: '[Filters] ⚠️ 渲染频繁警告',
+      message: '[Filters] ⚠️ Frequent render warning',
       data: {
         renderCount: renderCountRef.current,
       },
@@ -147,11 +147,11 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
     });
   }
 
-  // 🚀 新增：组件挂载日志
+  // 🚀 New: Component mount logging
   useEffect(() => {
     filterLogger.info({
       component: 'Filters',
-      message: '🎬 组件挂载',
+      message: '🎬 Component mounted',
       data: {
         componentId: componentId.current,
         mountTime: new Date(mountTimestamp.current).toISOString(),
@@ -169,7 +169,7 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
     return () => {
       filterLogger.info({
         component: 'Filters',
-        message: '🔚 组件卸载',
+        message: '🔚 Component unmounted',
         data: {
           componentId: componentId.current,
           lifetime: Date.now() - mountTimestamp.current,
@@ -181,11 +181,11 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
 
   useEffect(() => {
     renderCountRef.current++;
-    // 只记录前几次渲染，避免日志爆炸
+    // Only log first few renders to avoid log explosion
     if (renderCountRef.current <= 5 || renderCountRef.current % 10 === 0) {
       filterLogger.info({
         component: 'Filters',
-        message: '🔄 组件渲染',
+        message: '🔄 Component rendered',
         data: {
           componentId: componentId.current,
           configLength: config.length,
@@ -203,14 +203,14 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
     }
   }, [config, query]);
 
-  // 🚀 新增：监听config变化
+  // 🚀 New: Listen to config changes
   useEffect(() => {
     filterLogger.info({
       component: 'Filters',
-      message: '📋 Config变化',
+      message: '📋 Config changed',
       data: {
         componentId: componentId.current,
-        oldLength: renderCountRef.current > 1 ? '查看上一条日志' : 0,
+        oldLength: renderCountRef.current > 1 ? 'See previous log' : 0,
         newLength: config.length,
         newFields: config.map((c: any) => ({
           field: c.field,
@@ -225,11 +225,11 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
     });
   }, [config]);
 
-  // 🚀 新增：监听query变化
+  // 🚀 New: Listen to query changes
   useEffect(() => {
     filterLogger.info({
       component: 'Filters',
-      message: '🔍 Query变化',
+      message: '🔍 Query changed',
       data: {
         componentId: componentId.current,
         query,
@@ -239,41 +239,41 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
     });
   }, [query]);
 
-  // 记录插件系统初始化（仅一次）
+  // Record plugin system initialization (only once)
   const pluginInitializedRef = useRef(false);
   useEffect(() => {
     if (!pluginInitializedRef.current) {
       filterLogger.info({
         component: 'Filters',
-        message: '插件系统已初始化',
+        message: 'Plugin system initialized',
         data: pluginSystemStats,
       });
       pluginInitializedRef.current = true;
     }
   }, [pluginSystemStats]);
 
-  // 管理表单状态
+  // Manage form state
   const { form } = useFilterForm(query);
 
-  // 获取最终样式配置
+  // Get final style configuration
   const finalStyle = useFilterStyle(filterStyle);
 
-  // 创建插件上下文
+  // Create plugin context
   const pluginContext = usePluginContext(form, filterStyle);
 
-  // 获取字段渲染器
+  // Get field renderer
   const renderFieldItem = useFieldRenderer(pluginContext);
 
-  // 处理筛选器配置 - 使用稳定的 config
+  // Process filter configuration - use stable config
   const { hasFields, hasVisibleFields } = useFilterConfig(stableConfig);
 
-  // 处理重置功能 - 使用稳定的 config
+  // Process reset functionality - use stable config
   const { handleReset, canReset } = useFilterReset(
     resetFilterValues,
     stableConfig,
   );
 
-  // 使用useMemo缓存操作区域，避免每次渲染都创建新对象 - 必须在条件return之前
+  // Use useMemo to cache actions area, avoid creating new object on every render - must be before conditional return
   const actionsArea = useMemo(
     () => (
       <ActionsArea
@@ -295,7 +295,7 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
     ],
   );
 
-  // 如果没有字段配置，不渲染组件（与旧代码保持一致）
+  // If no field configuration, don't render component (consistent with old code)
   if (!hasFields) {
     return null;
   }
@@ -314,12 +314,12 @@ const FiltersInner: FC<FiltersComponentProps> = (props) => {
 };
 
 /**
- * 🔧 使用 React.memo 优化 Filters 组件重渲染
+ * 🔧 Use React.memo to optimize Filters component re-rendering
  *
- * 🎯 关键优化：比较config时忽略onChange等函数（每次都是新的）
+ * 🎯 Key optimization: Ignore onChange and other functions when comparing config (they are new every time)
  */
 export const Filters = React.memo(FiltersInner, (prevProps, nextProps) => {
-  // 🔧 比较config：只比较结构和数据，忽略函数
+  // 🔧 Compare config: only compare structure and data, ignore functions
   const compareConfig = (
     prev: any[] | undefined,
     next: any[] | undefined,
@@ -332,7 +332,7 @@ export const Filters = React.memo(FiltersInner, (prevProps, nextProps) => {
     }
 
     for (let i = 0; i < prev.length; i++) {
-      // 比较字段定义
+      // Compare field definitions
       if (prev[i].type !== next[i].type) {
         return false;
       }
@@ -340,14 +340,14 @@ export const Filters = React.memo(FiltersInner, (prevProps, nextProps) => {
         return false;
       }
 
-      // 比较componentProps，跳过函数
+      // Compare componentProps, skip functions
       const prevComp = prev[i].componentProps || {};
       const nextComp = next[i].componentProps || {};
 
       for (const key of Object.keys(prevComp)) {
         if (typeof prevComp[key] === 'function') {
           continue;
-        } // 跳过函数
+        } // Skip functions
         if (JSON.stringify(prevComp[key]) !== JSON.stringify(nextComp[key])) {
           return false;
         }
@@ -356,10 +356,10 @@ export const Filters = React.memo(FiltersInner, (prevProps, nextProps) => {
     return true;
   };
 
-  // 比较config
+  // Compare config
   if (!compareConfig(prevProps.config, nextProps.config)) {
     logger.info({
-      message: '[Filters] 🔄 config变化，需要重新渲染',
+      message: '[Filters] 🔄 Config changed, need to re-render',
       data: {
         prevLength: prevProps.config?.length,
         nextLength: nextProps.config?.length,
@@ -370,10 +370,10 @@ export const Filters = React.memo(FiltersInner, (prevProps, nextProps) => {
     return false;
   }
 
-  // 比较 query 对象
+  // Compare query object
   if (JSON.stringify(prevProps.query) !== JSON.stringify(nextProps.query)) {
     logger.info({
-      message: '[Filters] 🔄 query变化，需要重新渲染',
+      message: '[Filters] 🔄 Query changed, need to re-render',
       data: { prevQuery: prevProps.query, nextQuery: nextProps.query },
       source: 'Filters',
       component: 'ReactMemo',
@@ -381,7 +381,7 @@ export const Filters = React.memo(FiltersInner, (prevProps, nextProps) => {
     return false;
   }
 
-  // 比较其他关键 props
+  // Compare other key props
   const keysToCompare: (keyof FiltersComponentProps)[] = [
     'className',
     'wrapperClassName',
@@ -391,7 +391,7 @@ export const Filters = React.memo(FiltersInner, (prevProps, nextProps) => {
   for (const key of keysToCompare) {
     if (prevProps[key] !== nextProps[key]) {
       logger.info({
-        message: `[Filters] 🔄 ${String(key)}变化，需要重新渲染`,
+        message: `[Filters] 🔄 ${String(key)} changed, need to re-render`,
         data: { prevValue: prevProps[key], nextValue: nextProps[key] },
         source: 'Filters',
         component: 'ReactMemo',
@@ -401,13 +401,13 @@ export const Filters = React.memo(FiltersInner, (prevProps, nextProps) => {
   }
 
   logger.debug({
-    message: '[Filters] ⏭️ props未变化，跳过渲染',
+    message: '[Filters] ⏭️ Props unchanged, skip rendering',
     data: {},
     source: 'Filters',
     component: 'ReactMemo',
   });
-  return true; // props相同，不重新渲染
+  return true; // Props are the same, don't re-render
 });
 
-// 默认导出
+// Default export
 export default Filters;

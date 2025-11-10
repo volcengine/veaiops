@@ -15,15 +15,15 @@
 import type { FilterStyle, FixFilterControlCls } from './types';
 
 /**
- * 固定筛选控件类名配置
- * 用于统一控制筛选器组件的响应式宽度
+ * Fixed filter control class name configuration
+ * Used to uniformly control responsive width of filter components
  */
 export const fixFilterControlCls: FixFilterControlCls = {
   className: 'sm:w-p20 md:w-p21 lg:w-p22 x:w-p23 xl:w-p24 2xl:w-p24 3xl:w-p25',
 };
 
 /**
- * 默认筛选器样式配置
+ * Default filter style configuration
  */
 export const defaultFilterStyle: FilterStyle = {
   isWithBackgroundAndBorder: false,
@@ -31,28 +31,28 @@ export const defaultFilterStyle: FilterStyle = {
 };
 
 /**
- * 通用CSS类名
- * 用于布局和间距
+ * Common CSS class name
+ * Used for layout and spacing
  */
 export const commonClassName = 'flex flex-wrap items-center gap-[10px]';
 
 /**
- * 筛选器容器ID
+ * Filter container ID
  */
 export const FILTER_CONTAINER_ID = 'tableFilters';
 
 /**
- * 错误提示信息
+ * Error messages
  */
 export const ERROR_MESSAGES = {
-  FIELD_TYPE_REQUIRED: '字段类型未定义',
-  PLUGIN_NOT_FOUND: '组件插件未找到',
-  INVALID_CONFIG: '组件配置无效',
-  RENDER_FAILED: '组件渲染失败',
+  FIELD_TYPE_REQUIRED: 'Field type is not defined',
+  PLUGIN_NOT_FOUND: 'Component plugin not found',
+  INVALID_CONFIG: 'Component configuration is invalid',
+  RENDER_FAILED: 'Component rendering failed',
 } as const;
 
 /**
- * 警告信息
+ * Warning messages
  */
 export const WARNING_MESSAGES = {
   FIELD_TYPE_REQUIRED: 'Field type is required for rendering',
@@ -62,7 +62,7 @@ export const WARNING_MESSAGES = {
 } as const;
 
 /**
- * 日志信息
+ * Log messages
  */
 export const LOG_MESSAGES = {
   RENDER_ERROR: (type: string, _error: unknown) =>

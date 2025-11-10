@@ -15,99 +15,99 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type SystemStatistics = {
   /**
-   * 活跃机器人数量
+   * Number of active bots
    */
   active_bots: number;
   /**
-   * 活跃群数量
+   * Number of active chats
    */
   active_chats: number;
   /**
-   * 活跃消息卡片通知策略数量
+   * Number of active inform strategies
    */
   active_inform_strategies: number;
   /**
-   * 活跃订阅数量
+   * Number of active subscriptions
    */
   active_subscribes: number;
   /**
-   * 活跃用户数量
+   * Number of active users
    */
   active_users: number;
   /**
-   * 活跃产品数量
+   * Number of active products
    */
   active_products: number;
   /**
-   * 活跃项目数量
+   * Number of active projects
    */
   active_projects: number;
   /**
-   * 活跃客户数量
+   * Number of active customers
    */
   active_customers: number;
   /**
-   * 活跃智能阈值任务数量
+   * Number of active intelligent threshold tasks
    */
   active_intelligent_threshold_tasks: number;
   /**
-   * 活跃智能阈值自动更新任务数量
+   * Number of active intelligent threshold auto-update tasks
    */
   active_intelligent_threshold_autoupdate_tasks: number;
   /**
-   * 最近1天智能阈值成功数量
+   * Number of successful intelligent threshold tasks in the last 1 day
    */
   latest_1d_intelligent_threshold_success_num: number;
   /**
-   * 最近1天智能阈值失败数量
+   * Number of failed intelligent threshold tasks in the last 1 day
    */
   latest_1d_intelligent_threshold_failed_num: number;
   /**
-   * 最近7天智能阈值成功数量
+   * Number of successful intelligent threshold tasks in the last 7 days
    */
   latest_7d_intelligent_threshold_success_num: number;
   /**
-   * 最近7天智能阈值失败数量
+   * Number of failed intelligent threshold tasks in the last 7 days
    */
   latest_7d_intelligent_threshold_failed_num: number;
   /**
-   * 最近30天智能阈值成功数量
+   * Number of successful intelligent threshold tasks in the last 30 days
    */
   latest_30d_intelligent_threshold_success_num: number;
   /**
-   * 最近30天智能阈值失败数量
+   * Number of failed intelligent threshold tasks in the last 30 days
    */
   latest_30d_intelligent_threshold_failed_num: number;
   /**
-   * 最近24小时事件数量
+   * Number of events in the last 24 hours
    */
   latest_24h_events: number;
   /**
-   * 最近1天事件数量
+   * Number of events in the last 1 day
    */
   last_1d_events: number;
   /**
-   * 最近7天事件数量
+   * Number of events in the last 7 days
    */
   last_7d_events: number;
   /**
-   * 最近30天事件数量
+   * Number of events in the last 30 days
    */
   last_30d_events: number;
   /**
-   * 最近24小时消息数量
+   * Number of messages in the last 24 hours
    */
   latest_24h_messages: number;
   /**
-   * 最近1天消息数量
+   * Number of messages in the last 1 day
    */
   last_1d_messages: number;
   /**
-   * 最近7天消息数量
+   * Number of messages in the last 7 days
    */
   last_7d_messages: number;
   /**
-   * 最近30天消息数量
+   * Number of messages in the last 30 days
    */
   last_30d_messages: number;
 };

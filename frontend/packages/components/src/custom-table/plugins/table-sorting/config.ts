@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格排序插件默认配置
+ * Table sorting plugin default configuration
  */
 import type { TableSortingConfig } from '@/custom-table/types';
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';

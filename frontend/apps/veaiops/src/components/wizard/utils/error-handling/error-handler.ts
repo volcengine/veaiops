@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 数据源向导错误处理工具
- * @description 统一处理向导过程中的各种错误情况
+ * Data source wizard error handling utilities
+ * @description Unified handling of various error cases during wizard process
  */
 
 import { Message } from '@arco-design/web-react';
 
 /**
- * 错误类型枚举
+ * Error type enum
  */
 export enum WizardErrorType {
   NETWORK_ERROR = 'NETWORK_ERROR',
@@ -32,7 +32,7 @@ export enum WizardErrorType {
 }
 
 /**
- * 错误信息接口
+ * Error information interface
  */
 export interface WizardError {
   type: WizardErrorType;
@@ -42,7 +42,7 @@ export interface WizardError {
 }
 
 /**
- * 创建错误对象
+ * Create error object
  */
 export const createError = (
   type: WizardErrorType,
@@ -57,7 +57,7 @@ export const createError = (
 });
 
 /**
- * 处理网络错误
+ * Handle network error
  */
 export const handleNetworkError = (
   error: any,
@@ -82,7 +82,7 @@ export const handleNetworkError = (
 };
 
 /**
- * 处理API错误
+ * Handle API error
  */
 export const handleApiError = (
   error: any,
@@ -102,7 +102,7 @@ export const handleApiError = (
 };
 
 /**
- * 处理空数据错误
+ * Handle empty data error
  */
 export const handleEmptyDataError = (
   dataType: string,
@@ -116,7 +116,7 @@ export const handleEmptyDataError = (
 };
 
 /**
- * 处理验证错误
+ * Handle validation error
  */
 export const handleValidationError = (
   field: string,
@@ -136,7 +136,7 @@ export const handleValidationError = (
 };
 
 /**
- * 处理未知错误
+ * Handle unknown error
  */
 export const handleUnknownError = (
   error: any,
@@ -155,23 +155,23 @@ export const handleUnknownError = (
 };
 
 /**
- * 统一错误处理入口
+ * Unified error handling entry point
  */
 export const handleError = (
   error: any,
   context?: Record<string, any>,
 ): WizardError => {
-  // 网络错误
+  // Network error
   if (error?.name === 'TypeError' || error?.message?.includes('fetch')) {
     return handleNetworkError(error, context);
   }
 
-  // API错误（带有body的错误）
+  // API error (error with body)
   if (error?.body || error?.status) {
     return handleApiError(error, context);
   }
 
-  // 验证错误
+  // Validation error
   if (
     error?.message?.includes('required') ||
     error?.message?.includes('invalid')
@@ -179,12 +179,12 @@ export const handleError = (
     return handleValidationError('输入', error?.message, context);
   }
 
-  // 未知错误
+  // Unknown error
   return handleUnknownError(error, context);
 };
 
 /**
- * 安全执行异步操作（带错误处理）
+ * Safely execute async operation (with error handling)
  */
 export const safeAsync = async <T>(
   operation: () => Promise<T>,

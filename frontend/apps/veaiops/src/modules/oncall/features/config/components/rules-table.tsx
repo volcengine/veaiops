@@ -18,7 +18,7 @@ import type { Bot, Interest } from 'api-generate';
 import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react';
 
 /**
- * 切换状态参数接口
+ * Toggle status parameter interface
  */
 interface HandleToggleStatusParams {
   ruleUuid: string;
@@ -37,22 +37,22 @@ export interface RulesTableRef {
 }
 
 /**
- * Oncall规则表格组件
- * 使用 CustomTable 标准化实现
- * 支持刷新功能，各种操作都会自动刷新表格数据
+ * Oncall rules table component
+ * Uses CustomTable standardized implementation
+ * Supports refresh functionality, all operations automatically refresh table data
  */
 export const RulesTable = forwardRef<RulesTableRef, RulesTableProps>(
   ({ bots, onToggleStatus, onViewDetails, onEdit }, ref) => {
-    // CustomTable 的内部 ref
+    // CustomTable internal ref
     const tableRef = useRef<CustomTableActionType<Interest>>(null);
 
-    // 使用内聚型Hook分离业务逻辑和UI配置
+    // Use cohesive Hook to separate business logic and UI configuration
     const { customTableProps, operations } = useRulesData({
       bots,
       ref: tableRef,
     });
 
-    // 暴露符合 RulesTableRef 接口的 refresh 方法
+    // Expose refresh method that conforms to RulesTableRef interface
     useImperativeHandle(
       ref,
       () => ({
@@ -60,7 +60,7 @@ export const RulesTable = forwardRef<RulesTableRef, RulesTableProps>(
           if (operations?.refresh) {
             return await operations.refresh();
           }
-          // 如果 operations 不可用，尝试使用 tableRef
+          // If operations unavailable, try using tableRef
           if (tableRef.current?.refresh) {
             await tableRef.current.refresh();
             return { success: true };
@@ -80,7 +80,7 @@ export const RulesTable = forwardRef<RulesTableRef, RulesTableProps>(
       onEdit,
     });
 
-    // 默认选择第一个机器人作为初始查询参数（与原分支功能一致）
+    // Default select first bot as initial query parameter (consistent with original branch functionality)
     const initQuery = useMemo(() => {
       if (bots.length > 0 && bots[0]?.bot_id) {
         return { botId: bots[0].bot_id };

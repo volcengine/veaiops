@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接测试相关组件导出
+ * Connection test related component exports
  */
 
 export { ConnectTestModal } from './connect-test-modal';

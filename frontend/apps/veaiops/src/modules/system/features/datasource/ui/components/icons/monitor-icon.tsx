@@ -21,7 +21,7 @@ interface IconProps {
 }
 
 /**
- * 通用监控图标
+ * Generic monitor icon component
  */
 export const MonitorIcon: React.FC<IconProps> = ({
   size = 16,

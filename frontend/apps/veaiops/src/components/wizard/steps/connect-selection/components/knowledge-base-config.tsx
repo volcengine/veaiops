@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 知识库集合配置组件
- * @description 参考图片中的知识库配置界面设计
+ * Knowledge base collection configuration component
+ * @description References the knowledge base configuration interface design from images
  * @author AI Assistant
  * @date 2025-01-17
  */
@@ -38,14 +38,14 @@ export const KnowledgeBaseConfig: React.FC<KnowledgeBaseConfigProps> = ({
 }) => {
   const [kbCollections, setKbCollections] = useState<string[]>(collections);
 
-  // 添加知识库集合
+  // Add knowledge base collection
   const addKbCollection = () => {
     const newCollections = [...kbCollections, ''];
     setKbCollections(newCollections);
     onChange?.(newCollections);
   };
 
-  // 删除知识库集合
+  // Remove knowledge base collection
   const removeKbCollection = (index: number) => {
     if (kbCollections.length > 1) {
       const newCollections = kbCollections.filter((_, i) => i !== index);
@@ -54,7 +54,7 @@ export const KnowledgeBaseConfig: React.FC<KnowledgeBaseConfigProps> = ({
     }
   };
 
-  // 更新知识库集合
+  // Update knowledge base collection
   const updateKbCollection = (index: number, value: string) => {
     const newCollections = [...kbCollections];
     newCollections[index] = value;

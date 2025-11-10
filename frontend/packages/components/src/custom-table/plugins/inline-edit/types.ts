@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 行内编辑插件类型定义
- * 基于 EPS 平台的可编辑表格能力
+ * Inline edit plugin type definitions
+ * Based on EPS platform editable table capability
  */
 
-// 重新导出核心类型
+// Re-export core types
 export type {
   EditorType,
   EditMode,

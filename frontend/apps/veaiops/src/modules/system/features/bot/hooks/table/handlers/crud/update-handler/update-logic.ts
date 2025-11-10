@@ -19,7 +19,7 @@ import { logger } from '@veaiops/utils';
 import { useCallback } from 'react';
 
 /**
- * 更新逻辑Hook
+ * Update logic hook
  */
 export const useUpdateLogic = ({
   editingBot,
@@ -76,7 +76,7 @@ export const useUpdateLogic = ({
             component: 'handleUpdate',
           });
 
-          // 更新成功后刷新表格
+          // Refresh table after update success
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({

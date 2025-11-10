@@ -15,15 +15,15 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type LoginToken = {
   /**
-   * JWT访问令牌
+   * JWT access token
    */
   access_token: string;
   /**
-   * 令牌类型
+   * Token type
    */
   token_type?: string;
   /**
-   * 令牌过期时间（秒）
+   * Token expiration time in seconds
    */
   expires_in?: number;
 };

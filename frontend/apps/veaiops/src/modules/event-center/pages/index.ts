@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 事件中心页面级组件导出
+ * Event center page-level components export
  */
 
 export { default as EventSubscriptionPage } from './event-subscription-page';

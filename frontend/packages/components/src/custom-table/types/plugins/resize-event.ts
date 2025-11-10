@@ -13,95 +13,95 @@
 // limitations under the License.
 
 /**
- * 表格调整大小事件类型定义
- * 支持列宽调整和表格容器大小变化事件
+ * Table resize event type definitions
+ * Supports column width adjustment and table container size change events
  */
 
 import type { BaseRecord } from '../core/common';
 
 /**
- * 调整大小事件类型
+ * Resize event type
  */
 export type ResizeEventType = 'column' | 'container' | 'viewport';
 
 /**
- * 列调整大小事件
+ * Column resize event
  */
 export interface ColumnResizeEvent {
-  /** 事件类型 */
+  /** Event type */
   type: 'column';
-  /** 列标识 */
+  /** Column identifier */
   dataIndex: string;
-  /** 调整前宽度 */
+  /** Width before adjustment */
   oldWidth: number;
-  /** 调整后宽度 */
+  /** Width after adjustment */
   newWidth: number;
-  /** 宽度变化量 */
+  /** Width change amount */
   deltaWidth: number;
-  /** 触发时间戳 */
+  /** Trigger timestamp */
   timestamp: number;
-  /** 是否由用户手动调整 */
+  /** Whether manually adjusted by user */
   isManual: boolean;
-  /** 调整原因 */
+  /** Adjustment reason */
   reason?: 'user_drag' | 'auto_fit' | 'responsive' | 'programmatic';
 }
 
 /**
- * 容器调整大小事件
+ * Container resize event
  */
 export interface ContainerResizeEvent {
-  /** 事件类型 */
+  /** Event type */
   type: 'container';
-  /** 调整前尺寸 */
+  /** Size before adjustment */
   oldSize: {
     width: number;
     height: number;
   };
-  /** 调整后尺寸 */
+  /** Size after adjustment */
   newSize: {
     width: number;
     height: number;
   };
-  /** 尺寸变化量 */
+  /** Size change amount */
   deltaSize: {
     width: number;
     height: number;
   };
-  /** 触发时间戳 */
+  /** Trigger timestamp */
   timestamp: number;
-  /** 调整原因 */
+  /** Adjustment reason */
   reason?: 'window_resize' | 'layout_change' | 'container_change';
 }
 
 /**
- * 视窗调整大小事件
+ * Viewport resize event
  */
 export interface ViewportResizeEvent {
-  /** 事件类型 */
+  /** Event type */
   type: 'viewport';
-  /** 调整前视窗尺寸 */
+  /** Viewport size before adjustment */
   oldViewport: {
     width: number;
     height: number;
   };
-  /** 调整后视窗尺寸 */
+  /** Viewport size after adjustment */
   newViewport: {
     width: number;
     height: number;
   };
-  /** 视窗变化量 */
+  /** Viewport change amount */
   deltaViewport: {
     width: number;
     height: number;
   };
-  /** 触发时间戳 */
+  /** Trigger timestamp */
   timestamp: number;
-  /** 屏幕方向 */
+  /** Screen orientation */
   orientation?: 'portrait' | 'landscape';
 }
 
 /**
- * 调整大小事件联合类型
+ * Resize event union type
  */
 export type ResizeEvent =
   | ColumnResizeEvent
@@ -109,47 +109,47 @@ export type ResizeEvent =
   | ViewportResizeEvent;
 
 /**
- * 调整大小事件监听器
+ * Resize event listener
  */
 export interface ResizeEventListener {
-  /** 列调整大小监听器 */
+  /** Column resize listener */
   onColumnResize?: (event: ColumnResizeEvent) => void;
-  /** 容器调整大小监听器 */
+  /** Container resize listener */
   onContainerResize?: (event: ContainerResizeEvent) => void;
-  /** 视窗调整大小监听器 */
+  /** Viewport resize listener */
   onViewportResize?: (event: ViewportResizeEvent) => void;
-  /** 通用调整大小监听器 */
+  /** Generic resize listener */
   onResize?: (event: ResizeEvent) => void;
 }
 
 /**
- * 调整大小配置
+ * Resize configuration
  */
 export interface ResizeConfig {
-  /** 是否启用调整大小检测 */
+  /** Whether to enable resize detection */
   enabled?: boolean;
-  /** 防抖延迟 (ms) */
+  /** Debounce delay (ms) */
   debounceDelay?: number;
-  /** 是否检测列调整大小 */
+  /** Whether to detect column resize */
   detectColumnResize?: boolean;
-  /** 是否检测容器调整大小 */
+  /** Whether to detect container resize */
   detectContainerResize?: boolean;
-  /** 是否检测视窗调整大小 */
+  /** Whether to detect viewport resize */
   detectViewportResize?: boolean;
-  /** 最小变化阈值 */
+  /** Minimum change threshold */
   threshold?: {
     width?: number;
     height?: number;
   };
-  /** 事件监听器 */
+  /** Event listeners */
   listeners?: ResizeEventListener;
 }
 
 /**
- * 调整大小工具函数
+ * Resize utility functions
  */
 export interface ResizeHelpers {
-  /** 创建调整大小事件 */
+  /** Create resize event */
   createResizeEvent: {
     column: (
       params: Omit<ColumnResizeEvent, 'type' | 'timestamp' | 'deltaWidth'>,
@@ -162,46 +162,46 @@ export interface ResizeHelpers {
     ) => ViewportResizeEvent;
   };
 
-  /** 防抖调整大小处理器 */
+  /** Debounce resize handler */
   debounceResize: <T extends ResizeEvent>(
     handler: (event: T) => void,
     delay: number,
   ) => (event: T) => void;
 
-  /** 检测尺寸变化 */
+  /** Detect size changes */
   detectSizeChange: (
     oldSize: { width: number; height: number },
     newSize: { width: number; height: number },
     threshold?: { width?: number; height?: number },
   ) => boolean;
 
-  /** 计算响应式断点 */
+  /** Calculate responsive breakpoint */
   getResponsiveBreakpoint: (
     width: number,
   ) => 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
-  /** 获取容器尺寸 */
+  /** Get container size */
   getContainerSize: (element: HTMLElement) => { width: number; height: number };
 
-  /** 获取视窗尺寸 */
+  /** Get viewport size */
   getViewportSize: () => { width: number; height: number };
 }
 
 /**
- * 调整大小观察器状态
+ * Resize observer state
  */
 export interface ResizeObserverState {
-  /** 是否正在观察 */
+  /** Whether currently observing */
   isObserving: boolean;
-  /** 观察的元素 */
+  /** Element being observed */
   targetElement: HTMLElement | null;
-  /** 当前尺寸 */
+  /** Current size */
   currentSize: {
     width: number;
     height: number;
   };
-  /** 上次调整大小时间 */
+  /** Last resize time */
   lastResizeTime: number;
-  /** 调整大小历史 */
+  /** Resize history */
   resizeHistory: ResizeEvent[];
 }

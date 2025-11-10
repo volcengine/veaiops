@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 数据源类型常量
+ * Data source type constants
  */
 export const DATASOURCE_TYPES = {
   VOLCENGINE: 'Volcengine',
@@ -22,7 +22,7 @@ export const DATASOURCE_TYPES = {
 } as const;
 
 /**
- * 数据源类型配置（包含翻译和样式）
+ * Data source type configuration (includes translation and styling)
  */
 export const DATA_SOURCE_CONFIG = {
   Zabbix: {
@@ -31,44 +31,44 @@ export const DATA_SOURCE_CONFIG = {
     iconColor: '#1890ff',
   },
   Aliyun: {
-    label: '阿里云',
+    label: 'Aliyun',
     color: 'orange',
     iconColor: '#fa8c16',
   },
   Volcengine: {
-    label: '火山引擎',
+    label: 'Volcengine',
     color: 'purple',
     iconColor: '#722ed1',
   },
 } as const;
 
 /**
- * 数据源类型选项（用于下拉选择等）
+ * Data source type options (for dropdown selection, etc.)
  */
 export const DATA_SOURCE_OPTIONS = [
   { label: 'Zabbix', value: 'Zabbix' },
-  { label: '阿里云', value: 'Aliyun' },
-  { label: '火山引擎', value: 'Volcengine' },
+  { label: 'Aliyun', value: 'Aliyun' },
+  { label: 'Volcengine', value: 'Volcengine' },
 ] as const;
 
 /**
- * 数据源类型映射（用于快速查找翻译）
+ * Data source type mapping (for quick label lookup)
  */
 export const DATA_SOURCE_LABELS = {
   Zabbix: 'Zabbix',
-  Aliyun: '阿里云',
-  Volcengine: '火山引擎',
+  Aliyun: 'Aliyun',
+  Volcengine: 'Volcengine',
 } as const;
 
 /**
- * 获取数据源类型的中文标签
+ * Get label for data source type
  */
 export function getDataSourceLabel(type: string): string {
   return DATA_SOURCE_LABELS[type as keyof typeof DATA_SOURCE_LABELS] || type;
 }
 
 /**
- * 获取数据源类型配置
+ * Get data source type configuration
  */
 export function getDataSourceConfig(type: string) {
   return (

@@ -21,7 +21,7 @@ import type { DataSource } from 'api-generate';
 import type React from 'react';
 
 /**
- * 创建通用列（数据源名称、类型、状态、时间）
+ * Create common columns (data source name, type, status, time)
  */
 export const createCommonColumns = (): ModernTableColumnProps<DataSource>[] => {
   const { CustomOutlineTag, StampTime, InfoWithCode } =

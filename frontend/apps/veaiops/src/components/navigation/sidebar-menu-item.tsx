@@ -24,7 +24,7 @@ interface SidebarMenuItemProps {
   collapsed: boolean;
   isSelected: boolean;
   onClick: (key: string) => void;
-  module: string; // 添加模块参数
+  module: string; // Add module parameter
 }
 
 const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
@@ -39,13 +39,13 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    // 构建路由路径
+    // Build route path
     const routePath = `/${module}/${itemKey}`;
 
-    // 导航到对应路由
+    // Navigate to corresponding route
     navigate(routePath);
 
-    // 调用原有的点击处理函数
+    // Call original click handler
     onClick(itemKey);
   };
 

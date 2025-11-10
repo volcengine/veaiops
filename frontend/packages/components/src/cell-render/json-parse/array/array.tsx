@@ -23,8 +23,8 @@ const canJsonParse = (str: string | null | undefined): boolean => {
     JSON.parse(str);
     return true;
   } catch (error: unknown) {
-    // ✅ 静默处理 JSON.parse 错误（这是预期的，用于验证字符串是否为有效 JSON）
-    // 不需要记录警告，因为这是正常的验证流程
+    // ✅ Silently handle JSON.parse errors (this is expected, used to validate if string is valid JSON)
+    // No need to log warnings, as this is a normal validation flow
     return false;
   }
 };

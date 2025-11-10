@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type PaginationParams = {
   /**
-   * 跳过数量
+   * Number of records to skip
    */
   skip?: number;
   /**
-   * 限制数量
+   * Maximum number of records to return
    */
   limit?: number;
 };

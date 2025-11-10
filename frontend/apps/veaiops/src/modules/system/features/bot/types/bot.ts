@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * Bot 相关类型定义
- * 统一管理 Bot 相关的类型、接口和常量
+ * Bot-related type definitions
+ * Unified management of Bot-related types, interfaces, and constants
  */
 
-// 导入生成的类型定义，确保与 Python 接口一致
+// Import generated type definitions to ensure consistency with Python interface
 import type {
   AgentCfg,
   AgentCfgPayload,
@@ -39,17 +39,17 @@ export type {
 } from 'api-generate';
 
 /**
- * 火山引擎区域类型（与后端tos_region枚举对应）
+ * Volcengine region type (corresponds to backend tos_region enum)
  */
 export type VolcRegion = VolcCfgPayload.tos_region;
 
 /**
- * 网络类型（与后端NetworkType枚举对应）
+ * Network type (corresponds to backend NetworkType enum)
  */
 export type NetworkType = VolcCfgPayload.network_type;
 
 /**
- * 扩展的机器人数据（包含完整配置信息）
+ * Extended bot data (contains complete configuration information)
  */
 export type ExtendedBot = Bot & {
   volc_cfg?: VolcCfg;
@@ -57,13 +57,13 @@ export type ExtendedBot = Bot & {
 };
 
 /**
- * 表单数据类型（与表单字段名匹配）
- * 字段命名与 API 对齐：使用 agent_cfg 而不是 agent_cfg_payload
+ * Form data type (matches form field names)
+ * Field naming aligned with API: use agent_cfg instead of agent_cfg_payload
  *
- * 注意：name 字段已移除，因为：
- * 1. BotCreateRequest 不包含 name 字段
- * 2. 创建表单中未使用 name 字段
- * 3. 表格筛选中的 name 是查询参数，不是表单字段
+ * Note: name field has been removed because:
+ * 1. BotCreateRequest doesn't include name field
+ * 2. name field is not used in create form
+ * 3. name in table filter is a query parameter, not a form field
  */
 export interface BotFormData {
   bot_id: string;
@@ -75,7 +75,7 @@ export interface BotFormData {
 }
 
 /**
- * 火山引擎区域选项配置（与后端tos_region枚举对应）
+ * Volcengine region options configuration (corresponds to backend tos_region enum)
  */
 export const TOS_REGION_OPTIONS = [
   { label: '华北2-北京', value: 'cn-beijing' as const },
@@ -87,7 +87,7 @@ export const TOS_REGION_OPTIONS = [
 ] as const;
 
 /**
- * 网络类型选项
+ * Network type options
  */
 export const NETWORK_TYPE_OPTIONS = [
   { label: '内网', value: 'internal' },
@@ -95,15 +95,15 @@ export const NETWORK_TYPE_OPTIONS = [
 ] as const;
 
 /**
- * 企业协同工具选项已迁移到 @veaiops/constants
+ * Enterprise collaboration tool options have been migrated to @veaiops/constants
  * @see frontend/packages/constants/src/channel.ts
  *
- * 使用方式：
+ * Usage:
  * import { CHANNEL_OPTIONS } from '@veaiops/constants';
  */
 
 /**
- * 机器人表格操作回调
+ * Bot table operation callbacks
  */
 export interface BotTableActions {
   onEdit: (bot: Bot) => void;
@@ -111,7 +111,7 @@ export interface BotTableActions {
 }
 
 /**
- * 机器人表格组件属性接口
+ * Bot table component properties interface
  */
 export interface BotTableProps {
   onEdit: (bot: Bot) => void;
@@ -122,7 +122,7 @@ export interface BotTableProps {
 }
 
 /**
- * 机器人表格组件引用接口
+ * Bot table component ref interface
  */
 export interface BotTableRef {
   refresh: () => Promise<boolean>;

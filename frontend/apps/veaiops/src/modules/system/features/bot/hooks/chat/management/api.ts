@@ -20,7 +20,7 @@ import { logger } from '@veaiops/utils';
 import { useCallback } from 'react';
 
 /**
- * 更新群配置的参数接口
+ * Parameters interface for updating chat configuration
  */
 interface UpdateChatConfigParams {
   uid: string;
@@ -28,16 +28,16 @@ interface UpdateChatConfigParams {
 }
 
 /**
- * 群管理API调用Hook
+ * Chat management API call Hook
  */
 export const useChatManagementLogicApi = () => {
-  // 更新群配置
+  // Update chat configuration
   const updateChatConfig = useCallback(
     async ({ uid, config }: UpdateChatConfigParams): Promise<boolean> => {
       try {
-        // 调用真实API更新群配置
+        // Call real API to update chat configuration
         const response = await apiClient.chats.putApisV1ConfigChatsConfig({
-          uid, // 这里传入的是 _id
+          uid, // Here we pass _id
           requestBody: {
             enable_func_proactive_reply: config.enable_func_proactive_reply,
             enable_func_interest: config.enable_func_interest,
@@ -51,13 +51,13 @@ export const useChatManagementLogicApi = () => {
           throw new Error(response.message || '更新群配置失败');
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '更新群配置失败，请重试';
         Message.error(errorMessage);
 
-        // ✅ 正确：使用 logger 记录错误（对象解构参数）
+        // ✅ Correct: Use logger to record error (object destructuring parameters)
         logger.error({
           message: '更新群配置失败',
           data: {

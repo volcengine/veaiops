@@ -18,13 +18,13 @@ import type { InputTagProps } from '@arco-design/web-react/es/InputTag/interface
 import type { FC } from 'react';
 
 const commonInputProps = {
-  placeholder: '请输入',
+  placeholder: 'Please enter',
   style: { width: '100%' },
 };
 
 /**
- * InputTag 组件包装器
- * 提供表单项包装功能，支持垂直布局等特性
+ * InputTag component wrapper
+ * Provides form item wrapper functionality, supports vertical layout and other features
  */
 const InputTagComponent: FC<FormItemControlProps<InputTagProps>> = (props) => {
   const { controlProps, ...wrapperProps } = props;

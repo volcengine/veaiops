@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Unified log export tool
+ * Unified log export utility
  *
  * ✅ Features: Unified export of all logs (including in-memory logs from dedicated log tools)
  * - Collect logs from unified logger
@@ -43,7 +43,7 @@ export function clearCollectedLogs(): void {
  */
 export function startLogCollection(): void {
   // logger is enabled by default, this function is kept for compatibility
-  // If enable/disable functionality needs to be added in the future, it can be implemented here
+  // If enable/disable functionality is needed in the future, it can be implemented here
 }
 
 /**
@@ -51,12 +51,12 @@ export function startLogCollection(): void {
  */
 export function stopLogCollection(): void {
   // logger is enabled by default, this function is kept for compatibility
-  // If enable/disable functionality needs to be added in the future, it can be implemented here
+  // If enable/disable functionality is needed in the future, it can be implemented here
 }
 
 /**
  * Export all logs to file
- * @param format Export format: 'json' | 'text', or directly pass custom filename (backward compatible)
+ * @param formatOrFilename - Export format: 'json' | 'text', or directly pass custom filename (backward compatible)
  */
 export function exportLogsToFile(
   formatOrFilename: 'json' | 'text' | string = 'json',
@@ -68,7 +68,7 @@ export function exportLogsToFile(
   let filename: string;
   let mimeType: string;
 
-  // If filename is passed (contains .json or .txt/.log extension), determine format by extension
+  // If filename is passed (contains .json or .txt/.log extension), determine format based on extension
   if (formatOrFilename.includes('.json')) {
     filename = formatOrFilename;
     content = JSON.stringify(allLogs, null, 2);
@@ -109,16 +109,10 @@ export function exportLogsToFile(
 /**
  * Collect all logs
  * - Unified logger logs (main source)
- * - Enhanced collector logs (API requests, user behavior, performance metrics)
- * - Dedicated log tool in-memory logs (via window interface)
+ * - In-memory logs from dedicated log tools (via window interface)
  */
 export function collectAllLogs(): {
   unifiedLogs: LogEntry[];
-  enhancedLogs: {
-    apiRequests?: any[];
-    userActions?: any[];
-    performanceMetrics?: any;
-  };
   componentLogs: {
     customTable?: any[];
     filters?: any[];
@@ -133,49 +127,13 @@ export function collectAllLogs(): {
     exportTime: string;
     sessionId: string;
     totalUnifiedLogs: number;
-    totalEnhancedLogs: number;
     totalComponentLogs: number;
   };
 } {
   // 1. Collect unified logger logs (main source)
   const unifiedLogs = logger.getLogs();
 
-  // 2. Collect enhanced collector logs (API requests, user behavior, performance metrics)
-  const enhancedLogs: {
-    apiRequests?: any[];
-    userActions?: any[];
-    performanceMetrics?: any;
-  } = {};
-
-  if (typeof window !== 'undefined') {
-    try {
-      const enhancedCollector = (window as any).__veaiopsEnhancedCollector;
-      if (enhancedCollector) {
-        if (typeof enhancedCollector.getApiRequests === 'function') {
-          enhancedLogs.apiRequests = enhancedCollector.getApiRequests();
-        }
-        if (typeof enhancedCollector.getUserActions === 'function') {
-          enhancedLogs.userActions = enhancedCollector.getUserActions();
-        }
-        if (typeof enhancedCollector.getPerformanceMetrics === 'function') {
-          enhancedLogs.performanceMetrics =
-            enhancedCollector.getPerformanceMetrics();
-        }
-      }
-    } catch (error: unknown) {
-      // ✅ Silently handle log collection errors (avoid blocking export functionality), but log warning
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      if (process.env.NODE_ENV === 'development') {
-        console.warn(
-          '[LogExporter] Failed to collect enhanced logs',
-          errorObj.message,
-        );
-      }
-    }
-  }
-
-  // 2. Collect dedicated log tool in-memory logs (if any)
+  // 2. Collect in-memory logs from dedicated log tools (if any)
   const componentLogs: any = {};
 
   if (typeof window !== 'undefined') {
@@ -298,23 +256,13 @@ export function collectAllLogs(): {
     0,
   );
 
-  const totalEnhancedLogs =
-    (Array.isArray(enhancedLogs.apiRequests)
-      ? enhancedLogs.apiRequests.length
-      : 0) +
-    (Array.isArray(enhancedLogs.userActions)
-      ? enhancedLogs.userActions.length
-      : 0);
-
   return {
     unifiedLogs,
-    enhancedLogs,
     componentLogs,
     metadata: {
       exportTime: new Date().toISOString(),
       sessionId: logger.getSessionId(),
       totalUnifiedLogs: unifiedLogs.length,
-      totalEnhancedLogs,
       totalComponentLogs,
     },
   };
@@ -324,14 +272,13 @@ export function collectAllLogs(): {
  * Format logs as text format
  */
 function formatLogsAsText(allLogs: ReturnType<typeof collectAllLogs>): string {
-  const { unifiedLogs, enhancedLogs, componentLogs, metadata } = allLogs;
+  const { unifiedLogs, componentLogs, metadata } = allLogs;
 
   const header = [
     'VeAIOps Unified Log Export',
     `Export Time: ${metadata.exportTime}`,
     `Session ID: ${metadata.sessionId}`,
     `Unified Logs: ${metadata.totalUnifiedLogs}`,
-    `Enhanced Logs: ${metadata.totalEnhancedLogs}`,
     `Component Logs: ${metadata.totalComponentLogs}`,
     '='.repeat(80),
     '',
@@ -351,52 +298,6 @@ function formatLogsAsText(allLogs: ReturnType<typeof collectAllLogs>): string {
     }),
     '',
   ].join('\n');
-
-  // Format enhanced logs
-  const enhancedSections: string[] = [];
-
-  if (enhancedLogs.apiRequests && enhancedLogs.apiRequests.length > 0) {
-    enhancedSections.push(
-      '## Enhanced Collector - API Request Logs',
-      '='.repeat(80),
-      ...enhancedLogs.apiRequests.map((request: any) => {
-        const timestamp = request.startTime
-          ? new Date(request.startTime).toISOString()
-          : new Date().toISOString();
-        const duration = request.duration
-          ? ` (Duration: ${request.duration}ms)`
-          : '';
-        const status = request.status
-          ? ` [${request.status} ${request.statusText || ''}]`
-          : '';
-        return `[${timestamp}] ${request.method} ${request.url}${status}${duration}`;
-      }),
-      '',
-    );
-  }
-
-  if (enhancedLogs.userActions && enhancedLogs.userActions.length > 0) {
-    enhancedSections.push(
-      '## Enhanced Collector - User Action Logs',
-      '='.repeat(80),
-      ...enhancedLogs.userActions.map((action: any) => {
-        const timestamp = action.timestamp
-          ? new Date(action.timestamp).toISOString()
-          : new Date().toISOString();
-        return `[${timestamp}] ${action.type} - ${action.target || ''} - ${action.url || ''}`;
-      }),
-      '',
-    );
-  }
-
-  if (enhancedLogs.performanceMetrics) {
-    enhancedSections.push(
-      '## Enhanced Collector - Performance Metrics',
-      '='.repeat(80),
-      JSON.stringify(enhancedLogs.performanceMetrics, null, 2),
-      '',
-    );
-  }
 
   // Format component logs
   const componentSections: string[] = [];
@@ -420,18 +321,13 @@ function formatLogsAsText(allLogs: ReturnType<typeof collectAllLogs>): string {
     }
   });
 
-  return [
-    header,
-    unifiedSection,
-    ...enhancedSections,
-    ...componentSections,
-  ].join('\n');
+  return [header, unifiedSection, ...componentSections].join('\n');
 }
 
 /**
- * Export logs in specified time range
+ * Export logs within specified time range
  * @param startTime Start time (timestamp)
- * @param endTime End time (timestamp), if not provided use current time
+ * @param endTime End time (timestamp), if not provided, uses current time
  * @param formatOrFilename Export format: 'json' | 'text', or directly pass custom filename (backward compatible)
  */
 export function exportLogsInTimeRange(

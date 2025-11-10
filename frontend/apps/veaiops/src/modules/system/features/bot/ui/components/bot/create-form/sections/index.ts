@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Create Form Sections - 统一导出入口
+ * Create Form Sections - Unified export entry
  */
 
 export { BasicConfig } from './basic-config';

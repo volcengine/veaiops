@@ -15,9 +15,9 @@
 import type { SubscribeRelationWithAttributes } from 'api-generate';
 
 /**
- * 订阅关系表格数据类型
+ * Subscription relation table data type
  */
 export interface SubscriptionTableData extends SubscribeRelationWithAttributes {
   key: string;
-  [key: string]: any; // 添加索引签名以满足 BaseRecord 约束
+  [key: string]: any; // Add index signature to satisfy BaseRecord constraint
 }

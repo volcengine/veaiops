@@ -13,20 +13,20 @@
 // limitations under the License.
 
 /**
- * Bot管理自定义Hooks统一导出
+ * Bot management custom Hooks unified export
  */
 
-// 业务逻辑Hooks（表格相关）
+// Business logic Hooks (table-related)
 export {
   useBot,
   useBotActionConfig,
   useBotTableConfig,
 } from './table';
 
-// 表单相关Hooks
+// Form-related Hooks
 export { useBotForm } from './form';
 
-// 属性相关Hooks（类型从 @bot/types 统一导出，避免重复）
+// Attributes-related Hooks (types exported from @bot/types to avoid duplication)
 export {
   useBotAttributes,
   useBotAttributesTable,
@@ -40,8 +40,8 @@ export {
   type UseBotAttributesTableReturn,
 } from './attributes';
 
-// 聊天相关Hooks
+// Chat-related Hooks
 export { useBotChat, useChatManagementLogic, useChatTableConfig } from './chat';
 
-// 共享Hooks - 可被其他模块使用
+// Shared Hooks - can be used by other modules
 export { useBotList } from './list';

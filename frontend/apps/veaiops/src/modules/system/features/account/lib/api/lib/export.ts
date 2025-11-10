@@ -15,16 +15,16 @@
 import type { UserListParams } from './types';
 
 /**
- * 导出用户数据
+ * Export user data
  */
 export const exportUsers = async (
   _params: UserListParams = {},
 ): Promise<Blob> => {
   try {
-    // TODO: 替换为实际的API调用
+    // TODO: Replace with actual API call
     // const response = await apiClient.get('/api/users/export', { params });
 
-    // 模拟CSV数据
+    // Mock CSV data
     const csvData = `用户名,邮箱,角色,状态,系统管理员,创建时间
 admin,admin@volcaiops.com,管理员,正常,是,2024-01-01 00:00:00
 user1,user1@volcaiops.com,普通用户,正常,否,2024-01-02 00:00:00
@@ -33,7 +33,7 @@ viewer1,viewer1@volcaiops.com,只读用户,未激活,否,2024-01-03 00:00:00`;
     return new Blob([csvData], { type: 'text/csv;charset=utf-8' });
   } catch (error) {
     const errorMessage =
-      error instanceof Error ? error.message : '导出用户数据失败';
+      error instanceof Error ? error.message : 'Failed to export user data';
     throw new Error(errorMessage);
   }
 };

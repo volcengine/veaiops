@@ -15,7 +15,7 @@
 import { EventLevel, EventShowStatus, EventStatus } from 'api-generate';
 
 /**
- * 事件级别枚举选项配置
+ * Event level enum options configuration
  */
 export const EVENT_LEVEL_OPTIONS = [
   { label: 'P0', value: EventLevel.P0, extra: { color: 'red' } },
@@ -32,9 +32,9 @@ export const EVENT_LEVEL_MAP = EVENT_LEVEL_OPTIONS.reduce(
 );
 
 /**
- * 事件显示状态选项
- * 对应后端 EventShowStatus 枚举（中文）
- * 用于筛选器显示
+ * Event show status options
+ * Corresponds to backend EventShowStatus enum (Chinese)
+ * Used for filter display
  */
 export const EVENT_SHOW_STATUS_OPTIONS = [
   {
@@ -78,20 +78,20 @@ export const EVENT_SHOW_STATUS_MAP = EVENT_SHOW_STATUS_OPTIONS.reduce(
 );
 
 /**
- * 事件状态枚举选项配置
+ * Event status enum options configuration
  *
- * 状态值对应关系（与后端 Python EventStatus 枚举一致）:
- * - EventStatus.INITIAL (0): 初始状态
- * - EventStatus.SUBSCRIBED (1): 订阅匹配已完成，待构造通知卡片
- * - EventStatus.CARD_BUILT (2): 通知卡片已构造，待发送通知卡片
- * - EventStatus.DISTRIBUTED (3): 通知卡片已发送
- * - EventStatus.NO_DISTRIBUTION (4): 无订阅匹配,不发送通知卡片
- * - EventStatus.CHATOPS_NO_MATCH (11): 未命中检测规则，不发送通知卡片
- * - EventStatus.CHATOPS_RULE_FILTERED (12): 命中过滤规则，不发送通知卡片
- * - EventStatus.CHATOPS_RULE_LIMITED (13): 告警被抑制，不发送通知卡片
+ * Status value mapping (consistent with backend Python EventStatus enum):
+ * - EventStatus.INITIAL (0): Initial state
+ * - EventStatus.SUBSCRIBED (1): Subscription matching completed, waiting to construct notification card
+ * - EventStatus.CARD_BUILT (2): Notification card constructed, waiting to send notification card
+ * - EventStatus.DISTRIBUTED (3): Notification card sent
+ * - EventStatus.NO_DISTRIBUTION (4): No subscription match, do not send notification card
+ * - EventStatus.CHATOPS_NO_MATCH (11): Detection rule not matched, do not send notification card
+ * - EventStatus.CHATOPS_RULE_FILTERED (12): Filter rule matched, do not send notification card
+ * - EventStatus.CHATOPS_RULE_LIMITED (13): Alert suppressed, do not send notification card
  *
- * @see veaiops/schema/types.py - Python EventStatus 枚举定义
- * @see frontend/packages/api-client/src/models/event-status.ts - 生成的 TypeScript 枚举
+ * @see veaiops/schema/types.py - Python EventStatus enum definition
+ * @see frontend/packages/api-client/src/models/event-status.ts - Generated TypeScript enum
  */
 export const EVENT_STATUS_OPTIONS = [
   { label: '初始状态', value: EventStatus.INITIAL, extra: { color: 'gray' } },

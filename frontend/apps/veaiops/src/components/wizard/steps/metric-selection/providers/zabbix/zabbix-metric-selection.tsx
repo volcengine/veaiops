@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Zabbix指标选择组件
- * @description 专门处理Zabbix数据源的指标选择
+ * Zabbix metric selection component
+ * @description Specifically handles metric selection for Zabbix data sources
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -38,7 +38,7 @@ export const ZabbixMetricSelection: React.FC<ZabbixMetricSelectionProps> = ({
   onSearchChange,
   actions,
 }) => {
-  // 使用自定义 hook 处理业务逻辑
+  // Use custom hook to handle business logic
   const { handleMetricSelect } = useZabbixMetricSelection(actions);
 
   if (loading) {
@@ -53,10 +53,10 @@ export const ZabbixMetricSelection: React.FC<ZabbixMetricSelectionProps> = ({
     <div className={styles.stepContent}>
       <StepHeader />
 
-      {/* 搜索框 */}
+      {/* Search box */}
       <MetricSearch searchText={searchText} onSearchChange={onSearchChange} />
 
-      {/* 指标列表 */}
+      {/* Metric list */}
       <ZabbixMetricList
         metrics={metrics}
         selectedMetric={selectedMetric}

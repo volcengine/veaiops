@@ -17,7 +17,7 @@ import type { BotAttribute } from 'api-generate';
 import { useCallback } from 'react';
 
 /**
- * Bot属性表格操作处理Hook
+ * Bot attributes table action handling Hook
  */
 export const useAttributesTableActionHandlers = ({
   deleteAttribute,
@@ -33,13 +33,13 @@ export const useAttributesTableActionHandlers = ({
   refreshTable: () => Promise<void>;
 }) => {
   /**
-   * 处理删除操作
+   * Handle delete operation
    */
   const handleDelete = useCallback(
     async (attribute: BotAttribute): Promise<void> => {
       try {
         logger.info({
-          message: '[handleDelete] 🎯 开始删除特别关注',
+          message: '[handleDelete] 🎯 Starting to delete interest',
           data: {
             attributeId: attribute._id,
             attributeName: attribute.name,
@@ -51,7 +51,7 @@ export const useAttributesTableActionHandlers = ({
         const success = await deleteAttribute(attribute);
 
         logger.info({
-          message: '[handleDelete] ✅ deleteAttribute 调用完成',
+          message: '[handleDelete] ✅ deleteAttribute call completed',
           data: {
             success,
           },
@@ -59,35 +59,36 @@ export const useAttributesTableActionHandlers = ({
           component: 'handleDelete',
         });
 
-        // ✅ 删除成功后刷新表格
+        // ✅ Refresh table after successful deletion
         if (success) {
           logger.info({
-            message: '[handleDelete] 🔄 准备调用 refreshTable',
+            message: '[handleDelete] 🔄 Preparing to call refreshTable',
             data: {},
             source: 'BotAttributesTable',
             component: 'handleDelete',
           });
           await refreshTable();
           logger.info({
-            message: '[handleDelete] ✅ refreshTable 调用完成',
+            message: '[handleDelete] ✅ refreshTable call completed',
             data: {},
             source: 'BotAttributesTable',
             component: 'handleDelete',
           });
         } else {
           logger.warn({
-            message: '[handleDelete] ⚠️ deleteAttribute 返回 false，不刷新表格',
+            message:
+              '[handleDelete] ⚠️ deleteAttribute returned false, not refreshing table',
             data: {},
             source: 'BotAttributesTable',
             component: 'handleDelete',
           });
         }
       } catch (error: unknown) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
-          message: '删除属性失败',
+          message: 'Failed to delete attribute',
           data: {
             error: errorObj.message,
             stack: errorObj.stack,
@@ -103,7 +104,7 @@ export const useAttributesTableActionHandlers = ({
   );
 
   /**
-   * 处理编辑操作
+   * Handle edit operation
    */
   const handleEdit = useCallback(
     async (attribute: BotAttribute): Promise<boolean> => {
@@ -113,11 +114,11 @@ export const useAttributesTableActionHandlers = ({
         setIsModalVisible(true);
         return true;
       } catch (error) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
-          message: '编辑操作失败',
+          message: 'Edit operation failed',
           data: {
             error: errorObj.message,
             stack: errorObj.stack,

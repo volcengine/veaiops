@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 确认步骤组件导出
+ * Confirm step component export
  */
 
 export * from './components';

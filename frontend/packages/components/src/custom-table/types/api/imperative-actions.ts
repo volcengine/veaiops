@@ -13,128 +13,128 @@
 // limitations under the License.
 
 /**
- * CustomTable Imperative Actions 类型定义
- * 从 hooks/imperative/ 目录下各个文件迁移而来
+ * CustomTable Imperative Actions type definitions
+ * Migrated from files in hooks/imperative/ directory
  */
 
 import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
 
-// ==================== 数据操作相关 ====================
+// ==================== Data Operations ====================
 
 /**
- * @name 数据操作相关的实例方法
+ * @name Data operation related instance methods
  */
 export interface DataActionMethods<RecordType extends BaseRecord> {
-  /** @name 重新加载数据 */
+  /** @name Reload data */
   reload: (resetPageIndex?: boolean) => Promise<void>;
-  /** @name 刷新数据（重置页码并清空选择） */
+  /** @name Refresh data (reset page number and clear selection) */
   refresh: () => Promise<void>;
-  /** @name 取消当前进行中的请求 */
+  /** @name Cancel current ongoing request */
   cancel: () => void;
-  /** @name 获取当前表格数据 */
+  /** @name Get current table data */
   getData: () => RecordType[];
-  /** @name 获取格式化后的表格数据 */
+  /** @name Get formatted table data */
   getFormattedData: () => RecordType[];
-  /** @name 设置表格数据 */
+  /** @name Set table data */
   setData: (data: RecordType[]) => void;
-  /** @name 获取筛选后的数据 */
+  /** @name Get filtered data */
   getFilteredData: () => RecordType[];
-  /** @name 获取选中的数据 */
+  /** @name Get selected data */
   getSelectedData: () => RecordType[];
 }
 
-// ==================== 筛选操作相关 ====================
+// ==================== Filter Operations ====================
 
 /**
- * @name 筛选操作相关的实例方法
+ * @name Filter operation related instance methods
  */
 export interface FilterActionMethods<QueryType extends BaseQuery> {
-  /** @name 设置查询参数 */
+  /** @name Set query parameters */
   setQueryParams: (
     params: QueryType | ((prev: QueryType) => QueryType),
   ) => void;
-  /** @name 获取当前查询参数 */
+  /** @name Get current query parameters */
   getQueryParams: () => QueryType;
-  /** @name 重置查询参数 */
+  /** @name Reset query parameters */
   resetQueryParams: (keys?: string[]) => void;
-  /** @name 设置筛选条件 */
+  /** @name Set filter conditions */
   setFilters: (filters: Record<string, (string | number)[]>) => void;
-  /** @name 获取当前筛选条件 */
+  /** @name Get current filter conditions */
   getFilters: () => Record<string, (string | number)[]>;
-  /** @name 重置筛选条件 */
+  /** @name Reset filter conditions */
   resetFilters: () => void;
-  /** @name 设置排序 */
+  /** @name Set sorter */
   setSorter: (sorter: SorterInfo) => void;
-  /** @name 获取当前排序 */
+  /** @name Get current sorter */
   getSorter: () => SorterInfo | undefined;
-  /** @name 重置排序 */
+  /** @name Reset sorter */
   resetSorter: () => void;
-  /** @name 提交筛选 */
+  /** @name Submit filters */
   submitFilters: () => void;
-  /** @name 重置所有筛选和查询 */
+  /** @name Reset all filters and query */
   resetAll: () => void;
 }
 
-// ==================== 分页操作相关 ====================
+// ==================== Pagination Operations ====================
 
 /**
- * @name 页面信息接口
+ * @name Page information interface
  */
 export interface PageInfo {
-  /** @name 当前页码 */
+  /** @name Current page number */
   current: number;
-  /** @name 每页条数 */
+  /** @name Items per page */
   pageSize: number;
-  /** @name 总条数 */
+  /** @name Total items */
   total: number;
 }
 
 /**
- * @name 分页操作相关的实例方法
+ * @name Pagination operation related instance methods
  */
 export interface PaginationActionMethods {
-  /** @name 跳转到指定页 */
+  /** @name Go to specified page */
   goToPage: (page: number) => void;
-  /** @name 跳转到第一页 */
+  /** @name Go to first page */
   goToFirst: () => void;
-  /** @name 跳转到最后一页 */
+  /** @name Go to last page */
   goToLast: () => void;
-  /** @name 上一页 */
+  /** @name Previous page */
   goToPrev: () => void;
-  /** @name 下一页 */
+  /** @name Next page */
   goToNext: () => void;
-  /** @name 设置每页条数 */
+  /** @name Set page size */
   setPageSize: (size: number) => void;
-  /** @name 获取当前分页信息 */
+  /** @name Get current pagination information */
   getPageInfo: () => PageInfo;
-  /** @name 重置分页 */
+  /** @name Reset pagination */
   resetPagination: () => void;
 }
 
-// ==================== 选择操作相关 ====================
+// ==================== Selection Operations ====================
 
 /**
- * @name 选择操作相关的实例方法
+ * @name Selection operation related instance methods
  */
 export interface SelectionActionMethods<RecordType extends BaseRecord> {
-  /** @name 全选 */
+  /** @name Select all */
   selectAll: () => void;
-  /** @name 取消全选 */
+  /** @name Unselect all */
   unselectAll: () => void;
-  /** @name 反选 */
+  /** @name Invert selection */
   invertSelection: () => void;
-  /** @name 选择指定行 */
+  /** @name Select specified rows */
   selectRows: (keys: (string | number)[]) => void;
-  /** @name 取消选择指定行 */
+  /** @name Unselect specified rows */
   unselectRows: (keys: (string | number)[]) => void;
-  /** @name 获取选中的行键 */
+  /** @name Get selected row keys */
   getSelectedRowKeys: () => (string | number)[];
-  /** @name 获取选中的行数据 */
+  /** @name Get selected row data */
   getSelectedRows: () => RecordType[];
-  /** @name 检查是否选中指定行 */
+  /** @name Check if specified row is selected */
   isRowSelected: (key: string | number) => boolean;
-  /** @name 获取选择状态统计 */
+  /** @name Get selection status statistics */
   getSelectionInfo: () => {
     selectedCount: number;
     totalCount: number;
@@ -143,80 +143,80 @@ export interface SelectionActionMethods<RecordType extends BaseRecord> {
   };
 }
 
-// ==================== 展开操作相关 ====================
+// ==================== Expand Operations ====================
 
 /**
- * @name 展开操作相关的实例方法
+ * @name Expand operation related instance methods
  */
 export interface ExpandActionMethods {
-  /** @name 展开所有行 */
+  /** @name Expand all rows */
   expandAll: () => void;
-  /** @name 收起所有行 */
+  /** @name Collapse all rows */
   collapseAll: () => void;
-  /** @name 展开指定行 */
+  /** @name Expand specified rows */
   expandRows: (keys: (string | number)[]) => void;
-  /** @name 收起指定行 */
+  /** @name Collapse specified rows */
   collapseRows: (keys: (string | number)[]) => void;
-  /** @name 获取展开的行键 */
+  /** @name Get expanded row keys */
   getExpandedRowKeys: () => (string | number)[];
-  /** @name 检查指定行是否展开 */
+  /** @name Check if specified row is expanded */
   isRowExpanded: (key: string | number) => boolean;
 }
 
-// ==================== 工具操作相关 ====================
+// ==================== Utility Operations ====================
 
 /**
- * @name 重置选项接口
+ * @name Reset options interface
  */
 export interface ResetOptions {
-  /** @name 是否重置查询参数 */
+  /** @name Whether to reset query parameters */
   resetQuery?: boolean;
-  /** @name 是否重置筛选条件 */
+  /** @name Whether to reset filter conditions */
   resetFilters?: boolean;
-  /** @name 是否重置分页 */
+  /** @name Whether to reset pagination */
   resetPagination?: boolean;
-  /** @name 是否重置选择 */
+  /** @name Whether to reset selection */
   resetSelection?: boolean;
-  /** @name 是否重置展开状态 */
+  /** @name Whether to reset expanded state */
   resetExpanded?: boolean;
-  /** @name 是否重置排序 */
+  /** @name Whether to reset sorter */
   resetSorter?: boolean;
 }
 
 /**
- * @name 工具操作相关的实例方法
+ * @name Utility operation related instance methods
  */
 export interface UtilityActionMethods<RecordType extends BaseRecord> {
-  /** @name 导出数据 */
+  /** @name Export data */
   exportData: (format?: 'excel' | 'csv' | 'json') => RecordType[];
-  /** @name 刷新表格 */
+  /** @name Refresh table */
   refresh: () => Promise<void>;
-  /** @name 重置表格状态 */
+  /** @name Reset table state */
   reset: (options?: ResetOptions) => void;
-  /** @name 获取表格当前状态 */
+  /** @name Get table current state */
   getTableState: () => Record<string, unknown>;
-  /** @name 设置表格状态 */
+  /** @name Set table state */
   setTableState: (state: Record<string, unknown>) => void;
-  /** @name 重新加载数据 */
+  /** @name Reload data */
   reload: (resetPageIndex?: boolean) => Promise<void>;
 }
 
-// ==================== 状态操作相关 ====================
+// ==================== State Operations ====================
 
 /**
- * @name 状态操作相关的实例方法
+ * @name State operation related instance methods
  */
 export interface StateActionMethods {
-  /** @name 设置加载状态 */
+  /** @name Set loading state */
   setLoading: (loading: boolean) => void;
-  /** @name 获取加载状态 */
+  /** @name Get loading state */
   getLoading: () => boolean;
-  /** @name 设置错误状态 */
+  /** @name Set error state */
   setError: (error: Error | string | null) => void;
-  /** @name 获取错误状态 */
+  /** @name Get error state */
   getError: () => Error | string | null;
-  /** @name 清除错误状态 */
+  /** @name Clear error state */
   clearError: () => void;
-  /** @name 获取表格就绪状态 */
+  /** @name Get table ready state */
   isReady: () => boolean;
 }

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 阿里云数据源操作Hook
- * @description 管理阿里云相关的API调用和状态更新
+ * Aliyun data source operations Hook
+ * @description Manages Aliyun-related API calls and state updates
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -44,7 +44,7 @@ export const useAliyunOperations = (
 ) => {
   const {
     updateProjects,
-    setSelectNamespace, // 重命名：setSelectedProject -> setSelectNamespace
+    setSelectNamespace, // Renamed: setSelectedProject -> setSelectNamespace
     updateMetrics,
     setSelectedMetric,
     updateInstances,
@@ -55,13 +55,15 @@ export const useAliyunOperations = (
     clearMetricData,
   } = useAliyunState(setState);
 
-  // 获取阿里云项目列表
+  // Fetch Aliyun project list
   const fetchAliyunProjects = useCallback(
     async (connectId: string) => {
-      // 验证 connectId 格式
+      // Validate connectId format
       const validation = validateConnectIdWithMessage(connectId);
       if (!validation.isValid) {
-        Message.error(`连接ID格式无效：${validation.errorMessage}`);
+        Message.error(
+          `连接ID格式无效: ${validation.errorMessage}`,
+        );
         clearProjectData();
         return;
       }
@@ -81,7 +83,7 @@ export const useAliyunOperations = (
     [updateLoading, updateProjects, clearProjectData],
   );
 
-  // 获取阿里云指标
+  // Fetch Aliyun metrics
   const fetchAliyunMetrics = useCallback(
     async (connectId: string) => {
       updateLoading('metrics', true);
@@ -91,11 +93,11 @@ export const useAliyunOperations = (
           throw new Error('请先选择命名空间');
         }
 
-        // region 提示：region 已在连接选择步骤输入
-        // 参考文档：https://help.aliyun.com/document_detail/40654.html
+        // Region note: region is entered in the connection selection step
+        // Reference: https://help.aliyun.com/document_detail/40654.html
         if (!state.aliyun.region) {
-          // ✅ 注意：region 为空是允许的，会在后续步骤中提示用户输入
-          // 在开发环境记录日志，便于调试
+          // ✅ Note: empty region is allowed, will prompt user to input in next step
+          // Log in development environment for debugging
           logger.debug({
             message: 'Aliyun region not set, will prompt user in connect step',
             data: { namespace: state.aliyun.selectNamespace?.name },
@@ -109,7 +111,7 @@ export const useAliyunOperations = (
         const metrics = transformMetricData(rawData);
         updateMetrics(metrics);
       } catch (error) {
-        Message.error('获取阿里云监控项失败，请重试');
+        Message.error('获取阿里云指标失败，请重试');
         clearMetricData();
       } finally {
         updateLoading('metrics', false);
@@ -123,17 +125,19 @@ export const useAliyunOperations = (
     ],
   );
 
-  // 获取阿里云实例
+  // Fetch Aliyun instances
   const fetchAliyunInstances = useCallback(
     async (connectName: string, namespace: string, metricName: string) => {
       updateLoading('instances', true);
       try {
-        // 从 state.aliyun.region 读取（用户在连接选择步骤输入）
+        // Read from state.aliyun.region (entered by user in connection selection step)
         const { region } = state.aliyun;
         if (!region) {
-          throw new Error('未选择有效地域，无法获取实例列表');
+          throw new Error(
+            '未选择有效的区域，无法获取实例列表',
+          );
         }
-        // 传递选中的 groupBy 维度
+        // Pass selected groupBy dimensions
         const groupBy =
           state.aliyun.selectedGroupBy.length > 0
             ? state.aliyun.selectedGroupBy
@@ -150,7 +154,7 @@ export const useAliyunOperations = (
       } catch (error) {
         Message.error('获取阿里云实例失败，请重试');
 
-        // 如果API失败，使用模拟数据作为后备
+        // If API fails, use mock data as fallback
         const mockInstances = getMockInstanceData();
         updateInstances(mockInstances);
       } finally {
@@ -167,7 +171,7 @@ export const useAliyunOperations = (
 
   return {
     fetchAliyunProjects,
-    setSelectNamespace, // 重命名：setSelectedProject -> setSelectNamespace
+    setSelectNamespace, // Renamed: setSelectedProject -> setSelectNamespace
     fetchAliyunMetrics,
     setSelectedAliyunMetric: setSelectedMetric,
     fetchAliyunInstances,

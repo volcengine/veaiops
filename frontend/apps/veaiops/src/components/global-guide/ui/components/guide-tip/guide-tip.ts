@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 美观的引导提示组件核心逻辑
- * 采用模块化设计，专注于主要功能实现
+ * Beautiful guide tip component core logic
+ * Uses modular design, focused on main functionality implementation
  */
 
 import { logger } from '@veaiops/utils';
@@ -29,8 +29,8 @@ import {
 } from './utils';
 
 /**
- * 显示美观的引导提示
- * 基于原分支功能实现，适配当前模块化结构
+ * Show beautiful guide tip
+ * Based on original branch functionality, adapted to current modular structure
  */
 export const showGuideTip = (options: GuideTipOptions): (() => void) => {
   const {
@@ -47,9 +47,9 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
   } = options;
 
   try {
-    // 立即记录函数调用
+    // Immediately log function call
     logger.info({
-      message: '[GuideTip] showGuideTip 函数被调用',
+      message: '[GuideTip] showGuideTip function called',
       data: {
         selector,
         content,
@@ -60,48 +60,48 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
       component: 'showGuideTip',
     });
 
-    // 清理已存在的引导提示
+    // Clean up existing guide tips
     cleanupExistingTips(selector, content, placement);
 
-    // 验证目标元素
+    // Validate target element
     const targetElement = validateTargetElement(selector);
     if (!targetElement) {
       return () => {
-        // 空清理函数，当目标元素不存在时
+        // Empty cleanup function when target element does not exist
       };
     }
 
-    // 获取目标元素位置和尺寸
+    // Get target element position and size
     const targetRect = getElementRect(targetElement);
 
-    // 创建提示框容器和元素
+    // Create tip container and elements
     const { tipContainer, tipElement, closeButton, arrowElement } =
       createTipContainer(options);
 
-    // 添加到页面
+    // Add to page
     document.body.appendChild(tipContainer);
 
-    // 添加点击外部区域关闭功能
+    // Add click outside to close functionality
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as Element;
-      // 如果点击的不是tip容器内的元素，则关闭tip
+      // If click is not on element inside tip container, close tip
       if (!tipContainer.contains(target)) {
         cleanup();
       }
     };
 
-    // 监听点击事件（如果启用）
+    // Listen for click events (if enabled)
     if (closeOnOutsideClick) {
       document.addEventListener('mousedown', handleOutsideClick);
     }
 
-    // 定位提示框
+    // Position tip
     const rect = targetElement.getBoundingClientRect();
     const tipRect = tipElement.getBoundingClientRect();
 
-    // 添加定位调试信息
+    // Add positioning debug information
     logger.info({
-      message: '[GuideTip] 定位计算调试信息',
+      message: '[GuideTip] Position calculation debug information',
       data: {
         selector,
         content,
@@ -129,14 +129,14 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
       component: 'showGuideTip',
     });
 
-    // 计算位置（包含箭头初始位置）
+    // Calculate position (including initial arrow position)
     const position = calculateTipPosition(targetRect, tipElement, placement);
     tipElement.style.left = `${position.left}px`;
     tipElement.style.top = `${position.top}px`;
 
-    // 添加最终定位结果调试信息
+    // Add final positioning result debug information
     logger.info({
-      message: '[GuideTip] 最终定位结果',
+      message: '[GuideTip] Final positioning result',
       data: {
         selector,
         content,
@@ -157,7 +157,7 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
       component: 'showGuideTip',
     });
 
-    // 重新计算箭头位置（考虑边界调整）
+    // Recalculate arrow position (considering boundary adjustments)
     if (arrowElement && showArrow) {
       recalculateArrowPosition(
         arrowElement,
@@ -168,12 +168,12 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
       );
     }
 
-    // 添加进入动画
+    // Add enter animation
     tipElement.style.opacity = '0';
     tipElement.style.transform = 'translateY(-20px) scale(0.9)';
     tipElement.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
 
-    // 箭头也添加进入动画
+    // Also add enter animation for arrow
     if (arrowElement) {
       const currentTransform = arrowElement.style.transform || '';
       arrowElement.style.opacity = '0';
@@ -186,7 +186,7 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
       tipElement.style.opacity = '1';
       tipElement.style.transform = 'translateY(0) scale(1)';
 
-      // 箭头也同时显示
+      // Arrow also shows simultaneously
       if (arrowElement) {
         arrowElement.style.opacity = '1';
         const currentTransform = arrowElement.style.transform || '';
@@ -197,18 +197,18 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
       }
     });
 
-    // 清理函数
+    // Cleanup function
     const cleanup = () => {
-      // 移除事件监听器（如果添加了）
+      // Remove event listeners (if added)
       if (closeOnOutsideClick) {
         document.removeEventListener('mousedown', handleOutsideClick);
       }
 
-      // 同时为tip和箭头添加退出动画
+      // Add exit animation for both tip and arrow
       tipElement.style.opacity = '0';
       tipElement.style.transform = 'translateY(-20px) scale(0.9)';
 
-      // 箭头也同时添加退出动画
+      // Arrow also adds exit animation
       if (arrowElement) {
         const currentTransform = arrowElement.style.transform || '';
         arrowElement.style.opacity = '0';
@@ -227,18 +227,18 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
       }, 400);
     };
 
-    // 设置按钮点击
+    // Set button click
     if (closeButton) {
       closeButton.onclick = cleanup;
     }
 
-    // 自动关闭（如果启用）
+    // Auto close (if enabled)
     if (autoClose) {
       setTimeout(cleanup, autoCloseDelay);
     }
 
     logger.info({
-      message: '[GuideTip] 美观的引导提示已显示',
+      message: '[GuideTip] Beautiful guide tip displayed',
       data: { selector, content, placement, autoClose, closeOnOutsideClick },
       source: 'GuideTip',
       component: 'showGuideTip',
@@ -247,7 +247,7 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
     return cleanup;
   } catch (error) {
     logger.error({
-      message: '[GuideTip] 显示引导提示失败',
+      message: '[GuideTip] Failed to show guide tip',
       data: {
         error: error instanceof Error ? error.message : String(error),
         selector,
@@ -257,7 +257,7 @@ export const showGuideTip = (options: GuideTipOptions): (() => void) => {
       component: 'showGuideTip',
     });
     return () => {
-      // 空的清理函数
+      // Empty cleanup function
     };
   }
 };

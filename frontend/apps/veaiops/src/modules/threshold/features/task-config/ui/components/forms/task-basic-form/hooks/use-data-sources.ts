@@ -17,23 +17,13 @@ import { logger } from '@veaiops/utils';
 import { useMemo } from 'react';
 
 /**
- * 数据源配置 Hook
+ * Data source configuration Hook
  */
 export const useDataSources = (datasourceType?: string) => {
   const datasourceDataSource = useMemo(() => {
-    logger.info({
-      message: '[useDataSources] useMemo 执行 - datasourceDataSource 计算',
-      data: {
-        datasourceType,
-        timestamp: Date.now(),
-      },
-      source: 'UseDataSources',
-      component: 'useMemo',
-    });
-
     if (!datasourceType) {
       logger.debug({
-        message: '[useDataSources] datasourceDataSource - datasourceType 为空',
+        message: '🔍 datasourceDataSource - datasourceType is empty',
         data: { datasourceType },
         source: 'UseDataSources',
         component: 'useDataSources',
@@ -53,18 +43,11 @@ export const useDataSources = (datasourceType?: string) => {
     };
 
     logger.info({
-      message: '[useDataSources] datasourceDataSource 创建/更新',
+      message: '🔍 datasourceDataSource created',
       data: {
         datasourceType,
         api: dataSource.api,
-        dataSourceObject: {
-          api: dataSource.api,
-          hasServiceInstance: Boolean(dataSource.serviceInstance),
-          responseEntityKey: dataSource.responseEntityKey,
-        },
         timestamp: Date.now(),
-        // 注意：当 datasourceType 变化时，会创建新的 dataSource 对象
-        // 这可能导致 Select.Block 组件检测到 dataSource 变化并触发重新请求
       },
       source: 'UseDataSources',
       component: 'useDataSources',

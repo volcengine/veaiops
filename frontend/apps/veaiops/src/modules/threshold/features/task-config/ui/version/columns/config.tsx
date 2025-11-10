@@ -20,7 +20,7 @@ import type { FlattenedVersion } from './types';
 const { RowSpan } = CellRender;
 
 /**
- * 指标模版配置列配置
+ * Metric template configuration column configuration
  */
 export const getConfigColumn = ({
   setDetailConfigData,

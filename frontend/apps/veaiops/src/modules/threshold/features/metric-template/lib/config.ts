@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 指标模板管理配置
+ * Metric template management configuration
  */
 export const METRIC_TEMPLATE_MANAGEMENT_CONFIG = {
-  // 表格配置
+  // Table configuration
   table: {
     pageSize: 10,
     pageSizeOptions: ["10", "20", "50", "100"],
@@ -25,32 +25,32 @@ export const METRIC_TEMPLATE_MANAGEMENT_CONFIG = {
     showTotal: true,
   },
 
-  // 搜索配置
+  // Search configuration
   search: {
     placeholder: "请输入模板名称或指标名称",
     debounceTime: 300,
   },
 
-  // 模态框配置
+  // Modal configuration
   modal: {
     width: 1000,
     destroyOnClose: true,
   },
 
-  // 抽屉配置
+  // Drawer configuration
   drawer: {
     width: 800,
     destroyOnClose: true,
     placement: "right" as const,
   },
 
-  // 表单配置
+  // Form configuration
   form: {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
   },
 
-  // 操作按钮配置
+  // Action button configuration
   actions: {
     create: {
       text: "新建模板",
@@ -71,7 +71,7 @@ export const METRIC_TEMPLATE_MANAGEMENT_CONFIG = {
     },
   },
 
-  // 消息提示配置
+  // Message prompt configuration
   messages: {
     create: {
       success: "创建指标模板成功",
@@ -93,7 +93,7 @@ export const METRIC_TEMPLATE_MANAGEMENT_CONFIG = {
 } as const;
 
 /**
- * 默认的指标模板筛选参数
+ * Default metric template filter parameters
  */
 export const DEFAULT_FILTER_PARAMS = {
   skip: 0,
@@ -101,7 +101,7 @@ export const DEFAULT_FILTER_PARAMS = {
 } as const;
 
 /**
- * 表单验证规则
+ * Form validation rules
  */
 export const FORM_RULES = {
   name: [

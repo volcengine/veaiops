@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 页面组件
+// Page components
 export { DetailModal } from './components/modals/detail-modal';
 export { default as MonitorTable } from './components/tables/monitor-table';
 export * from './pages/management';
 
-// 图标组件
+// Icon components
 export {
   AliyunIcon,
   getDataSourceIcon,
@@ -26,7 +26,7 @@ export {
   ZabbixIcon,
 } from './components/icons';
 
-// 表格列配置
+// Table column configuration
 export {
   getAliyunColumns,
   getCommonColumns,
@@ -34,5 +34,5 @@ export {
   getZabbixColumns,
 } from './components/tables/columns';
 
-// 渲染器
+// Renderers
 export * from './components/renderers';

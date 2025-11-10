@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 账号管理辅助函数
- * @description 用户数据操作相关辅助函数（搜索、排序、过滤、导出、统计等）
+ * Account management helper functions
+ * @description User data operation related helper functions (search, sort, filter, export, statistics, etc.)
  */
 
 import type { User, UserRole, UserStatus } from '@account';
 import { formatDateTime, formatLastLogin, formatUserRole, formatUserStatus } from './formatters';
 
 /**
- * 生成随机密码
+ * Generate random password
  */
 export const generateRandomPassword = (length: number = 12): string => {
   const lowercase = 'abcdefghijklmnopqrstuvwxyz';
@@ -32,18 +32,18 @@ export const generateRandomPassword = (length: number = 12): string => {
   const allChars = lowercase + uppercase + numbers + symbols;
   let password = '';
 
-  // 确保包含每种类型的字符
+  // Ensure each type of character is included
   password += lowercase[Math.floor(Math.random() * lowercase.length)];
   password += uppercase[Math.floor(Math.random() * uppercase.length)];
   password += numbers[Math.floor(Math.random() * numbers.length)];
   password += symbols[Math.floor(Math.random() * symbols.length)];
 
-  // 填充剩余长度
+  // Fill remaining length
   for (let i = 4; i < length; i++) {
     password += allChars[Math.floor(Math.random() * allChars.length)];
   }
 
-  // 打乱字符顺序
+  // Shuffle character order
   return password
     .split('')
     .sort(() => Math.random() - 0.5)
@@ -51,7 +51,7 @@ export const generateRandomPassword = (length: number = 12): string => {
 };
 
 /**
- * searchUsers 参数接口
+ * searchUsers parameters interface
  */
 export interface SearchUsersParams {
   users: User[];
@@ -59,7 +59,7 @@ export interface SearchUsersParams {
 }
 
 /**
- * 搜索用户
+ * Search users
  */
 export const searchUsers = ({
   users,
@@ -80,7 +80,7 @@ export const searchUsers = ({
 };
 
 /**
- * sortUsers 参数接口
+ * sortUsers parameters interface
  */
 export interface SortUsersParams {
   users: User[];
@@ -89,7 +89,7 @@ export interface SortUsersParams {
 }
 
 /**
- * 排序用户
+ * Sort users
  */
 export const sortUsers = ({
   users,
@@ -110,7 +110,7 @@ export const sortUsers = ({
 };
 
 /**
- * 过滤用户
+ * Filter users
  */
 export const filterUsers = (
   users: User[],
@@ -141,7 +141,7 @@ export const filterUsers = (
 };
 
 /**
- * 导出用户数据为CSV
+ * Export user data to CSV
  */
 export const exportUsersToCSV = (users: User[]): string => {
   const headers = [
@@ -171,7 +171,7 @@ export const exportUsersToCSV = (users: User[]): string => {
 };
 
 /**
- * 获取用户统计信息
+ * Get user statistics
  */
 export const getUserStats = (users: User[]) => {
   const stats = {
@@ -187,25 +187,25 @@ export const getUserStats = (users: User[]) => {
       locked: 0,
     },
     systemAdmins: 0,
-    recentlyActive: 0, // 最近7天登录的用户
+    recentlyActive: 0, // Users who logged in within the last 7 days
   };
 
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
   users.forEach((user) => {
-    // 按角色统计
+    // Statistics by role
     stats.byRole[user.role]++;
 
-    // 按状态统计
+    // Statistics by status
     stats.byStatus[user.status]++;
 
-    // 系统管理员统计
+    // System admin statistics
     if (user.is_system_admin) {
       stats.systemAdmins++;
     }
 
-    // 最近活跃用户统计
+    // Recently active user statistics
     if (user.last_login && new Date(user.last_login) > sevenDaysAgo) {
       stats.recentlyActive++;
     }

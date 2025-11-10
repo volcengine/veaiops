@@ -15,78 +15,78 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type IntelligentThresholdTask = {
   /**
-   * 任务ID
+   * Task ID
    */
   _id?: string;
   /**
-   * 任务名称
+   * Task name
    */
   task_name: string;
   /**
-   * 任务描述
+   * Task description
    */
   description?: string;
   /**
-   * 关联的模板ID
+   * Associated template ID
    */
   template_id: string;
   /**
-   * 数据源ID
+   * Data source ID
    */
   datasource_id: string;
   /**
-   * 数据源类型
+   * Data source type
    */
   datasource_type?: IntelligentThresholdTask.datasource_type;
   /**
-   * 项目列表
+   * List of projects
    */
   projects?: Array<string>;
   /**
-   * 是否自动更新
+   * Whether auto update
    */
   auto_update?: boolean;
   /**
-   * 任务状态
+   * Task status
    */
   status?: IntelligentThresholdTask.status;
   /**
-   * 任务配置
+   * Task configuration
    */
   config?: {
     /**
-     * 调度表达式 (cron)
+     * Schedule expression (cron)
      */
     schedule?: string;
     /**
-     * 超时时间（秒）
+     * Timeout in seconds
      */
     timeout?: number;
     /**
-     * 重试次数
+     * Retry count
      */
     retry_count?: number;
   };
   /**
-   * 最后执行时间
+   * Last execution time
    */
   last_execution_time?: string;
   /**
-   * 下次执行时间
+   * Next execution time
    */
   next_execution_time?: string;
   /**
-   * 创建时间
+   * Creation time
    */
   created_at?: string;
   /**
-   * 更新时间
+   * Update time
    */
   updated_at?: string;
 };
 export namespace IntelligentThresholdTask {
   /**
-   * 数据源类型
+   * Data source type
    */
   export enum datasource_type {
     ZABBIX = 'Zabbix',
@@ -94,7 +94,7 @@ export namespace IntelligentThresholdTask {
     VOLCENGINE = 'Volcengine',
   }
   /**
-   * 任务状态
+   * Task status
    */
   export enum status {
     PENDING = 'pending',

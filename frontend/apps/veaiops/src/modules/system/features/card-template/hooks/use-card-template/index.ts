@@ -13,20 +13,20 @@
 // limitations under the License.
 
 /**
- * 卡片模板管理逻辑Hook
- * 提供卡片模板管理页面的所有业务逻辑
+ * Card template management logic Hook
+ * Provides all business logic for card template management page
  *
- * ✅ 已拆分：
- * - useCardTemplateCRUD: CRUD 操作（../crud/）
- * - useCardTemplateTableConfig: 表格配置（../table/）
- * - useCardTemplateManagementLogic: 管理逻辑（../management/）
+ * ✅ Split:
+ * - useCardTemplateCRUD: CRUD operations (../crud/)
+ * - useCardTemplateTableConfig: Table configuration (../table/)
+ * - useCardTemplateManagementLogic: Management logic (../management/)
  *
- * 注意：
- * - useCardTemplateManagementLogic 已从 ../management 导出，此处不再导出（避免重复）
- * - UseCardTemplateManagementLogicParams 类型已从 ../management 导出，此处从 management 重新导出
- * - transformAgentTemplateToTableData 已从 ../card-template 导出，此处不再导出（避免重复）
+ * Note:
+ * - useCardTemplateManagementLogic is already exported from ../management, not exported here (avoid duplication)
+ * - UseCardTemplateManagementLogicParams type is already exported from ../management, re-exported here from management
+ * - transformAgentTemplateToTableData is already exported from ../card-template, not exported here (avoid duplication)
  */
 export type { UseCardTemplateManagementLogicParams } from '../management';
 
-// ✅ 注意：useCardTemplateTableConfig 已独立拆分，从主文件导出
-// 表格配置使用 useCardTemplateTableConfig（已独立文件）
+// ✅ Note: useCardTemplateTableConfig has been independently split, exported from main file
+// Table configuration uses useCardTemplateTableConfig (independent file)

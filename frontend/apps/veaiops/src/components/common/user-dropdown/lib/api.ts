@@ -19,14 +19,14 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import { logger } from '@veaiops/utils';
 
 /**
- * 获取用户信息参数
+ * Parameters for getting user information
  */
 export interface GetUserInfoParams {
   username: string;
 }
 
 /**
- * 更新密码参数
+ * Parameters for updating password
  */
 export interface UpdatePasswordParams {
   userId: string;
@@ -34,9 +34,9 @@ export interface UpdatePasswordParams {
 }
 
 /**
- * 获取用户信息
+ * Get user information
  *
- * @returns 用户信息或 undefined
+ * @returns User information or undefined
  */
 export const getUserInfo = async ({
   username,
@@ -48,13 +48,13 @@ export const getUserInfo = async ({
       username,
     });
 
-    // 使用准确的 User 类型（从 @veaiops/api-client 生成）
+    // Use the accurate User type (generated from @veaiops/api-client)
     const data: User | undefined = response?.data?.[0];
     return data;
   } catch (error: unknown) {
     const errorObj = error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: '获取用户信息失败',
+      message: 'Failed to get user information',
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -69,9 +69,9 @@ export const getUserInfo = async ({
 };
 
 /**
- * 更新用户密码
+ * Update user password
  *
- * @returns 是否更新成功
+ * @returns Whether the update was successful
  */
 export const updateUserPassword = async ({
   userId,
@@ -88,16 +88,16 @@ export const updateUserPassword = async ({
     });
 
     if (response.code === API_RESPONSE_CODE.SUCCESS) {
-      Message.success('密码更新成功');
+      Message.success('Password updated successfully');
       return true;
     }
 
-    throw new Error(response.message || '更新密码失败');
+    throw new Error(response.message || 'Failed to update password');
   } catch (error: unknown) {
     const errorObj = error instanceof Error ? error : new Error(String(error));
-    Message.error(errorObj.message || '更新密码失败');
+    Message.error(errorObj.message || 'Failed to update password');
     logger.error({
-      message: '更新密码失败',
+      message: 'Failed to update password',
       data: {
         error: errorObj.message,
         stack: errorObj.stack,

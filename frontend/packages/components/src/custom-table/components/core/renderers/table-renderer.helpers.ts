@@ -22,7 +22,7 @@ import { DEFAULT_TABLE_PROPS } from './table-renderer.constants';
 import type { BaseQuery, BaseRecord } from './table-renderer.types';
 
 /**
- * 合并表格属性的参数接口
+ * Merge table properties parameter interface
  */
 export interface BuildOptimizedTablePropsParams<
   RecordType extends BaseRecord = BaseRecord,
@@ -35,7 +35,7 @@ export interface BuildOptimizedTablePropsParams<
 }
 
 /**
- * 合并表格属性（默认/用户/插件增强）
+ * Merge table properties (default/user/plugin enhancements)
  */
 export function buildOptimizedTableProps<
   RecordType extends BaseRecord = BaseRecord,
@@ -51,7 +51,7 @@ export function buildOptimizedTableProps<
 > {
   devLog.log({
     component: 'buildOptimizedTableProps',
-    message: '开始构建表格属性',
+    message: 'Starting to build table properties',
     data: {
       isLoading,
       useCustomLoader,
@@ -81,7 +81,7 @@ export function buildOptimizedTableProps<
 
   devLog.log({
     component: 'buildOptimizedTableProps',
-    message: '解析用户表格属性',
+    message: 'Resolving user table properties',
     data: {
       isFunction: typeof userDefinedTableProps === 'function',
       resolvedPropsKeys: Object.keys(resolvedUserProps),
@@ -97,7 +97,7 @@ export function buildOptimizedTableProps<
 
   devLog.log({
     component: 'buildOptimizedTableProps',
-    message: '应用列宽增强',
+    message: 'Applying column width enhancement',
     data: {
       hasColumnWidthEnhancement: Boolean(columnWidthEnhancedProps),
       columnWidthKeys: Object.keys(columnWidthEnhancedProps),
@@ -124,7 +124,7 @@ export function buildOptimizedTableProps<
 
   devLog.log({
     component: 'buildOptimizedTableProps',
-    message: '构建完成',
+    message: 'Build completed',
     data: {
       resultKeys: Object.keys(result),
       scrollConfig: result.scroll,
@@ -135,7 +135,7 @@ export function buildOptimizedTableProps<
 }
 
 /**
- * 确保每条记录具有稳定的 key
+ * Ensure each record has a stable key
  */
 export function ensureRowKeys<RecordType extends BaseRecord = BaseRecord>(
   formattedData: RecordType[] | unknown,
@@ -143,7 +143,7 @@ export function ensureRowKeys<RecordType extends BaseRecord = BaseRecord>(
 ): RecordType[] {
   devLog.log({
     component: 'ensureRowKeys',
-    message: '开始确保行 keys',
+    message: 'Starting to ensure row keys',
     data: {
       dataLength: Array.isArray(formattedData) ? formattedData.length : 0,
       rowKeyType: typeof rowKey,
@@ -153,7 +153,7 @@ export function ensureRowKeys<RecordType extends BaseRecord = BaseRecord>(
   if (!Array.isArray(formattedData)) {
     devLog.warn({
       component: 'ensureRowKeys',
-      message: '数据不是数组，返回空数组',
+      message: 'Data is not an array, returning empty array',
       data: { formattedData },
     });
     return [] as RecordType[];
@@ -177,7 +177,7 @@ export function ensureRowKeys<RecordType extends BaseRecord = BaseRecord>(
       try {
         keyValue = String(rowKey(item));
       } catch (error) {
-        // rowKey 函数执行失败，使用降级方案（静默处理）
+        // rowKey function execution failed, use fallback (silent handling)
         keyValue = `table-row-fallback-${index}`;
       }
     } else if (
@@ -203,9 +203,9 @@ export function ensureRowKeys<RecordType extends BaseRecord = BaseRecord>(
       keyValue = `table-row-${index}`;
     }
 
-    // 保证类型安全地将合并后的对象返回为 RecordType：
-    // 先将对象视为 Record<string, unknown> 合并，再断言为 unknown，最后再断言为 RecordType
-    // 这样可以避免 TypeScript 对直接从 { key: string } 到 RecordType 的不安全转换报错 (TS2352)。
+    // Ensure type-safe return of merged object as RecordType:
+    // First treat object as Record<string, unknown> for merging, then assert as unknown, finally assert as RecordType
+    // This avoids TypeScript error (TS2352) for unsafe conversion from { key: string } to RecordType
     const merged = {
       ...(item as Record<string, unknown>),
       key: keyValue,
@@ -215,7 +215,7 @@ export function ensureRowKeys<RecordType extends BaseRecord = BaseRecord>(
 }
 
 /**
- * 生成统一的 onChange 处理器的参数接口
+ * Generate unified onChange handler parameter interface
  */
 export interface CreateOnChangeHandlerParams<
   RecordType extends BaseRecord = BaseRecord,
@@ -226,7 +226,7 @@ export interface CreateOnChangeHandlerParams<
 }
 
 /**
- * 生成统一的 onChange 处理器
+ * Generate unified onChange handler
  */
 export function createOnChangeHandler<
   RecordType extends BaseRecord = BaseRecord,
@@ -237,7 +237,7 @@ export function createOnChangeHandler<
 }: CreateOnChangeHandlerParams<RecordType, QueryType>) {
   devLog.log({
     component: 'createOnChangeHandler',
-    message: '创建 onChange 处理器',
+    message: 'Creating onChange handler',
     data: {
       hasPluginManager: Boolean(pluginManager),
       hasContext: Boolean(context),
@@ -254,10 +254,10 @@ export function createOnChangeHandler<
       action: 'paginate' | 'sort' | 'filter';
     },
   ) => {
-    // 记录所有 onChange 事件
+    // Record all onChange events
     devLog.log({
       component: 'createOnChangeHandler',
-      message: 'Table onChange 触发',
+      message: 'Table onChange triggered',
       data: {
         action: changeExtra.action,
         sorterInfo,
@@ -283,7 +283,7 @@ export function createOnChangeHandler<
         );
         devLog.log({
           component: 'createOnChangeHandler',
-          message: '检测到排序操作，调用 TableSortingPlugin',
+          message: 'Sort operation detected, calling TableSortingPlugin',
           data: {
             sorterInfo,
             hasPlugin,
@@ -353,7 +353,7 @@ export function createOnChangeHandler<
 }
 
 /**
- * 读取列宽持久化标识（data-cwp-id）
+ * Read column width persistence identifier (data-cwp-id)
  */
 export function getColumnWidthPersistenceId<
   RecordType extends BaseRecord = BaseRecord,

@@ -25,13 +25,13 @@ import type { User } from 'api-generate';
 import { useMemo } from 'react';
 
 /**
- * 账号表格配置Hook
- * 提供数据源配置等（列配置已移至组件中处理）
+ * Account table configuration Hook
+ * Provides data source configuration, etc. (column configuration has been moved to component for handling)
  *
- * ✅ 已使用工具函数：
- * - createTableRequestWithResponseHandler: 自动处理分页参数和响应
- * - createServerPaginationDataSource: 创建服务器端分页数据源
- * - createStandardTableProps: 创建标准表格属性
+ * ✅ Utility functions used:
+ * - createTableRequestWithResponseHandler: Automatically handles pagination parameters and responses
+ * - createServerPaginationDataSource: Creates server-side pagination data source
+ * - createStandardTableProps: Creates standard table properties
  */
 export const useAccountTableConfig = ({
   handleEdit: _handleEdit,
@@ -41,10 +41,10 @@ export const useAccountTableConfig = ({
   handleDelete: (userId: string) => Promise<boolean>;
 }) => {
   /**
-   * CustomTable的request函数
-   * 使用工具函数自动处理分页参数、响应和错误，包含数据转换
+   * CustomTable's request function
+   * Uses utility function to automatically handle pagination parameters, responses, and errors, includes data transformation
    */
-  // ✅ 关键修复：使用 useMemo 稳定化 request 函数引用
+  // ✅ Key fix: Use useMemo to stabilize request function reference
   const request = useMemo(
     () =>
       createTableRequestWithResponseHandler<User[]>({
@@ -73,8 +73,8 @@ export const useAccountTableConfig = ({
             component: 'request',
           });
 
-          // ✅ 强制类型兼容：PaginatedAPIResponseUserList -> StandardApiResponse<User[]>
-          // 确保 code 为 number，满足 StandardApiResponse 要求
+          // ✅ Force type compatibility: PaginatedAPIResponseUserList -> StandardApiResponse<User[]>
+          // Ensure code is number, satisfies StandardApiResponse requirements
           return {
             code: response.code ?? API_RESPONSE_CODE.SUCCESS,
             data: response.data ?? [],
@@ -105,10 +105,10 @@ export const useAccountTableConfig = ({
           },
         },
       }),
-    [], // ✅ 空依赖数组，request 函数保持稳定
+    [], // ✅ Empty dependency array, request function remains stable
   );
 
-  // 添加渲染日志
+  // Add render log
   logger.debug({
     message: '[AccountTableConfig] 🔄 组件渲染',
     data: { hasRequest: Boolean(request), timestamp: Date.now() },
@@ -116,7 +116,7 @@ export const useAccountTableConfig = ({
     component: 'useAccountTableConfig',
   });
 
-  // ✅ 使用工具函数创建数据源
+  // ✅ Use utility function to create data source
   const dataSource = useMemo(() => {
     logger.debug({
       message: '[AccountTableConfig] 🔧 创建 dataSource',
@@ -127,7 +127,7 @@ export const useAccountTableConfig = ({
     return createServerPaginationDataSource({ request });
   }, [request]);
 
-  // ✅ 使用工具函数创建表格属性
+  // ✅ Use utility function to create table properties
   const tableProps = useMemo(
     () =>
       createStandardTableProps({

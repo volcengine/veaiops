@@ -191,3 +191,4 @@ function replaceAnyWithUnknown(outputDir) {
 }
 
 module.exports = { fixAllOfTypeConflicts, replaceAnyWithUnknown };
+

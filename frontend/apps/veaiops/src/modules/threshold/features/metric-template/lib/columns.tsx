@@ -30,10 +30,10 @@ import {
   METRIC_TYPE_TRANSLATIONS,
 } from "./metric-type-translations";
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
-// 表格列宽度常量
+// Table column width constants
 const COLUMN_WIDTH = {
   SMALL_WIDTH: 100,
   DEFAULT_WIDTH: 120,
@@ -42,7 +42,7 @@ const COLUMN_WIDTH = {
 };
 
 /**
- * 椭圆省略组件
+ * Ellipsis component
  */
 const Ellipsis: React.FC<{
   text: string | number | null | undefined;
@@ -80,12 +80,12 @@ const Ellipsis: React.FC<{
 };
 
 /**
- * 枚举渲染组件
+ * Enum render component
  */
 const FrontEnum: React.FC<{ metricType: MetricType | string }> = ({
   metricType,
 }) => {
-  // 类型检查：确保 metricType 是有效的 MetricType
+  // Type check: ensure metricType is valid MetricType
   const validMetricType: MetricType =
     typeof metricType === 'string' &&
     metricType in METRIC_TYPE_TRANSLATIONS
@@ -99,7 +99,7 @@ const FrontEnum: React.FC<{ metricType: MetricType | string }> = ({
 };
 
 /**
- * 获取指标模板表格列配置
+ * Get metric template table column configuration
  */
 export const getMetricTemplateColumns = ({
   onEdit,
@@ -158,7 +158,7 @@ export const getMetricTemplateColumns = ({
     render: (_: unknown, record: MetricTemplate) => {
       const buttonConfigurations: ButtonConfiguration[] = [];
 
-      // 编辑按钮
+      // Edit button
       buttonConfigurations.push({
         text: "编辑",
         onClick: () => {
@@ -172,7 +172,7 @@ export const getMetricTemplateColumns = ({
         },
       });
 
-      // 删除按钮
+      // Delete button
       buttonConfigurations.push({
         text: "删除",
         visible: true,

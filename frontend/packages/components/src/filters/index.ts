@@ -13,21 +13,21 @@
 // limitations under the License.
 
 /**
- * Filters 组件统一导出
+ * Filters component unified exports
  */
 
-// 重新导出主组件
+// Re-export main component
 export { Filters } from './filters';
 export { default as FiltersDefault } from './filters';
 
-// 重新导出核心类型
+// Re-export core types
 export type {
   FiltersComponentProps,
   FilterStyle,
   FieldItem,
 } from './core/types';
 
-// 重新导出插件系统的类型
+// Re-export plugin system types
 export type {
   FilterPlugin,
   FilterPluginContext,
@@ -36,12 +36,12 @@ export type {
   FilterEventBus,
 } from '@veaiops/types';
 
-// 导出工具函数和常量
+// Export utility functions and constants
 export * from './core/constants';
 export * from './core/utils';
 export * from './core/renderer';
 
-// 选择性导出插件系统，避免类型冲突
+// Selectively export plugin system to avoid type conflicts
 export {
   filterPluginRegistry,
   initializeCorePlugins,
@@ -50,5 +50,5 @@ export {
   corePlugins,
 } from './plugins';
 
-// 导出预设
+// Export presets
 export * from './presets';

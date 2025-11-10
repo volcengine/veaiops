@@ -22,17 +22,17 @@ import { ConfigValueRenderer } from './config-value-renderer';
 const { Text } = Typography;
 
 /**
- * 配置项渲染组件
+ * Config item renderer component
  */
 export const ConfigItemRenderer = ({ configKey, value }: ConfigItem) => {
-  // 强制使用水平布局的字段（即使是数组/对象）
+  // Fields that force horizontal layout (even if array/object)
   const forceHorizontal = [
     'aliyun_group_by',
     'zabbix_targets',
     'targets',
   ].includes(configKey);
 
-  // 强制使用垂直布局的字段
+  // Fields that force vertical layout
   const forceVertical = [
     'instances',
     'volcengine_instances',

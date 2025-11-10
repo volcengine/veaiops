@@ -38,7 +38,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({
 
   const currentMenuItems = getMenuItems(activeModule);
 
-  // 根据当前路径自动设置激活的菜单项
+  // Automatically set active menu item based on current path
   useEffect(() => {
     if (currentMenuItems.length === 0) {
       return;
@@ -49,27 +49,27 @@ const AppSidebar: React.FC<AppSidebarProps> = ({
     if (pathSegments.length >= 2) {
       const [module, subPath] = pathSegments;
 
-      // 确保当前模块匹配
+      // Ensure current module matches
       if (module === activeModule) {
-        // 检查subPath是否在当前菜单项中
+        // Check if subPath is in current menu items
         const menuKeys = currentMenuItems.map((item) => item.key);
         if (menuKeys.includes(subPath)) {
           setSelectedKeys([subPath]);
         } else {
-          // 如果subPath不在菜单中，默认选择第一个菜单项
+          // If subPath is not in menu, default to first menu item
           setSelectedKeys([currentMenuItems[0].key]);
         }
       }
     } else if (pathSegments.length === 1) {
-      // 如果只有模块路径，默认激活第一个菜单项
+      // If only module path, default to first menu item
       setSelectedKeys([currentMenuItems[0].key]);
     } else if (pathSegments.length === 0) {
-      // 如果是根路径，也默认激活第一个菜单项
+      // If root path, also default to first menu item
       setSelectedKeys([currentMenuItems[0].key]);
     }
   }, [location.pathname, activeModule, currentMenuItems]);
 
-  // 初始化选中状态
+  // Initialize selected state
   useEffect(() => {
     if (currentMenuItems.length > 0 && selectedKeys.length === 0) {
       const pathSegments = location.pathname.split('/').filter(Boolean);
@@ -93,10 +93,10 @@ const AppSidebar: React.FC<AppSidebarProps> = ({
 
   return (
     <div className="h-full flex flex-col">
-      {/* 侧边栏头部 */}
+      {/* Sidebar header */}
       <SidebarHeader collapsed={collapsed} />
 
-      {/* 侧边栏菜单 */}
+      {/* Sidebar menu */}
       <nav className="flex-1 py-4">
         <div id="sidebar-menu-container" className="space-y-2 px-[5px]">
           {currentMenuItems.map((item) => {
@@ -118,7 +118,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({
         </div>
       </nav>
 
-      {/* 底部折叠按钮 */}
+      {/* Bottom collapse button */}
       <div className="border-t border-white/10 p-4">
         <button
           type="button"

@@ -16,7 +16,7 @@ import type { SubscribeRelationWithAttributes } from 'api-generate';
 import type { SubscriptionTableData } from '../lib/types';
 
 /**
- * 转换订阅关系数据为表格数据
+ * Transform subscription relation data to table data
  */
 export const transformSubscriptionToTableData = (
   subscription: SubscribeRelationWithAttributes,

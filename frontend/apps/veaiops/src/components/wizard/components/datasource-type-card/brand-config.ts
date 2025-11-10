@@ -13,54 +13,54 @@
 // limitations under the License.
 
 /**
- * 数据源品牌配置
- * @description 定义各数据源类型的品牌颜色和样式类
+ * Data source brand configuration
+ * @description Defines brand colors and style classes for each data source type
  */
 
 import { DataSourceType } from '../../types';
 import styles from './styles.module.less';
 
-/** 品牌配置接口 */
+/** Brand configuration interface */
 export interface BrandConfig {
-  /** 主容器样式类 */
+  /** Main container style class */
   className: string;
-  /** 渐变背景样式类 */
+  /** Gradient background style class */
   gradientClass: string;
-  /** 图标样式类 */
+  /** Icon style class */
   iconClass: string;
-  /** 品牌主色 */
+  /** Brand primary color */
   brandColor: string;
 }
 
-/** 数据源品牌配置映射 */
+/** Data source brand configuration mapping */
 export const DATASOURCE_BRAND_CONFIGS: Record<DataSourceType, BrandConfig> = {
   [DataSourceType.VOLCENGINE]: {
     className: styles.volcengine,
     gradientClass: styles.volcengineGradient,
     iconClass: styles.volcengineIcon,
-    // 火山引擎品牌色：蓝色科技感
+    // Volcengine brand color: blue tech feel
     brandColor: '#1664FF',
   },
   [DataSourceType.ALIYUN]: {
     className: styles.aliyun,
     gradientClass: styles.aliyunGradient,
     iconClass: styles.aliyunIcon,
-    // 阿里云品牌色：橙色活力感
+    // Aliyun brand color: orange vitality feel
     brandColor: '#FF6A00',
   },
   [DataSourceType.ZABBIX]: {
     className: styles.zabbix,
     gradientClass: styles.zabbixGradient,
     iconClass: styles.zabbixIcon,
-    // Zabbix品牌色：红色专业感
+    // Zabbix brand color: red professional feel
     brandColor: '#D40000',
   },
 };
 
 /**
- * 获取数据源品牌配置
- * @param type 数据源类型
- * @returns 品牌配置对象
+ * Get data source brand configuration
+ * @param type Data source type
+ * @returns Brand configuration object
  */
 export const getBrandConfig = (type: DataSourceType): BrandConfig => {
   return DATASOURCE_BRAND_CONFIGS[type];

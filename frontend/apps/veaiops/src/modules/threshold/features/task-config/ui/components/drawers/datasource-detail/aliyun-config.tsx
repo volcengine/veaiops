@@ -21,9 +21,9 @@ import type { ConfigSectionProps } from './types';
 const { Text } = Typography;
 
 /**
- * 阿里云配置卡片
+ * Aliyun configuration card
  *
- * 显示阿里云数据源的配置信息和维度列表
+ * Displays Aliyun datasource configuration information and dimension list
  */
 export const AliyunConfig: React.FC<ConfigSectionProps> = ({ datasource }) => {
   if (!isAliyunType(datasource.type) || !datasource.aliyun_config) {
@@ -83,7 +83,7 @@ export const AliyunConfig: React.FC<ConfigSectionProps> = ({ datasource }) => {
         />
       </CardWithTitle>
 
-      {/* 维度配置 */}
+      {/* Dimension configuration */}
       {config.dimensions &&
         Array.isArray(config.dimensions) &&
         config.dimensions.length > 0 && (

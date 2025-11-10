@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Connection list component
- * @description Renders the connection selection list
+ * Connect list component
+ * @description Renders connect selection list
  * @author AI Assistant
  * @date 2025-01-17
  */
@@ -57,8 +57,8 @@ export const ConnectList: FC<ConnectListProps> = ({
   const [searchText, setSearchText] = useState('');
   const { filteredConnects } = useConnectFilter(connects, 'all', searchText);
 
-  // On first load, if there's no selected item and available connections, automatically select the first one
-  // Note: Only auto-select when there's no search text to avoid triggering auto-selection during search causing loops
+  // On first load, if there's no selected item and available connects, auto-select the first one
+  // Note: Only auto-select when there's no search text, to avoid triggering auto-selection during search causing loops
   useEffect(() => {
     const hasNoSearch = !searchText.trim();
     if (!selectedConnect && connects.length > 0 && hasNoSearch) {
@@ -66,7 +66,7 @@ export const ConnectList: FC<ConnectListProps> = ({
     }
   }, [connects.length, selectedConnect, searchText, onConnectSelect]);
 
-  // Move selected items to the first position for quick viewing during editing
+  // Put selected item first for quick viewing during editing
   const sortedConnects = [...filteredConnects].sort((a, b) => {
     const aSelected =
       selectedConnect?.id === a.id || selectedConnect?._id === a._id;
@@ -87,7 +87,7 @@ export const ConnectList: FC<ConnectListProps> = ({
       <div className={styles.searchContainer}>
         <Input
           prefix={<IconSearch />}
-          placeholder="搜索连接名称或描述..."
+          placeholder="Search connect name or description..."
           value={searchText}
           onChange={setSearchText}
           allowClear
@@ -128,14 +128,14 @@ export const ConnectList: FC<ConnectListProps> = ({
               description={connect.description}
               extra={
                 <Text type="secondary" style={{ fontSize: 12 }}>
-                  类型:{' '}
+                  Type:{' '}
                   {getDataSourceTypeLabel(
                     connect.type as unknown as DataSourceType,
                   )}
                   {connect.zabbix_api_url &&
-                    ` • 端点: ${connect.zabbix_api_url}`}
+                    ` • Endpoint: ${connect.zabbix_api_url}`}
                   {connect.created_at &&
-                    ` • 创建时间: ${new Date(connect.created_at).toLocaleDateString()}`}
+                    ` • Created: ${new Date(connect.created_at).toLocaleDateString()}`}
                 </Text>
               }
             />
@@ -143,14 +143,14 @@ export const ConnectList: FC<ConnectListProps> = ({
         </Radio.Group>
       </div>
 
-      {/* Empty state: no search results or no connection data */}
+      {/* Empty state: No search results or no connect data */}
       {sortedConnects.length === 0 && (
         <Empty
           icon={searchText ? <IconSearch /> : <IconLink />}
           description={
             searchText
-              ? `未找到包含 "${searchText}" 的连接`
-              : '暂无连接配置，请点击右上角"创建新连接"按钮创建'
+              ? `No connects found containing "${searchText}"`
+              : 'No connect configurations available, please click "Create New Connect" button in the top right corner'
           }
         />
       )}
@@ -159,7 +159,7 @@ export const ConnectList: FC<ConnectListProps> = ({
         <Alert
           className={'mt-2'}
           type="success"
-          content={`已选择连接: ${selectedConnect.name}`}
+          content={`Selected connect: ${selectedConnect.name}`}
           showIcon
           closable={false}
         />

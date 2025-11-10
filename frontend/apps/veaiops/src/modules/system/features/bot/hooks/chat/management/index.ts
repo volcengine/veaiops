@@ -17,28 +17,28 @@ import { useChatManagementLogicHandlers } from './handlers';
 import { useChatManagementLogicState } from './state';
 
 /**
- * 群管理业务逻辑Hook
+ * Chat management business logic Hook
  *
- * 对应 origin/feat/web-v2 分支的实现，确保功能一致性
+ * Corresponds to origin/feat/web-v2 branch implementation, ensuring functional consistency
  *
- * 拆分说明：
- * - state.ts: 状态管理（configModalVisible、editingChat）
- * - api.ts: API调用（updateChatConfig）
- * - handlers.ts: 事件处理（handleConfigEdit、handleConfigSubmit、handleConfigCancel）
- * - index.ts: 主入口，负责逻辑组装
+ * Split structure:
+ * - state.ts: State management (configModalVisible, editingChat)
+ * - api.ts: API calls (updateChatConfig)
+ * - handlers.ts: Event handling (handleConfigEdit, handleConfigSubmit, handleConfigCancel)
+ * - index.ts: Main entry, responsible for logic assembly
  */
 export const useChatManagementLogic = (
   afterUpdate?: () =>
     | Promise<boolean>
     | Promise<{ success: boolean; error?: Error }>,
 ) => {
-  // 状态管理
+  // State management
   const state = useChatManagementLogicState();
 
-  // API调用
+  // API calls
   const api = useChatManagementLogicApi();
 
-  // 事件处理
+  // Event handling
   const handlers = useChatManagementLogicHandlers({
     editingChat: state.editingChat,
     setEditingChat: state.setEditingChat,

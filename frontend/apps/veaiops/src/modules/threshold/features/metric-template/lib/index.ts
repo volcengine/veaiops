@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 指标模板模块lib统一导出
+ * Metric template module lib unified exports
  */
 
 export * from "./types";

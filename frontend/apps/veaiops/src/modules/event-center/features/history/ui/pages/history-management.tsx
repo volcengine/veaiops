@@ -19,15 +19,15 @@ import { HistoryDetailDrawer, HistoryTable } from '../components/table';
 import type { HistoryTableRef } from '../components/table/history-table';
 
 /**
- * 历史事件管理页面
- * 提供历史事件的查看和过滤功能 - 使用 CustomTable 和 Zustand 状态管理
+ * History event management page
+ * Provides history event viewing and filtering functionality - uses CustomTable and Zustand state management
  *
- * 架构特点：
- * - 使用自定义Hook封装业务逻辑
- * - 组件职责单一，易于维护
- * - 状态管理与UI渲染分离
- * - 支持配置化和扩展
- * - 使用CustomTable提供高级表格功能
+ * Architecture features:
+ * - Use custom Hooks to encapsulate business logic
+ * - Single responsibility components, easy to maintain
+ * - Separation of state management and UI rendering
+ * - Support configuration and extension
+ * - Use CustomTable to provide advanced table functionality
  */
 export const HistoryManagement: React.FC = () => {
   const tableRef = useRef<HistoryTableRef>(null);
@@ -43,7 +43,7 @@ export const HistoryManagement: React.FC = () => {
 
   return (
     <>
-      {/* 历史事件表格组件 - 使用CustomTable */}
+      {/* History event table component - uses CustomTable */}
       <HistoryTable
         ref={tableRef}
         onViewDetail={handleViewDetail}
@@ -51,7 +51,7 @@ export const HistoryManagement: React.FC = () => {
         updateFilters={updateFilters}
       />
 
-      {/* 事件详情抽屉组件 */}
+      {/* Event detail drawer component */}
       <HistoryDetailDrawer
         visible={drawerVisible}
         selectedRecord={selectedRecord}

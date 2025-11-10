@@ -16,7 +16,7 @@ import { logger } from '@veaiops/utils';
 import type { DOMAnalysis } from './types';
 
 /**
- * 检查元素是否可见
+ * Check if element is visible
  */
 function isElementVisible(element: Element): boolean {
   const style = window.getComputedStyle(element);
@@ -31,7 +31,7 @@ function isElementVisible(element: Element): boolean {
 }
 
 /**
- * 分析 DOM 状态
+ * Analyze DOM state
  */
 export function analyzeDOM(): DOMAnalysis {
   const analysis: DOMAnalysis = {
@@ -41,7 +41,7 @@ export function analyzeDOM(): DOMAnalysis {
   };
 
   try {
-    // 查找所有可能的引导元素
+    // Find all possible guide elements
     const selectors = [
       '[class*="global-guide"]',
       '[class*="guide"]',
@@ -75,7 +75,7 @@ export function analyzeDOM(): DOMAnalysis {
           analysis.visibleElements.push(elementInfo);
           analysis.issues.push({
             type: 'visible_guide_element',
-            message: '发现可见的引导元素',
+            message: 'Found visible guide element',
             severity: 'high',
             element: elementInfo,
           });
@@ -83,12 +83,12 @@ export function analyzeDOM(): DOMAnalysis {
       });
     });
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Expose actual error information
     const errorObj = error instanceof Error ? error : new Error(String(error));
-    const errorMessage = errorObj.message || 'DOM 分析失败';
+    const errorMessage = errorObj.message || 'DOM analysis failed';
     analysis.issues.push({
       type: 'dom_analysis_error',
-      message: `DOM 分析失败: ${errorMessage}`,
+      message: `DOM analysis failed: ${errorMessage}`,
       severity: 'error',
       error: (error as Error).message,
     });
@@ -98,16 +98,16 @@ export function analyzeDOM(): DOMAnalysis {
 }
 
 /**
- * 记录初始状态
+ * Log initial state
  */
 export function logInitialState(): void {
   try {
-    // 检查全局引导 store 状态
+    // Check global guide store state
     const guideStore = localStorage.getItem('global-guide-store');
     if (guideStore) {
       const parsed = JSON.parse(guideStore);
       logger.info({
-        message: '全局引导 Store 状态',
+        message: 'Global guide store state',
         data: {
           store: parsed,
           hasGuideVisible: 'state' in parsed && 'guideVisible' in parsed.state,
@@ -116,17 +116,17 @@ export function logInitialState(): void {
         source: 'GlobalGuideAnalyzer',
       });
     } else {
-      // ✅ 正确：使用 logger 记录信息，data 参数应为对象或 undefined
+      // ✅ Correct: Use logger to record information, data parameter should be object or undefined
       logger.info({
-        message: '全局引导 Store 不存在',
+        message: 'Global guide store does not exist',
         data: undefined,
         source: 'GlobalGuideAnalyzer',
       });
     }
 
-    // 检查当前 URL 和路由
+    // Check current URL and route
     logger.info({
-      message: '当前页面状态',
+      message: 'Current page state',
       data: {
         url: window.location.href,
         pathname: window.location.pathname,
@@ -137,12 +137,12 @@ export function logInitialState(): void {
       component: 'logInitialState',
     });
 
-    // 检查是否有全局引导组件相关的 DOM 元素
+    // Check if there are DOM elements related to global guide component
     const guideElements = document.querySelectorAll(
       '[class*="global-guide"], [class*="guide"]',
     );
     logger.info({
-      message: 'DOM 中的引导元素',
+      message: 'Guide elements in DOM',
       data: {
         elementCount: guideElements.length,
         elements: Array.from(guideElements).map((el) => ({
@@ -158,10 +158,10 @@ export function logInitialState(): void {
       component: 'logInitialState',
     });
 
-    // 检查 React DevTools 中的组件状态（如果可用）
+    // Check component state in React DevTools (if available)
     if ((window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__) {
       logger.info({
-        message: 'React DevTools 可用',
+        message: 'React DevTools available',
         data: {
           version: (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__.version,
         },
@@ -170,10 +170,10 @@ export function logInitialState(): void {
       });
     }
   } catch (error: unknown) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: Use logger to record error and expose actual error information
     const errorObj = error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: '记录初始状态失败',
+      message: 'Failed to log initial state',
       data: {
         error: errorObj.message,
         stack: errorObj.stack,

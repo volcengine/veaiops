@@ -14,7 +14,7 @@
 
 import { Typography } from '@arco-design/web-react';
 import { IconClockCircle, IconRefresh } from '@arco-design/web-react/icon';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge same-source imports
 import { STYLES, type TimeInfoProps, formatTimeDisplay } from '@ec/shared';
 import { CellRender } from '@veaiops/components';
 import type React from 'react';
@@ -23,8 +23,8 @@ const { Text } = Typography;
 const { StampTime } = CellRender;
 
 /**
- * 时间信息组件
- * 显示事件的创建时间和更新时间
+ * Time info component
+ * Displays event creation time and update time
  */
 export const TimeInfo: React.FC<TimeInfoProps> = ({ selectedRecord }) => {
   const createdTime = formatTimeDisplay(selectedRecord.created_at);

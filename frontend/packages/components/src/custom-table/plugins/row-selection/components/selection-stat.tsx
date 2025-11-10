@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 选择统计组件
- * 显示当前选择状态的统计信息
+ * Selection statistics component
+ * Displays statistical information about current selection state
  */
 import type {
   BaseRecord,
@@ -26,11 +26,11 @@ import type React from 'react';
 import styles from './selection-stat.module.less';
 
 interface SelectionStatProps<RecordType extends BaseRecord = BaseRecord> {
-  /** 选择状态 */
+  /** Selection state */
   selectionState: RowSelectionState<RecordType>;
-  /** 统计配置 */
+  /** Statistics configuration */
   config: SelectionStatConfig;
-  /** 样式类名 */
+  /** Style class name */
   className?: string;
 }
 
@@ -43,12 +43,12 @@ export const SelectionStat = <RecordType extends BaseRecord = BaseRecord>({
   const { selectedCount, totalCount, currentPageCount, selectedPercent } =
     selectionStat;
 
-  // 不显示统计信息
+  // Don't show statistics
   if (!config.show) {
     return null;
   }
 
-  // 自定义渲染
+  // Custom render
   if (config.render) {
     return (
       <div className={`${styles.selectionStat} ${className || ''}`}>
@@ -57,17 +57,17 @@ export const SelectionStat = <RecordType extends BaseRecord = BaseRecord>({
     );
   }
 
-  // 默认渲染
+  // Default render
   return (
     <div className={`${styles.selectionStat} ${className || ''}`}>
       <div className={styles.statContent}>
         <div className={styles.statText}>
-          <span className={styles.selected}>已选择 {selectedCount}</span>
+          <span className={styles.selected}>Selected {selectedCount}</span>
           <span className={styles.separator}>/</span>
-          <span className={styles.total}>共 {totalCount} 项</span>
+          <span className={styles.total}>Total {totalCount} items</span>
           {currentPageCount !== totalCount && (
             <span className={styles.pageInfo}>
-              (当前页 {currentPageCount} 项)
+              (Current page {currentPageCount} items)
             </span>
           )}
         </div>

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 行选择插件类型定义
- * 基于 Arco Table RowSelectionProps 能力
+ * Row selection plugin type definition
+ * Based on Arco Table RowSelectionProps capability
  */
 import type { Key, ReactNode } from 'react';
 import type { BaseRecord } from '../core/common';
@@ -22,106 +22,106 @@ import type { PluginPriorityEnum } from '../core/enums';
 import type { PluginBaseConfig } from './core';
 
 /**
- * 选择策略
+ * Selection strategy
  */
 export type SelectionStrategy = 'page' | 'all' | 'smart';
 
 /**
- * 批量操作配置
+ * Batch action configuration
  */
 export interface BatchActionConfig<RecordType extends BaseRecord = BaseRecord> {
-  /** 操作标识 */
+  /** Action identifier */
   key: string;
-  /** 操作标题 */
+  /** Action title */
   title: string;
-  /** 操作图标 */
+  /** Action icon */
   icon?: ReactNode;
-  /** 是否危险操作 */
+  /** Whether is dangerous action */
   danger?: boolean;
-  /** 是否禁用 */
+  /** Whether disabled */
   disabled?: boolean | ((selectedRows: RecordType[]) => boolean);
-  /** 操作处理函数 */
+  /** Action handler function */
   handler: (
     selectedKeys: Key[],
     selectedRows: RecordType[],
   ) => void | Promise<void>;
-  /** 操作权限检查 */
+  /** Action permission check */
   permission?: (selectedRows: RecordType[]) => boolean;
-  /** 操作确认信息 */
+  /** Action confirmation message */
   confirmText?: string | ((selectedRows: RecordType[]) => string);
 }
 
 /**
- * 选择统计配置
+ * Selection statistics configuration
  */
 export interface SelectionStatConfig {
-  /** 是否显示统计 */
+  /** Whether to show statistics */
   show?: boolean;
-  /** 自定义统计渲染 */
+  /** Custom statistics render */
   render?: (selectedCount: number, totalCount: number) => ReactNode;
-  /** 统计位置 */
+  /** Statistics position */
   position?: 'header' | 'footer' | 'both';
 }
 
 /**
- * 扩展的行选择配置（基于 Arco RowSelectionProps）
+ * Extended row selection configuration (based on Arco RowSelectionProps)
  */
 export interface RowSelectionConfig<RecordType extends BaseRecord = BaseRecord>
   extends PluginBaseConfig {
-  // === Arco Table 原生属性 ===
-  /** 选择类型 */
+  // === Arco Table native properties ===
+  /** Selection type */
   type?: 'checkbox' | 'radio';
-  /** 是否显示全选按钮 */
+  /** Whether to show select all button */
   checkAll?: boolean;
-  /** 是否严格模式（父子选择不关联） */
+  /** Whether strict mode (parent-child selection not linked) */
   checkStrictly?: boolean;
-  /** 是否跨页保持选择 */
+  /** Whether to maintain selection across pages */
   checkCrossPage?: boolean;
-  /** 是否跨页保留选择（别名） */
+  /** Whether to preserve selection across pages (alias) */
   preserveAcrossPages?: boolean;
-  /** 自定义列标题 */
+  /** Custom column title */
   columnTitle?: string | ReactNode;
-  /** 选择列宽度 */
+  /** Selection column width */
   columnWidth?: number;
-  /** 复选框属性配置 */
+  /** Checkbox properties configuration */
   checkboxProps?: (record: RecordType) => Record<string, unknown>;
-  /** 是否固定选择列 */
+  /** Whether to fix selection column */
   fixed?: boolean;
-  /** 已选中的行键 */
+  /** Selected row keys */
   selectedRowKeys?: Key[];
-  /** 是否保留已删除数据的选择状态 */
+  /** Whether to preserve selection state of deleted data */
   preserveSelectedRowKeys?: boolean;
-  /** 自定义选择框渲染 */
+  /** Custom selection box render */
   renderCell?: (
     originNode: ReactNode,
     checked: boolean,
     record: RecordType,
   ) => ReactNode;
 
-  // === 扩展属性 ===
-  /** 选择策略 */
+  // === Extended properties ===
+  /** Selection strategy */
   strategy?: SelectionStrategy;
-  /** 批量操作配置 */
+  /** Batch action configuration */
   batchActions?: BatchActionConfig<RecordType>[];
-  /** 选择统计配置 */
+  /** Selection statistics configuration */
   selectionStat?: SelectionStatConfig;
-  /** 最大选择数量 */
+  /** Maximum selection count */
   maxSelection?: number;
-  /** 获取行键的函数 */
+  /** Function to get row key */
   getRowKey?: (record: RecordType) => Key;
 
-  // === 回调函数 ===
-  /** 选择变化回调 */
+  // === Callback functions ===
+  /** Selection change callback */
   onChange?: (selectedKeys: Key[], selectedRows: RecordType[]) => void;
-  /** 手动选择单行回调 */
+  /** Manual single row selection callback */
   onSelect?: (
     selected: boolean,
     record: RecordType,
     selectedRows: RecordType[],
   ) => void;
-  /** 手动选择全部回调 */
+  /** Manual select all callback */
   onSelectAll?: (selected: boolean, selectedRows: RecordType[]) => void;
-  /** 批量操作执行前确认 */
+  /** Confirmation before batch action execution */
   beforeBatchAction?: (
     action: BatchActionConfig<RecordType>,
     selectedRows: RecordType[],
@@ -129,28 +129,28 @@ export interface RowSelectionConfig<RecordType extends BaseRecord = BaseRecord>
 }
 
 /**
- * 插件状态
+ * Plugin state
  */
 export interface RowSelectionState<RecordType extends BaseRecord = BaseRecord> {
-  /** 当前选中的 keys */
+  /** Currently selected keys */
   selectedRowKeys: Key[];
-  /** 当前选中的行数据 */
+  /** Currently selected row data */
   selectedRows: RecordType[];
-  /** 半选状态的 keys */
+  /** Indeterminate state keys */
   indeterminateKeys: Key[];
-  /** 跨页选择的所有 keys */
+  /** All selected keys across pages */
   allSelectedKeys: Key[];
-  /** 是否全选 */
+  /** Whether all selected */
   isAllSelected: boolean;
-  /** 是否半选 */
+  /** Whether indeterminate */
   isIndeterminate: boolean;
-  /** 选择统计 */
+  /** Selection statistics */
   selectionStat: {
     selectedCount: number;
     totalCount: number;
     currentPageCount: number;
     selectedPercent: number;
   };
-  /** 行选择缓存（用于跨页保持） */
+  /** Row selection cache (for cross-page preservation) */
   selectionCache: Map<Key, RecordType>;
 }

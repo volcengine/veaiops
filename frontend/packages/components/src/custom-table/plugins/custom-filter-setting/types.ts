@@ -15,81 +15,81 @@
 import type { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 import type { DrawerProps } from '@arco-design/web-react';
 /**
- * Custom Filter Setting 插件类型定义
+ * Custom Filter Setting plugin type definitions
  */
 import type { ReactNode } from 'react';
 
 /**
- * 文本显示函数类型
+ * Text display function type
  */
 export type CaseSelectText = (key: string, utcOffset?: number) => string;
 
 /**
- * CustomFilterSetting 组件属性
+ * CustomFilterSetting component props
  */
 export interface CustomFilterSettingProps
   extends Omit<DrawerProps, 'visible' | 'onOk' | 'onCancel'> {
-  /** 子组件（触发按钮） */
+  /** Child component (trigger button) */
   children?: ReactNode;
-  /** 固定选项 */
+  /** Fixed options */
   fixedOptions?: string[];
-  /** 所有可选项 */
+  /** All available options */
   allOptions?: string[];
-  /** 已选中的选项（不含已固定） */
+  /** Selected options (excluding fixed ones) */
   selectedOptions?: string[];
-  /** 隐藏的选项 */
+  /** Hidden options */
   hiddenOptions?: string[];
-  /** 配置标题 */
+  /** Configuration title */
   title?: string;
-  /** 布局修改回调 */
+  /** Layout change callback */
   onChange?: (props: {
     fixed_fields: string[];
     hidden_fields?: string[];
   }) => void;
-  /** 保存回调 */
+  /** Save callback */
   saveFun: (props: {
     fixed_fields: string[];
     selected_fields: string[];
     hidden_fields: string[];
   }) => void;
-  /** 文本显示函数 */
+  /** Text display function */
   caseSelectText: CaseSelectText;
-  /** 配置类型 - 仅支持选中、既选中又固定 */
+  /** Configuration type - only supports select, or both select and fixed */
   mode?: Array<'select' | 'fixed'>;
 }
 
 /**
- * Custom Filter Setting 插件配置
+ * Custom Filter Setting plugin configuration
  */
 export interface CustomFilterSettingConfig {
-  /** 是否启用插件 */
+  /** Whether to enable plugin */
   enabled?: boolean;
-  /** 插件优先级 */
+  /** Plugin priority */
   priority?: PluginPriorityEnum;
-  /** 是否启用过滤器设置功能 */
+  /** Whether to enable filter setting functionality */
   enableFilterSetting?: boolean;
-  /** CustomFilterSetting 组件属性 */
+  /** CustomFilterSetting component props */
   filterSettingProps?: Partial<CustomFilterSettingProps>;
-  /** 自定义渲染函数 */
+  /** Custom render function */
   customRender?: (props: CustomFilterSettingProps) => ReactNode;
 }
 
 /**
- * 插件状态
+ * Plugin state
  */
 export interface CustomFilterSettingState {
-  /** 是否显示过滤器设置 */
+  /** Whether to show filter setting */
   showFilterSetting: boolean;
-  /** 固定字段 */
+  /** Fixed fields */
   fixedFields: string[];
-  /** 选中字段 */
+  /** Selected fields */
   selectedFields: string[];
-  /** 隐藏字段 */
+  /** Hidden fields */
   hiddenFields: string[];
-  /** 所有可用字段 */
+  /** All available fields */
   allFields: string[];
-  /** 过滤器配置 */
+  /** Filter configuration */
   filters?: Record<string, unknown>;
-  /** 是否可见 */
+  /** Whether visible */
   visible?: boolean;
 }

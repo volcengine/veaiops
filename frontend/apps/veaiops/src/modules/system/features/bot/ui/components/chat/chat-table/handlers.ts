@@ -24,7 +24,7 @@ import type { Chat } from 'api-generate';
 import { useCallback } from 'react';
 
 /**
- * 群管理表格处理函数Hook
+ * Chat management table handler functions Hook
  */
 export const useChatTableHandlers = ({
   onUpdateConfig,
@@ -36,7 +36,7 @@ export const useChatTableHandlers = ({
     currentRecord: Chat;
   }) => Promise<boolean>;
 }) => {
-  // ✅ 使用 useCallback 稳定化 handleColumns 函数，避免每次渲染创建新引用
+  // ✅ Use useCallback to stabilize handleColumns function, avoid creating new reference on each render
   const handleColumns = useCallback(
     (props: Record<string, unknown>): ModernTableColumnProps<Chat>[] => {
       try {
@@ -52,7 +52,7 @@ export const useChatTableHandlers = ({
 
         const columns = getChatColumns({
           onUpdateConfig,
-          // 保持与 CustomTable handleColumns 的标准接口兼容
+          // Keep compatible with CustomTable handleColumns standard interface
         }) as ModernTableColumnProps<Chat>[];
 
         logger.debug({
@@ -78,14 +78,14 @@ export const useChatTableHandlers = ({
           source: 'ChatTable',
           component: 'handleColumns',
         });
-        // 返回空数组避免崩溃
+        // Return empty array to avoid crash
         return [];
       }
     },
     [onUpdateConfig],
   );
 
-  // ✅ 使用 useCallback 稳定化 handleFilters 函数，避免每次渲染创建新引用
+  // ✅ Use useCallback to stabilize handleFilters function, avoid creating new reference on each render
   const handleFilters = useCallback(
     (props: HandleFilterProps<BaseQuery>): FieldItem[] => {
       try {
@@ -127,7 +127,7 @@ export const useChatTableHandlers = ({
           source: 'ChatTable',
           component: 'handleFilters',
         });
-        // 返回空数组避免崩溃
+        // Return empty array to avoid crash
         return [];
       }
     },

@@ -15,23 +15,23 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ZabbixUserGroup = {
   /**
-   * Zabbix用户组ID
+   * Zabbix user group ID
    */
   usrgrpid: string;
   /**
-   * 用户组名称
+   * User group name
    */
   name: string;
   /**
-   * GUI访问级别
+   * GUI access level
    */
   gui_access: string;
   /**
-   * 用户状态
+   * User status
    */
   users_status: string;
   /**
-   * 调试模式
+   * Debug mode
    */
   debug_mode: string;
 };

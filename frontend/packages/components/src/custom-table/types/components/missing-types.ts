@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 缺失的组件类型定义
+ * Missing component type definitions
  */
 
 import type { PaginationProps } from '@arco-design/web-react/es/Pagination/pagination';
@@ -23,12 +23,12 @@ import type { BaseRecord } from '../core';
 import type { TableTitleProps } from './table-title';
 
 /**
- * 选项类型
+ * Option type
  */
-// Option 类型已移至 @veaiops/types/components
+// Option type has been moved to @veaiops/types/components
 
 /**
- * 自定义标题属性
+ * Custom title properties
  */
 export interface CustomTitleProps {
   title?: React.ReactNode;
@@ -39,8 +39,8 @@ export interface CustomTitleProps {
 }
 
 /**
- * 表格列标题属性（扩展 TableTitleProps，用于自定义表头组件）
- * 注意：TableTitleProps 已在 table-title.ts 中定义
+ * Table column title properties (extends TableTitleProps, for custom header components)
+ * Note: TableTitleProps is already defined in table-title.ts
  */
 export interface TableColumnTitleProps extends TableTitleProps {
   dataIndex?: string;
@@ -59,24 +59,24 @@ export interface TableColumnTitleProps extends TableTitleProps {
 }
 
 /**
- * 注意：以下类型已在对应的源文件中定义，此处移除避免重复导出：
- * - TableContentProps: 已在 table-content.ts 中定义
- * - DefaultStreamFooterProps: 已在 default-footer.ts 中定义
- * - DefaultFooterProps: 已在 default-footer.ts 中定义
- * - SimpleOptions: 已在 title-search.ts 中定义（类型为 string[] | number[]）
- * - SelectCustomWithFooterProps: 已在 title-search.ts 中定义
- * - CustomCheckBoxProps: 已在 title-checkbox.ts 中定义
- * - TableTitleProps: 已在 table-title.ts 中定义
- * - TableHeaderConfig: 已在 table-content.ts 中定义
- * - TableContentLoadingConfig: 已在 table-content.ts 中定义
- * - TableRenderers: 已在 table-content.ts 中定义
- * - TableAlertProps: 已在 table-alert.ts 中定义
- * - StreamRetryButtonProps: 已在 stream-retry-button.ts 中定义
- * 如需使用这些类型，请从对应的源文件或统一导出入口导入
+ * Note: The following types are already defined in their corresponding source files, removed here to avoid duplicate exports:
+ * - TableContentProps: already defined in table-content.ts
+ * - DefaultStreamFooterProps: already defined in default-footer.ts
+ * - DefaultFooterProps: already defined in default-footer.ts
+ * - SimpleOptions: already defined in title-search.ts (type is string[] | number[])
+ * - SelectCustomWithFooterProps: already defined in title-search.ts
+ * - CustomCheckBoxProps: already defined in title-checkbox.ts
+ * - TableTitleProps: already defined in table-title.ts
+ * - TableHeaderConfig: already defined in table-content.ts
+ * - TableContentLoadingConfig: already defined in table-content.ts
+ * - TableRenderers: already defined in table-content.ts
+ * - TableAlertProps: already defined in table-alert.ts
+ * - StreamRetryButtonProps: already defined in stream-retry-button.ts
+ * If you need to use these types, please import from the corresponding source file or unified export entry
  */
 
 /**
- * 自定义表格列属性
+ * Custom table column properties
  */
 export interface CustomTableColumnProps<T = Record<string, unknown>> {
   title: React.ReactNode;
@@ -90,7 +90,7 @@ export interface CustomTableColumnProps<T = Record<string, unknown>> {
 }
 
 /**
- * 查询选项接口
+ * Query options interface
  */
 export interface IQueryOptions {
   page?: number;
@@ -102,29 +102,29 @@ export interface IQueryOptions {
 }
 
 /**
- * RetryHandlerProps、RetryState、RetryOptions 已在 retry-handler.ts 中定义，此处移除避免重复
- * RetryConfig 已在 stream-retry-button.ts 中定义，此处移除避免重复
- * 如需使用，请从 '@/custom-table/types/components/retry-handler' 或 '@/custom-table/types' 导入
+ * RetryHandlerProps, RetryState, RetryOptions are already defined in retry-handler.ts, removed here to avoid duplication
+ * RetryConfig is already defined in stream-retry-button.ts, removed here to avoid duplication
+ * If needed, please import from '@/custom-table/types/components/retry-handler' or '@/custom-table/types'
  */
 
 /**
- * FormTableDataProps 已在 core/common.ts 中定义，此处移除避免重复
- * 如需使用，请从 '@/custom-table/types/core' 或 '@/custom-table/types' 导入
+ * FormTableDataProps is already defined in core/common.ts, removed here to avoid duplication
+ * If needed, please import from '@/custom-table/types/core' or '@/custom-table/types'
  */
 
 /**
- * CustomTable 组件属性类型
- * 注意：CustomTableProps 已从 props.ts 导出，此处移除避免重复定义
- * 如需使用 CustomTableProps，请从 '@/custom-table/types' 或 '@/custom-table/types/components' 导入
+ * CustomTable component property types
+ * Note: CustomTableProps is already exported from props.ts, removed here to avoid duplicate definition
+ * If you need to use CustomTableProps, please import from '@/custom-table/types' or '@/custom-table/types/components'
  */
 
 /**
- * PaginationConfig 已在 props.ts 中定义，此处移除避免重复
- * 如需使用，请从 '@/custom-table/types/components' 或 '@/custom-table/types' 导入
+ * PaginationConfig is already defined in props.ts, removed here to avoid duplication
+ * If needed, please import from '@/custom-table/types/components' or '@/custom-table/types'
  */
 
 /**
- * 自定义字段属性
+ * Custom fields properties
  */
 export interface CustomFieldsProps<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -136,8 +136,8 @@ export interface CustomFieldsProps<
 }
 
 /**
- * 自定义字段状态（已移至 custom-fields/types.ts，保留此处仅为向后兼容）
- * @deprecated 请使用 plugins/custom-fields/types 中的定义
+ * Custom fields state (moved to custom-fields/types.ts, kept here only for backward compatibility)
+ * @deprecated Please use the definition in plugins/custom-fields/types
  */
 export interface CustomFieldsState {
   showCustomFields: boolean;
@@ -151,11 +151,11 @@ export interface CustomFieldsState {
 }
 
 /**
- * CustomFilterSettingState 已在 plugins/custom-filter-setting/types.ts 中定义，此处移除避免重复
- * 如需使用，请从 '@/custom-table/types/plugins' 或 '@/custom-table/types' 导入
+ * CustomFilterSettingState is already defined in plugins/custom-filter-setting/types.ts, removed here to avoid duplication
+ * If needed, please import from '@/custom-table/types/plugins' or '@/custom-table/types'
  */
 
 /**
- * CustomEditorProps 已在 plugins/inline-edit.ts 中定义，此处移除避免重复
- * 如需使用，请从 '@/custom-table/types/plugins' 或 '@/custom-table/types' 导入
+ * CustomEditorProps is already defined in plugins/inline-edit.ts, removed here to avoid duplication
+ * If needed, please import from '@/custom-table/types/plugins' or '@/custom-table/types'
  */

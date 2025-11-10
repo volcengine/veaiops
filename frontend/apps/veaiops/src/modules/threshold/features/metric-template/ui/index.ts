@@ -15,7 +15,7 @@
 export { MetricTemplateDetailDrawer } from './components/metric-template-detail-drawer';
 
 /**
- * 指标模板UI组件统一导出
+ * Metric template UI components unified exports
  */
 
 export { MetricTemplateTable } from './table';

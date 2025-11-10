@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出所有子目录的内容
+// Export all subdirectory contents
 export * from './cascader';
 export * from './enum-checkbox-group';
 export * from './form-list';

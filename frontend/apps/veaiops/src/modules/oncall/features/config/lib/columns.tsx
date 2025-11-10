@@ -29,10 +29,10 @@ import {
 } from './renderers';
 
 /**
- * 获取表格列配置
- * 完全对齐原分支实现
+ * Get table column configuration
+ * Fully aligned with original branch implementation
  *
- * 注意：onToggleStatus 使用位置参数，因为 StatusColumn 组件期望位置参数
+ * Note: onToggleStatus uses positional parameters because StatusColumn component expects positional parameters
  */
 interface GetRulesTableColumnsParams {
   onToggleStatus: (ruleUuid: string, checked: boolean) => Promise<boolean>;

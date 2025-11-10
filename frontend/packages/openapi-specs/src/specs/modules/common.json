@@ -3,7 +3,7 @@
   "info": {
     "title": "VolcAIOpsKit - Common Schemas",
     "version": "1.0.0",
-    "description": "通用 Schema 定义"
+    "description": "Common schema definitions"
   },
   "paths": {},
   "components": {
@@ -75,20 +75,20 @@
         "properties": {
           "timestamp": {
             "type": "string",
-            "description": "日志时间戳"
+            "description": "Log timestamp"
           },
           "level": {
             "type": "string",
             "enum": ["INFO", "WARNING", "ERROR"],
-            "description": "日志级别"
+            "description": "Log level"
           },
           "message": {
             "type": "string",
-            "description": "日志消息"
+            "description": "Log message"
           },
           "details": {
             "type": "object",
-            "description": "详细信息",
+            "description": "Additional details",
             "additionalProperties": true
           }
         },
@@ -99,42 +99,42 @@
         "properties": {
           "total_rows": {
             "type": "integer",
-            "description": "总行数"
+            "description": "Total number of rows"
           },
           "successful_imports": {
             "type": "integer",
-            "description": "成功导入数量"
+            "description": "Number of successful imports"
           },
           "failed_imports": {
             "type": "integer",
-            "description": "失败导入数量"
+            "description": "Number of failed imports"
           },
           "skipped_rows": {
             "type": "integer",
-            "description": "跳过行数"
+            "description": "Number of skipped rows"
           },
           "errors": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "错误信息列表"
+            "description": "List of error messages"
           },
           "logs": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ImportLog"
             },
-            "description": "导入日志列表"
+            "description": "List of import logs"
           },
           "start_time": {
             "type": "string",
-            "description": "开始时间"
+            "description": "Start time"
           },
           "end_time": {
             "type": "string",
             "nullable": true,
-            "description": "结束时间"
+            "description": "End time"
           }
         },
         "required": [
@@ -166,23 +166,23 @@
         "properties": {
           "limit": {
             "type": "integer",
-            "description": "每页数量"
+            "description": "Number of records per page"
           },
           "skip": {
             "type": "integer",
-            "description": "跳过数量"
+            "description": "Number of records to skip"
           },
           "total": {
             "type": "integer",
-            "description": "总数量"
+            "description": "Total number of records"
           },
           "page": {
             "type": "integer",
-            "description": "当前页码"
+            "description": "Current page number"
           },
           "pages": {
             "type": "integer",
-            "description": "总页数"
+            "description": "Total number of pages"
           }
         },
         "required": ["limit", "skip", "total"]
@@ -192,15 +192,15 @@
         "properties": {
           "field": {
             "type": "string",
-            "description": "错误字段"
+            "description": "Error field name"
           },
           "message": {
             "type": "string",
-            "description": "错误消息"
+            "description": "Error message"
           },
           "code": {
             "type": "string",
-            "description": "错误代码"
+            "description": "Error code"
           }
         },
         "required": ["message"]
@@ -221,7 +221,7 @@
             "items": {
               "$ref": "#/components/schemas/ErrorDetail"
             },
-            "description": "详细错误列表"
+            "description": "List of detailed errors"
           }
         }
       }

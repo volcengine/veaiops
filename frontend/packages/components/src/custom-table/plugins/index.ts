@@ -13,59 +13,59 @@
 // limitations under the License.
 
 /**
- * CustomTable 插件导出
+ * CustomTable plugin exports
  */
 
-// 基础类型和系统
+// Base types and system
 export * from './plugin-system';
 
-// 数据源插件
+// Data source plugin
 export * from './data-source';
 
-// 过滤器插件
+// Filter plugin
 export * from './table-filter';
 
-// 列管理插件
+// Column management plugin
 export * from './table-columns';
 
-// 分页插件
+// Pagination plugin
 export * from './table-pagination';
 
-// 排序插件
+// Sorting plugin
 export * from './table-sorting';
 
-// 查询参数同步插件
+// Query parameter synchronization plugin
 export * from './query-sync';
 
-// 列宽持久化插件
+// Column width persistence plugin
 export * from './column-width-persistence';
 
-// 自定义字段插件
+// Custom fields plugin
 export * from './custom-fields';
 
-// 自定义过滤器设置插件
+// Custom filter setting plugin
 export * from './custom-filter-setting';
 
-// 行选择插件
+// Row selection plugin
 export * from './row-selection';
 
-// 行内编辑插件
+// Inline edit plugin
 export * from './inline-edit';
 
-// 智能单元格插件
+// Smart cell plugin
 export * from './smart-cell';
 
-// 核心插件系统类型导出 (已合并到core.ts)
+// Core plugin system type exports (merged into core.ts)
 export * from '@/custom-table/types/plugins/core';
 
-// 具体插件类型导出
+// Specific plugin type exports
 export * from '@/custom-table/types/plugins/data-source';
 export * from '@/custom-table/types/plugins/table-alert';
 export * from '@/custom-table/types/plugins/table-columns';
-// table-filter 类型已通过 ./table-filter 导出，避免重复导出
+// table-filter types are exported via ./table-filter to avoid duplicate exports
 // export * from '@/custom-table/types/plugins/table-filter';
 export * from '@/custom-table/types/plugins/table-pagination';
 export * from '@/custom-table/types/plugins/table-sorting';
-// inline-edit 和 smart-cell 类型已通过对应插件导出，避免重复导出
+// inline-edit and smart-cell types are exported via corresponding plugins to avoid duplicate exports
 // export * from '@/custom-table/types/plugins/inline-edit';
 // export * from '@/custom-table/types/plugins/smart-cell';

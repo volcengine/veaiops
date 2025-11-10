@@ -22,34 +22,34 @@ import type React from 'react';
 import type { ReactNode } from 'react';
 
 /**
- * 基础按钮属性接口
+ * Base button property interface
  */
 export interface ButtonProps {
-  text?: string; // 按钮文本
-  visible?: boolean; // 按钮是否可见
-  disabled?: boolean; // 按钮是否禁用
-  tooltip?: string | ReactNode; // 按钮提示文本（支持字符串或 ReactNode）
-  tooltipProps?: TooltipProps; // Tooltip 自定义属性（支持自定义 zIndex 等）
-  onClick?: () => void; // 按钮点击事件处理函数
-  enablePopoverWrapper?: boolean; // 是否启用 PopoverWrapper 组件
-  popoverProps?: PopoverProps; // 弹出框属性
+  text?: string; // Button text
+  visible?: boolean; // Whether button is visible
+  disabled?: boolean; // Whether button is disabled
+  tooltip?: string | ReactNode; // Button tooltip text (supports string or ReactNode)
+  tooltipProps?: TooltipProps; // Tooltip custom properties (supports custom zIndex, etc.)
+  onClick?: () => void; // Button click event handler function
+  enablePopoverWrapper?: boolean; // Whether to enable PopoverWrapper component
+  popoverProps?: PopoverProps; // Popover properties
   buttonProps?: BaseButtonProps;
   buttonGroupProps?: ButtonGroupConfiguration;
-  dataTestId?: string; // 按钮的测试ID，用于自动化测试
+  dataTestId?: string; // Button test ID for automated testing
 }
 
 /**
- * 带有 Popconfirm 功能的按钮属性接口
+ * Button property interface with Popconfirm functionality
  */
 export interface PopconfirmButtonProps {
-  supportPopConfirm?: boolean; // 是否支持 Popconfirm
-  popConfirmTitle?: string | ReactNode; // Popconfirm 的标题（支持字符串或 ReactNode）
-  popConfirmContent?: string | ReactNode; // Popconfirm 的内容（支持字符串或 ReactNode）
+  supportPopConfirm?: boolean; // Whether to support Popconfirm
+  popConfirmTitle?: string; // Popconfirm title
+  popConfirmContent?: string; // Popconfirm content
   popconfirmProps?: PopconfirmProps;
 }
 
 /**
- * DropDown 属性接口
+ * DropDown property interface
  */
 export interface DropDownProps {
   dropdownProps?: {
@@ -62,7 +62,7 @@ export interface DropDownProps {
 }
 
 /**
- * 按钮配置接口，继承了 ButtonProps 和 PopconfirmButtonProps、DropDownProps
+ * Button configuration interface, extends ButtonProps, PopconfirmButtonProps, and DropDownProps
  */
 export interface ButtonConfiguration
   extends ButtonProps,
@@ -70,11 +70,11 @@ export interface ButtonConfiguration
     DropDownProps {}
 
 /**
- * 按钮组配置接口
+ * Button group configuration interface
  */
 interface ButtonGroupConfiguration {
-  icon: ReactNode; // 按钮组图标
-  children: ReactNode; // 按钮组子元素
+  icon: ReactNode; // Button group icon
+  children: ReactNode; // Button group child elements
 }
 
 export interface ButtonConfigurationWithDropdown {
@@ -85,14 +85,14 @@ export interface ButtonConfigurationWithDropdown {
   dropdownClassName?: string;
 }
 /**
- * 最终的按钮配置接口，可以是按钮配置数组或包含按钮配置数组的对象
+ * Final button configuration interface, can be a button configuration array or an object containing button configuration array
  */
 export type FinalButtonConfiguration =
   | ButtonConfiguration[]
   | ButtonConfigurationWithDropdown;
 
 /**
- * Dropdown 菜单配置接口
+ * Dropdown menu configuration interface
  */
 export interface DropdownMenuConfiguration {
   key: string | undefined;
@@ -100,10 +100,10 @@ export interface DropdownMenuConfiguration {
   onClick: (() => void) | undefined;
   buttonProps: BaseButtonProps | undefined;
   supportPopConfirm?: boolean;
-  tooltip?: string | ReactNode; // 支持字符串或 ReactNode，与 ButtonConfiguration 保持一致
+  tooltip?: string | ReactNode; // Supports string or ReactNode, consistent with ButtonConfiguration
   text?: string;
   disabled?: boolean;
-  popConfirmTitle?: string | ReactNode; // Popconfirm 的标题（支持字符串或 ReactNode）
-  popConfirmContent?: string | ReactNode; // Popconfirm 的内容（支持字符串或 ReactNode）
+  popConfirmTitle?: string;
+  popConfirmContent?: string;
   popconfirmProps?: PopconfirmProps;
 }

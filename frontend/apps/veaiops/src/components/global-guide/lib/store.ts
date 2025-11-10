@@ -76,7 +76,7 @@ export interface GlobalGuideState {
   // Whether side guide panel is visible
   sideGuidePanelVisible: boolean;
 
-  // Whether detail panel content is visible
+  // Whether panel content is visible
   panelContentVisible: boolean;
 
   // Actions
@@ -106,7 +106,7 @@ const initialState: Omit<
 > = {
   currentStep: GlobalGuideStepNumber.CONNECTION,
   stepStatusMap: {
-    [GlobalGuideStepNumber.CONNECTION]: 'active' as StepStatus, // First step activated by default
+    [GlobalGuideStepNumber.CONNECTION]: 'active' as StepStatus, // First step is active by default
     [GlobalGuideStepNumber.DATASOURCE]: 'pending' as StepStatus,
     [GlobalGuideStepNumber.TEMPLATE]: 'pending' as StepStatus,
     [GlobalGuideStepNumber.METRIC_CONFIG]: 'pending' as StepStatus,
@@ -124,8 +124,8 @@ const initialState: Omit<
   platformSelection: null,
   lastVisitedRoute: '',
   userProgress: {},
-  sideGuidePanelVisible: false, // Don't show side guide panel by default
-  panelContentVisible: false, // Don't show detail panel content by default
+  sideGuidePanelVisible: false, // Side guide panel is hidden by default
+  panelContentVisible: false, // Panel content is hidden by default
 };
 
 export const useGlobalGuideStore = create<GlobalGuideState>()(
@@ -191,7 +191,7 @@ export const useGlobalGuideStore = create<GlobalGuideState>()(
 
       setSideGuidePanelVisible: (visible: boolean) => {
         set({ sideGuidePanelVisible: visible });
-        // When side panel is collapsed, detail panel content should also be collapsed
+        // When side panel is collapsed, panel content should also be collapsed
         if (!visible) {
           set({ panelContentVisible: false });
         }
@@ -199,7 +199,7 @@ export const useGlobalGuideStore = create<GlobalGuideState>()(
 
       setPanelContentVisible: (visible: boolean) => {
         set({ panelContentVisible: visible });
-        // When detail panel content is expanded, side panel should also be expanded
+        // When panel content is expanded, side panel should also be expanded
         if (visible) {
           set({ sideGuidePanelVisible: true });
         }
@@ -211,14 +211,14 @@ export const useGlobalGuideStore = create<GlobalGuideState>()(
     }),
     {
       name: 'global-guide-store',
-      // Only persist critical state, avoid sensitive information leakage
+      // Only persist critical state to avoid sensitive information leakage
       // guideVisible is not persisted, defaults to false on each visit
       partialize: (state) => ({
         currentStep: state.currentStep,
         stepStatusMap: state.stepStatusMap,
         platformSelection: state.platformSelection,
         lastVisitedRoute: state.lastVisitedRoute,
-        // guideVisible: state.guideVisible, // Not persisted, defaults to false each time
+        // guideVisible: state.guideVisible, // Not persisted, defaults to false
       }),
     },
   ),

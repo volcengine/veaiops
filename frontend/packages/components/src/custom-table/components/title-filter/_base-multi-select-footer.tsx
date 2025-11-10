@@ -37,23 +37,23 @@ interface SelectCustomWithFooterProps extends Omit<SelectProps, 'value'> {
 const BaseSelectFooter: FC<SelectCustomWithFooterProps> = (props) => {
   const { value, options, onChange, onVisibleChange, loading, ...otherProps } =
     props;
-  /** 内部的值 */
+  /** Internal value */
   const [stateValue, setStateValue] = useState<SelectValue>(value);
   useEffect(() => {
-    // 内布置和外部值不一样的情况下只会有清空的操作
+    // Only clear operation when internal value differs from external value
     if (value !== stateValue) {
       setStateValue(value);
     }
-    // 这里只监听外部值的变化
+    // Only listen to external value changes
   }, [value, stateValue]);
 
-  /** 是否显示下拉框 */
+  /** Whether to show dropdown */
   const [visible, setVisible] = useState(false);
 
   const handleVisibleChange = useCallback(
     (_visible: boolean) => {
       if (!_visible) {
-        // 如果窗口关闭，则外部值
+        // If window closes, use external value
         setStateValue(value);
       }
       setVisible(_visible);
@@ -90,10 +90,10 @@ const BaseSelectFooter: FC<SelectCustomWithFooterProps> = (props) => {
           {menu}
           <div className={`${styles.footer} justify-between`}>
             <Button size="mini" className={styles.selectAll} onClick={resetAll}>
-              重置
+              Reset
             </Button>
             <Button size="mini" type="primary" onClick={sure}>
-              确认
+              Confirm
             </Button>
           </div>
         </div>

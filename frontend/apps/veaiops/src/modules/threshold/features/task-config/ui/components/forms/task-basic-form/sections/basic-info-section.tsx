@@ -18,8 +18,8 @@ import { Input, Select } from '@veaiops/components';
 import type React from 'react';
 
 /**
- * Select.Block 数据源类型
- * 根据 @veaiops/components 中 Select.Block 的接口定义
+ * Select.Block data source type
+ * Based on Select.Block interface definition in @veaiops/components
  */
 type SelectDataSource =
   | ((props: {
@@ -38,7 +38,7 @@ type SelectDataSource =
     };
 
 /**
- * 基本信息区块组件参数
+ * Basic information section component parameters
  */
 interface BasicInfoSectionProps {
   form: FormInstance;
@@ -48,7 +48,7 @@ interface BasicInfoSectionProps {
 }
 
 /**
- * 任务基本信息区块
+ * Task basic information section
  */
 export const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
   form,
@@ -58,7 +58,7 @@ export const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
 }) => {
   return (
     <>
-      {/* 任务名称 */}
+      {/* Task name */}
       <Input.Block
         isControl
         inline
@@ -78,7 +78,7 @@ export const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
         }}
       />
 
-      {/* 指标模版 */}
+      {/* Metric template */}
       <Select.Block
         isControl
         inline
@@ -101,7 +101,7 @@ export const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
             _: string | number | undefined,
             option: OptionInfo | (OptionInfo | undefined)[] | undefined,
           ) => {
-            // 处理单个选项的情况
+            // Handle single option case
             const singleOption = Array.isArray(option) ? option[0] : option;
             if (
               singleOption &&
@@ -117,7 +117,7 @@ export const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
         }}
       />
 
-      {/* 项目 */}
+      {/* Project */}
       <Select.Block
         isControl
         inline

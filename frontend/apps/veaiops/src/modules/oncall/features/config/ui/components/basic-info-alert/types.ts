@@ -15,7 +15,7 @@
 import type { Interest } from 'api-generate';
 
 /**
- * 基本信息 Alert 组件属性
+ * Basic info Alert component props
  */
 export interface BasicInfoAlertProps {
   rule: Interest;

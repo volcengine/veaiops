@@ -21,7 +21,7 @@ import type { TimeseriesBackendItem } from './lib/validators';
 import { addThresholdLines, processTimeseriesItem } from './utils';
 
 /**
- * 转换后端返回的时序数据为图表所需格式的参数接口
+ * Parameter interface for converting backend-returned time series data to chart format
  */
 export interface ConvertTimeseriesDataParams {
   backendData: TimeseriesBackendItem[];
@@ -29,10 +29,10 @@ export interface ConvertTimeseriesDataParams {
 }
 
 /**
- * 转换后端返回的时序数据为图表所需格式
+ * Convert backend-returned time series data to chart format
  *
- * @param params - 包含 backendData 和 metric 的参数对象
- * @returns 转换后的图表数据点数组
+ * @param params - Parameter object containing backendData and metric
+ * @returns Converted chart data point array
  */
 export const convertTimeseriesData = ({
   backendData,
@@ -40,15 +40,15 @@ export const convertTimeseriesData = ({
 }: ConvertTimeseriesDataParams): TimeseriesDataPoint[] => {
   const data: TimeseriesDataPoint[] = [];
 
-  // 统计信息（用于调试和监控）
+  // Statistics (for debugging and monitoring)
   let totalSamples = 0;
   const skippedValueCount = 0;
   const skippedTimestampCount = 0;
   let invalidItemCount = 0;
 
-  // 边界检查：metric 必须存在
+  // Boundary check: metric must exist
   if (!metric) {
-    // ✅ 正确：使用 logger 记录错误
+    // ✅ Correct: Use logger to record error
     logger.error({
       message: 'metric is required',
       data: {},
@@ -58,9 +58,9 @@ export const convertTimeseriesData = ({
     return [];
   }
 
-  // 边界检查：backendData 必须是数组
+  // Boundary check: backendData must be an array
   if (!Array.isArray(backendData)) {
-    // ✅ 正确：使用 logger 记录错误
+    // ✅ Correct: Use logger to record error
     logger.error({
       message: 'backendData must be an array',
       data: { backendDataType: typeof backendData },
@@ -70,9 +70,9 @@ export const convertTimeseriesData = ({
     return [];
   }
 
-  // 边界检查：空数组直接返回
+  // Boundary check: Return empty array directly
   if (backendData.length === 0) {
-    // ✅ 正确：使用 logger 记录信息
+    // ✅ Correct: Use logger to record info
     logger.info({
       message: 'backendData is empty',
       data: {},
@@ -82,13 +82,13 @@ export const convertTimeseriesData = ({
     return [];
   }
 
-  // 提取阈值配置
+  // Extract threshold configuration
   const thresholdConfig = extractThresholdConfig(metric);
 
-  // 用于存储所有唯一的时间戳，用于添加阈值线
+  // Used to store all unique timestamps for adding threshold lines
   const allTimestamps = new Set<string>();
 
-  // 边界检查：验证每个时间序列项的有效性
+  // Boundary check: Validate validity of each time series item
   backendData.forEach((item, seriesIndex) => {
     if (!validateTimeseriesItem(item)) {
       invalidItemCount++;
@@ -106,9 +106,9 @@ export const convertTimeseriesData = ({
     totalSamples += item.timestamps.length;
   });
 
-  // 边界检查：如果所有数据都被跳过了
+  // Boundary check: If all data was skipped
   if (allTimestamps.size === 0) {
-    // ✅ 正确：使用 logger 记录警告
+    // ✅ Correct: Use logger to record warning
     logger.warn({
       message: 'All timestamps were skipped',
       data: {
@@ -123,16 +123,16 @@ export const convertTimeseriesData = ({
     return [];
   }
 
-  // 为所有唯一的时间戳添加阈值线
+  // Add threshold lines for all unique timestamps
   const thresholdData = addThresholdLines({
     allTimestamps,
     thresholdConfig,
   });
   data.push(...thresholdData);
 
-  // 边界检查：最终数据不应为空
+  // Boundary check: Final data should not be empty
   if (data.length === 0) {
-    // ✅ 正确：使用 logger 记录警告
+    // ✅ Correct: Use logger to record warning
     logger.warn({
       message: 'Final data array is empty after processing',
       data: {},
@@ -142,15 +142,15 @@ export const convertTimeseriesData = ({
     return [];
   }
 
-  // 按时间戳排序
+  // Sort by timestamp
   try {
     const sortedData = data.sort((a, b) => {
       const timeA = new Date(a.timestamp).getTime();
       const timeB = new Date(b.timestamp).getTime();
 
-      // 边界检查：排序时处理 NaN
+      // Boundary check: Handle NaN during sorting
       if (Number.isNaN(timeA) || Number.isNaN(timeB)) {
-        // ✅ 正确：使用 logger 记录错误
+        // ✅ Correct: Use logger to record error
         logger.error({
           message: 'Invalid timestamp during sorting',
           data: {
@@ -168,13 +168,13 @@ export const convertTimeseriesData = ({
       return timeA - timeB;
     });
 
-    // 输出统计信息
+    // Output statistics
     if (
       skippedValueCount > 0 ||
       skippedTimestampCount > 0 ||
       invalidItemCount > 0
     ) {
-      // ✅ 正确：使用 logger 记录信息
+      // ✅ Correct: Use logger to record info
       logger.info({
         message: 'convertTimeseriesData completed with warnings',
         data: {
@@ -192,7 +192,7 @@ export const convertTimeseriesData = ({
 
     return sortedData;
   } catch (sortError: unknown) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: Use logger to record error and expose actual error information
     const errorObj =
       sortError instanceof Error ? sortError : new Error(String(sortError));
     logger.error({
@@ -205,7 +205,7 @@ export const convertTimeseriesData = ({
       source: 'DataUtils',
       component: 'convertTimeseriesData',
     });
-    // 如果排序失败，返回未排序的数据
+    // If sorting fails, return unsorted data
     return data;
   }
 };

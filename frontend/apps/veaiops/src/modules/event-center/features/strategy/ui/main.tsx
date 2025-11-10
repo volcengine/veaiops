@@ -20,21 +20,21 @@ import { StrategyModal } from './modal';
 import { StrategyTable, type StrategyTableRef } from './table';
 
 /**
- * 策略管理页面
- * 提供策略的增删改查功能 - 使用 CustomTable 和 Zustand 状态管理
+ * Strategy management page
+ * Provides CRUD functionality for strategies - uses CustomTable and Zustand state management
  *
- * 架构特点：
- * - 使用自定义Hook封装业务逻辑
- * - 组件职责单一，易于维护
- * - 状态管理与UI渲染分离
- * - 支持配置化和扩展
- * - 使用CustomTable提供高级表格功能
+ * Architecture features:
+ * - Uses custom Hook to encapsulate business logic
+ * - Single responsibility components, easy to maintain
+ * - State management separated from UI rendering
+ * - Supports configuration and extension
+ * - Uses CustomTable to provide advanced table functionality
  */
 const StrategyManagement: React.FC = () => {
-  // 表格引用（用于获取刷新函数，用于表单提交后刷新）
+  // Table reference (used to get refresh function, for refreshing after form submission)
   const tableRef = useRef<StrategyTableRef>(null);
 
-  // 获取表格刷新函数（用于表单提交后刷新）
+  // Get table refresh function (for refreshing after form submission)
   const getRefreshTable = useCallback(async (): Promise<boolean> => {
     if (tableRef.current?.refresh) {
       const result = await tableRef.current.refresh();
@@ -56,15 +56,15 @@ const StrategyManagement: React.FC = () => {
     return false;
   }, []);
 
-  // 使用自定义Hook获取所有业务逻辑
-  // 注意：删除操作的刷新已由 useBusinessTable 自动处理，getRefreshTable 仅用于表单提交后刷新
+  // Use custom Hook to get all business logic
+  // Note: Refresh for delete operation is automatically handled by useBusinessTable, getRefreshTable is only used for refreshing after form submission
   const {
-    // 状态
+    // State
     modalVisible,
     editingStrategy,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,
@@ -74,8 +74,8 @@ const StrategyManagement: React.FC = () => {
 
   return (
     <>
-      {/* 策略表格组件 - 使用CustomTable */}
-      {/* 注意：删除操作的刷新已由 useBusinessTable 自动处理，refreshTable 仅用于表单提交后刷新 */}
+      {/* Strategy table component - uses CustomTable */}
+      {/* Note: Refresh for delete operation is automatically handled by useBusinessTable, refreshTable is only used for refreshing after form submission */}
       <StrategyTable
         ref={tableRef}
         onEdit={handleEdit}
@@ -83,7 +83,7 @@ const StrategyManagement: React.FC = () => {
         onAdd={handleAdd}
       />
 
-      {/* 策略弹窗组件 */}
+      {/* Strategy modal component */}
       <StrategyModal
         visible={modalVisible}
         editingStrategy={editingStrategy}

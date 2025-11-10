@@ -31,3 +31,4 @@ export interface EventHandlersContext {
   logger: typeof logger;
   addDebugLog: (action: string, data: any) => void;
 }
+

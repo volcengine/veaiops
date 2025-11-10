@@ -15,10 +15,10 @@
 import type { BaseQuery, FieldItem, HandleFilterProps } from '@veaiops/components';
 
 /**
- * 获取项目表格筛选器配置
+ * Get project table filter configuration
  *
- * 注意：后端只支持 name 参数筛选（veaiops/handler/routers/apis/v1/system_config/project.py）
- * 不支持 project_id 和 is_active 参数，因此只保留 name 筛选器
+ * Note: Backend only supports name parameter filtering (veaiops/handler/routers/apis/v1/system_config/project.py)
+ * Does not support project_id and is_active parameters, so only keep name filter
  */
 export const getProjectTableFilters = (
   props: HandleFilterProps<BaseQuery>,

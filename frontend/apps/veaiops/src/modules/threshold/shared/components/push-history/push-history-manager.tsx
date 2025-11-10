@@ -22,13 +22,13 @@ import { PushHistoryTable } from './push-history-table';
 import type { PushHistoryManagerProps, PushHistoryRecord } from './types';
 
 /**
- * 通用推送历史管理组件
- * @description 提供推送历史的查看和管理功能，支持根据模块类型进行过滤
+ * Generic push history management component
+ * @description Provides push history viewing and management functionality, supports filtering by module type
  *
- * 重构说明：
- * - 使用 shared 目录下的 PushHistoryTable 组件
- * - 使用正确的 Hook 和配置
- * - 提供完整的事件详情查看功能
+ * Refactoring notes:
+ * - Use PushHistoryTable component from shared directory
+ * - Use correct Hooks and configuration
+ * - Provide complete event detail viewing functionality
  */
 const PushHistoryManager: React.FC<PushHistoryManagerProps> = ({
   moduleType,
@@ -39,7 +39,7 @@ const PushHistoryManager: React.FC<PushHistoryManagerProps> = ({
   const [detailDrawerVisible, setDetailDrawerVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<Event | null>(null);
 
-  // 根据路由自动判断模块类型
+  // Automatically determine module type based on route
   const detectedModuleType = useMemo(() => {
     if (moduleType) {
       return moduleType;
@@ -49,7 +49,7 @@ const PushHistoryManager: React.FC<PushHistoryManagerProps> = ({
   }, [moduleType, location.pathname]);
 
   /**
-   * 将推送历史记录转换为事件详情组件可处理的格式
+   * Transform push history record to format processable by event detail component
    */
   const transformPushRecordToEvent = useCallback(
     (pushRecord: PushHistoryRecord) => {
@@ -60,7 +60,7 @@ const PushHistoryManager: React.FC<PushHistoryManagerProps> = ({
           '',
         agent_type: pushRecord.agent_type || 'unknown',
         event_level: pushRecord.event_level || 'P2',
-        status: pushRecord.status === 3 ? 1 : 0, // 3表示成功，其他表示失败
+        status: pushRecord.status === 3 ? 1 : 0, // 3 means success, others mean failure
         raw_data: pushRecord.raw_data || pushRecord,
         created_at: pushRecord.created_at,
         updated_at: pushRecord.updated_at,
@@ -76,8 +76,8 @@ const PushHistoryManager: React.FC<PushHistoryManagerProps> = ({
   );
 
   /**
-   * 查看详情
-   * 🔧 使用 useCallback 避免每次渲染都创建新函数
+   * View detail
+   * 🔧 Use useCallback to avoid creating new function on every render
    */
   const handleViewDetail = useCallback(
     (record: PushHistoryRecord) => {
@@ -89,8 +89,8 @@ const PushHistoryManager: React.FC<PushHistoryManagerProps> = ({
   );
 
   /**
-   * 关闭详情抽屉
-   * 🔧 使用 useCallback 避免每次渲染都创建新函数
+   * Close detail drawer
+   * 🔧 Use useCallback to avoid creating new function on every render
    */
   const handleCloseDetail = useCallback(() => {
     setDetailDrawerVisible(false);
@@ -99,7 +99,7 @@ const PushHistoryManager: React.FC<PushHistoryManagerProps> = ({
 
   return (
     <>
-      {/* 推送历史表格 */}
+      {/* Push history table */}
       <PushHistoryTable
         moduleType={detectedModuleType}
         title="历史事件"
@@ -108,7 +108,7 @@ const PushHistoryManager: React.FC<PushHistoryManagerProps> = ({
         onViewDetail={handleViewDetail}
       />
 
-      {/* 事件详情抽屉 */}
+      {/* Event detail drawer */}
       <HistoryDetailDrawer
         visible={detailDrawerVisible}
         selectedRecord={selectedRecord}

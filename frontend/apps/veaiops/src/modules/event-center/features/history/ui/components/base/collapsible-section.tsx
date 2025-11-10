@@ -14,15 +14,15 @@
 
 import { Button, Card, Typography } from '@arco-design/web-react';
 import { IconClose, IconEye } from '@arco-design/web-react/icon';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge same-source imports
 import { type CollapsibleSectionProps, STYLES } from '@ec/shared';
 import type React from 'react';
 
 const { Title } = Typography;
 
 /**
- * 可折叠章节组件
- * 提供可展开/折叠的内容区域
+ * Collapsible section component
+ * Provides expandable/collapsible content area
  */
 export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   title,

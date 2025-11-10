@@ -13,25 +13,25 @@
 // limitations under the License.
 
 /**
- * 策略弹窗组件统一导出
+ * Strategy modal component unified export
  *
- * 目录结构：
- * - component.tsx  - 主组件（101 lines）
- * - hooks/         - 业务逻辑 Hooks
- * - sections/      - UI 区块组件
- * - types.ts       - 类型定义
+ * Directory structure:
+ * - component.tsx  - Main component (101 lines)
+ * - hooks/         - Business logic Hooks
+ * - sections/      - UI block components
+ * - types.ts       - Type definitions
  */
 
-// ✅ 主组件
+// ✅ Main component
 export { default, StrategyModal } from './component';
 
-// ✅ 类型定义
+// ✅ Type definitions
 export type { StrategyModalProps } from './types';
 
-// ✅ Hooks（可选导出，供外部使用）
+// ✅ Hooks (optional export, for external use)
 export { useFormLogic, type UseFormLogicResult } from './hooks';
 
-// ✅ 区块组件（可选导出，供外部使用）
+// ✅ Block components (optional export, for external use)
 export {
   CardTemplateConfigMessage,
   FormFields,

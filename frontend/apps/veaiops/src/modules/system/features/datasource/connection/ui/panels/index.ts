@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 面板相关组件导出
+ * Panel related component exports
  */
 
 export {

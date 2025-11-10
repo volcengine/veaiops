@@ -15,6 +15,7 @@
 import apiClient from '@/utils/api-client';
 import {
   Button,
+  DatePicker,
   Descriptions,
   Drawer,
   Input,
@@ -32,15 +33,16 @@ import {
   IconRefresh,
   IconSearch,
 } from '@arco-design/web-react/icon';
-import { CellRender, RangePicker } from '@veaiops/components';
+import { CellRender } from '@veaiops/components';
 import { AgentType, EventLevel } from 'api-generate';
 import type { Event } from 'api-generate';
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 
+const { RangePicker } = DatePicker;
 const { Option } = Select;
 const { Title, Text } = Typography;
-const { CustomOutlineTag, StampTime } = CellRender;
+const { CustomOutlineTag } = CellRender;
 
 export const EventCenterHistoryPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -100,7 +102,6 @@ export const EventCenterHistoryPage: React.FC = () => {
   }, [fetchEventHistory]);
 
   // Event table column definitions
-  // ✅ Zero-intrusion design: No need to manually add useTimezone, StampTime component handles it automatically
   const eventColumns: ColumnProps<Event>[] = [
     {
       title: '事件ID',
@@ -150,13 +151,15 @@ export const EventCenterHistoryPage: React.FC = () => {
       dataIndex: 'created_at',
       width: 160,
       sorter: true,
-      render: (value: string) => <StampTime time={value} />,
+      render: (value: string) =>
+        value ? new Date(value).toLocaleString() : '-',
     },
     {
       title: '更新时间',
       dataIndex: 'updated_at',
       width: 160,
-      render: (value: string) => <StampTime time={value} />,
+      render: (value: string) =>
+        value ? new Date(value).toLocaleString() : '-',
     },
     {
       title: '操作',

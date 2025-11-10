@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== 数据源函数导出 ====================
+// ==================== Data source function exports ====================
 export {
   getAliyunContactGroupDataSource,
   getVolcengineAlertMethodsDataSource,
@@ -22,7 +22,7 @@ export {
   getZabbixMediatypeDataSource,
 } from './lib';
 
-// ==================== 类型导出 ====================
+// ==================== Type exports ====================
 export type {
   DataSourceOption,
   DataSourceSetter,

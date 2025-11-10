@@ -15,7 +15,7 @@
 import type { PerformanceAnalysis } from './types';
 
 /**
- * 分析性能
+ * Analyze performance
  */
 export function analyzePerformance(): PerformanceAnalysis {
   const analysis: PerformanceAnalysis = {
@@ -25,7 +25,7 @@ export function analyzePerformance(): PerformanceAnalysis {
   };
 
   try {
-    // 获取页面加载时间
+    // Get page load time
     if (performance.timing) {
       analysis.timing = {
         loadTime:
@@ -42,7 +42,7 @@ export function analyzePerformance(): PerformanceAnalysis {
       };
     }
 
-    // 获取内存使用情况
+    // Get memory usage
     if ((performance as any).memory) {
       analysis.memory = {
         usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
@@ -51,12 +51,12 @@ export function analyzePerformance(): PerformanceAnalysis {
       };
     }
 
-    // 检查是否有长时间运行的任务
+    // Check for long-running tasks
     const longTasks = performance.getEntriesByType('longtask');
     if (longTasks.length > 0) {
       analysis.issues.push({
         type: 'long_task',
-        message: '发现长时间运行的任务',
+        message: 'Found long-running tasks',
         severity: 'warning',
         tasks: longTasks.map((task) => ({
           duration: task.duration,
@@ -66,10 +66,10 @@ export function analyzePerformance(): PerformanceAnalysis {
     }
   } catch (error) {
     const errorMessage =
-      error instanceof Error ? error.message : '性能分析失败';
+      error instanceof Error ? error.message : 'Performance analysis failed';
     analysis.issues.push({
       type: 'performance_analysis_error',
-      message: `性能分析失败: ${errorMessage}`,
+      message: `Performance analysis failed: ${errorMessage}`,
       severity: 'error',
       error: (error as Error).message,
     });

@@ -13,12 +13,13 @@
 // limitations under the License.
 
 /**
- * 实例选择步骤日志管理Hook
- * @description 处理实例选择相关的日志收集和导出
+ * Instance selection step log management Hook
+ * @description Handles log collection and export related to instance selection
  * @author AI Assistant
  * @date 2025-01-16
  */
 
+import { exportLogsToFile } from '@veaiops/utils';
 import type {
   Connect,
   ZabbixHost,
@@ -34,7 +35,7 @@ import type {
   VolcengineMetric,
 } from '../../../types';
 
-// 定义 ZabbixMetric 类型别名
+// Define ZabbixMetric type alias
 type ZabbixMetric = ZabbixTemplateMetric;
 
 export interface UseInstanceLogsProps {
@@ -44,7 +45,7 @@ export interface UseInstanceLogsProps {
   selectedZabbixMetric?: ZabbixMetric | null;
   selectedAliyunMetric?: AliyunMetric | null;
   selectedVolcengineMetric?: VolcengineMetric | null;
-  // 实例数据
+  // Instance data
   zabbixHosts?: ZabbixHost[];
   aliyunInstances?: AliyunInstance[];
   volcengineInstances?: VolcengineInstance[];
@@ -136,9 +137,9 @@ export const useInstanceLogs = ({
       },
     };
 
-    // 记录日志到系统
+    // Log to system
 
-    // 导出日志文件
+    // Export log file
     exportLogsToFile(
       `instance-selection-logs-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.log`,
     );

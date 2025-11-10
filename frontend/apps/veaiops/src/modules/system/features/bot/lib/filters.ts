@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * Bot管理筛选配置
+ * Bot management filter configuration
  */
 import { channelTypeOptions } from '@/modules/event-center/features/strategy/constants/options';
 import type { FieldItem, HandleFilterProps } from '@veaiops/components';
 
 /**
- * 筛选配置接口
+ * Filter configuration interface
  */
 export interface BotFilters {
   status?: string;
@@ -28,17 +28,17 @@ export interface BotFilters {
 }
 
 /**
- * 默认筛选配置
- * 默认选择飞书作为企业协同工具
+ * Default filter configuration
+ * Default to Lark as enterprise collaboration tool
  */
 export const DEFAULT_BOT_FILTERS: BotFilters = {
   status: '',
-  channel: 'Lark', // 默认选择飞书
+  channel: 'Lark', // Default to Lark
   keyword: '',
 };
 
 /**
- * Bot筛选配置 - CustomTable标准格式
+ * Bot filter configuration - CustomTable standard format
  */
 export const getBotFilters = ({
   query,
@@ -51,10 +51,10 @@ export const getBotFilters = ({
   return [
     // {
     //   field: 'agent_type',
-    //   label: '智能体',
+    //   label: 'Agent',
     //   type: 'Select',
     //   componentProps: {
-    //     placeholder: '请选择智能体',
+    //     placeholder: 'Please select agent',
     //     value: query?.agent_type as string[] | undefined,
     //     options: AGENT_TYPE_OPTIONS,
     //     onChange: (v: string[]) => {

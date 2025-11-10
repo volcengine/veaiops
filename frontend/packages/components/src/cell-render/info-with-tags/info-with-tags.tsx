@@ -14,7 +14,7 @@
 
 import type { FC } from 'react';
 
-// 组件
+// Components
 import {
   CellInfoWithCode,
   type CellInfoWithCodeProps,

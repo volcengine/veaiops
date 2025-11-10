@@ -18,7 +18,7 @@ import type React from 'react';
 const { Title } = Typography;
 
 /**
- * Zabbix配置详情
+ * Zabbix configuration details section
  */
 export const ZabbixDetailSection: React.FC = () => (
   <div className="mt-4">
@@ -40,7 +40,7 @@ export const ZabbixDetailSection: React.FC = () => (
 );
 
 /**
- * 阿里云配置详情
+ * Aliyun configuration details section
  */
 export const AliyunDetailSection: React.FC = () => (
   <div className="mt-4">
@@ -62,7 +62,7 @@ export const AliyunDetailSection: React.FC = () => (
 );
 
 /**
- * 火山引擎配置详情
+ * Volcengine configuration details section
  */
 export const VolcengineDetailSection: React.FC = () => (
   <div className="mt-4">

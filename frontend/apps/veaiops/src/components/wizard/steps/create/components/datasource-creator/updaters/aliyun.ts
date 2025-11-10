@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 阿里云数据源更新函数
+ * Aliyun data source update function
  */
 
 import type { WizardState } from '@/components/wizard/types';
@@ -30,7 +30,7 @@ export const updateAliyunDataSource = async (
   const config: AliyunDataSourceConfig = {
     name: state.dataSourceName,
     connect_name: state.selectedConnect!.name,
-    // 从 state.aliyun.region 读取（用户在连接选择步骤输入）
+    // Read from state.aliyun.region (entered by user in connection selection step)
     region: state.aliyun.region || 'cn-beijing',
     namespace: state.aliyun.selectedMetric!.namespace,
     metric_name: state.aliyun.selectedMetric!.metricName,
@@ -38,7 +38,7 @@ export const updateAliyunDataSource = async (
       state.aliyun.selectedInstances.length > 0
         ? state.aliyun.selectedInstances.map((instance) => instance.dimensions)
         : undefined,
-    // 添加分组维度
+    // Add grouping dimensions
     group_by:
       state.aliyun.selectedGroupBy.length > 0
         ? state.aliyun.selectedGroupBy

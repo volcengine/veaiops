@@ -15,7 +15,7 @@
 import type { FormInstance } from '@arco-design/web-react/es/Form';
 
 /**
- * 任务基本信息表单组件Props
+ * Task basic information form component Props
  */
 export interface TaskBasicFormProps {
   form: FormInstance;

@@ -16,27 +16,27 @@ import type { CascaderProps } from '@arco-design/web-react/es/Cascader/interface
 import type { SelectProps } from '@arco-design/web-react/es/Select/interface';
 import { IconDown } from '@arco-design/web-react/icon';
 
-// 这些常量已移动到 form-control/wrapper/constants.ts 中
-// 避免重复导出，请从 form-control/wrapper 模块导入
+// These constants have been moved to form-control/wrapper/constants.ts
+// To avoid duplicate exports, please import from form-control/wrapper module
 
 export const commonSelectProps: Partial<SelectProps> = {
   className: 'w-default-control',
   showSearch: true,
   allowClear: true,
   arrowIcon: <IconDown />,
-  placeholder: '请选择',
+  placeholder: 'Please select',
 };
 
 export const commonCascaderProps: Partial<CascaderProps> = {
   className: 'w-default-control',
   showSearch: true,
   allowClear: true,
-  placeholder: '请选择',
+  placeholder: 'Please select',
 };
 
 export const commonInputProps = {
   className: 'w-default-control',
-  placeholder: '请输入',
+  placeholder: 'Please enter',
   autoComplete: 'off',
   allowClear: true,
   style: { width: '100%' },
@@ -44,13 +44,13 @@ export const commonInputProps = {
 
 export const commonInputNumberProps = {
   className: 'w-default-control',
-  placeholder: '请输入',
+  placeholder: 'Please enter',
 };
 
 export const smallInputProps = {
   ...commonInputProps,
   style: {
-    width: 200, // SMALL_CONTROL_WIDTH 的值
+    width: 200, // Value of SMALL_CONTROL_WIDTH
   },
 };
 
@@ -59,7 +59,7 @@ export const commonInputTextAreaProps = {
   wrapperStyle: {
     width: 'inherit',
   },
-  placeholder: '请输入',
+  placeholder: 'Please enter',
   allowClear: true,
 };
 
@@ -69,13 +69,11 @@ export const commonDateRangePickerProps = {
 };
 
 /**
- * 表单项常量定义
- * @description 提供表单项相关的常量配置
-
- *
+ * Form item constant definitions
+ * @description Provides form item related constant configurations
  */
 
-/** 表单项类型枚举 */
+/** Form item type enumeration */
 export const FORM_ITEM_TYPES = {
   INPUT: 'input',
   SELECT: 'select',
@@ -89,7 +87,7 @@ export const FORM_ITEM_TYPES = {
   SWITCH: 'switch',
 } as const;
 
-/** 表单项验证规则类型 */
+/** Form item validation rule types */
 export const VALIDATION_TYPES = {
   REQUIRED: 'required',
   EMAIL: 'email',
@@ -101,7 +99,7 @@ export const VALIDATION_TYPES = {
   PATTERN: 'pattern',
 } as const;
 
-/** 表单项尺寸 */
+/** Form item size */
 export const FORM_ITEM_SIZES = {
   MINI: 'mini',
   SMALL: 'small',
@@ -109,14 +107,14 @@ export const FORM_ITEM_SIZES = {
   LARGE: 'large',
 } as const;
 
-/** 表单布局类型 */
+/** Form layout type */
 export const FORM_LAYOUTS = {
   HORIZONTAL: 'horizontal',
   VERTICAL: 'vertical',
   INLINE: 'inline',
 } as const;
 
-/** 表单项状态 */
+/** Form item status */
 export const FORM_ITEM_STATUS = {
   DEFAULT: 'default',
   ERROR: 'error',
@@ -124,7 +122,7 @@ export const FORM_ITEM_STATUS = {
   SUCCESS: 'success',
 } as const;
 
-// 类型导出
+// Type exports
 export type FormItemType =
   (typeof FORM_ITEM_TYPES)[keyof typeof FORM_ITEM_TYPES];
 export type ValidationType =

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Bot 属性辅助 Hooks 统一导出
+ * Bot attribute helper Hooks unified export
  */
 
 export { useCreateAttribute } from './create';

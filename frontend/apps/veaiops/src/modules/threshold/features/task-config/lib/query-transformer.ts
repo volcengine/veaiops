@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 查询转换器
- * 用于转换前端查询参数到API参数
+ * Query transformer
+ * Used to convert frontend query parameters to API parameters
  */
 
 /**
- * 转换表格查询参数到API参数
- * @param params 表格查询参数
- * @returns API查询参数
+ * Transform table query parameters to API parameters
+ * @param params Table query parameters
+ * @returns API query parameters
  */
 export const transformTableQueryToApi = (params: any): any => {
   const {
@@ -37,7 +37,7 @@ export const transformTableQueryToApi = (params: any): any => {
     ...otherParams,
   };
 
-  // 处理排序
+  // Handle sorting
   if (sorter) {
     const { field, order } = sorter;
     if (field && order) {
@@ -45,7 +45,7 @@ export const transformTableQueryToApi = (params: any): any => {
     }
   }
 
-  // 处理过滤器
+  // Handle filters
   Object.keys(filters).forEach((key) => {
     const value = filters[key];
     if (value !== undefined && value !== null && value !== "") {
@@ -61,9 +61,9 @@ export const transformTableQueryToApi = (params: any): any => {
 };
 
 /**
- * 转换API响应到表格数据格式
- * @param response API响应
- * @returns 表格数据格式
+ * Transform API response to table data format
+ * @param response API response
+ * @returns Table data format
  */
 export const transformApiResponseToTable = (response: any) => {
   const { data, total, page, page_size } = response;
@@ -77,14 +77,14 @@ export const transformApiResponseToTable = (response: any) => {
 };
 
 /**
- * 转换表单数据到API数据
- * @param formData 表单数据
- * @returns API数据
+ * Transform form data to API data
+ * @param formData Form data
+ * @returns API data
  */
 export const transformFormDataToApi = (formData: any) => {
   const apiData = { ...formData };
 
-  // 处理特殊字段转换
+  // Handle special field conversion
   if (apiData.datasource_type) {
     apiData.datasource_type = apiData.datasource_type.toUpperCase();
   }
@@ -93,7 +93,7 @@ export const transformFormDataToApi = (formData: any) => {
     apiData.direction = apiData.direction.toUpperCase();
   }
 
-  // 处理数组字段
+  // Handle array fields
   if (apiData.projects && Array.isArray(apiData.projects)) {
     apiData.projects = apiData.projects.join(",");
   }
@@ -110,14 +110,14 @@ export const transformFormDataToApi = (formData: any) => {
 };
 
 /**
- * 转换API数据到表单数据
- * @param apiData API数据
- * @returns 表单数据
+ * Transform API data to form data
+ * @param apiData API data
+ * @returns Form data
  */
 export const transformApiDataToForm = (apiData: any) => {
   const formData = { ...apiData };
 
-  // 处理字符串字段转换为数组
+  // Handle string fields converted to arrays
   if (formData.projects && typeof formData.projects === "string") {
     formData.projects = formData.projects.split(",").filter(Boolean);
   }
@@ -134,9 +134,9 @@ export const transformApiDataToForm = (apiData: any) => {
 };
 
 /**
- * 构建查询URL参数
- * @param params 查询参数
- * @returns URL参数字符串
+ * Build query URL parameters
+ * @param params Query parameters
+ * @returns URL parameter string
  */
 export const buildQueryParams = (params: Record<string, any>): string => {
   const searchParams = new URLSearchParams();
@@ -156,28 +156,28 @@ export const buildQueryParams = (params: Record<string, any>): string => {
 };
 
 /**
- * 解析URL查询参数
- * @param search URL查询字符串
- * @returns 解析后的参数对象
+ * Parse URL query parameters
+ * @param search URL query string
+ * @returns Parsed parameter object
  */
 export const parseQueryParams = (search: string): Record<string, any> => {
   const params: Record<string, any> = {};
   const searchParams = new URLSearchParams(search);
 
   searchParams.forEach((value, key) => {
-    // 尝试解析为数字
+    // Try to parse as number
     if (!isNaN(Number(value))) {
       params[key] = Number(value);
     }
-    // 尝试解析为布尔值
+    // Try to parse as boolean
     else if (value === "true" || value === "false") {
       params[key] = value === "true";
     }
-    // 尝试解析为数组（逗号分隔）
+    // Try to parse as array (comma-separated)
     else if (value.includes(",")) {
       params[key] = value.split(",").filter(Boolean);
     }
-    // 默认为字符串
+    // Default to string
     else {
       params[key] = value;
     }

@@ -15,7 +15,7 @@
 import type React from 'react';
 
 /**
- * 路由配置接口
+ * Route configuration interface
  */
 export interface RouteConfig {
   path: string;
@@ -23,24 +23,24 @@ export interface RouteConfig {
   title: string;
   requireAuth: boolean;
   meta?: {
-    /** 页面描述 */
+    /** Page description */
     description?: string;
-    /** 页面关键词 */
+    /** Page keywords */
     keywords?: string[];
-    /** 是否缓存页面 */
+    /** Whether to cache page */
     keepAlive?: boolean;
-    /** 页面权限 */
+    /** Page permissions */
     permissions?: string[];
   };
 }
 
 /**
- * 懒加载组件类型
+ * Lazy loaded component type
  */
 export type LazyComponent = React.LazyExoticComponent<React.ComponentType<any>>;
 
 /**
- * 路由配置项类型
+ * Route configuration item type
  */
 export interface RouteConfigItem {
   path: string;

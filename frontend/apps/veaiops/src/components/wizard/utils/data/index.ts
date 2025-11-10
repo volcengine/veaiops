@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据处理相关功能统一导出
- * @description 包含数据预填充、数据转换等
+ * Data processing related functionality unified export
+ * @description Includes data prefilling, data transformation, etc.
  */
 
 export * from './prefill';

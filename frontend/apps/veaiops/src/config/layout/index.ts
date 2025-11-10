@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出配置
+// Export configuration
 export { layoutConfig } from './layout-config';
 export { moduleConfig } from './layout-config';
 
-// 导出hooks
+// Export hooks
 export { useLayout } from './layout-hooks';
 
-// 导出工具函数
+// Export utility functions
 export { layoutUtils } from './layout-utils';
 
-// 导出类型
+// Export types
 export type { LayoutState } from './types';

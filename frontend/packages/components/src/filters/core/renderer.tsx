@@ -21,14 +21,14 @@ import { ERROR_MESSAGES, commonClassName } from './constants';
 import type { FieldItem } from './types';
 import { hijackComponentProps, processLabelAsComponentProp } from './utils';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 /**
- * 使用插件系统渲染字段组件
- * @param field 字段配置
- * @param context 插件上下文
- * @returns 渲染的React节点
+ * Render field component using plugin system
+ * @param field - Field configuration
+ * @param context - Plugin context
+ * @returns - Rendered React node
  */
 export const renderField = (
   field: FieldItem,
@@ -36,17 +36,17 @@ export const renderField = (
 ): ReactNode => {
   const { type } = field;
 
-  // ✅ 步骤 1: 处理 label 到 addBefore/prefix 的转换
+  // ✅ Step 1: Process label to addBefore/prefix conversion
   const processedComponentProps = processLabelAsComponentProp(field);
 
-  // 添加详细日志
+  // Add detailed logging
   if (process.env.NODE_ENV === 'development') {
     const isSelectType = type === 'select' || type === 'Select';
     const hasOptions =
       processedComponentProps && 'options' in processedComponentProps;
     const options = hasOptions ? processedComponentProps.options : undefined;
 
-    console.info('[Filters/renderField] 渲染字段', {
+    console.info('[Filters/renderField] Rendering field', {
       type,
       field: field.field,
       label: field.label,
@@ -55,12 +55,12 @@ export const renderField = (
       componentPropsKeys: processedComponentProps
         ? Object.keys(processedComponentProps)
         : [],
-      // 🔧 特别追踪 label 转换结果
+      // 🔧 Specifically track label conversion result
       addBefore: processedComponentProps?.addBefore,
       prefix: processedComponentProps?.prefix,
       addAfter: processedComponentProps?.addAfter,
       suffix: processedComponentProps?.suffix,
-      // 🔧 特别追踪 Select 组件的 options
+      // 🔧 Specifically track Select component options
       isSelectType,
       hasOptions,
       optionsLength: Array.isArray(options) ? options.length : 0,
@@ -72,33 +72,33 @@ export const renderField = (
     });
   }
 
-  // 验证字段类型
+  // Validate field type
   if (!type) {
-    console.error('[Filters/renderField] 字段类型缺失', { field });
+    console.error('[Filters/renderField] Field type missing', { field });
     return (
       <CustomOutlineTag>{ERROR_MESSAGES.FIELD_TYPE_REQUIRED}</CustomOutlineTag>
     );
   }
 
-  // ✅ 步骤 2: 劫持组件属性（在 label 转换之后）
+  // ✅ Step 2: Hijack component props (after label conversion)
   const hijackedProps = hijackComponentProps(processedComponentProps);
 
-  // 解析命名空间类型（如 Select.Account）
+  // Parse namespaced type (e.g., Select.Account)
   const [mainType, subType] = type.split('.');
   const pluginType = subType ? mainType : type;
 
-  // 尝试从插件注册器获取插件
+  // Try to get plugin from plugin registry
   const plugin = filterPluginRegistry.get(pluginType);
 
   if (!plugin) {
-    console.error('[Filters/renderField] 插件未找到', {
+    console.error('[Filters/renderField] Plugin not found', {
       pluginType,
       type,
       field: field.field,
       availablePlugins: Array.from(filterPluginRegistry.getAll().keys()),
     });
 
-    // 使用 Unsupported 插件作为 fallback
+    // Use Unsupported plugin as fallback
     const fallbackPlugin = filterPluginRegistry.get('Unsupported');
     if (fallbackPlugin) {
       const safeComponentProps = processedComponentProps || {};
@@ -116,7 +116,7 @@ export const renderField = (
   }
 
   if (process.env.NODE_ENV === 'development') {
-    console.info('[Filters/renderField] 找到插件', {
+    console.info('[Filters/renderField] Plugin found', {
       pluginType,
       pluginName: plugin.name,
       pluginVersion: plugin.version,
@@ -124,17 +124,17 @@ export const renderField = (
   }
 
   try {
-    // ✅ 使用处理后的 componentProps（已包含 label 转换）
+    // ✅ Use processed componentProps (includes label conversion)
     const safeComponentProps = processedComponentProps || {};
 
-    // 验证插件配置
+    // Validate plugin configuration
     if (plugin.validateConfig && !plugin.validateConfig(safeComponentProps)) {
       return (
         <CustomOutlineTag>{ERROR_MESSAGES.INVALID_CONFIG}</CustomOutlineTag>
       );
     }
 
-    // 渲染插件组件
+    // Render plugin component
     return plugin.render({
       field,
       componentProps: safeComponentProps,
@@ -142,11 +142,11 @@ export const renderField = (
       context,
     });
   } catch (error) {
-    // ✅ 正确：记录错误日志，透出实际错误信息
+    // ✅ Correct: Log error with actual error information
     const errorMessage = error instanceof Error ? error.message : String(error);
     filterLogger.error({
       component: 'renderField',
-      message: `字段渲染失败: ${errorMessage}`,
+      message: `Field rendering failed: ${errorMessage}`,
       data: {
         field: field.field,
         fieldType: field.type,
@@ -160,9 +160,9 @@ export const renderField = (
 };
 
 /**
- * 渲染操作按钮列表
- * @param actions 操作按钮数组
- * @returns 渲染的操作按钮容器
+ * Render action buttons list
+ * @param actions - Action buttons array
+ * @returns - Rendered action buttons container
  */
 export const renderActions = (actions: ReactNode[] = []): ReactNode => (
   <div className={commonClassName}>
@@ -173,18 +173,18 @@ export const renderActions = (actions: ReactNode[] = []): ReactNode => (
 );
 
 /**
- * 渲染单个字段（包含可见性检查）
- * @param field 字段配置
- * @param context 插件上下文
- * @param key 字段键
- * @returns 渲染的字段节点或null
+ * Render single field (includes visibility check)
+ * @param field - Field configuration
+ * @param context - Plugin context
+ * @param key - Field key
+ * @returns - Rendered field node or null
  */
 export const renderSingleField = (
   field: FieldItem,
   context?: FilterPluginContext,
   key?: string,
 ): ReactNode => {
-  // 检查字段可见性
+  // Check field visibility
   if (field.visible === false) {
     return null;
   }
@@ -195,10 +195,10 @@ export const renderSingleField = (
 };
 
 /**
- * 渲染字段列表
- * @param fields 字段配置列表
- * @param context 插件上下文
- * @returns 渲染的字段列表
+ * Render field list
+ * @param fields - Field configuration list
+ * @param context - Plugin context
+ * @returns - Rendered field list
  */
 export const renderFieldList = (
   fields: FieldItem[],
@@ -212,10 +212,10 @@ export const renderFieldList = (
 };
 
 /**
- * 渲染错误边界组件
- * @param error 错误信息
- * @param componentType 组件类型
- * @returns 错误显示组件
+ * Render error boundary component
+ * @param error - Error message
+ * @param componentType - Component type
+ * @returns - Error display component
  */
 export const renderErrorBoundary = (
   error: string,
@@ -226,10 +226,10 @@ export const renderErrorBoundary = (
 };
 
 /**
- * 渲染警告组件
- * @param warning 警告信息
- * @param componentType 组件类型
- * @returns 警告显示组件
+ * Render warning component
+ * @param warning - Warning message
+ * @param componentType - Component type
+ * @returns - Warning display component
  */
 export const renderWarning = (
   warning: string,

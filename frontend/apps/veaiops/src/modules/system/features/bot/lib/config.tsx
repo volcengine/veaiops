@@ -17,13 +17,13 @@ import { IconPlus } from "@arco-design/web-react/icon";
 import React from "react";
 
 /**
- * Bot管理页面配置
+ * Bot management page configuration
  */
 export const BOT_MANAGEMENT_CONFIG = {
-  // 页面标题
+  // Page title
   title: "群聊机器人管理",
 
-  // 表格配置
+  // Table configuration
   table: {
     scroll: { x: 1200 },
     pagination: {
@@ -34,7 +34,7 @@ export const BOT_MANAGEMENT_CONFIG = {
     },
   },
 
-  // 操作按钮配置
+  // Action button configuration
   actions: {
     add: {
       text: "新增Bot",
@@ -43,14 +43,14 @@ export const BOT_MANAGEMENT_CONFIG = {
     },
   },
 
-  // 表单配置
+  // Form configuration
   form: {
     layout: "vertical" as const,
     labelCol: { span: 24 },
     wrapperCol: { span: 24 },
   },
 
-  // 消息配置
+  // Message configuration
   messages: {
     create: {
       success: "机器人创建成功",
@@ -74,12 +74,12 @@ export const BOT_MANAGEMENT_CONFIG = {
 } as const;
 
 /**
- * 消息常量导出（方便其他文件导入使用）
+ * Message constants export (for easy import in other files)
  */
 export const BOT_MESSAGES = BOT_MANAGEMENT_CONFIG.messages;
 
 /**
- * 创建操作按钮配置
+ * Create action button configuration
  */
 export const createActionButtons = (onAdd: () => void): React.ReactNode[] => [
   <Button
@@ -93,7 +93,7 @@ export const createActionButtons = (onAdd: () => void): React.ReactNode[] => [
 ];
 
 /**
- * 获取表格属性配置
+ * Get table properties configuration
  */
 export const getTableProps = () => ({
   ...BOT_MANAGEMENT_CONFIG.table,

@@ -16,19 +16,19 @@ import { createTableRequestWrapper } from "@veaiops/utils";
 import { metricTemplateApi } from "./api-service";
 
 /**
- * 获取指标模板列表
- * @param params - 包含分页和过滤参数的对象
+ * Fetch metric template list
+ * @param params - Object containing pagination and filter parameters
  */
 const fetchMetricTemplateList = async (params: Record<string, any>) => {
-  // 从参数中提取查询条件
+  // Extract query conditions from parameters
   const { name, metricType, skip, limit } = params;
 
-  // 获取所有数据（因为后端不支持过滤，我们需要在前端过滤）
-  // 使用一个较大的limit来获取所有数据
+  // Fetch all data (backend doesn't support filtering, need to filter on frontend)
+  // Use a large limit to fetch all data
   const response = await metricTemplateApi.list({ skip: 0, limit: 10000 });
   let filteredData = response.data || [];
 
-  // 在前端进行过滤
+  // Filter on frontend
   if (name) {
     filteredData = filteredData.filter((item: any) =>
       item.name?.toLowerCase().includes(name.toLowerCase())
@@ -41,7 +41,7 @@ const fetchMetricTemplateList = async (params: Record<string, any>) => {
     );
   }
 
-  // 在前端进行分页
+  // Paginate on frontend
   const startIndex = skip || 0;
   const endIndex = startIndex + (limit || 10);
   const paginatedData = filteredData.slice(startIndex, endIndex);
@@ -54,7 +54,7 @@ const fetchMetricTemplateList = async (params: Record<string, any>) => {
 };
 
 /**
- * 创建指标模板表格请求包装器
+ * Create metric template table request wrapper
  */
 export const createMetricTemplateTableRequestWrapper = () =>
   createTableRequestWrapper({ apiCall: fetchMetricTemplateList, defaultLimit: 10 });

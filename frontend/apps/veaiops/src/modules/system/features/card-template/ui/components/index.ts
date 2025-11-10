@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 组件导出
+// Component exports
 export { CardTemplateGuide as Guide } from './guide';
 export { default as StepCard } from './step-card';
 
-// 模态框组件导出
+// Modal component exports
 export * from './modal';

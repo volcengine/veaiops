@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Hook已迁移到 ../../../hooks/use-alert.ts
+// Hook has been migrated to ../../../hooks/use-alert.ts
 export { useAlert } from '@/custom-table/hooks/use-alert';

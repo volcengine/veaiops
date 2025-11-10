@@ -6,7 +6,7 @@
     "declarationMap": true,
     "outDir": "dist",
     "rootDir": "src",
-    // 被引用的项目必须能够 emit，不能禁用
+    // Referenced projects must be able to emit, cannot be disabled
     "noEmit": false,
     "baseUrl": ".",
     "paths": {

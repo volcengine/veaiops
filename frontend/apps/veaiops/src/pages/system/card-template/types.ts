@@ -13,65 +13,65 @@
 // limitations under the License.
 
 /**
- * 卡片模版管理相关类型定义
+ * Card template management related type definitions
 
  */
 
-// 导入生成的API类型
+// Import generated API types
 import type { ChannelType } from 'api-generate';
 
 /**
- * Agent类型枚举 - 基于生成的API类型
+ * Agent type enum - based on generated API types
  */
 export type AgentType = 'CHATOPS' | 'INTELLIGENT_THRESHOLD' | 'ONCALL';
 
 /**
- * Agent模版查询参数
+ * Agent template query parameters
  */
 export interface AgentTemplateQuery {
-  /** Agent类型筛选 */
+  /** Agent type filter */
   agents?: string[];
-  /** 通道类型筛选 */
+  /** Channel type filter */
   channels?: ChannelType[];
-  /** 模版ID搜索 */
+  /** Template ID search */
   templateId?: string;
-  /** 模版名称搜索 */
+  /** Template name search */
   name?: string;
-  /** 是否启用 */
+  /** Whether enabled */
   is_active?: boolean;
-  /** 创建时间范围 */
+  /** Creation time range */
   createTimeRanges?: number[];
-  /** 分页参数 */
+  /** Pagination parameters */
   skip?: number;
-  /** 每页大小 */
+  /** Page size */
   limit?: number;
 }
 
 /**
- * Agent类型选项
+ * Agent type options
  */
 
 /**
- * 通道类型选项已迁移到 @veaiops/constants
+ * Channel type options have been migrated to @veaiops/constants
  * @see frontend/packages/constants/src/channel.ts
  *
- * 使用方式：
+ * Usage:
  * import { CHANNEL_OPTIONS } from '@veaiops/constants';
  */
 
 /**
- * 引导步骤类型
+ * Guide step type
  */
 export interface GuideStep {
-  /** 步骤标题 */
+  /** Step title */
   title: string;
-  /** 步骤描述 */
+  /** Step description */
   description: string;
-  /** 步骤图标 */
+  /** Step icon */
   icon?: React.ReactNode;
-  /** 是否完成 */
+  /** Whether completed */
   completed?: boolean;
-  /** 操作按钮 */
+  /** Action button */
   action?: {
     text: string;
     onClick: () => void;

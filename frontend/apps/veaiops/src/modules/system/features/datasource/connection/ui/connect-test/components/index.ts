@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出主组件
+// Export main component
 export { PasswordForm } from './password-form';
 
-// 导出子组件
+// Export sub-components
 export { FormField } from './form-field';
 export { FormFieldsList } from './form-fields-list';
 export { FormActions } from './form-actions';
 
-// 导出其他组件
+// Export other components
 export { ModalHeader } from './modal-header';
 export { ModalFooter } from './modal-footer';
 export { StepStatus } from './step-status';
 export { StepContent } from './step-content';
 export { useConnectTestModal } from './hooks';
 
-// 导出类型
+// Export types
 export type {
   PasswordFormProps,
   PasswordFormRef,
@@ -37,5 +37,5 @@ export type {
   FormFieldConfig,
 } from './types';
 
-// 导出配置
+// Export configuration
 export { FORM_FIELD_CONFIGS } from './config';

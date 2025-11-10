@@ -13,28 +13,28 @@
 // limitations under the License.
 
 /**
- * 阿里云数据验证工具
- * @description 提供阿里云相关的数据验证功能
+ * Aliyun data validation utilities
+ * @description Provides Aliyun-related data validation functionality
  * @author AI Assistant
  * @date 2025-01-16
  */
 
 /**
- * 验证连接ID格式
- * @param connectId 连接ID
- * @returns 是否为有效的MongoDB ObjectId格式
+ * Validate connection ID format
+ * @param connectId Connection ID
+ * @returns Whether it's a valid MongoDB ObjectId format
  */
 export const validateConnectId = (connectId: string): boolean => {
   if (!connectId) {
     return false;
   }
 
-  // 必须是24位十六进制字符串（MongoDB ObjectId格式）
+  // Must be 24-character hexadecimal string (MongoDB ObjectId format)
   if (connectId.length !== 24) {
     return false;
   }
 
-  // 检查是否为有效的十六进制字符串
+  // Check if it's a valid hexadecimal string
   if (!/^[0-9a-fA-F]{24}$/.test(connectId)) {
     return false;
   }
@@ -43,9 +43,9 @@ export const validateConnectId = (connectId: string): boolean => {
 };
 
 /**
- * 验证连接ID并返回错误信息
- * @param connectId 连接ID
- * @returns 验证结果和错误信息
+ * Validate connection ID and return error message
+ * @param connectId Connection ID
+ * @returns Validation result and error message
  */
 export const validateConnectIdWithMessage = (
   connectId: string,

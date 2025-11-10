@@ -20,7 +20,7 @@ import type { Product } from 'api-generate';
 import { useCallback, useEffect, useState } from 'react';
 
 /**
- * 产品表格数据类型
+ * Product table data type
  */
 interface ProductTableData extends Product {
   key: string;
@@ -29,14 +29,14 @@ interface ProductTableData extends Product {
 }
 
 /**
- * 产品管理Hook
+ * Product management Hook
  */
 export const useProductManagement = () => {
   const [products, setProducts] = useState<ProductTableData[]>([]);
   const [loading, setLoading] = useState(false);
   const [importLoading, setImportLoading] = useState(false);
 
-  // 获取产品列表
+  // Get product list
   const fetchProducts = useCallback(
     async (params?: { skip?: number; limit?: number; name?: string }) => {
       try {
@@ -62,7 +62,7 @@ export const useProductManagement = () => {
           throw new Error(response.message || '获取产品列表失败');
         }
       } catch (error: unknown) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
@@ -85,7 +85,7 @@ export const useProductManagement = () => {
     [],
   );
 
-  // 删除产品
+  // Delete product
   const deleteProduct = useCallback(
     async (productId: string) => {
       try {
@@ -97,13 +97,13 @@ export const useProductManagement = () => {
 
         if (response.code === API_RESPONSE_CODE.SUCCESS) {
           Message.success('产品删除成功');
-          await fetchProducts(); // 重新获取列表
+          await fetchProducts(); // Refresh list
           return true;
         } else {
           throw new Error(response.message || '删除产品失败');
         }
       } catch (error: unknown) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
@@ -127,13 +127,13 @@ export const useProductManagement = () => {
     [fetchProducts],
   );
 
-  // 导入产品
+  // Import products
   const importProducts = useCallback(
     async (file: File) => {
       try {
         setImportLoading(true);
 
-        // 使用正确的导入接口
+        // Use correct import endpoint
         const response =
           await apiClient.products.postApisV1ManagerSystemConfigProductsImport({
             formData: { file },
@@ -141,13 +141,13 @@ export const useProductManagement = () => {
 
         if (response.code === API_RESPONSE_CODE.SUCCESS) {
           Message.success('产品导入成功');
-          await fetchProducts(); // 重新获取列表
+          await fetchProducts(); // Refresh list
           return true;
         } else {
           throw new Error(response.message || '导入产品失败');
         }
       } catch (error) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
@@ -171,7 +171,7 @@ export const useProductManagement = () => {
     [fetchProducts],
   );
 
-  // 组件挂载时获取数据
+  // Fetch data when component mounts
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);

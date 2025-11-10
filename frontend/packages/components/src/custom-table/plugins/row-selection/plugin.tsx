@@ -15,8 +15,8 @@
 import type { BaseRecord, PluginContext } from '@/custom-table/types';
 import { PluginNames } from '@/custom-table/types/constants/enum';
 /**
- * 行选择插件
- * 基于 Arco Table RowSelection 能力的增强插件
+ * Row selection plugin
+ * Enhanced plugin based on Arco Table RowSelection capability
  */
 import type React from 'react';
 import { BatchActions, SelectionStat } from './components';
@@ -29,7 +29,7 @@ import type {
 } from './types';
 
 /**
- * 插件基础接口
+ * Base plugin interface
  */
 interface BasePlugin<ConfigType = unknown, StateType = unknown> {
   name: string;
@@ -43,7 +43,7 @@ interface BasePlugin<ConfigType = unknown, StateType = unknown> {
 }
 
 /**
- * 行选择插件类
+ * Row selection plugin class
  */
 export class RowSelectionPlugin<RecordType extends BaseRecord = BaseRecord>
   implements
@@ -62,22 +62,22 @@ export class RowSelectionPlugin<RecordType extends BaseRecord = BaseRecord>
   }
 
   install() {
-    // 插件安装逻辑
+    // Plugin installation logic
     return Promise.resolve();
   }
 
   uninstall() {
-    // 插件卸载逻辑
+    // Plugin uninstallation logic
     return Promise.resolve();
   }
 
   activate() {
-    // 插件激活逻辑
+    // Plugin activation logic
     return Promise.resolve();
   }
 
   deactivate() {
-    // 插件停用逻辑
+    // Plugin deactivation logic
     return Promise.resolve();
   }
 
@@ -98,7 +98,7 @@ export class RowSelectionPlugin<RecordType extends BaseRecord = BaseRecord>
 
   getMethods() {
     return {
-      // 插件方法会通过 hooks 提供
+      // Plugin methods will be provided through hooks
     };
   }
 
@@ -113,7 +113,7 @@ export class RowSelectionPlugin<RecordType extends BaseRecord = BaseRecord>
 
         const { position } = this.config.selectionStat;
         if (position === 'footer' || position === 'both') {
-          return null; // 在 header 位置不渲染
+          return null; // Do not render at header position
         }
 
         return (
@@ -136,7 +136,7 @@ export class RowSelectionPlugin<RecordType extends BaseRecord = BaseRecord>
 
         const { position } = this.config.selectionStat;
         if (position === 'header') {
-          return null; // 在 footer 位置不渲染
+          return null; // Do not render at footer position
         }
 
         return (

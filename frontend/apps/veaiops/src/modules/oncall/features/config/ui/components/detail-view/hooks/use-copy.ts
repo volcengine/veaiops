@@ -17,7 +17,7 @@ import { safeCopyToClipboard } from '@veaiops/utils';
 import { useCallback, useState } from 'react';
 
 /**
- * 复制功能 Hook 参数接口
+ * Copy functionality Hook parameter interface
  */
 export interface UseCopyParams {
   onSuccess?: (label: string) => void;
@@ -25,7 +25,7 @@ export interface UseCopyParams {
 }
 
 /**
- * 复制功能 Hook 返回值
+ * Copy functionality Hook return value
  */
 export interface UseCopyReturn {
   copiedText: string;
@@ -37,10 +37,10 @@ export interface UseCopyReturn {
 }
 
 /**
- * 复制功能 Hook
+ * Copy functionality Hook
  *
- * 使用 safeCopyToClipboard 统一处理复制功能
- * 支持成功/失败提示和复制状态管理
+ * Uses safeCopyToClipboard to uniformly handle copy functionality
+ * Supports success/failure prompts and copy state management
  */
 export const useCopy = ({
   onSuccess,

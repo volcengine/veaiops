@@ -17,7 +17,7 @@ import type { TimeseriesDataPoint } from '../shared/types';
 import { COLOR_MAP } from './constants';
 
 /**
- * 生成tooltip索引，便于快速查找数据点
+ * Generate tooltip index for quick data point lookup
  */
 export const createTooltipIndex = (timeseriesData: TimeseriesDataPoint[]) => {
   const index = new Map<
@@ -28,7 +28,7 @@ export const createTooltipIndex = (timeseriesData: TimeseriesDataPoint[]) => {
     return index;
   }
 
-  // 使用统一颜色映射，保证折线、图例与 Tooltip 一致
+  // Use unified color mapping to ensure consistency between lines, legend and Tooltip
   const colorMap: Record<string, string> = COLOR_MAP;
 
   for (const d of timeseriesData) {
@@ -52,7 +52,7 @@ export const createTooltipIndex = (timeseriesData: TimeseriesDataPoint[]) => {
 };
 
 /**
- * 渲染tooltip内容
+ * Render tooltip content
  */
 export const renderTooltip = (
   _event: any,
@@ -62,7 +62,7 @@ export const renderTooltip = (
     Array<{ name: string; value: string; color: string }>
   >,
 ) => {
-  // title 为上面设置的 ISO 时间
+  // title is the ISO time set above
   const key = new Date(title).toISOString();
   const items = tooltipIndex.get(key) || [];
   const displayTime = formatDateTime(title);

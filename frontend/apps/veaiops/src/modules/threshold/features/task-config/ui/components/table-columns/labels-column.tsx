@@ -16,7 +16,7 @@ import { CellRender } from '@veaiops/components';
 import type React from 'react';
 
 /**
- * 标签列渲染组件
+ * Labels column render component
  */
 export const LabelsColumn: React.FC<{
   labels: Record<string, string>;

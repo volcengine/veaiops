@@ -23,7 +23,7 @@ import {
 } from '../components';
 
 /**
- * 清洗结果表格列配置 Hook
+ * Cleaning result table column configuration Hook
  */
 export const useCleaningResultColumns = (options?: {
   onViewTimeSeries?: (record: MetricThresholdResult) => void;

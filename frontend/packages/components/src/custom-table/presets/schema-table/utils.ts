@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Schema表格工具函数
- * @description 提供Schema创建、验证等工具函数
+ * Schema table utility functions
+ * @description Provides utility functions for Schema creation, validation, etc.
 
  * @date 2025-12-19
  */
@@ -33,7 +33,7 @@ import type {
 } from '@/custom-table/types/schema-table';
 import { getPreset, mergePreset } from './presets';
 
-// 创建表格Schema
+// Create table Schema
 export const createTableSchema = <T extends BaseRecord = BaseRecord>(
   config?: Partial<TableSchema<T>>,
 ): TableSchema<T> => {
@@ -56,34 +56,34 @@ export const createTableSchema = <T extends BaseRecord = BaseRecord>(
   };
 };
 
-// 验证Schema配置
+// Validate Schema configuration
 export const validateTableSchema = <T extends BaseRecord = BaseRecord>(
   schema: TableSchema<T>,
 ): ValidationResult => {
   const errors: ValidationResult['errors'] = [];
 
-  // 验证列配置
+  // Validate column configuration
   if (!schema.columns || schema.columns.length === 0) {
     errors.push({
       field: 'columns',
-      message: '至少需要定义一个列',
+      message: 'At least one column must be defined',
       severity: 'error',
     });
   }
 
-  // 验证列的唯一性
+  // Validate column uniqueness
   const columnKeys = new Set<string>();
   schema.columns.forEach((column, index) => {
     if (!column.key) {
       errors.push({
         field: `columns[${index}].key`,
-        message: '列必须有唯一的key',
+        message: 'Column must have a unique key',
         severity: 'error',
       });
     } else if (columnKeys.has(column.key)) {
       errors.push({
         field: `columns[${index}].key`,
-        message: `列key "${column.key}" 重复`,
+        message: `Column key "${column.key}" is duplicated`,
         severity: 'error',
       });
     } else {
@@ -93,7 +93,7 @@ export const validateTableSchema = <T extends BaseRecord = BaseRecord>(
     if (!column.title) {
       errors.push({
         field: `columns[${index}].title`,
-        message: '列必须有标题',
+        message: 'Column must have a title',
         severity: 'error',
       });
     }
@@ -101,18 +101,18 @@ export const validateTableSchema = <T extends BaseRecord = BaseRecord>(
     if (!column.dataIndex) {
       errors.push({
         field: `columns[${index}].dataIndex`,
-        message: '列必须有dataIndex',
+        message: 'Column must have dataIndex',
         severity: 'error',
       });
     }
   });
 
-  // 验证操作列配置
+  // Validate action column configuration
   if (schema.actions) {
     if (!schema.actions.items || schema.actions.items.length === 0) {
       errors.push({
         field: 'actions.items',
-        message: '操作列必须包含至少一个操作',
+        message: 'Action column must contain at least one action',
         severity: 'warning',
       });
     }
@@ -121,7 +121,7 @@ export const validateTableSchema = <T extends BaseRecord = BaseRecord>(
       if (!action.key) {
         errors.push({
           field: `actions.items[${index}].key`,
-          message: '操作必须有唯一的key',
+          message: 'Action must have a unique key',
           severity: 'error',
         });
       }
@@ -129,7 +129,7 @@ export const validateTableSchema = <T extends BaseRecord = BaseRecord>(
       if (!action.label) {
         errors.push({
           field: `actions.items[${index}].label`,
-          message: '操作必须有标签',
+          message: 'Action must have a label',
           severity: 'error',
         });
       }
@@ -137,18 +137,18 @@ export const validateTableSchema = <T extends BaseRecord = BaseRecord>(
       if (!action.onClick) {
         errors.push({
           field: `actions.items[${index}].onClick`,
-          message: '操作必须有点击处理函数',
+          message: 'Action must have a click handler',
           severity: 'error',
         });
       }
     });
   }
 
-  // 验证数据源配置
+  // Validate data source configuration
   if (!schema.dataSource && !schema.request) {
     errors.push({
       field: 'dataSource',
-      message: '必须提供dataSource或request配置',
+      message: 'Must provide dataSource or request configuration',
       severity: 'error',
     });
   }
@@ -159,7 +159,7 @@ export const validateTableSchema = <T extends BaseRecord = BaseRecord>(
   };
 };
 
-// Schema构建器实现
+// Schema builder implementation
 export class TableSchemaBuilder<T extends BaseRecord = BaseRecord>
   implements ITableSchemaBuilder<T>
 {
@@ -304,7 +304,7 @@ export class TableSchemaBuilder<T extends BaseRecord = BaseRecord>
   };
 }
 
-// 创建列Schema的辅助函数
+// Helper function to create column Schema
 export const createColumnSchema = <T extends BaseRecord = BaseRecord>(
   config: Partial<ColumnSchema<T>> & {
     key: string;
@@ -325,7 +325,7 @@ export const createColumnSchema = <T extends BaseRecord = BaseRecord>(
   };
 };
 
-// 创建操作配置的辅助函数
+// Helper function to create action configuration
 export const createActionConfig = (
   config: Partial<SchemaActionConfig> & {
     key: string;
@@ -341,7 +341,7 @@ export const createActionConfig = (
   };
 };
 
-// 根据数据自动推断列类型
+// Automatically infer column type from data
 export const inferColumnType = (data: BaseRecord[]): Record<string, string> => {
   if (!data || data.length === 0) {
     return {};
@@ -360,7 +360,7 @@ export const inferColumnType = (data: BaseRecord[]): Record<string, string> => {
     } else if (value instanceof Date) {
       columnTypes[key] = 'date';
     } else if (typeof value === 'string') {
-      // 尝试推断更具体的类型
+      // Try to infer more specific type
       if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
         columnTypes[key] = 'date';
       } else if (/^https?:\/\//.test(value)) {
@@ -378,7 +378,7 @@ export const inferColumnType = (data: BaseRecord[]): Record<string, string> => {
   return columnTypes;
 };
 
-// 从数据自动生成列配置
+// Automatically generate column configuration from data
 export const generateColumnsFromData = <T extends BaseRecord = BaseRecord>(
   data: T[],
   options?: {
@@ -397,7 +397,7 @@ export const generateColumnsFromData = <T extends BaseRecord = BaseRecord>(
 
   let keys = Object.keys(sampleRecord);
 
-  // 过滤键
+  // Filter keys
   if (includeKeys) {
     keys = keys.filter((key) => includeKeys.includes(key));
   }
@@ -406,12 +406,12 @@ export const generateColumnsFromData = <T extends BaseRecord = BaseRecord>(
   return keys.map((key) => {
     const baseColumn = createColumnSchema({
       key,
-      title: key.charAt(0).toUpperCase() + key.slice(1), // 首字母大写
+      title: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize first letter
       dataIndex: key,
       valueType: (columnTypes[key] || 'text') as FieldValueType,
     });
 
-    // 应用覆盖配置
+    // Apply override configuration
     if (columnOverrides[key]) {
       return { ...baseColumn, ...columnOverrides[key] };
     }
@@ -420,7 +420,7 @@ export const generateColumnsFromData = <T extends BaseRecord = BaseRecord>(
   });
 };
 
-// 应用预设模板
+// Apply preset template
 export const applyPreset = <T extends BaseRecord = BaseRecord>(
   schema: Partial<TableSchema<T>>,
   presetName: string,

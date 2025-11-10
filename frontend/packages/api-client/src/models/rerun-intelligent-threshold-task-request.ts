@@ -16,22 +16,22 @@
 import type { MetricTemplateValue } from './metric-template-value';
 export type RerunIntelligentThresholdTaskRequest = {
   /**
-   * 任务ID
+   * Task ID
    */
   task_id: string;
   metric_template_value: MetricTemplateValue;
   /**
-   * N计数
+   * N count
    */
   n_count: number;
   /**
-   * 阈值计算方向
+   * Threshold calculation direction
    */
   direction: RerunIntelligentThresholdTaskRequest.direction;
 };
 export namespace RerunIntelligentThresholdTaskRequest {
   /**
-   * 阈值计算方向
+   * Threshold calculation direction
    */
   export enum direction {
     UP = 'up',

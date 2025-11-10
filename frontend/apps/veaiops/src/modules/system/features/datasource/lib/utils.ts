@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * Monitor data source management utility functions
+ * Monitor data source management related utility functions
  */
 
-import { formatDateTime as formatDateTimeUtils, logger } from '@veaiops/utils';
+import { logger } from '@veaiops/utils';
 import type { DataSource } from "api-generate";
 import { MODULE_CONFIG } from "./constants";
 import { DataSourceType, MonitorItem } from "./types";
@@ -82,14 +82,40 @@ export const detectModuleType = (): "timeseries" | "threshold" | "common" => {
 };
 
 /**
- * Format datetime display
- *
- * Uses unified formatDateTime from @veaiops/utils for consistent timezone conversion
- * This function is kept for backward compatibility, but delegates to the unified function
+ * Format time display
  */
 export const formatDateTime = (dateString?: string): string => {
-  // Use unified formatDateTime from @veaiops/utils
-  return formatDateTimeUtils(dateString, true);
+  if (!dateString) {
+    return "-";
+  }
+
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleString("zh-CN", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  } catch (error: unknown) {
+    // ✅ Correct: use logger to record warning, silently handle date formatting error (avoid blocking functionality)
+    const errorObj =
+      error instanceof Error ? error : new Error(String(error));
+    logger.warn({
+      message: '日期格式化失败',
+      data: {
+        error: errorObj.message,
+        dateString,
+        stack: errorObj.stack,
+        errorObj,
+      },
+      source: 'DataSourceUtils',
+      component: 'formatDate',
+    });
+    return dateString;
+  }
 };
 
 /**
@@ -109,7 +135,7 @@ export const createErrorLog = (
 });
 
 /**
- * Get supported module types
+ * Get supported module type
  */
 export const getSupportedModuleType = (
   moduleType: string

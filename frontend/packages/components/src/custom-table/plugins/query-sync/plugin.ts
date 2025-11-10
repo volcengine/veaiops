@@ -18,7 +18,9 @@ import type {
   QuerySyncConfig,
 } from '@/custom-table/types';
 /**
- * 查询参数同步插件
+ * Query Parameter Sync Plugin
+ *
+ * Synchronizes table query parameters with URL search parameters
  */
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 import { devLog } from '@/custom-table/utils';
@@ -26,19 +28,19 @@ import { useQueryFormat, useQuerySync, useUrlSyncState } from './hooks';
 import { createQuerySyncUtils } from './utils/index';
 
 /**
- * 查询参数同步插件配置
+ * Query Sync Plugin Configuration
  */
 export interface QuerySyncPluginConfig extends QuerySyncConfig {
-  /** 插件优先级 */
+  /** Plugin priority */
   priority?: PluginPriorityEnum;
-  /** 是否启用插件 */
+  /** Whether the plugin is enabled */
   enabled?: boolean;
-  /** 调试模式 */
+  /** Debug mode */
   debug?: boolean;
 }
 
 /**
- * 查询参数同步插件实现
+ * Query Parameter Sync Plugin Implementation
  */
 const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
   name: 'query-sync',
@@ -47,7 +49,7 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
   priority: PluginPriorityEnum.HIGH,
   enabled: true,
 
-  // 默认配置
+  // Default configuration
   config: {
     syncQueryOnSearchParams: false,
     authQueryPrefixOnSearchParams: {},
@@ -59,7 +61,7 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
   },
 
   /**
-   * 插件安装
+   * Plugin installation
    */
   async install(context: PluginContext) {
     const config = this.config as QuerySyncPluginConfig;
@@ -72,12 +74,12 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
       });
     }
 
-    // 验证配置
+    // Validate configuration
     if (config.syncQueryOnSearchParams && !context.helpers.setQuery) {
       throw new Error('QuerySyncPlugin requires setQuery helper in context');
     }
 
-    // 扩展上下文，添加查询同步相关的功能
+    // Extend context, add query synchronization related functionality
     context.plugins = context.plugins || {};
     context.plugins.querySync = {
       config,
@@ -91,7 +93,7 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
   },
 
   /**
-   * 插件设置
+   * Plugin setup
    */
   async setup(context: PluginContext) {
     const config = this.config as QuerySyncPluginConfig;
@@ -112,8 +114,8 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
       context.state.query &&
       typeof context.helpers.setQuery === 'function'
     ) {
-      // 这里可以执行一些初始化逻辑
-      // 具体的同步逻辑会在 hooks 中处理
+      // Initialization logic can be executed here
+      // Specific synchronization logic will be handled in hooks
       if (config.debug) {
         devLog.log({
           component: 'QuerySyncPlugin',
@@ -124,7 +126,7 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
   },
 
   /**
-   * 组件挂载前
+   * Before component mount
    */
   async beforeMount(_context: PluginContext) {
     const config = this.config as QuerySyncPluginConfig;
@@ -142,7 +144,7 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
   },
 
   /**
-   * 组件挂载后
+   * After component mount
    */
   async afterMount(_context: PluginContext) {
     const config = this.config as QuerySyncPluginConfig;
@@ -160,7 +162,7 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
   },
 
   /**
-   * 更新前
+   * Before update
    */
   async beforeUpdate(context: PluginContext) {
     const config = this.config as QuerySyncPluginConfig;
@@ -175,7 +177,7 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
   },
 
   /**
-   * 更新后
+   * After update
    */
   async afterUpdate(_context: PluginContext) {
     const config = this.config as QuerySyncPluginConfig;
@@ -189,7 +191,7 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
   },
 
   /**
-   * 插件卸载
+   * Plugin uninstallation
    */
   async uninstall(context: PluginContext) {
     const config = this.config as QuerySyncPluginConfig;
@@ -201,14 +203,14 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
       });
     }
 
-    // 清理插件相关的上下文
+    // Clean up plugin-related context
     if (context.plugins?.querySync) {
       delete context.plugins.querySync;
     }
   },
 
   /**
-   * 插件激活
+   * Plugin activation
    */
   async activate(_context: PluginContext) {
     const config = this.config as QuerySyncPluginConfig;
@@ -220,11 +222,11 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
       });
     }
 
-    // 可以在这里执行激活后的逻辑
+    // Activation logic can be executed here
   },
 
   /**
-   * 插件停用
+   * Plugin deactivation
    */
   async deactivate(_context: PluginContext) {
     const config = this.config as QuerySyncPluginConfig;
@@ -236,12 +238,12 @@ const QuerySyncPlugin: Plugin<QuerySyncPluginConfig> = {
       });
     }
 
-    // 可以在这里执行停用后的清理逻辑
+    // Cleanup logic after deactivation can be executed here
   },
 };
 
 /**
- * 创建查询参数同步插件实例
+ * Create query parameter sync plugin instance
  */
 export const createQuerySyncPlugin = (
   config: Partial<QuerySyncPluginConfig> = {},

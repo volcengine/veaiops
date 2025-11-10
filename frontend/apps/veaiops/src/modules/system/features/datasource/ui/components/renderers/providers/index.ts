@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * Providers - 统一导出入口
- * 职责：提供特定云服务商的渲染器
+ * Providers - Unified export entry
+ * Responsibility: Provide cloud provider-specific renderers
  */
 
-// 导出阿里云特定渲染器
+// Export Aliyun-specific renderers
 export * from './aliyun';

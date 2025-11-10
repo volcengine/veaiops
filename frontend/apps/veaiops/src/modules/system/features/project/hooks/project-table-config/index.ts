@@ -26,13 +26,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== Hook 导出 ====================
+// ==================== Hook export ====================
 export { useProjectTableConfig } from './use-project-table-config';
 
-// ==================== 类型导出 ====================
+// ==================== Type export ====================
 export type { GetProjectTableColumnsParams } from './lib/types';
 
-// ==================== 工具函数导出 ====================
+// ==================== Utility function export ====================
 export {
   getProjectTableColumns,
   getProjectTableFilters,

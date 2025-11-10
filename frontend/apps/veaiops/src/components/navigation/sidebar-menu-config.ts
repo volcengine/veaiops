@@ -22,24 +22,24 @@ export interface MenuConfig {
   [module: string]: MenuItem[];
 }
 
-// 侧边栏菜单配置 - 根据图中模块拆分，只保留5个核心模块
+// Sidebar menu configuration - split by modules in the diagram, only keep 5 core modules
 export const sidebarMenuConfig: MenuConfig = {
-  // 用量统计
+  // Usage statistics
   statistics: [{ key: 'overview', title: '用量统计概览', icon: 'bar-chart' }],
-  // 智能阈值模块
+  // Intelligent threshold module
   threshold: [
     { key: 'template', title: '指标模版管理', icon: 'credit-card' },
     { key: 'config', title: '智能阈值任务配置', icon: 'settings' },
     { key: 'subscription', title: '事件订阅', icon: 'list' },
     { key: 'history', title: '历史事件', icon: 'push-history' },
   ],
-  // Oncall异动模块
+  // Oncall anomaly module
   oncall: [
     { key: 'config', title: '配置管理', icon: 'settings' },
     { key: 'rules', title: '事件订阅', icon: 'list' },
     { key: 'history', title: '历史事件', icon: 'push-history' },
   ],
-  // 系统配置模块
+  // System configuration module
   system: [
     { key: 'bot-management', title: '群聊机器人管理', icon: 'robot' },
     { key: 'card-template', title: '卡片模版管理', icon: 'credit-card' },
@@ -47,7 +47,7 @@ export const sidebarMenuConfig: MenuConfig = {
     { key: 'project', title: '项目管理', icon: 'folder' },
     { key: 'account', title: '账号管理', icon: 'user' },
   ],
-  // 事件中心模块
+  // Event center module
   'event-center': [
     { key: 'strategy', title: '消息卡片通知策略', icon: 'bell' },
     { key: 'subscribe-relation', title: '事件订阅', icon: 'list' },
@@ -56,9 +56,9 @@ export const sidebarMenuConfig: MenuConfig = {
 };
 
 /**
- * 获取指定模块的菜单项
- * @param module 模块名称
- * @returns 菜单项数组
+ * Get menu items for specified module
+ * @param module Module name
+ * @returns Array of menu items
  */
 export const getMenuItems = (module: string): MenuItem[] => {
   return sidebarMenuConfig[module] || [];

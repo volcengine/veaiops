@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Wizard Modals - 统一导出
- * @description 导出向导相关的所有弹窗组件
+ * Wizard Modals - Unified export
+ * @description Exports all modal components related to the wizard
  */
 
 export * from './creation-confirm-modal';

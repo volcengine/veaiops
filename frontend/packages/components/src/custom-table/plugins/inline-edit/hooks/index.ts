@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 行内编辑插件 Hook 导出
+ * Inline edit plugin Hook export
  */
 
 export { useInlineEdit } from './use-inline-edit';

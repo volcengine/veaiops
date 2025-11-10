@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 页面组件导出
+// Page component exports
 export * from './pages';
 
-// 功能模块导出
+// Feature module exports
 export * from './features';
 
-// 共享资源导出
+// Shared resources exports
 export * from './shared';

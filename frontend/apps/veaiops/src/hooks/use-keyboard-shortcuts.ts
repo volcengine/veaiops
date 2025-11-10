@@ -20,7 +20,7 @@ export const useKeyboardShortcuts = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Ctrl/Cmd + Shift + Q = 快速退出登录
+      // Ctrl/Cmd + Shift + Q = Quick logout
       if (
         (event.ctrlKey || event.metaKey) &&
         event.shiftKey &&
@@ -30,7 +30,7 @@ export const useKeyboardShortcuts = () => {
         quickLogout();
       }
 
-      // Ctrl/Cmd + Shift + L = 快速退出登录（备用快捷键）
+      // Ctrl/Cmd + Shift + L = Quick logout (alternative shortcut)
       if (
         (event.ctrlKey || event.metaKey) &&
         event.shiftKey &&

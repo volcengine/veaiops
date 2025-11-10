@@ -17,19 +17,19 @@ import type { DataSource } from './data-source';
 export type ZabbixDataSource = (DataSource & {
   config?: {
     /**
-     * Zabbix服务器URL
+     * Zabbix server URL
      */
     url: string;
     /**
-     * 用户名
+     * Username
      */
     username: string;
     /**
-     * 密码
+     * Password
      */
     password: string;
     /**
-     * 超时时间（秒）
+     * Timeout in seconds
      */
     timeout?: number;
   };

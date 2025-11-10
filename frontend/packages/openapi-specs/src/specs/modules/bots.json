@@ -236,7 +236,7 @@
     "/apis/v1/manager/system-config/bots/validate": {
       "post": {
         "summary": "Validate Bot Config",
-        "description": "验证机器人配置与连通性（AppID/Secret、Webhook/Callback、Agent API Base）",
+        "description": "Validate bot configuration and connectivity (AppID/Secret, Webhook/Callback, Agent API Base)",
         "tags": ["Bots"],
         "requestBody": {
           "required": true,
@@ -275,26 +275,26 @@
         "properties": {
           "ak": {
             "type": "string",
-            "description": "火山引擎Access Key"
+            "description": "Volcano Engine Access Key"
           },
           "sk": {
             "type": "string",
-            "description": "火山引擎Secret Key"
+            "description": "Volcano Engine Secret Key"
           },
           "tos_region": {
             "type": "string",
-            "description": "TOS区域"
+            "description": "TOS region"
           },
           "network_type": {
             "type": "string",
-            "description": "TOS区域"
+            "description": "TOS region"
           },
           "extra_kb_collections": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "额外的知识库集合"
+            "description": "Additional knowledge base collections"
           }
         }
       },
@@ -304,12 +304,12 @@
           "ak": {
             "type": "string",
             "minLength": 1,
-            "description": "火山引擎Access Key"
+            "description": "Volcano Engine Access Key"
           },
           "sk": {
             "type": "string",
             "minLength": 1,
-            "description": "火山引擎Secret Key"
+            "description": "Volcano Engine Secret Key"
           },
           "tos_region": {
             "type": "string",
@@ -321,19 +321,19 @@
               "ap-southeast-1",
               "ap-southeast-3"
             ],
-            "description": "TOS区域"
+            "description": "TOS region"
           },
           "network_type": {
             "type": "string",
             "enum": ["public", "internal"],
-            "description": "网络类型"
+            "description": "Network type"
           },
           "extra_kb_collections": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "额外的知识库集合"
+            "description": "Additional knowledge base collections"
           }
         },
         "required": ["tos_region", "network_type"]
@@ -343,19 +343,19 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Agent名称"
+            "description": "Agent name"
           },
           "embedding_name": {
             "type": "string",
-            "description": "嵌入模型名称"
+            "description": "Embedding model name"
           },
           "api_base": {
             "type": "string",
-            "description": "API基础URL"
+            "description": "API base URL"
           },
           "api_key": {
             "type": "string",
-            "description": "API密钥"
+            "description": "API key"
           }
         }
       },
@@ -365,23 +365,23 @@
           "name": {
             "type": "string",
             "minLength": 1,
-            "description": "LLM名称"
+            "description": "LLM name"
           },
           "embedding_name": {
             "type": "string",
             "minLength": 1,
-            "description": "LLM嵌入模型名称"
+            "description": "LLM embedding model name"
           },
           "api_base": {
             "type": "string",
             "minLength": 1,
             "default": "https://ark.cn-beijing.volces.com/api/v3",
-            "description": "LLM API基础URL"
+            "description": "LLM API base URL"
           },
           "api_key": {
             "type": "string",
             "minLength": 1,
-            "description": "LLM API密钥"
+            "description": "LLM API key"
           }
         },
         "required": ["name", "embedding_name", "api_base", "api_key"]
@@ -392,95 +392,95 @@
           "_id": {
             "type": "string",
             "nullable": true,
-            "description": "MongoDB文档ID"
+            "description": "MongoDB document ID"
           },
           "created_user": {
             "type": "string",
             "nullable": true,
-            "description": "创建用户"
+            "description": "Created user"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_user": {
             "type": "string",
             "nullable": true,
-            "description": "更新用户"
+            "description": "Updated user"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Update time"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否激活"
+            "description": "Whether active"
           },
           "channel": {
             "type": "string",
             "enum": ["Lark", "DingTalk", "WeChat", "Webhook"],
-            "description": "企业协同工具"
+            "description": "Enterprise collaboration tool"
           },
           "bot_id": {
             "type": "string",
-            "description": "机器人ID"
+            "description": "Bot ID"
           },
           "open_id": {
             "type": "string",
             "nullable": true,
-            "description": "OpenID，从bot_id自动生成"
+            "description": "OpenID, automatically generated from bot_id"
           },
           "name": {
             "type": "string",
             "nullable": true,
-            "description": "机器人名称"
+            "description": "Bot name"
           },
           "secret": {
             "type": "string",
-            "description": "机器人密钥"
+            "description": "Bot secret"
           },
           "webhook_urls": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Webhook URL列表"
+            "description": "Webhook URL list"
           },
           "volc_cfg": {
             "$ref": "#/components/schemas/VolcCfgPayload",
-            "description": "火山引擎配置"
+            "description": "Volcano Engine configuration"
           },
           "agent_cfg": {
             "$ref": "#/components/schemas/AgentCfgPayload",
-            "description": "Agent配置"
+            "description": "Agent configuration"
           }
         }
       },
       "BotCreateRequest": {
         "type": "object",
-        "description": "创建机器人请求。支持分阶段创建：阶段1只需填写channel、bot_id和secret即可快速创建；阶段2可在编辑时补充volc_cfg和agent_cfg等ChatOps高级配置",
+        "description": "Create bot request. Supports phased creation: Phase 1 only requires channel, bot_id, and secret for quick creation; Phase 2 can add ChatOps advanced configurations such as volc_cfg and agent_cfg during editing",
         "properties": {
           "channel": {
             "type": "string",
             "enum": ["Lark", "DingTalk", "WeChat", "Webhook"],
-            "description": "企业协同工具（必填）"
+            "description": "Enterprise collaboration tool (required)"
           },
           "bot_id": {
             "type": "string",
-            "description": "机器人App ID（必填）"
+            "description": "Bot App ID (required)"
           },
           "secret": {
             "type": "string",
-            "description": "机器人App Secret（必填）"
+            "description": "Bot App Secret (required)"
           },
           "webhook_urls": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Webhook URL列表（可选）"
+            "description": "Webhook URL list (optional)"
           },
           "volc_cfg": {
             "$ref": "#/components/schemas/VolcCfgPayload"
@@ -493,18 +493,18 @@
       },
       "BotUpdateRequest": {
         "type": "object",
-        "description": "更新机器人请求。所有字段均为可选，只更新提供的字段",
+        "description": "Update bot request. All fields are optional, only update provided fields",
         "properties": {
           "secret": {
             "type": "string",
-            "description": "机器人App Secret（可选）"
+            "description": "Bot App Secret (optional)"
           },
           "webhook_urls": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Webhook URL列表（可选）"
+            "description": "Webhook URL list (optional)"
           },
           "volc_cfg": {
             "$ref": "#/components/schemas/VolcCfgPayload"

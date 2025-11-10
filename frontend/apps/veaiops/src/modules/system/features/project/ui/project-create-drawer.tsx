@@ -25,7 +25,7 @@ interface ProjectCreateDrawerProps {
 }
 
 /**
- * 新建项目抽屉组件
+ * Create project drawer component
  */
 export const ProjectCreateDrawer: React.FC<ProjectCreateDrawerProps> = ({
   visible,
@@ -35,7 +35,7 @@ export const ProjectCreateDrawer: React.FC<ProjectCreateDrawerProps> = ({
 }) => {
   const [form] = Form.useForm();
 
-  // 使用公共的抽屉表单提交 Hook
+  // Use common drawer form submit Hook
   const { submitting, handleSubmit } = useDrawerFormSubmit({
     form,
     onSubmit,
@@ -52,7 +52,7 @@ export const ProjectCreateDrawer: React.FC<ProjectCreateDrawerProps> = ({
   return (
     <Drawer
       width={560}
-      title="新建项目"
+      title="Create Project"
       visible={visible}
       onCancel={handleClose}
       focusLock={false}
@@ -60,14 +60,14 @@ export const ProjectCreateDrawer: React.FC<ProjectCreateDrawerProps> = ({
         <div className="text-right">
           <Space>
             <Button onClick={handleClose} disabled={submitting}>
-              取消
+              Cancel
             </Button>
             <Button
               type="primary"
               onClick={handleSubmit}
               loading={submitting || Boolean(loading)}
             >
-              创建
+              Create
             </Button>
           </Space>
         </div>
@@ -82,22 +82,22 @@ export const ProjectCreateDrawer: React.FC<ProjectCreateDrawerProps> = ({
             scrollToFirstError
             autoComplete="off"
           >
-            {/* 提示信息 */}
+            {/* Tip information */}
             <div className="px-4 py-3 rounded-lg border border-[#bedaff] mb-6 flex items-start gap-2 bg-[#f0f6ff]">
               <IconInfoCircle className="text-base text-[#165dff] mt-0.5 flex-shrink-0" />
               <div className="text-sm text-[#4e5969] leading-relaxed">
-                项目ID和项目名称是必填字段，创建后项目ID不可修改
+                Project ID and project name are required fields. Project ID cannot be modified after creation.
               </div>
             </div>
 
-            {/* 项目ID */}
+            {/* Project ID */}
             <Form.Item
-              label="项目ID"
+              label="Project ID"
               field="project_id"
               rules={[
                 {
                   required: true,
-                  message: '请输入项目ID',
+                  message: 'Please enter project ID',
                 },
                 {
                   validator: (value, callback) => {
@@ -105,41 +105,41 @@ export const ProjectCreateDrawer: React.FC<ProjectCreateDrawerProps> = ({
                       callback();
                       return;
                     }
-                    // 验证项目ID格式：只允许字母、数字、下划线和连字符
+                    // Validate project ID format: only allow letters, numbers, underscores, and hyphens
                     const regex = /^[a-zA-Z0-9_-]+$/;
                     if (!regex.test(value)) {
-                      callback('项目ID只能包含字母、数字、下划线和连字符');
+                      callback('Project ID can only contain letters, numbers, underscores, and hyphens');
                     } else if (value.length < 2) {
-                      callback('项目ID长度不能少于2个字符');
+                      callback('Project ID must be at least 2 characters long');
                     } else if (value.length > 64) {
-                      callback('项目ID长度不能超过64个字符');
+                      callback('Project ID cannot exceed 64 characters');
                     } else {
                       callback();
                     }
                   },
                 },
               ]}
-              extra="项目的唯一标识符，创建后不可修改"
+              extra="Unique identifier for the project, cannot be modified after creation"
             >
               <Input
-                placeholder="请输入项目ID，如：proj_001"
+                placeholder="Please enter project ID, e.g., proj_001"
                 maxLength={64}
                 showWordLimit
               />
             </Form.Item>
 
-            {/* 项目名称 */}
+            {/* Project name */}
             <Form.Item
-              label="项目名称"
+              label="Project Name"
               field="name"
               rules={[
                 {
                   required: true,
-                  message: '请输入项目名称',
+                  message: 'Please enter project name',
                 },
                 {
                   maxLength: 100,
-                  message: '项目名称不能超过100个字符',
+                  message: 'Project name cannot exceed 100 characters',
                 },
                 {
                   validator: (value, callback) => {
@@ -148,17 +148,17 @@ export const ProjectCreateDrawer: React.FC<ProjectCreateDrawerProps> = ({
                       return;
                     }
                     if (value.trim().length === 0) {
-                      callback('项目名称不能为空白字符');
+                      callback('Project name cannot be blank');
                     } else {
                       callback();
                     }
                   },
                 },
               ]}
-              extra="项目的显示名称，可以包含中文"
+              extra="Display name for the project, can contain Chinese characters"
             >
               <Input
-                placeholder="请输入项目名称，如：示例项目"
+                placeholder="Please enter project name, e.g., Example Project"
                 maxLength={100}
                 showWordLimit
               />

@@ -15,10 +15,10 @@
 import type {} from '../types/strategy';
 
 /**
- * 事件策略相关常量
+ * Event strategy related constants
  */
 
-// 事件类型选项
+// Event type options
 export const EVENT_TYPE_OPTIONS = [
   { label: '系统告警', value: 'system_alert' },
   { label: '应用异常', value: 'app_exception' },
@@ -28,7 +28,7 @@ export const EVENT_TYPE_OPTIONS = [
   { label: '基础设施告警', value: 'infrastructure_alert' },
 ];
 
-// 优先级选项
+// Priority options
 export const PRIORITY_OPTIONS = [
   { label: '紧急', value: 'critical', color: 'red' },
   { label: '高', value: 'high', color: 'orange' },
@@ -36,7 +36,7 @@ export const PRIORITY_OPTIONS = [
   { label: '低', value: 'low', color: 'gray' },
 ];
 
-// 通知Channel选项
+// Notification Channel options
 export const EVENT_CHANNEL_OPTIONS = [
   { label: '飞书', value: 'lark' },
   { label: '钉钉', value: 'dingtalk' },
@@ -46,7 +46,7 @@ export const EVENT_CHANNEL_OPTIONS = [
   { label: 'Webhook', value: 'webhook' },
 ];
 
-// 工作日选项
+// Weekday options
 export const WEEKDAY_OPTIONS = [
   { label: '周一', value: 1 },
   { label: '周二', value: 2 },
@@ -57,7 +57,7 @@ export const WEEKDAY_OPTIONS = [
   { label: '周日', value: 7 },
 ];
 
-// 时区选项
+// Timezone options
 export const TIMEZONE_OPTIONS = [
   { label: 'Asia/Shanghai', value: 'Asia/Shanghai' },
   { label: 'UTC', value: 'UTC' },
@@ -66,8 +66,8 @@ export const TIMEZONE_OPTIONS = [
 ];
 
 /**
- * 获取事件策略的默认配置
- * 用于创建新策略时的初始值
+ * Get default configuration for event strategy
+ * Used as initial values when creating new strategy
  */
 export const DEFAULT_STRATEGY_CONFIG = {
   event_types: ['system_alert'],
@@ -96,10 +96,10 @@ export const DEFAULT_STRATEGY_CONFIG = {
 };
 
 /**
- * 注意：MOCK_STRATEGIES 已被移除
- * 请使用 useInformStrategies Hook 从真实API获取数据
+ * Note: MOCK_STRATEGIES has been removed
+ * Please use useInformStrategies Hook to fetch data from real API
  *
- * 使用示例：
+ * Usage example:
  * import { useInformStrategies } from '@/hooks/use-api-data';
  *
  * const { data: strategies, loading, error, refetch } = useInformStrategies();

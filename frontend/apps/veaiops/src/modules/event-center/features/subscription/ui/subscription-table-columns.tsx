@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 注意：AGENT_TYPE_MAP 已移除，使用本地定义
+// Note: AGENT_TYPE_MAP has been removed, using local definition
 import { Button, Popconfirm, Space } from '@arco-design/web-react';
 import type { ColumnProps } from '@arco-design/web-react/es/Table';
 import { IconDelete, IconEdit } from '@arco-design/web-react/icon';
@@ -28,18 +28,18 @@ const AGENT_TYPE_MAP = {
   intelligent_threshold_agent: '智能阈值代理',
 };
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender components to avoid repeated calls
 const { CustomOutlineTag, StampTime } = CellRender;
 
 /**
- * 订阅关系表格数据类型
+ * Subscription relation table data type
  */
 interface SubscriptionTableData extends SubscribeRelationWithAttributes {
   key: string;
 }
 
 /**
- * 订阅关系名称列渲染组件
+ * Subscription relation name column render component
  */
 export const SubscriptionNameColumn: React.FC<{
   name: string;
@@ -57,7 +57,7 @@ export const SubscriptionNameColumn: React.FC<{
 );
 
 /**
- * 智能体列渲染组件
+ * Agent type column render component
  */
 export const AgentTypeColumn: React.FC<{
   agentType: string;
@@ -68,14 +68,14 @@ export const AgentTypeColumn: React.FC<{
 };
 
 /**
- * 时间列渲染组件
+ * Time column render component
  */
 export const TimeColumn: React.FC<{
   time: string;
 }> = ({ time }) => <StampTime time={time} />;
 
 /**
- * 事件级别列渲染组件
+ * Event level column render component
  */
 export const EventLevelColumn: React.FC<{
   levels: string[];
@@ -96,7 +96,7 @@ export const EventLevelColumn: React.FC<{
 };
 
 /**
- * WEBHOOK状态列渲染组件
+ * WEBHOOK status column render component
  */
 export const WebhookStatusColumn: React.FC<{
   enabled: boolean;
@@ -105,14 +105,14 @@ export const WebhookStatusColumn: React.FC<{
 );
 
 /**
- * WEBHOOK地址列渲染组件
+ * WEBHOOK endpoint column render component
  */
 export const WebhookEndpointColumn: React.FC<{
   url: string;
 }> = ({ url }) => <span>{url || EMPTY_CONTENT_TEXT}</span>;
 
 /**
- * 项目列渲染组件
+ * Projects column render component
  */
 export const ProjectsColumn: React.FC<{
   projectIds: string[];
@@ -132,7 +132,7 @@ export const ProjectsColumn: React.FC<{
 };
 
 /**
- * 订阅关系操作列渲染组件
+ * Subscription relation actions column render component
  */
 export const SubscriptionActionsColumn: React.FC<{
   record: SubscriptionTableData;
@@ -175,9 +175,9 @@ export const SubscriptionActionsColumn: React.FC<{
 );
 
 /**
- * 获取订阅关系表格列配置
+ * Get subscription relation table column configuration
  *
- * 按照最佳实践：函数式列配置 + 组件化列渲染
+ * Following best practices: functional column configuration + componentized column rendering
  */
 export const getSubscriptionTableColumns = (
   onEdit?: (subscription: SubscribeRelationWithAttributes) => void,

@@ -20,16 +20,16 @@ import type { UpdateUserParams } from '../types';
 import { transformApiUserToUser } from '../utils';
 
 /**
- * 创建用户
+ * Create user
  */
 export const createUser = async (userData: UserFormData): Promise<User> => {
   try {
-    // 使用真实API调用
+    // Use real API call
     const response = await apiClient.users.postApisV1ManagerUsers({
       requestBody: {
         username: userData.username,
         email: userData.email,
-        password: userData.password || 'TempPass123!', // 临时密码
+        password: userData.password || 'TempPass123!', // Temporary password
       },
     });
 
@@ -40,10 +40,10 @@ export const createUser = async (userData: UserFormData): Promise<User> => {
       });
       return result;
     } else {
-      throw new Error(response.message || '创建用户失败');
+      throw new Error(response.message || 'Failed to create user');
     }
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Extract actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     throw errorObj;
@@ -51,14 +51,14 @@ export const createUser = async (userData: UserFormData): Promise<User> => {
 };
 
 /**
- * 更新用户
+ * Update user
  */
 export const updateUser = async ({
   id,
   userData,
 }: UpdateUserParams): Promise<User> => {
   try {
-    // 使用真实API调用
+    // Use real API call
     const response = await apiClient.users.putApisV1ManagerUsers({
       userId: id,
       requestBody: {
@@ -68,7 +68,7 @@ export const updateUser = async ({
     });
 
     if (response.code === API_RESPONSE_CODE.SUCCESS) {
-      // 由于更新接口返回的是APIResponse而不是用户数据，我们需要重新获取用户信息
+      // Since update endpoint returns APIResponse instead of user data, we need to re-fetch user information
       const userResponse = await apiClient.users.getApisV1ManagerUsers1({
         userId: id,
       });
@@ -84,14 +84,14 @@ export const updateUser = async ({
         return result;
       } else {
         throw new Error(
-          userResponse.message || '获取更新后的用户信息失败',
+          userResponse.message || 'Failed to fetch updated user information',
         );
       }
     } else {
-      throw new Error(response.message || '更新用户失败');
+      throw new Error(response.message || 'Failed to update user');
     }
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Extract actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     throw errorObj;
@@ -99,15 +99,15 @@ export const updateUser = async ({
 };
 
 /**
- * 删除用户
+ * Delete user
  *
- * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+ * @returns Returns result object in format { success: boolean; error?: Error }
  */
 export const deleteUser = async (
   id: string,
 ): Promise<{ success: boolean; error?: Error }> => {
   try {
-    // 使用真实API调用
+    // Use real API call
     const response = await apiClient.users.deleteApisV1ManagerUsers({
       userId: id,
     });
@@ -115,10 +115,10 @@ export const deleteUser = async (
     if (response.code === API_RESPONSE_CODE.SUCCESS) {
       return { success: true };
     }
-    const errorObj = new Error(response.message || '删除用户失败');
+    const errorObj = new Error(response.message || 'Failed to delete user');
     return { success: false, error: errorObj };
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Extract actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     return { success: false, error: errorObj };

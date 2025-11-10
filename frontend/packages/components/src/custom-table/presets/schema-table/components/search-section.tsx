@@ -27,7 +27,7 @@ interface SearchSectionProps {
 }
 
 /**
- * 搜索区域组件
+ * Search section component
  */
 export const SearchSection: React.FC<SearchSectionProps> = ({
   schema,
@@ -61,13 +61,13 @@ export const SearchSection: React.FC<SearchSectionProps> = ({
         <Space>
           <Button type="primary" htmlType="submit" icon={<IconSearch />}>
             {typeof schema.features.search === 'object'
-              ? schema.features.search.searchText || '查询'
-              : '查询'}
+              ? schema.features.search.searchText || 'Search'
+              : 'Search'}{' '}
           </Button>
           <Button onClick={onReset} icon={<IconRefresh />}>
             {typeof schema.features.search === 'object'
-              ? schema.features.search.resetText || '重置'
-              : '重置'}
+              ? schema.features.search.resetText || 'Reset'
+              : 'Reset'}{' '}
           </Button>
         </Space>
       </Form>

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出各功能模块（只导出主要组件和类型，避免导出冲突的工具函数）
-// Account 模块：导出主要组件和 Hooks，不导出 lib 中的工具函数（避免 formatDateTime 冲突）
+// Export feature modules (only export main components and types, avoid exporting conflicting utility functions)
+// Account module: Export main components and Hooks, do not export utility functions from lib (avoid formatDateTime conflict)
 export {
   AccountManagement,
   AccountModal,
@@ -24,10 +24,13 @@ export type {
   UserRole as AccountRole,
 } from './account';
 
-// Bot 模块：完整导出
+// Bot module: Full export
 export * from './bot';
 
-// Project 模块：导出主要组件和 Hooks，不导出 lib 中的工具函数（避免 formatDateTime 冲突）
+// Customer module: Full export
+export * from './customer';
+
+// Project module: Export main components and Hooks, do not export utility functions from lib (avoid formatDateTime conflict)
 export {
   ProjectManagement,
   ProjectTable,

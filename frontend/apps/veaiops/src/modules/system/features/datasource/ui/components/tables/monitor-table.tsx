@@ -23,7 +23,7 @@ import { useMonitorTableConfig } from '../../../hooks/use-monitor-table-config';
 import { getCommonColumns } from './columns';
 
 /**
- * 监控配置表格组件属性接口
+ * Monitor configuration table component properties interface
  */
 interface MonitorTableProps {
   onEdit?: (monitor: DataSource) => void;
@@ -35,28 +35,28 @@ interface MonitorTableProps {
 }
 
 /**
- * 监控配置表格组件引用接口
+ * Monitor configuration table component ref interface
  */
 export interface MonitorTableRef {
   refresh: () => Promise<{ success: boolean; error?: Error }>;
 }
 
-// 过滤器配置
+// Filter configuration
 const getMonitorFilters = () => [];
 
 /**
- * 监控配置表格组件
- * 封装表格的渲染逻辑，提供清晰的接口
+ * Monitor configuration table component
+ * Encapsulates table rendering logic, provides clear interface
  */
 export const MonitorTable = forwardRef<MonitorTableRef, MonitorTableProps>(
   ({ onEdit, onDelete, dataSourceType }, ref) => {
-    // 内部 ref，用于传递给 useBusinessTable
-    // 注意：CustomTable 需要泛型参数，但 useBusinessTable 的 ref 类型是 CustomTableActionType（无泛型）
-    // 使用类型断言来桥接这两个类型
+    // Internal ref, passed to useBusinessTable
+    // Note: CustomTable requires generic parameters, but useBusinessTable's ref type is CustomTableActionType (no generics)
+    // Use type assertion to bridge these two types
     const tableActionRef =
       useRef<CustomTableActionType<DataSource, BaseQuery>>(null);
 
-    // 表格配置（已使用 useBusinessTable 自动处理刷新）
+    // Table configuration (already uses useBusinessTable to auto handle refresh)
     const {
       customTableProps,
       handleColumns: configHandleColumns,
@@ -66,12 +66,12 @@ export const MonitorTable = forwardRef<MonitorTableRef, MonitorTableProps>(
       onEdit,
       onDelete: (monitorId: string) => onDelete(monitorId, dataSourceType),
       dataSourceType,
-      // 为什么使用类型断言：
-      // - tableActionRef 是泛型 CustomTableActionType<DataSource, BaseQuery>
-      // - useMonitorTableConfig 期望的 ref 类型是 CustomTableActionType<BaseRecord, BaseQuery>
-      // - 这是因为 CustomTableActionType 的泛型参数在运行时不影响 ref 的使用
-      // - DataSource 扩展了 BaseRecord，类型兼容性由运行时保证
-      // - 类型安全由 CustomTable 组件内部保证
+      // Why use type assertion:
+      // - tableActionRef is generic CustomTableActionType<DataSource, BaseQuery>
+      // - useMonitorTableConfig expects ref type CustomTableActionType<BaseRecord, BaseQuery>
+      // - This is because CustomTableActionType's generic parameters don't affect ref usage at runtime
+      // - DataSource extends BaseRecord, type compatibility is guaranteed at runtime
+      // - Type safety is guaranteed by CustomTable component internally
       ref: tableActionRef as unknown as React.Ref<
         CustomTableActionType<BaseRecord, BaseQuery>
       >,
@@ -111,33 +111,33 @@ export const MonitorTable = forwardRef<MonitorTableRef, MonitorTableProps>(
       [operations],
     );
 
-    // 创建 handleColumns 函数，传递操作回调给列配置
+    // Create handleColumns function, pass operation callbacks to column configuration
     const handleColumns = useCallback(
       (_props: Record<string, unknown>) => {
-        // 先使用配置中的 handleColumns
+        // First use handleColumns from configuration
         const baseColumns = configHandleColumns(_props);
 
-        // 适配 onDelete 函数，使用 useBusinessTable 自动包装的删除操作
-        // ✅ 删除操作会自动刷新表格
+        // Adapt onDelete function, use useBusinessTable auto-wrapped delete operation
+        // ✅ Delete operation will auto refresh table
         const adaptedOnDelete: DeleteHandler = async (id: string) => {
           try {
-            // ✅ 优先使用 useBusinessTable 包装的删除操作（自动刷新）
+            // ✅ Prefer useBusinessTable wrapped delete operation (auto refresh)
             if (wrappedHandlers?.delete) {
               const success = await wrappedHandlers.delete(id);
-              // ✅ 返回结果对象，符合异步方法错误处理规范
+              // ✅ Return result object, comply with async method error handling specification
               return success
                 ? { success: true }
                 : { success: false, error: new Error('删除操作失败') };
             }
 
-            // 兼容：如果没有包装的处理器，使用原始处理器
+            // Compatibility: if no wrapped handler, use original handler
             const success = await onDelete(id, dataSourceType);
-            // ✅ 返回结果对象，符合异步方法错误处理规范
+            // ✅ Return result object, comply with async method error handling specification
             return success
               ? { success: true }
               : { success: false, error: new Error('删除操作失败') };
           } catch (error: unknown) {
-            // ✅ 正确：透出实际错误信息
+            // ✅ Correct: expose actual error information
             const errorObj =
               error instanceof Error ? error : new Error(String(error));
             logger.error({
@@ -150,23 +150,23 @@ export const MonitorTable = forwardRef<MonitorTableRef, MonitorTableProps>(
               source: 'MonitorTable',
               component: 'adaptedOnDelete',
             });
-            // ✅ 返回结果对象，符合异步方法错误处理规范
+            // ✅ Return result object, comply with async method error handling specification
             return { success: false, error: errorObj };
           }
         };
 
-        // 传递编辑、删除、激活/停用后的刷新处理
-        // ✅ 切换状态后也需要刷新（使用 useBusinessTable 的刷新方法）
+        // Pass refresh handling after edit, delete, activate/deactivate
+        // ✅ Need to refresh after status toggle (use useBusinessTable's refresh method)
         const customColumns = getCommonColumns(
           dataSourceType,
           adaptedOnDelete,
           onEdit,
           async () => {
-            // ✅ 使用 useBusinessTable 的刷新方法
+            // ✅ Use useBusinessTable's refresh method
             if (operations?.refresh) {
               const refreshResult = await operations.refresh();
               if (!refreshResult.success && refreshResult.error) {
-                // ✅ 正确：使用 logger 记录警告，传递完整的错误信息
+                // ✅ Correct: use logger to record warning, pass complete error information
                 const errorObj = refreshResult.error;
                 logger.warn({
                   message: '切换状态后刷新表格失败',
@@ -183,21 +183,21 @@ export const MonitorTable = forwardRef<MonitorTableRef, MonitorTableProps>(
           },
         );
 
-        // 合并列配置（覆盖操作列和重复列）
-        // 获取 customColumns 中的所有 key，用于去重
+        // Merge column configuration (override action columns and duplicate columns)
+        // Get all keys from customColumns for deduplication
         const customColumnKeys = new Set(
           customColumns.map((col) => col.key).filter(Boolean),
         );
 
-        // 从 baseColumns 中过滤掉在 customColumns 中已存在的列（包括 'actions'、'type' 等）
-        // 同时过滤掉"配置信息"分组列，因为 customColumns 中的 getBaseColumns 也包含它
+        // Filter out columns from baseColumns that already exist in customColumns (including 'actions', 'type', etc.)
+        // Also filter out "Configuration Info" grouped column, because getBaseColumns in customColumns also contains it
         const filteredBaseColumns = baseColumns.filter((col) => {
           const colKey = col.key || '';
-          // 如果列有 children（分组列），检查是否是"配置信息"
+          // If column has children (grouped column), check if it's "Configuration Info"
           if (col.children && col.title === '配置信息') {
-            return false; // 过滤掉 baseColumns 中的"配置信息"列，保留 customColumns 中的
+            return false; // Filter out "Configuration Info" column from baseColumns, keep the one in customColumns
           }
-          // 过滤掉重复的 key
+          // Filter out duplicate keys
           return !customColumnKeys.has(colKey);
         });
 
@@ -224,9 +224,9 @@ export const MonitorTable = forwardRef<MonitorTableRef, MonitorTableProps>(
           connectDrawerShow: 'true',
           dataSourceWizardShow: 'true',
         }}
-        // 注意：tableActionRef 的类型是 RefObject<CustomTableActionType<DataSource, BaseQuery>>
-        // CustomTable 期望的 ref 类型是 Ref<CustomTableActionType<FormatRecordType, QueryType>>
-        // 使用 unknown 作为中间类型，确保类型转换安全（运行时类型是一致的）
+        // Note: tableActionRef's type is RefObject<CustomTableActionType<DataSource, BaseQuery>>
+        // CustomTable expects ref type Ref<CustomTableActionType<FormatRecordType, QueryType>>
+        // Use unknown as intermediate type to ensure type conversion safety (runtime types are consistent)
         ref={
           tableActionRef as unknown as React.Ref<
             CustomTableActionType<DataSource, BaseQuery>

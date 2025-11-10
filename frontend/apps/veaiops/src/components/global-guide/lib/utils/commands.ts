@@ -23,25 +23,25 @@ import {
   exportAllGlobalGuideLogs,
   quickDiagnoseGlobalGuide,
 } from './diagnostics';
-import './types'; // 导入 Window 接口扩展
+import './types'; // Import Window interface extension
 
 /**
- * 注册控制台调试命令
+ * Register console debug commands
  *
- * 注册到全局 window 对象，供开发者在浏览器控制台使用
+ * Register to global window object for developers to use in browser console
  *
- * @param handleStepClick - 步骤点击处理函数
- * @returns 清理函数
+ * @param handleStepClick - Step click handler function
+ * @returns Cleanup function
  */
 export const registerConsoleCommands = (
   handleStepClick: (stepNumber: number) => void,
 ): (() => void) => {
-  // 注册日志导出和诊断命令
+  // Register log export and diagnosis commands
   window.exportAllGlobalGuideLogs = exportAllGlobalGuideLogs;
   window.quickDiagnoseGuide = quickDiagnoseGlobalGuide;
   window.analyzeGlobalGuide = analyzeGlobalGuide;
 
-  // 注册步骤调试命令
+  // Register step debug commands
   window.debugStep1Click = createDebugStepClickCommand({
     handleStepClick,
     stepNumber: GlobalGuideStepNumber.CONNECTION,
@@ -54,13 +54,13 @@ export const registerConsoleCommands = (
     stepName: '第二步',
   });
 
-  // 注册其他调试命令
+  // Register other debug commands
   window.debugUrlState = debugUrlState;
   window.exportGlobalGuideLogs = exportGlobalGuideLogs;
 
-  // 返回清理函数
+  // Return cleanup function
   return () => {
-    // 清理时移除全局方法
+    // Remove global methods on cleanup
     delete window.exportAllGlobalGuideLogs;
     delete window.quickDiagnoseGuide;
     delete window.analyzeGlobalGuide;

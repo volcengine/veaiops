@@ -19,15 +19,15 @@ import type { Chat } from 'api-generate';
 import type { RefObject } from 'react';
 
 /**
- * 群管理表格配置获取Hook
+ * Chat management table configuration retrieval Hook
  */
 export const useChatTableConfigWrapper = ({
   tableRef,
 }: {
   tableRef: RefObject<CustomTableActionType<Chat>>;
 }) => {
-  // ✅ 注意：不能在 try-catch 中包裹 Hook 调用，违反 React Hooks 规则
-  // ✅ 添加日志记录，但不捕获错误（错误由 Error Boundary 处理）
+  // ✅ Note: Cannot wrap Hook calls in try-catch, violates React Hooks rules
+  // ✅ Add logging, but don't catch errors (errors handled by Error Boundary)
   logger.info({
     message: '[ChatTable] 开始调用 useChatTableConfig',
     data: {

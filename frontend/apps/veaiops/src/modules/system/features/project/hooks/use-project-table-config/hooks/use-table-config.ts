@@ -29,12 +29,12 @@ import { useTableHandlers } from './use-table-handlers';
 import { useTableRequest } from './use-table-request';
 
 /**
- * Project 表格配置聚合 Hook
+ * Project table configuration aggregation Hook
  *
- * 🎯 Hook 聚合模式 + 自动刷新机制
- * - 使用 useBusinessTable 统一管理表格逻辑
- * - 通过 operationWrapper 实现自动刷新
- * - 集中管理数据源、表格配置、列配置等
+ * 🎯 Hook aggregation pattern + auto refresh mechanism
+ * - Use useBusinessTable to uniformly manage table logic
+ * - Achieve auto refresh through operationWrapper
+ * - Centrally manage data source, table configuration, column configuration, etc.
  */
 export const useProjectTableConfig = ({
   onEdit,
@@ -43,19 +43,19 @@ export const useProjectTableConfig = ({
   onImport,
   onToggleStatus,
 }: UseProjectTableConfigOptions): UseProjectTableConfigReturn => {
-  // 🎯 使用 CRUD Hook 管理业务逻辑
+  // 🎯 Use CRUD Hook to manage business logic
   const crud = useProjectCRUD();
 
-  // 🎯 数据请求逻辑
+  // 🎯 Data request logic
   const { request } = useTableRequest();
 
-  // 🎯 数据源配置 - 使用工具函数
+  // 🎯 Data source configuration - use utility function
   const dataSource = useMemo(
     () => createServerPaginationDataSource({ request }),
     [request],
   );
 
-  // 🎯 表格配置 - 使用工具函数
+  // 🎯 Table configuration - use utility function
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
@@ -66,7 +66,7 @@ export const useProjectTableConfig = ({
     [],
   );
 
-  // 🎯 业务操作包装 - 自动刷新
+  // 🎯 Business operation wrapping - auto refresh
   const { customTableProps, customOperations } = useBusinessTable({
     dataSource,
     tableProps,
@@ -91,7 +91,7 @@ export const useProjectTableConfig = ({
       }) as Record<string, (...args: unknown[]) => unknown>,
   });
 
-  // 🎯 表格处理器配置
+  // 🎯 Table handler configuration
   const { handleColumns, handleFilters, renderActions, actions } =
     useTableHandlers({
       onEdit,
@@ -102,7 +102,7 @@ export const useProjectTableConfig = ({
     });
 
   return {
-    // 表格配置
+    // Table configuration
     customTableProps,
     customOperations,
     handleColumns,
@@ -110,32 +110,32 @@ export const useProjectTableConfig = ({
     renderActions,
     actions,
 
-    // 业务逻辑状态
+    // Business logic state
     modalVisible: crud.modalVisible,
     editingProject: crud.editingProject,
     submitting: crud.submitting,
     form: crud.form,
 
-    // 导入相关状态
+    // Import related state
     importDrawerVisible: crud.importDrawerVisible,
     uploading: crud.uploading,
 
-    // 新建项目相关状态
+    // Create project related state
     createDrawerVisible: crud.createDrawerVisible,
     creating: crud.creating,
 
-    // 业务逻辑处理器
+    // Business logic handlers
     handleCancel: crud.handleCancel,
     handleSubmit: crud.handleSubmit,
     handleDelete: crud.handleDelete,
     checkDeletePermission: crud.checkDeletePermission,
 
-    // 导入相关处理器
+    // Import related handlers
     handleImport: crud.handleImport,
     handleOpenImportDrawer: crud.handleOpenImportDrawer,
     handleCloseImportDrawer: crud.handleCloseImportDrawer,
 
-    // 新建项目相关处理器
+    // Create project related handlers
     handleCreate: crud.handleCreate,
     handleOpenCreateDrawer: crud.handleOpenCreateDrawer,
     handleCloseCreateDrawer: crud.handleCloseCreateDrawer,

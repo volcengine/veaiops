@@ -13,23 +13,23 @@
 // limitations under the License.
 
 /**
- * Bot UI 组件统一导出
- * 按照 Feature-Based 架构组织
+ * Bot UI components unified export
+ * Organized according to Feature-Based architecture
  *
- * 架构说明：
- * - management.tsx: Bot管理主页面
- * - table.tsx: Bot表格组件
- * - attributes-table.tsx: Bot属性表格组件
- * - components/: 子组件目录
- *   - bot/: Bot 相关子组件
- *   - chat/: 群管理相关子组件
- *   - attributes/: 属性相关子组件
+ * Architecture description:
+ * - management.tsx: Bot management main page
+ * - table.tsx: Bot table component
+ * - attributes-table.tsx: Bot attributes table component
+ * - components/: Sub-components directory
+ *   - bot/: Bot related sub-components
+ *   - chat/: Chat management related sub-components
+ *   - attributes/: Attributes related sub-components
  */
 
-// 主页面组件
+// Main page components
 export { BotManagement, default } from './management';
 export { BotTable, default as BotTableDefault } from './table';
 export { BotAttributesTable } from './attributes-table';
 
-// 子组件（通过 components/index.ts 统一导出）
+// Sub-components (unified export through components/index.ts)
 export * from './components';

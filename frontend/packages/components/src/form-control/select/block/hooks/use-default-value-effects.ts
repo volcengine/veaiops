@@ -18,8 +18,8 @@ import { useEffect, useRef } from 'react';
 import { logger } from '../logger';
 
 /**
- * 默认值副作用Hook
- * 负责处理默认值相关的副作用逻辑
+ * Default value side effects Hook
+ * Responsible for handling default value related side effect logic
  */
 export function useDefaultValueEffects({
   defaultActiveFirstOption,
@@ -34,10 +34,10 @@ export function useDefaultValueEffects({
   value?: unknown;
   mode?: 'multiple' | 'tags';
 }) {
-  // 🔧 全链路追踪标记点 4：Hook 入口
+  // 🔧 Full trace marker point 4: Hook entry
   logger.info(
     'DefaultValueEffects',
-    '🟢 [全链路-4] Hook 接收参数',
+    '🟢 [Full Trace-4] Hook received parameters',
     {
       receivedDefaultActiveFirstOption: defaultActiveFirstOption,
       receivedFinalDefaultValue: finalDefaultValue,
@@ -48,16 +48,16 @@ export function useDefaultValueEffects({
     'hookEntry',
   );
 
-  // 🔧 修复：使用ref标记是否已经触发过默认值设置，避免重复触发
+  // 🔧 Fix: Use ref to mark if default value has been triggered, avoid duplicate triggers
   const hasTriggeredDefaultRef = useRef(false);
   const prevValueRef = useRef(value);
 
-  // 监听 value 变化，如果从有值变为无值，重置标记
+  // Monitor value changes, if changes from having value to no value, reset marker
   useEffect(() => {
     const prevEmpty = isEmpty(prevValueRef.current);
     const currentEmpty = isEmpty(value);
 
-    // 如果从有值变为无值，允许重新应用默认值
+    // If changes from having value to no value, allow reapplying default value
     if (!prevEmpty && currentEmpty) {
       hasTriggeredDefaultRef.current = false;
     }
@@ -65,12 +65,12 @@ export function useDefaultValueEffects({
     prevValueRef.current = value;
   }, [value]);
 
-  // === 默认值副作用处理 ===
+  // === Default value side effect processing ===
   useEffect(() => {
-    // 🔧 全链路追踪标记点 5：useEffect 执行
+    // 🔧 Full trace marker point 5: useEffect execution
     logger.info(
       'DefaultValueEffects',
-      '🔵 [全链路-5] useEffect 被触发',
+      '🔵 [Full Trace-5] useEffect triggered',
       {
         defaultActiveFirstOption,
         finalDefaultValue,
@@ -87,31 +87,31 @@ export function useDefaultValueEffects({
       'useEffect',
     );
 
-    // 🔧 关键修复：只在以下情况触发onChange：
-    // 1. defaultActiveFirstOption为true
+    // 🔧 Key fix: Only trigger onChange in the following cases:
+    // 1. defaultActiveFirstOption is true
     if (!defaultActiveFirstOption) {
       logger.debug(
         'DefaultValueEffects',
-        '跳过：defaultActiveFirstOption 未启用',
+        'Skipped: defaultActiveFirstOption not enabled',
         {},
         'useEffect',
       );
       return;
     }
 
-    // 2. 有finalDefaultValue
+    // 2. Has finalDefaultValue
     if (!finalDefaultValue) {
       logger.debug(
         'DefaultValueEffects',
-        '跳过：无 finalDefaultValue',
+        'Skipped: no finalDefaultValue',
         {},
         'useEffect',
       );
       return;
     }
 
-    // 3. 当前value为空（避免覆盖用户已选择的值）
-    // 对于多选模式，空数组也视为空值
+    // 3. Current value is empty (avoid overwriting user-selected values)
+    // For multiple mode, empty array is also considered empty value
     const isValueEmpty =
       mode === 'multiple' || mode === 'tags'
         ? isEmpty(value) || (Array.isArray(value) && value.length === 0)
@@ -120,14 +120,14 @@ export function useDefaultValueEffects({
     if (!isValueEmpty) {
       logger.debug(
         'DefaultValueEffects',
-        '跳过：value 不为空',
+        'Skipped: value is not empty',
         { value, isValueEmpty, mode },
         'useEffect',
       );
       return;
     }
 
-    // 4. value 已经等于 finalDefaultValue，避免重复触发
+    // 4. value already equals finalDefaultValue, avoid duplicate triggers
     const isValueMatchDefault =
       mode === 'multiple' || mode === 'tags'
         ? Array.isArray(value) &&
@@ -141,28 +141,28 @@ export function useDefaultValueEffects({
     if (isValueMatchDefault) {
       logger.debug(
         'DefaultValueEffects',
-        '跳过：value 已匹配 finalDefaultValue',
+        'Skipped: value already matches finalDefaultValue',
         { value, finalDefaultValue },
         'useEffect',
       );
       return;
     }
 
-    // 5. 还未触发过（避免重复触发）
+    // 5. Not yet triggered (avoid duplicate triggers)
     if (hasTriggeredDefaultRef.current) {
       logger.warn(
         'DefaultValueEffects',
-        '⚠️ 跳过：已经触发过默认值',
+        '⚠️ Skipped: default value already triggered',
         { hasTriggered: true },
         'useEffect',
       );
       return;
     }
 
-    // 🔧 全链路追踪标记点 6：触发 onChange
+    // 🔧 Full trace marker point 6: Trigger onChange
     logger.info(
       'DefaultValueEffects',
-      '🟢 [全链路-6] ✅ 即将触发 onChange - 自动填充默认值',
+      '🟢 [Full Trace-6] ✅ About to trigger onChange - auto-fill default value',
       {
         finalDefaultValue,
         currentValue: value,
@@ -174,15 +174,15 @@ export function useDefaultValueEffects({
       'useEffect',
     );
 
-    // 传递undefined作为第二个参数，因为OptionInfo类型不可用
+    // Pass undefined as second parameter, because OptionInfo type is not available
     onChange?.(finalDefaultValue, undefined as never);
 
     hasTriggeredDefaultRef.current = true;
 
-    // 🔧 全链路追踪标记点 7：onChange 执行完成
+    // 🔧 Full trace marker point 7: onChange execution completed
     logger.info(
       'DefaultValueEffects',
-      '🟣 [全链路-7] ✅ onChange 已执行完成',
+      '🟣 [Full Trace-7] ✅ onChange execution completed',
       {
         setValue: finalDefaultValue,
         timestamp: new Date().toISOString(),
@@ -190,5 +190,5 @@ export function useDefaultValueEffects({
       'useEffect',
     );
   }, [defaultActiveFirstOption, finalDefaultValue, value, mode]);
-  // 注意：不包含 onChange，因为它通常是稳定的引用，包含它可能导致无限循环
+  // Note: onChange is not included, as it is usually a stable reference, including it may cause infinite loop
 }

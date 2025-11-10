@@ -16,7 +16,7 @@
 import type { DataSourceType } from './data-source-type';
 export type ConnectCreateRequest = {
   /**
-   * 连接名称
+   * Connection name
    */
   name: string;
   type: DataSourceType;
@@ -25,27 +25,27 @@ export type ConnectCreateRequest = {
    */
   zabbix_api_url?: string;
   /**
-   * Zabbix API 用户名
+   * Zabbix API username
    */
   zabbix_api_user?: string;
   /**
-   * Zabbix API 密码
+   * Zabbix API password
    */
   zabbix_api_password?: string;
   /**
-   * 阿里云 Access Key ID
+   * Alibaba Cloud Access Key ID
    */
   aliyun_access_key_id?: string;
   /**
-   * 阿里云 Access Key Secret
+   * Alibaba Cloud Access Key Secret
    */
   aliyun_access_key_secret?: string;
   /**
-   * 火山引擎 Access Key ID
+   * Volcano Engine Access Key ID
    */
   volcengine_access_key_id?: string;
   /**
-   * 火山引擎 Access Key Secret
+   * Volcano Engine Access Key Secret
    */
   volcengine_access_key_secret?: string;
 };

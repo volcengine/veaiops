@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Oncall Config UI 统一导出
+ * Oncall Config UI unified export
  */
 
-// 组件导出（包含列渲染组件）
+// Component exports (including column render components)
 export * from './components';

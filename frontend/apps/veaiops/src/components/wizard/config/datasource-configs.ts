@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源配置文件
- * @description 定义各种数据源类型的配置信息和步骤流程
+ * Data source configuration file
+ * @description Defines configuration information and step flow for various data source types
  * @author AI Assistant
  * @date 2025-01-15
  */
@@ -28,7 +28,7 @@ import { DataSource } from '@veaiops/api-client';
 import { DataSourceType } from '../types';
 import type { DataSourceTypeConfig } from '../types';
 
-// 数据源类型配置
+// Data source type configurations
 export const DATA_SOURCE_CONFIGS: DataSourceTypeConfig[] = [
   {
     type: DataSource.type.VOLCENGINE,
@@ -158,7 +158,7 @@ export const DATA_SOURCE_CONFIGS: DataSourceTypeConfig[] = [
   },
 ];
 
-// 图标映射
+// Icon mapping
 export const ICON_MAP = {
   IconDesktop,
   IconCloud,

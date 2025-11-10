@@ -19,7 +19,7 @@ import {
 import type React from 'react';
 
 /**
- * 密码要求检查项组件
+ * Password requirement check item component
  */
 interface PasswordRequirementItemProps {
   met: boolean;

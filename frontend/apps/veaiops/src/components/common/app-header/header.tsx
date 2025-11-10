@@ -19,8 +19,8 @@ import { UserDropdown } from '../user-dropdown';
 import type { AppHeaderProps } from './types';
 
 /**
- * 应用头部组件
- * 包含Logo、导航菜单、文档按钮和用户下拉菜单
+ * Application header component
+ * Includes Logo, navigation menu, documentation button, and user dropdown menu
  */
 export const AppHeader: React.FC<AppHeaderProps> = ({
   activeModule,

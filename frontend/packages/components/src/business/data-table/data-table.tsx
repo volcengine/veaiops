@@ -26,10 +26,8 @@ import type { ActionConfig, ColumnConfig, DataTableProps } from './types';
 const { Text } = Typography;
 
 /**
- * 通用数据表格组件
- * @description 提供标准化的数据表格功能，支持操作列、分页、选择等
-
-
+ * Generic data table component
+ * @description Provides standardized data table functionality, supports action columns, pagination, selection, etc.
  */
 export const DataTable = <T extends Record<string, any>>({
   data,
@@ -37,13 +35,13 @@ export const DataTable = <T extends Record<string, any>>({
   loading = false,
   pagination,
   actions = [],
-  actionTitle = '操作',
+  actionTitle = 'Actions',
   actionWidth = 200,
   showIndex = false,
-  indexTitle = '序号',
+  indexTitle = 'No.',
   rowSelection,
   rowKey = 'id',
-  emptyText = '暂无数据',
+  emptyText = 'No data',
   size = 'default',
   border = true,
   stripe = true,
@@ -51,11 +49,11 @@ export const DataTable = <T extends Record<string, any>>({
   footer,
   ...tableProps
 }: DataTableProps<T>) => {
-  // 转换列配置为Arco Table列配置
+  // Convert column configuration to Arco Table column configuration
   const tableColumns = useMemo<ColumnProps[]>(() => {
     const cols: ColumnProps[] = [];
 
-    // 添加序号列
+    // Add index column
     if (showIndex) {
       cols.push({
         title: indexTitle,
@@ -74,7 +72,7 @@ export const DataTable = <T extends Record<string, any>>({
       });
     }
 
-    // 添加数据列
+    // Add data columns
     columns.forEach((col: ColumnConfig<T>) => {
       const tableCol: ColumnProps = {
         title: col.title,
@@ -85,14 +83,14 @@ export const DataTable = <T extends Record<string, any>>({
         render: col.render,
       };
 
-      // 添加排序
+      // Add sorting
       if (col.sortable) {
         tableCol.sorter = true;
       }
 
-      // 添加筛选
+      // Add filtering
       if (col.filterable && col.dataIndex) {
-        // 从数据中提取唯一值作为筛选选项
+        // Extract unique values from data as filter options
         const uniqueValues = Array.from(
           new Set(data.map((item) => item[col.dataIndex as keyof T])),
         ).filter(Boolean);
@@ -110,7 +108,7 @@ export const DataTable = <T extends Record<string, any>>({
       cols.push(tableCol);
     });
 
-    // 添加操作列
+    // Add action column
     if (actions.length > 0) {
       cols.push({
         title: actionTitle,
@@ -119,12 +117,12 @@ export const DataTable = <T extends Record<string, any>>({
         render: (_: any, record: T, index: number) => (
           <Space size="small">
             {actions.map((action: ActionConfig<T>, actionIndex: number) => {
-              // 检查是否显示
+              // Check if should show
               if (action.visible && !action.visible(record)) {
                 return null;
               }
 
-              // 检查是否禁用
+              // Check if disabled
               const disabled = action.disabled
                 ? action.disabled(record)
                 : false;
@@ -172,7 +170,7 @@ export const DataTable = <T extends Record<string, any>>({
     pagination,
   ]);
 
-  // 处理分页配置
+  // Handle pagination configuration
   const paginationConfig = useMemo(() => {
     if (pagination === false) {
       return false;
@@ -185,7 +183,7 @@ export const DataTable = <T extends Record<string, any>>({
         total: pagination.total || data.length,
         showTotal: pagination.showTotal
           ? (total: number, range: number[]): string =>
-              `第 ${range[0]}-${range[1]} 条，共 ${total} 条`
+              `Items ${range[0]}-${range[1]} of ${total}`
           : undefined,
         showJumper: pagination.showJumper,
         sizeCanChange: pagination.sizeCanChange,
@@ -195,18 +193,18 @@ export const DataTable = <T extends Record<string, any>>({
       };
     }
 
-    // 默认分页配置
+    // Default pagination configuration
     return {
       pageSize: 10,
       showTotal: (total: number, range: number[]): string =>
-        `第 ${range[0]}-${range[1]} 条，共 ${total} 条`,
+        `Items ${range[0]}-${range[1]} of ${total}`,
       showJumper: true,
       sizeCanChange: true,
       pageSizeOptions: [10, 20, 50, 100],
     };
   }, [pagination, data.length]);
 
-  // 处理行选择配置
+  // Handle row selection configuration
   const rowSelectionConfig = useMemo(() => {
     if (!rowSelection) {
       return undefined;

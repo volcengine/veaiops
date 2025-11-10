@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 智能单元格插件统一导出
+ * Smart cell plugin unified export
  */
 
-// 重新导出类型
+// Re-export types
 export type {
   EmptyValueStrategy,
   UserRole,

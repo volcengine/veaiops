@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * CustomTable 类型守卫函数
- * 用于安全的类型转换和验证，替代 as unknown 断言
+ * CustomTable type guard functions
+ * Used for safe type conversion and validation, replacing as unknown assertions
  */
 
 import type { PluginContext, TableDataSource } from '@veaiops/types';
 import type { BaseQuery, BaseRecord } from './common';
 
 /**
- * 检查是否为有效的记录类型
+ * Check if value is a valid record type
  */
 export function isValidRecord<T extends BaseRecord>(
   value: unknown,
@@ -32,11 +32,11 @@ export function isValidRecord<T extends BaseRecord>(
 
   const record = value as Record<string, unknown>;
 
-  // // 支持多种主键字段命名约定：
-  // // - Id (标准约定)
-  // // - id (小写约定)
-  // // - approvalId (工单主键)
-  // // - 其他常见主键字段
+  // // Support multiple primary key field naming conventions:
+  // // - Id (standard convention)
+  // // - id (lowercase convention)
+  // // - approvalId (work order primary key)
+  // // - Other common primary key fields
   // const hasValidId =
   //   typeof record.Id !== 'undefined' ||
   //   typeof record.id !== 'undefined' ||
@@ -49,14 +49,14 @@ export function isValidRecord<T extends BaseRecord>(
 }
 
 /**
- * 检查是否为有效的查询类型
+ * Check if value is a valid query type
  */
 export function isValidQuery<T extends BaseQuery>(value: unknown): value is T {
   return value !== null && typeof value === 'object';
 }
 
 /**
- * 检查是否为有效的记录数组
+ * Check if value is a valid record array
  */
 export function isValidRecordArray<T extends BaseRecord>(
   value: unknown,
@@ -65,7 +65,7 @@ export function isValidRecordArray<T extends BaseRecord>(
 }
 
 /**
- * 安全的记录类型转换
+ * Safe record type conversion
  */
 export function safeRecordCast<T extends BaseRecord>(
   value: unknown,
@@ -75,7 +75,7 @@ export function safeRecordCast<T extends BaseRecord>(
     return value;
   }
 
-  // 提供更详细的调试信息
+  // Provide more detailed debugging information
   if (Array.isArray(value) && value.length > 0) {
     const firstRecord = value[0] as Record<string, unknown>;
     const availableKeys = Object.keys(firstRecord);
@@ -87,7 +87,7 @@ export function safeRecordCast<T extends BaseRecord>(
 }
 
 /**
- * 安全的查询类型转换
+ * Safe query type conversion
  */
 export function safeQueryCast<T extends BaseQuery>(
   value: unknown,
@@ -101,7 +101,7 @@ export function safeQueryCast<T extends BaseQuery>(
 }
 
 /**
- * 检查是否为有效的插件上下文
+ * Check if value is a valid plugin context
  */
 export function isValidPluginContext<
   RecordType extends BaseRecord,
@@ -117,7 +117,7 @@ export function isValidPluginContext<
 }
 
 /**
- * 安全的插件上下文转换
+ * Safe plugin context conversion
  */
 export function safeContextCast<
   RecordType extends BaseRecord,
@@ -131,7 +131,7 @@ export function safeContextCast<
 }
 
 /**
- * 检查是否为有效的数据源
+ * Check if value is a valid data source
  */
 export function isValidDataSource<
   RecordType extends BaseRecord,
@@ -143,9 +143,9 @@ export function isValidDataSource<
 
   const obj = value as Record<string, unknown>;
 
-  // 支持两种数据源配置模式：
-  // 1. 直接请求函数模式: 有 request 属性
-  // 2. 服务实例模式: 有 serviceInstance 和 serviceMethod 属性
+  // Support two data source configuration modes:
+  // 1. Direct request function mode: has request property
+  // 2. Service instance mode: has serviceInstance and serviceMethod properties
   const hasRequestFunction =
     'request' in obj && typeof obj.request === 'function';
   const hasServiceConfig = 'serviceInstance' in obj && 'serviceMethod' in obj;
@@ -154,7 +154,7 @@ export function isValidDataSource<
 }
 
 /**
- * 安全的数据源转换
+ * Safe data source conversion
  */
 export function safeDataSourceCast<
   RecordType extends BaseRecord,
@@ -171,12 +171,12 @@ export function safeDataSourceCast<
 }
 
 /**
- * 泛型兼容性转换工具
- * 用于处理复杂的泛型协变性问题
+ * Generic compatibility conversion utility
+ * Used to handle complex generic covariance issues
  */
 export interface TypeSafeConverter {
   /**
-   * 安全的上下文转换，处理泛型协变性
+   * Safe context conversion, handling generic covariance
    */
   convertContext: <
     FromRecord extends BaseRecord,
@@ -188,7 +188,7 @@ export interface TypeSafeConverter {
   ) => PluginContext<ToRecord, ToQuery>;
 
   /**
-   * 安全的数据转换，处理格式化记录类型
+   * Safe data conversion, handling formatted record types
    */
   convertRecordData: <
     FromRecord extends BaseRecord,
@@ -199,7 +199,7 @@ export interface TypeSafeConverter {
 }
 
 /**
- * 类型安全转换器实现
+ * Type-safe converter implementation
  */
 export const typeSafeConverter: TypeSafeConverter = {
   convertContext<
@@ -210,7 +210,7 @@ export const typeSafeConverter: TypeSafeConverter = {
   >(
     context: PluginContext<FromRecord, FromQuery>,
   ): PluginContext<ToRecord, ToQuery> {
-    // 这里使用结构化克隆确保类型安全
+    // Use structured clone here to ensure type safety
     return {
       state: {
         ...context.state,
@@ -230,7 +230,7 @@ export const typeSafeConverter: TypeSafeConverter = {
   convertRecordData<FromRecord extends BaseRecord, ToRecord extends BaseRecord>(
     data: FromRecord[],
   ): ToRecord[] {
-    // 验证数据格式是否兼容
+    // Verify data format compatibility
     if (!isValidRecordArray(data)) {
       return [];
     }

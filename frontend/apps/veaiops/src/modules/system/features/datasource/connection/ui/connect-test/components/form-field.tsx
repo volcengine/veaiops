@@ -17,8 +17,8 @@ import type React from 'react';
 import type { FormFieldProps } from './types';
 
 /**
- * 单个表单字段组件
- * 根据配置渲染对应的输入字段
+ * Single form field component
+ * Renders corresponding input field based on configuration
  */
 export const FormField: React.FC<FormFieldProps> = ({
   config,

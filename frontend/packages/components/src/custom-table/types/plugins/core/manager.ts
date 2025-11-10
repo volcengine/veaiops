@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 插件管理器类型定义
+ * Plugin manager type definition
  */
 
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
@@ -24,20 +24,20 @@ import type { PluginContext } from './context';
 import type { Plugin } from './plugin';
 
 /**
- * 插件管理器API类型
+ * Plugin manager API type
  */
 export interface PluginManagerAPI {
-  // 插件注册
+  // Plugin registration
   register: <Config = Record<string, unknown>>(
     plugin: Plugin<Config>,
   ) => Promise<void>;
   unregister: (pluginName: string) => Promise<void>;
 
-  // 插件管理
+  // Plugin management
   enable: (pluginName: string) => Promise<void>;
   disable: (pluginName: string) => Promise<void>;
 
-  // 插件查询
+  // Plugin query
   getPlugin: (pluginName: string) => Plugin | undefined;
   getPlugins: () => Plugin[];
   getAllPlugins: () => Plugin[];
@@ -47,14 +47,14 @@ export interface PluginManagerAPI {
   isPluginEnabled: (pluginName: string) => boolean;
   isPluginInstalled: (pluginName: string) => boolean;
 
-  // 生命周期管理
+  // Lifecycle management
   setup: (context: PluginContext) => Promise<void>;
   executeHook: (params: {
     lifecycle: PluginLifecycle;
     context: PluginContext;
   }) => Promise<void>;
 
-  // 插件调用
+  // Plugin invocation
   use: <T>({
     pluginName,
     method,
@@ -66,14 +66,14 @@ export interface PluginManagerAPI {
     args,
   }: { pluginName: string; renderer: string; args?: unknown[] }) => ReactNode;
 
-  // 事件系统
+  // Event system
   on: (event: string, listener: (...args: unknown[]) => void) => void;
   emit: (event: string, ...args: unknown[]) => void;
 
-  // 性能监控
+  // Performance monitoring
   getMetrics: () => PluginPerformanceMetrics;
 
-  // 上下文管理
+  // Context management
   setPluginContext: ({
     pluginName,
     context,
@@ -81,7 +81,7 @@ export interface PluginManagerAPI {
 }
 
 /**
- * 插件管理器类型
+ * Plugin manager type
  */
 export interface PluginManager extends PluginManagerAPI {
   context?: PluginContext;
@@ -90,7 +90,7 @@ export interface PluginManager extends PluginManagerAPI {
 }
 
 /**
- * 插件管理器接口（泛型版本）
+ * Plugin manager interface (generic version)
  */
 export interface PluginManagerGeneric<
   RecordType extends BaseRecord = BaseRecord,

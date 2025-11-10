@@ -23,7 +23,7 @@ import type {
 import { useCallback, useEffect, useState } from 'react';
 
 /**
- * 订阅关系管理Hook
+ * Subscription relationship management Hook
  */
 export function useSubscribeRelation(_moduleType: ModuleType) {
   const [subscribeRelations, setSubscribeRelations] = useState<
@@ -33,7 +33,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
   const [error, setError] = useState<string | null>(null);
 
   /**
-   * 获取订阅关系列表
+   * Get subscription relationship list
    */
   const fetchSubscribeRelations = useCallback(
     async ({
@@ -57,7 +57,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
           setSubscribeRelations(response.data);
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : '获取订阅关系列表失败';
         setError(errorMessage);
@@ -71,7 +71,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
   );
 
   /**
-   * 创建订阅关系
+   * Create subscription relationship
    */
   const createSubscribeRelation = useCallback(
     async (data: SubscribeRelationCreate): Promise<boolean> => {
@@ -88,7 +88,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '创建订阅关系失败';
@@ -101,7 +101,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
   );
 
   /**
-   * 更新订阅关系
+   * Update subscription relationship
    */
   const updateSubscribeRelation = useCallback(
     async ({
@@ -126,7 +126,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '更新订阅关系失败';
@@ -139,7 +139,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
   );
 
   /**
-   * 删除订阅关系
+   * Delete subscription relationship
    */
   const deleteSubscribeRelation = useCallback(
     async (id: string): Promise<boolean> => {
@@ -152,7 +152,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
         Message.success('订阅关系删除成功');
         return true;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '删除订阅关系失败';
@@ -165,7 +165,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
   );
 
   /**
-   * 获取单个订阅关系详情
+   * Get single subscription relationship details
    */
   const getSubscribeRelationById = useCallback(
     async (id: string): Promise<SubscribeRelationWithAttributes | null> => {
@@ -180,7 +180,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
         }
         return null;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : '获取订阅关系详情失败';
 
@@ -191,7 +191,7 @@ export function useSubscribeRelation(_moduleType: ModuleType) {
     [],
   );
 
-  // 组件挂载时自动获取数据
+  // Automatically fetch data when component mounts
   useEffect(() => {
     fetchSubscribeRelations();
   }, [fetchSubscribeRelations]);

@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出表单项常量
+// Export form item constants
 export * from './form-item';

@@ -25,7 +25,7 @@ import { syncQueryToUrl, updateSearchParams } from './sync-query-to-url';
 import { syncUrlToQuery } from './sync-url-to-query';
 
 /**
- * 查询参数同步工具类
+ * Query parameter synchronization utility class
  */
 export class QuerySyncUtils<
   QueryType extends Record<string, unknown> = Record<string, unknown>,
@@ -39,28 +39,28 @@ export class QuerySyncUtils<
   }
 
   /**
-   * 同步查询参数到URL
+   * Sync query parameters to URL
    */
   syncQueryToUrl = (queryParam?: Record<string, unknown>) => {
     syncQueryToUrl(queryParam, this.config, this.context);
   };
 
   /**
-   * 更新React Router的searchParams
+   * Update React Router's searchParams
    */
   updateSearchParams = (searchParams: URLSearchParams) => {
     updateSearchParams(searchParams, this.context);
   };
 
   /**
-   * 从URL搜索参数同步到查询参数
+   * Sync query parameters from URL search parameters
    */
   syncUrlToQuery = (): Record<string, unknown> => {
     return syncUrlToQuery(this.config, this.context);
   };
 
   /**
-   * 格式化查询参数（同步版本）
+   * Format query parameters (synchronous version)
    */
   formatQuerySync = (
     query: Record<string, unknown>,
@@ -69,7 +69,7 @@ export class QuerySyncUtils<
   };
 
   /**
-   * 格式化查询参数（异步版本）
+   * Format query parameters (asynchronous version)
    */
   formatQuery = async (
     query: Record<string, unknown>,
@@ -78,14 +78,14 @@ export class QuerySyncUtils<
   };
 
   /**
-   * 获取参数对象，过滤空值
+   * Get parameter object, filter out empty values
    */
   getParamsObject = <T extends Record<string, unknown>>(params: T): T => {
     return getParamsObject(params);
   };
 
   /**
-   * 根据指定的键过滤空数据
+   * Filter empty data by specified keys
    */
   filterEmptyDataByKeys = <T extends Record<string, unknown>>({
     data,
@@ -98,17 +98,17 @@ export class QuerySyncUtils<
   };
 
   /**
-   * 转换参数类型
+   * Convert parameter types
    */
   convertParamsTypes = (
     query: Record<string, unknown>,
   ): Record<string, unknown> => {
-    // 使用 query-formatters 中的函数，但保持向后兼容
+    // Use functions from query-formatters but maintain backward compatibility
     const result: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(query)) {
       if (typeof value === 'string') {
-        // 尝试转换数字
+        // Try to convert to number
         if (/^\d+$/.test(value)) {
           result[key] = parseInt(value, 10);
         } else if (/^\d+\.\d+$/.test(value)) {
@@ -129,15 +129,15 @@ export class QuerySyncUtils<
   };
 
   /**
-   * 重置查询参数
-   * 🔧 修复：使用 initQuery 而不是空对象，确保重置到初始状态
-   * 🎯 边界case处理：
-   * - initQuery 为空对象或 undefined：重置为空对象
-   * - preservedFields 与 initQuery 合并：preservedFields 优先级更高
-   * - querySearchParamsFormat 格式化 URL 参数
-   * - 数组参数的 URL 同步
-   * - 认证参数的保留
-   * - syncQueryOnSearchParams 为 false 时不同步到 URL
+   * Reset query parameters
+   * 🔧 Fix: Use initQuery instead of empty object to ensure reset to initial state
+   * 🎯 Edge case handling:
+   * - initQuery is empty object or undefined: reset to empty object
+   * - Merge preservedFields with initQuery: preservedFields has higher priority
+   * - querySearchParamsFormat formats URL parameters
+   * - URL synchronization for array parameters
+   * - Authentication parameter preservation
+   * - Don't sync to URL when syncQueryOnSearchParams is false
    */
   resetQuery = (
     resetEmptyData = false,
@@ -147,13 +147,13 @@ export class QuerySyncUtils<
   };
 
   /**
-   * 处理activeKey变化
+   * Handle activeKey changes
    */
   handleActiveKeyChange = () => {
     const { useActiveKeyHook } = this.config;
 
     if (useActiveKeyHook && this.context.activeKeyChangeRef.current) {
-      // 延迟更新查询参数以避免竞态条件
+      // Delay query parameter update to avoid race conditions
       delay(async () => {
         const urlQuery = this.syncUrlToQuery();
         this.context.setQuery(
@@ -164,14 +164,14 @@ export class QuerySyncUtils<
   };
 
   /**
-   * 验证查询参数
+   * Validate query parameters
    */
   validateQuery = <T extends Record<string, unknown>>(query: T): boolean => {
     if (!query || typeof query !== 'object') {
       return false;
     }
 
-    // 基本验证逻辑
+    // Basic validation logic
     return Object.keys(query).length >= 0;
   };
 }

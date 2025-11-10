@@ -17,7 +17,7 @@ import type React from 'react';
 import { useState } from 'react';
 
 import { CollapsibleSection } from '../base';
-// 导入子组件
+// Import sub-components
 import {
   BasicInfo,
   ChannelMessage,
@@ -26,7 +26,7 @@ import {
   TimeInfo,
 } from '../business';
 
-// 导入常量和工具函数
+// Import constants and utility functions
 import {
   DEFAULT_EXPANDED_SECTIONS,
   EVENT_LEVEL_VISUAL_MAP,
@@ -38,8 +38,8 @@ import {
 const { Title } = Typography;
 
 /**
- * 历史事件详情抽屉组件
- * 提供事件详细信息的查看功能，采用现代化设计理念
+ * History event detail drawer component
+ * Provides event detail viewing functionality, adopts modern design concepts
  */
 export const HistoryDetailDrawer: React.FC<HistoryDetailDrawerProps> = ({
   visible,
@@ -98,10 +98,10 @@ export const HistoryDetailDrawer: React.FC<HistoryDetailDrawerProps> = ({
       }}
     >
       <div className="min-h-full">
-        {/* 事件概览卡片 */}
+        {/* Event overview card */}
         <EventOverview selectedRecord={selectedRecord} />
 
-        {/* 基础信息章节 */}
+        {/* Basic info section */}
         <CollapsibleSection
           title="基础信息"
           sectionKey="basic"
@@ -111,7 +111,7 @@ export const HistoryDetailDrawer: React.FC<HistoryDetailDrawerProps> = ({
           <BasicInfo selectedRecord={selectedRecord} />
         </CollapsibleSection>
 
-        {/* 时间信息章节 */}
+        {/* Time info section */}
         <CollapsibleSection
           title="时间信息"
           sectionKey="time"
@@ -121,7 +121,7 @@ export const HistoryDetailDrawer: React.FC<HistoryDetailDrawerProps> = ({
           <TimeInfo selectedRecord={selectedRecord} />
         </CollapsibleSection>
 
-        {/* 渠道消息章节 */}
+        {/* Channel message section */}
         {selectedRecord.channel_msg &&
           Object.keys(selectedRecord.channel_msg).length > 0 && (
             <CollapsibleSection
@@ -135,7 +135,7 @@ export const HistoryDetailDrawer: React.FC<HistoryDetailDrawerProps> = ({
             </CollapsibleSection>
           )}
 
-        {/* 原始数据章节 */}
+        {/* Raw data section */}
         <CollapsibleSection
           title="原始数据"
           sectionKey="rawData"

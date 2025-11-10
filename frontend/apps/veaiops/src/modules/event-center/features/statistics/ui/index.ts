@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 统计管理 UI 组件统一导出
+ * Statistics management UI components unified export
  */
 
 export { default as StatisticsManagement } from './statistics-management';

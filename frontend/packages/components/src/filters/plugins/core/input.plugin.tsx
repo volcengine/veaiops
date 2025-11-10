@@ -18,59 +18,59 @@ import { Input, InputNumber, InputTag } from '@arco-design/web-react';
 import type { FilterPlugin } from '@veaiops/types';
 import React from 'react';
 
-// Input 插件
+// Input plugin
 export const InputPlugin: FilterPlugin = {
   type: 'Input',
-  name: '文本输入框',
-  description: '基础文本输入组件',
+  name: 'Text Input',
+  description: 'Basic text input component',
   version: '1.0.0',
   render: ({ hijackedProps }: { hijackedProps?: Record<string, unknown> }) => {
-    // 过滤掉不应该传递到 DOM 元素的属性
+    // Filter out props that should not be passed to DOM elements
     const { subType, ...filteredProps } = hijackedProps || {};
     return <Input {...commonInputProps} {...filteredProps} />;
   },
   validateConfig: (config: Record<string, unknown>) =>
     typeof config === 'object',
   defaultConfig: {
-    placeholder: '请输入...',
+    placeholder: 'Please enter...',
     allowClear: true,
   },
 };
 
-// InputNumber 插件
+// InputNumber plugin
 export const InputNumberPlugin: FilterPlugin = {
   type: 'InputNumber',
-  name: '数字输入框',
-  description: '数字输入组件',
+  name: 'Number Input',
+  description: 'Number input component',
   version: '1.0.0',
   render: ({ hijackedProps }: { hijackedProps?: Record<string, unknown> }) => {
-    // 过滤掉不应该传递到 DOM 元素的属性
+    // Filter out props that should not be passed to DOM elements
     const { subType, ...filteredProps } = hijackedProps || {};
     return <InputNumber {...commonInputProps} {...filteredProps} />;
   },
   validateConfig: (config: Record<string, unknown>) =>
     typeof config === 'object',
   defaultConfig: {
-    placeholder: '请输入数字...',
+    placeholder: 'Please enter a number...',
     precision: 0,
   },
 };
 
-// InputTag 插件
+// InputTag plugin
 export const InputTagPlugin: FilterPlugin = {
   type: 'InputTag',
-  name: '标签输入框',
-  description: '标签输入组件',
+  name: 'Tag Input',
+  description: 'Tag input component',
   version: '1.0.0',
   render: ({ hijackedProps }: { hijackedProps?: Record<string, unknown> }) => {
-    // 过滤掉不应该传递到 DOM 元素的属性
+    // Filter out props that should not be passed to DOM elements
     const { subType, ...filteredProps } = hijackedProps || {};
     return <InputTag {...commonInputProps} {...filteredProps} />;
   },
   validateConfig: (config: Record<string, unknown>) =>
     typeof config === 'object',
   defaultConfig: {
-    placeholder: '请输入标签...',
+    placeholder: 'Please enter tags...',
     allowClear: true,
   },
 };

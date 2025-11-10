@@ -14,64 +14,64 @@
 
 import type { BaseRecord } from '@veaiops/types';
 /**
- * 表格展开插件类型定义
- * 基于 Arco Table useExpand 能力
+ * Table expand plugin type definition
+ * Based on Arco Table useExpand capability
  */
 import type { Key, ReactNode } from 'react';
 import type { PluginPriorityEnum } from '../core/enums';
 
 /**
- * 展开触发方式
+ * Expand trigger method
  */
 export type ExpandTrigger = 'click' | 'doubleClick' | 'icon';
 
 /**
- * 展开内容类型
+ * Expand content type
  */
 export type ExpandContentType = 'nested-table' | 'custom' | 'form' | 'tree';
 
 /**
- * 嵌套表格配置
+ * Nested table configuration
  */
 export interface NestedTableConfig<RecordType extends BaseRecord = BaseRecord> {
-  /** 子表格列配置 */
+  /** Child table column configuration */
   columns: Array<Record<string, unknown>>;
-  /** 子表格数据字段 */
+  /** Child table data field */
   dataField: string;
-  /** 子表格属性 */
+  /** Child table properties */
   tableProps?: Partial<Record<string, unknown>>;
 }
 
 /**
- * 展开渲染配置
+ * Expand render configuration
  */
 export interface ExpandRenderConfig {
-  /** 展开内容类型 */
+  /** Expand content type */
   type: ExpandContentType;
-  /** 嵌套表格配置 */
+  /** Nested table configuration */
   nestedTable?: NestedTableConfig<BaseRecord>;
-  /** 自定义渲染函数 */
+  /** Custom render function */
   render?: <RecordType extends BaseRecord = BaseRecord>(
     record: RecordType,
     index: number,
   ) => ReactNode;
-  /** 展开内容的样式 */
+  /** Expand content style */
   style?: React.CSSProperties;
-  /** 展开内容的类名 */
+  /** Expand content class name */
   className?: string;
 }
 
 /**
- * 展开图标配置
+ * Expand icon configuration
  */
 export interface ExpandIconConfig {
-  /** 展开图标 */
+  /** Expand icon */
   expandIcon?: ReactNode;
-  /** 收起图标 */
+  /** Collapse icon */
   collapseIcon?: ReactNode;
-  /** 图标位置 */
+  /** Icon position */
   position?: 'left' | 'right';
-  /** 自定义渲染展开图标 */
+  /** Custom render expand icon */
   render?: <RecordType extends BaseRecord = BaseRecord>(
     expanded: boolean,
     record: RecordType,
@@ -79,34 +79,34 @@ export interface ExpandIconConfig {
 }
 
 /**
- * 表格展开配置
+ * Table expand configuration
  */
 export interface TableExpandConfig {
-  /** 是否启用插件 */
+  /** Whether plugin is enabled */
   enabled?: boolean;
-  /** 插件优先级 */
+  /** Plugin priority level */
   priority?: PluginPriorityEnum;
-  /** 展开触发方式 */
+  /** Expand trigger method */
   trigger?: ExpandTrigger;
-  /** 默认展开的行 */
+  /** Default expanded rows */
   defaultExpandedRowKeys?: Key[];
-  /** 展开渲染配置 */
+  /** Expand render configuration */
   renderConfig?: ExpandRenderConfig;
-  /** 展开图标配置 */
+  /** Expand icon configuration */
   iconConfig?: ExpandIconConfig;
-  /** 是否可以展开多行 */
+  /** Whether multiple rows can be expanded */
   allowMultipleExpand?: boolean;
-  /** 展开变化回调 */
+  /** Expand change callback */
   onExpandChange?: <RecordType extends BaseRecord = BaseRecord>(
     expanded: boolean,
     record: RecordType,
     expandedRowKeys: Key[],
   ) => void;
-  /** 判断行是否可展开 */
+  /** Determine if row is expandable */
   rowExpandable?: <RecordType extends BaseRecord = BaseRecord>(
     record: RecordType,
   ) => boolean;
-  /** 展开行的样式 */
+  /** Expanded row style */
   expandedRowClassName?:
     | string
     | (<RecordType extends BaseRecord = BaseRecord>(
@@ -116,13 +116,13 @@ export interface TableExpandConfig {
 }
 
 /**
- * 插件状态
+ * Plugin state
  */
 export interface TableExpandState {
-  /** 当前展开的行 keys */
+  /** Currently expanded row keys */
   expandedRowKeys: Key[];
-  /** 展开状态映射 */
+  /** Expand state mapping */
   expandedMap: Map<Key, boolean>;
-  /** 是否有展开的行 */
+  /** Whether there are expanded rows */
   hasExpandedRows: boolean;
 }

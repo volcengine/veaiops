@@ -20,8 +20,8 @@ import { FormFields, TopAlert } from './sections';
 import type { StrategyModalProps } from './types';
 
 /**
- * 策略弹窗组件
- * 提供策略的新增和编辑功能
+ * Strategy modal component
+ * Provides strategy creation and editing functionality
  */
 export const StrategyModal: React.FC<StrategyModalProps> = ({
   visible,
@@ -31,24 +31,24 @@ export const StrategyModal: React.FC<StrategyModalProps> = ({
   form,
   width = 800,
 }) => {
-  // 表单逻辑
+  // Form logic
   const { botsOptions, chatOptions, selectedBotName } = useFormLogic(form);
 
-  // 监听 bot_id 变化
+  // Watch bot_id changes
   const bot_id = Form.useWatch('bot_id', form);
 
-  // 使用公共的抽屉表单提交 Hook
+  // Use common drawer form submit Hook
   const { submitting, handleSubmit } = useDrawerFormSubmit({
     form,
     onSubmit: async (values) => {
-      // 基本验证
+      // Basic validation
       if (!values.name?.trim()) {
-        throw new Error('请输入策略名称');
+        throw new Error('Please enter strategy name');
       }
       return await onSubmit(values);
     },
     resetOnSuccess: true,
-    closeOnSuccess: false, // 不自动关闭，由父组件控制
+    closeOnSuccess: false, // Don't auto-close, controlled by parent component
   });
 
   return (
@@ -73,10 +73,10 @@ export const StrategyModal: React.FC<StrategyModalProps> = ({
       }
     >
       <DrawerFormContent loading={submitting}>
-        {/* 顶部提示信息 */}
+        {/* Top alert information */}
         <TopAlert editingStrategy={editingStrategy} />
 
-        {/* 表单字段（包含底部的注意事项） */}
+        {/* Form fields (includes notes at the bottom) */}
         <Form form={form} layout="vertical" autoComplete="off">
           <FormFields
             form={form}

@@ -21,7 +21,7 @@ const BooleanRender: FC<{ data: unknown }> = ({ data }) => {
   if (isUndefined(data) || isNull(data)) {
     return <span>{EMPTY_CONTENT}</span>;
   }
-  return <div className={'flex'}>{data ? '是' : '否'}</div>;
+  return <div className={'flex'}>{data ? 'Yes' : 'No'}</div>;
 };
 
 export { BooleanRender };

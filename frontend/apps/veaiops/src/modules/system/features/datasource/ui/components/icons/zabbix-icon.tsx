@@ -21,7 +21,7 @@ interface IconProps {
 }
 
 /**
- * Zabbix图标
+ * Zabbix icon component
  */
 export const ZabbixIcon: React.FC<IconProps> = ({
   size = 16,

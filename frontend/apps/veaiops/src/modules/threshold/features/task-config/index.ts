@@ -13,19 +13,19 @@
 // limitations under the License.
 
 /**
- * 智能阈值任务配置模块 - 主入口
+ * Intelligent threshold task configuration module - main entry
  *
- * 模块结构：
- * - lib/: 核心业务逻辑、类型定义、配置等
- * - hooks/: 自定义 React Hooks
- * - ui/: UI 组件
+ * Module structure:
+ * - lib/: Core business logic, type definitions, configurations, etc.
+ * - hooks/: Custom React Hooks
+ * - ui/: UI components
  */
 
-// 导出所有 UI 组件和相关功能
+// Export all UI components and related functionality
 export * from './ui';
 
-// 导出库文件
+// Export library files
 export * from './lib';
 
-// 导出 Hooks
+// Export Hooks
 export * from './hooks';

@@ -15,7 +15,7 @@
 import { useCallback } from 'react';
 
 /**
- * URL 验证器类型
+ * URL validator type
  */
 export type UrlValidator = (
   value: string | undefined,
@@ -23,7 +23,7 @@ export type UrlValidator = (
 ) => void;
 
 /**
- * 默认 URL 验证器
+ * Default URL validator
  */
 export const useUrlValidator = (
   customValidator?: UrlValidator,

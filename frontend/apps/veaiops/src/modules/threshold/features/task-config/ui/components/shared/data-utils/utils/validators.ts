@@ -15,7 +15,7 @@
 import type { TimeseriesBackendItem } from '../types';
 
 /**
- * 验证时间序列项的有效性
+ * Validate timeseries item validity
  */
 export const validateTimeseriesItem = (
   item: unknown,
@@ -26,7 +26,7 @@ export const validateTimeseriesItem = (
 
   const typedItem = item as TimeseriesBackendItem;
 
-  // timestamps 和 values 必须是数组
+  // timestamps and values must be arrays
   if (
     !Array.isArray(typedItem.timestamps) ||
     !Array.isArray(typedItem.values)
@@ -34,7 +34,7 @@ export const validateTimeseriesItem = (
     return false;
   }
 
-  // 至少要有一个数据点
+  // Must have at least one data point
   if (typedItem.timestamps.length === 0 || typedItem.values.length === 0) {
     return false;
   }

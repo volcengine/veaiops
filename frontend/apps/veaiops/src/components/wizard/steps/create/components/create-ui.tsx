@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 创建步骤UI组件
- * @description 处理创建步骤的UI渲染逻辑
+ * Create step UI component
+ * @description Handles UI rendering logic for the create step
  * @author AI Assistant
  * @date 2025-01-17
  */
@@ -147,7 +147,7 @@ export const CreateUI: React.FC<CreateUIProps> = ({
     );
   }
 
-  // 显示数据源名称输入表单
+  // Display data source name input form
   const isEditMode = Boolean(state.editingDataSourceId);
 
   return (

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 智能单元格插件 Hook 导出
+ * Smart cell plugin Hook export
  */
 
 export { useSmartCell } from './use-smart-cell';

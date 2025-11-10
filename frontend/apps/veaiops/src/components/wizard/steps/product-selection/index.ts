@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 产品选择步骤组件导出
+ * Product selection step component export
  */
 
 export {

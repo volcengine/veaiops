@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 表格排序插件类型定义
+ * Table sorting plugin type definition
  */
 
 import type { PluginBaseConfig } from './core';
-// 创建本地的 SorterInfo 类型定义
+// Create local SorterInfo type definition
 interface SorterInfo {
   field?: string;
   direction?: 'ascend' | 'descend';
@@ -25,7 +25,7 @@ interface SorterInfo {
 }
 
 /**
- * 表格排序配置
+ * Table sorting configuration
  */
 export interface TableSortingConfig extends PluginBaseConfig {
   enabled?: boolean;
@@ -36,7 +36,7 @@ export interface TableSortingConfig extends PluginBaseConfig {
 }
 
 /**
- * 表格排序状态
+ * Table sorting state
  */
 export interface TableSortingState {
   sortedColumns: Array<{
@@ -47,7 +47,7 @@ export interface TableSortingState {
 }
 
 /**
- * 表格排序方法
+ * Table sorting methods
  */
 export interface TableSortingMethods {
   setSorter: (field: string, direction: 'ascend' | 'descend' | null) => void;

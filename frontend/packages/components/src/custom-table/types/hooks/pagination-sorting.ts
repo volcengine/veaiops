@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 分页和排序 Hook 相关类型定义
- * 基于 Arco Design 类型标准优化
+ * Pagination and sorting Hook related type definitions
+ * Optimized based on Arco Design type standards
  */
 import type {
   RowSelectionProps,
@@ -65,7 +65,7 @@ export interface UseSortingProps<
 }
 
 /**
- * 分页信息
+ * Pagination info
  */
 export interface PaginationPageInfo {
   current: number;
@@ -74,7 +74,7 @@ export interface PaginationPageInfo {
 }
 
 /**
- * 排序信息
+ * Sort info
  */
 export interface SortInfo {
   field?: string;
@@ -82,7 +82,7 @@ export interface SortInfo {
 }
 
 /**
- * 基于 Arco Design 的筛选器配置
+ * Filter configuration based on Arco Design
  */
 export interface FilterItem<ValueType = unknown> {
   text?: ReactNode;
@@ -91,7 +91,7 @@ export interface FilterItem<ValueType = unknown> {
 }
 
 /**
- * Hooks 筛选器配置（重命名避免与 components/props.ts 中的 FilterConfig 冲突）
+ * Hooks filter configuration (renamed to avoid conflicts with FilterConfig in components/props.ts)
  */
 export interface HooksFilterConfig<RecordType = Record<string, unknown>> {
   filters?: FilterItem[];
@@ -101,7 +101,7 @@ export interface HooksFilterConfig<RecordType = Record<string, unknown>> {
 }
 
 /**
- * 基于 Arco Design 的行选择配置
+ * Row selection configuration based on Arco Design
  */
 export interface TableRowSelectionConfig<RecordType = Record<string, unknown>>
   extends RowSelectionProps<RecordType> {
@@ -111,7 +111,7 @@ export interface TableRowSelectionConfig<RecordType = Record<string, unknown>>
 }
 
 /**
- * usePagination Hook 返回值
+ * usePagination Hook return value
  */
 export interface UsePaginationResult {
   current: number;
@@ -131,7 +131,7 @@ export interface UsePaginationResult {
 }
 
 /**
- * useSorting Hook 返回值
+ * useSorting Hook return value
  */
 export interface UseSortingResult {
   sorter: SorterInfo | SorterInfo[];

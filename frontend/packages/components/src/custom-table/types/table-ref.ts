@@ -13,84 +13,84 @@
 // limitations under the License.
 
 /**
- * 通用表格引用接口
- * 提供开箱即用的 ref 类型，消除业务侧重复定义
+ * Generic table reference interface
+ * Provides out-of-the-box ref types, eliminating duplicate definitions on the business side
  */
 
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
 import type { CustomTableHelpers } from './plugins/core';
 
 /**
- * 基础表格 Ref 接口
- * 包含最常用的表格操作方法
+ * Base table ref interface
+ * Contains the most commonly used table operation methods
  */
 export interface BaseTableRef {
-  /** 刷新表格数据 */
+  /** Refresh table data */
   refresh: () => Promise<void>;
-  /** 重新加载数据 */
+  /** Reload data */
   reload?: () => Promise<void>;
 }
 
 /**
- * 增强表格 Ref 接口
- * 包含完整的表格操作方法
+ * Enhanced table ref interface
+ * Contains complete table operation methods
  */
 export interface EnhancedTableRef<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > extends BaseTableRef {
-  /** 获取表格数据 */
+  /** Get table data */
   getData: () => RecordType[];
-  /** 设置表格查询参数 */
+  /** Set table query parameters */
   setQuery: (query: QueryType | ((prev: QueryType) => QueryType)) => void;
-  /** 获取当前查询参数 */
+  /** Get current query parameters */
   getQuery: () => QueryType;
-  /** 获取表格辅助方法 */
+  /** Get table helper methods */
   helpers?: CustomTableHelpers<RecordType, QueryType>;
 }
 
 /**
- * 自动类型推导函数
- * 根据需要的功能返回不同的 ref 类型
- * 注意：这是一个类型辅助函数，实际使用时应使用 useRef<EnhancedTableRef>()
+ * Automatic type inference function
+ * Returns different ref types based on required functionality
+ * Note: This is a type helper function, should use useRef<EnhancedTableRef>() in actual use
  */
 export function createTableRef(): EnhancedTableRef<BaseRecord, BaseQuery> {
-  // 这是一个类型辅助函数，实际使用时应使用 useRef<EnhancedTableRef>()
+  // This is a type helper function, should use useRef<EnhancedTableRef>() in actual use
   throw new Error(
     'createTableRef is a type helper only. Use useRef<EnhancedTableRef>() instead.',
   );
 }
 
 /**
- * 完整表格 Ref 接口
- * 包含所有可能的表格操作方法
+ * Full table ref interface
+ * Contains all possible table operation methods
  */
 export interface FullTableRef<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > extends BaseTableRef {
-  // 数据操作
+  // Data operations
   reload: () => Promise<void>;
   getData: () => RecordType[];
   setData: (data: RecordType[]) => void;
 
-  // 查询操作
+  // Query operations
   setQuery: (query: QueryType | ((prev: QueryType) => QueryType)) => void;
   getQuery: () => QueryType;
 
-  // 刷新操作（新增业务语义化方法）
+  // Refresh operations (new business semantic methods)
   afterCreate?: () => Promise<void>;
   afterUpdate?: () => Promise<void>;
   afterDelete?: () => Promise<void>;
   afterImport?: () => Promise<void>;
   afterBatchOperation?: () => Promise<void>;
 
-  // 辅助方法
+  // Helper methods
   helpers?: CustomTableHelpers<RecordType, QueryType>;
 }
 
 /**
- * 最常用的表格 Ref 类型
- * 提供基础的刷新功能
+ * Most commonly used table ref type
+ * Provides basic refresh functionality
  */
 export type TableRef = BaseTableRef;

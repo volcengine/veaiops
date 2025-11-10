@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 订阅关系表格配置 Hook
+ * Subscription relation table configuration Hook
  *
- * 🎯 按照最佳实践实现Hook聚合模式 + 自动刷新机制
- * 🎯 优先使用标准类型: @veaiops/components 和 api-generate
+ * 🎯 Implements Hook aggregation pattern + automatic refresh mechanism following best practices
+ * 🎯 Prioritizes standard types: @veaiops/components and api-generate
  */
 
 import { Button, Message } from '@arco-design/web-react';
 import { IconPlus, IconRefresh } from '@arco-design/web-react/icon';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge imports from same source
 import {
   getSubscriptionColumns,
   getSubscriptionFilters,
@@ -43,13 +43,14 @@ import {
   createServerPaginationDataSource,
   createStandardTableProps,
   createTableRequestWithResponseHandler,
+  logger,
 } from '@veaiops/utils';
 import type { SubscribeRelationWithAttributes } from 'api-generate';
 import type React from 'react';
 import { useCallback, useMemo } from 'react';
 
 /**
- * 订阅关系查询参数类型 (扩展自 BaseQuery)
+ * Subscription relation query parameter type (extends BaseQuery)
  */
 export interface SubscriptionQueryParams extends BaseQuery {
   name?: string;
@@ -65,7 +66,7 @@ export interface SubscriptionQueryParams extends BaseQuery {
 }
 
 /**
- * 订阅关系表格配置 Hook 参数类型
+ * Subscription relation table configuration Hook parameter type
  */
 export interface UseSubscriptionTableConfigOptions {
   onEdit?: (subscription: SubscribeRelationWithAttributes) => void;
@@ -85,7 +86,7 @@ export interface UseSubscriptionTableConfigOptions {
 }
 
 /**
- * 订阅关系表格配置 Hook 返回值类型
+ * Subscription relation table configuration Hook return value type
  */
 export interface UseSubscriptionTableConfigReturn {
   customTableProps: ReturnType<typeof useBusinessTable>['customTableProps'];
@@ -100,9 +101,9 @@ export interface UseSubscriptionTableConfigReturn {
 }
 
 /**
- * 订阅关系表格配置 Hook
+ * Subscription relation table configuration Hook
  *
- * 提供完整的表格配置（已集成 useBusinessTable 和 operationWrapper 自动刷新）
+ * Provides complete table configuration (integrated with useBusinessTable and operationWrapper automatic refresh)
  */
 export const useSubscriptionTableConfig = ({
   onEdit,
@@ -112,17 +113,22 @@ export const useSubscriptionTableConfig = ({
   onRefresh,
   ref,
 }: UseSubscriptionTableConfigOptions): UseSubscriptionTableConfigReturn => {
-  // 🎯 请求函数 - 使用工具函数
-  // ✅ 关键修复：使用 useMemo 稳定化 request 函数引用
+  // 🎯 Request function - use utility function
+  // ✅ Key fix: Use useMemo to stabilize request function reference
   const request = useMemo(
     () =>
       createTableRequestWithResponseHandler({
         apiCall: async ({ skip, limit, ...otherParams }) => {
-          console.log('[SubscriptionTableConfig] 🔵 API 请求开始', {
-            skip,
-            limit,
-            otherParams,
-            timestamp: Date.now(),
+          logger.debug({
+            message: '[SubscriptionTableConfig] API 请求开始',
+            data: {
+              skip,
+              limit,
+              otherParams,
+              timestamp: Date.now(),
+            },
+            source: 'SubscriptionTableConfig',
+            component: 'apiCall',
           });
 
           const response = await subscriptionService.getSubscriptions({
@@ -131,13 +137,18 @@ export const useSubscriptionTableConfig = ({
             limit,
           } as SubscriptionQueryParams);
 
-          console.log('[SubscriptionTableConfig] ✅ API 请求成功', {
-            dataLength: response.data?.length,
-            total: response.total,
-            timestamp: Date.now(),
+          logger.debug({
+            message: '[SubscriptionTableConfig] API 请求成功',
+            data: {
+              dataLength: response.data?.length,
+              total: response.total,
+              timestamp: Date.now(),
+            },
+            source: 'SubscriptionTableConfig',
+            component: 'apiCall',
           });
 
-          // 类型转换：PaginatedAPIResponseSubscribeRelationList 与 StandardApiResponse<SubscribeRelationWithAttributes[]> 结构兼容
+          // Type conversion: PaginatedAPIResponseSubscribeRelationList is structurally compatible with StandardApiResponse<SubscribeRelationWithAttributes[]>
           return response as unknown as StandardApiResponse<
             SubscribeRelationWithAttributes[]
           >;
@@ -146,9 +157,15 @@ export const useSubscriptionTableConfig = ({
           errorMessagePrefix: '加载订阅关系列表失败',
           defaultLimit: 10,
           onError: (error) => {
-            console.error('[SubscriptionTableConfig] ❌ API 请求失败', {
-              error: error instanceof Error ? error.message : String(error),
-              timestamp: Date.now(),
+            logger.error({
+              message: '[SubscriptionTableConfig] API 请求失败',
+              data: {
+                error: error instanceof Error ? error.message : String(error),
+                timestamp: Date.now(),
+                errorObj: error,
+              },
+              source: 'SubscriptionTableConfig',
+              component: 'onError',
             });
             const errorMessage =
               error instanceof Error
@@ -158,24 +175,34 @@ export const useSubscriptionTableConfig = ({
           },
         },
       }),
-    [], // ✅ 空依赖数组，request 函数保持稳定
+    [], // ✅ Empty dependency array, request function remains stable
   );
 
-  // 添加渲染日志
-  console.log('[SubscriptionTableConfig] 🔄 组件渲染', {
-    hasRequest: Boolean(request),
-    timestamp: Date.now(),
+  // Add render log
+  logger.debug({
+    message: '[SubscriptionTableConfig] 组件渲染',
+    data: {
+      hasRequest: Boolean(request),
+      timestamp: Date.now(),
+    },
+    source: 'SubscriptionTableConfig',
+    component: 'useMemo',
   });
 
-  // 🎯 数据源配置 - 使用工具函数
+  // 🎯 Data source configuration - use utility function
   const dataSource = useMemo(() => {
-    console.log('[SubscriptionTableConfig] 🔧 创建 dataSource', {
-      timestamp: Date.now(),
+    logger.debug({
+      message: '[SubscriptionTableConfig] 创建 dataSource',
+      data: {
+        timestamp: Date.now(),
+      },
+      source: 'SubscriptionTableConfig',
+      component: 'useMemo',
     });
     return createServerPaginationDataSource({ request });
   }, [request]);
 
-  // 🎯 表格属性配置 - 使用工具函数
+  // 🎯 Table properties configuration - use utility function
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
@@ -186,7 +213,7 @@ export const useSubscriptionTableConfig = ({
     [],
   );
 
-  // 🎯 使用 useBusinessTable 集成所有逻辑
+  // 🎯 Use useBusinessTable to integrate all logic
   const { customTableProps, customOperations } =
     useBusinessTable<SubscriptionQueryParams>({
       dataSource,
@@ -200,17 +227,17 @@ export const useSubscriptionTableConfig = ({
       operationWrapper: ({ wrapUpdate, wrapDelete }: OperationWrappers) => ({
         handleEdit: (..._args: unknown[]) =>
           wrapUpdate(async () => {
-            // operationWrapper暂不需要实际调用，仅用于自动刷新
+            // operationWrapper doesn't need actual call, only for automatic refresh
           }),
         handleDelete: (..._args: unknown[]) =>
           wrapDelete(async (_id: string): Promise<boolean> => {
-            // operationWrapper暂不需要实际调用，仅用于自动刷新
+            // operationWrapper doesn't need actual call, only for automatic refresh
             return true;
           }),
       }),
     });
 
-  // 🎯 获取列配置
+  // 🎯 Get column configuration
   const handleColumns = useCallback(
     (
       props?: Record<string, QueryValue>,
@@ -224,19 +251,19 @@ export const useSubscriptionTableConfig = ({
     [onEdit, onDelete, onToggleStatus],
   );
 
-  // 🎯 获取筛选器配置
+  // 🎯 Get filter configuration
   const handleFilters = useCallback(
     (props: HandleFilterProps<BaseQuery>): FieldItem[] => {
       return getSubscriptionFilters({
         query: props.query,
         handleChange: props.handleChange,
-        moduleType: undefined, // 使用默认值
+        moduleType: undefined, // Use default value
       });
     },
     [],
   );
 
-  // 🎯 获取操作按钮配置
+  // 🎯 Get action button configuration
   const renderActions = useCallback(
     (_props?: Record<string, QueryValue>): JSX.Element[] =>
       [

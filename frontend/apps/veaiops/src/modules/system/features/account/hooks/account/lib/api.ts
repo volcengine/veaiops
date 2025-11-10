@@ -18,16 +18,16 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import type { UserFormData, UpdateUserParams } from './types';
 
 /**
- * 创建用户
+ * Create user
  */
 export const createUser = async (userData: UserFormData): Promise<boolean> => {
   try {
-    // 使用 Users API
+    // Use Users API
     const response = await apiClient.users.postApisV1ManagerUsers({
       requestBody: {
         username: userData.username,
         email: userData.email,
-        password: userData.password || 'defaultPassword123', // 提供默认密码
+        password: userData.password || 'defaultPassword123', // Provide default password
       },
     });
 
@@ -46,14 +46,14 @@ export const createUser = async (userData: UserFormData): Promise<boolean> => {
 };
 
 /**
- * 更新用户信息
+ * Update user information
  */
 export const updateUser = async ({
   userId,
   updateData,
 }: UpdateUserParams): Promise<boolean> => {
   try {
-    // 使用 Users API - 更新用户基本信息（非密码）
+    // Use Users API - Update user basic information (non-password)
     const response = await apiClient.users.putApisV1ManagerUsers({
       userId,
       requestBody: {
@@ -77,11 +77,11 @@ export const updateUser = async ({
 };
 
 /**
- * 删除用户
+ * Delete user
  */
 export const deleteUser = async (userId: string): Promise<boolean> => {
   try {
-    // 使用 Users API
+    // Use Users API
     const response = await apiClient.users.deleteApisV1ManagerUsers({
       userId,
     });

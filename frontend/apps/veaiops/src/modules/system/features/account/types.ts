@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 直接使用API生成的User类型
+// Directly use API generated User type
 import type { FormInstance } from '@arco-design/web-react';
 import type { User as ApiUser } from 'api-generate';
 
 /**
- * 用户角色类型
+ * User role type
  */
 export type UserRole = 'admin' | 'user' | 'viewer';
 
 /**
- * 用户状态类型
+ * User status type
  */
 export type UserStatus = 'active' | 'inactive' | 'locked';
 
 /**
- * 扩展的用户类型，包含本地需要的字段
+ * Extended user type, includes locally required fields
  */
 export interface User extends Omit<ApiUser, '_id'> {
-  id: string; // 映射 _id 到 id
+  id: string; // Map _id to id
   role: UserRole;
   status: UserStatus;
   is_system_admin: boolean;
@@ -40,34 +40,34 @@ export interface User extends Omit<ApiUser, '_id'> {
 }
 
 /**
- * 用户表单数据接口
+ * User form data interface
  */
 export interface UserFormData {
-  /** 用户名 */
+  /** Username */
   username: string;
-  /** 邮箱 */
+  /** Email */
   email: string;
-  /** 密码 */
+  /** Password */
   password?: string;
-  /** 旧密码（修改密码时使用） */
+  /** Old password (used when changing password) */
   old_password?: string;
-  /** 新密码（修改密码时使用） */
+  /** New password (used when changing password) */
   new_password?: string;
-  /** 确认新密码（修改密码时使用） */
+  /** Confirm new password (used when changing password) */
   confirm_password?: string;
-  /** 是否激活 */
+  /** Whether active */
   is_active?: boolean;
-  /** 是否为管理员 */
+  /** Whether administrator */
   is_supervisor?: boolean;
 }
 
 /**
- * 用户表格数据类型
+ * User table data type
  */
 export type UserTableData = User;
 
 /**
- * 用户表格组件属性接口
+ * User table component props interface
  */
 export interface UserTableProps {
   onEdit: (user: User) => void;
@@ -76,7 +76,7 @@ export interface UserTableProps {
 }
 
 /**
- * 用户弹窗组件属性接口
+ * User modal component props interface
  */
 
 export interface UserModalProps {
@@ -84,6 +84,6 @@ export interface UserModalProps {
   editingUser: User | null;
   onCancel: () => void;
   onSubmit: (values: UserFormData) => Promise<boolean>;
-  /** Arco Design Form 实例类型 */
+  /** Arco Design Form instance type */
   form: FormInstance;
 }

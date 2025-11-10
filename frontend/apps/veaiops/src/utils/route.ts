@@ -16,39 +16,39 @@ import { routesConfig } from '@/config/route-config';
 import type { RouteConfig, RouteUtils } from '@/types/route';
 
 /**
- * 路由工具函数
- * 提供路由相关的实用功能
+ * Route utility functions
+ * Provides utility functions related to routing
  */
 export const routeUtils: RouteUtils = {
   /**
-   * 根据路径获取路由配置
-   * @param path 路由路径
-   * @returns 路由配置对象或undefined
+   * Get route configuration by path
+   * @param path Route path
+   * @returns Route configuration object or undefined
    */
   getRouteByPath: (path: string): RouteConfig | undefined => {
     return routesConfig.find((route) => route.path === path);
   },
 
   /**
-   * 获取需要认证的路由
-   * @returns 需要认证的路由配置数组
+   * Get routes that require authentication
+   * @returns Array of route configurations that require authentication
    */
   getAuthRequiredRoutes: (): RouteConfig[] => {
     return routesConfig.filter((route) => route.requireAuth !== false);
   },
 
   /**
-   * 获取不需要认证的路由
-   * @returns 公开路由配置数组
+   * Get routes that do not require authentication
+   * @returns Array of public route configurations
    */
   getPublicRoutes: (): RouteConfig[] => {
     return routesConfig.filter((route) => route.requireAuth === false);
   },
 
   /**
-   * 检查路径是否需要认证
-   * @param path 路由路径
-   * @returns 是否需要认证
+   * Check if path requires authentication
+   * @param path Route path
+   * @returns Whether authentication is required
    */
   requiresAuth: (path: string): boolean => {
     const route = routeUtils.getRouteByPath(path);

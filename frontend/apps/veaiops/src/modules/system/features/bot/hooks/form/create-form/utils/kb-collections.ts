@@ -17,7 +17,7 @@ import type { BotFormData } from '@bot/lib';
 import type React from 'react';
 
 /**
- * 添加知识库集合
+ * Add knowledge base collection
  */
 export const addKbCollection = (
   kbCollections: string[],
@@ -27,7 +27,7 @@ export const addKbCollection = (
 };
 
 /**
- * 删除知识库集合
+ * Remove knowledge base collection
  */
 export const removeKbCollection = ({
   index,
@@ -53,7 +53,7 @@ export const removeKbCollection = ({
 };
 
 /**
- * 更新知识库集合
+ * Update knowledge base collection
  */
 export const updateKbCollection = ({
   index,

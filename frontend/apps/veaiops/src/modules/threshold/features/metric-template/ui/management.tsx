@@ -19,14 +19,14 @@ import { MetricTemplateDrawer } from './modal';
 import { MetricTemplateTable } from './table';
 
 /**
- * 指标模板管理主组件
- * 整合表格和模态框，提供完整的管理功能
+ * Metric template management main component
+ * Integrates table and modal, provides complete management functionality
  */
 const MetricTemplateManagement: React.FC = () => {
-  // 使用 ref 存储表格刷新函数
+  // Use ref to store table refresh function
   const refreshTableRef = useRef<(() => Promise<boolean>) | undefined>();
 
-  // 包装刷新函数
+  // Wrap refresh function
   const refreshTable = useCallback(async () => {
     logger.debug({
       message: 'refreshTable 被调用',
@@ -59,7 +59,7 @@ const MetricTemplateManagement: React.FC = () => {
     return false;
   }, []);
 
-  // 处理刷新函数准备就绪
+  // Handle refresh function ready
   const handleRefreshReady = useCallback((refresh: () => Promise<boolean>) => {
     logger.debug({
       message: '表格刷新函数已准备就绪',
@@ -71,12 +71,12 @@ const MetricTemplateManagement: React.FC = () => {
   }, []);
 
   const {
-    // 状态
+    // State
     editingTemplate,
     modalVisible,
     form,
 
-    // 操作方法
+    // Operation methods
     deleteTemplate,
     handleEdit,
     handleAdd,

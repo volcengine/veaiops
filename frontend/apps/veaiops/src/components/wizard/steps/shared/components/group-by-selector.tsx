@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 分组维度选择器组件
- * @description 处理指标分组维度的选择
+ * Grouping dimension selector component
+ * @description Handles selection of metric grouping dimensions
  */
 
 import { Checkbox, Space, Typography } from '@arco-design/web-react';
@@ -36,7 +36,7 @@ export const GroupBySelector: React.FC<GroupBySelectorProps> = ({
         paddingTop: 12,
         borderTop: '1px solid var(--color-border-2)',
       }}
-      onClick={(e) => e.stopPropagation()} // 防止点击checkbox时触发外层的metric选择
+      onClick={(e) => e.stopPropagation()} // Prevent triggering outer metric selection when clicking checkbox
     >
       <Text
         style={{

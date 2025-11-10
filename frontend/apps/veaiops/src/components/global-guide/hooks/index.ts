@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * GlobalGuide Hooks 统一导出
+ * Unified exports for GlobalGuide Hooks
  */
 
 export { useConsoleCommands } from './use-console-commands';

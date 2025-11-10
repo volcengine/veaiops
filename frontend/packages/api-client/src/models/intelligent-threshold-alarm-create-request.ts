@@ -15,37 +15,37 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type IntelligentThresholdAlarmCreateRequest = {
   /**
-   * 关联的任务ID
+   * Associated task ID
    */
   task_id: string;
   /**
-   * 告警类型
+   * Alarm type
    */
   alarm_type: IntelligentThresholdAlarmCreateRequest.alarm_type;
   /**
-   * 告警级别
+   * Alarm level
    */
   severity: IntelligentThresholdAlarmCreateRequest.severity;
   /**
-   * 告警标题
+   * Alarm title
    */
   title: string;
   /**
-   * 告警消息
+   * Alarm message
    */
   message: string;
   /**
-   * 触发告警的指标值
+   * Metric value that triggered the alarm
    */
   metric_value?: number;
   /**
-   * 阈值
+   * Threshold
    */
   threshold_value?: number;
 };
 export namespace IntelligentThresholdAlarmCreateRequest {
   /**
-   * 告警类型
+   * Alarm type
    */
   export enum alarm_type {
     THRESHOLD_BREACH = 'threshold_breach',
@@ -53,7 +53,7 @@ export namespace IntelligentThresholdAlarmCreateRequest {
     SYSTEM_ERROR = 'system_error',
   }
   /**
-   * 告警级别
+   * Alarm level
    */
   export enum severity {
     INFO = 'INFO',

@@ -22,7 +22,7 @@ import { useBotAttributesTableFormHandlers } from './form-handlers';
 import { useBotAttributesTableModalHandlers } from './modal-handlers';
 
 /**
- * 事件处理器参数
+ * Event handler parameters
  */
 interface HandlersParams {
   modalType: ModalType;
@@ -46,13 +46,13 @@ interface HandlersParams {
 }
 
 /**
- * 事件处理器Hook
+ * Event handler Hook
  *
- * 拆分说明：
- * - modal-handlers.ts: 模态框相关处理（handleOpenCreateModal、handleCloseModal、handleCloseViewModal）
- * - form-handlers.ts: 表单提交处理（handleFormSubmit）
- * - delete-handler.ts: 删除操作处理（handleDelete）
- * - index.ts: 统一导出，组合所有处理函数
+ * Split explanation:
+ * - modal-handlers.ts: Modal-related handlers (handleOpenCreateModal, handleCloseModal, handleCloseViewModal)
+ * - form-handlers.ts: Form submission handlers (handleFormSubmit)
+ * - delete-handler.ts: Delete operation handlers (handleDelete)
+ * - index.ts: Unified export, combines all handler functions
  */
 export const useBotAttributesTableHandlers = ({
   modalType,
@@ -67,7 +67,7 @@ export const useBotAttributesTableHandlers = ({
   deleteAttribute,
   refreshTable,
 }: HandlersParams) => {
-  // 模态框处理
+  // Modal handlers
   const modalHandlers = useBotAttributesTableModalHandlers({
     setEditingAttribute,
     setIsModalVisible,
@@ -76,7 +76,7 @@ export const useBotAttributesTableHandlers = ({
     setViewingAttribute,
   });
 
-  // 表单处理
+  // Form handlers
   const formHandlers = useBotAttributesTableFormHandlers({
     modalType,
     editingAttribute,
@@ -85,7 +85,7 @@ export const useBotAttributesTableHandlers = ({
     handleCloseModal: modalHandlers.handleCloseModal,
   });
 
-  // 删除处理
+  // Delete handler
   const deleteHandler = useBotAttributesTableDeleteHandler({
     deleteAttribute,
     refreshTable,

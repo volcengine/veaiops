@@ -15,16 +15,16 @@
 import { CONFIG_FIELD_TRANSLATIONS } from './constants';
 
 /**
- * 获取字段的翻译文本
- * @param key 字段名
- * @returns 翻译后的文本，如果没有翻译则返回 null
+ * Get translated text for a field
+ * @param key Field name
+ * @returns Translated text, or null if no translation is available
  */
 export const getFieldTranslation = (key: string): string | null => {
   return CONFIG_FIELD_TRANSLATIONS[key] || null;
 };
 
 /**
- * 安全地将值转换为字符串
+ * Safely convert value to string
  */
 export const safeStringify = (value: unknown): string => {
   if (value == null) {

@@ -23,8 +23,8 @@ import { useTaskFormHandlers } from './use-form-handlers';
 import { useTaskOperations } from './use-operations';
 
 /**
- * Task management business logic Hook - Uses Zustand for unified state management
- * 🎯 Receives table refresh function, manually refreshes after successful create and edit operations
+ * Task management business logic Hook - uses Zustand for unified state management
+ * 🎯 Receives table refresh function, manually refreshes after create and update operations succeed
  *
  * @param refreshTable - Table refresh function (optional)
  */
@@ -46,14 +46,11 @@ export const useTaskManagementLogic = (
     closeAlarmDrawer,
     setSelectedTasks,
 
-    // State setter methods
-    setLoading,
-
     // Business operations
     // loadTasks, // Removed unused variable
   } = useTaskConfigStore();
 
-  // 🎯 CustomTable supports auto-refresh, no need to manually manage refresh logic
+  // 🎯 CustomTable supports automatic refresh, no need to manually manage refresh logic
   // Provide placeholder functions to maintain interface compatibility
   const afterCreate = async () => {
     // Can add post-creation logic here, such as refreshing data or showing notifications
@@ -80,10 +77,10 @@ export const useTaskManagementLogic = (
   // Batch rerun modal state
   const [batchRerunModalVisible, setBatchRerunModalVisible] = useState(false);
 
-  // Use task operations Hook - Adapt to Zustand store
+  // Use task operations Hook - adapted for Zustand store
   const taskOperations = useTaskOperations({
     setOperationType: (_type) => {
-      // This function is now handled through openTaskDrawer
+      // This function is now handled by openTaskDrawer
     },
     setDrawerVisible: (visible) => {
       if (!visible) {
@@ -105,15 +102,17 @@ export const useTaskManagementLogic = (
     taskList,
   });
 
-  // Use form handlers Hook - Adapt to Zustand store
+  // Use form handling Hook - adapted for Zustand store
   const formHandlers = useTaskFormHandlers({
     operationType: taskDrawer.type || 'create',
     editingTask: taskDrawer.record || null,
     form,
-    setLoading, // ✅ Get setLoading from Zustand store, used to update loading state
+    setLoading: () => {
+      // Loading state is now managed by Zustand store
+    },
     setDrawerVisible: closeTaskDrawer,
     setAlarmDrawerVisible: closeAlarmDrawer,
-    // ✅ Pass table refresh function, manually refresh table after successful create and edit
+    // ✅ Pass table refresh function, manually refresh table after create and update succeed
     refreshTable,
   });
 
@@ -132,7 +131,7 @@ export const useTaskManagementLogic = (
     [openTaskDrawer],
   );
 
-  // Table action configuration
+  // Table operation configuration
   const tableActions: TaskTableActions = {
     onAdd: taskOperations.handleAdd,
     onRerun: async (task) => {
@@ -160,7 +159,7 @@ export const useTaskManagementLogic = (
   };
 
   return {
-    // State - Get from Zustand store
+    // State - retrieved from Zustand store
     drawerVisible: taskDrawer.visible,
     alarmDrawerVisible: alarmDrawer.visible,
     batchRerunModalVisible,

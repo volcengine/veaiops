@@ -19,7 +19,9 @@ import { devLog } from '@/custom-table/utils/log-utils';
 import { Button } from '@arco-design/web-react';
 import { IconSettings } from '@arco-design/web-react/icon';
 /**
- * Custom Filter Setting 插件
+ * Custom Filter Setting Plugin
+ *
+ * Provides drag-and-drop sorting and configuration saving functionality for filters
  */
 import React from 'react';
 import { DraggableFilterSetting } from './components';
@@ -34,7 +36,8 @@ export const CustomFilterSettingPlugin: PluginFactory<
   return {
     name: PluginNames.CUSTOM_FILTER_SETTING,
     version: '1.0.0',
-    description: '自定义过滤器设置插件 - 支持拖拽排序和配置保存',
+    description:
+      'Custom Filter Setting Plugin - Supports drag-and-drop sorting and configuration saving',
     priority: finalConfig.priority || PluginPriorityEnum.MEDIUM,
     enabled: finalConfig.enabled !== false,
     dependencies: [],
@@ -52,7 +55,7 @@ export const CustomFilterSettingPlugin: PluginFactory<
         props: { baseColumns },
       } = context;
 
-      // 设置插件状态
+      // Set plugin state
       Object.assign(context.state, {
         enableFilterSetting: finalConfig.enableFilterSetting,
         filterSettingProps: finalConfig.filterSettingProps,
@@ -68,7 +71,7 @@ export const CustomFilterSettingPlugin: PluginFactory<
     },
 
     update(_context: PluginContext) {
-      // 当配置或数据更新时的操作
+      // Operations when configuration or data is updated
     },
 
     uninstall(_context: PluginContext) {
@@ -78,9 +81,9 @@ export const CustomFilterSettingPlugin: PluginFactory<
       });
     },
 
-    // 渲染方法
+    // Render methods
     render: {
-      // 渲染过滤器设置组件
+      // Render filter setting component
       filterSetting(context: PluginContext) {
         const {
           state: { enableFilterSetting, filterSettingProps },
@@ -91,7 +94,7 @@ export const CustomFilterSettingPlugin: PluginFactory<
         }
 
         const props = {
-          title: '搜索项设置',
+          title: 'Search Item Settings',
           mode: ['select'] as Array<'select' | 'fixed'>,
           caseSelectText: (key: string) => key,
           saveFun: (settings: {
@@ -99,29 +102,29 @@ export const CustomFilterSettingPlugin: PluginFactory<
             selected_fields: string[];
             hidden_fields: string[];
           }) => {
-            // 保存过滤器设置
+            // Save filter settings
           },
           ...filterSettingProps,
         };
 
-        // 如果有自定义渲染函数，使用自定义渲染
+        // If custom render function exists, use custom render
         if (finalConfig.customRender) {
           return finalConfig.customRender(props);
         }
 
-        // 否则使用默认的拖拽组件
+        // Otherwise use default draggable component
         return (
           <DraggableFilterSetting key="custom-filter-setting" {...props}>
             <Button type="text" size="mini">
               <IconSettings />
-              过滤器设置
+              Filter Settings
             </Button>
           </DraggableFilterSetting>
         );
       },
     },
 
-    // 插件钩子
+    // Plugin hooks
     hooks: {
       onFilterSettingChange: (...args: unknown[]) => {
         const [settings] = args as [

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 业务组件导出
+ * Business components export
  */
 
 export { BasicInfo } from './basic-info';

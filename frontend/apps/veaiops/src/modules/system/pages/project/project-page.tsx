@@ -16,8 +16,8 @@ import { ProjectManagement } from '@/modules';
 import type React from 'react';
 
 /**
- * 项目管理页面
- * @description 直接使用 features/project 中的 ProjectManagement 组件
+ * Project management page
+ * @description Directly uses the ProjectManagement component from features/project
  */
 const ProjectPage: React.FC = () => {
   return <ProjectManagement />;

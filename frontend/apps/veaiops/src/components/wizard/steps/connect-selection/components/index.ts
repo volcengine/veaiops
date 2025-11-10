@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 连接选择步骤组件导出
- * @description 统一导出连接选择步骤相关组件
+ * Connection selection step component export
+ * @description Unified export of connection selection step related components
  * @author AI Assistant
  * @date 2025-01-17
  */

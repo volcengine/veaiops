@@ -26,11 +26,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== Hooks 导出 ====================
+// ==================== Hooks exports ====================
 export { useTaskManagementLogic } from './use-task-management-logic';
 export { useTaskTableConfig } from './use-task-table-config';
 
-// ==================== 类型导出 ====================
+// ==================== Type exports ====================
 export type {
   UseTaskTableConfigOptions,
   UseTaskTableConfigReturn,

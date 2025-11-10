@@ -16,11 +16,11 @@ import type { QueryFormatter } from '@/custom-table/types';
 import type { FilterEmptyDataByKeysParams } from './types';
 
 /**
- * 查询参数格式化辅助函数
+ * Query parameter formatting helper functions
  */
 
 /**
- * 转换参数类型
+ * Convert parameter types
  */
 export function convertParamsTypes(
   query: Record<string, unknown>,
@@ -29,7 +29,7 @@ export function convertParamsTypes(
 
   for (const [key, value] of Object.entries(query)) {
     if (typeof value === 'string') {
-      // 尝试转换数字
+      // Try to convert to number
       if (/^\d+$/.test(value)) {
         result[key] = parseInt(value, 10);
       } else if (/^\d+\.\d+$/.test(value)) {
@@ -50,16 +50,16 @@ export function convertParamsTypes(
 }
 
 /**
- * 格式化查询参数（同步版本）
+ * Format query parameters (synchronous version)
  */
 export function formatQuerySync(
   query: Record<string, unknown>,
   queryFormat: Record<string, QueryFormatter> = {},
 ): Record<string, unknown> {
-  // 先进行基础类型转换
+  // First perform basic type conversion
   const baseConverted = convertParamsTypes(query);
 
-  // 再根据 queryFormat 进行自定义格式化
+  // Then perform custom formatting according to queryFormat
   const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(baseConverted)) {
     const formatter: QueryFormatter | undefined = queryFormat[key];
@@ -77,16 +77,16 @@ export function formatQuerySync(
 }
 
 /**
- * 格式化查询参数（异步版本）
+ * Format query parameters (asynchronous version)
  */
 export async function formatQuery(
   query: Record<string, unknown>,
   queryFormat: Record<string, QueryFormatter> = {},
 ): Promise<Record<string, unknown>> {
-  // 先进行基础类型转换
+  // First perform basic type conversion
   const baseConverted = convertParamsTypes(query);
 
-  // 再根据 queryFormat 进行自定义格式化
+  // Then perform custom formatting according to queryFormat
   const result: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(baseConverted)) {
     const formatter: QueryFormatter | undefined = queryFormat[key];
@@ -104,7 +104,7 @@ export async function formatQuery(
 }
 
 /**
- * 获取参数对象，过滤空值
+ * Get parameter object, filter out empty values
  */
 export function getParamsObject<T extends Record<string, unknown>>(
   params: T,
@@ -113,7 +113,7 @@ export function getParamsObject<T extends Record<string, unknown>>(
 
   for (const [key, value] of Object.entries(params)) {
     if (value !== null && value !== undefined && value !== '') {
-      // 对于数组，只保留非空数组
+      // For arrays, only keep non-empty arrays
       if (Array.isArray(value)) {
         if (value.length > 0) {
           (result as any)[key] = value;
@@ -128,7 +128,7 @@ export function getParamsObject<T extends Record<string, unknown>>(
 }
 
 /**
- * 根据指定的键过滤空数据
+ * Filter empty data by specified keys
  */
 export function filterEmptyDataByKeys<T extends Record<string, unknown>>({
   data,

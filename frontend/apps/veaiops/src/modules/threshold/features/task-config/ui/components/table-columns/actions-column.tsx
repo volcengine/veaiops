@@ -18,7 +18,7 @@ import type { MetricThresholdResult } from 'api-generate';
 import type React from 'react';
 
 /**
- * 操作列渲染组件
+ * Actions column render component
  */
 export const ActionsColumn: React.FC<{
   record: MetricThresholdResult;
@@ -34,10 +34,10 @@ export const ActionsColumn: React.FC<{
           try {
             onViewTimeSeries(record);
           } catch (error) {
-            // 静默处理：查看时序图失败不影响其他操作
+            // Silent handling: viewing timeseries chart failure does not affect other operations
           }
         } else {
-          // TODO: 实现查看时序图功能
+          // TODO: Implement view timeseries chart functionality
         }
       }}
     >

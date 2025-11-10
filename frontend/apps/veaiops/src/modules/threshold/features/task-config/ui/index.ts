@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 主页面组件
+// Main page component
 export { TaskManagement } from './management';
 export * from './pages';
 
-// 任务相关
+// Task related
 export * from './task';
 
-// 版本相关
+// Version related
 export * from './version';
 
-// 告警相关
+// Alarm related
 export * from './alarm';
 
-// 清洗结果
+// Cleaning result
 export * from './cleaning';
 
-// 共享表单
+// Shared forms
 export * from './shared-forms';
 
-// 组件库
+// Component library
 export * from './components';

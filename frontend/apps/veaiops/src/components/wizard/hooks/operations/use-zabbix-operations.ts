@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Zabbix数据源操作Hook
- * @description 管理Zabbix相关的API调用和状态更新
+ * Zabbix data source operations Hook
+ * @description Manages Zabbix-related API calls and state updates
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -35,7 +35,7 @@ export const useZabbixOperations = (
   setState: React.Dispatch<React.SetStateAction<WizardState>>,
   updateLoading: (key: keyof WizardState['loading'], value: boolean) => void,
 ) => {
-  // 获取Zabbix模板
+  // Fetch Zabbix templates
   const fetchZabbixTemplates = useCallback(
     async (connectName: string, name?: string) => {
       updateLoading('templates', true);
@@ -67,7 +67,7 @@ export const useZabbixOperations = (
     [setState, updateLoading],
   );
 
-  // 设置选中的模板
+  // Set selected template
   const setSelectedTemplate = useCallback(
     (template: ZabbixTemplate | null) => {
       setState((prev) => ({
@@ -75,7 +75,7 @@ export const useZabbixOperations = (
         zabbix: {
           ...prev.zabbix,
           selectedTemplate: template,
-          // 切换模板时清除所有后续依赖数据
+          // Clear all subsequent dependent data when switching template
           selectedMetric: null,
           metrics: [],
           hosts: [],
@@ -87,7 +87,7 @@ export const useZabbixOperations = (
     [setState],
   );
 
-  // 获取Zabbix监控项
+  // Fetch Zabbix metrics
   const fetchZabbixMetrics = useCallback(
     async (connectName: string, templateId: string) => {
       updateLoading('metrics', true);
@@ -119,7 +119,7 @@ export const useZabbixOperations = (
 
         Message.error('获取 Zabbix 监控项失败，请重试');
 
-        // 设置空数组作为fallback
+        // Set empty array as fallback
         setState((prev) => ({
           ...prev,
           zabbix: { ...prev.zabbix, metrics: [] },
@@ -131,13 +131,13 @@ export const useZabbixOperations = (
     [setState, updateLoading],
   );
 
-  // 获取Zabbix主机列表
+  // Fetch Zabbix host list
   const fetchZabbixHosts = useCallback(
     async (connectName: string, templateId: string) => {
       updateLoading('hosts', true);
 
       try {
-        // 使用 apiClient 调用接口
+        // Use apiClient to call API
         const result =
           await apiClient.dataSources.getApisV1DatasourceZabbixTemplatesHosts({
             connectName,
@@ -158,7 +158,7 @@ export const useZabbixOperations = (
 
         Message.error('获取 Zabbix 主机列表失败，请重试');
 
-        // 设置空数组作为fallback
+        // Set empty array as fallback
         setState((prev) => ({
           ...prev,
           zabbix: { ...prev.zabbix, hosts: [] },
@@ -170,7 +170,7 @@ export const useZabbixOperations = (
     [setState, updateLoading],
   );
 
-  // 设置选中的监控项
+  // Set selected metric
   const setSelectedMetric = useCallback(
     (metric: ZabbixTemplateMetric | null) => {
       setState((prev) => {
@@ -179,7 +179,7 @@ export const useZabbixOperations = (
           zabbix: {
             ...prev.zabbix,
             selectedMetric: metric,
-            // 切换监控项时清除主机和items，防止数据不一致
+            // Clear hosts and items when switching metric to prevent data inconsistency
             hosts: [],
             selectedHosts: [],
             items: [],
@@ -192,7 +192,7 @@ export const useZabbixOperations = (
     [setState],
   );
 
-  // 设置选中的主机
+  // Set selected hosts
   const setSelectedHosts = useCallback(
     (hosts: ZabbixHost[]) => {
       setState((prev) => ({
@@ -203,13 +203,13 @@ export const useZabbixOperations = (
     [setState],
   );
 
-  // 获取Zabbix Items
+  // Fetch Zabbix Items
   const fetchZabbixItems = useCallback(
     async (connectName: string, host: string, metricName: string) => {
       try {
         updateLoading('items', true);
 
-        // 调用真实API获取items
+        // Call real API to fetch items
         const response = await apiClient.zabbix.getZabbixItems({
           connectName,
           host,
@@ -218,11 +218,11 @@ export const useZabbixOperations = (
 
         if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
           setState((prev) => {
-            // 合并新items而非覆盖，避免并发调用时数据丢失
+            // Merge new items instead of overwriting to avoid data loss during concurrent calls
             const existingItems = prev.zabbix.items || [];
             const newItems = response.data || [];
 
-            // 去重：使用Map保证每个hostname只保留最新的item
+            // Deduplicate: use Map to ensure only the latest item per hostname is kept
             const itemsMap = new Map<string, (typeof newItems)[0]>();
             [...existingItems, ...newItems].forEach((item) => {
               itemsMap.set(item.hostname, item);

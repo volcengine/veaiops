@@ -12,23 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { formatDateTime as formatDateTimeUtils } from '@veaiops/utils';
-
 /**
- * Format time display
- * ✅ Use unified formatDateTime, supports timezone conversion
+ * Format date time display
  */
 export const formatDateTime = (dateString: string): string => {
-  return formatDateTimeUtils(dateString, false); // false = do not show seconds
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } catch {
+    return dateString;
+  }
 };
 
 /**
  * Format date display (date only)
- * ✅ Use unified formatDateTime, supports timezone conversion
  */
 export const formatDate = (dateString: string): string => {
-  // Use formatDateTime but only take the date part
-  const formatted = formatDateTimeUtils(dateString, false);
-  // If format is "YYYY-MM-DD HH:mm:ss", only take the first 10 characters (date part)
-  return formatted.split(' ')[0] || dateString;
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+  } catch {
+    return dateString;
+  }
 };

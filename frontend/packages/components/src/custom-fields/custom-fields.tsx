@@ -19,8 +19,8 @@ import { CheckBoxDrawer } from './components/check-box-drawer';
 import type { CustomFieldsProps } from './types';
 
 /**
- * 自定义字段组件
- * 提供字段选择和定制功能
+ * Custom fields component
+ * Provides field selection and customization functionality
  */
 const CustomFields: FC<CustomFieldsProps> = ({
   disabledFields,
@@ -28,12 +28,12 @@ const CustomFields: FC<CustomFieldsProps> = ({
   value = [],
   confirm,
   initialFields,
-  buttonText = '定制列',
-  drawerTitle = '定制列配置',
+  buttonText = 'Customize Columns',
+  drawerTitle = 'Customize Columns Configuration',
 }) => {
   const [visible, setVisible] = useState(false);
 
-  // 计算活跃字段数量（总字段数减去已选字段数）
+  // Calculate active field count (total fields minus selected fields)
   const activeCount = useMemo(() => {
     const totalFields = columns?.length || 0;
     const selectedFields = value?.length || 0;

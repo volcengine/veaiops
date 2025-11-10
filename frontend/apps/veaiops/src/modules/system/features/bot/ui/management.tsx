@@ -22,36 +22,36 @@ import { ChatManagementDrawer } from './components/chat/management-drawer';
 import { BotTable } from './table';
 
 /**
- * Bot管理页面
- * 提供Bot的增删改查功能 - 使用 CustomTable 和 Zustand 状态管理
+ * Bot management page
+ * Provides CRUD functionality for Bot - uses CustomTable and Zustand state management
  *
- * 架构特点：
- * - 使用自定义Hook封装业务逻辑
- * - 组件职责单一，易于维护
- * - 状态管理与UI渲染分离
- * - 支持配置化和扩展
- * - 使用CustomTable提供高级表格功能
+ * Architecture features:
+ * - Uses custom Hook to encapsulate business logic
+ * - Single responsibility components, easy to maintain
+ * - State management separated from UI rendering
+ * - Supports configuration and extension
+ * - Uses CustomTable to provide advanced table functionality
  */
 const BotManagement: React.FC = () => {
-  // BotTable ref，用于刷新表格
+  // BotTable ref, used to refresh table
   const tableRef = useRef<BotTableRef>(null);
 
-  // 使用自定义Hook获取所有业务逻辑，传递表格刷新方法
+  // Use custom Hook to get all business logic, pass table refresh method
   const {
-    // 状态
+    // State
     modalVisible,
     editingBot,
     loading,
 
-    // 属性管理状态
+    // Attribute management state
     selectedBot,
     attributesDrawerVisible,
 
-    // 群管理状态
+    // Chat management state
     chatManagementDrawerVisible,
     selectedBotForChat,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,
@@ -63,17 +63,17 @@ const BotManagement: React.FC = () => {
     handleCloseChatManagementDrawer,
   } = useBot(tableRef);
 
-  // 提交处理器：转发给 handleSubmit 并返回结果
+  // Submit handler: forward to handleSubmit and return result
   const handleCompleteSubmit = async (
     values: BotCreateRequest | BotUpdateRequest,
   ): Promise<boolean> => {
-    // handleSubmit 已经接受 BotCreateRequest | BotUpdateRequest 类型，不需要类型断言
+    // handleSubmit already accepts BotCreateRequest | BotUpdateRequest type, no type assertion needed
     return await handleSubmit(values);
   };
 
   return (
     <>
-      {/* Bot表格组件 - 使用CustomTable */}
+      {/* Bot table component - uses CustomTable */}
       <BotTable
         ref={tableRef}
         onEdit={handleEdit}
@@ -83,7 +83,7 @@ const BotManagement: React.FC = () => {
         onGroupManagement={handleChatManagement}
       />
 
-      {/* Bot弹窗组件 */}
+      {/* Bot modal component */}
       <BotCompleteModal
         visible={modalVisible}
         editingBot={editingBot}
@@ -92,14 +92,14 @@ const BotManagement: React.FC = () => {
         loading={loading}
       />
 
-      {/* Bot特别关注抽屉 */}
+      {/* Bot attributes drawer */}
       <BotAttributesDrawer
         visible={attributesDrawerVisible}
         onClose={handleCloseAttributesDrawer}
         bot={selectedBot}
       />
 
-      {/* 群管理抽屉 */}
+      {/* Chat management drawer */}
       <ChatManagementDrawer
         visible={chatManagementDrawerVisible}
         onClose={handleCloseChatManagementDrawer}

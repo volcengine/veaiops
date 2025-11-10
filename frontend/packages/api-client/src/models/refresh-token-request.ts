@@ -15,7 +15,7 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type RefreshTokenRequest = {
   /**
-   * 当前的访问令牌
+   * Current access token
    */
   token: string;
 };

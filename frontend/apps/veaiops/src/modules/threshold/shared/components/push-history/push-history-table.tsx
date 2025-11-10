@@ -27,7 +27,7 @@ import {
 import { useTableColumns } from './table-columns';
 
 /**
- * 推送历史表格组件属性接口
+ * Push history table component props interface
  */
 interface PushHistoryTableProps {
   moduleType: ModuleType;
@@ -41,12 +41,12 @@ interface PushHistoryTableProps {
 const queryFormat = {
   agent_type: queryArrayFormat,
   event_level: queryArrayFormat,
-  show_status: queryArrayFormat, // 状态数组
+  show_status: queryArrayFormat, // Status array
 };
 
 /**
- * 推送历史表格组件
- * 封装表格的渲染逻辑，提供清晰的接口
+ * Push history table component
+ * Encapsulates table rendering logic, provides clear interface
  */
 export const PushHistoryTable: React.FC<PushHistoryTableProps> = ({
   moduleType,
@@ -56,18 +56,18 @@ export const PushHistoryTable: React.FC<PushHistoryTableProps> = ({
   loading = false,
   onViewDetail,
 }) => {
-  // 表格配置
+  // Table configuration
   const { dataSource, tableProps } = usePushHistoryTableConfig({
     moduleType,
     showModuleTypeColumn,
   });
 
-  // 操作按钮配置
+  // Action button configuration
   const { actionButtons } = usePushHistoryActionConfig({
     loading,
   });
 
-  // 获取表格列配置
+  // Get table column configuration
   const columns = useTableColumns({
     showModuleTypeColumn,
     customActions,
@@ -75,12 +75,12 @@ export const PushHistoryTable: React.FC<PushHistoryTableProps> = ({
     onViewDetail,
   });
 
-  // 🔧 修复死循环：使用 useMemo 缓存 handleColumns 函数
+  // 🔧 Fix infinite loop: Use useMemo to cache handleColumns function
   const handleColumns = useMemo(() => {
     return () => columns;
   }, [columns]);
 
-  // 🔧 修复死循环：使用 useCallback 缓存 handleFilters 函数
+  // 🔧 Fix infinite loop: Use useCallback to cache handleFilters function
   const handleFilters = useCallback(
     (params: HandleFilterProps<BaseQuery>) => {
       return getPushHistoryFilters({
@@ -91,26 +91,26 @@ export const PushHistoryTable: React.FC<PushHistoryTableProps> = ({
     [moduleType],
   );
 
-  // 🔧 修复死循环：使用 useMemo 缓存 handleFiltersProps
+  // 🔧 Fix infinite loop: Use useMemo to cache handleFiltersProps
   const handleFiltersProps = useMemo(() => ({ moduleType }), [moduleType]);
 
   return (
     <div data-testid="oncall-history-table">
       <CustomTable
-        // 表格标题
+        // Table title
         title={title}
-        // 数据源配置
+        // Data source configuration
         dataSource={dataSource}
-        // 列配置处理函数
+        // Column configuration handler function
         handleColumns={handleColumns}
-        // 过滤器处理函数
+        // Filter handler function
         handleFilters={handleFilters}
         handleFiltersProps={handleFiltersProps}
-        // 使用Hook返回的表格属性配置
+        // Use table props configuration returned by Hook
         tableProps={tableProps}
-        // 操作按钮
+        // Action buttons
         actions={actionButtons}
-        // 表格样式
+        // Table style
         tableClassName="push-history-table"
         queryFormat={queryFormat}
       />

@@ -29,18 +29,18 @@ import { BotAttributeFormModal } from '../../bot/attribute-form-modal';
 import { useAttributesTableLogic } from './hooks';
 
 /**
- * Bot属性表格组件
- * 提供Bot属性的CRUD功能
+ * Bot attribute table component
+ * Provides CRUD functionality for Bot attributes
  *
- * 拆分说明：
- * - hooks/use-attributes-table-logic.ts: 业务逻辑Hook（状态管理、事件处理）
- * - index.tsx: 主入口组件，负责UI渲染
+ * Split description:
+ * - hooks/use-attributes-table-logic.ts: Business logic Hook (state management, event handling)
+ * - index.tsx: Main entry component, responsible for UI rendering
  */
 export const BotAttributesTable: React.FC<BotAttributesTableProps> = ({
   botId,
   channel,
 }) => {
-  // 创建 tableRef 用于刷新表格
+  // Create tableRef for refreshing table
   const tableRef =
     useRef<CustomTableActionType<BotAttribute, BotAttributeFiltersQuery>>(null);
 
@@ -57,14 +57,14 @@ export const BotAttributesTable: React.FC<BotAttributesTableProps> = ({
     stableFetchAttributes,
   } = useAttributesTableLogic({ botId, channel, tableRef });
 
-  // 表格列配置
+  // Table column configuration
   const columns = getBotAttributesColumns({
     onDelete: handleDelete,
   });
 
   return (
     <div className="bot-attributes-table">
-      {/* 功能说明提示 */}
+      {/* Feature description hint */}
       <Alert
         type="info"
         content="为机器人添加关注项目，以便在事件中心订阅和管理相关事件。选择要关注的项目后，系统将自动为该机器人启用对应项目的事件推送和ChatOps功能。"
@@ -100,7 +100,7 @@ export const BotAttributesTable: React.FC<BotAttributesTableProps> = ({
         })}
       />
 
-      {/* 创建/编辑模态框 */}
+      {/* Create/Edit modal */}
       <BotAttributeFormModal
         visible={isModalVisible}
         type={modalType}

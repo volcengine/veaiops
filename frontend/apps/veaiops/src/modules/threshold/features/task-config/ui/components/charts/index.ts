@@ -13,7 +13,7 @@
 // limitations under the License.
 
 export { getChartConfig } from './config';
-// formatDateTime 已统一到 @veaiops/utils 包中
+// formatDateTime has been unified to @veaiops/utils package
 export { COLOR_MAP, SERIES_ALIAS_MAP } from './constants';
 export { ChartLegend } from './chart-legend';
 export { TimeseriesChart } from './timeseries-chart';

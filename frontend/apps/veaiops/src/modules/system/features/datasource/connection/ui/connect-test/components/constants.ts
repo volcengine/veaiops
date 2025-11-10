@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 连接测试弹窗相关常量
+ * Connection test modal related constants
  */
 
-// 建议检查项列表
+// Suggestions checklist
 export const CONNECTION_TEST_SUGGESTIONS = [
   '网络连接是否正常',
   'API地址是否正确',
@@ -24,10 +24,10 @@ export const CONNECTION_TEST_SUGGESTIONS = [
   '服务器是否可访问',
 ] as const;
 
-// 测试状态类型
+// Test status type
 export type TestStatus = 'loading' | 'success' | 'error' | 'idle';
 
-// 状态消息配置
+// Status message configuration
 export const STATUS_MESSAGES = {
   loading: {
     title: '正在测试连接',

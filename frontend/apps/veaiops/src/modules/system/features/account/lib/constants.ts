@@ -13,16 +13,14 @@
 // limitations under the License.
 
 /**
- * 账号管理模块常量配置
- * @description 账号管理相关的常量定义和配置
-
- *
+ * Account management module constant configuration
+ * @description Constant definitions and configuration related to account management
  */
 
-import type { UserRole, UserStatus } from "@account";
+import type { UserRole, UserStatus } from '@account';
 
 /**
- * 用户角色配置
+ * User role configuration
  */
 export const USER_ROLE_CONFIG = {
   admin: {
@@ -43,7 +41,7 @@ export const USER_ROLE_CONFIG = {
 } as const;
 
 /**
- * 用户状态配置
+ * User status configuration
  */
 export const USER_STATUS_CONFIG = {
   active: {
@@ -64,7 +62,7 @@ export const USER_STATUS_CONFIG = {
 } as const;
 
 /**
- * 用户角色选项
+ * User role options
  */
 export const USER_ROLE_OPTIONS = [
   { label: "全部角色", value: "" },
@@ -74,7 +72,7 @@ export const USER_ROLE_OPTIONS = [
 ] as const;
 
 /**
- * 用户状态选项
+ * User status options
  */
 export const USER_STATUS_OPTIONS = [
   { label: "全部状态", value: "" },
@@ -84,7 +82,7 @@ export const USER_STATUS_OPTIONS = [
 ] as const;
 
 /**
- * 用户权限配置
+ * User permissions configuration
  */
 export const USER_PERMISSIONS = {
   admin: {
@@ -117,10 +115,10 @@ export const USER_PERMISSIONS = {
 } as const;
 
 /**
- * 账号管理配置
+ * Account management configuration
  */
 export const ACCOUNT_MANAGEMENT_CONFIG = {
-  // 表格配置
+  // Table configuration
   table: {
     pageSize: 10,
     showSizeChanger: true,
@@ -128,13 +126,13 @@ export const ACCOUNT_MANAGEMENT_CONFIG = {
     showTotal: true,
   },
 
-  // 表单配置
+  // Form configuration
   form: {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
   },
 
-  // 密码配置
+  // Password configuration
   password: {
     minLength: 8,
     maxLength: 32,
@@ -144,21 +142,21 @@ export const ACCOUNT_MANAGEMENT_CONFIG = {
     requireSpecialChars: false,
   },
 
-  // 用户名配置
+  // Username configuration
   username: {
     minLength: 3,
     maxLength: 20,
     pattern: /^[a-zA-Z0-9_-]+$/,
   },
 
-  // 邮箱配置
+  // Email configuration
   email: {
     pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   },
 } as const;
 
 /**
- * 用户验证规则
+ * User validation rules
  */
 export const USER_VALIDATION_RULES = {
   username: [
@@ -199,7 +197,7 @@ export const USER_VALIDATION_RULES = {
 } as const;
 
 /**
- * 默认用户数据
+ * Default user data
  */
 export const DEFAULT_USER_DATA = {
   username: "",
@@ -211,7 +209,7 @@ export const DEFAULT_USER_DATA = {
 } as const;
 
 /**
- * 表格列宽配置
+ * Table column width configuration
  */
 export const ACCOUNT_TABLE_COLUMNS_WIDTH = {
   username: 150,
@@ -224,7 +222,7 @@ export const ACCOUNT_TABLE_COLUMNS_WIDTH = {
 } as const;
 
 /**
- * 操作按钮配置
+ * Action button configuration
  */
 export const ACCOUNT_ACTIONS_CONFIG = {
   edit: {

@@ -15,15 +15,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
 /**
- * URL 参数管理 Hook
- * 用于管理页面 URL 中的查询参数
+ * URL parameter management Hook
+ * Used to manage query parameters in page URL
  */
 export const useUrlParams = () => {
   const [urlParams, setUrlParams] = useState<URLSearchParams>(
     new URLSearchParams(window.location.search),
   );
 
-  // 获取特定参数值
+  // Get specific parameter value
   const getParam = useCallback(
     (key: string): string | null => {
       return urlParams.get(key);
@@ -31,7 +31,7 @@ export const useUrlParams = () => {
     [urlParams],
   );
 
-  // 设置参数
+  // Set parameter
   interface SetParamParams {
     key: string;
     value: string;
@@ -41,36 +41,36 @@ export const useUrlParams = () => {
     const newParams = new URLSearchParams(window.location.search);
     newParams.set(key, value);
 
-    // 更新 URL
+    // Update URL
     const newUrl = `${window.location.pathname}?${newParams.toString()}`;
     window.history.pushState({}, '', newUrl);
 
-    // 更新状态
+    // Update state
     setUrlParams(newParams);
   }, []);
 
-  // 删除参数
+  // Remove parameter
   const removeParam = useCallback((key: string) => {
     const newParams = new URLSearchParams(window.location.search);
     newParams.delete(key);
 
-    // 更新 URL
+    // Update URL
     const newUrl = newParams.toString()
       ? `${window.location.pathname}?${newParams.toString()}`
       : window.location.pathname;
     window.history.pushState({}, '', newUrl);
 
-    // 更新状态
+    // Update state
     setUrlParams(newParams);
   }, []);
 
-  // 清空所有参数
+  // Clear all parameters
   const clearParams = useCallback(() => {
     window.history.pushState({}, '', window.location.pathname);
     setUrlParams(new URLSearchParams());
   }, []);
 
-  // 监听浏览器前进后退
+  // Listen to browser forward/back navigation
   useEffect(() => {
     const handlePopState = () => {
       setUrlParams(new URLSearchParams(window.location.search));

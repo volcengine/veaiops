@@ -16,7 +16,7 @@ import { ComingSoonPage } from '@/components/common';
 import type React from 'react';
 
 /**
- * 值班统计页面 - 待实现
+ * Oncall statistics page - To be implemented
  */
 export const OncallStatsPage: React.FC = () => {
   return (

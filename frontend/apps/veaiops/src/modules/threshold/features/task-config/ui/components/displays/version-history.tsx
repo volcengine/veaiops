@@ -23,11 +23,8 @@ import {
   IconMinusCircle,
   IconPlayCircle,
 } from '@arco-design/web-react/icon';
-import { CellRender } from '@veaiops/components';
 import type { IntelligentThresholdTaskVersion } from 'api-generate';
 import type React from 'react';
-
-const { StampTime } = CellRender;
 
 const { Title, Text } = Typography;
 
@@ -139,13 +136,22 @@ export const TaskVersionHistory: React.FC<TaskVersionHistoryProps> = ({
                     />
                   </Space>
                   <Text type="secondary" style={{ fontSize: 13 }}>
-                    <StampTime time={item.created_at} />
+                    {item.created_at
+                      ? new Date(item.created_at).toLocaleString('zh-CN', {
+                          year: 'numeric',
+                          month: '2-digit',
+                          day: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                        })
+                      : '-'}
                   </Text>
                 </div>
 
                 {/* Bottom: detailed information */}
                 <div className="flex gap-4 flex-wrap">
-                  {/* Create user - field removed, because IntelligentThresholdTaskVersion type does not include create_user field */}
+                  {/* Create user - field removed because IntelligentThresholdTaskVersion type does not contain create_user field */}
 
                   {/* Direction tag */}
                   {item.direction && (

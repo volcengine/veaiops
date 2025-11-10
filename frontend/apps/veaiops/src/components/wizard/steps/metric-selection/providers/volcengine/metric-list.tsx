@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 火山引擎指标列表组件
- * @description 展示所有可用的火山引擎指标的列表
+ * Volcengine metric list component
+ * @description Displays a list of all available Volcengine metrics
  */
 
 import { Empty, Radio, Space } from '@arco-design/web-react';

@@ -15,7 +15,7 @@
 import { useTheme } from '@/contexts/theme-context';
 import type React from 'react';
 
-// 主题切换按钮组件
+// Theme toggle button component
 export const ThemeToggle: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
 
@@ -42,7 +42,7 @@ export const ThemeToggle: React.FC = () => {
         className="arco-icon w-4 h-4 mr-1"
       >
         {isDark ? (
-          // 太阳图标 (切换到亮色模式)
+          // Sun icon (switch to light mode)
           <>
             <circle cx="24" cy="24" r="9" fill="currentColor" stroke="none" />
             <path
@@ -52,7 +52,7 @@ export const ThemeToggle: React.FC = () => {
             />
           </>
         ) : (
-          // 月亮图标 (切换到暗色模式)
+          // Moon icon (switch to dark mode)
           <path
             fill="currentColor"
             stroke="none"

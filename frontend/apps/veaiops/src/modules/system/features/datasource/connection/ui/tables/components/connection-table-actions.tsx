@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 数据源连接表格操作配置
+ * Data source connection table actions configuration
  *
- * 将工具栏操作配置单独抽象出来，提高代码可维护性
+ * Abstract toolbar actions configuration separately to improve code maintainability
  */
 
 import { Button } from '@arco-design/web-react';
@@ -23,13 +23,13 @@ import { IconRefresh } from '@arco-design/web-react/icon';
 import { useCallback } from 'react';
 
 export interface ConnectionTableActionsConfig {
-  /** 刷新处理器 */
+  /** Refresh handler */
   onRefresh?: () => void;
 }
 
 /**
- * 数据源连接表格操作配置 Hook
- * 负责定义工具栏操作按钮
+ * Data source connection table actions configuration Hook
+ * Responsible for defining toolbar action buttons
  */
 export const useConnectionTableActions = ({
   onRefresh,

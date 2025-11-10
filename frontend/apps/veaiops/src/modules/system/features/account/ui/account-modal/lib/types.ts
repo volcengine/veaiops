@@ -16,23 +16,23 @@ import type { User, UserFormData } from '@account';
 import type { FormInstance } from '@arco-design/web-react';
 
 /**
- * 账号弹窗组件属性接口
+ * Account modal component props interface
  */
 export interface AccountModalProps {
-  /** 是否显示弹窗 */
+  /** Whether to show modal */
   visible: boolean;
-  /** 正在编辑的用户，null 表示新增 */
+  /** User being edited, null means create new */
   editingUser: User | null;
-  /** 取消回调 */
+  /** Cancel callback */
   onCancel: () => void;
-  /** 提交回调 */
+  /** Submit callback */
   onSubmit: (values: UserFormData) => Promise<boolean>;
-  /** Arco Design Form 实例类型 */
+  /** Arco Design Form instance type */
   form: FormInstance;
 }
 
 /**
- * 表单字段类型
+ * Form field type
  */
 export type FormFieldType =
   | 'username'
@@ -44,7 +44,7 @@ export type FormFieldType =
   | 'status';
 
 /**
- * 表单验证规则类型
+ * Form validation rule type
  */
 export interface ValidationRule {
   required?: boolean;
@@ -52,7 +52,7 @@ export interface ValidationRule {
   minLength?: number;
   maxLength?: number;
   type?: string;
-  /** Arco Design Form 验证器函数，接受值和回调函数 */
+  /** Arco Design Form validator function, accepts value and callback */
   validator?: (
     value: string | undefined,
     callback: (error?: string) => void,

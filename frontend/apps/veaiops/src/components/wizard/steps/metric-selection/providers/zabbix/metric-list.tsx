@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Zabbix指标列表组件
- * @description 展示所有可用的Zabbix指标的列表
+ * Zabbix metric list component
+ * @description Displays a list of all available Zabbix metrics
  */
 
 import { Empty, Radio, Space } from '@arco-design/web-react';

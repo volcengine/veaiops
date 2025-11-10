@@ -16,7 +16,6 @@
  * Data source connection management utility functions
  */
 
-import { formatDateTime } from '@veaiops/utils';
 import { DataSourceType } from "api-generate";
 import { DATA_SOURCE_DISPLAY_NAMES } from "./constants";
 
@@ -47,8 +46,11 @@ export const formatConnectionTime = (dateString: string): string => {
   } else if (diffInDays < 7) {
     return `${diffInDays}天前`;
   } else {
-    // Use formatDateTime for consistent timezone conversion
-    return formatDateTime(dateString, false); // false = don't show seconds
+    return date.toLocaleDateString("zh-CN", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
   }
 };
 
@@ -92,7 +94,7 @@ export const validateConnectionConfig = (
 ): { valid: boolean; errors: string[] } => {
   const errors: string[] = [];
 
-  // General validation
+  // Common validation
   if (!config.name?.trim()) {
     errors.push("连接名称不能为空");
   }
@@ -154,7 +156,7 @@ export const generateConnectionId = (
 /**
  * Check if connection is healthy
  * @param connect Connection object
- * @returns Whether it is healthy
+ * @returns Whether healthy
  */
 export const isConnectionHealthy = (connect: any): boolean => {
   return connect?.is_active === true;
@@ -162,7 +164,7 @@ export const isConnectionHealthy = (connect: any): boolean => {
 
 /**
  * Format connection status text
- * @param isActive Whether it is active
+ * @param isActive Whether active
  * @returns Status text
  */
 export const formatConnectionStatus = (isActive: boolean): string => {
@@ -171,7 +173,7 @@ export const formatConnectionStatus = (isActive: boolean): string => {
 
 /**
  * Get connection status color
- * @param isActive Whether it is active
+ * @param isActive Whether active
  * @returns Color value
  */
 export const getConnectionStatusColor = (isActive: boolean): string => {

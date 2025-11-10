@@ -13,19 +13,19 @@
 // limitations under the License.
 
 /**
- * 数据源向导工具函数统一导出
- * @description 提供向导相关的所有工具函数，现已按功能模块化组织
+ * Data source wizard utility functions unified export
+ * @description Provides all wizard-related utility functions, now organized by functional modules
  * @author AI Assistant
  * @date 2025-01-19
  */
 
-// 初始化日志收集
+// Initialize log collection
 import { exportLogsToFile, startLogCollection } from '@veaiops/utils';
 
-// 启动日志收集
+// Start log collection
 startLogCollection();
 
-// 添加全局日志导出函数到 window 对象，方便调试
+// Add global log export function to window object for debugging convenience
 if (typeof window !== 'undefined') {
   (window as any).exportDataSourceWizardLogs = () => {
     exportLogsToFile('datasource-wizard-debug.log');
@@ -33,21 +33,21 @@ if (typeof window !== 'undefined') {
 }
 
 // ============================================================================
-// 步骤相关功能
+// Step-related functionality
 // ============================================================================
 export * from './steps';
 
 // ============================================================================
-// 数据处理功能
+// Data processing functionality
 // ============================================================================
 export * from './data';
 
 // ============================================================================
-// 验证功能
+// Validation functionality
 // ============================================================================
 export * from './validation';
 
 // ============================================================================
-// 错误处理
+// Error handling
 // ============================================================================
 export * from './error-handling';

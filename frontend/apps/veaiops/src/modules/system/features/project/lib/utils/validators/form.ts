@@ -16,7 +16,7 @@ import type { ProjectFormData } from '@project/types';
 import { validateDate, validateDateRange } from './date';
 
 /**
- * 验证项目表单数据
+ * Validate project form data
  */
 export const validateProjectFormData = (data: ProjectFormData): string[] => {
   const errors: string[] = [];

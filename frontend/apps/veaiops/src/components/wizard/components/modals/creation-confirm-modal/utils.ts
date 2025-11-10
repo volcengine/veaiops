@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 创建确认弹窗工具函数
+ * Creation confirmation modal utility functions
  */
 
 import { DataSource } from '@veaiops/api-client';
 import type { DataSourceType } from '../../../types';
 
 /**
- * 获取数据源类型显示文本
+ * Get data source type display text
  */
 export const getDataSourceTypeText = (type: DataSourceType): string => {
   switch (type) {

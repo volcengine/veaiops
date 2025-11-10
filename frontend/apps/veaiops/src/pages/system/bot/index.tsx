@@ -15,8 +15,8 @@
 import { BotManagement } from '@/modules/system/features/bot';
 
 /**
- * 群聊机器人管理页面
- * @description 提供群聊机器人的创建、编辑、删除和查看功能
+ * Bot management page
+ * @description Provides functionality for creating, editing, deleting, and viewing bots
 
  *
  */

@@ -19,7 +19,7 @@ import type { Project } from 'api-generate';
 import { useState } from 'react';
 
 /**
- * 根据类目加载对应的内容选项
+ * Load corresponding content options based on category
  */
 export const useAttributeValues = () => {
   const [valueOptions, setValueOptions] = useState<
@@ -57,11 +57,11 @@ export const useAttributeValues = () => {
       }
 
       if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
-        // 使用 name（显示名称）作为 label 和 value
-        // 后端会保存 value 到 BotAttribute 的 value 字段
+        // Use name (display name) as label and value
+        // Backend will save value to BotAttribute's value field
         const options = response.data.map((item: Project) => {
           const { name } = item;
-          // 如果 name 不存在，使用 project_id 作为后备
+          // If name doesn't exist, use project_id as fallback
           const fallbackValue = item.project_id;
 
           return {
@@ -77,7 +77,7 @@ export const useAttributeValues = () => {
         return false;
       }
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage =

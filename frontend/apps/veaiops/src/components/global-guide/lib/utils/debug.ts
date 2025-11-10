@@ -16,7 +16,7 @@ import { logger } from '@veaiops/utils';
 
 
 /**
- * 调试命令参数接口
+ * Debug command parameters interface
  */
 export interface DebugStepClickParams {
   handleStepClick: (stepNumber: number) => void;
@@ -25,10 +25,10 @@ export interface DebugStepClickParams {
 }
 
 /**
- * 创建调试步骤点击的命令函数
+ * Create debug step click command function
  *
- * @param params - 调试参数
- * @returns 调试命令函数
+ * @param params - Debug parameters
+ * @returns Debug command function
  */
 export const createDebugStepClickCommand = ({
   handleStepClick,
@@ -47,7 +47,7 @@ export const createDebugStepClickCommand = ({
       component: `debugStep${stepNumber}Click`,
     });
 
-    // 模拟点击步骤
+    // Simulate step click
     handleStepClick(stepNumber);
 
     setTimeout(() => {
@@ -66,7 +66,7 @@ export const createDebugStepClickCommand = ({
 };
 
 /**
- * 调试 URL 状态变化
+ * Debug URL state changes
  */
 export const debugUrlState = (): void => {
   logger.info({
@@ -84,7 +84,7 @@ export const debugUrlState = (): void => {
 };
 
 /**
- * 导出 GlobalGuide 日志
+ * Export GlobalGuide logs
  */
 export const exportGlobalGuideLogs = (): void => {
   logger.info({

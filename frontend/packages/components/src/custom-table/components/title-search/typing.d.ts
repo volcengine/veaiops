@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 标题搜索组件类型定义
- * 类型已迁移到 ../../types/components/title-search.ts
- * 此文件保留以兼容现有引用，实际类型请从types目录导入
+ * Title search component type definitions
+ * Types have been migrated to ../../types/components/title-search.ts
+ * This file is kept for compatibility with existing references, actual types should be imported from types directory
  */
 export type { SimpleOptions } from '@/custom-table/types';

@@ -23,7 +23,7 @@ import {
 import type React from 'react';
 
 /**
- * 新增账号说明卡片
+ * Create account info card
  */
 export const CreateAccountInfoCard: React.FC = () => {
   return (
@@ -88,7 +88,7 @@ export const CreateAccountInfoCard: React.FC = () => {
 };
 
 /**
- * 修改密码说明卡片 - 普通用户
+ * Change password info card - regular user
  */
 export const ChangePasswordInfoCard: React.FC = () => {
   return (
@@ -146,7 +146,7 @@ export const ChangePasswordInfoCard: React.FC = () => {
 };
 
 /**
- * 系统管理员警告卡片
+ * System administrator warning card
  */
 interface AdminWarningCardProps {
   username: string;

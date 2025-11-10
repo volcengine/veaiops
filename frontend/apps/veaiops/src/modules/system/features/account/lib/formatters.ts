@@ -14,13 +14,11 @@
 
 /**
  * Account management formatting functions
- * @description Formatting functions for user roles, status, time, etc.
+ * @description Formatting related functions for user roles, status, time, etc.
  */
 
 import type { UserRole, UserStatus } from '@account';
 import { USER_ROLE_CONFIG, USER_STATUS_CONFIG } from './constants';
-
-import { formatDateTime as formatDateTimeUtils } from '@veaiops/utils';
 
 /**
  * Format user role display
@@ -52,7 +50,6 @@ export const getUserStatusColor = (status: UserStatus): string => {
 
 /**
  * Format last login time
- * ✅ Use unified formatDateTime, supports timezone conversion
  */
 export const formatLastLogin = (lastLogin?: string): string => {
   if (!lastLogin) {
@@ -71,17 +68,20 @@ export const formatLastLogin = (lastLogin?: string): string => {
   } else if (diffDays < 7) {
     return `${diffDays}天前`;
   } else {
-    // ✅ Use unified formatDateTime, supports timezone conversion
-    const formatted = formatDateTimeUtils(lastLogin, false);
-    // Return only the date part
-    return formatted.split(' ')[0] || lastLogin;
+    return date.toLocaleDateString('zh-CN');
   }
 };
 
 /**
  * Format creation time
- * ✅ Use unified formatDateTime, supports timezone conversion
  */
 export const formatDateTime = (dateTime: string): string => {
-  return formatDateTimeUtils(dateTime, false); // false = do not show seconds
+  const date = new Date(dateTime);
+  return date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 };

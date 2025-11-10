@@ -14,6 +14,7 @@
 
 import { Button } from '@arco-design/web-react';
 import { IconPlus, IconUpload } from '@arco-design/web-react/icon';
+import { logger } from '@veaiops/utils';
 import type React from 'react';
 
 /**
@@ -28,27 +29,42 @@ export const getProjectTableActions = ({
 }): React.ReactNode[] => {
   const actions: React.ReactNode[] = [];
 
-  // Handle new project button click
+  // Handle create project button click
   const handleCreateClick = (e: React.MouseEvent<HTMLElement>) => {
-    console.log('[ProjectTableActions] 🆕 新建项目按钮被点击', {
-      timestamp: Date.now(),
-      eventType: e.type,
-      defaultPrevented: e.defaultPrevented,
+    logger.debug({
+      message: '[ProjectTableActions] 🆕 Create project button clicked',
+      data: {
+        timestamp: Date.now(),
+        eventType: e.type,
+        defaultPrevented: e.defaultPrevented,
+      },
+      source: 'ProjectTableActions',
+      component: 'handleCreateClick',
     });
 
     // ✅ Step 1: Immediately prevent all default behaviors
     e.preventDefault();
     e.stopPropagation();
 
-    console.log('[ProjectTableActions] ✅ 已阻止默认行为', {
-      timestamp: Date.now(),
-      defaultPrevented: e.defaultPrevented,
+    logger.debug({
+      message: '[ProjectTableActions] ✅ Default behaviors prevented',
+      data: {
+        timestamp: Date.now(),
+        defaultPrevented: e.defaultPrevented,
+      },
+      source: 'ProjectTableActions',
+      component: 'handleCreateClick',
     });
 
-    // ✅ Step 2: Execute callback in next event loop to avoid potential side effects from synchronous execution
+    // ✅ Step 2: Execute callback in next event loop to avoid side effects from synchronous execution
     setTimeout(() => {
-      console.log('[ProjectTableActions] 📞 调用 onCreate 回调', {
-        timestamp: Date.now(),
+      logger.debug({
+        message: '[ProjectTableActions] 📞 Calling onCreate callback',
+        data: {
+          timestamp: Date.now(),
+        },
+        source: 'ProjectTableActions',
+        component: 'handleCreateClick',
       });
       onCreate?.();
     }, 0);
@@ -56,25 +72,40 @@ export const getProjectTableActions = ({
 
   // Handle import project button click
   const handleImportClick = (e: React.MouseEvent<HTMLElement>) => {
-    console.log('[ProjectTableActions] 📥 导入项目按钮被点击', {
-      timestamp: Date.now(),
-      eventType: e.type,
-      defaultPrevented: e.defaultPrevented,
+    logger.debug({
+      message: '[ProjectTableActions] 📥 Import project button clicked',
+      data: {
+        timestamp: Date.now(),
+        eventType: e.type,
+        defaultPrevented: e.defaultPrevented,
+      },
+      source: 'ProjectTableActions',
+      component: 'handleImportClick',
     });
 
     // ✅ Step 1: Immediately prevent all default behaviors
     e.preventDefault();
     e.stopPropagation();
 
-    console.log('[ProjectTableActions] ✅ 已阻止默认行为', {
-      timestamp: Date.now(),
-      defaultPrevented: e.defaultPrevented,
+    logger.debug({
+      message: '[ProjectTableActions] ✅ Default behaviors prevented',
+      data: {
+        timestamp: Date.now(),
+        defaultPrevented: e.defaultPrevented,
+      },
+      source: 'ProjectTableActions',
+      component: 'handleImportClick',
     });
 
-    // ✅ Step 2: Execute callback in next event loop to avoid potential side effects from synchronous execution
+    // ✅ Step 2: Execute callback in next event loop to avoid side effects from synchronous execution
     setTimeout(() => {
-      console.log('[ProjectTableActions] 📞 调用 onImport 回调', {
-        timestamp: Date.now(),
+      logger.debug({
+        message: '[ProjectTableActions] 📞 Calling onImport callback',
+        data: {
+          timestamp: Date.now(),
+        },
+        source: 'ProjectTableActions',
+        component: 'handleImportClick',
       });
       onImport?.();
     }, 0);
@@ -88,7 +119,6 @@ export const getProjectTableActions = ({
         htmlType="button"
         icon={<IconPlus />}
         onClick={handleCreateClick}
-        data-testid="new-project-btn"
       >
         新建项目
       </Button>,
@@ -102,7 +132,6 @@ export const getProjectTableActions = ({
         htmlType="button"
         icon={<IconUpload />}
         onClick={handleImportClick}
-        data-testid="import-project-btn"
       >
         导入项目
       </Button>,

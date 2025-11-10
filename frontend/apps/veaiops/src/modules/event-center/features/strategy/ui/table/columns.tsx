@@ -21,7 +21,7 @@ import { EMPTY_CONTENT_TEXT } from '@veaiops/constants';
 import type { InformStrategy } from 'api-generate';
 import type React from 'react';
 
-const { CustomOutlineTag, Ellipsis, StampTime } = CellRender;
+const { CustomOutlineTag, Ellipsis } = CellRender;
 
 /**
  * Strategy name column render component
@@ -79,7 +79,7 @@ export const ChatColumn: React.FC<{
     return <span>{EMPTY_CONTENT_TEXT}</span>;
   }
 
-  // Transform group_chats data to format required by TagEllipsis
+  // Convert group_chats data to format required by TagEllipsis
   const tagData = record.group_chats.map((item, index: number) => ({
     name: item.chat_name || item.id,
     key: `chat-${item.id || index}`,
@@ -102,7 +102,7 @@ export const StatusColumn: React.FC<{
  */
 export const CreateTimeColumn: React.FC<{
   createdAt: string;
-}> = ({ createdAt }) => <StampTime time={createdAt} />;
+}> = ({ createdAt }) => <span>{new Date(createdAt).toLocaleString()}</span>;
 
 /**
  * Strategy actions column render component

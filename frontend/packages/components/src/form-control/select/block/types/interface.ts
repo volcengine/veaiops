@@ -15,7 +15,7 @@
 import type { SelectProps } from '@arco-design/web-react';
 import type { CSSProperties, ReactNode } from 'react';
 
-// 定义多搜索字段配置类型
+// Define multi-search field configuration type
 export type SearchKeyConfig =
   | {
       key: string;
@@ -45,7 +45,7 @@ export interface StandardEnum {
 }
 
 /**
- * optionfy入参类型
+ * Optionfy input parameter type
  */
 export type OptionfyProps<T> = {
   dataSet: Array<T>;
@@ -59,7 +59,7 @@ export type OptionfyProps<T> = {
   valueRender?: ({ record, value }: { record: T; value: any }) => any;
   disabledList?: Array<string | number>;
   disabledCheckFunc?: (value: any) => boolean;
-  filters?: Partial<T>; // 根据某个key进行条件过滤
+  filters?: Partial<T>; // Conditional filtering based on a key
 };
 
 export type SelectOption = {
@@ -95,7 +95,7 @@ export interface EnumOptionConfigs {
 }
 
 /**
- * @title 数据源配置
+ * @title Data source configuration
  */
 export type DataSourceSetter = {
   serviceInstance: any;
@@ -108,154 +108,154 @@ export type DataSourceSetter = {
 };
 
 /**
- * @title API 选择框
+ * @title API select box
  */
 export type FinalSelectBlockProps = {
   /**
-   * @zh 是否可见
+   * @zh Whether visible
    */
   visible?: boolean;
   /**
-   * @zh 异步函数
+   * @zh Async function
    * @defaultValue () => []
    */
   dataSource?:
     | ((props: SelectDataSourceProps) => Promise<any> | any)
     | DataSourceSetter;
   /**
-   * 缓存key
+   * Cache key
    */
   cacheKey?: string;
   /**
-   * 数据源共享
+   * Data source sharing
    */
   dataSourceShare?: boolean;
   /**
-   * 是否作为数据源的生产者
+   * Whether to act as data source producer
    */
   isFirstHint?: boolean;
   /**
-   * 滚动分页模式
+   * Scroll pagination mode
    */
   isScrollFetching?: boolean;
   /**
-   * debouncedFetch
+   * Debounced fetch
    */
   isDebouncedFetch?: boolean;
   /**
-   * 虚拟滚动请求分页
+   * Virtual scroll request pagination
    */
   pageReq: any;
   /**
-   * 依赖参数
+   * Dependency parameters
    */
   dependency?: unknown;
   /**
-   * 填充默认值，默认选择option第一个
+   * Fill default value, select first option by default
    */
   defaultActiveFirstOption?: boolean;
   /**
-   * options变更的回调
+   * Options change callback
    * @param Options
    */
   onOptionsChange?: (Options: Array<SelectOption>) => void;
   /**
-   * 是否在分页场景下支持根据value查询option
+   * Whether to support querying option by value in pagination scenario
    */
   isCascadeRemoteSearch?: boolean;
   /**
-   * 分页场景下支持根据value查询option的key
+   * Key for querying option by value in pagination scenario
    */
   remoteSearchKey?: string;
   /**
-   * 查询search key
+   * Search key
    */
   searchKey?: string;
   /**
-   * 多字段搜索配置，支持同时搜索多个字段
-   * 例如: [{ key: 'fatalId', valueType: 'number' }, { key: 'title', valueType: 'string' }]
-   * 或简写为: ['fatalId', 'title']
+   * Multi-field search configuration, supports searching multiple fields simultaneously
+   * Example: [{ key: 'fatalId', valueType: 'number' }, { key: 'title', valueType: 'string' }]
+   * Or shorthand: ['fatalId', 'title']
    */
   multiSearchKeys?: SearchKeyConfig[];
   /**
-   * remoteSearchKey format函数
+   * remoteSearchKey format function
    */
   formatRemoteSearchKey?: (v: string) => any;
   /**
-   * 粘贴值的字段名，用于指定粘贴后的值应该传递给哪个API参数
-   * 例如: 'accountIDs', 'userIds', 'ids' 等
-   * 如果不设置，则使用 searchKey 或 remoteSearchKey
+   * Field name for pasted values, used to specify which API parameter the pasted values should be passed to
+   * Example: 'accountIDs', 'userIds', 'ids', etc.
+   * If not set, use searchKey or remoteSearchKey
    */
   pasteValueKey?: string;
   /**
-   * 粘贴值的处理函数，用于自定义转换粘贴的值
-   * 例如: (values) => values.map(v => String(v)) // 确保都是字符串
-   * 例如: (values) => values.map(v => Number(v)) // 转换为数字
-   * 如果不设置，则使用默认逻辑
+   * Paste value processor function, used to customize conversion of pasted values
+   * Example: (values) => values.map(v => String(v)) // Ensure all are strings
+   * Example: (values) => values.map(v => Number(v)) // Convert to numbers
+   * If not set, use default logic
    */
   pasteValueProcessor?: (values: (string | number)[]) => (string | number)[];
   /**
-   * onChange时的值处理函数，用于转换传递给表单的值类型
-   * 例如: (values) => values.map(v => Number(v)) // 转换为数字类型以满足表单提交要求
-   * 例如: (values) => values.map(v => String(v)) // 转换为字符串类型
-   * 如果不设置，则保持原始类型
+   * Value processor function on onChange, used to convert value types passed to form
+   * Example: (values) => values.map(v => Number(v)) // Convert to number type to meet form submission requirements
+   * Example: (values) => values.map(v => String(v)) // Convert to string type
+   * If not set, keep original type
    */
   onChangeProcessor?: (values: (string | number)[]) => (string | number)[];
   /**
-   * 是否再value为空的时候触发options获取
+   * Whether to trigger options fetch when value is empty
    */
   isValueEmptyTriggerOptions?: boolean;
   /**
-   * 前端枚举值配置
+   * Frontend enum value configuration
    */
   enumOptionConfig: EnumOptionConfigs;
   /**
-   * 是否满足请求条件
+   * Whether request conditions are met
    */
   canFetch?: boolean;
   /**
-   * options处理方法
+   * Options processing method
    * @param props
    */
   handleOptions?: (props: { options: Option[]; value: any }) => Option[];
   /**
-   * payload处理方法
+   * Payload processing method
    * @param props
    */
   handleParams?: (params: any) => any;
   /**
-   * 自定义搜索方法
+   * Custom search method
    * @param props
    */
   _onSearch?: (props: { search: string | null }) => void;
   /**
-   * 自定义inlineDom
+   * Custom inline DOM
    */
   inlineSuffixDom?: ReactNode;
   /**
-   * @zh 包裹层样式
+   * @zh Wrapper layer style
    * @en Wrapper style
    */
   wrapperStyle?: CSSProperties;
   /**
-   * @zh 是否允许粘贴多个值
+   * @zh Whether to allow pasting multiple values
    * @en Allow paste multiple values
    * @defaultValue false
    */
   allowPasteMultiple?: boolean;
   /**
-   * @zh 分隔符数组，用于切分粘贴的多个值
+   * @zh Separator array for splitting pasted multiple values
    * @en Token separators for splitting pasted multiple values
    * @defaultValue ['\n', ',', ';', '\t', ' ', '|', '，', '；']
    */
   tokenSeparators?: string[];
   /**
-   * @zh 粘贴事件处理回调
+   * @zh Paste event handler callback
    * @en Paste event handler callback
    */
   onPaste?: (pastedValues: string[], event: ClipboardEvent) => void;
   /**
-   * @zh 粘贴前的值处理函数
+   * @zh Value processor function before pasting
    * @en Value processor before adding pasted values
    */
   beforePasteProcess?: (value: string) => string;
@@ -264,6 +264,6 @@ export type FinalSelectBlockProps = {
 export type VeArchSelectBlockProps = Partial<FinalSelectBlockProps> &
   SelectProps;
 
-// 向后兼容：小写别名
+// Backward compatibility: lowercase alias
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export type veArchSelectBlockProps = VeArchSelectBlockProps;

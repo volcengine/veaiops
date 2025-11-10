@@ -26,10 +26,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== 主函数导出 ====================
+// ==================== Main function exports ====================
 export { createMonitorTableColumns } from './create-monitor-table-columns';
 
-// ==================== 工具函数导出 ====================
+// ==================== Utility function exports ====================
 export {
   createBaseConfigFields,
   createVolcengineSpecificFields,

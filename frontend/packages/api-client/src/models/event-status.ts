@@ -18,35 +18,35 @@
  */
 export enum EventStatus {
   /**
-   * 初始化
+   * Initial
    */
   INITIAL = 0,
   /**
-   * 已订阅
+   * Subscribed
    */
   SUBSCRIBED = 1,
   /**
-   * 已构建卡片
+   * Card built
    */
   CARD_BUILT = 2,
   /**
-   * 已分发
+   * Distributed
    */
   DISTRIBUTED = 3,
   /**
-   * 无分发
+   * No distribution
    */
   NO_DISTRIBUTION = 4,
   /**
-   * ChatOps未匹配
+   * ChatOps not matched
    */
   CHATOPS_NO_MATCH = 11,
   /**
-   * ChatOps规则过滤
+   * ChatOps rule filtered
    */
   CHATOPS_RULE_FILTERED = 12,
   /**
-   * ChatOps规则限制
+   * ChatOps rule limited
    */
   CHATOPS_RULE_LIMITED = 13,
 }

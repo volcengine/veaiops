@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Zabbix 数据源配置详情组件
+ * Zabbix data source configuration details component
  */
 
 import { Descriptions, Space } from '@arco-design/web-react';
@@ -86,7 +86,7 @@ export const ZabbixDetails: React.FC<{ state: WizardState }> = ({ state }) => {
           useEllipsis={true}
         />
       ),
-      span: 1, // 独占一行
+      span: 1, // Occupy a full row
     });
   }
 
@@ -131,7 +131,7 @@ export const ZabbixDetails: React.FC<{ state: WizardState }> = ({ state }) => {
 
   return (
     <Space direction="vertical" size={16} className="w-full">
-      {/* 第1步：选择连接 */}
+      {/* Step 1: Select connection */}
       <div>
         <div className="text-sm font-semibold mb-2 text-gray-900">
           第1步：选择连接
@@ -150,7 +150,7 @@ export const ZabbixDetails: React.FC<{ state: WizardState }> = ({ state }) => {
         />
       </div>
 
-      {/* 第2步：选择模板 */}
+      {/* Step 2: Select template */}
       <div>
         <div className="text-sm font-semibold mb-2 text-gray-900">
           第2步：选择模板
@@ -164,7 +164,7 @@ export const ZabbixDetails: React.FC<{ state: WizardState }> = ({ state }) => {
         />
       </div>
 
-      {/* 第3步：选择监控项 */}
+      {/* Step 3: Select monitoring item */}
       <div>
         <div className="text-sm font-semibold mb-2 text-gray-900">
           第3步：选择监控项
@@ -178,7 +178,7 @@ export const ZabbixDetails: React.FC<{ state: WizardState }> = ({ state }) => {
         />
       </div>
 
-      {/* 第4步：选择主机 */}
+      {/* Step 4: Select hosts */}
       <div>
         <div className="text-sm font-semibold mb-2 text-gray-900">
           第4步：选择主机
@@ -192,7 +192,7 @@ export const ZabbixDetails: React.FC<{ state: WizardState }> = ({ state }) => {
         />
       </div>
 
-      {/* 第5步：确认配置 */}
+      {/* Step 5: Confirm configuration */}
       <div>
         <div className="text-sm font-semibold mb-2 text-gray-900">
           第5步：确认配置

@@ -14,8 +14,8 @@
 
 import { PluginNames } from '@/custom-table/types/constants/enum';
 /**
- * 行内编辑插件
- * 基于 EPS 平台的可编辑表格能力
+ * Inline Edit Plugin
+ * Based on EPS platform editable table capability
  */
 import type { BaseRecord } from '@/custom-table/types/core/common';
 import { EditableCell } from './components';
@@ -24,7 +24,7 @@ import { useInlineEdit } from './hooks';
 import type { EditState, InlineEditConfig } from './types';
 
 /**
- * 插件基础接口
+ * Base Plugin Interface
  */
 interface BasePlugin<ConfigType = unknown, StateType = unknown> {
   name: string;
@@ -38,7 +38,7 @@ interface BasePlugin<ConfigType = unknown, StateType = unknown> {
 }
 
 /**
- * 行内编辑插件类
+ * Inline Edit Plugin Class
  */
 export class InlineEditPlugin<RecordType extends BaseRecord = BaseRecord>
   implements
@@ -54,22 +54,22 @@ export class InlineEditPlugin<RecordType extends BaseRecord = BaseRecord>
   }
 
   install() {
-    // 插件安装逻辑
+    // Plugin installation logic
     return Promise.resolve();
   }
 
   uninstall() {
-    // 插件卸载逻辑
+    // Plugin uninstallation logic
     return Promise.resolve();
   }
 
   activate() {
-    // 插件激活逻辑
+    // Plugin activation logic
     return Promise.resolve();
   }
 
   deactivate() {
-    // 插件停用逻辑
+    // Plugin deactivation logic
     return Promise.resolve();
   }
 
@@ -89,14 +89,14 @@ export class InlineEditPlugin<RecordType extends BaseRecord = BaseRecord>
 
   getMethods() {
     return {
-      // 插件方法会通过 hooks 提供
+      // Plugin methods will be provided through hooks
     };
   }
 
   render() {
     return {
-      // 行内编辑主要通过 column render 函数实现
-      // 这里可以提供工具栏或其他辅助组件
+      // Inline editing is mainly implemented through column render functions
+      // Toolbar or other auxiliary components can be provided here
       toolbar: (context: any) => {
         const { state, methods } = context;
 
@@ -104,13 +104,13 @@ export class InlineEditPlugin<RecordType extends BaseRecord = BaseRecord>
           return null;
         }
 
-        // TODO: 可以添加批量编辑工具栏
+        // TODO: Can add batch edit toolbar
         return null;
       },
     };
   }
 
-  // 转换列配置以支持编辑
+  // Transform column configuration to support editing
   transformColumns<
     ColumnType extends {
       dataIndex?: string;
@@ -131,13 +131,13 @@ export class InlineEditPlugin<RecordType extends BaseRecord = BaseRecord>
         return column;
       }
 
-      // 原始渲染函数
+      // Original render function
       const originalRender = column.render;
 
       return {
         ...column,
         render: (value: unknown, record: RecordType, index: number) => {
-          // 在实际使用时，这些方法会从 context 中获取
+          // In actual use, these methods will be obtained from context
           const isEditing = false; // methods.isEditing(getRowKey(record), column.dataIndex);
           const onStartEdit = () => {
             // TODO: methods.startEdit(getRowKey(record), column.dataIndex);
@@ -149,7 +149,7 @@ export class InlineEditPlugin<RecordType extends BaseRecord = BaseRecord>
             // TODO: methods.cancelEdit();
           };
 
-          // 渲染可编辑单元格
+          // Render editable cell
           return (
             <EditableCell<RecordType>
               value={value}
@@ -194,7 +194,9 @@ export class InlineEditPlugin<RecordType extends BaseRecord = BaseRecord>
       this.config.enabled &&
       (!this.config.fields || this.config.fields.length === 0)
     ) {
-      errors.push('启用行内编辑时必须配置编辑字段');
+      errors.push(
+        'Edit fields must be configured when enabling inline editing',
+      );
     }
 
     return {

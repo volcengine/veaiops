@@ -26,7 +26,7 @@ interface KbCollectionsProps {
 }
 
 /**
- * 知识库集合配置区块组件
+ * Knowledge base collections configuration section component
  */
 export const KbCollections: React.FC<KbCollectionsProps> = ({
   kbCollections,

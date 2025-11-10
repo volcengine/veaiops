@@ -22,33 +22,32 @@ import type {
 } from '@/custom-table/types';
 import { devLog } from '@/custom-table/utils/log-utils';
 /**
- * CustomTable 渲染器 Hook
- * 负责处理各种组件的渲染逻辑
+ * CustomTable Renderer Hook
+ * Responsible for handling rendering logic of various components
  *
-
  * @date 2025-12-19
  */
 import React, { useMemo, useCallback } from 'react';
 
 /**
- * @name 渲染器方法集合
+ * @name Renderer methods collection
  */
 export interface TableRenderers {
-  /** @name 无数据元素渲染器 */
+  /** @name No data element renderer */
   NoDataElement: React.ReactNode;
-  /** @name 表格筛选组件渲染器 */
+  /** @name Table filter component renderer */
   TableFilterComponent: React.ReactNode;
-  /** @name 警告组件渲染器 */
+  /** @name Alert component renderer */
   AlertComponent: React.ReactNode;
-  /** @name 表格内容渲染器 */
+  /** @name Table content renderer */
   renderTableContent: (tableComponent: React.ReactNode) => React.ReactNode;
-  /** @name 底部内容渲染器 */
+  /** @name Footer content renderer */
   renderFooterContent: () => React.ReactNode;
 }
 
 /**
- * @name 创建表格渲染器集合
- * @description 基于插件系统创建各种渲染器方法
+ * @name Create table renderer collection
+ * @description Create various renderer methods based on plugin system
  */
 const useCustomTableRenderers = <
   RecordType extends BaseRecord = BaseRecord,
@@ -57,14 +56,14 @@ const useCustomTableRenderers = <
   context: PluginContext<RecordType, QueryType>,
   pluginManager: PluginManager,
   dataSource?: any,
-  pluginsReady?: boolean, // 新增插件就绪状态参数
+  pluginsReady?: boolean, // New plugin ready state parameter
 ): TableRenderers => {
   const {
     state: { error },
     props: { customComponentRender, customFooter },
   } = context as any;
 
-  // 组件渲染器 - 内联实现
+  // Component renderer - inline implementation
   const NoDataElement = useMemo(() => {
     try {
       let dataElement;
@@ -82,7 +81,7 @@ const useCustomTableRenderers = <
         });
       }
 
-      // 如果渲染结果是有效的React元素，包装在Fragment中以避免Context问题
+      // If render result is a valid React element, wrap in Fragment to avoid Context issues
       if (React.isValidElement(dataElement)) {
         return (
           <React.Fragment key="data-wrapper">{dataElement}</React.Fragment>
@@ -93,7 +92,7 @@ const useCustomTableRenderers = <
     } catch (error: unknown) {
       devLog.warn({
         component: 'useCustomTableRenderers',
-        message: '渲染TableDataComponent失败',
+        message: 'Failed to render TableDataComponent',
         data: {
           error: error instanceof Error ? error.message : String(error),
         },
@@ -103,7 +102,7 @@ const useCustomTableRenderers = <
   }, [pluginManager, context, error]);
 
   const TableFilterComponent = useMemo(() => {
-    // 只有在插件就绪时才渲染
+    // Only render when plugins are ready
     if (!pluginsReady) {
       return null;
     }
@@ -115,7 +114,7 @@ const useCustomTableRenderers = <
         args: [context],
       });
 
-      // 如果渲染结果是有效的React元素，包装在Fragment中以避免Context问题
+      // If render result is a valid React element, wrap in Fragment to avoid Context issues
       if (React.isValidElement(filterComponent)) {
         return (
           <React.Fragment key="filter-wrapper">
@@ -128,7 +127,7 @@ const useCustomTableRenderers = <
     } catch (error: unknown) {
       devLog.warn({
         component: 'useCustomTableRenderers',
-        message: '渲染TableFilterComponent失败',
+        message: 'Failed to render TableFilterComponent',
         data: {
           error: error instanceof Error ? error.message : String(error),
         },
@@ -138,11 +137,11 @@ const useCustomTableRenderers = <
   }, [pluginManager, context, pluginsReady]);
 
   const AlertComponent = useMemo(() => {
-    // 只有在插件就绪时才渲染
+    // Only render when plugins are ready
     if (!pluginsReady) {
       devLog.log({
         component: 'useCustomTableRenderers',
-        message: '🚨 插件未就绪，AlertComponent返回null',
+        message: '🚨 Plugin not ready, AlertComponent returns null',
       });
       return null;
     }
@@ -150,10 +149,10 @@ const useCustomTableRenderers = <
     try {
       devLog.log({
         component: 'useCustomTableRenderers',
-        message: '🚨 开始渲染AlertComponent',
+        message: '🚨 Starting to render AlertComponent',
       });
 
-      // 直接调用插件渲染方法，添加详细调试信息
+      // Directly call plugin render method, add detailed debug information
       const alertComponent = pluginManager.render({
         pluginName: PluginNames.TABLE_ALERT,
         renderer: 'alert',
@@ -162,7 +161,7 @@ const useCustomTableRenderers = <
 
       devLog.log({
         component: 'useCustomTableRenderers',
-        message: '🚨 AlertComponent渲染结果:',
+        message: '🚨 AlertComponent render result:',
         data: {
           alertComponent,
           alertComponentType: typeof alertComponent,
@@ -179,7 +178,7 @@ const useCustomTableRenderers = <
     } catch (error: unknown) {
       devLog.warn({
         component: 'useCustomTableRenderers',
-        message: '渲染AlertComponent失败',
+        message: 'Failed to render AlertComponent',
         data: {
           error: error instanceof Error ? error.message : String(error),
         },
@@ -267,7 +266,7 @@ const useCustomTableRenderers = <
       } catch (error: unknown) {
         devLog.warn({
           component: 'useCustomTableRenderers',
-          message: '渲染LoadMoreButton失败',
+          message: 'Failed to render LoadMoreButton',
           data: {
             error: error instanceof Error ? error.message : String(error),
           },

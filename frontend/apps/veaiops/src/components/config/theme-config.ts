@@ -14,39 +14,39 @@
 
 import type { ThemeConfig } from '@arco-design/web-react/es/ConfigProvider/interface';
 
-// Arco Design暗色主题配置
+// Arco Design dark theme configuration
 export const darkThemeConfig: ThemeConfig = {
   token: {
-    // 基础颜色
+    // Base colors
     colorBgBase: '#0f1419',
     colorTextBase: '#ffffff',
     colorBorder: '#374151',
     colorBgContainer: '#1a1f2e',
     colorPrimary: '#1890ff',
 
-    // 表格相关颜色
+    // Table related colors
     colorBgElevated: '#1a1f2e',
     colorBorderSecondary: '#374151',
     colorFillSecondary: '#252b3b',
     colorFillTertiary: '#1a1f2e',
     colorFillQuaternary: '#0f1419',
 
-    // 文本颜色
+    // Text colors
     colorTextSecondary: '#94a3b8',
     colorTextTertiary: '#6b7280',
     colorTextQuaternary: '#4b5563',
 
-    // 状态颜色
+    // Status colors
     colorSuccess: '#10b981',
     colorWarning: '#f59e0b',
     colorError: '#ef4444',
     colorInfo: '#1890ff',
 
-    // 悬停和激活状态
+    // Hover and active states
     colorBgTextHover: '#252b3b',
     colorBgTextActive: '#374151',
   },
 };
 
-// 默认导出暗色主题
+// Default export dark theme
 export const themeConfig = darkThemeConfig;

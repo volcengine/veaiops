@@ -16,13 +16,13 @@ import { Empty } from '@arco-design/web-react';
 import type React from 'react';
 
 interface ComingSoonPageProps {
-  /** 页面标题 */
+  /** Page title */
   title: string;
-  /** 自定义描述文本，默认为"功能正在开发中，敬请期待" */
+  /** Custom description text, default: "Feature is under development, stay tuned" */
   description?: string;
-  /** 自定义图片地址，默认为统一的待开发图片 */
+  /** Custom image URL, default: unified coming soon image */
   imgSrc?: string;
-  /** 自定义容器样式类名 */
+  /** Custom container className */
   className?: string;
 }
 

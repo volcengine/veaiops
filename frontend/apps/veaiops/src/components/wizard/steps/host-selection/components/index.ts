@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 主机选择组件导出
+ * Host selection component export
  */
 
 export { InstanceSelectionStep } from './instance-selection-step';

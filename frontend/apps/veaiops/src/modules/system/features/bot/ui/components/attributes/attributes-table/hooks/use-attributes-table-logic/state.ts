@@ -18,7 +18,7 @@ import { type BotAttribute, ChannelType } from 'api-generate';
 import { useCallback, useRef, useState } from 'react';
 
 /**
- * Bot属性表格状态管理Hook
+ * Bot attributes table state management Hook
  */
 export const useAttributesTableLogicState = ({
   botId,
@@ -27,19 +27,19 @@ export const useAttributesTableLogicState = ({
   botId?: string;
   channel?: string | ChannelType;
 }) => {
-  // 状态管理
+  // State management
   const [editingAttribute, setEditingAttribute] = useState<BotAttribute | null>(
     null,
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalType, setModalType] = useState<ModalType>('create');
 
-  // 转换 channel 为 ChannelType（如果 channel 是字符串类型）
+  // Convert channel to ChannelType (if channel is string type)
   const channelType =
     (typeof channel === 'string' ? (channel as ChannelType) : channel) ||
     ChannelType.LARK;
 
-  // 业务逻辑 Hook
+  // Business logic Hook
   const {
     loading,
     fetchAttributes,
@@ -51,16 +51,16 @@ export const useAttributesTableLogicState = ({
     channel: channelType,
   });
 
-  // 使用 ref 来稳定 fetchAttributes 函数的引用，避免死循环
+  // Use ref to stabilize fetchAttributes function reference to avoid infinite loop
   const fetchAttributesRef = useRef(fetchAttributes);
   fetchAttributesRef.current = fetchAttributes;
 
-  // 创建一个稳定的请求函数
+  // Create a stable request function
   const stableFetchAttributes = useCallback(
     (params?: BotAttributeFiltersQuery & { skip?: number; limit?: number }) => {
       return fetchAttributesRef.current(params);
     },
-    [], // 空依赖数组，确保函数引用稳定
+    [], // Empty dependency array to ensure function reference is stable
   );
 
   return {

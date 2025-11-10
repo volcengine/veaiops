@@ -15,7 +15,7 @@
 import type React from 'react';
 
 /**
- * 连接管理引导内容组件
+ * Connection management guide content component
  */
 export const ConnectionManagementGuideContent: React.FC = () => (
   <div>
@@ -46,7 +46,7 @@ export const ConnectionManagementGuideContent: React.FC = () => (
 );
 
 /**
- * 新增数据源引导内容组件
+ * Add data source guide content component
  */
 export const AddMonitorConfigGuideContent: React.FC = () => (
   <div>

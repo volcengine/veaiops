@@ -13,33 +13,33 @@
 // limitations under the License.
 
 /**
- * ⚠️ 注意：EventLevel 枚举定义在 @veaiops/api-client
+ * ⚠️ Note: EventLevel enum is defined in @veaiops/api-client
  *
- * ✅ 单一数据源原则：
- * - EventLevel 枚举从 @veaiops/api-client 导入（不在此处重新导出，避免中转）
- * - EVENT_LEVEL_OPTIONS 等配置常量在此处定义（UI 展示配置）
+ * ✅ Single source of truth principle:
+ * - EventLevel enum is imported from @veaiops/api-client (not re-exported here to avoid intermediary)
+ * - Configuration constants like EVENT_LEVEL_OPTIONS are defined here (UI display configuration)
  *
- * 使用方式：
+ * Usage:
  * ```typescript
- * // 导入枚举
+ * // Import enum
  * import { EventLevel } from '@veaiops/api-client';
- * // 导入配置常量
+ * // Import configuration constants
  * import { EVENT_LEVEL_OPTIONS } from '@veaiops/constants';
  *
- * // 使用枚举值
+ * // Use enum value
  * const level = EventLevel.P0;
- * // 查找配置
+ * // Find configuration
  * const config = EVENT_LEVEL_OPTIONS.find(opt => opt.value === EventLevel.P0);
  * ```
  */
 
-// ✅ 作为使用方，导入 EventLevel 用于类型定义和值比较
+// ✅ As a consumer, import EventLevel for type definitions and value comparisons
 import { EventLevel } from '@veaiops/api-client';
 
 /**
- * 事件级别选项配置（带颜色和中文标签）
+ * Event level option configuration (with color and Chinese labels)
  *
- * 注意：value 值使用 EventLevel 枚举
+ * Note: value uses EventLevel enum
  */
 export const EVENT_LEVEL_OPTIONS = [
   { label: 'P0', value: EventLevel.P0, extra: { color: 'red' } },
@@ -48,8 +48,8 @@ export const EVENT_LEVEL_OPTIONS = [
 ] as const;
 
 /**
- * 事件级别映射表
- * 用于快速查找配置
+ * Event level mapping table
+ * Used for quick configuration lookup
  */
 export const EVENT_LEVEL_MAP = EVENT_LEVEL_OPTIONS.reduce(
   (acc, cur) => {
@@ -60,7 +60,7 @@ export const EVENT_LEVEL_MAP = EVENT_LEVEL_OPTIONS.reduce(
 );
 
 /**
- * 事件级别颜色映射
+ * Event level color mapping
  */
 export const EVENT_LEVEL_COLOR_MAP: Record<EventLevel, string> = {
   [EventLevel.P0]: 'red',
@@ -69,7 +69,7 @@ export const EVENT_LEVEL_COLOR_MAP: Record<EventLevel, string> = {
 };
 
 /**
- * 事件级别文本映射
+ * Event level text mapping
  */
 export const EVENT_LEVEL_TEXT_MAP: Record<EventLevel, string> = {
   [EventLevel.P0]: 'P0',

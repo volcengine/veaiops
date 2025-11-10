@@ -21,25 +21,25 @@ import {
 import { renderTargets } from './target-renderer';
 
 /**
- * 值渲染组件（flex 布局）
+ * Value renderer component (flex layout)
  */
 export const ConfigValueRenderer = ({ configKey, value }: ConfigItem) => {
-  // 特殊处理阿里云维度 - 使用标签渲染
+  // Special handling for Aliyun dimension - use tag rendering
   if (configKey === 'aliyun_group_by') {
     return <div className="flex-1">{renderAliyunDimension(value)}</div>;
   }
 
-  // 特殊处理阿里云实例列表 - 使用 Modal+Table
+  // Special handling for Aliyun instances list - use Modal+Table
   if (configKey === 'aliyun_dimensions') {
     return <div className="flex-1">{renderAliyunInstancesList(value)}</div>;
   }
 
-  // 特殊处理 targets 相关字段 - 使用标签渲染
+  // Special handling for targets-related fields - use tag rendering
   if (configKey === 'targets' || configKey === 'zabbix_targets') {
     return <div className="flex-1">{renderTargets(value)}</div>;
   }
 
-  // 处理其他字段
+  // Handle other fields
   return (
     <CellRender.Ellipsis
       text={String(value)}

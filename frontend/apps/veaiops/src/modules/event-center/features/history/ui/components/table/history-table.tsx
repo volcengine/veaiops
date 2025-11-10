@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge imports from same source
 import {
   type HistoryFilters,
   useHistoryTableConfigFromTable as useHistoryTableConfig,
@@ -23,7 +23,7 @@ import type { Event } from 'api-generate';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 /**
- * 历史事件表格组件属性接口
+ * History event table component props interface
  */
 interface HistoryTableProps {
   onViewDetail: (record: Event) => void;
@@ -32,14 +32,14 @@ interface HistoryTableProps {
 }
 
 /**
- * 历史事件表格组件 Ref 接口
+ * History event table component Ref interface
  */
 export interface HistoryTableRef {
   refresh: () => Promise<{ success: boolean; error?: Error }>;
 }
 
 /**
- * 历史事件管理配置
+ * History event management configuration
  */
 const HISTORY_MANAGEMENT_CONFIG = {
   title: '历史事件',
@@ -47,8 +47,8 @@ const HISTORY_MANAGEMENT_CONFIG = {
 };
 
 /**
- * queryFormat: 用于合并多个同名参数时的处理
- * 在 querySearchParamsFormat 之后执行
+ * queryFormat: Used for handling when merging multiple parameters with the same name
+ * Executed after querySearchParamsFormat
  */
 const queryFormat = {
   agent_type: queryArrayFormat,
@@ -57,15 +57,15 @@ const queryFormat = {
   event_level: queryArrayFormat,
 };
 /**
- * 历史事件表格组件
- * 使用CustomTable标准化实现 - 按照事件中心的标准模式
+ * History event table component
+ * Uses CustomTable standardized implementation - following event center standard pattern
  */
 export const HistoryTable = forwardRef<HistoryTableRef, HistoryTableProps>(
   ({ onViewDetail, filters, updateFilters: _updateFilters }, ref) => {
-    // CustomTable 的内部 ref
+    // CustomTable internal ref
     const tableRef = useRef<CustomTableActionType<Event>>(null);
 
-    // 表格配置（已使用 useBusinessTable 自动处理刷新）
+    // Table configuration (refresh is automatically handled by useBusinessTable)
     const {
       customTableProps,
       handleColumns: configHandleColumns,
@@ -73,11 +73,11 @@ export const HistoryTable = forwardRef<HistoryTableRef, HistoryTableProps>(
       operations,
     } = useHistoryTableConfig({
       filters,
-      onViewDetail, // onViewDetail 类型为 (record: Event) => void，与接口定义一致
+      onViewDetail, // onViewDetail type is (record: Event) => void, consistent with interface definition
       ref: tableRef,
     });
 
-    // 暴露符合 HistoryTableRef 接口的 refresh 方法
+    // Expose refresh method conforming to HistoryTableRef interface
     useImperativeHandle(
       ref,
       () => ({
@@ -85,7 +85,7 @@ export const HistoryTable = forwardRef<HistoryTableRef, HistoryTableProps>(
           if (operations?.refresh) {
             return await operations.refresh();
           }
-          // 如果 operations 不可用，尝试使用 tableRef
+          // If operations is unavailable, try using tableRef
           if (tableRef.current?.refresh) {
             await tableRef.current.refresh();
             return { success: true };
@@ -107,7 +107,7 @@ export const HistoryTable = forwardRef<HistoryTableRef, HistoryTableProps>(
         handleFilters={configHandleFilters}
         syncQueryOnSearchParams
         useActiveKeyHook
-        // 表格配置
+        // Table configuration
         tableClassName="history-management-table"
         queryFormat={queryFormat}
       />

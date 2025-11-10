@@ -19,7 +19,7 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import { useCallback } from 'react';
 
 /**
- * 更新机器人的参数接口
+ * Parameters interface for updating bot
  */
 export interface UpdateBotParams {
   botId: string;
@@ -27,7 +27,7 @@ export interface UpdateBotParams {
 }
 
 /**
- * 更新机器人Hook
+ * Update bot hook
  */
 export const useUpdateBot = () => {
   return useCallback(
@@ -45,7 +45,7 @@ export const useUpdateBot = () => {
 
         throw new Error(response.message || BOT_MESSAGES.update.error);
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : BOT_MESSAGES.update.error;
         Message.error(errorMessage);

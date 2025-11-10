@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { GlobalGuide } from '@/components/global-guide';
 import { LayoutMain, LayoutSidebar } from '@/components/layout';
+//
 import { useLayout } from '@/config/layout';
 import { useKeyboardShortcuts } from '@/hooks/use-keyboard-shortcuts';
 import type React from 'react';
@@ -23,7 +23,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const { collapsed, activeModule, setCollapsed, setActiveModule } =
     useLayout();
 
-  // 启用键盘快捷键（在Router上下文内部）
+  // Enable keyboard shortcuts (inside Router context)
   useKeyboardShortcuts();
 
   return (
@@ -41,8 +41,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         {children}
       </LayoutMain>
 
-      {/* 全局引导组件 - 固定在右侧，支持智能阈值配置流程 */}
-      <GlobalGuide />
+      {/* Global guide component - fixed on the right, supports intelligent threshold configuration flow */}
+      {/* <GlobalGuide /> */}
     </div>
   );
 };

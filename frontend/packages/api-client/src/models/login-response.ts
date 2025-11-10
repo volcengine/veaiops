@@ -15,15 +15,15 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type LoginResponse = {
   /**
-   * 访问令牌
+   * Access token
    */
   access_token?: string;
   /**
-   * 令牌类型
+   * Token type
    */
   token_type?: string;
   /**
-   * 过期时间（秒）
+   * Expiration time in seconds
    */
   expires_in?: number;
 };

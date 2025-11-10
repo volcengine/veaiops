@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 项目管理相关常量、配置和工具函数
+ * Project management related constants, configurations, and utility functions
  */
 
 import { exportLogsToFile as utilsExportLogsToFile } from "@veaiops/utils";
@@ -26,53 +26,53 @@ import {
 } from "./api";
 import apiClient from "@/utils/api-client";
 
-// 导出本地常量定义（模块特定）
+// Export local constant definitions (module-specific)
 export * from "./constants";
 
-// 项目状态配置
+// Project status configuration
 export const PROJECT_STATUS_CONFIG: Record<
   ProjectStatus,
   { color: string; text: string }
 > = {
-  planning: { color: "blue", text: "规划中" },
-  active: { color: "green", text: "进行中" },
-  suspended: { color: "orange", text: "暂停" },
-  completed: { color: "gray", text: "已完成" },
-  cancelled: { color: "red", text: "已取消" },
+  planning: { color: "blue", text: "Planning" },
+  active: { color: "green", text: "In Progress" },
+  suspended: { color: "orange", text: "Suspended" },
+  completed: { color: "gray", text: "Completed" },
+  cancelled: { color: "red", text: "Cancelled" },
 };
 
-// 项目优先级配置
+// Project priority configuration
 export const PROJECT_PRIORITY_CONFIG: Record<
   ProjectPriority,
   { color: string; text: string }
 > = {
-  low: { color: "green", text: "低" },
-  medium: { color: "blue", text: "中" },
-  high: { color: "orange", text: "高" },
-  urgent: { color: "red", text: "紧急" },
+  low: { color: "green", text: "Low" },
+  medium: { color: "blue", text: "Medium" },
+  high: { color: "orange", text: "High" },
+  urgent: { color: "red", text: "Urgent" },
 };
 
-// 项目状态选项
+// Project status options
 export const PROJECT_STATUS_OPTIONS = [
-  { label: "全部", value: "" },
-  { label: "规划中", value: "planning" },
-  { label: "进行中", value: "active" },
-  { label: "暂停", value: "suspended" },
-  { label: "已完成", value: "completed" },
-  { label: "已取消", value: "cancelled" },
+  { label: "All", value: "" },
+  { label: "Planning", value: "planning" },
+  { label: "In Progress", value: "active" },
+  { label: "Suspended", value: "suspended" },
+  { label: "Completed", value: "completed" },
+  { label: "Cancelled", value: "cancelled" },
 ];
 
-// 项目优先级选项
+// Project priority options
 export const PROJECT_PRIORITY_OPTIONS = [
-  { label: "全部", value: "" },
-  { label: "低", value: "low" },
-  { label: "中", value: "medium" },
-  { label: "高", value: "high" },
-  { label: "紧急", value: "urgent" },
+  { label: "All", value: "" },
+  { label: "Low", value: "low" },
+  { label: "Medium", value: "medium" },
+  { label: "High", value: "high" },
+  { label: "Urgent", value: "urgent" },
 ];
 
 /**
- * 获取项目列表（模拟数据）
+ * Get project list (mock data)
  */
 export const getProjectList = async (
   _params: Record<string, any>
@@ -88,7 +88,7 @@ export const getProjectList = async (
   };
 };
 
-// ✅ 已拆分：从 utils 目录统一导出
+// ✅ Split: Unified export from utils directory
 export {
   formatBudget,
   formatDate,
@@ -120,22 +120,22 @@ export {
 } from './utils/helpers';
 
 /**
- * 创建项目 - 重新导出api.ts中的实现
+ * Create project - re-export implementation from api.ts
  */
 export const createProject = apiCreateProject;
 
 /**
- * 删除项目 - 包装api.ts中的实现
+ * Delete project - wrap implementation from api.ts
  */
 export const deleteProject = async (projectId: string): Promise<boolean> => {
   const result = await apiDeleteProject(projectId);
   return result.success;
 };
 
-// transformProjectToFormData 和 validateProjectFormData 已从 utils/transformers 和 utils/validators 导出
+// transformProjectToFormData and validateProjectFormData are exported from utils/transformers and utils/validators
 
 /**
- * 项目验证规则
+ * Project validation rules
  */
 export const PROJECT_VALIDATION_RULES = {
   name: {
@@ -155,20 +155,20 @@ export const PROJECT_VALIDATION_RULES = {
 };
 
 /**
- * 导出调试日志
+ * Export debug logs
  */
 export const exportDebugLogs = (filename: string): void => {
   utilsExportLogsToFile(filename);
 };
 
 /**
- * 导入项目 - 包装api.ts中的实现
+ * Import projects - wrap implementation from api.ts
  */
 export const importProjects = async (file: File): Promise<boolean> => {
   const result = await apiImportProjects(file);
   return result.success;
 };
 
-// 导出表格配置相关
+// Export table configuration related
 export * from "./table-columns";
 export * from "./table-config";

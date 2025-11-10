@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Filters 组件日志收集器
- * 🚀 增强版：集成 @veaiops/utils logger 和 log-exporter
+ * Filters component log collector
+ * 🚀 Enhanced version: Integrates @veaiops/utils logger and log-exporter
  */
 
 import { logger, startLogCollection } from '@veaiops/utils';
@@ -28,7 +28,7 @@ interface FilterLogEntry {
 }
 
 /**
- * 记录日志的参数接口
+ * Log parameters interface
  */
 interface LogParams {
   level: FilterLogEntry['level'];
@@ -38,26 +38,7 @@ interface LogParams {
 }
 
 /**
- * 记录信息日志的参数接口
- */
-interface InfoWarnErrorDebugParams {
-  component: string;
-  message: string;
-  data?: unknown;
-}
-
-/**
- * 记录日志的参数接口
- */
-interface LogParams {
-  level: FilterLogEntry['level'];
-  component: string;
-  message: string;
-  data?: unknown;
-}
-
-/**
- * 记录信息日志的参数接口
+ * Info/Warn/Error/Debug log parameters interface
  */
 interface InfoWarnErrorDebugParams {
   component: string;
@@ -70,7 +51,7 @@ class FilterLogger {
   private enabled = false;
 
   /**
-   * 启用日志收集
+   * Enable log collection
    */
   enable(): void {
     this.enabled = true;
@@ -78,16 +59,16 @@ class FilterLogger {
   }
 
   /**
-   * 禁用日志收集
+   * Disable log collection
    */
   disable(): void {
     this.enabled = false;
   }
 
   /**
-   * 记录日志
-   * ✅ 优化：统一使用 @veaiops/utils logger，移除重复的 console 输出
-   * logger 内部已处理 console 输出和时间戳格式化
+   * Log entry
+   * ✅ Optimized: Unified use of @veaiops/utils logger, removed duplicate console output
+   * Logger internally handles console output and timestamp formatting
    */
   log({ level, component, message, data }: LogParams): void {
     if (!this.enabled) {
@@ -104,7 +85,7 @@ class FilterLogger {
 
     this.logs.push(entry);
 
-    // ✅ 统一使用 @veaiops/utils logger（logger 内部已处理 console 输出）
+    // ✅ Unified use of @veaiops/utils logger (logger internally handles console output)
     const logData = data ? { data } : undefined;
     switch (level) {
       case 'error':
@@ -143,14 +124,14 @@ class FilterLogger {
   }
 
   /**
-   * 获取所有日志
+   * Get all logs
    */
   getLogs(): FilterLogEntry[] {
     return [...this.logs];
   }
 
   /**
-   * 清空日志
+   * Clear logs
    */
   clear(): void {
     this.logs = [];
@@ -173,30 +154,32 @@ class FilterLogger {
   }
 }
 
-// 创建全局实例
+// Create global instance
 export const filterLogger = new FilterLogger();
 
-// 开发环境下启用并暴露到全局
+// Enable and expose to global in development environment
 if (typeof window !== 'undefined') {
   filterLogger.enable();
 
-  // 暴露日志获取接口给统一日志导出系统
+  // Expose log retrieval interface to unified log export system
   (window as any).getFiltersLogs = () => {
     return filterLogger.getLogs();
   };
 
-  // 🚀 新增：统一日志导出接口
+  // 🚀 New: Unified log export interface
   if (!(window as any).exportAllComponentLogs) {
     (window as any).exportAllComponentLogs = () => {
-      console.group('📦 收集所有组件日志');
+      console.group('📦 Collect all component logs');
 
       const filtersLogs = (window as any).getFiltersLogs?.() || [];
-      console.log(`✅ Filters日志: ${filtersLogs.length} 条`);
+      console.log(`✅ Filters logs: ${filtersLogs.length} entries`);
 
       const tableFilterLogs = (window as any).getTableFilterLogs?.() || [];
-      console.log(`✅ TableFilterPlugin日志: ${tableFilterLogs.length} 条`);
+      console.log(
+        `✅ TableFilterPlugin logs: ${tableFilterLogs.length} entries`,
+      );
 
-      // 🔍 按时间排序所有日志
+      // 🔍 Sort all logs by time
       const allLogsArray = [
         ...filtersLogs.map((log: any) => ({ ...log, source: 'Filters' })),
         ...tableFilterLogs.map((log: any) => ({
@@ -227,13 +210,13 @@ if (typeof window !== 'undefined') {
         logs: {
           filters: filtersLogs,
           tableFilter: tableFilterLogs,
-          timeline: allLogsArray, // 按时间排序的所有日志
+          timeline: allLogsArray, // All logs sorted by time
         },
       };
 
       console.groupEnd();
 
-      // 导出到文件
+      // Export to file
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const filename = `route-filter-debug-logs-${timestamp}.json`;
       const blob = new Blob([JSON.stringify(allLogs, null, 2)], {
@@ -248,13 +231,15 @@ if (typeof window !== 'undefined') {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
-      console.log(`✅ 路由筛选项调试日志已导出: ${filename}`);
+      console.log(`✅ Route filter debug logs exported: ${filename}`);
       console.table(allLogs.metadata);
 
       return allLogs;
     };
 
-    console.log('✅ exportAllComponentLogs 函数已注册到 window 对象');
+    console.log(
+      '✅ exportAllComponentLogs function registered to window object',
+    );
   }
 }
 

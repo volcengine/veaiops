@@ -20,7 +20,7 @@ import type React from 'react';
 import { UpdateTooltip } from '../../update-tooltip';
 
 /**
- * 关注属性字段组件属性
+ * Interest attribute fields component props
  */
 interface InterestFieldsProps {
   form: FormInstance;
@@ -30,7 +30,7 @@ interface InterestFieldsProps {
 }
 
 /**
- * 关注属性字段组件
+ * Interest attribute fields component
  */
 export const InterestFields: React.FC<InterestFieldsProps> = ({
   form,
@@ -41,7 +41,7 @@ export const InterestFields: React.FC<InterestFieldsProps> = ({
   return (
     <Form.Item label="配置关注属性">
       <Space direction="vertical" style={{ width: '100%' }}>
-        {/* 项目 */}
+        {/* Project */}
         <UpdateTooltip
           show={showProjectTooltip}
           message="项目数据已更新"

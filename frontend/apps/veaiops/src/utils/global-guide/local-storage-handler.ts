@@ -16,13 +16,13 @@ import { logger } from '@veaiops/utils';
 import type { LocalStorageAnalysis } from './types';
 
 /**
- * 备份 localStorage 状态
+ * Backup localStorage state
  */
 export function backupLocalStorage(): Record<string, string> {
   const backup: Record<string, string> = {};
 
   try {
-    // 备份全局引导相关的 localStorage 项
+    // Backup global guide related localStorage items
     const keys = [
       'global-guide-store',
       've_arch_amap_logs_session_',
@@ -31,7 +31,7 @@ export function backupLocalStorage(): Record<string, string> {
 
     keys.forEach((key) => {
       if (key.includes('session_')) {
-        // 处理 session 相关的 key
+        // Handle session related keys
         for (let i = 0; i < localStorage.length; i++) {
           const storageKey = localStorage.key(i);
           if (storageKey?.includes(key)) {
@@ -47,7 +47,7 @@ export function backupLocalStorage(): Record<string, string> {
     });
 
     logger.info({
-      message: 'localStorage 备份完成',
+      message: 'localStorage backup completed',
       data: {
         backupKeys: Object.keys(backup),
         backupSize: JSON.stringify(backup).length,
@@ -55,10 +55,10 @@ export function backupLocalStorage(): Record<string, string> {
       source: 'GlobalGuideAnalyzer',
     });
   } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: Use logger to record error and expose actual error information
     const errorObj = error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: 'localStorage 备份失败',
+      message: 'localStorage backup failed',
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -73,7 +73,7 @@ export function backupLocalStorage(): Record<string, string> {
 }
 
 /**
- * 分析 localStorage
+ * Analyze localStorage
  */
 export function analyzeLocalStorage(
   localStorageBackup: Record<string, string>,
@@ -92,11 +92,11 @@ export function analyzeLocalStorage(
       const parsed = JSON.parse(guideStore);
       analysis.globalGuideStore = parsed;
 
-      // 检查关键问题
+      // Check key issues
       if ('state' in parsed && 'guideVisible' in parsed.state) {
         analysis.issues.push({
           type: 'persistence_issue',
-          message: 'guideVisible 仍然被持久化',
+          message: 'guideVisible is still persisted',
           severity: 'high',
           value: parsed.state.guideVisible,
         });
@@ -105,7 +105,7 @@ export function analyzeLocalStorage(
       if (parsed.state?.guideVisible === true) {
         analysis.issues.push({
           type: 'initial_state_issue',
-          message: 'guideVisible 初始值为 true',
+          message: 'guideVisible initial value is true',
           severity: 'high',
           value: parsed.state.guideVisible,
         });
@@ -113,16 +113,16 @@ export function analyzeLocalStorage(
     } else {
       analysis.issues.push({
         type: 'missing_store',
-        message: 'global-guide-store 不存在',
+        message: 'global-guide-store does not exist',
         severity: 'info',
       });
     }
   } catch (error) {
-    // ✅ 正确：透出实际错误信息
+    // ✅ Correct: Expose actual error information
     const errorObj = error instanceof Error ? error : new Error(String(error));
     analysis.issues.push({
       type: 'parse_error',
-      message: '解析 global-guide-store 失败',
+      message: 'Failed to parse global-guide-store',
       severity: 'error',
       error: errorObj.message,
     });

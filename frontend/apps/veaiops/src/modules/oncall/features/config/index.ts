@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Config 功能模块统一导出
- * 对应路由: /oncall/config（规则配置管理）
+ * Config feature module unified export
+ * Corresponding route: /oncall/config (rule configuration management)
  */
 
 export { default as OncallConfigPage } from './page';

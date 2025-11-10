@@ -19,24 +19,24 @@ import { useMetricTemplateCrud } from './use-crud';
 import { useMetricTemplateForm } from './use-form';
 
 /**
- * 指标模板管理逻辑Hook
- * 组合各个子 Hook，提供完整的模板管理功能
+ * Metric template management logic Hook
+ * Combines various sub Hooks to provide complete template management functionality
  */
 export const useMetricTemplateManagementLogic = (
   refreshTable?: () => Promise<boolean>,
 ) => {
-  // 使用管理刷新 Hook，获取刷新回调函数
+  // Use management refresh Hook to get refresh callback function
   const { afterCreate, afterUpdate, afterDelete } =
     useManagementRefresh(refreshTable);
 
-  // 使用 CRUD 操作 Hook
+  // Use CRUD operations Hook
   const {
     createTemplate,
     updateTemplate,
     deleteTemplate: originalDeleteTemplate,
   } = useMetricTemplateCrud();
 
-  // 使用表单处理 Hook
+  // Use form handling Hook
   const {
     form,
     editingTemplate,
@@ -48,23 +48,23 @@ export const useMetricTemplateManagementLogic = (
   } = useMetricTemplateForm();
 
   /**
-   * 处理模态框确认
+   * Handle modal confirmation
    */
   const handleModalOk = useCallback(async () => {
     return handleSubmit(async (completeValues) => {
       let result;
       if (editingTemplate?._id) {
-        // 更新模式
+        // Update mode
         result = await updateTemplate({
           templateId: editingTemplate._id,
           data: completeValues,
         });
-        // 更新成功后刷新表格
+        // Refresh table after successful update
         if (result) {
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
-              message: '更新后刷新表格失败',
+              message: 'Failed to refresh table after update',
               data: {
                 error: refreshResult.error.message,
                 stack: refreshResult.error.stack,
@@ -76,14 +76,14 @@ export const useMetricTemplateManagementLogic = (
           }
         }
       } else {
-        // 创建模式
+        // Create mode
         result = await createTemplate(completeValues);
-        // 创建成功后刷新表格
+        // Refresh table after successful create
         if (result) {
           const refreshResult = await afterCreate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
-              message: '创建后刷新表格失败',
+              message: 'Failed to refresh table after create',
               data: {
                 error: refreshResult.error.message,
                 stack: refreshResult.error.stack,
@@ -107,17 +107,17 @@ export const useMetricTemplateManagementLogic = (
   ]);
 
   /**
-   * 包装删除方法，添加刷新逻辑
+   * Wrap delete method, add refresh logic
    */
   const deleteTemplate = useCallback(
     async (templateId: string): Promise<boolean> => {
       const result = await originalDeleteTemplate(templateId);
-      // 删除成功后刷新表格
+      // Refresh table after successful delete
       if (result) {
         const refreshResult = await afterDelete();
         if (!refreshResult.success && refreshResult.error) {
           logger.warn({
-            message: '删除后刷新表格失败',
+            message: 'Failed to refresh table after delete',
             data: {
               error: refreshResult.error.message,
               stack: refreshResult.error.stack,
@@ -134,12 +134,12 @@ export const useMetricTemplateManagementLogic = (
   );
 
   return {
-    // 状态
+    // State
     editingTemplate,
     modalVisible,
     form,
 
-    // 操作方法
+    // Operation methods
     createTemplate,
     updateTemplate,
     deleteTemplate,

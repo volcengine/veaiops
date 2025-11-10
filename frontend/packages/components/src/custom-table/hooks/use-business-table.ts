@@ -13,24 +13,24 @@
 // limitations under the License.
 
 /**
- * 业务表格统一 Hook
+ * Business table unified Hook
 
- * 参考 Arco Design 的 hook 设计模式（如 useSorter、useRowSelection）
- * 统一处理业务侧表格配置，整合：
- * 1. 数据源配置
- * 2. 刷新逻辑
- * 3. 操作包装
- * 4. 复杂业务逻辑处理
+ * Reference Arco Design's hook design patterns (e.g., useSorter, useRowSelection)
+ * Unifies business-side table configurations, integrating:
+ * 1. Data source configuration
+ * 2. Refresh logic
+ * 3. Operation wrapping
+ * 4. Complex business logic handling
 
- * 设计理念（参考 Arco Design）：
- * - 每个 Hook 专注单一职责
- * - 通过组合实现复杂功能
- * - 提供清晰的 API 边界
- * - 支持复杂场景的灵活扩展
+ * Design philosophy (referencing Arco Design):
+ * - Each Hook focuses on a single responsibility
+ * - Achieves complex functionality through composition
+ * - Provides clear API boundaries
+ * - Supports flexible extension for complex scenarios
 
  * @example
  * ```tsx
- * // 简单场景
+ * // Simple scenario
  * const { customTableProps, wrappedHandlers } = useBusinessTable({
  *   dataSource: { /* ... *\/ },
  *   tableProps: { /* ... *\/ },
@@ -43,17 +43,17 @@
  *
  * return <CustomTable {...customTableProps} />;
  *
- * // 复杂场景（MonitorTable 风格）
+ * // Complex scenario (MonitorTable style)
  * const { operations, customTableProps } = useBusinessTable({
  *   dataSource: dataSourceFromHook,
  *   tableProps: tablePropsFromHook,
- *   // 自定义操作包装逻辑
+ *   // Custom operation wrapping logic
  *   operationWrapper: ({ wrapDelete, wrapUpdate, wrapDeleteAsVoid }) => ({
- *     // 包装删除函数（返回 boolean，用于表格配置）
+ *     // Wrap delete function (returns boolean, for table configuration)
  *     wrappedDelete: wrapDelete((id) => onDelete(id, dataSourceType)),
- *     // 包装删除函数（返回 void，用于操作列）
+ *     // Wrap delete function (returns void, for action column)
  *     handleDelete: wrapDeleteAsVoid((id) => onDelete(id, dataSourceType)),
- *     // 包装更新函数（用于切换激活状态）
+ *     // Wrap update function (for toggling active state)
  *     handleToggle: async () => wrapUpdate(async () => {})(),
  *   }),
  *   ref,
@@ -73,101 +73,101 @@ import { type StandardTableProps, logger } from '@veaiops/utils';
 import { useMemo, useRef } from 'react';
 
 /**
- * 操作包装函数类型
+ * Operation wrapper function types
  */
 export interface OperationWrappers {
-  /** 包装删除操作（返回 boolean） */
+  /** Wrap delete operation (returns boolean) */
   wrapDelete: (
     fn: (id: string) => Promise<boolean>,
   ) => (id: string) => Promise<boolean>;
-  /** 包装更新操作（返回 Promise<void>） */
+  /** Wrap update operation (returns Promise<void>) */
   wrapUpdate: (fn: () => Promise<void>) => () => Promise<void>;
-  /** 包装删除操作（返回 void） */
+  /** Wrap delete operation (returns void) */
   wrapDeleteAsVoid: (
     fn: (id: string) => Promise<boolean>,
   ) => (id: string) => Promise<void>;
-  /** 获取刷新函数 */
+  /** Get refresh function */
   getRefresh: () => (() => Promise<void>) | undefined;
 }
 
 /**
- * 业务表格配置选项
+ * Business table configuration options
  */
 export interface BusinessTableConfigOptions<
   TQueryParams extends Record<string, unknown> = Record<string, unknown>,
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 数据源配置 */
+  /** Data source configuration */
   dataSource: TableDataSource<RecordType, TQueryParams>;
-  /** 表格属性配置（支持对象或函数形式） */
+  /** Table property configuration (supports object or function form) */
   tableProps?:
     | StandardTableProps
     | Record<string, unknown>
     | ((ctx?: { loading?: boolean }) =>
         | StandardTableProps
         | Record<string, unknown>);
-  /** 列配置函数 */
+  /** Column configuration function */
   handleColumns?: (
     props: Record<string, unknown>,
   ) => ModernTableColumnProps<RecordType>[];
-  /** 操作处理器（简单场景） */
+  /** Operation handlers (simple scenario) */
   handlers?: {
-    /** 删除处理器 */
+    /** Delete handler */
     delete?: (id: string) => Promise<boolean>;
-    /** 更新处理器 */
+    /** Update handler */
     update?: () => Promise<void>;
-    /** 创建处理器 */
+    /** Create handler */
     create?: () => Promise<void>;
   };
-  /** 操作包装器（复杂场景，支持自定义逻辑） */
+  /** Operation wrapper (complex scenario, supports custom logic) */
   operationWrapper?: (
     wrappers: OperationWrappers,
   ) => Record<string, (...args: unknown[]) => unknown>;
-  /** 刷新配置 */
+  /** Refresh configuration */
   refreshConfig?: {
     enableRefreshFeedback?: boolean;
     successMessage?: string;
     errorMessage?: string;
     showLoading?: boolean;
   };
-  /** ref 引用（支持泛型参数，类型安全） */
+  /** ref reference (supports generic parameters, type-safe) */
   ref?: React.Ref<CustomTableActionType<RecordType, QueryType>>;
 }
 
 /**
- * 业务表格配置返回
+ * Business table configuration return
  */
 export interface BusinessTableConfigResult {
-  /** CustomTable 使用的 props */
+  /** Props used by CustomTable */
   customTableProps: Record<string, unknown>;
-  /** 刷新包装器（用于业务侧进一步处理，仅服务器数据模式） */
+  /** Refresh wrapper (for further processing on business side, server data mode only) */
   operations: ReturnType<typeof useManagementRefresh>;
-  /** 包装后的操作处理器（简单场景） */
+  /** Wrapped operation handlers (simple scenario) */
   wrappedHandlers?: {
     delete?: (id: string) => Promise<boolean>;
     update?: () => Promise<void>;
     create?: () => Promise<void>;
   };
-  /** 自定义包装结果（复杂场景） */
+  /** Custom wrapped results (complex scenarios) */
   customOperations?: Record<string, (...args: unknown[]) => unknown>;
-  /** 是否为本地数据模式 */
+  /** Whether it is local data mode */
   isLocalData?: boolean;
 }
 
 /**
- * 业务表格统一 Hook
+ * Business table unified Hook
 
- * 支持两种数据模式：
- * 1. 服务器数据模式：通过 request 函数获取数据，支持刷新、分页等功能
- * 2. 本地数据模式：通过 dataList 提供静态数据，不支持刷新功能
+ * Supports two data modes:
+ * 1. Server data mode: Get data through request function, supports refresh, pagination, etc.
+ * 2. Local data mode: Provide static data through dataList, does not support refresh functionality
  *
- * 支持两种使用模式：
- * 1. 简单模式：自动包装标准操作
- * 2. 复杂模式：通过 operationWrapper 支持自定义包装逻辑
+ * Supports two usage modes:
+ * 1. Simple mode: Automatically wrap standard operations
+ * 2. Complex mode: Support custom wrapper logic through operationWrapper
 
- * @param options 配置选项
- * @returns 表格配置和操作处理器
+ * @param options Configuration options
+ * @returns Table configuration and operation handlers
  */
 export const useBusinessTable = <
   TQueryParams extends Record<string, unknown> = Record<string, unknown>,
@@ -186,28 +186,28 @@ export const useBusinessTable = <
     ref,
   } = options;
 
-  // 🎯 解构 refreshConfig，避免对象引用问题
+  // 🎯 Destructure refreshConfig to avoid object reference issues
   const { enableRefreshFeedback, successMessage, errorMessage, showLoading } =
     refreshConfig || {};
 
-  // 🎯 判断是否为本地数据模式（有 dataList 且 manual 为 true）
+  // 🎯 Determine if is local data mode (has dataList and manual is true)
   const isLocalData =
     (dataSource as any).dataList !== undefined &&
     (dataSource as any).manual === true;
 
-  // 诊断日志：数据源与刷新配置稳定性（仅日志）
+  // Diagnostic log: Data source and refresh configuration stability (log only)
   // devLog.log('useBusinessTable', 'config_snapshot', {
   //   isLocalData,
   //   refreshConfig,
   // });
 
-  // 🎯 使用 useManagementRefresh 处理刷新逻辑（仅对服务器数据）
+  // 🎯 Use useManagementRefresh to handle refresh logic (server data only)
   const operations = useManagementRefresh(
     isLocalData
       ? undefined
       : async () => {
           logger.debug({
-            message: '[useBusinessTable] 🔄 开始刷新表格',
+            message: '[useBusinessTable] 🔄 Starting table refresh',
             data: {
               hasRef: Boolean(ref),
               refType: typeof ref,
@@ -233,7 +233,8 @@ export const useBusinessTable = <
             ref.current.refresh
           ) {
             logger.info({
-              message: '[useBusinessTable] ✅ 准备调用 ref.current.refresh()',
+              message:
+                '[useBusinessTable] ✅ Preparing to call ref.current.refresh()',
               data: {
                 refCurrentType: typeof ref.current,
                 refCurrentKeys: Object.keys(ref.current || {}),
@@ -246,7 +247,8 @@ export const useBusinessTable = <
             await ref.current.refresh();
             const refreshEndTime = Date.now();
             logger.info({
-              message: '[useBusinessTable] ✅ ref.current.refresh() 调用完成',
+              message:
+                '[useBusinessTable] ✅ ref.current.refresh() call completed',
               data: {
                 duration: refreshEndTime - refreshStartTime,
               },
@@ -256,7 +258,7 @@ export const useBusinessTable = <
           } else {
             logger.warn({
               message:
-                '[useBusinessTable] ⚠️ 刷新失败：ref.current 不存在或没有 refresh 方法',
+                '[useBusinessTable] ⚠️ Refresh failed: ref.current does not exist or has no refresh method',
               data: {
                 hasRef: Boolean(ref),
                 refType: typeof ref,
@@ -279,7 +281,7 @@ export const useBusinessTable = <
         },
   );
 
-  // 🎯 简单场景：自动包装操作函数
+  // 🎯 Simple scenario: Automatically wrap operation functions
   const wrappedHandlers = useMemo(() => {
     if (!handlers || operationWrapper) {
       return undefined;
@@ -289,7 +291,7 @@ export const useBusinessTable = <
       ...(handlers.delete && {
         delete: async (id: string) => {
           logger.debug({
-            message: '[useBusinessTable] 🗑️ wrappedHandlers.delete 被调用',
+            message: '[useBusinessTable] 🗑️ wrappedHandlers.delete called',
             data: {
               id,
               isLocalData,
@@ -299,7 +301,7 @@ export const useBusinessTable = <
           });
           const result = await handlers.delete!(id);
           logger.debug({
-            message: '[useBusinessTable] 🗑️ 删除操作完成',
+            message: '[useBusinessTable] 🗑️ Delete operation completed',
             data: {
               id,
               result,
@@ -312,7 +314,7 @@ export const useBusinessTable = <
           if (result && !isLocalData) {
             logger.debug({
               message:
-                '[useBusinessTable] 🔄 开始调用 operations.afterDelete()',
+                '[useBusinessTable] 🔄 Starting to call operations.afterDelete()',
               data: {
                 id,
               },
@@ -321,7 +323,8 @@ export const useBusinessTable = <
             });
             const refreshResult = await operations.afterDelete();
             logger.debug({
-              message: '[useBusinessTable] 🔄 operations.afterDelete() 完成',
+              message:
+                '[useBusinessTable] 🔄 operations.afterDelete() completed',
               data: {
                 id,
                 refreshResult,
@@ -352,7 +355,7 @@ export const useBusinessTable = <
     };
   }, [handlers, operationWrapper, isLocalData, operations]);
 
-  // 🎯 复杂场景：使用自定义操作包装器
+  // 🎯 Complex scenario: Use custom operation wrapper
   const customOperations = useMemo(() => {
     if (!operationWrapper) {
       return undefined;
@@ -394,12 +397,12 @@ export const useBusinessTable = <
     return operationWrapper(wrappers);
   }, [operationWrapper, isLocalData, operations, ref]);
 
-  // 🔧 渲染计数日志
+  // 🔧 Render count log
   const renderCountRef = useRef(0);
   renderCountRef.current++;
 
   logger.info({
-    message: '[useBusinessTable] 🔄 Hook执行',
+    message: '[useBusinessTable] 🔄 Hook executing',
     data: {
       renderCount: renderCountRef.current,
       hasDataSource: Boolean(dataSource),
@@ -409,11 +412,11 @@ export const useBusinessTable = <
     component: 'UseBusinessTable',
   });
 
-  // 🎯 组装 CustomTable 使用的 props
-  // 🔧 使用 useMemo 稳定对象引用
+  // 🎯 Assemble props used by CustomTable
+  // 🔧 Use useMemo to stabilize object references
   const customTableProps = useMemo(() => {
     logger.info({
-      message: '[useBusinessTable] 📦 customTableProps重新创建',
+      message: '[useBusinessTable] 📦 customTableProps recreated',
       data: {
         renderCount: renderCountRef.current,
       },

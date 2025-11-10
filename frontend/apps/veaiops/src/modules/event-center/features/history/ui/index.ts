@@ -13,21 +13,21 @@
 // limitations under the License.
 
 /**
- * 历史事件 UI 组件统一导出
+ * History event UI components unified export
  */
 
 export { HistoryManagement } from './pages';
 export { HistoryTable, HistoryDetailDrawer } from './components/table';
 
-// 导出子组件
+// Export sub-components
 export * from './components/base';
 export * from './components/business';
 
-// 导出类型定义
+// Export type definitions
 export * from './shared/types';
 
-// 导出常量
+// Export constants
 export * from './shared/constants';
 
-// 导出工具函数
+// Export utility functions
 export * from './shared/utils';

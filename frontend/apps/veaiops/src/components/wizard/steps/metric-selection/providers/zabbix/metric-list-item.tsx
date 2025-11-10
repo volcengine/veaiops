@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Zabbix指标列表项组件
- * @description 单个Zabbix指标项的展示和交互
+ * Zabbix metric list item component
+ * @description Display and interaction for a single Zabbix metric item
  */
 
 import { IconDashboard } from '@arco-design/web-react/icon';

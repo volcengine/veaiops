@@ -15,19 +15,19 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type VolcengineProduct = {
   /**
-   * 产品命名空间
+   * Product namespace
    */
   namespace: string;
   /**
-   * 产品描述（作为产品名称显示）
+   * Product description (displayed as product name)
    */
   description: string;
   /**
-   * 产品类型名称
+   * Product type name
    */
   type: string;
   /**
-   * 产品类型ID
+   * Product type ID
    */
   type_id: string;
 };

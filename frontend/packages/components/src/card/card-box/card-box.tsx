@@ -21,9 +21,9 @@ import styles from './index.module.less';
 const { Col } = Grid;
 
 export type CardBoxProps = {
-  /** 卡片盒子的宽度 */
+  /** Card box width */
   span: 8 | 12 | 24;
-  /** 是否带有边框 */
+  /** Whether to have border */
   border?: boolean;
   children: ReactNode;
 };

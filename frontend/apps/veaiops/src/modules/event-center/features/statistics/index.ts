@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 统计管理功能统一导出
+ * Statistics management feature unified export
  *
- * ✅ 层层导出原则：通过功能模块 index.ts 统一导出所有子目录内容
- * - 从功能模块 index.ts 导入，路径最短（如 `@ec/statistics`）
- * - 每个子目录通过各自的 index.ts 统一导出
+ * ✅ Layered export principle: Unified export of all subdirectory contents through feature module index.ts
+ * - Import from feature module index.ts for shortest path (e.g., `@ec/statistics`)
+ * - Each subdirectory exports through its own index.ts
  */
 
-// ==================== Hooks 导出 ====================
+// ==================== Hooks Export ====================
 export {
   useStatisticsLogic,
   useChartConfigs,
@@ -28,10 +28,10 @@ export {
   type TimeRange,
 } from './hooks';
 
-// ==================== UI 组件导出 ====================
+// ==================== UI Components Export ====================
 export { default as StatisticsOverview } from './ui/statistics-overview';
 export { default as StatisticsCharts } from './ui/statistics-charts';
 export { default as StatisticsManagement } from './ui/statistics-management';
 
-// ==================== 默认导出 ====================
+// ==================== Default Export ====================
 export { default } from './ui/statistics-management';

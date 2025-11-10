@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * 表格过滤器插件类型定义
+ * Table filter plugin type definition
  */
 
 import type { ReactNode } from 'react';
-// FilterValue 类型已在 core/common.ts 中定义，此处导入以避免重复定义
+// FilterValue type is already defined in core/common.ts, import here to avoid duplicate definition
 import type { FilterValue } from '../core/common';
 import type { PluginBaseConfig } from './core';
 
 /**
- * 表格过滤器配置
+ * Table filter configuration
  */
 export interface TableFilterConfig extends PluginBaseConfig {
   enabled?: boolean;
@@ -38,7 +38,7 @@ export interface TableFilterConfig extends PluginBaseConfig {
 }
 
 /**
- * 过滤器项配置
+ * Filter item configuration
  */
 export interface FilterItemConfig {
   key: string;
@@ -51,7 +51,7 @@ export interface FilterItemConfig {
 }
 
 /**
- * 表格过滤器状态
+ * Table filter state
  */
 export interface TableFilterState {
   filters: Record<string, unknown>;

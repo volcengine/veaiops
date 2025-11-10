@@ -20,42 +20,42 @@ import { useChatTableRequest } from './request';
 import { useChatTableProps } from './table-props';
 
 /**
- * 群管理表格配置Hook的参数接口
+ * Chat management table configuration Hook parameter interface
  */
 export interface UseChatTableConfigParams {
   ref?: React.Ref<CustomTableActionType<Chat>>;
 }
 
 /**
- * 群管理表格配置Hook
+ * Chat management table configuration Hook
  *
- * 拆分说明：
- * - request.ts: API请求配置（request函数和dataSource）
- * - table-props.ts: 表格属性配置（tableProps和memoizedTableProps）
- * - index.ts: 统一导出，组合所有逻辑，使用 useBusinessTable 自动处理刷新
+ * Split explanation:
+ * - request.ts: API request configuration (request function and dataSource)
+ * - table-props.ts: Table property configuration (tableProps and memoizedTableProps)
+ * - index.ts: Unified export, combines all logic, uses useBusinessTable to automatically handle refresh
  *
- * ✅ 已使用工具函数：
- * - createTableRequestWithResponseHandler: 自动处理分页参数和响应
- * - createServerPaginationDataSource: 创建服务器端分页数据源
- * - createStandardTableProps: 创建标准表格属性配置
- * - useBusinessTable: 自动处理刷新逻辑
+ * ✅ Tools used:
+ * - createTableRequestWithResponseHandler: Automatically handles pagination parameters and responses
+ * - createServerPaginationDataSource: Creates server-side pagination data source
+ * - createStandardTableProps: Creates standard table property configuration
+ * - useBusinessTable: Automatically handles refresh logic
  */
 export const useChatTableConfig = ({ ref }: UseChatTableConfigParams) => {
-  // API请求配置
+  // API request configuration
   const { dataSource } = useChatTableRequest();
 
-  // 表格属性配置
+  // Table property configuration
   const { memoizedTableProps } = useChatTableProps();
 
-  // 🎯 使用 useBusinessTable 自动处理刷新逻辑
-  // ✅ 传递函数形式的 tableProps 给 useBusinessTable
+  // 🎯 Use useBusinessTable to automatically handle refresh logic
+  // ✅ Pass function-form tableProps to useBusinessTable
   const { customTableProps, operations } = useBusinessTable({
     dataSource,
-    tableProps: memoizedTableProps, // ✅ 传递函数而不是对象
+    tableProps: memoizedTableProps, // ✅ Pass function instead of object
     refreshConfig: {
-      enableRefreshFeedback: false, // ChatTable 不使用刷新反馈
+      enableRefreshFeedback: false, // ChatTable does not use refresh feedback
     },
-    // ref 类型已支持泛型参数，无需类型断言
+    // ref type already supports generic parameters, no type assertion needed
     ref,
   });
 

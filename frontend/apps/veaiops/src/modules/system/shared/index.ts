@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * System 共享资源导出
+ * System shared resources export
  */
 
-// 导出常量
+// Export constants
 export * from './constants';
 
-// 导出工具函数
+// Export utility functions
 export * from './utils';

@@ -37,7 +37,7 @@ interface TaskDrawerContentProps {
 }
 
 /**
- * 任务抽屉内容组件
+ * Task drawer content component
  */
 export const TaskDrawerContent: React.FC<TaskDrawerContentProps> = ({
   operationType,
@@ -51,12 +51,12 @@ export const TaskDrawerContent: React.FC<TaskDrawerContentProps> = ({
   setDetailConfigVisible,
   onViewCleaningResult,
 }) => {
-  // 渲染版本历史
+  // Render version history
   if (operationType === 'versions') {
     return <TaskVersionHistory versions={versions} loading={versionsLoading} />;
   }
 
-  // 渲染任务详情
+  // Render task details
   if (operationType === 'detail') {
     return (
       <TaskVersionTable
@@ -68,7 +68,7 @@ export const TaskDrawerContent: React.FC<TaskDrawerContentProps> = ({
     );
   }
 
-  // 渲染重新执行
+  // Render rerun
   if (operationType === 'rerun') {
     return (
       <TaskInfoDisplay
@@ -79,7 +79,7 @@ export const TaskDrawerContent: React.FC<TaskDrawerContentProps> = ({
     );
   }
 
-  // 渲染创建/编辑表单
+  // Render create/edit form
   return (
     <TaskBasicForm
       form={form}

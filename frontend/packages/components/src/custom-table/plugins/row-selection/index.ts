@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 行选择插件统一导出
+ * Row selection plugin unified export
  */
 
-// 重新导出类型
+// Re-export types
 export type {
   SelectionStrategy,
   BatchActionConfig,

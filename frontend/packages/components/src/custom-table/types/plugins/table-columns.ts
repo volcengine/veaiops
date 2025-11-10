@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 表格列管理插件类型定义
+ * Table column management plugin type definition
  */
 
 import type { ColumnProps } from '@arco-design/web-react/es/Table';
 import type { PluginBaseConfig } from './core';
 
 /**
- * 表格列配置
+ * Table column configuration
  */
 export interface TableColumnsConfig extends PluginBaseConfig {
   enabled?: boolean;
@@ -31,7 +31,7 @@ export interface TableColumnsConfig extends PluginBaseConfig {
 }
 
 /**
- * 列项配置
+ * Column item configuration
  */
 export interface ColumnItem<RecordType = Record<string, unknown>>
   extends Omit<ColumnProps<RecordType>, 'fixed'> {
@@ -46,7 +46,7 @@ export interface ColumnItem<RecordType = Record<string, unknown>>
 }
 
 /**
- * 表格列状态
+ * Table column state
  */
 export interface TableColumnsState<RecordType = Record<string, unknown>> {
   columns: ColumnItem<RecordType>[];
@@ -56,7 +56,7 @@ export interface TableColumnsState<RecordType = Record<string, unknown>> {
 }
 
 /**
- * 表格列方法
+ * Table column methods
  */
 export interface TableColumnsMethods<RecordType = Record<string, unknown>> {
   showColumn: (columnKey: string) => void;

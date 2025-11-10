@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 选择提示组件
- * @description 显示已选择的Zabbix指标提示信息
+ * Selection alert component
+ * @description Displays alert information for selected Zabbix metric
  */
 
 import { Alert } from '@arco-design/web-react';

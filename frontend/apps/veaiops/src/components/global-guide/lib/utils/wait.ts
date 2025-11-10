@@ -17,12 +17,12 @@ export interface WaitForNextElementParams {
 }
 
 /**
- * 等待下一个元素出现的辅助函数
+ * Helper function to wait for next element to appear
  */
 export const waitForNextElement = async ({
   selector,
 }: WaitForNextElementParams): Promise<boolean> => {
-  // 主动等待下一个元素出现，最多等待5秒
+  // Actively wait for next element to appear, maximum wait 5 seconds
   const nextElementWaitStart = Date.now();
 
   while (Date.now() - nextElementWaitStart < 5000) {
@@ -32,7 +32,7 @@ export const waitForNextElement = async ({
       return true;
     }
 
-    // 每100ms检查一次
+    // Check every 100ms
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
   return false;
@@ -43,7 +43,7 @@ export interface WaitForPageReadyParams {
 }
 
 /**
- * 智能等待页面加载完成
+ * Intelligently wait for page to finish loading
  */
 export const waitForPageReady = ({
   maxWaitTime = 2000,
@@ -52,19 +52,19 @@ export const waitForPageReady = ({
     const startTime = Date.now();
 
     const checkReady = () => {
-      // 检查页面是否已加载完成
+      // Check if page has finished loading
       if (document.readyState === 'complete') {
         resolve(true);
         return;
       }
 
-      // 检查是否超时
+      // Check if timeout
       if (Date.now() - startTime >= maxWaitTime) {
-        resolve(false); // 超时返回 false
+        resolve(false); // Return false on timeout
         return;
       }
 
-      // 继续检查
+      // Continue checking
       setTimeout(checkReady, 100);
     };
 

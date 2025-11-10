@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * ✅ 单一数据源原则：统一使用后端枚举值
+ * ✅ Single source of truth principle: Unified use of backend enum values
  *
- * 对应后端 ChannelType 枚举（veaiops/schema/types.py）
- * 对应 API 生成的 ChannelType 枚举（@veaiops/api-client/models/channel-type.ts）
+ * Corresponds to backend ChannelType enum (veaiops/schema/types.py)
+ * Corresponds to API-generated ChannelType enum (@veaiops/api-client/models/channel-type.ts)
  *
- * 枚举值映射：
+ * Enum value mapping:
  * - ChannelType.LARK ↔ Python ChannelType.Lark = "Lark"
  * - ChannelType.DING_TALK ↔ Python ChannelType.DingTalk = "DingTalk"
  * - ChannelType.WE_CHAT ↔ Python ChannelType.WeChat = "WeChat"

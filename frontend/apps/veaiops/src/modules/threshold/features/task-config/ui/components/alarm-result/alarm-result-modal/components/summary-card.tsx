@@ -25,7 +25,7 @@ interface SummaryCardProps {
 }
 
 /**
- * 统计概览卡片
+ * Statistics overview card
  */
 export const SummaryCard: React.FC<SummaryCardProps> = ({ data }) => {
   const { total, created, updated, deleted, failed } = data;

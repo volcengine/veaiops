@@ -15,7 +15,7 @@
 import type { SyncAlarmRulesResponse } from 'api-generate';
 
 /**
- * 告警规则操作结果接口
+ * Alarm rule operation result interface
  */
 export interface RuleOperationResult {
   action: string;
@@ -26,7 +26,7 @@ export interface RuleOperationResult {
 }
 
 /**
- * 告警规则操作分类接口
+ * Alarm rule operations classification interface
  */
 export interface RuleOperations {
   create: RuleOperationResult[];
@@ -36,19 +36,19 @@ export interface RuleOperations {
 }
 
 /**
- * 告警结果弹窗属性
+ * Alarm result modal props
  */
 export interface AlarmResultModalProps {
-  /** 是否显示弹窗 */
+  /** Whether the modal is visible */
   visible: boolean;
-  /** 告警规则同步结果数据 */
+  /** Alarm rule sync result data */
   data: SyncAlarmRulesResponse | null;
-  /** 关闭弹窗回调 */
+  /** Callback to close the modal */
   onClose: () => void;
 }
 
 /**
- * 格式化后的数据接口
+ * Formatted data interface
  */
 export interface FormattedAlarmResultData extends SyncAlarmRulesResponse {
   rule_operations: RuleOperations;

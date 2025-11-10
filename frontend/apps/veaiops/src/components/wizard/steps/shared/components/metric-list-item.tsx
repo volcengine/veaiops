@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 指标列表项组件
- * @description 单个指标项的展示和交互
+ * Metric list item component
+ * @description Display and interaction for a single metric item
  */
 
 import { IconDashboard } from '@arco-design/web-react/icon';
@@ -39,7 +39,7 @@ export const MetricListItem: React.FC<MetricListItemProps> = ({
       description={`命名空间: ${metric.namespace}${metric.unit ? ` | 单位: ${metric.unit}` : ''}`}
       radioValue={metric.metricName}
     >
-      {/* GroupBy 维度选择 - 仅在选中且有维度时显示 */}
+      {/* GroupBy dimension selection - only shown when selected and has dimensions */}
       {metric.dimensionKeys && metric.dimensionKeys.length > 0 && (
         <GroupBySelector
           dimensionKeys={metric.dimensionKeys}

@@ -17,16 +17,16 @@ import { IconRefresh } from '@arco-design/web-react/icon';
 import React, { useState, useCallback, useEffect } from 'react';
 
 /**
- * 统计数据类型
+ * Statistics data type
  */
 export interface StatisticsData {
-  // 总体统计
+  // Overall statistics
   totalEvents: number;
   totalStrategies: number;
   totalSubscriptions: number;
   activeSubscriptions: number;
 
-  // 事件级别分布
+  // Event level distribution
   eventLevelDistribution: {
     critical: number;
     high: number;
@@ -34,7 +34,7 @@ export interface StatisticsData {
     low: number;
   };
 
-  // 事件类型分布
+  // Event type distribution
   eventTypeDistribution: {
     alert: number;
     warning: number;
@@ -42,14 +42,14 @@ export interface StatisticsData {
     error: number;
   };
 
-  // 时间趋势数据
+  // Time trend data
   eventTrend: Array<{
     date: string;
     count: number;
     level: string;
   }>;
 
-  // 响应时间统计
+  // Response time statistics
   responseTimeStats: {
     average: number;
     min: number;
@@ -57,7 +57,7 @@ export interface StatisticsData {
     p95: number;
   };
 
-  // 成功率统计
+  // Success rate statistics
   successRate: {
     total: number;
     success: number;
@@ -67,13 +67,13 @@ export interface StatisticsData {
 }
 
 /**
- * 时间范围类型
+ * Time range type
  */
 export type TimeRange = '1h' | '24h' | '7d' | '30d';
 
 /**
- * 统计逻辑Hook
- * 提供统计页面的所有业务逻辑
+ * Statistics logic Hook
+ * Provides all business logic for statistics page
  */
 export const useStatisticsLogic = () => {
   const [loading, setLoading] = useState(false);
@@ -83,14 +83,14 @@ export const useStatisticsLogic = () => {
   const [timeRange, setTimeRange] = useState<TimeRange>('24h');
 
   /**
-   * 获取统计数据
+   * Fetch statistics data
    */
   const fetchStatistics = useCallback(
     async (_range: TimeRange = timeRange) => {
       try {
         setLoading(true);
 
-        // 临时使用模拟数据，等待后端 API 实现
+        // Temporarily use mock data, waiting for backend API implementation
         const mockData: StatisticsData = {
           totalEvents: Math.floor(Math.random() * 10000) + 1000,
           totalStrategies: Math.floor(Math.random() * 100) + 10,
@@ -136,7 +136,7 @@ export const useStatisticsLogic = () => {
           },
         };
 
-        // 计算成功率
+        // Calculate success rate
         mockData.successRate.success = Math.floor(
           mockData.successRate.total * (0.85 + Math.random() * 0.1),
         );
@@ -145,16 +145,16 @@ export const useStatisticsLogic = () => {
         mockData.successRate.rate =
           (mockData.successRate.success / mockData.successRate.total) * 100;
 
-        // 模拟网络延迟
+        // Simulate network delay
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         setStatisticsData(mockData);
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage =
-          error instanceof Error ? error.message : '获取统计数据失败，请重试';
+          error instanceof Error ? error.message : 'Failed to fetch statistics data, please try again';
         Message.error(errorMessage);
       } finally {
         setLoading(false);
@@ -164,7 +164,7 @@ export const useStatisticsLogic = () => {
   );
 
   /**
-   * 切换时间范围
+   * Switch time range
    */
   const handleTimeRangeChange = useCallback(
     (range: TimeRange) => {
@@ -175,25 +175,25 @@ export const useStatisticsLogic = () => {
   );
 
   /**
-   * 刷新数据
+   * Refresh data
    */
   const handleRefresh = useCallback(() => {
     fetchStatistics(timeRange);
-    Message.success('数据已刷新');
+    Message.success('Data refreshed');
   }, [fetchStatistics, timeRange]);
 
-  // 初始化加载数据
+  // Initialize and load data
   useEffect(() => {
     fetchStatistics();
   }, [fetchStatistics]);
 
   return {
-    // 状态
+    // State
     loading,
     statisticsData,
     timeRange,
 
-    // 事件处理器
+    // Event handlers
     handleTimeRangeChange,
     handleRefresh,
     fetchStatistics,
@@ -201,8 +201,8 @@ export const useStatisticsLogic = () => {
 };
 
 /**
- * 统计页面操作按钮配置Hook
- * 提供页面工具栏操作按钮配置
+ * Statistics page action button configuration Hook
+ * Provides page toolbar action button configuration
  */
 export const useStatisticsActionConfig = (onRefresh: () => void) => {
   const actions = [
@@ -218,7 +218,7 @@ export const useStatisticsActionConfig = (onRefresh: () => void) => {
           className: 'arco-btn arco-btn-secondary',
           onClick: onRefresh,
         },
-        [React.createElement(IconRefresh, { key: 'icon' }), '刷新'],
+        [React.createElement(IconRefresh, { key: 'icon' }), 'Refresh'],
       ),
     ),
   ];
@@ -227,11 +227,11 @@ export const useStatisticsActionConfig = (onRefresh: () => void) => {
 };
 
 /**
- * 图表配置Hook
- * 提供各种图表的配置选项
+ * Chart configuration Hook
+ * Provides configuration options for various charts
  */
 export const useChartConfigs = (statisticsData: StatisticsData | null) => {
-  // 事件级别分布饼图配置
+  // Event level distribution pie chart configuration
   const eventLevelPieConfig = {
     data: statisticsData
       ? [
@@ -257,7 +257,7 @@ export const useChartConfigs = (statisticsData: StatisticsData | null) => {
     interactions: [{ type: 'element-active' }],
   };
 
-  // 事件趋势折线图配置
+  // Event trend line chart configuration
   const eventTrendLineConfig = {
     data: statisticsData?.eventTrend || [],
     xField: 'date',
@@ -272,7 +272,7 @@ export const useChartConfigs = (statisticsData: StatisticsData | null) => {
     },
   };
 
-  // 事件类型柱状图配置
+  // Event type bar chart configuration
   const eventTypeBarConfig = {
     data: statisticsData
       ? [

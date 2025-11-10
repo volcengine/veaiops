@@ -16,8 +16,8 @@ import type { MetricThresholdResult } from 'api-generate';
 import type { TimeseriesDataPoint } from '../types';
 
 /**
- * 后端返回的时序数据项结构
- * 支持多个数据源（Volcengine、Aliyun、Zabbix）的通用格式
+ * Backend returned timeseries data item structure
+ * Supports common format for multiple data sources (Volcengine, Aliyun, Zabbix)
  */
 export interface TimeseriesBackendItem {
   timestamps: Array<string | number>;
@@ -27,7 +27,7 @@ export interface TimeseriesBackendItem {
 }
 
 /**
- * 转换后端返回的时序数据为图表所需格式的参数接口
+ * Parameter interface for converting backend returned timeseries data to chart required format
  */
 export interface ConvertTimeseriesDataParams {
   backendData: TimeseriesBackendItem[];
@@ -35,7 +35,7 @@ export interface ConvertTimeseriesDataParams {
 }
 
 /**
- * 转换统计信息
+ * Conversion statistics
  */
 export interface ConversionStats {
   totalSamples: number;
@@ -45,7 +45,7 @@ export interface ConversionStats {
 }
 
 /**
- * 获取标签值的参数接口
+ * Parameter interface for getting label value
  */
 export interface GetLabelValueParams {
   obj: Record<string, unknown>;

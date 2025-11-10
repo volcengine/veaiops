@@ -15,29 +15,29 @@
 import { hasMessage, hasResponse } from './type-guards';
 
 /**
- * 从错误对象中提取错误消息
+ * Extract error message from error object
  *
- * 优先级：
- * 1. Error 实例的 message 属性
- * 2. 对象中包含 message 属性的值
- * 3. 嵌套的错误对象（error.error.message、error.response.data.message）
- * 4. 默认错误消息（仅在完全无法提取时使用）
+ * Priority:
+ * 1. Error instance's message property
+ * 2. Object containing message property value
+ * 3. Nested error objects (error.error.message, error.response.data.message)
+ * 4. Default error message (only used when completely unable to extract)
  *
- * @param error 错误对象（unknown 类型）
- * @returns 提取的错误消息字符串
+ * @param error Error object (unknown type)
+ * @returns Extracted error message string
  */
 export function getErrorMessage(error: unknown): string {
-  // 1. 字符串类型直接返回
+  // 1. String type returns directly
   if (typeof error === 'string') {
     return error;
   }
 
-  // 2. Error 实例
+  // 2. Error instance
   if (error instanceof Error) {
     return error.message || '未知错误';
   }
 
-  // 3. 对象中包含 message 属性
+  // 3. Object containing message property
   if (hasMessage(error)) {
     const { message } = error;
     if (typeof message === 'string' && message) {
@@ -45,7 +45,7 @@ export function getErrorMessage(error: unknown): string {
     }
   }
 
-  // 4. 嵌套错误对象 error.error.message
+  // 4. Nested error object error.error.message
   if (
     typeof error === 'object' &&
     error !== null &&
@@ -64,7 +64,7 @@ export function getErrorMessage(error: unknown): string {
     }
   }
 
-  // 5. HTTP 响应错误 error.response.data.message
+  // 5. HTTP response error error.response.data.message
   if (hasResponse(error) && error.response?.data) {
     const responseData = error.response.data;
     if (
@@ -87,6 +87,6 @@ export function getErrorMessage(error: unknown): string {
     }
   }
 
-  // 6. 完全无法提取时返回默认消息
+  // 6. Return default message when completely unable to extract
   return '未知错误';
 }

@@ -20,13 +20,13 @@ import type { UserListParams, UserListResponse } from '../types';
 import { transformApiUserToUser } from '../utils';
 
 /**
- * 获取用户列表
+ * Get user list
  */
 export const getUserList = async (
   params: UserListParams = {},
 ): Promise<UserListResponse> => {
   try {
-    // 使用真实API调用
+    // Use real API call
     const response = await apiClient.users.getApisV1ManagerUsers({
       skip: params.skip,
       limit: params.limit,
@@ -45,7 +45,7 @@ export const getUserList = async (
         limit: response.limit || 10,
       };
     } else {
-      // 如果API调用失败，使用模拟数据作为后备
+      // If API call fails, use mock data as fallback
       const mockUsers: User[] = [
         {
           id: '1',
@@ -79,7 +79,7 @@ export const getUserList = async (
       };
     }
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Extract actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     throw errorObj;

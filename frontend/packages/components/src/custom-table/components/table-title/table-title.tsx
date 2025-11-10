@@ -15,7 +15,7 @@
 import type { TableTitleProps } from '@/custom-table/types/components/table-title';
 import { Space } from '@arco-design/web-react';
 /**
- * 表格标题组件
+ * Table title component
  */
 import React from 'react';
 import '../../styles/components/table-title.less';

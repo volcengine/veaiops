@@ -20,7 +20,7 @@ import { renderInstances } from '../../../../renderers/core/instance-renderer';
 import { getConfigData } from '../utils';
 
 /**
- * 创建火山引擎特定字段列
+ * Create Volcengine-specific field columns
  */
 export const createVolcengineFields = (
   dataSourceType: DataSourceType,

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 监控数据源管理API服务
+ * Monitor data source management API service
  */
 
 import type { APIResponseDataSourceList, DataSource } from "api-generate";
@@ -21,11 +21,11 @@ import type { DataSourceType } from "./types";
 import apiClient from "@/utils/api-client";
 
 /**
- * 数据源API服务
+ * Data source API service
  */
 export const DataSourceApiService = {
   /**
-   * 获取Zabbix数据源列表
+   * Get Zabbix data source list
    */
   async getZabbixDataSources(): Promise<APIResponseDataSourceList> {
     const response = await apiClient.dataSources.getApisV1DatasourceZabbix({
@@ -36,7 +36,7 @@ export const DataSourceApiService = {
   },
 
   /**
-   * 获取阿里云数据源列表
+   * Get Aliyun data source list
    */
   async getAliyunDataSources(): Promise<APIResponseDataSourceList> {
     const response = await apiClient.dataSources.getApisV1DatasourceAliyun({
@@ -47,7 +47,7 @@ export const DataSourceApiService = {
   },
 
   /**
-   * 获取火山引擎数据源列表
+   * Get Volcengine data source list
    */
   async getVolcengineDataSources(): Promise<APIResponseDataSourceList> {
     const response = await apiClient.dataSources.getApisV1DatasourceVolcengine({
@@ -58,9 +58,9 @@ export const DataSourceApiService = {
   },
 
   /**
-   * 删除Zabbix数据源
+   * Delete Zabbix data source
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object in format { success: boolean; error?: Error }
    */
   async deleteZabbixDataSource(
     id: string,
@@ -78,9 +78,9 @@ export const DataSourceApiService = {
   },
 
   /**
-   * 删除阿里云数据源
+   * Delete Aliyun data source
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object in format { success: boolean; error?: Error }
    */
   async deleteAliyunDataSource(
     id: string,
@@ -98,9 +98,9 @@ export const DataSourceApiService = {
   },
 
   /**
-   * 删除火山引擎数据源
+   * Delete Volcengine data source
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object in format { success: boolean; error?: Error }
    */
   async deleteVolcengineDataSource(
     id: string,
@@ -118,9 +118,9 @@ export const DataSourceApiService = {
   },
 
   /**
-   * 根据类型删除数据源
+   * Delete data source by type
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object in format { success: boolean; error?: Error }
    */
   async deleteDataSourceByType(
     type: DataSourceType,
@@ -141,7 +141,7 @@ export const DataSourceApiService = {
   },
 
   /**
-   * 根据类型获取数据源列表
+   * Get data source list by type
    */
   async getDataSourcesByType(type: DataSourceType): Promise<DataSource[]> {
     switch (type) {

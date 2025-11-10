@@ -19,7 +19,7 @@ import type { FlattenedVersion } from './types';
 const { Ellipsis, RowSpan } = CellRender;
 
 /**
- * 版本号列配置
+ * Version number column configuration
  */
 export const getVersionColumn = (): ColumnProps<FlattenedVersion> => ({
   title: '版本号',

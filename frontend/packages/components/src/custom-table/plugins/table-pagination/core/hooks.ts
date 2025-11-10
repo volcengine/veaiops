@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 表格分页插件钩子函数
+ * Table pagination plugin hook functions
  */
 import { createPaginationStateManager } from '@/custom-table/types/utils/state-managers';
 import { getStateNumber, isCallableFunction } from './utils';
 
 /**
- * 获取当前分页信息
+ * Get current pagination information
  */
 export function getPaginationInfo(...args: unknown[]) {
   const context = args[0] as any;
@@ -44,7 +44,7 @@ export function getPaginationInfo(...args: unknown[]) {
 }
 
 /**
- * 获取分页配置
+ * Get pagination configuration
  */
 export function getPaginationConfig(...args: unknown[]) {
   const context = args[0] as any;
@@ -67,7 +67,7 @@ export function getPaginationConfig(...args: unknown[]) {
 
   return {
     total: tableTotal,
-    showTotal: (total: number) => `共 ${total} 项`,
+    showTotal: (total: number) => `Total ${total} items`,
     showJumper: true,
     sizeCanChange: true,
     current,
@@ -88,11 +88,11 @@ export function getPaginationConfig(...args: unknown[]) {
 }
 
 /**
- * 重置分页
+ * Reset pagination
  */
 export function resetPagination(...args: unknown[]) {
   const context = args[0] as any;
   const paginationManager = createPaginationStateManager();
-  // 类型断言以兼容不同的 PluginContext 泛型参数
+  // Type assertion to be compatible with different PluginContext generic parameters
   paginationManager.resetPaginationState(context);
 }

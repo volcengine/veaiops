@@ -29,7 +29,7 @@ import type React from 'react';
 import type { UseSecretViewerReturn } from '../hooks';
 
 /**
- * SecretField 组件的 Props
+ * SecretField component Props
  */
 interface SecretFieldProps {
   label: string;
@@ -46,7 +46,7 @@ interface SecretFieldProps {
 }
 
 /**
- * 加密字段组件（可复用）
+ * Encrypted field component (reusable)
  */
 export const SecretField: React.FC<SecretFieldProps> = ({
   label,
@@ -61,7 +61,7 @@ export const SecretField: React.FC<SecretFieldProps> = ({
   fieldName,
   formField,
 }) => {
-  // 根据 secretKey 选择对应的 AutofillBlocker 预设
+  // Select corresponding AutofillBlocker preset based on secretKey
   let autofillBlockerProps;
   if (secretKey === 'api_key') {
     autofillBlockerProps = AutofillBlockerPresets.apiKey();

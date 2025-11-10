@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 日志导出工具 - 向后兼容导出
+ * Log export utility - backward compatible export
  *
- * 注意：此文件引用的 ./log-exporter/ 目录可能不存在
- * 目前统一通过 ./index.ts 导出所有日志相关功能
+ * Note: The ./log-exporter/ directory referenced by this file may not exist
+ * Currently all log-related functionality is exported through ./index.ts
  *
- * @deprecated 建议从 '../index' 导入（即从 logger 目录统一导出）
+ * @deprecated It is recommended to import from '../index' (i.e., unified export from logger directory)
  */
 
-// 重新导出核心功能，保持向后兼容
+// Re-export core functionality for backward compatibility
 export { logger } from './core';
 export type { LogEntry, LoggerConfig } from './core';
 export {

@@ -26,13 +26,13 @@ import { AlarmDrawer } from '../../alarm';
 import { AlarmResultModal } from '../../components/alarm-result';
 
 /**
- * 创建告警规则的回调函数
+ * Callback function for creating alarm rules
  */
 export const useCreateAlarmCallback = (
   setSelectedVersion: (version: IntelligentThresholdTaskVersion | null) => void,
   setAlarmDrawerVisible: (visible: boolean) => void,
 ) => {
-  // 处理创建告警规则
+  // Handle create alarm rule
   const handleCreateAlarm = useCallback(
     (version: IntelligentThresholdTaskVersion) => {
       setSelectedVersion(version);
@@ -47,7 +47,7 @@ export const useCreateAlarmCallback = (
 };
 
 /**
- * 告警抽屉 hook - 封装告警抽屉的状态和渲染逻辑
+ * Alarm drawer hook - encapsulates alarm drawer state and rendering logic
  */
 export const useAlarmDrawer = (
   task: IntelligentThresholdTask | null,
@@ -89,7 +89,7 @@ export const useAlarmDrawer = (
       try {
         setLoading(true);
 
-        // 调用告警规则同步API
+        // Call alarm rule sync API
         const response =
           await apiClient.intelligentThresholdAlarm.postApisV1IntelligentThresholdAlarmSync(
             {
@@ -98,21 +98,21 @@ export const useAlarmDrawer = (
           );
 
         if (response.code === API_RESPONSE_CODE.SUCCESS) {
-          // 设置结果数据并显示结果弹窗
+          // Set result data and display result modal
           setResultData(response.data);
           setResultModalVisible(true);
           close();
 
           return { success: true, data: response.data };
         } else {
-          throw new Error(response.message || '创建告警规则失败');
+          throw new Error(response.message || 'Failed to create alarm rule');
         }
       } catch (error: unknown) {
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '创建告警规则失败';
+        const errorMessage = errorObj.message || 'Failed to create alarm rule';
         logger.error({
-          message: '创建告警规则失败',
+          message: 'Failed to create alarm rule',
           data: {
             error: errorMessage,
             stack: errorObj.stack,
@@ -124,7 +124,7 @@ export const useAlarmDrawer = (
           source: 'useAlarmDrawer',
           component: 'handleSubmit',
         });
-        const fullErrorMessage = `创建告警规则失败：${errorMessage}`;
+        const fullErrorMessage = `Failed to create alarm rule: ${errorMessage}`;
         Message.error(fullErrorMessage);
         return { success: false, message: fullErrorMessage };
       } finally {

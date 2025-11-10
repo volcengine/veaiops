@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 数据源连接表格列配置
+ * Data source connection table column configuration
  *
- * 将列配置逻辑单独抽象出来，提高代码可维护性
- * 业务方可以通过修改这个文件来定制列配置
+ * Abstract column configuration logic separately to improve code maintainability
+ * Business side can customize column configuration by modifying this file
  */
 
 import { Button, Popconfirm, Space, Tag } from '@arco-design/web-react';
@@ -30,30 +30,30 @@ import { CellRender } from '@veaiops/components';
 import type { Connect } from 'api-generate';
 import { useCallback } from 'react';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { InfoWithCode, StampTime, CustomOutlineTag } = CellRender;
 
 /**
- * 数据源连接表格列配置参数
+ * Data source connection table column configuration parameters
  */
 export interface ConnectionTableColumnsConfig {
-  /** 数据源类型 */
+  /** Data source type */
   type?: string;
-  /** 编辑处理器 */
+  /** Edit handler */
   onEdit?: (connection: Connect) => void;
-  /** 删除处理器 */
+  /** Delete handler */
   onDelete?: (id: string) => void;
-  /** 测试连接处理器 */
+  /** Test connection handler */
   onTest?: (connection: Connect) => void;
-  /** 创建监控处理器 */
+  /** Create monitor handler */
   onCreateMonitor?: (connection: Connect) => void;
 }
 
 /**
- * 数据源连接表格列配置 Hook
+ * Data source connection table column configuration Hook
  *
- * @param config 列配置参数
- * @returns 列配置函数
+ * @param config Column configuration parameters
+ * @returns Column configuration function
  */
 export const useConnectionTableColumns = ({
   type,

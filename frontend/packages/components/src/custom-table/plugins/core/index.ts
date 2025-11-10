@@ -13,22 +13,21 @@
 // limitations under the License.
 
 /**
- * 插件核心模块导出
+ * Plugin core module exports
  *
-
  * @date 2025-12-19
  */
 
-// 导出核心类
+// Export core classes
 export { PluginEventSystem } from './plugin-events';
 export { PluginExecutor } from './plugin-executor';
 export { PluginLifecycleManager } from './plugin-lifecycle';
 export { PluginPerformanceMonitor } from './plugin-performance';
 export { PluginRegistry } from './plugin-registry';
 
-// 导出工具函数
+// Export utility functions
 export * from './plugin-utils';
 
-// 导出类型
+// Export types
 export type { EventListener, UnsubscribeFunction } from './plugin-events';
 export type { PluginInstance } from './plugin-registry';

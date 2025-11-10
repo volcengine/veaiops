@@ -32,15 +32,15 @@ interface BotEditFormProps {
 }
 
 /**
- * Bot编辑表单组件
+ * Bot edit form component
  *
- * 拆分说明：
- * - sections/base-config.tsx: 基础配置区块（企业协同工具、App ID、App Secret）
- * - sections/chat-ops-config.tsx: ChatOps扩展配置区块（大模型配置、知识库配置）
- * - sections/form-actions.tsx: 操作按钮区块（取消、更新机器人）
- * - index.tsx: 主入口组件，负责组装和渲染
+ * Split description:
+ * - sections/base-config.tsx: Base configuration section (enterprise collaboration tool, App ID, App Secret)
+ * - sections/chat-ops-config.tsx: ChatOps extended configuration section (LLM configuration, knowledge base configuration)
+ * - sections/form-actions.tsx: Action buttons section (cancel, update bot)
+ * - index.tsx: Main entry component, responsible for assembly and rendering
  *
- * 对应 origin/feat/web-v2 分支的实现，确保功能一致性
+ * Corresponds to origin/feat/web-v2 branch implementation, ensuring functional consistency
  */
 export const BotEditForm: React.FC<BotEditFormProps> = ({
   bot,
@@ -50,7 +50,7 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
 }) => {
   const [form] = Form.useForm();
 
-  // 密码可见性状态管理
+  // Password visibility state management
   const [showSecrets, setShowSecrets] = useState({
     secret: false,
     ak: false,
@@ -58,13 +58,13 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
     api_key: false,
   });
 
-  // ChatOps高级配置开关（对应 origin/feat/web-v2：检查是否有 name 或 ak）
+  // ChatOps advanced configuration toggle (corresponds to origin/feat/web-v2: check if name or ak exists)
   const [showAdvancedConfig, setShowAdvancedConfig] = useState(
     Boolean(bot?.agent_cfg?.name || bot?.volc_cfg?.ak),
   );
 
-  // 知识库集合状态管理
-  // 对应 origin/feat/web-v2：如果没有知识库集合，初始化为 ['']（一个空字符串的数组）
+  // Knowledge base collection state management
+  // Corresponds to origin/feat/web-v2: if no knowledge base collection, initialize as [''] (array with one empty string)
   const [kbCollections, setKbCollections] = useState<string[]>(() => {
     if (
       bot?.volc_cfg?.extra_kb_collections &&
@@ -75,7 +75,7 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
     return [''];
   });
 
-  // 切换密码可见性
+  // Toggle password visibility
   const toggleSecretVisibility = (
     field: 'secret' | 'ak' | 'sk' | 'api_key',
   ) => {
@@ -85,7 +85,7 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
     }));
   };
 
-  // 知识库集合管理（对应 origin/feat/web-v2 分支的实现，同步更新表单值）
+  // Knowledge base collection management (corresponds to origin/feat/web-v2 branch implementation, synchronize form values)
   const addKbCollection = () => {
     setKbCollections((prev) => [...prev, '']);
   };
@@ -93,7 +93,7 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
   const removeKbCollection = (index: number) => {
     const newCollections = kbCollections.filter((_, i) => i !== index);
     setKbCollections(newCollections);
-    // 同步更新表单值（对应 origin/feat/web-v2 分支的实现）
+    // Synchronize form values (corresponds to origin/feat/web-v2 branch implementation)
     const currentValues = form.getFieldsValue();
     form.setFieldsValue({
       ...currentValues,
@@ -108,7 +108,7 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
     const newCollections = [...kbCollections];
     newCollections[index] = value;
     setKbCollections(newCollections);
-    // 同步更新表单值（对应 origin/feat/web-v2 分支的实现）
+    // Synchronize form values (corresponds to origin/feat/web-v2 branch implementation)
     const currentValues = form.getFieldsValue();
     form.setFieldsValue({
       ...currentValues,
@@ -121,7 +121,7 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
 
   useEffect(() => {
     if (bot) {
-      // 从bot数据中提取知识库集合，如果没有则使用默认值（对应 origin/feat/web-v2）
+      // Extract knowledge base collections from bot data, use default value if none (corresponds to origin/feat/web-v2)
       const initialKbCollections =
         bot.volc_cfg?.extra_kb_collections &&
         bot.volc_cfg.extra_kb_collections.length > 0
@@ -130,26 +130,26 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
 
       setKbCollections(initialKbCollections);
 
-      // 检查是否已有ChatOps配置（对应 origin/feat/web-v2：检查是否有 name 或 ak）
+      // Check if ChatOps configuration already exists (corresponds to origin/feat/web-v2: check if name or ak exists)
       const hasChatOpsConfig = Boolean(bot.agent_cfg?.name || bot.volc_cfg?.ak);
       setShowAdvancedConfig(hasChatOpsConfig);
 
-      // 设置表单初始值（对应 origin/feat/web-v2 分支的实现）
+      // Set form initial values (corresponds to origin/feat/web-v2 branch implementation)
       const formValues: Partial<BotUpdateRequest> & {
         channel?: string;
         bot_id?: string;
       } = {
-        channel: bot.channel, // 用于显示和 Form.useWatch
-        bot_id: bot.bot_id || '', // 用于显示和 Form.useWatch，空字符串默认值
-        secret: '', // 明确赋空字符串，避免类型错误
+        channel: bot.channel, // Used for display and Form.useWatch
+        bot_id: bot.bot_id || '', // Used for display and Form.useWatch, empty string default value
+        secret: '', // Explicitly assign empty string to avoid type errors
         webhook_urls: bot.webhook_urls,
       };
 
-      // 只有启用了ChatOps配置时，才设置这些字段（对应 origin/feat/web-v2）
+      // Only set these fields when ChatOps configuration is enabled (corresponds to origin/feat/web-v2)
       if (hasChatOpsConfig) {
         formValues.volc_cfg = {
-          ak: '', // 明确赋空字符串（对应 origin/feat/web-v2）
-          sk: '', // 明确赋空字符串（对应 origin/feat/web-v2）
+          ak: '', // Explicitly assign empty string (corresponds to origin/feat/web-v2)
+          sk: '', // Explicitly assign empty string (corresponds to origin/feat/web-v2)
           tos_region:
             (bot.volc_cfg?.tos_region as VolcCfgPayload.tos_region) ||
             VolcCfgPayload.tos_region.CN_BEIJING,
@@ -164,7 +164,7 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
           api_base:
             bot.agent_cfg?.api_base ||
             'https://ark.cn-beijing.volces.com/api/v3',
-          api_key: '', // 明确赋空字符串（对应 origin/feat/web-v2）
+          api_key: '', // Explicitly assign empty string (corresponds to origin/feat/web-v2)
         };
       }
 
@@ -173,49 +173,49 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
   }, [bot, form]);
 
   /**
-   * 表单值类型定义
-   * 为什么使用 Record<string, unknown>：
-   * - Form.useForm() 返回的表单值类型是动态的，无法完全推断
-   * - 表单字段包括：bot_id, secret, channel, webhook_urls, volc_cfg, agent_cfg
-   * - 需要通过类型转换将表单值转换为 BotUpdateRequest
+   * Form value type definition
+   * Why use Record<string, unknown>:
+   * - Form.useForm() returns dynamic form value types that cannot be fully inferred
+   * - Form fields include: bot_id, secret, channel, webhook_urls, volc_cfg, agent_cfg
+   * - Need to convert form values to BotUpdateRequest through type conversion
    */
   /**
-   * 表单提交处理器
-   * 对应 origin/feat/web-v2 分支的实现，确保功能一致性
+   * Form submission handler
+   * Corresponds to origin/feat/web-v2 branch implementation, ensuring functional consistency
    *
-   * 处理逻辑：
-   * 1. 过滤空的知识库集合
-   * 2. 深度拦截空值：如果密钥字段为空值（空字符串或null），则设为 undefined，避免覆盖原值
-   * 3. 只有当所有必填字段都存在时才提交 volc_cfg 或 agent_cfg
+   * Processing logic:
+   * 1. Filter empty knowledge base collections
+   * 2. Deep intercept empty values: if secret fields are empty (empty string or null), set to undefined to avoid overwriting original values
+   * 3. Only submit volc_cfg or agent_cfg when all required fields exist
    */
   const handleSubmit = async (
     values: Record<string, unknown>,
   ): Promise<boolean> => {
     try {
-      // 过滤空的知识库集合
+      // Filter empty knowledge base collections
       const filteredKbCollections = kbCollections.filter(
         (collection) => collection.trim() !== '',
       );
 
-      // 深度拦截：如果密钥字段为空值（空字符串或null），则从提交数据中移除，避免覆盖原值
-      // 后端逻辑：空值保留原配置，只有非空值才会更新
-      // 重要：AgentCfgPayload 和 VolcCfgPayload 的所有必填字段必须提供，否则后端会报错
-      // 解决方案：只有当所有必填字段都有值时，才提交 agent_cfg 或 volc_cfg
+      // Deep intercept: if secret fields are empty (empty string or null), remove from submission data to avoid overwriting original values
+      // Backend logic: empty values preserve original configuration, only non-empty values will be updated
+      // Important: All required fields of AgentCfgPayload and VolcCfgPayload must be provided, otherwise backend will error
+      // Solution: Only submit agent_cfg or volc_cfg when all required fields have values
       const submitData: BotUpdateRequest = {
         ...values,
-        // 处理 secret: 空字符串或 undefined 时不提交，保留原值
+        // Handle secret: do not submit if empty string or undefined, preserve original value
         secret:
           values.secret && String(values.secret).trim()
             ? (values.secret as string)
             : undefined,
       } as BotUpdateRequest;
 
-      // 处理 volc_cfg：只有所有必填字段都存在时才提交
-      // 必填字段：tos_region（ak 和 sk 是 Optional，可以为空）
+      // Handle volc_cfg: only submit when all required fields exist
+      // Required fields: tos_region (ak and sk are Optional, can be empty)
       if ((values.volc_cfg as BotUpdateRequest['volc_cfg'])?.tos_region) {
         submitData.volc_cfg = {
           ...(values.volc_cfg as BotUpdateRequest['volc_cfg']),
-          // ak 和 sk 为空字符串时设为 undefined，后端会保留原值
+          // Set ak and sk to undefined when empty string, backend will preserve original value
           ak:
             (values.volc_cfg as BotUpdateRequest['volc_cfg'])?.ak &&
             String((values.volc_cfg as BotUpdateRequest['volc_cfg']).ak).trim()
@@ -227,7 +227,7 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
               ? (values.volc_cfg as BotUpdateRequest['volc_cfg']).sk
               : undefined,
           extra_kb_collections: filteredKbCollections,
-          // 确保必填字段存在
+          // Ensure required fields exist
           tos_region: (values.volc_cfg as BotUpdateRequest['volc_cfg'])
             .tos_region,
           network_type:
@@ -235,32 +235,32 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
             VolcCfgPayload.network_type.INTERNAL,
         };
       } else {
-        // 如果没有 volc_cfg 或缺少必填字段，不提交（后端会保留原值）
+        // If no volc_cfg or missing required fields, do not submit (backend will preserve original value)
         submitData.volc_cfg = undefined;
       }
 
-      // 处理 agent_cfg：只有所有必填字段都存在时才提交
-      // 必填字段：name, embedding_name, api_base（api_key 在更新时是 Optional，可以为空）
+      // Handle agent_cfg: only submit when all required fields exist
+      // Required fields: name, embedding_name, api_base (api_key is Optional during update, can be empty)
       const agentCfg = values.agent_cfg as BotUpdateRequest['agent_cfg'];
       if (agentCfg?.name && agentCfg.embedding_name && agentCfg.api_base) {
         submitData.agent_cfg = {
           ...agentCfg,
-          // api_key 为空字符串时设为 undefined，后端会保留原值
+          // Set api_key to undefined when empty string, backend will preserve original value
           api_key:
             agentCfg.api_key && String(agentCfg.api_key).trim()
               ? agentCfg.api_key
               : undefined,
-          // 确保所有必填字段存在
+          // Ensure all required fields exist
           name: agentCfg.name,
           embedding_name: agentCfg.embedding_name,
           api_base: agentCfg.api_base,
         };
       } else {
-        // 如果没有 agent_cfg 或缺少必填字段，不提交（后端会保留原值）
+        // If no agent_cfg or missing required fields, do not submit (backend will preserve original value)
         submitData.agent_cfg = undefined;
       }
 
-      // 如果 secret 为空，移除该字段（后端会保留原值）
+      // If secret is empty, remove the field (backend will preserve original value)
       if (!submitData.secret) {
         delete submitData.secret;
       }
@@ -271,11 +271,11 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
         form.resetFields();
         onCancel?.();
       }
-      // ✅ 修复：移除固定错误消息，避免与业务逻辑层的错误消息重复
-      // 原因：useUpdateBot 的 catch 块已经显示了详细的错误消息
+      // ✅ Fix: Remove fixed error message to avoid duplication with business logic layer error messages
+      // Reason: useUpdateBot's catch block already displays detailed error messages
       return success;
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || BOT_MESSAGES.update.error;
@@ -294,7 +294,7 @@ export const BotEditForm: React.FC<BotEditFormProps> = ({
     }
   };
 
-  // URL 验证器（对应 origin/feat/web-v2 分支的实现）
+  // URL validator (corresponds to origin/feat/web-v2 branch implementation)
   const urlValidator = (value: string, callback: (error?: string) => void) => {
     if (!value) {
       callback();

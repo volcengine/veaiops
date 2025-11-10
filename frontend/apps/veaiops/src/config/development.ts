@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 开发体验优化配置
- * 提供开发环境下的调试工具和性能监控
+ * Development experience optimization configuration
+ * Provides debugging tools and performance monitoring in development environment
  */
 
 import { memoryCache } from '@/utils/cache-manager';
@@ -22,15 +22,15 @@ import { performanceMonitor } from '@/utils/performance-monitor';
 import React from 'react';
 
 interface DevToolsConfig {
-  /** 是否启用性能监控 */
+  /** Whether to enable performance monitoring */
   enablePerformanceMonitoring: boolean;
-  /** 是否启用缓存调试 */
+  /** Whether to enable cache debugging */
   enableCacheDebugging: boolean;
-  /** 是否启用组件渲染追踪 */
+  /** Whether to enable component render tracking */
   enableRenderTracking: boolean;
-  /** 是否启用网络请求日志 */
+  /** Whether to enable network request logging */
   enableNetworkLogging: boolean;
-  /** 是否启用错误边界调试 */
+  /** Whether to enable error boundary debugging */
   enableErrorBoundaryDebugging: boolean;
 }
 
@@ -52,68 +52,68 @@ class DevelopmentTools {
   }
 
   /**
-   * 初始化开发工具
+   * Initialize development tools
    */
   private initialize() {
     if (process.env.NODE_ENV !== 'development') {
       return;
     }
 
-    // 添加全局调试方法
+    // Add global debug methods
     this.addGlobalDebugMethods();
 
-    // 启用性能监控
+    // Enable performance monitoring
     if (this.config.enablePerformanceMonitoring) {
       this.enablePerformanceMonitoring();
     }
 
-    // 启用缓存调试
+    // Enable cache debugging
     if (this.config.enableCacheDebugging) {
       this.enableCacheDebugging();
     }
 
-    // 启用网络请求日志
+    // Enable network request logging
     if (this.config.enableNetworkLogging) {
       this.enableNetworkLogging();
     }
 
-    // 启用错误边界调试
+    // Enable error boundary debugging
     if (this.config.enableErrorBoundaryDebugging) {
       this.enableErrorBoundaryDebugging();
     }
   }
 
   /**
-   * 添加全局调试方法
+   * Add global debug methods
    */
   private addGlobalDebugMethods() {
     if (typeof window === 'undefined') {
       return;
     }
 
-    // 添加到 window 对象
+    // Add to window object
     (window as any).__VOLCAIOPS_DEBUG__ = {
-      // 获取性能报告
+      // Get performance report
       getPerformanceReport: () => performanceMonitor.getPerformanceReport(),
 
-      // 获取缓存统计
+      // Get cache statistics
       getCacheStats: () => memoryCache.getStats(),
 
-      // 清理缓存
+      // Clear cache
       clearCache: () => memoryCache.clear(),
 
-      // 获取渲染统计
+      // Get render statistics
       getRenderStats: () => Array.from(this.renderTracker.entries()),
 
-      // 清理渲染统计
+      // Clear render statistics
       clearRenderStats: () => this.renderTracker.clear(),
 
-      // 模拟慢网络
+      // Simulate slow network
       simulateSlowNetwork: (delay = 2000) => {
         this.simulateNetworkDelay(delay);
       },
 
-      // 触发错误测试
+      // Trigger error test
       triggerError: (message = 'Test error') => {
         throw new Error(message);
       },
@@ -121,38 +121,38 @@ class DevelopmentTools {
   }
 
   /**
-   * 启用性能监控
+   * Enable performance monitoring
    */
   private enablePerformanceMonitoring() {
-    // 定期输出性能报告
+    // Periodically output performance report
     setInterval(() => {
       const report = performanceMonitor.getPerformanceReport();
       if (report.score < 80) {
-        // 性能分数低于80时输出警告
+        // Output warning when performance score is below 80
         console.warn('[Performance] Low performance score:', report.score);
       }
-    }, 30000); // 每30秒检查一次
+    }, 30000); // Check every 30 seconds
   }
 
   /**
-   * 启用缓存调试
+   * Enable cache debugging
    */
   private enableCacheDebugging() {
-    // 定期输出缓存统计
+    // Periodically output cache statistics
     setInterval(() => {
       memoryCache.getStats();
-    }, 60000); // 每分钟输出一次
+    }, 60000); // Output every minute
   }
 
   /**
-   * 启用网络请求日志
+   * Enable network request logging
    */
   private enableNetworkLogging() {
     if (typeof window === 'undefined') {
       return;
     }
 
-    // 拦截 fetch 请求
+    // Intercept fetch requests
     const originalFetch = window.fetch;
     window.fetch = async (...args) => {
       const startTime = performance.now();
@@ -171,7 +171,7 @@ class DevelopmentTools {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
 
-        // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+        // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         throw errorObj;
@@ -180,27 +180,27 @@ class DevelopmentTools {
   }
 
   /**
-   * 启用错误边界调试
+   * Enable error boundary debugging
    */
   private enableErrorBoundaryDebugging() {
-    // 监听未捕获的错误
+    // Listen for uncaught errors
     window.addEventListener('error', (event) => {
-      console.error('[DevTools] === 未捕获的错误 ===');
+      console.error('[DevTools] === Uncaught Error ===');
       console.error('[DevTools] Error:', event.error);
       console.error('[DevTools] Message:', event.message);
       console.error('[DevTools] Filename:', event.filename);
       console.error('[DevTools] Line:', event.lineno);
     });
 
-    // 监听未处理的 Promise 拒绝
+    // Listen for unhandled Promise rejections
     window.addEventListener('unhandledrejection', (event) => {
-      console.error('[DevTools] === 未处理的 Promise 拒绝 ===');
+      console.error('[DevTools] === Unhandled Promise Rejection ===');
       console.error('[DevTools] Reason:', event.reason);
     });
   }
 
   /**
-   * 模拟网络延迟
+   * Simulate network delay
    */
   private simulateNetworkDelay(delay: number) {
     if (typeof window === 'undefined') {
@@ -213,7 +213,7 @@ class DevelopmentTools {
       return originalFetch(...args);
     };
 
-    // 5分钟后自动恢复
+    // Automatically restore after 5 minutes
     setTimeout(
       () => {
         window.fetch = originalFetch;
@@ -223,7 +223,7 @@ class DevelopmentTools {
   }
 
   /**
-   * 记录组件渲染
+   * Track component render
    */
   trackComponentRender(componentName: string) {
     if (!this.config.enableRenderTracking) {
@@ -233,7 +233,7 @@ class DevelopmentTools {
     const count = this.renderTracker.get(componentName) || 0;
     this.renderTracker.set(componentName, count + 1);
 
-    // 如果渲染次数过多，发出警告
+    // Warn if render count is too high
     if (count > 10) {
       console.warn(
         `[Performance] Component ${componentName} rendered ${count} times`,
@@ -242,25 +242,25 @@ class DevelopmentTools {
   }
 
   /**
-   * 获取配置
+   * Get configuration
    */
   getConfig(): DevToolsConfig {
     return { ...this.config };
   }
 
   /**
-   * 更新配置
+   * Update configuration
    */
   updateConfig(newConfig: Partial<DevToolsConfig>) {
     this.config = { ...this.config, ...newConfig };
   }
 }
 
-// 创建开发工具实例
+// Create development tools instance
 export const devTools = new DevelopmentTools();
 
 /**
- * React Hook 用于组件渲染追踪
+ * React Hook for component render tracking
  */
 export const useRenderTracker = (componentName: string) => {
   if (process.env.NODE_ENV === 'development') {
@@ -269,7 +269,7 @@ export const useRenderTracker = (componentName: string) => {
 };
 
 /**
- * 高阶组件用于自动追踪组件渲染
+ * Higher-order component for automatic component render tracking
  */
 export const withRenderTracker = <P extends object>(
   WrappedComponent: React.ComponentType<P>,
@@ -292,7 +292,7 @@ export const withRenderTracker = <P extends object>(
 };
 
 /**
- * 开发环境专用的日志工具
+ * Development environment specific logging tool
  */
 export const devLog = {
   info: (_message: string, ..._args: any[]) => {
@@ -317,10 +317,10 @@ export const devLog = {
   },
 
   group: (label: string) => {
-    // console.log 已移除
+    // console.log removed
   },
 
   groupEnd: () => {
-    // console.log 已移除
+    // console.log removed
   },
 };

@@ -20,8 +20,8 @@ import type { SelectOption } from '../types/interface';
 import type { SelectBlockState } from '../types/plugin';
 
 /**
- * 状态订阅Hook
- * 管理与PluginManager的状态同步，规避React批量渲染时序问题
+ * State subscription Hook
+ * Manages state synchronization with PluginManager, avoiding React batch rendering timing issues
  */
 export function useStateSubscription(
   pluginManagerRef: React.MutableRefObject<
@@ -30,7 +30,7 @@ export function useStateSubscription(
   initialOptions: SelectOption[],
   hookTraceId: string,
 ) {
-  // 🔧 使用实时订阅机制获取最新状态，规避React批量渲染问题
+  // 🔧 Use real-time subscription mechanism to get latest state, bypass React batch rendering issues
   const [currentState, setCurrentState] = useState<SelectBlockState>(() => ({
     fetchOptions: initialOptions || [],
     initFetchOptions: initialOptions || [],
@@ -42,20 +42,20 @@ export function useStateSubscription(
     mounted: false,
   }));
 
-  // 🔧 订阅PluginManager状态变化，实时同步
+  // 🔧 Subscribe to PluginManager state changes, sync in real-time
   useEffect(() => {
     if (!pluginManagerRef.current) {
       return () => {};
     }
 
-    // 立即获取当前状态
+    // Immediately get current state
     setCurrentState(pluginManagerRef.current.getState());
 
-    // 订阅后续状态变化
+    // Subscribe to subsequent state changes
     const unsubscribe = pluginManagerRef.current.subscribe((newState) => {
       logger.debug(
         'UseStateSubscription',
-        '收到状态订阅通知',
+        'Received state subscription notification',
         {
           newLoading: newState.loading,
           newFetching: newState.fetching,
@@ -67,7 +67,7 @@ export function useStateSubscription(
       setCurrentState(newState);
     });
 
-    // 清理订阅
+    // Clean up subscription
     return unsubscribe;
   }, [hookTraceId]);
 

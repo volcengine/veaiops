@@ -17,7 +17,7 @@ import type { User } from 'api-generate';
 import { useState } from 'react';
 
 /**
- * 账号管理相关的状态管理
+ * Account management related state management
  */
 export const useAccountState = () => {
   const [form] = Form.useForm();
@@ -34,6 +34,6 @@ export const useAccountState = () => {
 };
 
 /**
- * UseAccountStateReturn 类型导出
+ * UseAccountStateReturn type export
  */
 export type UseAccountStateReturn = ReturnType<typeof useAccountState>;

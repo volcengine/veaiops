@@ -13,38 +13,38 @@
 // limitations under the License.
 
 /**
- * 卡片模板 Hooks 统一导出
+ * Card template Hooks unified export
  *
- * 目录结构说明：
- * - table/         - 表格配置 Hook（简化：use-card-template-table-config → table/）
- * - crud/          - CRUD 操作 Hook（简化：use-card-template-crud → crud/）
- * - management/    - 管理逻辑 Hook（简化：use-management-logic → management/）
- * - card-template/ - 卡片模板工具（已存在，保留）
- * - use-card-template/ - 卡片模板 Hook（已存在，保留）
+ * Directory structure:
+ * - table/         - Table configuration Hook (simplified: use-card-template-table-config → table/)
+ * - crud/          - CRUD operations Hook (simplified: use-card-template-crud → crud/)
+ * - management/    - Management logic Hook (simplified: use-management-logic → management/)
+ * - card-template/ - Card template utilities (already exists, preserved)
+ * - use-card-template/ - Card template Hook (already exists, preserved)
  */
 
-// ==================== Table 表格配置 ====================
-// ✅ 简化：use-card-template-table-config.tsx → table/
+// ==================== Table Configuration ====================
+// ✅ Simplified: use-card-template-table-config.tsx → table/
 export * from './table';
 
-// ==================== CRUD 操作 ====================
-// ✅ 简化：use-card-template-crud.ts → crud/
+// ==================== CRUD Operations ====================
+// ✅ Simplified: use-card-template-crud.ts → crud/
 export * from './crud';
 
-// ==================== Management 管理逻辑 ====================
-// ✅ 简化：use-management-logic.ts → management/
+// ==================== Management Logic ====================
+// ✅ Simplified: use-management-logic.ts → management/
 export * from './management';
 
-// ==================== Card Template 工具 ====================
-// ✅ 已存在：card-template/ 目录
-// 注意：card-template 目录的内容已拆分到其他目录：
+// ==================== Card Template Utilities ====================
+// ✅ Already exists: card-template/ directory
+// Note: Contents of card-template directory have been split to other directories:
 // - useCardTemplateManagementLogic → ./management
 // - transformAgentTemplateToTableData → ./use-card-template/utils/transform
-// 如果需要访问 card-template/lib 中的类型和工具，请直接导入该目录
-// export * from './card-template'; // 已移除，避免重复导出
+// If you need to access types and utilities from card-template/lib, please directly import that directory
+// export * from './card-template'; // Removed to avoid duplicate exports
 
 // ==================== Use Card Template Hook ====================
-// ✅ 已存在：use-card-template/ 目录
-// 注意：useCardTemplateManagementLogic 已从 ./management 导出，此处不再导出（避免重复）
-// UseCardTemplateManagementLogicParams 类型已从 ./management 导出，此处从 management 统一导出
+// ✅ Already exists: use-card-template/ directory
+// Note: useCardTemplateManagementLogic is already exported from ./management, not exported here (avoid duplicates)
+// UseCardTemplateManagementLogicParams type is already exported from ./management, unified export from management here
 export type { UseCardTemplateManagementLogicParams } from './management';

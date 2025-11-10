@@ -15,8 +15,8 @@
 import { CustomLoading } from '@/custom-table/components';
 import type { TableContentProps } from '@/custom-table/types';
 /**
- * CustomTable 主内容渲染组件
- * 基于 pro-components 设计模式优化
+ * CustomTable main content render component
+ * Optimized based on pro-components design pattern
  *
 
  * @date 2025-12-19
@@ -25,8 +25,8 @@ import type React from 'react';
 import { useMemo } from 'react';
 
 /**
- * @name 表格主内容组件
- * @description 负责渲染表格的完整内容结构，包括标题、筛选器、加载状态、表格主体和底部内容
+ * @name Table main content component
+ * @description Responsible for rendering the complete table content structure, including title, filters, loading state, table body, and footer content
  */
 export const TableContent: React.FC<TableContentProps> = ({
   header,
@@ -42,10 +42,10 @@ export const TableContent: React.FC<TableContentProps> = ({
     useCustomLoading = false,
     loading = false,
     customLoading = false,
-    tip = '加载中...',
+    tip = 'Loading...',
   } = loadingConfig;
 
-  /** @name 标题区域渲染 */
+  /** @name Header area rendering */
   const headerDom = useMemo(() => {
     const headerObj = header as
       | {
@@ -70,35 +70,35 @@ export const TableContent: React.FC<TableContentProps> = ({
     );
   }, [header]);
 
-  /** @name 加载状态渲染 */
+  /** @name Loading state rendering */
   const loadingDom = useMemo(() => {
     const shouldShowLoading = useCustomLoading && (loading || customLoading);
     if (!shouldShowLoading) {
       return null;
     }
-    // 安全地将 tip 转换为字符串，确保类型安全
-    let tipString = '加载中...';
+    // Safely convert tip to string, ensure type safety
+    let tipString = 'Loading...';
     if (tip != null) {
       if (typeof tip === 'string') {
         tipString = tip;
       } else {
-        // 如果不是字符串类型，使用默认值，避免类型转换问题
-        tipString = '加载中...';
+        // If not string type, use default value, avoid type conversion issues
+        tipString = 'Loading...';
       }
     }
     return <CustomLoading tip={tipString} />;
   }, [useCustomLoading, loading, customLoading, tip]);
 
-  /** @name 表格内容渲染 */
+  /** @name Table content rendering */
   const tableContentDom = useMemo(
     () => (renderers?.tableRender ? renderers.tableRender(tableDom) : null),
     [renderers, tableDom],
   );
 
-  /** @name 底部内容渲染 */
+  /** @name Footer content rendering */
   const footerDom = useMemo(() => {
     if (renderers?.footerRender) {
-      // 兼容两种签名：() => ReactNode 和 (props) => ReactNode
+      // Compatible with two signatures: () => ReactNode and (props) => ReactNode
       return (renderers.footerRender as any)({});
     }
     return null;

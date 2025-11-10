@@ -13,33 +13,33 @@
 // limitations under the License.
 
 /**
- * 策略管理类型定义
+ * Strategy management type definitions
  *
- * 🎯 类型设计原则：
- * 1. 优先使用 api-generate 中的后端接口类型
- * 2. 优先使用 @veaiops/components 中的组件类型
- * 3. 仅在必要时定义最小化的扩展类型
+ * 🎯 Type design principles:
+ * 1. Prioritize using backend interface types from api-generate
+ * 2. Prioritize using component types from @veaiops/components
+ * 3. Define minimal extension types only when necessary
  */
 
 import type { GroupChatVO, InformStrategy } from 'api-generate';
 
-// ✅ 类型安全：统一从 api-generate 导入 InformStrategy（符合单一数据源原则）
-// 根据 Python 源码分析：API 返回 InformStrategyVO，对应 TypeScript 的 InformStrategy
+// ✅ Type safe: Unified import of InformStrategy from api-generate (conforms to single source of truth principle)
+// Based on Python source code analysis: API returns InformStrategyVO, corresponding to TypeScript's InformStrategy
 
 /**
- * 策略编辑表单数据适配器
+ * Strategy edit form data adapter
  *
- * 将 InformStrategy（API 返回格式）转换为编辑表单需要的格式
+ * Converts InformStrategy (API response format) to format required by edit form
  *
- * 根据 Python 源码分析（veaiops/schema/models/event/event.py）：
- * - InformStrategyVO 包含: id, name, description, channel, bot: BotVO, group_chats: List[GroupChatVO]
- * - BotVO 包含: id, channel, bot_id, name, is_active
- * - GroupChatVO 包含: id, open_chat_id, chat_name, is_active
+ * Based on Python source code analysis (veaiops/schema/models/event/event.py):
+ * - InformStrategyVO contains: id, name, description, channel, bot: BotVO, group_chats: List[GroupChatVO]
+ * - BotVO contains: id, channel, bot_id, name, is_active
+ * - GroupChatVO contains: id, open_chat_id, chat_name, is_active
  *
- * 编辑表单需要扁平化的 bot_id 和 chat_ids 字段，因此从嵌套对象中提取这些值
+ * Edit form requires flattened bot_id and chat_ids fields, so extract these values from nested objects
  *
- * @param strategy - 消息卡片通知策略对象（InformStrategy 类型，来自 api-generate）
- * @returns 包含 bot_id 和 chat_ids 的策略对象（符合 EventStrategy 接口的扁平化要求）
+ * @param strategy - Message card notification strategy object (InformStrategy type, from api-generate)
+ * @returns Strategy object containing bot_id and chat_ids (conforms to EventStrategy interface's flattened requirements)
  */
 export function adaptStrategyForEdit(
   strategy: InformStrategy,
@@ -47,13 +47,13 @@ export function adaptStrategyForEdit(
   bot_id: string;
   chat_ids: string[];
 } {
-  // ✅ 类型安全：从 BotVO 中提取 bot_id（Python 源码：BotVO.bot_id）
-  // ✅ 类型安全：从 GroupChatVO[] 中提取 open_chat_id（Python 源码：GroupChatVO.open_chat_id）
+  // ✅ Type safe: Extract bot_id from BotVO (Python source: BotVO.bot_id)
+  // ✅ Type safe: Extract open_chat_id from GroupChatVO[] (Python source: GroupChatVO.open_chat_id)
   return {
     ...strategy,
-    bot_id: strategy.bot?.bot_id || '', // BotVO 的 bot_id 字段（Python: bot_id: str = Field(...)）
+    bot_id: strategy.bot?.bot_id || '', // BotVO's bot_id field (Python: bot_id: str = Field(...))
     chat_ids: strategy.group_chats?.map(
-      (item: GroupChatVO) => item.open_chat_id, // GroupChatVO 的 open_chat_id 字段（Python: open_chat_id: str = Field(...)）
+      (item: GroupChatVO) => item.open_chat_id, // GroupChatVO's open_chat_id field (Python: open_chat_id: str = Field(...))
     ) || [],
   };
 }

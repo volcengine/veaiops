@@ -15,7 +15,7 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type AliyunProjectMetaPayload = {
   /**
-   * 阿里云项目名称
+   * Alibaba Cloud project name
    */
   project?: string;
 };

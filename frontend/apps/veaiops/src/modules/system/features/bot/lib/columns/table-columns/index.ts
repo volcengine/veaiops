@@ -26,13 +26,13 @@ interface TableColumnsProps {
 }
 
 /**
- * 获取表格列定义 - 传统方式
+ * Get table column definitions - Traditional approach
  *
- * 拆分说明：
- * - base-columns.tsx: 基础列定义（App ID、名称、Open ID）
- * - group-management-column.tsx: 群管理列定义
- * - action-column.tsx: 操作列定义（编辑、删除、特别关注）
- * - index.ts: 主入口，负责组装和导出
+ * Split explanation:
+ * - base-columns.tsx: Base column definitions (App ID, name, Open ID)
+ * - group-management-column.tsx: Group management column definition
+ * - action-column.tsx: Action column definition (edit, delete, special attention)
+ * - index.ts: Main entry, responsible for assembly and export
  */
 export const getTableColumns = ({
   onEdit,
@@ -42,15 +42,15 @@ export const getTableColumns = ({
 }: TableColumnsProps): ColumnProps<Bot>[] => {
   const columns: ColumnProps<Bot>[] = [];
 
-  // 基础列
+  // Base columns
   columns.push(...getBaseColumns());
 
-  // 群管理列（如果提供回调）
+  // Group management column (if callback provided)
   if (onGroupManagement) {
     columns.push(getGroupManagementColumn({ onGroupManagement }));
   }
 
-  // 操作列
+  // Action column
   columns.push(getActionColumn({ onEdit, onDelete, onViewAttributes }));
 
   return columns;

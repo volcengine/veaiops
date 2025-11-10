@@ -13,26 +13,26 @@
 // limitations under the License.
 
 /**
- * 缓存管理器
- * 提供内存缓存、本地存储缓存和会话缓存功能
+ * Cache manager
+ * Provides memory cache, local storage cache, and session cache functionality
  */
 
 interface CacheItem<T> {
   value: T;
   timestamp: number;
-  ttl: number; // 生存时间（毫秒）
+  ttl: number; // Time to live (milliseconds)
   accessCount: number;
   lastAccessed: number;
 }
 
 interface CacheOptions {
-  /** 缓存生存时间（毫秒），默认 5 分钟 */
+  /** Cache time to live (milliseconds), default 5 minutes */
   ttl?: number;
-  /** 最大缓存项数量，默认 100 */
+  /** Maximum number of cache items, default 100 */
   maxSize?: number;
-  /** 是否使用 LRU 淘汰策略，默认 true */
+  /** Whether to use LRU eviction strategy, default true */
   useLRU?: boolean;
-  /** 存储类型 */
+  /** Storage type */
   storage?: 'memory' | 'localStorage' | 'sessionStorage';
 }
 
@@ -43,18 +43,18 @@ class CacheManager<T = any> {
 
   constructor(options: CacheOptions = {}) {
     this.options = {
-      ttl: options.ttl ?? 5 * 60 * 1000, // 5分钟
+      ttl: options.ttl ?? 5 * 60 * 1000, // 5 minutes
       maxSize: options.maxSize ?? 100,
       useLRU: options.useLRU ?? true,
       storage: options.storage ?? 'memory',
     };
 
-    // 启动定期清理
+    // Start periodic cleanup
     this.startCleanup();
   }
 
   /**
-   * 设置缓存项
+   * Set cache item
    */
   set({
     key,
@@ -76,28 +76,28 @@ class CacheManager<T = any> {
       lastAccessed: now,
     };
 
-    // 如果使用浏览器存储
+    // If using browser storage
     if (this.options.storage !== 'memory') {
       this.setStorageItem(key, item);
       return;
     }
 
-    // 内存缓存
+    // Memory cache
     this.cache.set(key, item);
 
-    // 检查缓存大小限制
+    // Check cache size limit
     if (this.cache.size > this.options.maxSize) {
       this.evictItems();
     }
   }
 
   /**
-   * 获取缓存项
+   * Get cache item
    */
   get(key: string): T | null {
     let item: CacheItem<T> | null = null;
 
-    // 从不同存储获取
+    // Get from different storage
     if (this.options.storage === 'memory') {
       item = this.cache.get(key) || null;
     } else {
@@ -110,17 +110,17 @@ class CacheManager<T = any> {
 
     const now = Date.now();
 
-    // 检查是否过期
+    // Check if expired
     if (now - item.timestamp > item.ttl) {
       this.delete(key);
       return null;
     }
 
-    // 更新访问信息
+    // Update access information
     item.accessCount++;
     item.lastAccessed = now;
 
-    // 更新存储
+    // Update storage
     if (this.options.storage === 'memory') {
       this.cache.set(key, item);
     } else {
@@ -131,7 +131,7 @@ class CacheManager<T = any> {
   }
 
   /**
-   * 删除缓存项
+   * Delete cache item
    */
   delete(key: string): boolean {
     if (this.options.storage === 'memory') {
@@ -142,7 +142,7 @@ class CacheManager<T = any> {
   }
 
   /**
-   * 清空所有缓存
+   * Clear all cache
    */
   clear(): void {
     if (this.options.storage === 'memory') {
@@ -153,14 +153,14 @@ class CacheManager<T = any> {
   }
 
   /**
-   * 检查缓存项是否存在且未过期
+   * Check if cache item exists and is not expired
    */
   has(key: string): boolean {
     return this.get(key) !== null;
   }
 
   /**
-   * 获取缓存统计信息
+   * Get cache statistics
    */
   getStats() {
     const items = this.getAllItems();
@@ -189,7 +189,7 @@ class CacheManager<T = any> {
   }
 
   /**
-   * 清理过期项
+   * Clean up expired items
    */
   cleanup(): number {
     const now = Date.now();
@@ -203,7 +203,7 @@ class CacheManager<T = any> {
         }
       }
     } else {
-      // 浏览器存储的清理
+      // Browser storage cleanup
       const keys = this.getStorageKeys();
       keys.forEach((key) => {
         const item = this.getStorageItem(key);
@@ -218,7 +218,7 @@ class CacheManager<T = any> {
   }
 
   /**
-   * 淘汰缓存项（LRU策略）
+   * Evict cache items (LRU strategy)
    */
   private evictItems(): void {
     if (!this.options.useLRU) {
@@ -227,10 +227,10 @@ class CacheManager<T = any> {
 
     const items = Array.from(this.cache.entries());
 
-    // 按最后访问时间排序，最久未访问的在前
+    // Sort by last access time, least recently used first
     items.sort(([, a], [, b]) => a.lastAccessed - b.lastAccessed);
 
-    // 删除最久未访问的项，直到缓存大小符合限制
+    // Delete least recently used items until cache size meets limit
     const itemsToRemove = items.length - this.options.maxSize + 1;
     for (let i = 0; i < itemsToRemove; i++) {
       const [key] = items[i];
@@ -239,15 +239,15 @@ class CacheManager<T = any> {
   }
 
   /**
-   * 启动定期清理
+   * Start periodic cleanup
    */
   private startCleanup(): void {
-    // 每5分钟清理一次过期项
+    // Clean up expired items every 5 minutes
     this.cleanupTimer = setInterval(
       () => {
         const cleaned = this.cleanup();
         if (cleaned > 0) {
-          // 清理了过期缓存项，可以在这里添加日志记录
+          // Expired cache items cleaned, can add logging here
         }
       },
       5 * 60 * 1000,
@@ -255,7 +255,7 @@ class CacheManager<T = any> {
   }
 
   /**
-   * 停止定期清理
+   * Stop periodic cleanup
    */
   stopCleanup(): void {
     if (this.cleanupTimer) {
@@ -265,7 +265,7 @@ class CacheManager<T = any> {
   }
 
   /**
-   * 浏览器存储相关方法
+   * Browser storage related methods
    */
   private getStorage() {
     if (typeof window === 'undefined') {
@@ -289,7 +289,7 @@ class CacheManager<T = any> {
     try {
       storage.setItem(this.getStorageKey(key), JSON.stringify(item));
     } catch (error) {
-      // localStorage/sessionStorage 写入失败（可能是存储空间不足或权限问题），静默处理
+      // localStorage/sessionStorage write failed (may be insufficient storage space or permission issue), handle silently
     }
   }
 
@@ -303,7 +303,7 @@ class CacheManager<T = any> {
       const data = storage.getItem(this.getStorageKey(key));
       return data ? JSON.parse(data) : null;
     } catch (error) {
-      // localStorage/sessionStorage 读取或解析失败，返回 null（静默处理）
+      // localStorage/sessionStorage read or parse failed, return null (handle silently)
       return null;
     }
   }
@@ -318,7 +318,7 @@ class CacheManager<T = any> {
       storage.removeItem(this.getStorageKey(key));
       return true;
     } catch (error) {
-      // localStorage/sessionStorage 删除失败，返回 false（静默处理）
+      // localStorage/sessionStorage delete failed, return false (handle silently)
       return false;
     }
   }
@@ -366,19 +366,19 @@ class CacheManager<T = any> {
   }
 }
 
-// 创建默认缓存实例
+// Create default cache instances
 export const memoryCache = new CacheManager({ storage: 'memory' });
 export const localCache = new CacheManager({
   storage: 'sessionStorage',
   ttl: 24 * 60 * 60 * 1000,
-}); // 24小时
+}); // 24 hours
 export const sessionCache = new CacheManager({ storage: 'sessionStorage' });
 
-// 导出缓存管理器类
+// Export cache manager class
 export { CacheManager };
 
 /**
- * 缓存装饰器，用于缓存函数结果
+ * Cache decorator for caching function results
  */
 export interface CachedParams<T extends (...args: any[]) => any> {
   cacheManager?: CacheManager;
@@ -403,13 +403,13 @@ export function cached<T extends (...args: any[]) => any>({
         ? keyGenerator(...args)
         : `${propertyKey}_${JSON.stringify(args)}`;
 
-      // 尝试从缓存获取
+      // Try to get from cache
       const cached = cacheManager.get(cacheKey);
       if (cached !== null) {
         return cached;
       }
 
-      // 执行原方法并缓存结果
+      // Execute original method and cache result
       const result = originalMethod.apply(this, args);
       cacheManager.set({ key: cacheKey, value: result, ttl });
 

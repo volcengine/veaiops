@@ -17,50 +17,50 @@ import type { MetricTemplateValue } from './metric-template-value';
 import type { MetricThresholdResult } from './metric-threshold-result';
 export type IntelligentThresholdTaskVersion = {
   /**
-   * 版本ID
+   * Version ID
    */
   _id?: string;
   /**
-   * 任务ID
+   * Task ID
    */
   task_id: string;
   metric_template_value: MetricTemplateValue;
   /**
-   * N计数
+   * N count
    */
   n_count: number;
   /**
-   * 阈值计算方向
+   * Threshold calculation direction
    */
   direction: IntelligentThresholdTaskVersion.direction;
   /**
-   * 任务状态
+   * Task status
    */
   status: IntelligentThresholdTaskVersion.status;
   /**
-   * 版本号
+   * Version number
    */
   version: number;
   /**
-   * 阈值结果
+   * Threshold result
    */
   result?: Array<MetricThresholdResult>;
   /**
-   * 创建时间
+   * Creation time
    */
   created_at?: string;
   /**
-   * 更新时间
+   * Update time
    */
   updated_at?: string;
   /**
-   * 错误信息（如果任务失败）
+   * Error message (if task failed)
    */
   error_message?: string;
 };
 export namespace IntelligentThresholdTaskVersion {
   /**
-   * 阈值计算方向
+   * Threshold calculation direction
    */
   export enum direction {
     UP = 'up',
@@ -68,7 +68,7 @@ export namespace IntelligentThresholdTaskVersion {
     BOTH = 'both',
   }
   /**
-   * 任务状态
+   * Task status
    */
   export enum status {
     UNKNOWN = 'Unknown',

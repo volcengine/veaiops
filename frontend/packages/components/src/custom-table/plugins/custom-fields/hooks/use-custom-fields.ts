@@ -20,26 +20,26 @@ import { useCallback, useMemo, useState } from 'react';
 import type { CustomFieldsState } from '../types';
 
 export interface UseCustomFieldsOptions<T extends BaseRecord = BaseRecord> {
-  /** 初始选中的字段 */
+  /** Initially selected fields */
   initialFields?: string[];
-  /** 所有可用的列 */
+  /** All available columns */
   columns: ModernTableColumnProps<T>[];
-  /** 禁用的字段 */
+  /** Disabled fields */
   disabledFields?: Map<string, string | undefined>;
-  /** 字段变化回调 */
+  /** Field change callback */
   onFieldsChange?: (fields: string[]) => void;
 }
 
 export interface UseCustomFieldsReturn<T extends BaseRecord = BaseRecord> {
-  /** 当前状态 */
+  /** Current state */
   state: CustomFieldsState<T>;
-  /** 设置选中的字段 */
+  /** Set selected fields */
   setSelectedFields: (fields: string[]) => void;
-  /** 切换字段状态 */
+  /** Toggle field state */
   toggleField: (field: string) => void;
-  /** 重置到初始状态 */
+  /** Reset to initial state */
   reset: () => void;
-  /** 获取所有可用字段 */
+  /** Get all available fields */
   getAllAvailableFields: () => string[];
 }
 
@@ -53,7 +53,7 @@ export const useCustomFields = <T extends BaseRecord = BaseRecord>({
     useState<string[]>(initialFields);
 
   /**
-   * 递归获取所有字段
+   * Recursively get all fields
    */
   const getAllFields = useCallback(
     (columns: ModernTableColumnProps<T>[]): string[] => {
@@ -72,7 +72,7 @@ export const useCustomFields = <T extends BaseRecord = BaseRecord>({
   );
 
   /**
-   * 获取所有可用字段（排除禁用的）
+   * Get all available fields (excluding disabled ones)
    */
   const getAllAvailableFields = useCallback(() => {
     const allFields = getAllFields(columns);
@@ -80,7 +80,7 @@ export const useCustomFields = <T extends BaseRecord = BaseRecord>({
   }, [columns, disabledFields, getAllFields]);
 
   /**
-   * 可用的列
+   * Available columns
    */
   const availableColumns = useMemo(
     () =>
@@ -91,7 +91,7 @@ export const useCustomFields = <T extends BaseRecord = BaseRecord>({
   );
 
   /**
-   * 设置选中字段
+   * Set selected fields
    */
   const setSelectedFields = useCallback(
     (fields: string[]) => {
@@ -102,7 +102,7 @@ export const useCustomFields = <T extends BaseRecord = BaseRecord>({
   );
 
   /**
-   * 切换字段状态
+   * Toggle field state
    */
   const toggleField = useCallback((field: string) => {
     setSelectedFieldsState((prev: string[]) => {
@@ -115,14 +115,14 @@ export const useCustomFields = <T extends BaseRecord = BaseRecord>({
   }, []);
 
   /**
-   * 重置到初始状态
+   * Reset to initial state
    */
   const reset = useCallback(() => {
     setSelectedFields(initialFields);
   }, [initialFields, setSelectedFields]);
 
   /**
-   * 当前状态
+   * Current state
    */
   const state: CustomFieldsState<T> = useMemo(
     () => ({

@@ -16,8 +16,8 @@ import { Link } from '@arco-design/web-react';
 import type React from 'react';
 
 /**
- * 阿里云Region提示组件
- * 用于提示用户选择阿里云监控项后必须填写Region
+ * Aliyun Region prompt component
+ * @description Used to prompt users that Region must be filled after selecting Aliyun metric
  */
 export const AliyunRegionPrompt: React.FC = () => {
   return (

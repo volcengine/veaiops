@@ -13,69 +13,68 @@
 // limitations under the License.
 
 /**
- * VE-ARCH Components 类型导出
- * @description 提供组件库相关的类型定义
-
+ * VE-ARCH Components type exports
+ * @description Provides type definitions related to component library
  *
  */
 
 import type { SorterResult } from '@arco-design/web-react/es/Table/interface';
 import type { ReactNode } from 'react';
 
-// ===== 基础类型定义 =====
+// ===== Basic type definitions =====
 
-/** 通用选项类型，支持扩展数据 */
+/** Common option type, supports extended data */
 export type Option<T = Record<string, any>> = {
-  /** 显示标签，支持 React 节点 */
+  /** Display label, supports React node */
   label: ReactNode;
-  /** 选项值 */
+  /** Option value */
   value: string | number;
-  /** 是否禁用 */
+  /** Whether disabled */
   disabled?: boolean;
-  /** 扩展数据 */
+  /** Extended data */
   extra?: T;
 };
 
-// ===== 表格相关类型 =====
+// ===== Table related types =====
 
 export type IQueryOptions<T = unknown> = (
   params?: Record<string, unknown>,
 ) => Promise<T[]> | T[];
 
-/** 自定义表头filter的属性 */
+/** Custom table header filter properties */
 export interface TableColumnTitleProps {
-  /** 列标题 */
+  /** Column title */
   title: string;
-  /** 列在数据中对于的key */
+  /** Column key in data */
   dataIndex: string;
-  /** 筛选key */
+  /** Filter key */
   filterDataIndex?: string;
-  /** 排序的值 */
+  /** Sort value */
   sorter?: SorterResult;
-  /** 筛选的值 */
+  /** Filter value */
   filters: Record<string, string | number | string[] | number[]>;
-  /** 排序或者筛选触发的值 */
+  /** Value triggered by sort or filter */
   onChange: (
     type: string,
     value?: { [p: string]: (string | number)[] | string | number | null },
   ) => void;
-  /** 查询 */
+  /** Query */
   queryOptions?: IQueryOptions;
-  /** 表头是否有提示 */
+  /** Whether table header has tooltip */
   tip?: ReactNode;
   /**
-   * 是否支持多选
+   * Whether to support multiple selection
    * @default true
    */
   multiple?: boolean;
 }
 
-// ===== 公共组件类型 =====
+// ===== Public component types =====
 
-// 注意：Public 命名空间未使用，已移除
-// /** Public 命名空间，用于兼容原有的导入方式 */
+// Note: Public namespace is unused, removed
+// /** Public namespace, used for compatibility with original import method */
 // export const Public = {
-//   // 这里可以添加其他公共组件和工具
+//   // Other public components and utilities can be added here
 // } as const;
 
-// 命名导出
+// Named exports

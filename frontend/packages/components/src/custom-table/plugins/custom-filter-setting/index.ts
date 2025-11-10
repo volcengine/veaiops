@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Custom Filter Setting 插件导出
+ * Custom Filter Setting plugin export
  */
 export type {
   CustomFilterSettingConfig,

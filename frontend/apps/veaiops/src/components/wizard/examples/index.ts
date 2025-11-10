@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 数据源向导示例组件导出
+ * Data source wizard example component export
  */
 
 export { default as LogExportDemo } from './log-export-demo';

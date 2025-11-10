@@ -18,14 +18,14 @@ import type { MetricThresholdResult } from 'api-generate';
 import { ErrorTooltipContent } from './error-tooltip-content';
 
 /**
- * 获取状态列配置
+ * Get status column configuration
  *
- * 状态判断逻辑：
- * - 有 error_message 则为失败状态
- * - 没有 error_message 则为成功状态
+ * Status determination logic:
+ * - Has error_message means failed status
+ * - No error_message means success status
  *
- * 注意：虽然 Python 后端定义了 status 字段，但实际数据中可能不包含该字段，
- * 因此根据 error_message 的存在与否来判断状态
+ * Note: Although Python backend defines a status field, actual data may not include this field,
+ * therefore status is determined based on the presence or absence of error_message
  */
 export const getStatusColumn = (): ColumnProps<MetricThresholdResult> => ({
   title: '状态',
@@ -36,15 +36,15 @@ export const getStatusColumn = (): ColumnProps<MetricThresholdResult> => ({
   render: (_: unknown, record: MetricThresholdResult) => {
     const errorMessage = record?.error_message;
 
-    // 根据 error_message 判断状态：有 error_message 为失败，没有为成功
+    // Determine status based on error_message: has error_message means failed, no error_message means success
     const isFailed = Boolean(errorMessage);
 
-    // 如果没有错误信息，显示成功状态
+    // If no error message, show success status
     if (!isFailed) {
       return <Tag color="green">成功</Tag>;
     }
 
-    // 如果有错误信息，显示失败状态和错误详情 Tooltip
+    // If has error message, show failed status and error details Tooltip
     return (
       <Tooltip
         content={<ErrorTooltipContent errorMessage={errorMessage || ''} />}

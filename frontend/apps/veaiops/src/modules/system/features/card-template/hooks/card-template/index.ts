@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * 卡片模板工具统一导出
+ * Card template utilities unified export
  *
- * 目录结构：
- * - lib/         - 工具函数、类型和 API
+ * Directory structure:
+ * - lib/         - Utility functions, types and API
  *
  */
 
-// ==================== Lib 工具导出 ====================
+// ==================== Lib utilities export ====================
 export * from './lib';

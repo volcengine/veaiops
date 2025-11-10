@@ -16,27 +16,27 @@ import { createStandardTableProps } from '@veaiops/utils';
 import { useCallback, useMemo } from 'react';
 
 /**
- * 表格属性配置Hook
+ * Table properties configuration Hook
  *
- * ✅ 已使用工具函数：
- * - createStandardTableProps: 创建标准表格属性配置
+ * ✅ Utility functions used:
+ * - createStandardTableProps: Creates standard table properties configuration
  */
 export const useChatTableProps = () => {
-  // ✅ 使用工具函数创建表格属性配置
+  // ✅ Use utility function to create table properties configuration
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
         rowKey: 'chat_id',
         pageSize: 10,
         scrollX: 1000,
-        // 注意：stripe 属性不在 createStandardTableProps 支持范围内
-        // 如需 stripe，应在 CustomTable 的 tableProps 中直接配置
+        // Note: stripe property is not supported by createStandardTableProps
+        // If stripe is needed, should be configured directly in CustomTable's tableProps
       }),
     [],
   );
 
-  // ✅ 使用 useCallback 稳定化 tableProps 函数，避免每次渲染创建新引用
-  // 注意：CustomTable 会传递 { loading: boolean } 参数，函数需要接收该参数
+  // ✅ Use useCallback to stabilize tableProps function, avoid creating new reference on each render
+  // Note: CustomTable will pass { loading: boolean } parameter, function needs to receive this parameter
   const memoizedTableProps = useCallback(
     (ctx?: { loading?: boolean }) => ({
       ...tableProps,
@@ -44,9 +44,9 @@ export const useChatTableProps = () => {
         pageSize: 10,
         sizeCanChange: true,
         showJumper: true,
-        showTotal: true, // 使用默认的分页显示格式
+        showTotal: true, // Use default pagination display format
       },
-      // 可以根据 loading 状态调整其他属性（如需要）
+      // Can adjust other properties based on loading state (if needed)
       ...(ctx?.loading !== undefined && {}),
     }),
     [tableProps],

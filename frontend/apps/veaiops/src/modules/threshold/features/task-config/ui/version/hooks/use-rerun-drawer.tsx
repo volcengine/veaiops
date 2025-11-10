@@ -25,7 +25,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { renderRerunForm } from '../../task';
 
 /**
- * 重新执行抽屉 hook - 封装重新执行抽屉的状态和渲染逻辑
+ * Rerun drawer hook - encapsulates rerun drawer state and rendering logic
  */
 export const useRerunDrawer = (
   tableRef: React.RefObject<any>,
@@ -84,21 +84,21 @@ export const useRerunDrawer = (
         Message.success('任务重新执行成功');
         close();
 
-        // 刷新表格数据以显示新的版本结果
+        // Refresh table data to display new version results
         if (tableRef.current?.refresh) {
           const refreshResult = await tableRef.current.refresh();
           return refreshResult ?? true;
         }
         return true;
       } else {
-        throw new Error(response.message || '任务重新执行失败');
+        throw new Error(response.message || 'Failed to rerun task');
       }
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
-        message: '任务重新执行失败',
+        message: 'Failed to rerun task',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
@@ -109,7 +109,7 @@ export const useRerunDrawer = (
         source: 'useRerunDrawer',
         component: 'handleSubmit',
       });
-      const errorMessage = errorObj.message || '任务重新执行失败';
+      const errorMessage = errorObj.message || 'Failed to rerun task';
       Message.error(errorMessage);
       return false;
     } finally {
@@ -117,10 +117,10 @@ export const useRerunDrawer = (
     }
   }, [rerunData, form, close, tableRef]);
 
-  // 同步表单数据
+  // Sync form data
   useEffect(() => {
     if (rerunData) {
-      // 将版本记录转换为表单字段格式
+      // Convert version record to form field format
       const formData = {
         direction: rerunData.direction || 'both',
         n_count: rerunData.n_count || 3,

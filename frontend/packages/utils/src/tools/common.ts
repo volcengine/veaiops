@@ -14,13 +14,13 @@
 
 /**
  * Common utility function collection
- * Provides common data processing and conversion utilities
+ * Provides common data processing and transformation functionality
  *
 
  * @date 2025-12-19
  */
 
-// URLSearchParams is a native browser API; no import needed
+// URLSearchParams is a browser native API, no need to import
 import {
   entries,
   fromPairs,
@@ -30,10 +30,10 @@ import {
 } from 'lodash-es';
 
 /**
- * Ensure the input value is an array.
- * If the value is undefined, return an empty array.
- * If the value is not an array, return an array containing the value.
- * If the value is already an array, return it directly.
+ * Ensure input value is an array.
+ * If value is undefined, return an empty array.
+ * If value is not an array, return an array containing that value.
+ * If value is already an array, return it directly.
  */
 export const ensureArray = <T>(value: unknown): T[] => {
   if (value === undefined || value === null) {
@@ -45,12 +45,12 @@ export const ensureArray = <T>(value: unknown): T[] => {
 };
 
 /**
- * 过滤掉参数对象中的空值、空数组和空字符串（兼容版本）
+ * Filter out empty values, empty arrays, and empty strings from parameter object (compatible version)
  */
 export const filterEmptyQueryParams = (
   queryRequestParams?: Record<string, unknown>,
 ): Record<string, unknown> => {
-  // Use entries to convert the object to [key, value] tuples and filter out empty values, empty arrays, and empty strings
+  // Use entries function to convert object to [key, value] array format, and use filter method to filter out empty values, empty arrays, and empty strings
   const filteredQueries = entries(queryRequestParams)?.filter(
     ([, val]: [string, unknown]) => {
       // Check if value is defined
@@ -72,7 +72,7 @@ export const filterEmptyQueryParams = (
       }
 
       if (!isValueUndefined && !isValueNull && !isValueNan) {
-        // Check if value is a non-empty array
+        // Check if value is non-empty array
         if (Array.isArray(val)) {
           const isNonEmptyArray = val.length > 0;
           return isNonEmptyArray;
@@ -87,12 +87,12 @@ export const filterEmptyQueryParams = (
     },
   );
 
-  // Use fromPairs to convert filtered entries back to an object
+  // Use fromPairs function to convert filtered array to a new object
   return fromPairs(filteredQueries);
 };
 
 /**
- * 从对象中移除指定的键的参数接口（兼容版本）
+ * OmitObjectKeys parameter interface (compatible version)
  */
 export interface OmitObjectKeysParams<T extends Record<string, any>> {
   obj: T;
@@ -100,7 +100,7 @@ export interface OmitObjectKeysParams<T extends Record<string, any>> {
 }
 
 /**
- * 从对象中移除指定的键（兼容版本）
+ * Remove specified keys from object (compatible version)
  */
 export const omitObjectKeys = <T extends Record<string, any>>({
   obj,
@@ -112,7 +112,7 @@ export const omitObjectKeys = <T extends Record<string, any>>({
 };
 
 /**
- * 转换参数类型（兼容版本）
+ * Convert parameter types (compatible version)
  */
 export const convertQueryParamsTypes = (
   params: Record<string, unknown>,
@@ -123,7 +123,7 @@ export const convertQueryParamsTypes = (
     if (Object.prototype.hasOwnProperty.call(params, key)) {
       const value = params[key];
 
-      // Convert numeric strings to numbers
+      // Convert numeric string to number
       if (
         typeof value === 'string' &&
         !Number.isNaN(Number(value)) &&
@@ -131,7 +131,7 @@ export const convertQueryParamsTypes = (
       ) {
         result[key] = Number(value);
       } else if (Array.isArray(value)) {
-        // Recursively handle arrays
+        // Recursively process array
         result[key] = value.map((item) =>
           typeof item === 'string' && !Number.isNaN(Number(item)) && item !== ''
             ? Number(item)
@@ -147,7 +147,7 @@ export const convertQueryParamsTypes = (
 };
 
 /**
- * 检查是否可以转换为数字
+ * Check if value can be converted to number
  */
 export const canConvertToNumber = (value: any): boolean => {
   return (
@@ -159,14 +159,14 @@ export const canConvertToNumber = (value: any): boolean => {
 };
 
 /**
- * 转换为数字
+ * Convert to number
  */
 export const toNumber = (value: any): number => {
   return canConvertToNumber(value) ? Number(value) : value;
 };
 
 /**
- * 将 URLSearchParams 转化为包含所有查询参数的对象（兼容版本）
+ * Convert URLSearchParams to object containing all query parameters (compatible version)
  */
 export const parseURLSearchParams = ({
   searchParams,
@@ -208,7 +208,7 @@ export interface SafeJSONParseParams {
 }
 
 /**
- * 安全的去解析JSON字符串
+ * Safely parse JSON string
  */
 export const safeJSONParse = ({
   valueString,
@@ -229,9 +229,9 @@ export const safeJSONParse = ({
 };
 
 /**
- * Get params object and filter empty values (imported from query.ts)
- * @param params Original params object
- * @returns Filtered params object
+ * Get parameter object, filter empty values (imported from query.ts)
+ * @param params Original parameter object
+ * @returns Filtered parameter object
  */
 export function getParamsObject<T extends Record<string, any>>(
   params: T,
@@ -240,7 +240,7 @@ export function getParamsObject<T extends Record<string, any>>(
 
   for (const [key, value] of Object.entries(params)) {
     if (value !== null && value !== undefined && value !== '') {
-      // For arrays, keep only non-empty arrays
+      // For arrays, only keep non-empty arrays
       if (Array.isArray(value)) {
         if (value.length > 0) {
           (result as any)[key] = value;
@@ -254,8 +254,8 @@ export function getParamsObject<T extends Record<string, any>>(
   return result;
 }
 
-// Note: The alias functions below are unused and removed
-// If needed, use the original functions: convertQueryParamsTypes or omitObjectKeys
+// Note: The following alias functions are unused and have been removed
+// If needed, use the original functions directly: convertQueryParamsTypes or omitObjectKeys
 
 // /**
 //  * Alias function for converting parameter types
@@ -263,12 +263,12 @@ export function getParamsObject<T extends Record<string, any>>(
 // export const convertParamsTypes = convertQueryParamsTypes;
 
 // /**
-//  * Alias function for removing specified keys from an object
+//  * Remove specified keys from object (alias function)
 //  */
 // export const omitKeysFromObject = omitObjectKeys;
 
 /**
- * 表单数据属性类型
+ * Form data property type
  */
 export interface FormTableDataProps<
   RecordType = unknown,
@@ -280,14 +280,14 @@ export interface FormTableDataProps<
 }
 
 /**
- * Safe clipboard copy utility
- * - Prefer navigator.clipboard.writeText
+ * Safe copy to clipboard utility
+ * - Prioritize using navigator.clipboard.writeText
  * - Fallback to textarea + document.execCommand('copy') when Clipboard API is unavailable
  *
- * Note: This utility doesn't depend on the UI layer (e.g., Message). On errors, it returns a result object, and the caller decides how to notify users.
+ * Note: This utility does not depend on UI layer (e.g., Message), returns result object on error, caller decides how to prompt user
  *
  * @param text Text to copy
- * @returns Result object of shape { success: boolean; error?: Error }
+ * @returns Returns result object in { success: boolean; error?: Error } format
  */
 export const safeCopyToClipboard = async (
   text: string,
@@ -323,15 +323,15 @@ export const safeCopyToClipboard = async (
     document.body.removeChild(textarea);
 
     if (!successful) {
-      throw new Error('浏览器不支持剪贴板复制');
+      throw new Error('Browser does not support clipboard copy');
     }
 
     return { success: true };
   } catch (err: unknown) {
-    // ✅ Correct: expose the actual error info
+    // ✅ Correct: expose actual error information
     const error = err instanceof Error ? err : new Error(String(err));
-    // The utility layer shouldn't depend directly on a logging lib; use console.error for minimal logging
-    console.error('[safeCopyToClipboard] 复制失败:', {
+    // Utility layer does not directly depend on logger library, use console.error for minimal logging here
+    console.error('[safeCopyToClipboard] Copy failed:', {
       error: error.message,
       timestamp: Date.now(),
     });

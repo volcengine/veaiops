@@ -16,7 +16,7 @@ import type { SubscribeRelationWithAttributes } from 'api-generate';
 import { useEffect, useState } from 'react';
 
 /**
- * Webhook管理Hook的返回值类型
+ * Webhook management Hook return value type
  */
 export interface UseWebhookManagementReturn {
   webhookHeaders: Array<{ key: string; value: string }>;
@@ -31,18 +31,18 @@ export interface UseWebhookManagementReturn {
 }
 
 /**
- * Webhook管理Hook参数
+ * Webhook management Hook parameters
  */
 export interface UseWebhookManagementParams {
-  /** 初始数据（编辑模式时使用） */
+  /** Initial data (used in edit mode) */
   initialData?: SubscribeRelationWithAttributes | null;
 }
 
 /**
- * 将后端返回的 webhook_headers 对象转换为前端表单使用的数组格式
+ * Convert backend webhook_headers object to array format used by frontend form
  *
- * @param webhookHeadersObj - 后端返回的 webhook_headers 对象
- * @returns 前端表单使用的数组格式
+ * @param webhookHeadersObj - Backend webhook_headers object
+ * @returns Array format used by frontend form
  *
  * @example
  * ```ts
@@ -50,7 +50,7 @@ export interface UseWebhookManagementParams {
  *   'Content-Type': 'application/json',
  *   'Authorization': 'Bearer token'
  * });
- * // 返回: [
+ * // Returns: [
  * //   { key: 'Content-Type', value: 'application/json' },
  * //   { key: 'Authorization', value: 'Bearer token' }
  * // ]
@@ -70,11 +70,11 @@ const convertWebhookHeadersToArray = (
 };
 
 /**
- * Webhook管理Hook
- * 提供Webhook请求头的状态管理功能
+ * Webhook management Hook
+ * Provides state management functionality for Webhook request headers
  *
- * @param params - Hook参数
- * @returns Webhook管理函数和状态
+ * @param params - Hook parameters
+ * @returns Webhook management functions and state
  */
 export const useWebhookManagement = ({
   initialData,
@@ -82,14 +82,14 @@ export const useWebhookManagement = ({
   const [webhookHeaders, setWebhookHeaders] = useState<
     Array<{ key: string; value: string }>
   >(() => {
-    // 初始化时从 initialData 中提取 webhook_headers
+    // Extract webhook_headers from initialData during initialization
     if (initialData?.webhook_headers) {
       return convertWebhookHeadersToArray(initialData.webhook_headers);
     }
     return [];
   });
 
-  // 当 initialData 变化时，重新初始化 webhookHeaders
+  // Re-initialize webhookHeaders when initialData changes
   useEffect(() => {
     if (initialData?.webhook_headers) {
       setWebhookHeaders(
@@ -101,14 +101,14 @@ export const useWebhookManagement = ({
   }, [initialData]);
 
   /**
-   * 添加 Webhook 请求头
+   * Add Webhook request header
    */
   const addWebhookHeader = () => {
     setWebhookHeaders([...webhookHeaders, { key: '', value: '' }]);
   };
 
   /**
-   * 删除 Webhook 请求头
+   * Remove Webhook request header
    */
   const removeWebhookHeader = (index: number) => {
     const newHeaders = webhookHeaders.filter((_, i) => i !== index);
@@ -116,7 +116,7 @@ export const useWebhookManagement = ({
   };
 
   /**
-   * 更新 Webhook 请求头
+   * Update Webhook request header
    */
   const updateWebhookHeader = (
     index: number,
@@ -129,7 +129,7 @@ export const useWebhookManagement = ({
   };
 
   /**
-   * 重置 Webhook 请求头
+   * Reset Webhook request headers
    */
   const resetWebhookHeaders = () => {
     setWebhookHeaders([]);

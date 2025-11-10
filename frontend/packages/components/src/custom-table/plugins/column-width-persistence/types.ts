@@ -13,15 +13,12 @@
 // limitations under the License.
 
 /**
- * 列宽持久化插件类型定义
- * 类型已迁移到 ../../types/plugins/column-width-persistence.ts
- * 此文件保留以兼容现有引用，实际类型请从types目录导入
- *
-
- *
+ * Column width persistence plugin type definitions
+ * Types have been migrated to ../../types/plugins/column-width-persistence.ts
+ * This file is kept for backward compatibility with existing references, actual types should be imported from types directory
  */
 
-// 重新导出核心类型
+// Re-export core types
 export type {
   ColumnWidthPersistenceConfig,
   ColumnWidthPersistenceState,
@@ -31,53 +28,53 @@ export type {
   TablePropsWithColumnWidth,
 } from '@/custom-table/types/plugins/column-width-persistence';
 
-// 保留独有的接口
+// Keep unique interfaces
 /**
- * 列宽信息
+ * Column width information
  */
 export interface ColumnWidthInfo {
-  /** 列标识 */
+  /** Column identifier */
   dataIndex: string;
-  /** 列宽度 */
+  /** Column width */
   width: number;
-  /** 检测时间戳 */
+  /** Detection timestamp */
   timestamp: number;
 }
 
 /**
- * 列宽持久化插件方法
+ * Column width persistence plugin methods
  */
 export interface ColumnWidthPersistenceMethods {
-  /** 设置单个列的持久化宽度 */
+  /** Set persistent width for single column */
   setPersistentColumnWidth: (params: {
     dataIndex: string;
     width: number;
   }) => void;
 
-  /** 批量设置持久化列宽度 */
+  /** Batch set persistent column widths */
   setBatchPersistentColumnWidths: (widthsMap: Record<string, number>) => void;
 
-  /** 获取持久化列宽度 */
+  /** Get persistent column width */
   getPersistentColumnWidth: (dataIndex: string) => number | undefined;
 
-  /** 获取所有持久化列宽度 */
+  /** Get all persistent column widths */
   getAllPersistentColumnWidths: () => Record<string, number>;
 
-  /** 清除特定列的持久化宽度 */
+  /** Clear persistent width for specific column */
   clearPersistentColumnWidth: (dataIndex: string) => void;
 
-  /** 清除所有持久化列宽度 */
+  /** Clear all persistent column widths */
   clearAllPersistentColumnWidths: () => void;
 
-  /** 从DOM检测当前列宽度 */
+  /** Detect current column widths from DOM */
   detectCurrentColumnWidths: () => Promise<Record<string, number>>;
 
-  /** 保存当前列宽度到持久化存储 */
+  /** Save current column widths to persistent storage */
   saveCurrentColumnWidths: () => Promise<void>;
 
-  /** 从持久化存储恢复列宽度 */
+  /** Restore column widths from persistent storage */
   restoreColumnWidths: () => Promise<void>;
 
-  /** 应用列宽度到表格 */
+  /** Apply column widths to table */
   applyColumnWidths: (widthsMap: Record<string, number>) => void;
 }

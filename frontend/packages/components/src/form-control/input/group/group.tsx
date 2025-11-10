@@ -23,17 +23,17 @@ import { isEmpty } from 'lodash-es';
 import { type FC, useEffect, useState } from 'react';
 
 const commonInputProps = {
-  placeholder: '请输入',
+  placeholder: 'Please enter',
   autoComplete: 'off' as const,
 };
 
 const commonSelectProps = {
-  placeholder: '请选择',
+  placeholder: 'Please select',
 };
 
 /**
- * InputGroup 组件包装器
- * 提供表单项包装功能，支持垂直布局等特性
+ * InputGroup component wrapper
+ * Provides form item wrapper functionality, supports vertical layout and other features
  */
 const InputGroup: FC<
   InputGroupProps & {

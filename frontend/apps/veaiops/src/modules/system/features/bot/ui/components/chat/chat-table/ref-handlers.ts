@@ -23,7 +23,7 @@ export interface ChatTableRef {
 }
 
 /**
- * 群管理表格 Ref 处理Hook
+ * Chat management table Ref handler Hook
  */
 export const useChatTableRefHandler = ({
   ref,
@@ -36,7 +36,7 @@ export const useChatTableRefHandler = ({
     | undefined;
   tableRef: RefObject<CustomTableActionType<Chat>>;
 }) => {
-  // 暴露刷新方法给父组件
+  // Expose refresh method to parent component
   useImperativeHandle(
     ref,
     () => ({

@@ -63,3 +63,4 @@ export const getPageInfo = (): PageInfo => {
     title: document.title,
   };
 };
+

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 数据源创建函数统一导出
+ * Data source creation function unified export
  */
 
 import type { DataSourceType, WizardState } from '@/components/wizard/types';
@@ -28,7 +28,7 @@ export { createVolcengineDataSource } from './volcengine';
 export { createZabbixDataSource } from './zabbix';
 
 /**
- * 根据数据源类型创建数据源
+ * Create data source based on data source type
  */
 export const createDataSource = async (
   dataSourceType: DataSourceType,

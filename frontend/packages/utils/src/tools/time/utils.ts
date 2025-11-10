@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 判断一个字符串是否可以被转换成数字
- * @param str 需要被检查的字符串
- * @return 如果字符串可以被转换成数字则返回true，否则返回false
+ * Check if a string can be converted to a number
+ * @param str String to be checked
+ * @return Returns true if string can be converted to number, otherwise returns false
  */
 export const canConvertToNumber = (str: string | number | unknown): boolean => {
   if (!str) {
@@ -27,25 +27,25 @@ export const canConvertToNumber = (str: string | number | unknown): boolean => {
 };
 
 /**
- * 判断一个时间戳是毫秒时间戳
- * @param timestamp 时间戳，可以是以秒为单位或毫秒为单位
- * @returns 如果时间戳是以毫秒为单位，则返回 true；否则返回 false
+ * Check if a timestamp is a millisecond timestamp
+ * @param timestamp Timestamp, can be in seconds or milliseconds
+ * @returns Returns true if timestamp is in milliseconds, otherwise returns false
  */
 export const isMillisecondTimestamp = (timestamp?: number | string): boolean =>
   timestamp?.toString().length === 13;
 
 /**
- * 判断一个时间戳是秒时间戳
- * @param timestamp 时间戳，可以是以秒为单位或毫秒为单位
- * @returns 如果时间戳是以秒为单位，则返回 true；否则返回 false
+ * Check if a timestamp is a second timestamp
+ * @param timestamp Timestamp, can be in seconds or milliseconds
+ * @returns Returns true if timestamp is in seconds, otherwise returns false
  */
 export const isSecondTimestamp = (timestamp?: number | string): boolean =>
   timestamp?.toString().length === 10;
 
 /**
- * 检测一个时间范围数组中的元素是否全部为毫秒级时间戳
- * @param timeRange 待检测的时间范围数组
- * @returns 如果时间范围数组中的元素全部为毫秒级时间戳，则返回true，否则返回 false
+ * Check if all elements in a time range array are millisecond timestamps
+ * @param timeRange Time range array to be checked
+ * @returns Returns true if all elements in time range array are millisecond timestamps, otherwise returns false
  */
 export const isTimeRangeWithMillSecondTimestamps = (
   timeRange: string[] | number[],
@@ -54,9 +54,9 @@ export const isTimeRangeWithMillSecondTimestamps = (
   timeRange?.every((time) => isMillisecondTimestamp(time));
 
 /**
- * 将毫秒时间戳数组转换为秒时间戳数组
- * @param millisecondTimestamps 毫秒时间戳数组
- * @returns 秒时间戳数组
+ * Convert millisecond timestamp array to second timestamp array
+ * @param millisecondTimestamps Millisecond timestamp array
+ * @returns Second timestamp array
  */
 export const convertMillisecondsToSeconds = (
   millisecondTimestamps: number[],
@@ -65,9 +65,9 @@ export const convertMillisecondsToSeconds = (
 };
 
 /**
- * 将分钟数转换为毫秒数
- * @param minutes 分钟数
- * @returns 转换后的毫秒数，如果分钟数不存在，则返回 undefined
+ * Convert minutes to milliseconds
+ * @param minutes Number of minutes
+ * @returns Converted milliseconds, returns undefined if minutes does not exist
  */
 export const convertMinutesToMilliseconds = (
   minutes: number | undefined,
@@ -84,12 +84,12 @@ export const convertMinutesToMilliseconds = (
 };
 
 /**
- * 将时间解析为以秒为单位的结果。
- * @param time - 时间对象，包含以小时、分钟和秒为单位的时间值。
- * @param time.hours - 小时数，默认为 0。
- * @param time.minutes - 分钟数，默认为 0。
- * @param time.seconds - 秒数，默认为 0。
- * @returns 解析后的以秒为单位的时间值。
+ * Parse time to result in seconds.
+ * @param time - Time object, containing time values in hours, minutes, and seconds.
+ * @param time.hours - Number of hours, defaults to 0.
+ * @param time.minutes - Number of minutes, defaults to 0.
+ * @param time.seconds - Number of seconds, defaults to 0.
+ * @returns Parsed time value in seconds.
  */
 export const parseTimeToSeconds = (
   props: { hours?: number; minutes?: number; seconds?: number } | undefined,

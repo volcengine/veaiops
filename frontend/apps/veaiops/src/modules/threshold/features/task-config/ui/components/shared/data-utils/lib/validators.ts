@@ -15,8 +15,8 @@
 import { logger } from '@veaiops/utils';
 
 /**
- * 后端返回的时序数据项结构
- * 支持多个数据源（Volcengine、Aliyun、Zabbix）的通用格式
+ * Backend returned time series data item structure
+ * Supports common format for multiple data sources (Volcengine, Aliyun, Zabbix)
  */
 export interface TimeseriesBackendItem {
   timestamps: Array<string | number>;
@@ -26,7 +26,7 @@ export interface TimeseriesBackendItem {
 }
 
 /**
- * 验证时间序列项的有效性
+ * Validate time series item validity
  */
 export const validateTimeseriesItem = (
   item: unknown,
@@ -37,7 +37,7 @@ export const validateTimeseriesItem = (
 
   const typedItem = item as TimeseriesBackendItem;
 
-  // timestamps 和 values 必须是数组
+  // timestamps and values must be arrays
   if (
     !Array.isArray(typedItem.timestamps) ||
     !Array.isArray(typedItem.values)
@@ -45,7 +45,7 @@ export const validateTimeseriesItem = (
     return false;
   }
 
-  // 至少要有一个数据点
+  // Must have at least one data point
   if (typedItem.timestamps.length === 0 || typedItem.values.length === 0) {
     return false;
   }
@@ -54,19 +54,19 @@ export const validateTimeseriesItem = (
 };
 
 /**
- * 安全的数值解析函数
+ * Safe number parsing function
  */
 export const parseToNumber = (value: unknown): number | undefined => {
   if (value === null || value === undefined) {
     return undefined;
   }
 
-  // 边界检查：已经是数字
+  // Boundary check: already a number
   if (typeof value === 'number') {
     return Number.isFinite(value) ? value : undefined;
   }
 
-  // 边界检查：字符串转数字
+  // Boundary check: string to number conversion
   if (typeof value === 'string') {
     const numericValue = Number(value);
     return Number.isFinite(numericValue) ? numericValue : undefined;
@@ -76,14 +76,14 @@ export const parseToNumber = (value: unknown): number | undefined => {
 };
 
 /**
- * 验证时间戳的有效性
+ * Validate timestamp validity
  */
 export const validateTimestamp = (rawTimestamp: unknown): boolean => {
   if (typeof rawTimestamp !== 'number' || !Number.isFinite(rawTimestamp)) {
     return false;
   }
 
-  // 边界检查：时间戳范围合理性（1970-2100年之间）
+  // Boundary check: timestamp range reasonableness (between 1970-2100)
   const MIN_TIMESTAMP = 0; // 1970-01-01
   const MAX_TIMESTAMP = 4102444800; // 2100-01-01
   if (rawTimestamp < MIN_TIMESTAMP || rawTimestamp > MAX_TIMESTAMP) {
@@ -94,7 +94,7 @@ export const validateTimestamp = (rawTimestamp: unknown): boolean => {
 };
 
 /**
- * 验证值的合理性
+ * Validate value reasonableness
  */
 export const validateValueRange = (value: number): boolean => {
   const MAX_REASONABLE_VALUE = Number.MAX_SAFE_INTEGER;

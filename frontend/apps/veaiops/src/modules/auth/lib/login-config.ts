@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 登录页面样式配置
+// Login page style configuration
 export const loginStyles = {
-  // 背景样式
+  // Background style
   background: {
     container: 'min-h-screen flex items-center justify-center p-4',
   },
 
-  // 卡片样式
+  // Card style
   card: {
     container: 'w-96 p-8 shadow-2xl border-0',
     style: {
@@ -31,7 +31,7 @@ export const loginStyles = {
     },
   },
 
-  // Logo样式
+  // Logo style
   logo: {
     container:
       'w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center relative overflow-hidden',
@@ -51,7 +51,7 @@ export const loginStyles = {
     icon: 'text-white text-3xl relative z-10',
   },
 
-  // 标题样式
+  // Title style
   title: {
     container: 'mb-3 text-white font-bold text-3xl',
     style: {
@@ -62,10 +62,10 @@ export const loginStyles = {
     },
   },
 
-  // 副标题样式
+  // Subtitle style
   subtitle: 'text-gray-300 text-lg',
 
-  // 表单样式
+  // Form style
   form: {
     container: 'space-y-6',
     label: 'text-gray-300 font-medium',
@@ -75,7 +75,7 @@ export const loginStyles = {
     icon: 'text-gray-400',
   },
 
-  // 按钮样式
+  // Button style
   button: {
     container: 'w-full border-0',
     style: {
@@ -98,14 +98,14 @@ export const loginStyles = {
     },
   },
 
-  // 底部信息样式
+  // Footer information style
   footer: {
     container: 'text-center mt-8',
     text: 'text-gray-400 text-sm leading-relaxed',
   },
 } as const;
 
-// 表单验证规则
+// Form validation rules
 export const formRules = {
   username: [
     { required: true, message: '请输入用户名' },
@@ -117,7 +117,7 @@ export const formRules = {
   ],
 };
 
-// 表单字段配置
+// Form field configuration
 export const formFields = {
   username: {
     label: '用户名',

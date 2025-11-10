@@ -17,31 +17,31 @@ import type { BotVO } from './bot-vo';
 import type { ChannelType } from './channel-type';
 import type { GroupChatVO } from './group-chat-vo';
 /**
- * 通知策略响应对象（InformStrategyVO）
+ * Inform strategy response object (InformStrategyVO)
  */
 export type InformStrategy = {
   /**
-   * 消息卡片通知策略ID
+   * Message card notification strategy ID
    */
   id: string;
   /**
-   * 消息卡片通知策略名称
+   * Message card notification strategy name
    */
   name: string;
   /**
-   * 消息卡片通知策略描述
+   * Message card notification strategy description
    */
   description?: string;
   /**
-   * 通知Channel类型
+   * Notification channel type
    */
   channel: ChannelType;
   /**
-   * 机器人信息
+   * Bot information
    */
   bot: BotVO;
   /**
-   * 群聊列表
+   * Group chat list
    */
   group_chats: Array<GroupChatVO>;
 };

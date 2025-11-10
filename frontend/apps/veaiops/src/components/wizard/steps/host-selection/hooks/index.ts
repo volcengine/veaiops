@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 主机选择hooks导出
+ * Host selection hooks export
  */
 
 export { useInstanceData } from './use-instance-data';

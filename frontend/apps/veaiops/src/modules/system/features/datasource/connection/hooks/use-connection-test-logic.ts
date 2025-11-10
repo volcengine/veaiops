@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接测试逻辑Hook
+ * Connection test logic Hook
  */
 
 import { useConnectionTest } from '@/hooks/use-connection-test';
@@ -32,7 +32,7 @@ export const useConnectionTestLogic = ({
     useConnectionTest();
 
   /**
-   * 构建测试配置
+   * Build test configuration
    */
   const buildTestConfig = useCallback(
     (values: any): ConnectCreateRequest => {
@@ -41,7 +41,7 @@ export const useConnectionTestLogic = ({
         type,
       };
 
-      // 根据数据源类型添加认证信息
+      // Add authentication information based on data source type
       if (type === DataSourceType.ZABBIX) {
         testConfig.zabbix_api_url = values.zabbix_api_url;
         testConfig.zabbix_api_user = values.zabbix_api_user;
@@ -61,7 +61,7 @@ export const useConnectionTestLogic = ({
   );
 
   /**
-   * 验证密码字段
+   * Validate password field
    */
   const validatePassword = useCallback(
     (values: any): string | null => {
@@ -84,14 +84,14 @@ export const useConnectionTestLogic = ({
   );
 
   /**
-   * 处理连接测试
+   * Handle connection test
    */
   const handleTestConnection = useCallback(
     async (values: any) => {
       try {
         const testConfig = buildTestConfig(values);
 
-        // 检查密码是否已填写
+        // Check if password is filled
         const missingField = validatePassword(values);
         if (missingField) {
           Message.error(`请输入${missingField}以进行连接测试`);
@@ -107,7 +107,7 @@ export const useConnectionTestLogic = ({
           return false;
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const msg =
           error instanceof Error ? error.message : '连接测试失败，请检查输入';
         Message.error(`连接测试失败:${msg}`);
@@ -118,7 +118,7 @@ export const useConnectionTestLogic = ({
   );
 
   /**
-   * 执行连接测试（用于表单提交前）
+   * Execute connection test (used before form submission)
    */
   const executeConnectionTest = useCallback(
     async (values: any) => {

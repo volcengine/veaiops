@@ -27,39 +27,39 @@ import { getEventHistoryFilters } from './filters';
 import type { EventHistoryFilters, EventHistoryTableProps } from './types';
 
 /**
- * 统一的历史事件表格组件
+ * Unified event history table component
  *
- * 用于三个模块的历史事件展示：
- * - 智能阈值历史事件
- * - ChatOps历史事件
- * - 事件中心历史事件
+ * Used for event history display in three modules:
+ * - Intelligent threshold event history
+ * - ChatOps event history
+ * - Event center event history
  *
- * 特点：
- * - 统一的列配置：事件ID、智能体、状态、事件级别、项目、创建时间、更新时间
- * - 根据模块类型自动过滤智能体选项
- * - 支持自定义操作列
- * - 通过 props 注入 API 请求函数，避免在组件库层直接依赖应用层代码
+ * Features:
+ * - Unified column configuration: Event ID, Agent, Status, Event Level, Project, Created At, Updated At
+ * - Automatically filter agent options based on module type
+ * - Supports custom action column
+ * - Inject API request function through props to avoid direct dependency on application layer code in component library layer
  */
 export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
   moduleType,
-  title = '历史事件',
+  title = 'Event History',
   showExport = false,
   onViewDetail,
   customActions,
   request,
 }) => {
-  // 使用传入的 request 函数
+  // Use passed request function
   if (!request) {
     throw new Error('EventHistoryTable: request prop is required');
   }
 
-  // 数据源配置
+  // Data source configuration
   const dataSource = useMemo(
     () => createServerPaginationDataSource({ request }),
     [request],
   );
 
-  // 表格属性配置
+  // Table properties configuration
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
@@ -70,12 +70,12 @@ export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
     [],
   );
 
-  // 列配置
+  // Column configuration
   const handleColumns = useMemo(() => {
     return () => getEventHistoryColumns({ onViewDetail, customActions });
   }, [onViewDetail, customActions]);
 
-  // 筛选器配置
+  // Filter configuration
   const handleFilters = useCallback(
     (props: HandleFilterProps<EventHistoryFilters>) => {
       return getEventHistoryFilters({
@@ -86,14 +86,14 @@ export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
     [moduleType],
   );
 
-  // 操作按钮
+  // Action buttons
   const actions = useMemo(() => {
     const buttons: React.ReactNode[] = [];
 
     if (showExport) {
       buttons.push(
         <Button key="export" type="primary">
-          导出
+          Export
         </Button>,
       );
     }
@@ -101,7 +101,7 @@ export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
     return buttons;
   }, [showExport]);
 
-  // Query format 配置
+  // Query format configuration
   const queryFormat = useMemo(
     () => ({
       agent_type: queryArrayFormat,

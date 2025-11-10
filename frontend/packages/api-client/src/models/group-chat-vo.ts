@@ -14,23 +14,23 @@
 
 /* generated using openapi-typescript-codegen -- do not edit */
 /**
- * 群聊视图对象
+ * Group chat view object
  */
 export type GroupChatVO = {
   /**
-   * 群聊文档ID
+   * Group chat document ID
    */
   id: string;
   /**
-   * 开放群聊ID
+   * Open chat ID
    */
   open_chat_id: string;
   /**
-   * 群聊名称
+   * Group chat name
    */
   chat_name: string;
   /**
-   * 是否激活
+   * Whether the group chat is active
    */
   is_active: boolean;
 };

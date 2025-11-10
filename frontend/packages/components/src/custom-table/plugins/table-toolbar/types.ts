@@ -13,129 +13,129 @@
 // limitations under the License.
 
 /**
- * 表格工具栏插件类型定义
- * 提供表格常用操作工具栏
+ * Table toolbar plugin type definition
+ * Provides common table operation toolbar
  */
 import type { ReactNode } from 'react';
 
 /**
- * 工具栏位置
+ * Toolbar position
  */
 export type ToolbarPosition = 'top' | 'bottom' | 'both';
 
 /**
- * 工具栏对齐方式
+ * Toolbar alignment
  */
 export type ToolbarAlign = 'left' | 'center' | 'right' | 'space-between';
 
 /**
- * 工具栏按钮配置
+ * Toolbar button configuration
  */
 export interface ToolbarButtonConfig {
-  /** 按钮唯一标识 */
+  /** Button unique identifier */
   key: string;
-  /** 按钮标题 */
+  /** Button title */
   title: string;
-  /** 按钮图标 */
+  /** Button icon */
   icon?: ReactNode;
-  /** 按钮类型 */
+  /** Button type */
   type?: 'primary' | 'secondary' | 'dashed' | 'text' | 'outline';
-  /** 是否危险按钮 */
+  /** Whether danger button */
   danger?: boolean;
-  /** 是否禁用 */
+  /** Whether disabled */
   disabled?: boolean | (() => boolean);
-  /** 是否显示 */
+  /** Whether visible */
   visible?: boolean | (() => boolean);
-  /** 按钮点击事件 */
+  /** Button click event */
   onClick: () => void | Promise<void>;
-  /** 自定义渲染 */
+  /** Custom render */
   render?: () => ReactNode;
 }
 
 /**
- * 搜索框配置
+ * Search box configuration
  */
 export interface SearchConfig {
-  /** 是否显示搜索框 */
+  /** Whether to show search box */
   show?: boolean;
-  /** 搜索框占位符 */
+  /** Search box placeholder */
   placeholder?: string;
-  /** 是否允许清空 */
+  /** Whether to allow clear */
   allowClear?: boolean;
-  /** 搜索回调 */
+  /** Search callback */
   onSearch?: (value: string) => void;
-  /** 搜索框样式 */
+  /** Search box style */
   style?: React.CSSProperties;
-  /** 搜索框宽度 */
+  /** Search box width */
   width?: number | string;
 }
 
 /**
- * 刷新按钮配置
+ * Refresh button configuration
  */
 export interface RefreshConfig {
-  /** 是否显示刷新按钮 */
+  /** Whether to show refresh button */
   show?: boolean;
-  /** 刷新按钮标题 */
+  /** Refresh button title */
   title?: string;
-  /** 刷新回调 */
+  /** Refresh callback */
   onRefresh?: () => void | Promise<void>;
-  /** 是否显示加载状态 */
+  /** Whether to show loading state */
   showLoading?: boolean;
 }
 
 /**
- * 密度设置配置
+ * Density setting configuration
  */
 export interface DensityConfig {
-  /** 是否显示密度设置 */
+  /** Whether to show density setting */
   show?: boolean;
-  /** 默认密度 */
+  /** Default density */
   defaultDensity?: 'default' | 'middle' | 'small';
-  /** 密度变化回调 */
+  /** Density change callback */
   onDensityChange?: (density: 'default' | 'middle' | 'small') => void;
 }
 
 /**
- * 表格工具栏配置
+ * Table toolbar configuration
  */
 export interface TableToolbarConfig {
-  /** 是否启用插件 */
+  /** Whether plugin is enabled */
   enabled?: boolean;
-  /** 插件优先级 */
+  /** Plugin priority level */
   priority?: number;
-  /** 工具栏位置 */
+  /** Toolbar position */
   position?: ToolbarPosition;
-  /** 工具栏对齐方式 */
+  /** Toolbar alignment */
   align?: ToolbarAlign;
-  /** 左侧按钮配置 */
+  /** Left button configuration */
   leftButtons?: ToolbarButtonConfig[];
-  /** 右侧按钮配置 */
+  /** Right button configuration */
   rightButtons?: ToolbarButtonConfig[];
-  /** 搜索配置 */
+  /** Search configuration */
   search?: SearchConfig;
-  /** 刷新配置 */
+  /** Refresh configuration */
   refresh?: RefreshConfig;
-  /** 密度设置配置 */
+  /** Density setting configuration */
   density?: DensityConfig;
-  /** 工具栏样式 */
+  /** Toolbar style */
   style?: React.CSSProperties;
-  /** 工具栏类名 */
+  /** Toolbar class name */
   className?: string;
-  /** 自定义工具栏渲染 */
+  /** Custom toolbar render */
   render?: () => ReactNode;
 }
 
 /**
- * 插件状态
+ * Plugin state
  */
 export interface TableToolbarState {
-  /** 当前密度设置 */
+  /** Current density setting */
   currentDensity: 'default' | 'middle' | 'small';
-  /** 搜索值 */
+  /** Search value */
   searchValue: string;
-  /** 是否正在刷新 */
+  /** Whether currently refreshing */
   isRefreshing: boolean;
-  /** 工具栏是否可见 */
+  /** Whether toolbar is visible */
   isVisible: boolean;
 }

@@ -36,8 +36,8 @@ import { useEffect, useState } from 'react';
 const { Text } = Typography;
 
 /**
- * 日志导出调试按钮组件
- * 用于手动导出调试日志，排查问题
+ * Log export debug button component
+ * Used to manually export debug logs for troubleshooting
  */
 export interface LogExportButtonProps {
   buttonText?: string;
@@ -63,7 +63,7 @@ export const LogExportButton: React.FC<LogExportButtonProps> = ({
       setIsCollecting(true);
     }
 
-    // 定期更新日志计数
+    // Periodically update log count
     const interval = setInterval(() => {
       setLogCount(getLogCount());
     }, 1000);
@@ -84,7 +84,7 @@ export const LogExportButton: React.FC<LogExportButtonProps> = ({
       exportLogsToFile();
       Message.success(`成功导出 ${count} 条日志`);
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorMessage =
         error instanceof Error ? error.message : '导出日志失败';
       Message.error(errorMessage);
@@ -101,7 +101,7 @@ export const LogExportButton: React.FC<LogExportButtonProps> = ({
           setLogCount(0);
           Message.success('已清空日志');
         } catch (error) {
-          // ✅ 正确：透出实际的错误信息
+          // ✅ Correct: Expose actual error information
           const errorMessage =
             error instanceof Error ? error.message : '清空日志失败';
           Message.error(errorMessage);
@@ -155,7 +155,7 @@ export const LogExportButton: React.FC<LogExportButtonProps> = ({
         }
       : {};
 
-  // 仅在开发环境显示
+  // Only display in development environment
   if (process.env.NODE_ENV !== 'development') {
     return null;
   }

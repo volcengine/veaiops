@@ -18,7 +18,7 @@ import { ChannelType } from 'api-generate';
 import { useState } from 'react';
 
 /**
- * Bot创建表单状态管理
+ * Bot create form state management
  */
 export const useBotCreateFormState = () => {
   const [form] = Form.useForm<BotFormData>();

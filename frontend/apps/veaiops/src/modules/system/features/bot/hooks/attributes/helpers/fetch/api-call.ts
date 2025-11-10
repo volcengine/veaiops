@@ -17,7 +17,7 @@ import { type FetchAttributesParams, fetchAttributesApi } from '@bot';
 import type { BotAttribute } from 'api-generate';
 
 /**
- * 调用API获取Bot属性列表
+ * Call API to fetch Bot attributes list
  */
 export const callFetchAttributesApi = async ({
   params,
@@ -38,7 +38,7 @@ export const callFetchAttributesApi = async ({
     const result = await fetchAttributesApi(params);
 
     if (result.data) {
-      // 过滤当前bot的特别关注
+      // Filter current bot's special attention
       const filteredAttributes =
         result.data.filter(
           (attr: BotAttribute) =>
@@ -47,14 +47,14 @@ export const callFetchAttributesApi = async ({
         ) || [];
       setAttributes(filteredAttributes);
 
-      // 返回 CustomTable 期望的格式
+      // Return format expected by CustomTable
       return {
         data: filteredAttributes,
         total: filteredAttributes.length,
       };
     }
 
-    // 如果没有数据，返回空结果
+    // If no data, return empty result
     return {
       data: [],
       total: 0,
@@ -64,7 +64,7 @@ export const callFetchAttributesApi = async ({
       error instanceof Error ? error.message : '获取特别关注列表失败，请重试';
     Message.error(errorMessage);
 
-    // 错误时也要返回正确格式
+    // Also return correct format on error
     return {
       data: [],
       total: 0,

@@ -21,7 +21,7 @@ interface ModelFieldsProps {
 }
 
 /**
- * 模型配置字段组件（模型名称、Embedding模型名称、API Base URL）
+ * Model configuration fields component (Model name, Embedding model name, API Base URL)
  */
 export const ModelFields: React.FC<ModelFieldsProps> = ({
   showAdvancedConfig,

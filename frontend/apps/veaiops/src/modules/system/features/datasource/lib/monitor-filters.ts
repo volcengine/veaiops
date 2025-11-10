@@ -29,12 +29,12 @@
 import type { BaseQuery, FieldItem, HandleFilterProps } from '@veaiops/components';
 
 /**
- * 创建监控表格筛选器配置
+ * Create monitor table filter configuration
  *
- * 注意：当前返回空数组，不显示筛选器（与 origin/feat/web-v2 分支一致）
+ * Note: Currently returns empty array, no filters displayed (consistent with origin/feat/web-v2 branch)
  *
- * @param _props - 筛选器属性
- * @returns 筛选器配置数组（当前为空）
+ * @param _props - Filter properties
+ * @returns Filter configuration array (currently empty)
  */
 export const createMonitorTableFilters = (
   _props: HandleFilterProps<BaseQuery>,

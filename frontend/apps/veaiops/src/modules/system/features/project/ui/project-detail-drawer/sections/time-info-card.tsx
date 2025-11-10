@@ -22,14 +22,14 @@ const { Text } = Typography;
 const { StampTime } = CellRender;
 
 /**
- * 时间信息卡片组件参数
+ * Time info card component parameters
  */
 interface TimeInfoCardProps {
   project: Project;
 }
 
 /**
- * 项目时间信息卡片组件
+ * Project time info card component
  */
 export const TimeInfoCard: React.FC<TimeInfoCardProps> = ({ project }) => {
   return (
@@ -53,7 +53,7 @@ export const TimeInfoCard: React.FC<TimeInfoCardProps> = ({ project }) => {
                 lineHeight: '22px',
               }}
             >
-              时间信息
+              Time Information
             </Text>
             <Text
               type="secondary"
@@ -63,7 +63,7 @@ export const TimeInfoCard: React.FC<TimeInfoCardProps> = ({ project }) => {
                 lineHeight: '16px',
               }}
             >
-              项目的创建和更新时间记录
+              Project creation and update time records
             </Text>
           </div>
         </div>
@@ -85,7 +85,7 @@ export const TimeInfoCard: React.FC<TimeInfoCardProps> = ({ project }) => {
         column={1}
         data={[
           {
-            label: '创建时间',
+            label: 'Created At',
             value: (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#00b42a]" />
@@ -96,7 +96,7 @@ export const TimeInfoCard: React.FC<TimeInfoCardProps> = ({ project }) => {
             ),
           },
           {
-            label: '更新时间',
+            label: 'Updated At',
             value: (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#165dff]" />

@@ -24,7 +24,7 @@ import type { Project } from 'api-generate';
 import { CellRender } from "@veaiops/components";
 import type { ProjectTableActions } from '@project/types';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender components to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 const { Ellipsis: EllipsisRender, StampTime: StampTimeRender } = CellRender;
@@ -32,68 +32,70 @@ const { Ellipsis: EllipsisRender, StampTime: StampTimeRender } = CellRender;
 const { Text } = Typography;
 
 /**
- * 获取项目表格列配置
+ * Get project table column configuration
  */
 export const getProjectTableColumns = (
   actions: ProjectTableActions
 ): ColumnProps<Project>[] => [
   {
-    title: "项目ID",
+    title: "Project ID",
     dataIndex: "project_id",
     key: "project_id",
     width: 200,
     render: (projectId: string) => <EllipsisRender text={projectId} />,
   },
   {
-    title: "项目名称",
+    title: "Project Name",
     dataIndex: "name",
     key: "name",
     width: 300,
     render: (name: string) => <Text className="font-bold">{name}</Text>,
   },
   {
-    title: "状态",
+    title: "Status",
     dataIndex: "status",
     key: "status",
     width: 100,
     render: (status: string, record: Project) => (
       <CustomOutlineTag className="rounded-xl">
-        {record.is_active ? "活跃" : "停用"}
+        {record.is_active ? "Active" : "Inactive"}
       </CustomOutlineTag>
     ),
   },
   {
-    title: "创建时间",
+    title: "Created At",
     dataIndex: "created_at",
     key: "created_at",
     width: 180,
     render: (createdAt: string) => (
-      <StampTimeRender time={createdAt} />
+      <StampTimeRender
+        time={createdAt ? new Date(createdAt).getTime() : undefined}
+      />
     ),
   },
   {
-    title: "更新时间",
+    title: "Updated At",
     dataIndex: "updated_at",
     key: "updated_at",
     width: 180,
     render: (updatedAt: number) => <StampTimeRender time={updatedAt} />,
   },
   {
-    title: "操作",
+    title: "Actions",
     key: "actions",
     width: 150,
     fixed: "right" as const,
 
     render: (_: unknown, record: Project) => (
       <Popconfirm
-        title="确认删除"
-        content={`确定要删除项目 "${record.name}" 吗？此操作不可恢复。`}
+        title="Confirm Delete"
+        content={`Are you sure you want to delete project "${record.name}"? This action cannot be undone.`}
         onOk={() => actions.onDelete(record.project_id || "")}
-        okText="删除"
-        cancelText="取消"
+        okText="Delete"
+        cancelText="Cancel"
         okButtonProps={{ status: "danger" }}
       >
-        <Tooltip content="删除项目">
+        <Tooltip content="Delete Project">
           <Button
             type="text"
             size="small"

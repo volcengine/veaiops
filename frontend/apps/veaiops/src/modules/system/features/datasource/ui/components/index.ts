@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * Components - 统一导出入口
- * 职责：层层导出所有组件，提供清晰的组件访问接口
+ * Components - Unified export entry
+ * Responsibility: Export all components layer by layer, providing clear component access interface
  *
- * 目录结构：
- * - headers/: 页面头部组件
- * - icons/: 图标组件
- * - modals/: 模态框组件
- * - renderers/: 数据渲染器组件
- * - tables/: 表格组件
- * - tabs/: 标签页组件
+ * Directory structure:
+ * - headers/: Page header components
+ * - icons/: Icon components
+ * - modals/: Modal components
+ * - renderers/: Data renderer components
+ * - tables/: Table components
+ * - tabs/: Tab components
  */
 
 // ==================== Headers ====================

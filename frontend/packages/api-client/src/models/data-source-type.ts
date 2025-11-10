@@ -14,7 +14,7 @@
 
 /* generated using openapi-typescript-codegen -- do not edit */
 /**
- * 数据源类型
+ * Data source type
  */
 export enum DataSourceType {
   ZABBIX = 'Zabbix',

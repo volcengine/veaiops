@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * CustomTable 查询参数处理工具函数
+ * CustomTable query parameter processing utility functions
  */
 
 /**
- * 获取URL参数对象
+ * Get URL parameter object
  */
 export const getParamsObject = ({
   searchParams,

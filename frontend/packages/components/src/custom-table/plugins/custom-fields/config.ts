@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Custom Fields 插件默认配置
+ * Default configuration for Custom Fields plugin
  */
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 import type { CustomFieldsConfig } from './types';

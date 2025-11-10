@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 共享模块导出
+ * Shared module export
  */
 
 // Components

@@ -22,7 +22,7 @@ import {
 import type { UseBotStateReturn } from './state';
 
 /**
- * 事件处理器Hook的参数
+ * Event handler Hook parameters
  */
 interface UseBotHandlersParams {
   state: UseBotStateReturn;
@@ -33,13 +33,13 @@ interface UseBotHandlersParams {
 }
 
 /**
- * Bot管理的事件处理器Hook
+ * Bot management event handler Hook
  *
- * 拆分说明：
- * - handlers/crud-handlers.ts: CRUD操作处理器（create, update, delete, submit）
- * - handlers/modal-handlers.ts: 弹窗操作处理器（edit, add, cancel）
- * - handlers/drawer-handlers.ts: 抽屉操作处理器（viewAttributes, chatManagement等）
- * - handlers.ts: 主入口，负责组装和导出
+ * Split explanation:
+ * - handlers/crud-handlers.ts: CRUD operation handlers (create, update, delete, submit)
+ * - handlers/modal-handlers.ts: Modal operation handlers (edit, add, cancel)
+ * - handlers/drawer-handlers.ts: Drawer operation handlers (viewAttributes, chatManagement, etc.)
+ * - handlers.ts: Main entry point, responsible for assembly and export
  */
 export const useBotHandlers = ({
   state,
@@ -64,7 +64,7 @@ export const useBotHandlers = ({
     setSelectedBotForChat,
   } = state;
 
-  // CRUD操作处理器
+  // CRUD operation handlers
   const { handleDelete, handleCreate, handleUpdate, handleSubmit } =
     useCrudHandlers({
       state,
@@ -74,7 +74,7 @@ export const useBotHandlers = ({
       refreshTable,
     });
 
-  // 弹窗操作处理器
+  // Modal operation handlers
   const { handleEdit, handleAdd, handleCancel } = useModalHandlers({
     form,
     editingBot,
@@ -83,7 +83,7 @@ export const useBotHandlers = ({
     setModalVisible,
   });
 
-  // 抽屉操作处理器
+  // Drawer operation handlers
   const {
     handleViewAttributes,
     handleCloseAttributesDrawer,

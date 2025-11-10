@@ -33,8 +33,8 @@ interface TrendChartsProps {
 }
 
 /**
- * 趋势图表组件
- * @description 展示事件和消息的趋势图表
+ * Trend charts component
+ * @description Display trend charts for events and messages
  */
 export const TrendCharts: React.FC<TrendChartsProps> = ({
   loading,

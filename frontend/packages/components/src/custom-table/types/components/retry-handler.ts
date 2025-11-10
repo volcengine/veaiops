@@ -13,26 +13,26 @@
 // limitations under the License.
 
 /**
- * RetryHandler 组件类型定义
- * 从 components/retry-handler/types.ts 迁移而来
+ * RetryHandler component type definitions
+ * Migrated from components/retry-handler/types.ts
  */
 
 import type { PluginContext } from '@veaiops/types';
 
 /**
- * @name 重试处理器组件属性
+ * @name Retry handler component properties
  */
 export interface RetryHandlerProps {
-  /** @name 插件上下文 */
+  /** @name Plugin context */
   context: PluginContext;
-  /** @name 重试提示消息 */
+  /** @name Retry tip message */
   message?: string;
-  /** @name 重试按钮文本 */
+  /** @name Retry button text */
   buttonText?: string;
 }
 
 /**
- * 重试状态
+ * Retry state
  */
 export interface RetryState {
   attempt: number;
@@ -42,7 +42,7 @@ export interface RetryState {
 }
 
 /**
- * 重试选项
+ * Retry options
  */
 export interface RetryOptions {
   maxAttempts: number;

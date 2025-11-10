@@ -16,7 +16,7 @@ import type { ConfigItem } from '@datasource/types';
 import { ConfigItemRenderer } from './config-item-renderer';
 
 /**
- * 渲染所有配置项 - 核心入口函数
+ * Render all config items - core entry function
  */
 export const renderAllConfigItems = (configItems: ConfigItem[]) => {
   return configItems.map((item, index) => (

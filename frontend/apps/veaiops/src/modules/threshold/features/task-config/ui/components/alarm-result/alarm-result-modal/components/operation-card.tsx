@@ -30,7 +30,7 @@ interface OperationCardProps {
 }
 
 /**
- * 操作详情卡片
+ * Operation details card
  */
 export const OperationCard: React.FC<OperationCardProps> = ({
   title,

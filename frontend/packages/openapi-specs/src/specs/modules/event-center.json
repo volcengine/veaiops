@@ -3,7 +3,7 @@
   "info": {
     "title": "VolcAIOpsKit - Event Center API",
     "version": "1.0.0",
-    "description": "事件中心管理相关接口"
+    "description": "Event center management related APIs"
   },
   "paths": {
     "/apis/v1/manager/event-center/inform-strategy/": {
@@ -575,7 +575,7 @@
                 "$ref": "#/components/schemas/EventShowStatus"
               }
             },
-            "description": "Filter events by show status (multiple selection allowed). 显示状态筛选，允许的值为：等待发送、发送成功、未订阅、未命中规则、命中过滤规则、告警抑制"
+            "description": "Filter events by show status (multiple selection allowed). Allowed values: Pending (PENDING), Success (SUCCESS), Not Subscribed (NOT_SUBSCRIBED), Not Matched (NOT_MATCHED), Filtered (FILTERED), Restrained (RESTRAINED)"
           },
           {
             "name": "region",
@@ -1048,86 +1048,86 @@
       },
       "BotVO": {
         "type": "object",
-        "description": "机器人视图对象",
+        "description": "Bot view object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "机器人文档ID"
+            "description": "Bot document ID"
           },
           "channel": {
             "$ref": "#/components/schemas/ChannelType",
-            "description": "通道类型"
+            "description": "Channel type"
           },
           "bot_id": {
             "type": "string",
-            "description": "机器人ID"
+            "description": "Bot ID"
           },
           "name": {
             "type": "string",
-            "description": "机器人名称"
+            "description": "Bot name"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否激活"
+            "description": "Whether the bot is active"
           }
         },
         "required": ["id", "channel", "bot_id", "name", "is_active"]
       },
       "GroupChatVO": {
         "type": "object",
-        "description": "群聊视图对象",
+        "description": "Group chat view object",
         "properties": {
           "id": {
             "type": "string",
-            "description": "群聊文档ID"
+            "description": "Group chat document ID"
           },
           "open_chat_id": {
             "type": "string",
-            "description": "开放群聊ID"
+            "description": "Open chat ID"
           },
           "chat_name": {
             "type": "string",
-            "description": "群聊名称"
+            "description": "Group chat name"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否激活"
+            "description": "Whether the group chat is active"
           }
         },
         "required": ["id", "open_chat_id", "chat_name", "is_active"]
       },
       "InformStrategy": {
         "type": "object",
-        "description": "通知策略响应对象（InformStrategyVO）",
+        "description": "Inform strategy response object (InformStrategyVO)",
         "properties": {
           "id": {
             "type": "string",
-            "description": "消息卡片通知策略ID"
+            "description": "Message card notification strategy ID"
           },
           "name": {
             "type": "string",
-            "description": "消息卡片通知策略名称",
+            "description": "Message card notification strategy name",
             "minLength": 1,
             "maxLength": 255
           },
           "description": {
             "type": "string",
-            "description": "消息卡片通知策略描述"
+            "description": "Message card notification strategy description"
           },
           "channel": {
             "$ref": "#/components/schemas/ChannelType",
-            "description": "通知Channel类型"
+            "description": "Notification channel type"
           },
           "bot": {
             "$ref": "#/components/schemas/BotVO",
-            "description": "机器人信息"
+            "description": "Bot information"
           },
           "group_chats": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/GroupChatVO"
             },
-            "description": "群聊列表"
+            "description": "Group chat list"
           }
         },
         "required": ["id", "name", "channel", "bot", "group_chats"]
@@ -1137,7 +1137,7 @@
         "properties": {
           "active": {
             "type": "boolean",
-            "description": "是否启用策略"
+            "description": "Whether to enable the strategy"
           }
         },
         "required": ["active"]
@@ -1147,21 +1147,21 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "消息卡片通知策略名称",
+            "description": "Message card notification strategy name",
             "minLength": 1,
             "maxLength": 255
           },
           "description": {
             "type": "string",
-            "description": "消息卡片通知策略描述"
+            "description": "Message card notification strategy description"
           },
           "channel": {
             "$ref": "#/components/schemas/ChannelType",
-            "description": "通知Channel类型"
+            "description": "Notification channel type"
           },
           "bot_id": {
             "type": "string",
-            "description": "机器人ID",
+            "description": "Bot ID",
             "minLength": 10,
             "maxLength": 32
           },
@@ -1170,7 +1170,7 @@
             "items": {
               "type": "string"
             },
-            "description": "群ID列表",
+            "description": "Group chat ID list",
             "minItems": 1
           }
         },
@@ -1181,21 +1181,21 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "消息卡片通知策略名称",
+            "description": "Message card notification strategy name",
             "minLength": 1,
             "maxLength": 255
           },
           "description": {
             "type": "string",
-            "description": "消息卡片通知策略描述"
+            "description": "Message card notification strategy description"
           },
           "channel": {
             "$ref": "#/components/schemas/ChannelType",
-            "description": "通知Channel类型"
+            "description": "Notification channel type"
           },
           "bot_id": {
             "type": "string",
-            "description": "机器人ID",
+            "description": "Bot ID",
             "minLength": 10,
             "maxLength": 32
           },
@@ -1204,7 +1204,7 @@
             "items": {
               "type": "string"
             },
-            "description": "群ID列表",
+            "description": "Group chat ID list",
             "minItems": 1
           }
         }
@@ -1557,14 +1557,14 @@
           "CHATOPS_RULE_LIMITED"
         ],
         "x-enum-descriptions": [
-          "初始化",
-          "已订阅",
-          "已构建卡片",
-          "已分发",
-          "无分发",
-          "ChatOps未匹配",
-          "ChatOps规则过滤",
-          "ChatOps规则限制"
+          "Initial",
+          "Subscribed",
+          "Card built",
+          "Distributed",
+          "No distribution",
+          "ChatOps not matched",
+          "ChatOps rule filtered",
+          "ChatOps rule limited"
         ],
         "description": "Event status codes: 0=INITIAL, 1=SUBSCRIBED, 2=CARD_BUILT, 3=DISPATCHED, 4=NONE_DISPATCH, 11=CHATOPS_NOT_MATCHED, 12=CHATOPS_RULE_FILTERED, 13=CHATOPS_RULE_RESTRAINED"
       },
@@ -1586,7 +1586,7 @@
           "FILTERED",
           "RESTRAINED"
         ],
-        "description": "Event show status with Chinese display names. 对应 Python EventShowStatus(str, Enum): PENDING=\"等待发送\", SUCCESS=\"发送成功\", NOT_SUBSCRIBED=\"未订阅\", NOT_MATCHED=\"未命中规则\", FILTERED=\"命中过滤规则\", RESTRAINED=\"告警抑制\". 等待发送=PENDING (status 0,1,2), 发送成功=SUCCESS (status 3), 未订阅=NOT_SUBSCRIBED (status 4), 未命中规则=NOT_MATCHED (status 11), 命中过滤规则=FILTERED (status 12), 告警抑制=RESTRAINED (status 13)"
+        "description": "Event show status with display names. Corresponds to Python EventShowStatus(str, Enum): PENDING=\"Pending\", SUCCESS=\"Success\", NOT_SUBSCRIBED=\"Not Subscribed\", NOT_MATCHED=\"Not Matched\", FILTERED=\"Filtered\", RESTRAINED=\"Restrained\". PENDING=\"Pending\" (status 0,1,2), SUCCESS=\"Success\" (status 3), NOT_SUBSCRIBED=\"Not Subscribed\" (status 4), NOT_MATCHED=\"Not Matched\" (status 11), FILTERED=\"Filtered\" (status 12), RESTRAINED=\"Restrained\" (status 13)"
       },
       "AgentNotification": {
         "type": "object",
@@ -1776,11 +1776,11 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "数据库唯一标识"
+            "description": "Database unique identifier"
           },
           "id": {
             "type": "string",
-            "description": "代理模板ID"
+            "description": "Agent template ID"
           },
           "agents": {
             "type": "array",
@@ -1799,12 +1799,12 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Update time"
           }
         },
         "required": ["id", "agents", "channel", "template_id"]
@@ -1899,7 +1899,7 @@
             "properties": {
               "show_status": {
                 "$ref": "#/components/schemas/EventShowStatus",
-                "description": "The show status of the event (computed field based on status). 状态（基于status字段计算）"
+                "description": "The show status of the event (computed field based on status field)"
               }
             }
           }

@@ -20,7 +20,7 @@ import { logger } from '@veaiops/utils';
 import { useCallback } from 'react';
 
 /**
- * 删除机器人Hook
+ * Delete bot hook
  */
 export const useDeleteBot = () => {
   return useCallback(async (botId: string): Promise<boolean> => {

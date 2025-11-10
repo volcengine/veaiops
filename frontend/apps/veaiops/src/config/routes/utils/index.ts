@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * 路由工具模块统一导出
+ * Route utility module unified exports
  *
- * 已拆分为多个子模块以提高可维护性：
- * - types: 类型定义
- * - components: React 组件（RouteLoadingFallback, RouteErrorBoundary）
- * - route-creators: 路由创建函数
+ * Split into multiple sub-modules for better maintainability:
+ * - types: Type definitions
+ * - components: React components (RouteLoadingFallback, RouteErrorBoundary)
+ * - route-creators: Route creation functions
  */
 
 export * from './types';

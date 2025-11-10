@@ -15,27 +15,27 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type AliyunMetricConfig = {
   /**
-   * 连接名称
+   * Connection name
    */
   connect_name: string;
   /**
-   * 阿里云地域
+   * Alibaba Cloud region
    */
   region: string;
   /**
-   * 命名空间
+   * Namespace
    */
   namespace: string;
   /**
-   * 指标名称
+   * Metric name
    */
   metric_name: string;
   /**
-   * 维度信息
+   * Dimension information
    */
   dimensions?: Array<Record<string, string>>;
   /**
-   * 分组维度
+   * Grouping dimensions
    */
   group_by?: Array<string>;
 };

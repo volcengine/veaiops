@@ -15,10 +15,10 @@
 import { layoutConfig, moduleConfig } from './config';
 
 /**
- * 布局工具函数
+ * Layout utility functions
  */
 export const layoutUtils = {
-  // 获取模块默认路径
+  // Get module default path
   getModuleDefaultPath: (module: string): string => {
     return (
       moduleConfig.defaultPaths[
@@ -27,19 +27,19 @@ export const layoutUtils = {
     );
   },
 
-  // 检查是否为活动模块
+  // Check if module is active
   isActiveModule: (currentPath: string, module: string): boolean => {
     return currentPath.startsWith(`/${module}`);
   },
 
-  // 获取侧边栏宽度类名
+  // Get sidebar width class name
   getSidebarWidthClass: (collapsed: boolean): string => {
     return collapsed
       ? layoutConfig.sidebar.collapsedWidth
       : layoutConfig.sidebar.expandedWidth;
   },
 
-  // 获取主内容边距类名
+  // Get main content margin class name
   getMainMarginClass: (collapsed: boolean): string => {
     return collapsed ? 'ml-16' : 'ml-60';
   },

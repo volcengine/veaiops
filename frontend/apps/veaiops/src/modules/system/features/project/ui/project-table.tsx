@@ -21,22 +21,22 @@ import { CustomTable } from '@veaiops/components';
 import React, { forwardRef } from 'react';
 
 /**
- * 项目表格组件
- * 基于CustomTable的标准化实现
- * 使用 useBusinessTable 和 operationWrapper 实现自动刷新，无需手动管理 ref
+ * Project table component
+ * Standardized implementation based on CustomTable
+ * Uses useBusinessTable and operationWrapper to achieve auto refresh, no need to manually manage ref
  */
 export const ProjectTable = forwardRef<
   { refresh: () => Promise<void> },
   ProjectTableProps
 >(({ onDelete, onImport, onCreate }, ref) => {
-  // 🎯 使用 useProjectTableConfig Hook，自动处理刷新逻辑
-  // ✅ 传递 ref 给 useProjectTableConfig，让 useBusinessTable 可以使用 ref 刷新
+  // 🎯 Use useProjectTableConfig Hook to automatically handle refresh logic
+  // ✅ Pass ref to useProjectTableConfig so useBusinessTable can use ref to refresh
   const { customTableProps, handleColumns, handleFilters, actions } =
     useProjectTableConfig({
       onDelete,
       onImport,
       onCreate,
-      ref, // ✅ 传递 ref 给 Hook
+      ref, // ✅ Pass ref to Hook
     });
 
   return (
@@ -51,7 +51,7 @@ export const ProjectTable = forwardRef<
   );
 });
 
-// 设置 displayName 用于调试
+// Set displayName for debugging
 ProjectTable.displayName = 'ProjectTable';
 
 export default ProjectTable;

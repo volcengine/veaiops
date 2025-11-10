@@ -18,17 +18,17 @@ import { Tip } from '@/tip';
 import styles from './index.module.less';
 
 type CardTitleProps = {
-  /** 卡片标题 */
+  /** Card title */
   title?: ReactNode;
-  /** 卡片头部提示 */
+  /** Card header tip */
   tips?: ReactNode;
-  /** 是否展示tip */
+  /** Whether to show tip */
   showTips?: boolean;
-  /** 副标题 */
+  /** Subtitle */
   subTitle?: ReactNode;
-  /** 卡片文案或者描述 */
+  /** Card text or description */
   description?: ReactNode;
-  /** 卡片右边按钮操作 */
+  /** Card right side button actions */
   actions?: Array<ReactNode>;
 };
 

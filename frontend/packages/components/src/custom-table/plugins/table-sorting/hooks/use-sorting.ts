@@ -16,7 +16,7 @@ import type { TableSortingConfig } from '@/custom-table/types';
 import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
 import { isEmpty, snakeCase } from 'lodash-es';
 /**
- * 表格排序Hook
+ * Table sorting Hook
  */
 import { useCallback, useMemo, useState } from 'react';
 import { DEFAULT_TABLE_SORTING_CONFIG } from '../config';
@@ -37,23 +37,23 @@ export const useSorting = ({
     ...config,
   };
 
-  // 排序状态
+  // Sorting state
   const [sorter, setSorter] = useState<SorterInfo | SorterInfo[]>(
     initialSorter,
   );
 
-  // 合并字段映射
+  // Merge field mapping
   const finalSortFieldMap = useMemo(
     () => ({ ...DEFAULT_TABLE_SORTING_CONFIG.sortFieldMap, ...sortFieldMap }),
     [sortFieldMap],
   );
 
-  // 重置排序
+  // Reset sorting
   const resetSorter = useCallback(() => {
     setSorter({} as SorterInfo);
   }, []);
 
-  // 生成排序参数
+  // Generate sorting parameters
   const getSorterParam = useCallback(() => {
     if (isEmpty(sorter)) {
       return {};
@@ -64,7 +64,7 @@ export const useSorting = ({
     }
 
     if (Array.isArray(sorter)) {
-      // 多字段排序处理
+      // Multi-field sorting handling
       if (multiSorter) {
         return {
           SortColumns: sorter.map((item) => ({
@@ -75,7 +75,7 @@ export const useSorting = ({
           })),
         };
       }
-      // 如果不支持多字段排序但收到多字段，只使用第一个
+      // If multi-field sorting is not supported but multiple fields are received, only use the first one
       else if (sorter.length > 0) {
         return {
           SortColumn: {
@@ -87,7 +87,7 @@ export const useSorting = ({
         };
       }
     } else {
-      // 单字段排序
+      // Single-field sorting
       return {
         SortColumn: {
           Column:
@@ -101,7 +101,7 @@ export const useSorting = ({
     return {};
   }, [sorter, finalSortFieldMap, multiSorter, remoteSorting]);
 
-  // 排序变更处理
+  // Sorting change handling
   const handleSorterChange = useCallback(
     (newSorter: SorterInfo | SorterInfo[]) => {
       setSorter(newSorter);

@@ -13,10 +13,11 @@
 // limitations under the License.
 
 /**
- * 表单提交逻辑Hook
+ * Form submission logic Hook
  */
 
 import { Message } from '@arco-design/web-react';
+import { logger } from '@veaiops/utils';
 import type { DataSourceType } from 'api-generate';
 import { useCallback, useState } from 'react';
 import { useConnectionTestLogic } from './use-connection-test-logic';
@@ -44,39 +45,40 @@ export const useFormSubmission = ({
     useConnectionTestLogic({ type });
 
   /**
-   * 处理表单提交
+   * Handle form submission
    */
   const handleSubmit = useCallback(
     async (form: any): Promise<boolean> => {
       try {
         const values = await form.validate();
 
-        // 在编辑模式下，确保包含连接名称（即使字段被disabled）
+        // In edit mode, ensure connection name is included (even if field is disabled)
         if (initialValues?.name && !values.name) {
           values.name = initialValues.name;
         }
 
         setSubmitting(true);
 
-        // 检查密码是否已填写
+        // Check if password is filled
         const missingField = validatePassword(values);
         if (missingField) {
           Message.error(`请输入${missingField}`);
           return false;
         }
 
-        // 提交前测试连接
+        // Test connection before submission
         Message.info('正在测试连接...');
 
-        // 执行测试连接
+        // Execute connection test
         const testResult = await executeConnectionTest(values);
 
         if (!testResult.success) {
-          // 清除页面顶部的错误横幅，避免重复显示
+          // Clear error banner at top of page to avoid duplicate display
           clearResult();
-          // 显示测试失败弹窗，阻断后续提交
+          // Show test failure modal, block subsequent submission
           const errorMessage =
-            testResult.message || '连接测试失败，请检查配置后重试';
+            testResult.message ||
+            'Connection test failed, please check configuration and retry';
           setTestError(errorMessage);
           setTestConnectionData({
             _id: initialValues?._id || 'temp',
@@ -93,18 +95,18 @@ export const useFormSubmission = ({
 
         Message.success('连接测试成功，正在提交...');
 
-        // 提交数据
+        // Submit data
         const success = await onSubmit(values);
         return success;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际错误信息
-        // 表单验证失败或测试连接失败
+        // ✅ Correct: Extract actual error information
+        // Form validation failed or connection test failed
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMsg = errorObj.message || '操作失败';
+        const errorMsg = errorObj.message || 'Operation failed';
         Message.error(errorMsg);
         logger.error({
-          message: '连接表单提交失败',
+          message: 'Connection form submission failed',
           data: {
             error: errorMsg,
             stack: errorObj.stack,
@@ -131,7 +133,7 @@ export const useFormSubmission = ({
   );
 
   /**
-   * 关闭测试失败弹窗
+   * Close test failure modal
    */
   const handleTestModalClose = useCallback(() => {
     setTestModalVisible(false);

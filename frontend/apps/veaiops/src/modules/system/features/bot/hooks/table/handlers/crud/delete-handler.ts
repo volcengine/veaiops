@@ -17,17 +17,17 @@ import { logger } from '@veaiops/utils';
 import { useCallback } from 'react';
 
 /**
- * 删除处理器参数
+ * Delete handler parameters
  */
 interface DeleteHandlerParams {
   deleteBot: (botId: string) => Promise<boolean>;
 }
 
 /**
- * 删除Bot处理器
+ * Bot delete handler
  *
- * ✅ 注意：刷新由 useBusinessTable 的 wrappedHandlers.delete 自动处理
- * 根据 .cursorrules 规范：必须使用 useBusinessTable 自动处理刷新，禁止手动实现刷新逻辑
+ * ✅ Note: Refresh is automatically handled by useBusinessTable's wrappedHandlers.delete
+ * According to .cursorrules specification: Must use useBusinessTable to automatically handle refresh, manual refresh logic is prohibited
  */
 export const useDeleteHandler = ({ deleteBot }: DeleteHandlerParams) => {
   const handleDelete = useCallback(

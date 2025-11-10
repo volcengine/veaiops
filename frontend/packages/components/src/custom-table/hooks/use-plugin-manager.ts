@@ -27,12 +27,12 @@ import type { Plugin } from '@/custom-table/types/plugins/core';
 import { devLog } from '@/custom-table/utils/log-utils';
 import type { BaseQuery, BaseRecord, PluginContext } from '@veaiops/types';
 /**
- * CustomTable 插件管理 Hook
+ * CustomTable plugin management Hook
  */
 import { useEffect, useMemo, useState } from 'react';
 
 /**
- * 插件管理Hook
+ * Plugin management Hook
  */
 const usePluginManager = <
   RecordType extends BaseRecord = BaseRecord,
@@ -44,10 +44,10 @@ const usePluginManager = <
   },
   context: PluginContext<RecordType, QueryType>,
 ) => {
-  // 插件就绪状态
+  // Plugin ready state
   const [pluginsReady, setPluginsReady] = useState(false);
 
-  // 动态插件组合
+  // Dynamic plugin combination
   const activePlugins = useMemo(() => {
     if (props.plugins) {
       return props.plugins;
@@ -56,7 +56,7 @@ const usePluginManager = <
     const features = { ...DEFAULT_FEATURES, ...props.features };
     const activePluginNames: string[] = [];
 
-    // 根据功能开关动态组合插件
+    // Dynamically combine plugins based on feature flags
     Object.entries(features).forEach(([feature, enabled]) => {
       if (enabled && feature in FEATURE_PLUGIN_MAP) {
         const featureKey = feature;
@@ -71,14 +71,14 @@ const usePluginManager = <
     return activePluginNames;
   }, [props.features, props.plugins]);
 
-  // 过滤默认插件 - 只保留活跃的插件
+  // Filter default plugins - only keep active plugins
   const filteredPlugins = useMemo(
     () =>
       DEFAULT_PLUGINS.filter((plugin) => activePlugins.includes(plugin.name)),
     [activePlugins],
   );
 
-  // 创建插件管理器 - 确保单例模式
+  // Create plugin manager - ensure singleton pattern
   const pluginManager = useMemo(() => {
     const manager = createPluginManager();
     devLog.log({
@@ -88,12 +88,12 @@ const usePluginManager = <
     return manager;
   }, []);
 
-  // 诊断日志：插件注册计数器（仅日志，不改变逻辑）
+  // Diagnostic log: Plugin registration counter (log only, does not change logic)
   const registerCounterRef = useMemo(() => {
     return new Map<string, number>();
   }, []);
 
-  // 初始化插件 - 优化依赖项以减少重复初始化
+  // Initialize plugins - optimize dependencies to reduce repeated initialization
   useEffect(() => {
     const initPlugins = async () => {
       try {
@@ -106,13 +106,13 @@ const usePluginManager = <
           },
         });
 
-        // 重置插件就绪状态，防止并发初始化
+        // Reset plugin ready state to prevent concurrent initialization
         setPluginsReady(false);
 
-        // 批量注册插件
+        // Batch register plugins
         await Promise.all(
           filteredPlugins.map(async (plugin) => {
-            // 诊断日志：统计插件注册次数（幂等校验仅日志）
+            // Diagnostic log: Count plugin registration times (idempotency check log only)
             const key = plugin.name;
             const prev = registerCounterRef.get(key) || 0;
             registerCounterRef.set(key, prev + 1);
@@ -127,7 +127,7 @@ const usePluginManager = <
             });
 
             await pluginManager.register(plugin);
-            // 记录插件注册
+            // Log plugin registration
             const pluginType = (plugin as Plugin & { type?: string }).type;
             logCollector.logPluginRegister({
               pluginName: plugin.name,
@@ -137,7 +137,7 @@ const usePluginManager = <
           }),
         );
 
-        // 设置插件上下文
+        // Set plugin context
         filteredPlugins.forEach((plugin) => {
           pluginManager.setPluginContext({
             pluginName: plugin.name,
@@ -145,7 +145,7 @@ const usePluginManager = <
           });
         });
 
-        // 初始化插件
+        // Initialize plugins
         const initResult = await initializePlugins(
           pluginManager,
           context as any,
@@ -155,28 +155,28 @@ const usePluginManager = <
             component: 'usePluginManager',
             message: 'All plugins initialized successfully',
           });
-          // 记录插件初始化
+          // Record plugin initialization
           filteredPlugins.forEach((plugin) => {
             logCollector.logPluginInit({ pluginName: plugin.name });
           });
           setPluginsReady(true);
         } else if (initResult.error) {
-          // ✅ 正确：根据返回结果判断，错误信息已在 initializePlugins 中记录
-          // 部分插件初始化失败，但仍设置 ready 为 true（因为其他插件可能已成功初始化）
+          // ✅ Correct: Judge based on return result, error information has been recorded in initializePlugins
+          // Some plugins failed to initialize, but still set ready to true (because other plugins may have initialized successfully)
           devLog.warn({
             component: 'usePluginManager',
-            message: '部分插件初始化失败',
+            message: 'Some plugins failed to initialize',
             data: {
               error: initResult.error.message,
               pluginNames: filteredPlugins.map((p) => p.name),
             },
           });
-          setPluginsReady(true); // 允许继续，因为部分插件可能已成功
+          setPluginsReady(true); // Allow to continue, because some plugins may have succeeded
         }
       } catch (error: unknown) {
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Extract actual error information
         devLog.error({
           component: 'usePluginManager',
           message: 'Plugin init failed',
@@ -191,13 +191,13 @@ const usePluginManager = <
       }
     };
 
-    // 只在必要时重新初始化
+    // Only re-initialize when necessary
     if (filteredPlugins.length > 0) {
       initPlugins();
     }
-  }, [pluginManager, filteredPlugins, registerCounterRef]); // 包含 registerCounterRef 依赖
+  }, [pluginManager, filteredPlugins, registerCounterRef]); // Include registerCounterRef dependency
 
-  // 在上下文变化时更新插件上下文，并重跑各插件的 setup 以便注入 helpers
+  // Update plugin context when context changes, and re-run each plugin's setup to inject helpers
   useEffect(() => {
     const rebindContextAndSetup = async () => {
       if (!pluginsReady || filteredPlugins.length === 0) {
@@ -214,7 +214,7 @@ const usePluginManager = <
         },
       });
 
-      // 1) 更新插件上下文，绑定最新 helpers/state 引用
+      // 1) Update plugin context, bind latest helpers/state references
       filteredPlugins.forEach((plugin) => {
         pluginManager.setPluginContext({
           pluginName: plugin.name,
@@ -222,7 +222,7 @@ const usePluginManager = <
         });
       });
 
-      // 2) 重新执行各插件的 setup，确保像 detectAndSaveColumnWidths 之类的方法注入到 helpers
+      // 2) Re-execute each plugin's setup to ensure methods like detectAndSaveColumnWidths are injected into helpers
       for (const plugin of filteredPlugins) {
         try {
           const maybeSetup = (
@@ -238,7 +238,7 @@ const usePluginManager = <
         } catch (error: unknown) {
           const errorObj =
             error instanceof Error ? error : new Error(String(error));
-          // ✅ 正确：透出实际错误信息
+          // ✅ Correct: Expose actual error information
           devLog.error({
             component: 'usePluginManager',
             message: 'Plugin setup error',

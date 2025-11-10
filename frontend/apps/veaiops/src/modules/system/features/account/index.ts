@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出 UI 组件
+// Export UI components
 export {
   AccountManagement,
   AccountModal,
   transformApiUserToExtendedUser,
 } from './ui';
 
-// 导出 Hooks（通过 hooks/index.ts）
+// Export Hooks (via hooks/index.ts)
 export * from './hooks';
 
-// 导出工具函数和服务（通过 lib/index.ts）
+// Export utility functions and services (via lib/index.ts)
 export * from './lib';
 
-// 导出类型定义（通过 types/index.ts）
+// Export type definitions (via types/index.ts)
 export type * from './types';

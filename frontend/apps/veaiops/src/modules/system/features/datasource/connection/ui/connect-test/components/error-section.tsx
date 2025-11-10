@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 错误详情区域组件
+ * Error details section component
  */
 
 import { Divider } from '@arco-design/web-react';

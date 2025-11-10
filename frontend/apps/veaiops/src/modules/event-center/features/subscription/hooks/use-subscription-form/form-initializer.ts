@@ -19,7 +19,7 @@ import { normalizeStrategyIds } from './strategy-id-normalizer';
 import { createDefaultTimeRange, parseTimeRange } from './time-range-utils';
 
 /**
- * 关注属性字段列表
+ * List of interest attribute fields
  */
 const INTEREST_FIELDS = [
   'interest_products',
@@ -29,19 +29,19 @@ const INTEREST_FIELDS = [
 ] as const;
 
 /**
- * 设置表单的关注属性字段
+ * Set interest attribute fields in the form
  *
- * 遍历所有关注属性字段，如果初始数据中存在值则设置到表单中
- * 这样处理的好处是避免不必要的字段覆盖
+ * Iterates through all interest attribute fields and sets them in the form if values exist in the initial data.
+ * This approach avoids unnecessary field overwrites.
  *
- * @param form - 表单实例
- * @param initialData - 初始数据
+ * @param form - Form instance
+ * @param initialData - Initial data
  *
  * @example
  * ```ts
  * setInterestFields(form, {
  *   interest_products: ['product1', 'product2'],
- *   interest_projects: null, // 不会被设置
+ *   interest_projects: null, // Will not be set
  *   webhook_endpoint: 'https://example.com'
  * });
  * ```
@@ -52,7 +52,7 @@ export const setInterestFields = (
 ): void => {
   INTEREST_FIELDS.forEach((field) => {
     const value = initialData[field];
-    // 只设置非空值
+    // Only set non-null values
     if (value != null) {
       form.setFieldValue(field, value);
     }
@@ -60,79 +60,79 @@ export const setInterestFields = (
 };
 
 /**
- * 创建编辑模式的表单初始值
+ * Create form initial values for edit mode
  *
- * 处理编辑模式下的数据转换：
- * 1. 规范化策略ID（处理对象数组）
- * 2. 解析时间范围（ISO字符串转Date）
- * 3. 转换事件级别字段名（event_level -> event_levels）
- * 4. 保留其他字段原值
+ * Handles data transformation in edit mode:
+ * 1. Normalize strategy IDs (handle object arrays)
+ * 2. Parse time range (ISO string to Date)
+ * 3. Convert event level field name (event_level -> event_levels)
+ * 4. Preserve other field values
  *
- * @param initialData - 初始数据
- * @returns 表单初始值对象
+ * @param initialData - Initial data
+ * @returns Form initial values object
  *
  * @example
  * ```ts
  * const formValues = createEditFormValues({
- *   name: '测试订阅',
+ *   name: 'Test Subscription',
  *   inform_strategy_ids: [{ id: '123' }, { id: '456' }],
  *   start_time: '2025-01-01T00:00:00.000Z',
  *   end_time: '2025-12-31T23:59:59.999Z',
  *   event_level: ['P0', 'P1'],
- *   // ... 其他字段
+ *   // ... other fields
  * });
- * // 结果：
+ * // Result:
  * // {
- * //   name: '测试订阅',
+ * //   name: 'Test Subscription',
  * //   inform_strategy_ids: ['123', '456'],
  * //   effective_time_range: [Date(2025-01-01), Date(2025-12-31)],
  * //   event_levels: ['P0', 'P1'],
- * //   // ... 其他字段
+ * //   // ... other fields
  * // }
  * ```
  */
 export const createEditFormValues = (
   initialData: SubscribeRelationWithAttributes,
 ): Record<string, unknown> => {
-  // 展开初始数据，但排除 event_level 字段以避免冲突
+  // Spread initial data, but exclude event_level field to avoid conflicts
   const { event_level, ...restData } = initialData;
 
   return {
     ...restData,
-    // 规范化策略ID数组
+    // Normalize strategy ID array
     inform_strategy_ids: normalizeStrategyIds(initialData.inform_strategy_ids),
-    // 解析时间范围
+    // Parse time range
     effective_time_range: parseTimeRange(
       initialData.start_time,
       initialData.end_time,
     ),
-    // 转换事件级别字段名：event_level（后端）-> event_levels（前端表单）
-    // 确保即使是空数组也能正确显示
+    // Convert event level field name: event_level (backend) -> event_levels (frontend form)
+    // Ensure empty arrays are displayed correctly
     event_levels: Array.isArray(event_level) ? event_level : [],
   };
 };
 
 /**
- * 创建新建模式的表单初始值
+ * Create form initial values for new mode
  *
- * 设置新建订阅时的默认值：
- * 1. 默认时间范围：当前时间到100年后
- * 2. 默认事件级别：空数组（表示全选）
- * 3. 特定模块的默认智能体：
- *    - Oncall模块：默认选择内容识别Agent
- *    - 智能阈值模块：默认选择智能阈值Agent
- *    - 事件中心模块：默认选择内容识别Agent
+ * Sets default values when creating a new subscription:
+ * 1. Default time range: current time to 100 years later
+ * 2. Default event level: empty array (represents all levels selected)
+ * 3. Default agent for specific modules:
+ *    - Oncall module: defaults to content recognition agent
+ *    - Intelligent threshold module: defaults to intelligent threshold agent
+ *    - Event center module: defaults to content recognition agent
  *
- * @param moduleType - 模块类型
- * @returns 表单初始值对象
+ * @param moduleType - Module type
+ * @returns Form initial values object
  *
  * @example
  * ```ts
- * // 普通模式
+ * // Normal mode
  * createNewFormValues()
  * // { effective_time_range: [now, now+100years], event_levels: [] }
  *
- * // Oncall模块
+ * // Oncall module
  * createNewFormValues(ModuleType.ONCALL)
  * // {
  * //   effective_time_range: [now, now+100years],
@@ -140,7 +140,7 @@ export const createEditFormValues = (
  * //   agent_type: 'chatops_interest_agent'
  * // }
  *
- * // 智能阈值模块
+ * // Intelligent threshold module
  * createNewFormValues(ModuleType.INTELLIGENT_THRESHOLD)
  * // {
  * //   effective_time_range: [now, now+100years],
@@ -148,7 +148,7 @@ export const createEditFormValues = (
  * //   agent_type: 'intelligent_threshold_agent'
  * // }
  *
- * // 事件中心模块
+ * // Event center module
  * createNewFormValues(ModuleType.EVENT_CENTER)
  * // {
  * //   effective_time_range: [now, now+100years],
@@ -162,52 +162,53 @@ export const createNewFormValues = (
 ): Record<string, unknown> => {
   const defaultValues: Record<string, unknown> = {
     effective_time_range: createDefaultTimeRange(),
-    // ⚠️ 注意：虽然后端支持空数组表示"全部级别"，但前端设置了必填验证
-    // 为了更好的用户体验，不设置默认值，让用户主动选择
-    // event_levels: [], // 不设置默认值，让用户主动选择
+    // ⚠️ Note: Although the backend supports empty array to represent "all levels",
+    // the frontend has required validation. For better UX, we don't set a default value,
+    // letting users actively choose.
+    // event_levels: [], // Don't set default value, let users actively choose
   };
 
-  // 根据模块类型设置默认智能体
+  // Set default agent based on module type
   if (moduleType === ModuleType.ONCALL) {
-    // Oncall模块默认选择内容识别Agent
+    // Oncall module defaults to content recognition agent
     defaultValues.agent_type = AgentType.CHATOPS_INTEREST_AGENT;
   } else if (moduleType === ModuleType.INTELLIGENT_THRESHOLD) {
-    // 智能阈值模块默认选择智能阈值Agent
+    // Intelligent threshold module defaults to intelligent threshold agent
     defaultValues.agent_type = AgentType.INTELLIGENT_THRESHOLD_AGENT;
   }
-  // 事件中心模块：不设置默认值，因为有两个选项，让用户自己选择
+  // Event center module: don't set default value, as there are two options, let users choose
 
   return defaultValues;
 };
 
 /**
- * 初始化表单数据
+ * Initialize form data
  *
- * 根据是否有初始数据来决定初始化策略：
- * - 有初始数据：编辑模式，使用 createEditFormValues
- * - 无初始数据：新建模式，使用 createNewFormValues
+ * Determines initialization strategy based on whether initial data exists:
+ * - With initial data: edit mode, use createEditFormValues
+ * - Without initial data: new mode, use createNewFormValues
  *
- * @param form - 表单实例
- * @param initialData - 初始数据（可选）
- * @param moduleType - 模块类型（可选）
+ * @param form - Form instance
+ * @param initialData - Initial data (optional)
+ * @param moduleType - Module type (optional)
  */
 export const initializeForm = (
   form: FormInstance,
   initialData?: SubscribeRelationWithAttributes | null,
   moduleType?: ModuleType,
 ): void => {
-  // 重置表单
+  // Reset form
   form.resetFields();
 
   if (initialData) {
-    // 编辑模式：设置初始值
+    // Edit mode: set initial values
     const editValues = createEditFormValues(initialData);
     form.setFieldsValue(editValues);
 
-    // 单独设置关注属性字段（避免覆盖）
+    // Set interest attribute fields separately (to avoid overwriting)
     setInterestFields(form, initialData);
   } else {
-    // 新建模式：设置默认值
+    // New mode: set default values
     const newValues = createNewFormValues(moduleType);
     form.setFieldsValue(newValues);
   }

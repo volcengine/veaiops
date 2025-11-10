@@ -18,16 +18,16 @@ import { useEffect, useState } from 'react';
 import { DocsDrawer } from '../docs-drawer';
 
 /**
- * 文档按钮组件
- * 包含文档图标按钮和文档抽屉
+ * Documentation button component
+ * Includes documentation icon button and documentation drawer
  */
 export const DocsButton: React.FC = () => {
   const [docsDrawerVisible, setDocsDrawerVisible] = useState(false);
 
-  // 🔍 调试日志：DocsButton 挂载
+  // 🔍 Debug log: DocsButton mounted
   useEffect(() => {
     logger.info({
-      message: '[DocsButton] 组件已挂载',
+      message: '[DocsButton] Component mounted',
       data: {
         currentRoute: window.location.pathname,
         timestamp: new Date().toISOString(),
@@ -37,10 +37,10 @@ export const DocsButton: React.FC = () => {
     });
   }, []);
 
-  // 🔍 调试日志：DocsDrawer 可见性变化
+  // 🔍 Debug log: DocsDrawer visibility change
   useEffect(() => {
     logger.info({
-      message: '[DocsButton] DocsDrawer 可见性变化',
+      message: '[DocsButton] DocsDrawer visibility changed',
       data: {
         docsDrawerVisible,
         currentRoute: window.location.pathname,
@@ -53,7 +53,7 @@ export const DocsButton: React.FC = () => {
 
   const handleDocsButtonClick = () => {
     logger.info({
-      message: '[DocsButton] 文档按钮被点击',
+      message: '[DocsButton] Documentation button clicked',
       data: {
         currentRoute: window.location.pathname,
         previousVisible: docsDrawerVisible,
@@ -67,7 +67,7 @@ export const DocsButton: React.FC = () => {
 
   return (
     <>
-      {/* 文档图标按钮 */}
+      {/* Documentation icon button */}
       <button
         id="docs-button"
         type="button"
@@ -92,7 +92,7 @@ export const DocsButton: React.FC = () => {
         </svg>
       </button>
 
-      {/* 文档抽屉 */}
+      {/* Documentation drawer */}
       <DocsDrawer
         visible={docsDrawerVisible}
         onClose={() => setDocsDrawerVisible(false)}

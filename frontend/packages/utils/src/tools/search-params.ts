@@ -25,9 +25,9 @@ export interface QueryFormatValueProps {
 }
 
 /**
- * 将 URLSearchParams 转化为包含所有查询参数的对象
- * @param searchParams URLSearchParams 实例
- * @returns 包含所有查询参数的对象，如果有相同键但不同值的情况，则值以数组形式存储
+ * Convert URLSearchParams to object containing all query parameters
+ * @param searchParams URLSearchParams instance
+ * @returns Object containing all query parameters, if there are same keys with different values, values are stored as arrays
  */
 export const getSearchParamsObject = ({
   searchParams,
@@ -62,9 +62,9 @@ export const getSearchParamsObject = ({
 };
 
 /**
- * 默认query数组处理函数
- * @param pre
- * @param value
+ * Default query array format function
+ * @param pre Previous value
+ * @param value Current value
  */
 export const queryArrayFormat = <T>({ pre, value }: QueryFormatValueProps) => {
   if (pre === undefined) {
@@ -76,9 +76,9 @@ export const queryArrayFormat = <T>({ pre, value }: QueryFormatValueProps) => {
 };
 
 /**
- * 默认query单选级联数组处理函数
- * @param pre
- * @param value
+ * Default query single-select cascader array format function
+ * @param pre Previous value
+ * @param value Current value
  */
 export const queryArrayCascaderFormat = ({
   pre,
@@ -91,9 +91,9 @@ export const queryArrayCascaderFormat = ({
 };
 
 /**
- * 默认query多选级联数组处理函数
- * @param pre
- * @param value
+ * Default query multi-select cascader array format function
+ * @param pre Previous value
+ * @param value Current value
  */
 export const queryArrayMultiCascaderFormat = <T>({
   pre,
@@ -117,41 +117,41 @@ export const queryArrayMultiCascaderFormat = <T>({
 };
 
 /**
- * 默认query数值类型数组处理函数
- * @param pre - 前一个数组
- * @param value - 要合并的值
- * @returns {Array} - 合并后的数组
+ * Default query number array format function
+ * @param pre - Previous array
+ * @param value - Value to merge
+ * @returns {Array} - Merged array
  */
 export const queryNumberArrayFormat = ({
   pre,
   value,
 }: QueryFormatValueProps): Array<number> => {
-  // 将 value 转换为数字（如果可以）
+  // Convert value to number (if possible)
   const current = toNumber(value);
 
-  // 如果前一个数组未定义，返回当前值组成的数组
+  // If previous array is undefined, return array containing current value
   if (pre === undefined) {
     const arr = Array.isArray(current) ? current : [current];
     return ensureArray(arr);
   }
-  // 如果前一个数组是一个数组，使用展开运算符将当前值添加到前一个数组并返回
+  // If previous array is an array, use spread operator to add current value to previous array and return
   else if (Array.isArray(pre)) {
     return [...pre, current];
   }
-  // 如果前一个数组不是数组，使用 concat 方法将前一个数组和当前值连接到一个新的数组中并返回
+  // If previous array is not an array, use concat method to concatenate previous array and current value into a new array and return
   return ensureArray<number>(pre).concat(current);
 };
 
 /**
- * 默认query数值类型处理函数
- * @param value
+ * Default query number format function
+ * @param value Value to format
  */
 export const queryNumberFormat = ({ value }: QueryFormatValueProps) =>
   canConvertToNumber(value) ? Number(value) : value;
 
 /**
- * 默认query布尔值处理函数
- * @param value
+ * Default query boolean format function
+ * @param value Value to format
  */
 export const queryBooleanFormat = <T>({ value }: { value: T }) => {
   switch (value) {

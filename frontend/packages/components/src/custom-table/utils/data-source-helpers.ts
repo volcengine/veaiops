@@ -19,13 +19,13 @@ import { Message } from '@arco-design/web-react';
 import { devLog } from './log-utils';
 
 /**
- * 提取响应数据的辅助函数
+ * Helper function to extract response data
  *
- * 为什么使用 unknown：
- * - response 参数需要处理来自不同 API 的响应结构（response.data、response.result 等）
- * - newDataList 需要容纳不同 RecordType 的数据，在格式化前无法确定具体类型
- * - 使用 unknown 比 any 更安全，强制进行类型检查后再使用
- * - 这些数据会在后续步骤中通过 formatTableData 进行类型安全转换
+ * Why use unknown:
+ * - response parameter needs to handle response structures from different APIs (response.data, response.result, etc.)
+ * - newDataList needs to accommodate data of different RecordType, specific type cannot be determined before formatting
+ * - Using unknown is safer than any, forcing type checking before use
+ * - This data will be type-safely converted through formatTableData in subsequent steps
  */
 export const extractResponseData = (
   response: unknown,
@@ -57,7 +57,7 @@ export const extractResponseData = (
       });
     }
   } else {
-    // 原有的serviceInstance[serviceMethod]逻辑
+    // Original serviceInstance[serviceMethod] logic
     const itemsKey = dataSource.responseItemsKey as string;
     const responseWithResult = response as {
       result?: Record<string, unknown>;
@@ -96,19 +96,19 @@ export const extractResponseData = (
 };
 
 /**
- * 处理请求错误的辅助函数
+ * Helper function to handle request errors
  *
- * 为什么使用 unknown：
- * - error 对象可能来自不同的错误源（网络错误、API 错误等）
- * - 需要兼容不同的错误结构（error.status、error.code、error.statusCode 等）
- * - 使用 unknown 类型更安全，需要先进行类型检查再访问属性
+ * Why use unknown:
+ * - error object may come from different error sources (network errors, API errors, etc.)
+ * - Need to be compatible with different error structures (error.status, error.code, error.statusCode, etc.)
+ * - Using unknown type is safer, requires type checking before accessing properties
  */
 export const handleRequestError = (
   e: unknown,
   _requestId: string,
   dataSource: TableDataSource,
 ): void => {
-  // 处理不同类型的错误对象
+  // Handle different types of error objects
   let error:
     | Error
     | {
@@ -136,13 +136,13 @@ export const handleRequestError = (
   const errorMessage =
     (error as { message?: string; msg?: string }).message ||
     (error as { msg?: string }).msg ||
-    '请求失败';
+    'Request failed';
   const statusCode: number | undefined =
     (error as { status?: number; code?: number; statusCode?: number }).status ||
     (error as { code?: number }).code ||
     (error as { statusCode?: number }).statusCode;
 
-  // 记录详细的错误日志
+  // Log detailed error information
   devLog.error({
     component: 'useDataSource',
     message: 'Request failed:',
@@ -153,47 +153,48 @@ export const handleRequestError = (
     },
   });
 
-  // ✅ 正确：根据错误类型决定是否显示错误消息，优先透出实际错误信息
-  // 注意：对于特定状态码（404、500+），在基础消息上追加实际错误信息
+  // ✅ Correct: Decide whether to show error message based on error type, prioritize showing actual error information
+  // Note: For specific status codes (404, 500+), append actual error information to the base message
+  // Error messages (user-facing)
   if (statusCode === 404) {
     const finalMessage =
-      errorMessage && errorMessage !== '请求失败'
-        ? `请求的资源不存在: ${errorMessage}`
-        : '请求的资源不存在';
+      errorMessage && errorMessage !== 'Request failed'
+        ? `Resource not found: ${errorMessage}`
+        : 'Resource not found';
     Message.error(finalMessage);
   } else if (statusCode && statusCode >= 500) {
     const finalMessage =
-      errorMessage && errorMessage !== '请求失败'
-        ? `服务器错误: ${errorMessage}`
-        : '服务器错误，请稍后重试';
+      errorMessage && errorMessage !== 'Request failed'
+        ? `Server error: ${errorMessage}`
+        : 'Server error, please try again later';
     Message.error(finalMessage);
   } else if (statusCode && statusCode >= 400) {
-    // ✅ 正确：透出实际错误信息
+    // ✅ Correct: Show actual error information
     Message.error(errorMessage);
   } else {
-    // ✅ 正确：对于无状态码的错误，优先显示实际错误信息
+    // ✅ Correct: For errors without status codes, prioritize showing actual error information
     const finalMessage =
-      errorMessage && errorMessage !== '请求失败'
+      errorMessage && errorMessage !== 'Request failed'
         ? errorMessage
-        : '请求失败，请检查网络连接';
+        : 'Request failed, please check your network connection';
     Message.error(finalMessage);
   }
 
-  // 将 unknown 类型的错误转换为 Error 对象
+  // Convert unknown type error to Error object
   const errorObj = e instanceof Error ? e : new Error(String(errorMessage));
   dataSource?.onError?.(errorObj);
   dataSource?.onFinally?.();
 };
 
 /**
- * 构建请求结果
+ * Build request result
  *
- * 为什么使用 unknown：
- * - response 需要处理不同 API 的响应结构
- * - newDataList 在格式化前无法确定具体 RecordType
- * - query 使用 Record<string, unknown> 以兼容不同的查询参数类型
- * - 使用 unknown 比 any 更安全，强制进行类型检查后再使用
- * - 这些数据会在后续步骤中进行类型安全转换
+ * Why use unknown:
+ * - response needs to handle response structures from different APIs
+ * - newDataList cannot determine specific RecordType before formatting
+ * - query uses Record<string, unknown> to be compatible with different query parameter types
+ * - Using unknown is safer than any, forcing type checking before use
+ * - This data will be type-safely converted in subsequent steps
  */
 export const buildRequestResult = (
   response: unknown,
@@ -205,19 +206,19 @@ export const buildRequestResult = (
   isQueryChange: boolean,
   query: Record<string, unknown>,
 ): { list: unknown[]; total: number } => {
-  // 处理分页为空的情况
+  // Handle empty pagination case
   if (newDataList.length === 0 && current > 1) {
     setCurrent((prevState: number) => prevState - 1);
   }
 
-  // 先提取 responseData 用于后续计算
+  // Extract responseData first for subsequent calculations
   const responseData = response as {
     Result?: { pageResp?: { totalCount?: number } };
     result?: { pageResp?: { totalCount?: number } };
     [key: string]: unknown;
   };
 
-  // 格式化结果
+  // Format result
   const result = {
     list: formatTableData({
       sourceData: newDataList,
@@ -249,14 +250,14 @@ export const buildRequestResult = (
     },
   });
 
-  // 成功回调
+  // Success callback
   const responseResultData =
     (responseData.Result as Record<string, unknown>) ||
     (responseData.result as Record<string, unknown>) ||
     {};
   if (dataSource?.onSuccess) {
-    // result.list 已在 formatTableData 中处理，类型已转换
-    // 使用类型断言因为 formatTableData 返回的是格式化后的数据，符合 BaseRecord 要求
+    // result.list has been processed in formatTableData, type has been converted
+    // Use type assertion because formatTableData returns formatted data that meets BaseRecord requirements
     dataSource.onSuccess({
       query: query as BaseQuery,
       v: result?.list as BaseRecord[],

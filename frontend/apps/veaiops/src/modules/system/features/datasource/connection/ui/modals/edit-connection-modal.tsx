@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 编辑连接弹窗组件
+ * Edit connection modal component
  */
 
 import { getDataSourceDisplayName } from '@/utils/data-source-utils';
@@ -43,13 +43,13 @@ export const EditConnectionModal: React.FC<EditConnectionModalProps> = ({
 }) => {
   const [form] = Form.useForm();
 
-  // 处理初始值，确保密码字段为空
+  // Handle initial values, ensure password fields are empty
   const getInitialValues = () => {
     if (!editingConnect) {
       return undefined;
     }
 
-    // Connect 类型本身不包含密码字段，但为了确保密码字段为空，显式设置
+    // Connect type itself doesn't include password fields, but to ensure password fields are empty, explicitly set them
     return {
       ...editingConnect,
       zabbix_api_password: '',

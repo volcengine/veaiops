@@ -20,9 +20,9 @@ import { API_RESPONSE_CODE } from "@veaiops/constants";
 import apiClient from "@/utils/api-client";
 
 /**
- * 订阅关系服务
+ * Subscription relation service
  *
- * 封装订阅关系相关的API调用，提供统一的API接口
+ * Encapsulates subscription relation related API calls, provides unified API interface
  *
  * @example
  * ```typescript
@@ -32,7 +32,7 @@ import apiClient from "@/utils/api-client";
  */
 export class SubscriptionService {
   /**
-   * 获取订阅关系列表
+   * Get subscription relation list
    */
   async getSubscriptions(params?: {
     skip?: number;
@@ -53,7 +53,7 @@ export class SubscriptionService {
   }
 
   /**
-   * 创建订阅关系
+   * Create subscription relation
    */
   async createSubscription(subscriptionData: SubscribeRelationCreate) {
     const response =
@@ -65,7 +65,7 @@ export class SubscriptionService {
   }
 
   /**
-   * 更新订阅关系
+   * Update subscription relation
    */
   async updateSubscription(
     subscriptionId: string,
@@ -81,7 +81,7 @@ export class SubscriptionService {
   }
 
   /**
-   * 删除订阅关系
+   * Delete subscription relation
    */
   async deleteSubscription(subscriptionId: string) {
     const response =
@@ -93,13 +93,13 @@ export class SubscriptionService {
   }
 
   /**
-   * 检查订阅关系名称是否重复
+   * Check if subscription relation name is duplicate
    */
   async checkSubscriptionNameDuplicate(name: string, excludeId?: string) {
     const response =
       await apiClient.subscribe.getApisV1ManagerEventCenterSubscribe({
         skip: 0,
-        limit: 1000, // 获取所有数据进行检查
+        limit: 1000, // Fetch all data for checking
       });
 
     if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
@@ -115,5 +115,5 @@ export class SubscriptionService {
   }
 }
 
-// 创建单例实例
+// Create singleton instance
 export const subscriptionService = new SubscriptionService();

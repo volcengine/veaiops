@@ -23,13 +23,13 @@ import { PasteDataFetcher } from './data-fetchers/paste-data-fetcher';
 import { TokenSeparatorUtils } from './utils/token-separator-utils';
 import { PasteValidator } from './validators/paste-validator';
 
-// 导入拆分后的工具类
+// Import split utility classes
 
-// 重新导出工具类，保持向后兼容
+// Re-export utility classes for backward compatibility
 export { TokenSeparatorUtils };
 
 /**
- * 粘贴处理插件实现
+ * Paste handler plugin implementation
  */
 export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
   name = 'paste-handler';
@@ -55,17 +55,21 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
   }
 
   /**
-   * 处理粘贴事件
+   * Handle paste event
    */
   handlePaste(event: ClipboardEvent): void {
-    // 防御性检查：确保配置对象和context存在
+    // Defensive check: ensure config object and context exist
     if (!this.config) {
-      console.warn('[PasteHandler] 配置对象未初始化，跳过粘贴处理');
+      console.warn(
+        '[PasteHandler] Config object not initialized, skipping paste handling',
+      );
       return;
     }
 
     if (!this.context) {
-      console.warn('[PasteHandler] context已被销毁，跳过粘贴处理');
+      console.warn(
+        '[PasteHandler] Context has been destroyed, skipping paste handling',
+      );
       return;
     }
 
@@ -77,7 +81,7 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
       onPaste,
     } = this.config;
 
-    // 只在多选模式且允许粘贴多个值时生效
+    // Only effective in multiple mode and when paste multiple values is allowed
     if (!allowPasteMultiple || mode !== 'multiple') {
       return;
     }
@@ -87,14 +91,14 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
       return;
     }
 
-    // 阻止默认行为
+    // Prevent default behavior
     event.preventDefault();
 
-    // 🔧 增强分隔符支持 - 使用自定义或默认分隔符
+    // 🔧 Enhanced separator support - use custom or default separators
     const separators =
       tokenSeparators || TokenSeparatorUtils.getDefaultSeparators();
 
-    // 使用增强的文本切分方法
+    // Use enhanced text splitting method
     const splitValues = TokenSeparatorUtils.splitTextByMultipleSeparators(
       pastedText,
       separators,
@@ -104,34 +108,36 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
       return;
     }
 
-    // 处理每个值
+    // Process each value
     const processedValues = this.validator.processPastedValues(
       splitValues,
       beforePasteProcess,
     );
 
-    // 调用用户自定义的onPaste回调
+    // Call user-defined onPaste callback
     if (onPaste) {
       onPaste(processedValues, event);
     }
 
-    // 更新组件的值
+    // Update component value
     this.updateValue(processedValues);
   }
 
   /**
-   * 更新组件的值（包含完整的验证和错误处理）
+   * Update component value (includes complete validation and error handling)
    */
   private async updateValue(newValues: string[]): Promise<void> {
-    // 🔧 防御性检查：确保context存在，避免组件销毁后的异步操作
+    // 🔧 Defensive check: ensure context exists, avoid async operations after component destruction
     if (!this.context) {
-      console.warn('[PasteHandler] context已被销毁，跳过值更新');
+      console.warn(
+        '[PasteHandler] Context has been destroyed, skipping value update',
+      );
       return;
     }
 
     const { props } = this.context;
 
-    // 获取当前已选中的值，确保类型一致性
+    // Get currently selected values, ensure type consistency
     let rawCurrentValues: (string | number)[] = [];
 
     if (Array.isArray(props.value)) {
@@ -146,79 +152,85 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
       }
     }
 
-    // 保持当前值的原始类型，让onChangeProcessor处理最终的类型转换
+    // Keep original type of current values, let onChangeProcessor handle final type conversion
     const currentValues = rawCurrentValues;
 
     try {
-      // 🔧 第1步：基础验证和预处理
+      // 🔧 Step 1: Basic validation and preprocessing
       const preValidationResult = this.validator.preValidateValues(newValues);
       if (!preValidationResult.isValid) {
-        Message.error(preValidationResult.errorMessage || '粘贴数据验证失败');
+        Message.error(
+          preValidationResult.errorMessage || 'Paste data validation failed',
+        );
         return;
       }
 
-      // 🔧 第2步：值类型转换
+      // 🔧 Step 2: Value type conversion
       const processedNewValues = this.validator.convertValueTypes(
         preValidationResult.validValues,
       );
 
-      // 🔧 第3步：去重检查
+      // 🔧 Step 3: Deduplication check
       const deduplicationResult = this.validator.checkDuplication(
         processedNewValues,
         currentValues,
       );
       if (deduplicationResult.hasNewValues === false) {
-        Message.warning('粘贴的值已全部存在，无需重复添加');
+        Message.warning(
+          'All pasted values already exist, no need to add duplicates',
+        );
         return;
       }
 
-      // 🔧 第4步：数量限制检查
+      // 🔧 Step 4: Quantity limit check
       const limitCheckResult = this.validator.checkLimits(
         deduplicationResult.newUniqueValues,
         currentValues,
       );
       if (!limitCheckResult.isValid) {
-        Message.error(limitCheckResult.errorMessage || '数量限制检查失败');
+        Message.error(
+          limitCheckResult.errorMessage || 'Quantity limit check failed',
+        );
         return;
       }
 
-      // 🔧 第5步：数据源验证（验证值是否真实存在）
+      // 🔧 Step 5: Data source validation (verify if values actually exist)
       const validationResult = await this.validator.validateAgainstDataSource(
         limitCheckResult.finalValues,
       );
 
-      // 处理验证结果
+      // Handle validation results
       if (validationResult.validValues.length === 0) {
         Message.error(
-          `所有粘贴的值都无效：${validationResult.invalidValues.join(', ')}`,
+          `All pasted values are invalid: ${validationResult.invalidValues.join(', ')}`,
         );
         return;
       }
 
-      // 部分成功的情况
+      // Partial success case
       if (validationResult.invalidValues.length > 0) {
         Message.warning(
-          `部分值无效已忽略：${validationResult.invalidValues.join(', ')}\n` +
-            `成功添加：${validationResult.validValues.length} 个值`,
+          `Invalid values ignored: ${validationResult.invalidValues.join(', ')}\n` +
+            `Successfully added: ${validationResult.validValues.length} values`,
         );
       } else {
         Message.success(
-          `成功粘贴 ${validationResult.validValues.length} 个账户`,
+          `Successfully pasted ${validationResult.validValues.length} accounts`,
         );
       }
 
-      // 🔧 第6步：更新组件值并触发数据获取
+      // 🔧 Step 6: Update component value and trigger data fetch
       const finalMergedValues = Array.from(
         new Set([...currentValues, ...validationResult.validValues]),
       );
 
       if (props.onChange) {
-        // 🔧 使用onChangeProcessor处理传递给表单的值类型
+        // 🔧 Use onChangeProcessor to handle value types passed to form
         const processedValues = props.onChangeProcessor
           ? props.onChangeProcessor(finalMergedValues)
-          : finalMergedValues; // 如果没有onChangeProcessor则保持原始类型
+          : finalMergedValues; // If no onChangeProcessor, keep original type
 
-        // 构造option信息
+        // Construct option information
         const optionInfo = validationResult.validValues.map((val) => ({
           value: val,
           label: String(val),
@@ -226,7 +238,7 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
 
         this.logger.info(
           'PasteHandler',
-          '🟢 粘贴触发onChange',
+          '🟢 Paste triggered onChange',
           {
             processedValues,
             optionInfo,
@@ -240,30 +252,34 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
         props.onChange(processedValues, optionInfo as any);
       }
 
-      // 🔧 重要：粘贴后触发数据获取，确保新粘贴的值能被搜索到
+      // 🔧 Important: Trigger data fetch after paste, ensure newly pasted values can be searched
       await this.dataFetcher.triggerDataFetchForPastedValues(
         validationResult.validValues,
       );
     } catch (error) {
-      Message.error('验证粘贴数据时发生错误，请重试');
+      Message.error(
+        'An error occurred while validating paste data, please try again',
+      );
     }
   }
 
   /**
-   * 创建粘贴事件处理器
+   * Create paste event handler
    */
   createPasteHandler(): ((event: ClipboardEvent) => void) | undefined {
-    // 防御性检查：确保配置对象和context存在
+    // Defensive check: ensure config object and context exist
     if (!this.config || !this.config.allowPasteMultiple) {
       return undefined;
     }
 
     if (!this.context) {
-      console.warn('[PasteHandler] context已被销毁，无法创建粘贴处理器');
+      console.warn(
+        '[PasteHandler] Context has been destroyed, cannot create paste handler',
+      );
       return undefined;
     }
 
-    // 绑定this上下文，防止调用时this丢失
+    // Bind this context to prevent this from being lost when called
     return this.handlePaste.bind(this);
   }
 

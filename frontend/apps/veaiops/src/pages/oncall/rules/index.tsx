@@ -17,12 +17,12 @@ import { ModuleType } from '@/types/module';
 import type React from 'react';
 
 /**
- * Oncall异动 - 事件订阅页面
- * @description 显示智能体订阅规则管理（内容识别Agent），支持筛选和管理事件订阅
+ * Oncall anomaly - Event subscription page
+ * @description Display agent subscription rule management (Content Recognition Agent), supports filtering and managing event subscriptions
  *
- * 功能对照（与 origin/feat/web-v2 保持一致）：
- * - 筛选器：名称、智能体（内容识别Agent）、事件级别、是否开启WEBHOOK
- * - 表格列：名称、生效开始时间、生效结束时间、事件级别、是否开启WEBHOOK、WEBHOOK地址、操作
+ * Feature comparison (consistent with origin/feat/web-v2):
+ * - Filters: Name, Agent (Content Recognition Agent), Event Level, WEBHOOK Enabled
+ * - Table columns: Name, Effective Start Time, Effective End Time, Event Level, WEBHOOK Enabled, WEBHOOK Address, Actions
  */
 const OncallRulesPage: React.FC = () => {
   return <EventSubscriptionPage moduleType={ModuleType.ONCALL} />;

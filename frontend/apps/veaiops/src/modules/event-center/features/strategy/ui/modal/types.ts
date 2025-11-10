@@ -20,16 +20,16 @@ import type {
 } from 'api-generate';
 
 /**
- * 策略弹窗组件属性接口
+ * Strategy modal component props interface
  *
- * 类型分析（基于 Python 源码三方对照）：
- * - editingStrategy 接收 InformStrategy（API 响应格式）
- * - 表单内部通过 adaptStrategyForEdit 转换为包含 bot_id 和 chat_ids 的格式
- * - 提交时使用 InformStrategyCreate 或 InformStrategyUpdate（API 请求格式）
+ * Type analysis (based on Python source code three-way comparison):
+ * - editingStrategy receives InformStrategy (API response format)
+ * - Form internally converts to format containing bot_id and chat_ids via adaptStrategyForEdit
+ * - Uses InformStrategyCreate or InformStrategyUpdate (API request format) when submitting
  */
 export interface StrategyModalProps {
   visible: boolean;
-  // ✅ 统一使用 InformStrategy（api-generate），符合单一数据源原则
+  // ✅ Unified use of InformStrategy (api-generate), conforms to single data source principle
   editingStrategy: InformStrategy | null;
   onCancel: () => void;
   onSubmit: (
@@ -37,7 +37,7 @@ export interface StrategyModalProps {
   ) => Promise<boolean>;
   form: FormInstance;
   /**
-   * 抽屉宽度，默认为800px
+   * Drawer width, defaults to 800px
    */
   width?: number;
 }

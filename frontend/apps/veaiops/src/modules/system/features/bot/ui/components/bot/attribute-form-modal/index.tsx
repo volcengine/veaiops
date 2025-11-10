@@ -23,7 +23,7 @@ import { useAttributeValues } from './hooks';
 import { FormFields } from './sections';
 
 /**
- * Bot属性表单模态框组件属性接口
+ * Bot attribute form modal component properties interface
  */
 interface BotAttributeFormModalProps {
   visible: boolean;
@@ -35,15 +35,15 @@ interface BotAttributeFormModalProps {
 }
 
 /**
- * Bot属性表单模态框组件
- * 提供创建和编辑Bot属性的表单界面
+ * Bot attribute form modal component
+ * Provides form interface for creating and editing Bot attributes
  *
- * 拆分说明：
- * - hooks/use-attribute-values.ts: 加载属性值的逻辑（根据类目加载对应的内容选项）
- * - effects.ts: 副作用管理（useEffect逻辑，编辑时更新表单值）
- * - handlers.ts: 事件处理（handleSubmit、handleCancel）
- * - sections/form-fields.tsx: 表单字段区块（类目和内容选择器）
- * - index.tsx: 主入口组件，负责表单渲染和提交
+ * Split description:
+ * - hooks/use-attribute-values.ts: Logic for loading attribute values (load corresponding content options based on category)
+ * - effects.ts: Side effect management (useEffect logic, update form values when editing)
+ * - handlers.ts: Event handling (handleSubmit、handleCancel)
+ * - sections/form-fields.tsx: Form field sections (category and content selectors)
+ * - index.tsx: Main entry component, responsible for form rendering and submission
  */
 export const BotAttributeFormModal: React.FC<BotAttributeFormModalProps> = ({
   visible,
@@ -59,7 +59,7 @@ export const BotAttributeFormModal: React.FC<BotAttributeFormModalProps> = ({
   const { valueOptions, loadingValues, loadAttributeValues, setValueOptions } =
     useAttributeValues();
 
-  // 副作用管理
+  // Side effect management
   useAttributeFormModalEffects({
     form,
     type,
@@ -69,7 +69,7 @@ export const BotAttributeFormModal: React.FC<BotAttributeFormModalProps> = ({
     setValueOptions,
   });
 
-  // 事件处理
+  // Event handling
   const { handleSubmit, handleCancel } = useAttributeFormModalHandlers({
     form,
     onSubmit,
@@ -79,25 +79,25 @@ export const BotAttributeFormModal: React.FC<BotAttributeFormModalProps> = ({
   });
 
   /**
-   * 处理类目变化
+   * Handle category change
    *
-   * 当用户选择或清除类目时：
-   * 1. 更新 selectedAttributeName 状态（控制项目下拉框的启用/禁用）
-   * 2. 清空当前选中的内容
-   * 3. 如果选择了类目，加载对应的内容选项
-   * 4. 如果清除了类目，清空内容选项
+   * When user selects or clears category:
+   * 1. Update selectedAttributeName state (controls enable/disable of project dropdown)
+   * 2. Clear currently selected content
+   * 3. If category is selected, load corresponding content options
+   * 4. If category is cleared, clear content options
    */
   const handleAttributeNameChange = (value: string | undefined) => {
     const newValue = value || '';
     setSelectedAttributeName(newValue);
-    // 清空内容 - 使用 undefined 而不是空字符串
+    // Clear content - use undefined instead of empty string
     form.setFieldValue('value', undefined);
 
     if (newValue) {
-      // 加载新的内容选项
+      // Load new content options
       loadAttributeValues(newValue);
     } else {
-      // 如果清除了类目，清空内容选项
+      // If category is cleared, clear content options
       setValueOptions([]);
     }
   };
@@ -113,7 +113,7 @@ export const BotAttributeFormModal: React.FC<BotAttributeFormModalProps> = ({
       unmountOnExit
     >
       <Form form={form} layout="vertical">
-        {/* 功能说明 */}
+        {/* Feature description */}
         <Alert
           type="info"
           content="添加关注项目后，该机器人将能够接收和处理对应项目的事件推送，实现智能告警、问题识别等ChatOps功能。"

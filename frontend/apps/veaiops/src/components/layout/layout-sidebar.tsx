@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-// config/index.ts 同时导出 layout 和 routes，如果通过 @/config 导入会同时加载两者，造成循环
+// config/index.ts exports both layout and routes, importing via @/config would load both and cause circular dependency
 import { layoutConfig } from '@/config/layout';
 import type React from 'react';
 import { AppSidebar } from '../navigation/app-sidebar';

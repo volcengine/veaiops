@@ -16,7 +16,7 @@ import type { IntelligentThresholdConfig } from 'api-generate';
 import type React from 'react';
 
 /**
- * 单个阈值配置项组件
+ * Single threshold configuration item component
  */
 const ThresholdConfigItem: React.FC<{
   threshold: IntelligentThresholdConfig;
@@ -45,7 +45,7 @@ const ThresholdConfigItem: React.FC<{
         </span>
       </div>
     </div>
-    {/* 简单的阈值可视化条 */}
+    {/* Simple threshold visualization bar */}
     <div className="mt-2 h-2 bg-gray-200 rounded relative">
       {Boolean(threshold.lower_bound) && (
         <div
@@ -74,7 +74,7 @@ const ThresholdConfigItem: React.FC<{
 );
 
 /**
- * 阈值配置列渲染组件
+ * Threshold configuration column render component
  */
 export const ThresholdConfigColumn: React.FC<{
   thresholds: IntelligentThresholdConfig[];

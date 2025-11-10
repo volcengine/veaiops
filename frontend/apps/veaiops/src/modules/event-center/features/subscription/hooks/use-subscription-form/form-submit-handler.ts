@@ -14,11 +14,7 @@
 
 import type { FormInstance } from '@arco-design/web-react';
 import { Message } from '@arco-design/web-react';
-import {
-  convertLocalTimeRangeToUtc,
-  ensureArray,
-  logger,
-} from '@veaiops/utils';
+import { ensureArray } from '@veaiops/utils';
 import type {
   SubscribeRelationCreate,
   SubscribeRelationUpdate,
@@ -26,7 +22,7 @@ import type {
 import type { WebhookHeader } from './types';
 
 /**
- * Transform Webhook header array to object
+ * Convert webhook header array to object
  *
  * Filters out items with empty key or value to ensure data validity
  *
@@ -49,7 +45,7 @@ const convertWebhookHeaders = (
   const webhookHeadersObj: Record<string, string> = {};
 
   webhookHeaders.forEach(({ key, value }) => {
-    // Only add items where both key and value are valid
+    // Only add items with both valid key and value
     if (key && value) {
       webhookHeadersObj[key] = value;
     }
@@ -59,44 +55,28 @@ const convertWebhookHeaders = (
 };
 
 /**
- * Extract and format submission data from form values
+ * Extract and format submit data from form values
  *
  * Handles various data transformations:
- * 1. Transform time range to ISO string
+ * 1. Convert time range to ISO string
  * 2. Normalize strategy IDs to string array
- * 3. Handle Webhook configuration
- * 4. Handle event levels
+ * 3. Handle webhook configuration
+ * 4. Handle event level
  *
  * @param values - Form values
  * @param webhookHeaders - Webhook header configuration
- * @param enableWebhook - Whether to enable Webhook
- * @returns Formatted submission data
+ * @param enableWebhook - Whether to enable webhook
+ * @returns Formatted submit data
  */
 const formatSubmitData = (
   values: Record<string, any>,
   webhookHeaders: WebhookHeader[],
   enableWebhook: boolean,
 ): SubscribeRelationCreate | SubscribeRelationUpdate => {
-  // Convert time range from local timezone to UTC ISO 8601 format
-  // ✅ Fix: convertLocalTimeRangeToUtc now handles both Date[] and string[] automatically
+  // Handle time range
+  const [startTime, endTime] = values.effective_time_range || [];
 
-  // Validate time range exists (required field)
-  if (
-    !values.effective_time_range ||
-    !Array.isArray(values.effective_time_range) ||
-    values.effective_time_range.length !== 2
-  ) {
-    throw new Error('生效时间范围是必填字段');
-  }
-
-  const utcRange = convertLocalTimeRangeToUtc(values.effective_time_range);
-  if (!utcRange) {
-    throw new Error('时间范围转换失败，请重新选择');
-  }
-
-  const [start_time, end_time] = utcRange;
-
-  // Handle Webhook headers
+  // Handle webhook headers
   const webhookHeadersObj = enableWebhook
     ? convertWebhookHeaders(webhookHeaders)
     : {};
@@ -106,23 +86,23 @@ const formatSubmitData = (
     .map((id) => String(id).trim())
     .filter((id) => id.length > 0);
 
-  // Normalize event levels: transform frontend form's event_levels to backend's event_level
-  // ✅ Fix: event_level is a required backend field, empty array means subscribe to all levels
+  // Normalize event level: convert frontend form's event_levels to backend's event_level
+  // ✅ Fix: event_level is a required field in the backend, empty array represents subscribing to all levels
   // Backend definition: event_level: List[EventLevel] = Field(...) - required field
   const normalizedEventLevel = Array.isArray(values.event_levels)
     ? values.event_levels
     : [];
 
-  // ✅ Fix: Return type conforms to SubscribeRelationCreate | SubscribeRelationUpdate
+  // ✅ Fix: Return type matches SubscribeRelationCreate | SubscribeRelationUpdate
   // Ensure required fields are not undefined
   // ✅ Fix: Field name unified to use enable_webhook (consistent with backend definition)
-  // ✅ Fix: inform_strategy_ids always passes array (even if empty), not undefined
+  // ✅ Fix: inform_strategy_ids always passes an array (even if empty), not undefined
   return {
     name: values.name,
     agent_type: values.agent_type,
     inform_strategy_ids: normalizedStrategyIds,
-    start_time,
-    end_time,
+    start_time: startTime?.toISOString(),
+    end_time: endTime?.toISOString(),
     event_level: normalizedEventLevel,
     enable_webhook: enableWebhook || undefined,
     webhook_endpoint: enableWebhook ? values.webhook_endpoint : undefined,
@@ -137,19 +117,19 @@ const formatSubmitData = (
 };
 
 /**
- * Create form submission handler function
+ * Create form submit handler function
  *
- * Encapsulates complete form submission flow:
+ * Encapsulates the complete form submission flow:
  * 1. Validate form
  * 2. Format data
- * 3. Call submission callback
+ * 3. Call submit callback
  * 4. Determine success/failure based on return value
- * 5. Display corresponding notification
+ * 5. Display corresponding message
  * 6. Call onCancel to close form on success
  *
  * @param form - Form instance
  * @param setLoading - Function to set loading state
- * @returns Submission handler function, returns Promise<boolean> indicating submission success
+ * @returns Submit handler function, returns Promise<boolean> indicating whether submission was successful
  *
  * @example
  * ```ts
@@ -161,7 +141,7 @@ const formatSubmitData = (
  *     return true; // Return true for success, false for failure
  *   },
  *   () => {
- *     // Callback to close modal after success
+ *     // Callback to close modal on success
  *   },
  *   webhookHeaders,
  *   enableWebhook
@@ -189,14 +169,14 @@ export const createSubmitHandler = (
       const values = await form.validate();
       setLoading(true);
 
-      // Format submission data
+      // Format submit data
       const submitData = formatSubmitData(
         values,
         webhookHeaders,
         enableWebhook,
       );
 
-      // Call submission callback, get result
+      // Call submit callback and get result
       const success = await onSubmit(submitData);
 
       // Determine success based on return value
@@ -205,26 +185,11 @@ export const createSubmitHandler = (
         return true;
       }
 
-      Message.error('订阅保存失败，请重试');
+      Message.error('Subscription save failed, please try again');
       return false;
-    } catch (error: unknown) {
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      const errorMessage = errorObj.message || '提交失败，请检查表单数据';
-
-      // ✅ 正确：使用 logger 记录错误，透出实际错误信息
-      logger.error({
-        message: '订阅表单提交失败',
-        data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
-          errorObj,
-        },
-        source: 'SubscriptionForm',
-        component: 'createSubmitHandler',
-      });
-
-      Message.error(errorMessage);
+    } catch (error) {
+      // Handle validation failure or submission failure
+      Message.error('Submission failed, please check form data');
       return false;
     } finally {
       setLoading(false);

@@ -17,8 +17,8 @@ import type { InformStrategy } from 'api-generate';
 import type React from 'react';
 
 /**
- * 卡片模版配置提示文案组件
- * 用于统一展示卡片模版配置提示
+ * Card template configuration prompt text component
+ * Used to uniformly display card template configuration prompts
  */
 export const CardTemplateConfigMessage: React.FC = () => {
   return (
@@ -37,15 +37,15 @@ export const CardTemplateConfigMessage: React.FC = () => {
 };
 
 /**
- * 顶部提示信息组件属性接口
+ * Top alert component props interface
  */
 export interface TopAlertProps {
   editingStrategy: InformStrategy | null;
 }
 
 /**
- * 顶部提示信息组件
- * 显示新建或编辑策略的提示
+ * Top alert component
+ * Displays prompts for creating or editing strategy
  */
 export const TopAlert: React.FC<TopAlertProps> = ({ editingStrategy }) => {
   const isCreate = !editingStrategy;
@@ -66,15 +66,15 @@ export const TopAlert: React.FC<TopAlertProps> = ({ editingStrategy }) => {
 };
 
 /**
- * 警告信息组件属性接口
+ * Warning alert component props interface
  */
 export interface WarningAlertProps {
   selectedBotName: string | null;
 }
 
 /**
- * 警告信息组件
- * 显示注意事项和配置提示
+ * Warning alert component
+ * Displays notes and configuration prompts
  */
 export const WarningAlert: React.FC<WarningAlertProps> = ({
   selectedBotName,

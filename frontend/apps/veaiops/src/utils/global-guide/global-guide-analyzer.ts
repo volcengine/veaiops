@@ -28,8 +28,8 @@ import { generateRecommendations } from './report-generator';
 import type { AnalysisReport } from './types';
 
 /**
- * 全局引导组件拦截问题分析工具
- * 使用日志工具分析首次访问被拦截的原因
+ * Global guide component interception issue analysis tool
+ * Uses logging tools to analyze why first-time access is intercepted
  */
 class GlobalGuideAnalyzer {
   private isAnalyzing = false;
@@ -37,13 +37,13 @@ class GlobalGuideAnalyzer {
   private localStorageBackup: Record<string, string> = {};
 
   /**
-   * 开始分析
+   * Start analysis
    */
   startAnalysis(): void {
     if (this.isAnalyzing) {
-      // ✅ 正确：使用 logger 记录警告，data 参数应为对象或 undefined
+      // ✅ Correct: Use logger to record warning, data parameter should be object or undefined
       logger.warn({
-        message: '分析已在进行中',
+        message: 'Analysis already in progress',
         data: undefined,
         source: 'GlobalGuideAnalyzer',
       });
@@ -53,14 +53,14 @@ class GlobalGuideAnalyzer {
     this.isAnalyzing = true;
     this.analysisStartTime = Date.now();
 
-    // 备份当前 localStorage 状态
+    // Backup current localStorage state
     this.localStorageBackup = backupLocalStorage();
 
-    // 开始收集日志
+    // Start log collection
     startLogCollection();
 
     logger.info({
-      message: '开始分析全局引导组件拦截问题',
+      message: 'Starting analysis of global guide component interception issue',
       data: {
         startTime: new Date().toISOString(),
         url: window.location.href,
@@ -68,18 +68,18 @@ class GlobalGuideAnalyzer {
       source: 'GlobalGuideAnalyzer',
     });
 
-    // 记录关键状态
+    // Log critical state
     logInitialState();
   }
 
   /**
-   * 停止分析并导出结果
+   * Stop analysis and export results
    */
   stopAnalysis(): void {
     if (!this.isAnalyzing) {
-      // ✅ 正确：使用 logger 记录警告，data 参数应为对象或 undefined
+      // ✅ Correct: Use logger to record warning, data parameter should be object or undefined
       logger.warn({
-        message: '没有正在进行的分析',
+        message: 'No analysis in progress',
         data: undefined,
         source: 'GlobalGuideAnalyzer',
       });
@@ -90,7 +90,7 @@ class GlobalGuideAnalyzer {
     const analysisDuration = Date.now() - this.analysisStartTime;
 
     logger.info({
-      message: '分析完成',
+      message: 'Analysis completed',
       data: {
         duration: `${analysisDuration}ms`,
         logCount: getLogCount(),
@@ -98,16 +98,16 @@ class GlobalGuideAnalyzer {
       source: 'GlobalGuideAnalyzer',
     });
 
-    // 导出分析结果
+    // Export analysis results
     this.exportAnalysisResults();
   }
 
   /**
-   * 导出分析结果
+   * Export analysis results
    */
   private exportAnalysisResults(): void {
     try {
-      // 导出日志
+      // Export logs
       const timestamp = new Date()
         .toISOString()
         .slice(0, 19)
@@ -116,15 +116,15 @@ class GlobalGuideAnalyzer {
 
       exportLogsToFile(filename);
 
-      // 创建详细的分析报告
+      // Create detailed analysis report
       const analysisReport = this.generateAnalysisReport();
 
-      // 将分析报告保存到 localStorage 供后续查看
+      // Save analysis report to localStorage for later viewing
       const reportKey = `global-guide-analysis-report-${timestamp}`;
       localStorage.setItem(reportKey, JSON.stringify(analysisReport));
 
       logger.info({
-        message: '分析结果已导出',
+        message: 'Analysis results exported',
         data: {
           logFile: filename,
           reportKey,
@@ -133,11 +133,11 @@ class GlobalGuideAnalyzer {
         source: 'GlobalGuideAnalyzer',
       });
     } catch (error) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
-        message: '导出分析结果失败',
+        message: 'Failed to export analysis results',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
@@ -150,7 +150,7 @@ class GlobalGuideAnalyzer {
   }
 
   /**
-   * 生成分析报告
+   * Generate analysis report
    */
   private generateAnalysisReport(): AnalysisReport {
     return {
@@ -166,24 +166,24 @@ class GlobalGuideAnalyzer {
   }
 
   /**
-   * 快速诊断
+   * Quick diagnosis
    */
   quickDiagnosis(): void {
-    // ✅ 正确：使用 logger 记录信息，data 参数应为对象或 undefined
+    // ✅ Correct: Use logger to record information, data parameter should be object or undefined
     logger.info({
-      message: '开始快速诊断',
+      message: 'Starting quick diagnosis',
       data: undefined,
       source: 'GlobalGuideAnalyzer',
     });
 
-    // 检查 localStorage
+    // Check localStorage
     const guideStore = localStorage.getItem('global-guide-store');
     if (guideStore) {
       try {
         const parsed = JSON.parse(guideStore);
         if ('state' in parsed && 'guideVisible' in parsed.state) {
           logger.error({
-            message: '发现问题: guideVisible 被持久化',
+            message: 'Issue found: guideVisible is persisted',
             data: {
               value: parsed.state.guideVisible,
               store: parsed,
@@ -192,11 +192,11 @@ class GlobalGuideAnalyzer {
           });
         }
       } catch (error) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
-          message: 'localStorage 解析失败',
+          message: 'localStorage parse failed',
           data: {
             error: errorObj.message,
             stack: errorObj.stack,
@@ -208,13 +208,13 @@ class GlobalGuideAnalyzer {
       }
     }
 
-    // 检查 DOM
+    // Check DOM
     const visibleGuideElements = document.querySelectorAll(
       '[class*="global-guide"]:not([style*="display: none"])',
     );
     if (visibleGuideElements.length > 0) {
       logger.error({
-        message: '发现问题: 存在可见的引导元素',
+        message: 'Issue found: visible guide elements exist',
         data: {
           count: visibleGuideElements.length,
           elements: Array.from(visibleGuideElements).map((el) => ({
@@ -227,23 +227,23 @@ class GlobalGuideAnalyzer {
       });
     }
 
-    // ✅ 正确：使用 logger 记录信息，data 参数应为对象或 undefined
+    // ✅ Correct: Use logger to record information, data parameter should be object or undefined
     logger.info({
-      message: '快速诊断完成',
+      message: 'Quick diagnosis completed',
       data: undefined,
       source: 'GlobalGuideAnalyzer',
     });
   }
 }
 
-// 创建全局分析器实例
+// Create global analyzer instance
 export const globalGuideAnalyzer = new GlobalGuideAnalyzer();
 
-// 导出便捷方法
+// Export convenience methods
 export const analyzeGlobalGuideIssue = () => {
   globalGuideAnalyzer.startAnalysis();
 
-  // 5秒后自动停止分析
+  // Automatically stop analysis after 5 seconds
   setTimeout(() => {
     globalGuideAnalyzer.stopAnalysis();
   }, 5000);
@@ -253,14 +253,14 @@ export const quickDiagnoseGlobalGuide = () => {
   globalGuideAnalyzer.quickDiagnosis();
 };
 
-// 导出所有相关日志的便捷方法
+// Export convenience method for all related logs
 export const exportAllGlobalGuideLogs = (filename?: string) => {
   const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
   const finalFilename =
     filename || `global-guide-complete-analysis-${timestamp}.log`;
 
   logger.info({
-    message: '开始导出全局引导相关日志',
+    message: 'Starting export of global guide related logs',
     data: {
       filename: finalFilename,
       timestamp: new Date().toISOString(),
@@ -269,11 +269,11 @@ export const exportAllGlobalGuideLogs = (filename?: string) => {
     component: 'exportAllGlobalGuideLogs',
   });
 
-  // 使用 log-exporter 导出日志
+  // Use log-exporter to export logs
   exportLogsToFile(finalFilename);
 
   logger.info({
-    message: '全局引导日志导出完成',
+    message: 'Global guide logs export completed',
     data: {
       filename: finalFilename,
     },
@@ -281,7 +281,7 @@ export const exportAllGlobalGuideLogs = (filename?: string) => {
   });
 };
 
-// 在控制台提供便捷方法
+// Provide convenience methods in console
 if (typeof window !== 'undefined') {
   (window as any).analyzeGlobalGuide = analyzeGlobalGuideIssue;
   (window as any).quickDiagnoseGuide = quickDiagnoseGlobalGuide;

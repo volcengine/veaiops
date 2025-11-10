@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 火山引擎数据源配置详情组件
+ * Volcengine data source configuration details component
  */
 
 import { Descriptions, Divider, Space, Tag } from '@arco-design/web-react';
@@ -31,7 +31,7 @@ import type { WizardState } from '../../../types';
 
 const { Ellipsis, CustomOutlineTagList } = CellRender;
 
-// 步骤标题组件
+// Step title component
 const StepTitle: React.FC<{ icon: React.ReactNode; title: string }> = ({
   icon,
   title,
@@ -139,17 +139,17 @@ export const VolcengineDetails: React.FC<{ state: WizardState }> = ({
         <CustomOutlineTagList
           dataList={state.volcengine.selectedInstances.map(
             (instance, index) => {
-              // 获取 DiskName 用于显示实例+磁盘信息
+              // Get DiskName for displaying instance + disk information
               const diskName = instance.dimensions?.DiskName;
 
-              // 构建显示名称：实例ID (磁盘: DiskName)
+              // Build display name: instanceId (Disk: DiskName)
               const displayName = diskName
                 ? `${instance.instanceId} (磁盘: ${diskName})`
                 : instance.instanceName ||
                   instance.instanceId ||
                   `实例 ${index + 1}`;
 
-              // 生成唯一 key：组合 instanceId + DiskName
+              // Generate unique key: combine instanceId + DiskName
               const uniqueKey = diskName
                 ? `${instance.instanceId}-${diskName}`
                 : instance.instanceId || `instance-${index}`;
@@ -163,7 +163,7 @@ export const VolcengineDetails: React.FC<{ state: WizardState }> = ({
           useEllipsis={true}
         />
       ),
-      span: 1, // 独占一行
+      span: 1, // Occupy full row
     });
   }
 
@@ -186,7 +186,7 @@ export const VolcengineDetails: React.FC<{ state: WizardState }> = ({
 
   return (
     <Space direction="vertical" size={20} style={{ width: '100%' }}>
-      {/* 第1步：选择连接 */}
+      {/* Step 1: Select connection */}
       <div>
         <StepTitle icon={<IconLink />} title="第1步：选择连接" />
         <Descriptions
@@ -203,7 +203,7 @@ export const VolcengineDetails: React.FC<{ state: WizardState }> = ({
         />
       </div>
 
-      {/* 第2步：选择产品 */}
+      {/* Step 2: Select product */}
       <div>
         <StepTitle icon={<IconCloud />} title="第2步：选择产品" />
         <Descriptions
@@ -215,7 +215,7 @@ export const VolcengineDetails: React.FC<{ state: WizardState }> = ({
         />
       </div>
 
-      {/* 第3步：选择子命名空间 */}
+      {/* Step 3: Select sub-namespace */}
       <div>
         <StepTitle icon={<IconApps />} title="第3步：选择子命名空间" />
         <Descriptions
@@ -229,7 +229,7 @@ export const VolcengineDetails: React.FC<{ state: WizardState }> = ({
 
       <Divider style={{ margin: 0 }} />
 
-      {/* 第4步：选择监控项 */}
+      {/* Step 4: Select metric */}
       <div>
         <StepTitle icon={<IconStorage />} title="第4步：选择监控项" />
         <Descriptions
@@ -241,7 +241,7 @@ export const VolcengineDetails: React.FC<{ state: WizardState }> = ({
         />
       </div>
 
-      {/* 第5步：选择实例 */}
+      {/* Step 5: Select instance */}
       <div>
         <StepTitle icon={<IconDesktop />} title="第5步：选择实例" />
         <Descriptions

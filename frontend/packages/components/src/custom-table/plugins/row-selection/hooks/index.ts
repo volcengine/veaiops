@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 行选择插件 Hooks 导出
+ * Row selection plugin Hooks export
  */
 export { useRowSelection } from './use-row-selection';
 export type {

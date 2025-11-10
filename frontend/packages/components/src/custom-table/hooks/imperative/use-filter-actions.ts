@@ -13,10 +13,9 @@
 // limitations under the License.
 
 /**
- * CustomTable 筛选和排序操作 Hook
- * 负责处理筛选、排序、查询相关的所有操作
+ * CustomTable filter and sort operations Hook
+ * Responsible for handling all operations related to filtering, sorting, and querying
  *
-
  * @date 2025-12-19
  */
 import type {
@@ -27,45 +26,45 @@ import type {
 import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
 
 /**
- * @name 筛选和排序操作相关的实例方法
+ * @name Filter and sort operation related instance methods
  */
 export interface FilterActionMethods<QueryType extends BaseQuery> {
-  // 筛选操作
-  /** @name 设置筛选条件 */
+  // Filter operations
+  /** @name Set filter conditions */
   setFilters: (newFilters: Record<string, (string | number)[]>) => void;
-  /** @name 清除筛选条件 */
+  /** @name Clear filter conditions */
   clearFilters: () => void;
-  /** @name 获取筛选条件 */
+  /** @name Get filter conditions */
   getFilters: () => Record<string, (string | number)[]>;
-  /** @name 重置筛选条件 */
+  /** @name Reset filter conditions */
   resetFilters: () => void;
-  /** @name 应用筛选条件 */
+  /** @name Apply filter conditions */
   applyFilters: (filters: Record<string, (string | number)[]>) => void;
 
-  // 排序操作
-  /** @name 设置排序条件 */
+  // Sort operations
+  /** @name Set sort conditions */
   setSorter: (newSorter: SorterInfo) => void;
-  /** @name 清除排序条件 */
+  /** @name Clear sort conditions */
   clearSorter: () => void;
-  /** @name 重置排序条件 */
+  /** @name Reset sort conditions */
   resetSorter: () => void;
-  /** @name 获取排序条件 */
+  /** @name Get sort conditions */
   getSorter: () => SorterInfo;
 
-  // 查询操作
-  /** @name 设置查询参数 */
+  // Query operations
+  /** @name Set query parameters */
   setQuery: (query: Partial<BaseQuery>) => void;
-  /** @name 获取查询参数 */
+  /** @name Get query parameters */
   getQuery: () => QueryType;
-  /** @name 重置查询参数 */
+  /** @name Reset query parameters */
   resetQuery: () => void;
-  /** @name 合并查询参数 */
+  /** @name Merge query parameters */
   mergeQuery: (query: Partial<BaseQuery>) => void;
 }
 
 /**
- * @name 创建筛选和排序操作方法
- * @description 基于 pro-components 筛选和排序设计模式
+ * @name Create filter and sort operation methods
+ * @description Based on pro-components filter and sort design pattern
  */
 export const createFilterActions = <
   RecordType extends BaseRecord = BaseRecord,
@@ -80,50 +79,50 @@ export const createFilterActions = <
   const { filters, sorter } = state;
 
   return {
-    // 筛选操作
-    /** @name 设置筛选条件 */
+    // Filter operations
+    /** @name Set filter conditions */
     setFilters: (newFilters: Record<string, (string | number)[]>) =>
       context.helpers.setFilters(newFilters),
 
-    /** @name 清除筛选条件 */
+    /** @name Clear filter conditions */
     clearFilters: () => context.helpers.setFilters({}),
 
-    /** @name 获取筛选条件 */
+    /** @name Get filter conditions */
     getFilters: () => filters,
 
-    /** @name 重置筛选条件 */
+    /** @name Reset filter conditions */
     resetFilters: () => context.helpers.setFilters({}),
 
-    /** @name 应用筛选条件 */
+    /** @name Apply filter conditions */
     applyFilters: (filters: Record<string, (string | number)[]>) =>
       context.helpers.setFilters(filters),
 
-    // 排序操作
-    /** @name 设置排序条件 */
+    // Sort operations
+    /** @name Set sort conditions */
     setSorter: (newSorter: SorterInfo) =>
       context.helpers.setSorter?.(newSorter),
 
-    /** @name 清除排序条件 */
+    /** @name Clear sort conditions */
     clearSorter: () => context.helpers.setSorter?.({}),
 
-    /** @name 重置排序条件 */
+    /** @name Reset sort conditions */
     resetSorter: () => context.helpers.setSorter?.({}),
 
-    /** @name 获取排序条件 */
+    /** @name Get sort conditions */
     getSorter: () => sorter,
 
-    // 查询操作
-    /** @name 设置查询参数 */
+    // Query operations
+    /** @name Set query parameters */
     setQuery: (query: Partial<BaseQuery>) =>
       context.helpers.setQuery(query as QueryType),
 
-    /** @name 获取查询参数 */
+    /** @name Get query parameters */
     getQuery: () => context.state.query,
 
-    /** @name 重置查询参数 */
+    /** @name Reset query parameters */
     resetQuery: () => context.helpers.setQuery({} as QueryType),
 
-    /** @name 合并查询参数 */
+    /** @name Merge query parameters */
     mergeQuery: (query: Partial<BaseQuery>) => {
       const currentQuery = context.state.query;
       context.helpers.setQuery({ ...currentQuery, ...query });

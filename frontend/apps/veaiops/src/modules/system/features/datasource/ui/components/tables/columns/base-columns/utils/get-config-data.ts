@@ -17,13 +17,13 @@ import type { DataSource } from 'api-generate';
 import type { GetConfigDataParams } from '../types';
 
 /**
- * 根据数据源类型获取配置数据
+ * Get configuration data based on data source type
  */
 export const getConfigData = ({
   record,
   dataSourceType,
 }: GetConfigDataParams) => {
-  // 使用类型断言，因为实际数据结构包含特定配置字段
+  // Use type assertion because actual data structure contains specific configuration fields
   const recordWithConfigs = record as DataSource & {
     volcengine_config?: Record<string, unknown>;
     aliyun_config?: Record<string, unknown>;

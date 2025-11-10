@@ -22,19 +22,19 @@ import { BotDrawerTitle } from '../bot/drawer-title';
 import { ChatTable, type ChatTableRef } from './chat-table/index';
 
 /**
- * 群管理抽屉组件
+ * Chat management drawer component
  *
- * 对应 origin/feat/web-v2 分支的实现，确保功能一致性
+ * Corresponds to origin/feat/web-v2 branch implementation, ensures functional consistency
  */
 export const ChatManagementDrawer: React.FC<ChatManagementDrawerProps> = ({
   visible,
   onClose,
   selectedBot,
 }) => {
-  // 表格引用，用于获取刷新函数
+  // Table reference, used to get refresh function
   const tableRef = useRef<ChatTableRef>(null);
 
-  // 获取表格刷新函数
+  // Get table refresh function
   const getRefreshTable = async () => {
     if (tableRef.current?.refresh) {
       const result = await tableRef.current.refresh();
@@ -53,7 +53,7 @@ export const ChatManagementDrawer: React.FC<ChatManagementDrawerProps> = ({
     }
   };
 
-  // 使用管理刷新 Hook，提供配置更新后刷新功能
+  // Use management refresh Hook, provide refresh functionality after configuration update
   const { afterUpdate } = useManagementRefresh(getRefreshTable);
 
   return (
@@ -72,7 +72,7 @@ export const ChatManagementDrawer: React.FC<ChatManagementDrawerProps> = ({
       maskClosable={false}
       focusLock={false}
     >
-      {/* 引导提示：需先在群聊中拉入对应机器人 */}
+      {/* Guide tip: Need to add corresponding bot to group chat first */}
       <Alert
         type="warning"
         content="需要先在群聊中拉入对应机器人"

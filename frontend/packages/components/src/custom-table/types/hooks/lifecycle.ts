@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 生命周期管理 Hook 相关类型定义
+ * Lifecycle management Hook related type definitions
  */
 import type { BaseQuery, BaseRecord } from '../core';
 import type {
@@ -22,19 +22,19 @@ import type {
 } from '../plugins/lifecycle';
 
 /**
- * 生命周期阶段 (重新导出插件中的定义)
+ * Lifecycle phase (re-export definition from plugin)
  */
 export type LifecyclePhase = PluginLifecyclePhase;
 
 /**
- * 生命周期回调函数
+ * Lifecycle callback function
  */
 export type LifecycleCallback<T = Record<string, unknown>> = (
   context: T,
 ) => void | Promise<void>;
 
 /**
- * 生命周期配置
+ * Lifecycle configuration
  */
 export type LifecycleConfig<
   RecordType extends BaseRecord = BaseRecord,
@@ -53,24 +53,24 @@ export type LifecycleConfig<
  * useLifecycleManager Hook Props
  */
 export interface UseLifecycleManagerProps {
-  /** 生命周期配置 */
+  /** Lifecycle configuration */
   config?: LifecycleConfig;
-  /** 生命周期配置 */
+  /** Lifecycle configuration */
   lifecycleConfig?: Record<string, unknown>;
-  /** 管理器配置 */
+  /** Manager configuration */
   managerConfig?: Record<string, unknown>;
-  /** 全局回调 */
+  /** Global callbacks */
   globalCallbacks?: Record<string, unknown>;
-  /** 生命周期错误回调 */
+  /** Lifecycle error callback */
   onLifecycleError?: (error: Error) => void;
-  /** 是否启用调试 */
+  /** Whether to enable debugging */
   debug?: boolean;
-  /** 自定义上下文 */
+  /** Custom context */
   context?: Record<string, unknown>;
 }
 
 /**
- * 生命周期执行器
+ * Lifecycle executor
  */
 export interface LifecycleExecutor {
   execute: (
@@ -84,21 +84,21 @@ export interface LifecycleExecutor {
 }
 
 /**
- * useLifecycleManager Hook 返回值
+ * useLifecycleManager Hook return value
  */
 export interface UseLifecycleManagerResult {
-  /** 执行生命周期 */
+  /** Execute lifecycle */
   executeLifecycle: (
     phase: LifecyclePhase,
     pluginName: string,
     context: Record<string, unknown>,
   ) => Promise<void>;
-  /** 添加监听器 */
+  /** Add listener */
   addListener: (listener: LifecycleListener) => void;
-  /** 移除监听器 */
+  /** Remove listener */
   removeListener: (listener: LifecycleListener) => void;
-  /** 获取性能指标 */
+  /** Get performance metrics */
   getPerformanceMetrics: () => Record<string, unknown>;
-  /** 清除性能指标 */
+  /** Clear performance metrics */
   clearPerformanceMetrics: () => void;
 }

@@ -16,45 +16,45 @@ import { CellRender } from '@/cell-render';
 import { Card, Descriptions, Typography } from '@arco-design/web-react';
 import type React from 'react';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 const { Title, Text } = Typography;
 
 /**
- * 配置变更项
+ * Configuration change item
  */
 export interface ConfigChange {
-  /** 字段路径 */
+  /** Field path */
   path: string;
-  /** 字段名称 */
+  /** Field name */
   label: string;
-  /** 原始值 */
+  /** Original value */
   oldValue: any;
-  /** 新值 */
+  /** New value */
   newValue: any;
-  /** 变更类型 */
+  /** Change type */
   type: 'added' | 'modified' | 'deleted';
 }
 
 /**
- * 配置对比属性
+ * Configuration comparison properties
  */
 export interface ConfigDiffProps {
-  /** 原始配置 */
+  /** Original configuration */
   originalConfig: Record<string, any>;
-  /** 新配置 */
+  /** New configuration */
   newConfig: Record<string, any>;
-  /** 字段标签映射 */
+  /** Field label mapping */
   fieldLabels?: Record<string, string>;
-  /** 忽略的字段 */
+  /** Ignored fields */
   ignoreFields?: string[];
-  /** 自定义渲染函数 */
+  /** Custom render function */
   renderValue?: (value: any, field: string) => React.ReactNode;
 }
 
 /**
- * 深度比较两个对象，返回变更列表
+ * Deeply compare two objects and return change list
  */
 const getConfigChanges = (
   original: Record<string, any>,
@@ -69,7 +69,7 @@ const getConfigChanges = (
   for (const key of allKeys) {
     const fullPath = prefix ? `${prefix}.${key}` : key;
 
-    // 跳过忽略的字段
+    // Skip ignored fields
     if (ignoreFields.includes(fullPath)) {
       continue;
     }
@@ -79,7 +79,7 @@ const getConfigChanges = (
     const label = fieldLabels[fullPath] || key;
 
     if (!(key in original)) {
-      // 新增字段
+      // Added field
       changes.push({
         path: fullPath,
         label,
@@ -88,7 +88,7 @@ const getConfigChanges = (
         type: 'added',
       });
     } else if (!(key in current)) {
-      // 删除字段
+      // Deleted field
       changes.push({
         path: fullPath,
         label,
@@ -104,7 +104,7 @@ const getConfigChanges = (
       !Array.isArray(oldValue) &&
       !Array.isArray(newValue)
     ) {
-      // 递归比较对象
+      // Recursively compare objects
       changes.push(
         ...getConfigChanges(
           oldValue,
@@ -115,7 +115,7 @@ const getConfigChanges = (
         ),
       );
     } else if (JSON.stringify(oldValue) !== JSON.stringify(newValue)) {
-      // 修改字段
+      // Modified field
       changes.push({
         path: fullPath,
         label,
@@ -130,11 +130,11 @@ const getConfigChanges = (
 };
 
 /**
- * 格式化值显示
+ * Format value display
  */
 const formatValue = (value: any): React.ReactNode => {
   if (value === undefined) {
-    return <Text type="secondary">未设置</Text>;
+    return <Text type="secondary">Not set</Text>;
   }
 
   if (value === null) {
@@ -142,7 +142,7 @@ const formatValue = (value: any): React.ReactNode => {
   }
 
   if (typeof value === 'boolean') {
-    return <CustomOutlineTag>{value ? '是' : '否'}</CustomOutlineTag>;
+    return <CustomOutlineTag>{value ? 'Yes' : 'No'}</CustomOutlineTag>;
   }
 
   if (typeof value === 'object') {
@@ -153,10 +153,8 @@ const formatValue = (value: any): React.ReactNode => {
 };
 
 /**
- * 配置变更摘要组件
- * @description 显示配置变更的详细对比信息
-
-
+ * Configuration change summary component
+ * @description Displays detailed comparison information of configuration changes
  */
 export const ConfigChangeSummary: React.FC<ConfigDiffProps> = ({
   originalConfig,
@@ -176,7 +174,7 @@ export const ConfigChangeSummary: React.FC<ConfigDiffProps> = ({
     return (
       <Card>
         <div style={{ textAlign: 'center', padding: '40px 0' }}>
-          <Text type="secondary">没有配置变更</Text>
+          <Text type="secondary">No configuration changes</Text>
         </div>
       </Card>
     );
@@ -188,29 +186,33 @@ export const ConfigChangeSummary: React.FC<ConfigDiffProps> = ({
 
   return (
     <div>
-      {/* 变更统计 */}
+      {/* Change statistics */}
       <Card style={{ marginBottom: 16 }}>
-        <Title heading={6}>变更统计</Title>
+        <Title heading={6}>Change Statistics</Title>
         <div style={{ display: 'flex', gap: 16 }}>
           {addedChanges.length > 0 && (
-            <CustomOutlineTag>新增 {addedChanges.length} 项</CustomOutlineTag>
+            <CustomOutlineTag>
+              Added {addedChanges.length} items
+            </CustomOutlineTag>
           )}
           {modifiedChanges.length > 0 && (
             <CustomOutlineTag>
-              修改 {modifiedChanges.length} 项
+              Modified {modifiedChanges.length} items
             </CustomOutlineTag>
           )}
           {deletedChanges.length > 0 && (
-            <CustomOutlineTag>删除 {deletedChanges.length} 项</CustomOutlineTag>
+            <CustomOutlineTag>
+              Deleted {deletedChanges.length} items
+            </CustomOutlineTag>
           )}
         </div>
       </Card>
 
-      {/* 新增项 */}
+      {/* Added items */}
       {addedChanges.length > 0 && (
         <Card style={{ marginBottom: 16 }}>
           <Title heading={6} style={{ color: '#00b42a' }}>
-            新增配置项
+            Added Configuration Items
           </Title>
           <Descriptions
             column={1}
@@ -222,22 +224,22 @@ export const ConfigChangeSummary: React.FC<ConfigDiffProps> = ({
         </Card>
       )}
 
-      {/* 修改项 */}
+      {/* Modified items */}
       {modifiedChanges.length > 0 && (
         <Card style={{ marginBottom: 16 }}>
           <Title heading={6} style={{ color: '#ff7d00' }}>
-            修改配置项
+            Modified Configuration Items
           </Title>
           {modifiedChanges.map((change, index) => (
             <div key={index} style={{ marginBottom: 16 }}>
               <Text bold>{change.label}</Text>
               <div style={{ marginTop: 8 }}>
                 <div style={{ marginBottom: 4 }}>
-                  <Text type="secondary">原值：</Text>
+                  <Text type="secondary">Old Value: </Text>
                   {renderValue(change.oldValue, change.path)}
                 </div>
                 <div>
-                  <Text type="secondary">新值：</Text>
+                  <Text type="secondary">New Value: </Text>
                   {renderValue(change.newValue, change.path)}
                 </div>
               </div>
@@ -246,11 +248,11 @@ export const ConfigChangeSummary: React.FC<ConfigDiffProps> = ({
         </Card>
       )}
 
-      {/* 删除项 */}
+      {/* Deleted items */}
       {deletedChanges.length > 0 && (
         <Card>
           <Title heading={6} style={{ color: '#f53f3f' }}>
-            删除配置项
+            Deleted Configuration Items
           </Title>
           <Descriptions
             column={1}
@@ -266,7 +268,7 @@ export const ConfigChangeSummary: React.FC<ConfigDiffProps> = ({
 };
 
 /**
- * 简单配置对比组件
+ * Simple configuration comparison component
  */
 export const ConfigDiff: React.FC<{
   title?: string;
@@ -280,17 +282,17 @@ export const ConfigDiff: React.FC<{
     );
   }
 
-  // 获取变更类型的显示信息
+  // Get change type display information
   const getChangeTypeInfo = (type: ConfigChange['type']) => {
     switch (type) {
       case 'added':
-        return { color: 'green', text: '新增' };
+        return { color: 'green', text: 'Added' };
       case 'modified':
-        return { color: 'orange', text: '修改' };
+        return { color: 'orange', text: 'Modified' };
       case 'deleted':
-        return { color: 'red', text: '删除' };
+        return { color: 'red', text: 'Deleted' };
       default:
-        return { color: 'gray', text: '未知' };
+        return { color: 'gray', text: 'Unknown' };
     }
   };
 
@@ -309,11 +311,11 @@ export const ConfigDiff: React.FC<{
             {change.type === 'modified' && (
               <div style={{ marginTop: 4, marginLeft: 16 }}>
                 <div>
-                  <Text type="secondary">原值：</Text>
+                  <Text type="secondary">Old Value: </Text>
                   {formatValue(change.oldValue)}
                 </div>
                 <div>
-                  <Text type="secondary">新值：</Text>
+                  <Text type="secondary">New Value: </Text>
                   {formatValue(change.newValue)}
                 </div>
               </div>
@@ -321,14 +323,14 @@ export const ConfigDiff: React.FC<{
 
             {change.type === 'added' && (
               <div style={{ marginTop: 4, marginLeft: 16 }}>
-                <Text type="secondary">值：</Text>
+                <Text type="secondary">Value: </Text>
                 {formatValue(change.newValue)}
               </div>
             )}
 
             {change.type === 'deleted' && (
               <div style={{ marginTop: 4, marginLeft: 16 }}>
-                <Text type="secondary">原值：</Text>
+                <Text type="secondary">Old Value: </Text>
                 {formatValue(change.oldValue)}
               </div>
             )}

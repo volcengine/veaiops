@@ -20,7 +20,7 @@ import { logger } from '@veaiops/utils';
 import { useCallback } from 'react';
 
 /**
- * 创建机器人Hook
+ * Create bot hook
  */
 export const useCreateBot = () => {
   return useCallback(async (botData: BotCreateRequest): Promise<boolean> => {

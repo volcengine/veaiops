@@ -13,13 +13,12 @@
 // limitations under the License.
 
 /**
- * CustomTable Imperative API 模块导出
+ * CustomTable Imperative API module exports
  *
-
  * @date 2025-12-19
  */
 
-// 导出各个功能模块
+// Export individual functional modules
 export * from './use-data-actions';
 export * from './use-expand-actions';
 export * from './use-filter-actions';

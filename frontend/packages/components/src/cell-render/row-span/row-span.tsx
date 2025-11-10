@@ -21,13 +21,13 @@ type WithOptionalRowSpan<T> = T & {
 type RowSpanRecordType<T = Record<string, any>> = WithOptionalRowSpan<T>;
 
 interface RowSpanCellProps<T extends RowSpanRecordType> {
-  record: T; // 包含rowSpan配置的记录对象
-  children: ReactNode; // 自定义渲染组件
+  record: T; // Record object containing rowSpan configuration
+  children: ReactNode; // Custom rendering component
 }
 
 /**
- * RowSpan 函数返回的类型
- * 用于表格列的 render 函数中
+ * Return type of RowSpan function
+ * Used in table column render functions
  */
 export type RowSpanReturnType = {
   children: ReactNode;
@@ -37,10 +37,10 @@ export type RowSpanReturnType = {
 };
 
 /**
- * 用于根据记录配置处理rowSpan逻辑的组件。
- * @param record - 包含rowSpan配置的记录对象。
- * @param renderComponent - 用于单元格的自定义渲染组件。
- * @returns 包含单元格内容和属性的对象。
+ * Component for processing rowSpan logic based on record configuration
+ * @param record - Record object containing rowSpan configuration
+ * @param renderComponent - Custom rendering component for cells
+ * @returns Object containing cell content and properties
  */
 const RowSpanCellRender = <T extends RowSpanRecordType>({
   record,

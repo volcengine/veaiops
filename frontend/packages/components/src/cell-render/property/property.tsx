@@ -22,19 +22,19 @@ import { LinkRender } from '../link/link';
 import { StampTimeRender } from '../time/time';
 
 export enum RenderPropertyType {
-  // 文本省略
+  // Text ellipsis
   ELLIPSIS = 'ellipsis',
-  BOOLEAN = 'boolean', // 布尔值
-  TIME = 'time', // 时间渲染
-  LINK = 'link', // 链接渲染
-  JSON_PARSE = 'json_parse', // json渲染
-  EMPLOYEE = 'employee', // 员工渲染
-  EMPLOYEE_GROUP = 'employee_group', // 员工组渲染
-  INFO_WITH_CODE = 'info_with_code', // 名称+code组合
-  FRONT_ENUMS = 'front_enums', // 前端枚举值
-  CUSTOM_ARRAY = 'custom_array', // 批量渲染
-  PRODUCT_LINE = 'product_line', // 产品线渲染
-  PRODUCT_LINES = 'product_lines', // 产品线组渲染
+  BOOLEAN = 'boolean', // Boolean value
+  TIME = 'time', // Time rendering
+  LINK = 'link', // Link rendering
+  JSON_PARSE = 'json_parse', // JSON rendering
+  EMPLOYEE = 'employee', // Employee rendering
+  EMPLOYEE_GROUP = 'employee_group', // Employee group rendering
+  INFO_WITH_CODE = 'info_with_code', // Name + code combination
+  FRONT_ENUMS = 'front_enums', // Frontend enum values
+  CUSTOM_ARRAY = 'custom_array', // Batch rendering
+  PRODUCT_LINE = 'product_line', // Product line rendering
+  PRODUCT_LINES = 'product_lines', // Product line group rendering
 }
 
 interface RenderPropertyProps {

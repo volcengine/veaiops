@@ -23,7 +23,7 @@ interface IModalStyle {
 }
 
 /**
- * 根据选择器所选元素、modal 的长宽、用户定义的 placement 和 offset，获取 modal 的位置
+ * Get modal position based on selector selected element, modal dimensions, user-defined placement and offset
  * Calculate the modal's position based on its anchor element, user-defined placement and offset
  * @param {HTMLElement} modalEl
  * @param {Element} anchorEl
@@ -83,62 +83,62 @@ export const getModalStyle = (
 
   const transform: Record<string, Record<string, number>> = {
     top: {
-      // modal放到内容的上面
+      // Place modal above content
       top: top - modalPos.height - MARGIN,
       left: left + width / 2 - modalPos.width / 2,
     },
     bottom: {
-      // modal放到内容的下面
+      // Place modal below content
       top: bottom + MARGIN,
       left: left + width / 2 - modalPos.width / 2,
     },
     left: {
-      // modal放到内容的左边
+      // Place modal to the left of content
       top: top + height / 2 - modalPos.height / 2,
       left: left - modalPos.width - MARGIN,
     },
     right: {
-      // modal放到内容的右边
+      // Place modal to the right of content
       top: top + height / 2 - modalPos.height / 2,
       left: left + width + MARGIN,
     },
     'top-right': {
-      // modal的bottom-border紧贴内容的top-border，right-borders水平对齐
+      // Modal's bottom-border aligns with content's top-border, right-borders horizontally aligned
       top: top - modalPos.height - MARGIN,
       left: left + width - modalPos.width,
     },
     'top-left': {
-      // modal的bottom-border紧贴内容的top-border，left-borders水平对齐
+      // Modal's bottom-border aligns with content's top-border, left-borders horizontally aligned
       top: top - modalPos.height - MARGIN,
       left,
     },
     'bottom-right': {
-      // modal的top-border紧贴内容的bottom-border，right-borders水平对齐
+      // Modal's top-border aligns with content's bottom-border, right-borders horizontally aligned
       top: bottom + MARGIN,
       left: left + width - modalPos.width,
     },
     'bottom-left': {
-      // modal的top-border紧贴内容的bottom-border，left-borders水平对齐
+      // Modal's top-border aligns with content's bottom-border, left-borders horizontally aligned
       top: bottom + MARGIN,
       left,
     },
     'right-top': {
-      // modal的left-border紧贴内容的right-border，top-borders水平对齐
+      // Modal's left-border aligns with content's right-border, top-borders horizontally aligned
       top,
       left: left + width + MARGIN,
     },
     'left-top': {
-      // modal的right-border紧贴内容的left-border，top-borders水平对齐
+      // Modal's right-border aligns with content's left-border, top-borders horizontally aligned
       top,
       left: left - modalPos.width - MARGIN,
     },
     'right-bottom': {
-      // modal的left-border紧贴内容的right-border，bottom-borders水平对齐
+      // Modal's left-border aligns with content's right-border, bottom-borders horizontally aligned
       top: bottom - modalPos.height,
       left: left + width + MARGIN,
     },
     'left-bottom': {
-      // modal的right-border紧贴内容的left-border，bottom-borders水平对齐
+      // Modal's right-border aligns with content's left-border, bottom-borders horizontally aligned
       top: bottom - modalPos.height,
       left: left - modalPos.width - MARGIN,
     },

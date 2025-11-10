@@ -28,8 +28,8 @@ import {
 import { useMemo } from 'react';
 
 /**
- * 创建历史事件表格的请求函数
- * 根据模块类型自动过滤智能体选项
+ * Create request function for event history table
+ * Automatically filter agent options based on module type
  */
 export const useEventHistoryRequest = ({
   moduleType,
@@ -50,7 +50,7 @@ export const useEventHistoryRequest = ({
       }) => {
         const allowedAgentTypes = getAllowedAgentTypes(moduleType);
 
-        // 构建 API 参数
+        // Build API parameters
         const apiParams: Parameters<
           typeof apiClient.event.getApisV1ManagerEventCenterEvent
         >[0] = {
@@ -58,7 +58,7 @@ export const useEventHistoryRequest = ({
           limit: limit ?? 10,
         };
 
-        // 智能体类型筛选（根据模块类型过滤）
+        // Agent type filtering (filter based on module type)
         if (agent_type && (agent_type as string[]).length > 0) {
           const selectedTypes = agent_type as string[];
           const filteredTypes = selectedTypes.filter((type) =>
@@ -68,21 +68,21 @@ export const useEventHistoryRequest = ({
             apiParams.agentType = filteredTypes as any;
           }
         } else {
-          // 如果没有选择，默认使用模块允许的类型
+          // If not selected, default to module-allowed types
           apiParams.agentType = allowedAgentTypes as any;
         }
 
-        // 事件级别
+        // Event level
         if (event_level && event_level !== '') {
           apiParams.eventLevel = event_level as any;
         }
 
-        // 状态
+        // Status
         if (show_status && (show_status as string[]).length > 0) {
           apiParams.showStatus = show_status as string[];
         }
 
-        // 时间范围
+        // Time range
         if (start_time) {
           apiParams.startTime = start_time as string;
         }
@@ -90,19 +90,19 @@ export const useEventHistoryRequest = ({
           apiParams.endTime = end_time as string;
         }
 
-        // 排序参数处理
-        // 后端只支持 sort_order 参数（"asc" 或 "desc"），固定按 created_at 排序
-        // CustomTable 传递的是 sort_columns 格式，需要转换为 sort_order
+        // Sort parameter processing
+        // Backend only supports sort_order parameter ("asc" or "desc"), fixed sorting by created_at
+        // CustomTable passes sort_columns format, need to convert to sort_order
         if (
           sort_columns &&
           Array.isArray(sort_columns) &&
           sort_columns.length > 0
         ) {
           const sortColumn = sort_columns[0];
-          // 后端固定按 created_at 排序，只需要传递 sort_order
+          // Backend fixed sorting by created_at, only need to pass sort_order
           apiParams.sortOrder = sortColumn.desc ? 'desc' : 'asc';
 
-          // 添加日志：排序参数转换
+          // Add log: sort parameter conversion
           logger.info({
             message: '事件历史表格排序参数转换',
             data: {
@@ -116,7 +116,7 @@ export const useEventHistoryRequest = ({
           });
         }
 
-        // 添加日志：完整的 API 请求参数
+        // Add log: complete API request parameters
         logger.info({
           message: '事件历史表格 API 请求参数',
           data: {
@@ -132,9 +132,9 @@ export const useEventHistoryRequest = ({
         const response =
           await apiClient.event.getApisV1ManagerEventCenterEvent(apiParams);
 
-        // 添加日志：API 响应结果
+        // Add log: API response result
         logger.info({
-          message: '事件历史表格 API 响应',
+          message: '事件历史表格 API 响应结果',
           data: {
             responseCode: response.code,
             dataLength: Array.isArray(response.data) ? response.data.length : 0,

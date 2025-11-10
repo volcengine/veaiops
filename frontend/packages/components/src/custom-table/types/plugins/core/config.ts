@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 插件配置相关类型定义
+ * Plugin configuration related type definitions
  */
 
-// PluginPriority 已在 core/enums.ts 中定义，从 core 导入避免重复
+// PluginPriority is already defined in core/enums.ts, import from core to avoid duplication
 import type { PluginPriority } from '../../core/enums';
 
 /**
- * 插件基础配置
+ * Plugin base configuration
  */
 export interface PluginBaseConfig {
   enabled?: boolean;
@@ -31,7 +31,7 @@ export interface PluginBaseConfig {
 }
 
 /**
- * 插件性能指标
+ * Plugin performance metrics
  */
 export interface PluginPerformanceMetrics {
   totalPlugins: number;

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 行选择插件组件导出
+ * Row selection plugin components export
  */
 export { BatchActions } from './batch-actions';
 export { SelectionStat } from './selection-stat';

@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 引导提示组件主入口
- * 采用模块化设计，将功能拆分为多个文件
+ * Guide tip component main entry
+ * Uses modular design, splits functionality into multiple files
  */
 
-// 导出类型定义
+// Export type definitions
 export type { GuideTipOptions, Position, Size } from './types';
 
-// 导出工具函数
+// Export utility functions
 export {
   getElementRect,
   calculateTipPosition,
@@ -30,10 +30,10 @@ export {
   validateTargetElement,
 } from './utils';
 
-// 导出主要功能
+// Export main functionality
 export { showGuideTip } from './guide-tip';
 
-// 导出测试函数（开发环境）
+// Export test functions (development environment)
 export {
   testArrowPointing,
   testArrowDisplay,

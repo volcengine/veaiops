@@ -14,52 +14,50 @@
 
 import type { ReactNode } from 'react';
 
-// 由于 types 包不直接依赖 arco-design，我们使用类型兼容的方式
+// Since types package doesn't directly depend on arco-design, we use type-compatible approach
 type SorterResult = any;
 
 /**
- * 表格组件类型定义
- * @description 提供表格相关的类型定义
-
- *
+ * Table component type definitions
+ * @description Provides table-related type definitions
  */
 
-// ===== 表格相关类型 =====
+// ===== Table-related types =====
 
 export type IQueryOptions<T = unknown> = (
   params?: Record<string, unknown>,
 ) => Promise<T[]> | T[];
 
-/** 自定义表头filter的属性 */
+/** Custom table header filter properties */
 export interface TableColumnTitleProps {
-  /** 列标题 */
+  /** Column title */
   title: string;
-  /** 列在数据中对于的key */
+  /** Column key in data */
   dataIndex: string;
-  /** 筛选key */
+  /** Filter key */
   filterDataIndex?: string;
-  /** 排序的值 */
+  /** Sorter value */
   sorter?: SorterResult;
-  /** 筛选的值 */
+  /** Filter values */
   filters: Record<string, string | number | string[] | number[]>;
-  /** 排序或者筛选触发的值 */
+  /** Callback triggered by sorting or filtering */
   onChange: (
     type: string,
     value?: { [p: string]: (string | number)[] | string | number | null },
   ) => void;
-  /** 查询 */
+  /** Query options */
   queryOptions?: IQueryOptions;
-  /** 表头是否有提示 */
+  /** Tooltip in table header */
   tip?: ReactNode;
   /**
-   * 是否支持多选
+   * Whether to support multiple selection
    * @default true
    */
   multiple?: boolean;
-  /** 自定义样式 */
+  /** Custom styles */
   style?: React.CSSProperties;
-  /** 是否显示提示 */
+  /** Whether to show tooltip */
   showTip?: boolean;
-  /** 前端枚举配置 */
+  /** Frontend enum configuration */
   frontEnum?: unknown;
 }

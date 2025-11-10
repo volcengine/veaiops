@@ -26,36 +26,36 @@ import type {
 import { useCallback, useState } from 'react';
 
 /**
- * 机器人表格数据类型
+ * Bot table data type
  */
 export interface BotTableData extends Bot {
-  /** 表格行键 */
+  /** Table row key */
   key: string;
-  /** 状态 */
+  /** Status */
   status: 'active' | 'inactive';
 }
 
 /**
- * 机器人配置表单数据
- * 注意：此接口用于前端表单，与API请求类型可能不完全一致
+ * Bot configuration form data
+ * Note: This interface is for frontend forms and may not exactly match API request types
  */
 export interface BotFormData {
-  /** 应用ID */
+  /** Application ID */
   appId: string;
-  /** 应用密钥 */
+  /** Application secret */
   appSecret: string;
-  /** 加密Token */
+  /** Encryption token */
   encryptToken?: string;
-  /** 加密密钥 */
+  /** Encryption secret */
   encryptSecret?: string;
-  /** 机器人名称 */
+  /** Bot name */
   name?: string;
-  /** 企业协同工具 */
+  /** Enterprise collaboration tool */
   channel: ChannelType;
 }
 
 /**
- * 机器人管理Hook
+ * Bot management Hook
  */
 export const useBotManagement = () => {
   const [bots, setBots] = useState<BotTableData[]>([]);
@@ -63,7 +63,7 @@ export const useBotManagement = () => {
   const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
 
   /**
-   * 转换机器人数据为表格数据
+   * Transform bot data to table data
    */
   const transformBotToTableData = useCallback((bot: Bot): BotTableData => {
     return {
@@ -74,7 +74,7 @@ export const useBotManagement = () => {
   }, []);
 
   /**
-   * 加载机器人列表
+   * Load bot list
    */
   const loadBots = useCallback(async () => {
     try {
@@ -87,14 +87,14 @@ export const useBotManagement = () => {
         const tableData = response.data.map(transformBotToTableData);
         setBots(tableData);
       } else {
-        throw new Error(response.message || '获取机器人列表失败');
+        throw new Error(response.message || 'Failed to load bot list');
       }
     } catch (error) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
-        message: '加载机器人列表失败',
+        message: 'Failed to load bot list',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
@@ -107,13 +107,13 @@ export const useBotManagement = () => {
         error instanceof Error ? error.message : '加载机器人列表失败，请重试';
       Message.error(errorMessage);
     } finally {
-      // 加载完成
+      // Loading completed
       setLoading(false);
     }
   }, [transformBotToTableData]);
 
   /**
-   * 创建机器人
+   * Create bot
    */
   const createBot = useCallback(
     async (botData: BotCreateRequest): Promise<boolean> => {
@@ -133,11 +133,11 @@ export const useBotManagement = () => {
           throw new Error(response.message || BOT_MESSAGES.create.error);
         }
       } catch (error) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
-          message: '创建机器人失败',
+          message: 'Failed to create bot',
           data: {
             error: errorObj.message,
             stack: errorObj.stack,
@@ -151,7 +151,7 @@ export const useBotManagement = () => {
         Message.error(errorMessage);
         return false;
       } finally {
-        // 操作完成
+        // Operation completed
         setLoading(false);
       }
     },
@@ -159,7 +159,7 @@ export const useBotManagement = () => {
   );
 
   /**
-   * 更新机器人
+   * Update bot
    */
   interface UpdateBotParams {
     botId: string;
@@ -175,7 +175,7 @@ export const useBotManagement = () => {
         });
 
         if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
-          // 重新获取更新后的机器人信息
+          // Re-fetch updated bot information
           const botResponse =
             await apiClient.bots.getApisV1ManagerSystemConfigBots1({
               uid: botId,
@@ -193,13 +193,13 @@ export const useBotManagement = () => {
             return true;
           }
         } else {
-          // 更新API调用失败
+          // Update API call failed
           throw new Error(response.message || BOT_MESSAGES.update.error);
         }
 
         throw new Error(response.message || BOT_MESSAGES.update.error);
       } catch (error) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
@@ -216,7 +216,7 @@ export const useBotManagement = () => {
         Message.error(errorMessage || BOT_MESSAGES.update.error);
         return false;
       } finally {
-        // 操作完成
+        // Operation completed
         setLoading(false);
       }
     },
@@ -224,7 +224,7 @@ export const useBotManagement = () => {
   );
 
   /**
-   * 删除机器人
+   * Delete bot
    */
   const deleteBot = useCallback(async (botId: string): Promise<boolean> => {
     try {
@@ -243,7 +243,7 @@ export const useBotManagement = () => {
 
       throw new Error(response.message || BOT_MESSAGES.delete.error);
     } catch (error) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
@@ -265,23 +265,23 @@ export const useBotManagement = () => {
   }, []);
 
   /**
-   * 测试机器人连接
+   * Test bot connection
    */
   const testBotConnection = useCallback(
     async (_botId: string): Promise<boolean> => {
       try {
         setLoading(true);
-        // 注意：这里假设有测试连接的API，如果没有则需要添加到OpenAPI规范中
-        // 目前先模拟测试功能
+        // Note: This assumes there is a test connection API, if not, it needs to be added to OpenAPI spec
+        // Currently simulate test functionality
         Message.info('正在测试连接...');
 
-        // 模拟测试过程
+        // Simulate test process
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         Message.success('机器人连接测试成功');
         return true;
       } catch (error) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
@@ -298,7 +298,7 @@ export const useBotManagement = () => {
         Message.error(errorMessage || '测试机器人连接失败');
         return false;
       } finally {
-        // 操作完成
+        // Operation completed
         setLoading(false);
       }
     },
@@ -306,7 +306,7 @@ export const useBotManagement = () => {
   );
 
   /**
-   * 获取机器人详情
+   * Get bot details
    */
   const getBotDetails = useCallback(
     async (botId: string): Promise<Bot | null> => {
@@ -322,9 +322,9 @@ export const useBotManagement = () => {
           return response.data;
         }
 
-        throw new Error(response.message || '获取机器人详情失败');
+        throw new Error(response.message || 'Failed to get bot details');
       } catch (error) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
@@ -346,12 +346,12 @@ export const useBotManagement = () => {
   );
 
   return {
-    // 状态
+    // State
     bots,
     loading,
     selectedBot,
 
-    // 操作方法
+    // Operation methods
     loadBots,
     createBot,
     updateBot,

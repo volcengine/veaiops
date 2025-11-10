@@ -22,7 +22,7 @@ import { getVersionColumn } from './version';
 import { getWindowSizeColumn } from './window-size';
 
 /**
- * 生成表格列配置
+ * Generate table column configuration
  */
 export const handleColumns = ({
   setDetailConfigData,
@@ -46,7 +46,7 @@ export const handleColumns = ({
   ];
 };
 
-// 导出类型供外部使用
+// Export types for external use
 export type {
   FlattenedVersion,
   WithOptionalRowSpan,

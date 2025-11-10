@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源类型选择组件
- * @description 展示数据源类型选择界面
+ * Data source type selection component
+ * @description Displays the data source type selection interface
  * @author AI Assistant
  * @date 2025-01-15
  */
@@ -77,9 +77,9 @@ export const TypeSelection: React.FC<TypeSelectionProps> = ({
             );
           })}
 
-          {/* 更多产品期待中卡片 */}
+          {/* Coming soon card for more products */}
           <div className={styles.comingSoonCard}>
-            {/* 暂时隐藏图标 */}
+            {/* Temporarily hide icon */}
             {/* <div className={styles.comingSoonIconWrapper}>
               <IconCloud className={styles.comingSoonCloud} />
             </div> */}

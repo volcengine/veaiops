@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 列宽持久化插件类型定义 - 在types模块中
+ * Column width persistence plugin type definition - in types module
  *
 
  *
@@ -25,47 +25,47 @@ import type React from 'react';
 import type { PluginBaseConfig } from './core';
 
 /**
- * 列宽持久化插件配置
+ * Column width persistence plugin configuration
  */
 export interface ColumnWidthPersistenceConfig extends PluginBaseConfig {
-  /** 是否启用列宽持久化 */
+  /** Whether column width persistence is enabled */
   enabled?: boolean;
 
-  /** 是否启用自动检测列宽变化 */
+  /** Whether to enable automatic detection of column width changes */
   enableAutoDetection?: boolean;
 
-  /** 列宽检测的防抖时间(ms) */
+  /** Debounce time for column width detection (ms) */
   detectionDelay?: number;
 
-  /** 存储键前缀 */
+  /** Storage key prefix */
   storageKeyPrefix?: string;
 
-  /** 是否启用本地存储持久化 */
+  /** Whether to enable local storage persistence */
   enableLocalStorage?: boolean;
 
-  /** 最小列宽限制 */
+  /** Minimum column width limit */
   minColumnWidth?: number;
 
-  /** 最大列宽限制 */
+  /** Maximum column width limit */
   maxColumnWidth?: number;
 }
 
 /**
- * 调整大小事件
+ * Resize event
  */
 export interface ResizeEvent {
   size: { width: number; height: number };
 }
 
 /**
- * 增强的行回调属性
+ * Enhanced row callback properties
  */
 export interface EnhancedRowCallbackProps extends RowCallbackProps {
   onResize?: (event: React.SyntheticEvent, data: ResizeEvent) => void;
 }
 
 /**
- * 列宽助手函数接口
+ * Column width helper function interface
  */
 export interface ColumnWidthHelpers {
   setPersistentColumnWidth: (dataIndex: string, width: number) => void;
@@ -75,23 +75,23 @@ export interface ColumnWidthHelpers {
 }
 
 /**
- * 列宽持久化状态
+ * Column width persistence state
  */
 export interface ColumnWidthPersistenceState {
-  /** 持久化的列宽映射 */
+  /** Persistent column width mapping */
   persistentWidths: Record<string, number>;
-  /** 表格ID */
+  /** Table ID */
   tableId?: string;
-  /** 是否正在检测列宽 */
+  /** Whether currently detecting column width */
   isDetecting?: boolean;
-  /** 最后检测时间 */
+  /** Last detection time */
   lastDetectionTime?: number;
-  /** 列宽历史记录 */
+  /** Column width history */
   widthHistory?: Array<{ timestamp: number; widths: Record<string, number> }>;
 }
 
 /**
- * 带列宽的表格属性
+ * Table properties with column width
  */
 export interface TablePropsWithColumnWidth {
   onHeaderCell?: (column: ColumnProps, index?: number) => RowCallbackProps;
@@ -100,39 +100,39 @@ export interface TablePropsWithColumnWidth {
 }
 
 /**
- * 列宽持久化插件方法
+ * Column width persistence plugin methods
  */
 export interface ColumnWidthPersistenceMethods {
-  /** 设置单个列的持久化宽度 */
+  /** Set persistent width for a single column */
   setPersistentColumnWidth: (params: {
     dataIndex: string;
     width: number;
   }) => void;
 
-  /** 批量设置持久化列宽度 */
+  /** Batch set persistent column widths */
   setBatchPersistentColumnWidths: (widthsMap: Record<string, number>) => void;
 
-  /** 获取持久化列宽度 */
+  /** Get persistent column width */
   getPersistentColumnWidth: (dataIndex: string) => number | undefined;
 
-  /** 获取所有持久化列宽度 */
+  /** Get all persistent column widths */
   getAllPersistentColumnWidths: () => Record<string, number>;
 
-  /** 清除单个列的持久化宽度 */
+  /** Clear persistent width for a single column */
   clearPersistentColumnWidth: (dataIndex: string) => void;
 
-  /** 清除所有持久化列宽度 */
+  /** Clear all persistent column widths */
   clearAllPersistentColumnWidths: () => void;
 
-  /** 从DOM检测当前列宽度 */
+  /** Detect current column widths from DOM */
   detectCurrentColumnWidths: () => Promise<Record<string, number>>;
 
-  /** 保存当前列宽度到持久化存储 */
+  /** Save current column widths to persistent storage */
   saveCurrentColumnWidths: () => Promise<void>;
 
-  /** 从持久化存储恢复列宽度 */
+  /** Restore column widths from persistent storage */
   restoreColumnWidths: () => Promise<void>;
 
-  /** 应用列宽度到表格 */
+  /** Apply column widths to table */
   applyColumnWidths: (widthsMap: Record<string, number>) => void;
 }

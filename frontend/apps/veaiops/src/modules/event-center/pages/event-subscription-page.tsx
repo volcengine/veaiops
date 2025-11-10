@@ -26,46 +26,46 @@ import {
 } from '../features/subscription';
 
 /**
- * 事件订阅页面属性
+ * Event subscription page props
  */
 interface EventSubscriptionPageProps {
-  /** 模块类型（用于筛选智能体选项） */
+  /** Module type (for filtering agent options) */
   moduleType?: ModuleType;
 }
 
 /**
- * 事件订阅页面
+ * Event subscription page
  *
- * @description 统一的事件订阅管理页面，支持不同模块类型
- * - 事件中心：显示"内容识别Agent" + "智能阈值Agent"
- * - Oncall异动：仅显示"内容识别Agent"
+ * @description Unified event subscription management page, supports different module types
+ * - Event center: displays "Content Recognition Agent" + "Intelligent Threshold Agent"
+ * - Oncall changes: only displays "Content Recognition Agent"
  *
- * 功能特性：
- * - 智能体筛选（根据模块类型显示不同选项）
- * - 事件级别筛选（P0/P1/P2/P3）
- * - WEBHOOK开关和地址配置
- * - 生效时间范围设置
- * - 完整的CRUD操作
+ * Features:
+ * - Agent filtering (displays different options based on module type)
+ * - Event level filtering (P0/P1/P2/P3)
+ * - WEBHOOK toggle and address configuration
+ * - Effective time range setting
+ * - Complete CRUD operations
  *
- * 与 origin/feat/web-v2 保持一致：
- * - 使用 SubscriptionTable 组件（显示"事件订阅"）
- * - 使用 SubscriptionModal 组件（表单弹窗）
- * - 使用 useSubscriptionManagementLogic Hook（业务逻辑）
+ * Consistent with origin/feat/web-v2:
+ * - Uses SubscriptionTable component (displays "Event Subscription")
+ * - Uses SubscriptionModal component (form modal)
+ * - Uses useSubscriptionManagementLogic Hook (business logic)
  */
 const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
   moduleType,
 }) => {
-  // 表格组件 ref（用于访问刷新函数）
+  // Table component ref (for accessing refresh function)
   const tableRef = useRef<CustomTableActionType<BaseRecord, BaseQuery>>(null);
 
-  // 🔍 追踪回调引用变化（用于调试）
+  // 🔍 Track callback reference changes (for debugging)
   const prevHandleEditRef = useRef<unknown>(null);
   const prevHandleDeleteRef = useRef<unknown>(null);
   const prevHandleAddRef = useRef<unknown>(null);
 
-  // 包装刷新函数，确保返回 Promise<boolean>
-  // ✅ 修复：useSubscriptionManagementLogic 期望 () => Promise<boolean>
-  // 但 tableRef.current?.refresh?.() 返回 Promise<void> | undefined
+  // Wrap refresh function, ensure returns Promise<boolean>
+  // ✅ Fix: useSubscriptionManagementLogic expects () => Promise<boolean>
+  // But tableRef.current?.refresh?.() returns Promise<void> | undefined
   const refreshTable = useCallback(async (): Promise<boolean> => {
     try {
       await tableRef.current?.refresh?.();
@@ -74,7 +74,7 @@ const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
-        message: '刷新表格失败',
+        message: 'Failed to refresh table',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
@@ -87,11 +87,11 @@ const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
     }
   }, []);
 
-  // 使用订阅管理逻辑Hook
+  // Use subscription management logic Hook
   const {
     modalVisible,
     editingSubscription,
-    // form 未使用，但由 useSubscriptionManagementLogic 返回，保留以保持接口一致
+    // form is unused, but returned by useSubscriptionManagementLogic, keep for interface consistency
     form: _form,
     handleEdit,
     handleAdd,
@@ -100,11 +100,11 @@ const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
     handleDelete,
   } = useSubscriptionManagementLogic(refreshTable);
 
-  // 🔍 追踪 handleEdit 引用变化
+  // 🔍 Track handleEdit reference changes
   useEffect(() => {
     if (prevHandleEditRef.current !== handleEdit) {
       logger.debug({
-        message: '[EventSubscriptionPage] handleEdit 引用变化',
+        message: '[EventSubscriptionPage] handleEdit reference changed',
         data: {
           prevHandleEdit: prevHandleEditRef.current,
           currentHandleEdit: handleEdit,
@@ -116,11 +116,11 @@ const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
     }
   }, [handleEdit]);
 
-  // 🔍 追踪 handleDelete 引用变化
+  // 🔍 Track handleDelete reference changes
   useEffect(() => {
     if (prevHandleDeleteRef.current !== handleDelete) {
       logger.debug({
-        message: '[EventSubscriptionPage] handleDelete 引用变化',
+        message: '[EventSubscriptionPage] handleDelete reference changed',
         data: {
           prevHandleDelete: prevHandleDeleteRef.current,
           currentHandleDelete: handleDelete,
@@ -132,11 +132,11 @@ const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
     }
   }, [handleDelete]);
 
-  // 🔍 追踪 handleAdd 引用变化
+  // 🔍 Track handleAdd reference changes
   useEffect(() => {
     if (prevHandleAddRef.current !== handleAdd) {
       logger.debug({
-        message: '[EventSubscriptionPage] handleAdd 引用变化',
+        message: '[EventSubscriptionPage] handleAdd reference changed',
         data: {
           prevHandleAdd: prevHandleAddRef.current,
           currentHandleAdd: handleAdd,
@@ -148,10 +148,10 @@ const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
     }
   }, [handleAdd]);
 
-  // 🔍 记录 modalVisible 变化（点击新增订阅时会变化）
+  // 🔍 Log modalVisible changes (changes when clicking add subscription)
   useEffect(() => {
     logger.debug({
-      message: '[EventSubscriptionPage] modalVisible 变化',
+      message: '[EventSubscriptionPage] modalVisible changed',
       data: {
         modalVisible,
         hasEditingSubscription: Boolean(editingSubscription),
@@ -161,12 +161,12 @@ const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
     });
   }, [modalVisible, editingSubscription]);
 
-  // 查看订阅详情（预留功能）
-  // 注意：详情抽屉功能暂未实现，此处仅记录日志
+  // View subscription details (reserved feature)
+  // Note: Detail drawer feature not yet implemented, only logs here
   const handleView = useCallback(
     (subscription: SubscribeRelationWithAttributes) => {
       logger.debug({
-        message: '查看订阅详情（功能待实现）',
+        message: 'View subscription details (feature to be implemented)',
         data: {
           subscriptionId: subscription._id,
           subscription,
@@ -180,7 +180,7 @@ const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
 
   return (
     <>
-      {/* 事件订阅表格 */}
+      {/* Event subscription table */}
       <SubscriptionTable
         ref={tableRef}
         moduleType={moduleType}
@@ -190,17 +190,17 @@ const EventSubscriptionPage: React.FC<EventSubscriptionPageProps> = ({
         onView={handleView}
       />
 
-      {/* 订阅表单弹窗 */}
+      {/* Subscription form modal */}
       <SubscriptionModal
         visible={modalVisible}
         initialData={editingSubscription}
         onSubmit={handleSubmit}
         onCancel={handleCancel}
         moduleType={moduleType}
-        title={editingSubscription ? '编辑订阅' : '新建订阅'}
+        title={editingSubscription ? 'Edit Subscription' : 'New Subscription'}
       />
 
-      {/* TODO: 详情抽屉 - 如需要可添加 */}
+      {/* TODO: Detail drawer - can be added if needed */}
       {/* <SubscriptionDetailDrawer
         visible={detailVisible}
         data={viewingSubscription}

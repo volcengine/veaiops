@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ✅ 修复循环依赖：index.tsx 已重命名为 component.tsx
+// ✅ Fixed circular dependency: index.tsx has been renamed to component.tsx
 export { default } from './component';
 export type { CardTemplateModalProps } from './component';
 
-// 表单组件导出
+// Form component export
 export { default as CardTemplateForm } from './form';

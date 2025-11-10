@@ -21,7 +21,7 @@ import type { Chat } from 'api-generate';
 import { useCallback } from 'react';
 
 /**
- * 获取群列表Hook
+ * Fetch chat list Hook
  */
 export const useFetchChats = ({
   setChats,
@@ -39,7 +39,7 @@ export const useFetchChats = ({
 
       try {
         setLoading(true);
-        // 调用真实API获取群聊列表
+        // Call real API to get chat list
         const response = await apiClient.chats.getApisV1ConfigChats({
           uid: params.bot_id,
           skip: params.skip || PAGINATION.DEFAULT_SKIP,
@@ -50,7 +50,7 @@ export const useFetchChats = ({
         if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
           const apiChatList = response.data || [];
 
-          // ✅ 使用 logger 记录调试信息（logger 内部会处理开发环境判断）
+          // ✅ Use logger to record debug information (logger internally handles development environment check)
           logger.debug({
             message: '获取群聊列表响应',
             data: {
@@ -63,17 +63,17 @@ export const useFetchChats = ({
             component: 'fetchChats',
           });
 
-          // 直接使用API返回的Chat数据结构，显式保留 enable_func_* 字段
+          // Directly use API returned Chat data structure, explicitly preserve enable_func_* fields
           const chatList: Chat[] = apiChatList.map((apiChat: Chat) => ({
             ...apiChat,
-            // 确保必要字段存在
+            // Ensure required fields exist
             _id: apiChat._id,
             chat_id: apiChat.chat_id,
             name: apiChat.name,
             chat_type: apiChat.chat_type,
             channel: apiChat.channel,
             bot_id: apiChat.bot_id || params.bot_id || '',
-            // 保留并规范化功能开关字段。后端默认 true，若未提供则设为 true 以保证 UI 行为一致。
+            // Preserve and normalize feature toggle fields. Backend defaults to true, if not provided set to true to ensure UI behavior consistency.
             enable_func_proactive_reply:
               apiChat.enable_func_proactive_reply ?? false,
             enable_func_interest: apiChat.enable_func_interest ?? false,
@@ -88,7 +88,7 @@ export const useFetchChats = ({
           throw new Error(response.message || '获取群聊列表失败');
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : '获取群列表失败，请重试';
         Message.error(errorMessage);

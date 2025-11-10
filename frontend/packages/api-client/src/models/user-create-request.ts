@@ -15,19 +15,19 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type UserCreateRequest = {
   /**
-   * 用户名
+   * Username
    */
   username: string;
   /**
-   * 邮箱地址
+   * Email address
    */
   email: string;
   /**
-   * 密码
+   * Password
    */
   password: string;
   /**
-   * 是否为管理员
+   * Whether the user is a supervisor
    */
   is_supervisor?: boolean;
 };

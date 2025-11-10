@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 共享类型和工具函数导出
+ * Shared types and utility functions export
  */
 
 export * from './types';

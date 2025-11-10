@@ -12,9 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Button, Empty, Modal, Space, Spin } from '@arco-design/web-react';
+import {
+  Button,
+  DatePicker,
+  Empty,
+  Modal,
+  Space,
+  Spin,
+} from '@arco-design/web-react';
 import { IconRefresh } from '@arco-design/web-react/icon';
-import { RangePicker } from '@veaiops/components';
 import { logger } from '@veaiops/utils';
 import type { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -26,6 +32,8 @@ import {
 } from '@task-config/ui/components/charts';
 import type { TimeseriesChartModalProps } from '@task-config/ui/components/shared/types';
 import styles from './index.module.less';
+
+const { RangePicker } = DatePicker;
 
 export const TimeseriesChartModal: React.FC<TimeseriesChartModalProps> = ({
   visible,
@@ -48,7 +56,7 @@ export const TimeseriesChartModal: React.FC<TimeseriesChartModalProps> = ({
   useEffect(() => {
     if (visible && metric) {
       logger.info({
-        message: '🎯 TimeseriesChartModal useEffect 触发',
+        message: '🎯 TimeseriesChartModal useEffect triggered',
         data: {
           visible,
           hasMetric: Boolean(metric),
@@ -63,7 +71,7 @@ export const TimeseriesChartModal: React.FC<TimeseriesChartModalProps> = ({
     // ✅ Remove fetchTimeseriesData from dependency array, as it's already stabilized with useCallback
   }, [visible, metric, task, timeRange, fetchTimeseriesData]);
 
-  // Handle time range changes
+  // Handle time range change
   // Note: RangePicker's onChange must use positional parameters to match third-party library signature
   const handleTimeRangeChange = (dateString: string[], date: Dayjs[]): void => {
     if (date && date.length === 2) {

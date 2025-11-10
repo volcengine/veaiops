@@ -17,7 +17,7 @@ import type { TimeseriesDataPoint } from '../../types';
 import type { ConversionStats } from '../types';
 
 /**
- * 按时间戳排序数据
+ * Sort data by timestamp
  */
 export const sortDataByTimestamp = ({
   data,
@@ -31,9 +31,9 @@ export const sortDataByTimestamp = ({
       const timeA = new Date(a.timestamp).getTime();
       const timeB = new Date(b.timestamp).getTime();
 
-      // 边界检查：排序时处理 NaN
+      // Boundary check: handle NaN during sorting
       if (Number.isNaN(timeA) || Number.isNaN(timeB)) {
-        // ✅ 正确：使用 logger 记录错误
+        // ✅ Correct: use logger to record error
         logger.error({
           message: 'Invalid timestamp during sorting',
           data: {
@@ -53,7 +53,7 @@ export const sortDataByTimestamp = ({
 
     return sortedData;
   } catch (sortError) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: use logger to record error and expose actual error information
     const errorObj =
       sortError instanceof Error ? sortError : new Error(String(sortError));
     logger.error({
@@ -66,7 +66,7 @@ export const sortDataByTimestamp = ({
       source: 'DataUtils',
       component: 'sortDataByTimestamp',
     });
-    // 如果排序失败，返回未排序的数据
+    // If sorting fails, return unsorted data
     return data;
   }
 };

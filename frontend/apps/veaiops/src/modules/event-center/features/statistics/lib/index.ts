@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 统计管理模块工具函数和服务统一导出
+ * Statistics management module utility functions and services unified export
  */
 
-// 导出类型定义
+// Export type definitions
 export * from "./types";

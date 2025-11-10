@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 监控模块常量定义（从injection模块迁移）
+ * Monitor module constant definitions (migrated from injection module)
  */
 
 export const sourceTypeOptions = [
   { label: "Prometheus", value: "Prometheus" },
   { label: "InfluxDB", value: "InfluxDB" },
   { label: "Zabbix", value: "Zabbix" },
-  { label: "阿里云", value: "Aliyun" },
-  { label: "火山引擎", value: "Volcengine" },
+  { label: "Aliyun", value: "Aliyun" },
+  { label: "Volcengine", value: "Volcengine" },
 ];
 
 export const authTypeOptions = [
@@ -45,11 +45,11 @@ export const statusColors = {
   error: "red",
 };
 
-// 从constants包导入数据源类型配置
+// Import data source type configuration from constants package
 export { DATA_SOURCE_CONFIG as DATA_SOURCE_TYPES } from "@veaiops/constants";
 
 /**
- * 模块配置
+ * Module configuration
  */
 export const MODULE_CONFIG = {
   timeseries: {
@@ -70,7 +70,7 @@ export const MODULE_CONFIG = {
 } as const;
 
 /**
- * 状态配置
+ * Status configuration
  */
 export const STATUS_CONFIG = {
   active: {
@@ -101,7 +101,7 @@ export const STATUS_CONFIG = {
 } as const;
 
 /**
- * Tab 键常量
+ * Tab key constants
  */
 export const TAB_KEYS = {
   ZABBIX: "zabbix",

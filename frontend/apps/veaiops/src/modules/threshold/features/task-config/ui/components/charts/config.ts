@@ -19,7 +19,7 @@ import { COLOR_MAP, SERIES_ALIAS_MAP } from './constants';
 import type { AxisDensityOptions } from './types';
 
 /**
- * 生成时序图表配置
+ * Generate time series chart configuration
  */
 export const getChartConfig = (
   data: TimeseriesDataPoint[],
@@ -29,16 +29,16 @@ export const getChartConfig = (
     new Set(data.map((d) => String(d.timestamp))),
   );
   const MAX_TICKS = options.maxXTicks ?? 8;
-  const MIN_TICKS = 3; // 最少显示3个刻度
-  // 计算实际刻度数：不低于最小值，不超过最大值
+  const MIN_TICKS = 3; // Minimum 3 ticks to display
+  // Calculate actual tick count: not less than minimum, not more than maximum
   const actualTicks = Math.min(
     Math.max(uniqueTimestamps.length, MIN_TICKS),
     MAX_TICKS,
   );
 
-  // 提取唯一的 type 值并按固定顺序排序
+  // Extract unique type values and sort in fixed order
   const uniqueTypes = [...new Set(data.map((d) => d.type))];
-  // 如果数据为空，使用默认的完整类型列表，避免图例消失
+  // If data is empty, use default complete type list to avoid legend disappearing
   const orderedTypes =
     uniqueTypes.length > 0
       ? ['实际值', '上阈值', '下阈值'].filter((t) =>
@@ -49,29 +49,29 @@ export const getChartConfig = (
     (type) => COLOR_MAP[type as TimeseriesDataPoint['type']],
   );
 
-  // 大数据量渲染优化阈值
+  // Large data volume rendering optimization threshold
   const LARGE_DATA_THRESHOLD = 2000;
   const isLargeDataset = data.length > LARGE_DATA_THRESHOLD;
 
-  // 计算x轴domain
+  // Calculate x-axis domain
   const xDomain = options.timeRange
     ? [options.timeRange[0].getTime(), options.timeRange[1].getTime()]
     : undefined;
 
   return {
     data,
-    // 将时间轴显式转为 Date，确保使用连续时间比例尺（time scale）
+    // Explicitly convert time axis to Date, ensure using continuous time scale (time scale)
     xField: (d: any) => new Date(d.timestamp),
     yField: 'value',
     seriesField: 'type',
-    // 显式声明颜色通道，确保按 type 着色并驱动图例
+    // Explicitly declare color channel, ensure coloring by type and driving legend
     colorField: 'type',
-    // 大数据量禁用平滑以降低计算开销
+    // Disable smoothing for large data volumes to reduce computation overhead
     smooth: !isLargeDataset,
     autoFit: true,
-    // 添加内边距，为底部x轴标签预留空间（水平标签需要较多空间）
-    appendPadding: [10, 10, 40, 10], // [上, 右, 下, 左]
-    // 大数据量关闭动画
+    // Add padding to reserve space for bottom x-axis labels (horizontal labels need more space)
+    appendPadding: [10, 10, 40, 10], // [top, right, bottom, left]
+    // Disable animation for large data volumes
     animation: isLargeDataset
       ? false
       : {
@@ -80,29 +80,29 @@ export const getChartConfig = (
             duration: 1000,
           },
         },
-    // 使用 scale 配置：颜色映射 + x 轴连续时间比例尺
+    // Use scale configuration: color mapping + x-axis continuous time scale
     scale: {
-      // 在比例尺层强制刻度数量，并关闭 nice，避免被对齐到整天只剩 1 刻度
+      // Force tick count at scale level and disable nice to avoid being aligned to full day with only 1 tick
       x: {
         type: 'time',
         nice: false,
         tickCount: actualTicks,
-        // 如果提供了时间范围，强制x轴显示完整的时间范围
+        // If time range is provided, force x-axis to display complete time range
         ...(xDomain && {
           domain: xDomain,
         }),
       },
-      y: { nice: true, domainMin: 0 }, // 确保y轴从0开始
+      y: { nice: true, domainMin: 0 }, // Ensure y-axis starts from 0
       color: {
-        domain: orderedTypes, // 明确指定 domain，确保顺序
-        range: colorRange, // 对应的颜色数组
+        domain: orderedTypes, // Explicitly specify domain to ensure order
+        range: colorRange, // Corresponding color array
       },
     },
-    // 使用 style 回调配置虚线样式（注意：参数是 data 数组，不是单个 datum）
+    // Use style callback to configure dashed line style (note: parameter is data array, not single datum)
     style: {
       lineWidth: 2,
       lineDash: (seriesData: any[]) => {
-        // seriesData 是当前系列的所有数据点
+        // seriesData is all data points of current series
         if (seriesData && seriesData.length > 0) {
           const type = seriesData[0].type as TimeseriesDataPoint['type'];
           const isThreshold = type === '上阈值' || type === '下阈值';
@@ -134,52 +134,52 @@ export const getChartConfig = (
       x: {
         position: 'bottom',
         title: null,
-        // 轴线配置
+        // Axis line configuration
         line: true,
         lineLineWidth: 1,
         lineStroke: '#e5e7eb',
-        // 刻度线配置
+        // Tick line configuration
         tick: true,
         tickLength: 4,
         tickLineWidth: 1,
         tickStroke: '#e5e7eb',
         tickCount: actualTicks,
-        // 刻度值(标签)配置
+        // Tick value (label) configuration
         label: true,
         labelFormatter: (d: string | Date) => formatDateTime(d),
         labelFontSize: 11,
         labelFill: '#4E5969',
-        labelSpacing: 8, // 刻度值到其对应刻度的间距
-        labelAlign: 'horizontal', // 始终保持水平
-        labelAutoRotate: false, // 禁用自动旋转
-        // 手动过滤标签，避免重叠
+        labelSpacing: 8, // Spacing from tick value to its corresponding tick
+        labelAlign: 'horizontal', // Always keep horizontal
+        labelAutoRotate: false, // Disable auto-rotation
+        // Manually filter labels to avoid overlap
         labelFilter: (_datum: any, index: number, data?: any[]) => {
-          // 防御性检查：如果 data 未定义或为空，显示所有标签
+          // Defensive check: If data is undefined or empty, show all labels
           if (!data || !Array.isArray(data)) {
             return true;
           }
 
           const totalLabels = data.length;
 
-          // 总是显示第一个和最后一个（优先级最高）
+          // Always show first and last (highest priority)
           if (index === 0 || index === totalLabels - 1) {
             return true;
           }
 
-          // 标签少时全部显示
+          // Show all when labels are few
           if (totalLabels <= 6) {
             return true;
           }
 
-          // 根据总标签数动态计算显示间隔
+          // Dynamically calculate display interval based on total label count
           const interval = Math.ceil(totalLabels / 6);
           return index % interval === 0;
         },
         transform: [
           {
-            type: 'hide', // 隐藏重叠的标签
-            keepHeader: true, // 保留第一个标签
-            keepTail: true, // 保留最后一个标签
+            type: 'hide', // Hide overlapping labels
+            keepHeader: true, // Keep first label
+            keepTail: true, // Keep last label
           },
         ],
         tickFilter: undefined,
@@ -187,16 +187,16 @@ export const getChartConfig = (
       y: {
         position: 'left',
         title: null,
-        // 轴线配置
+        // Axis line configuration
         line: true,
         lineLineWidth: 1,
         lineStroke: '#e5e7eb',
-        // 刻度线配置
+        // Tick line configuration
         tick: true,
         tickLength: 4,
         tickLineWidth: 1,
         tickStroke: '#e5e7eb',
-        // 刻度值(标签)配置
+        // Tick value (label) configuration
         label: true,
         labelFormatter: (text: string) => {
           const numeric = Number(text);
@@ -222,8 +222,8 @@ export const getChartConfig = (
           SERIES_ALIAS_MAP[value] || value,
       },
     },
-    // Tooltip will be configured在具体组件中覆盖
-    // 大数据量关闭散点以减少 DOM/绘制
+    // Tooltip will be configured and overridden in specific components
+    // Disable points for large data volumes to reduce DOM/rendering
     point: isLargeDataset
       ? undefined
       : {

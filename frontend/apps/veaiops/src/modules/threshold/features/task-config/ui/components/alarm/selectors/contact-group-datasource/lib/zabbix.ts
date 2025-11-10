@@ -22,10 +22,10 @@ import type {
 } from './types';
 
 /**
- * 获取 Zabbix 告警方式（媒介类型）数据源配置
+ * Get Zabbix alert method (media type) data source configuration
  *
- * @param datasourceId - 数据源ID
- * @returns 异步函数，返回 options 数组
+ * @param datasourceId - Data source ID
+ * @returns Async function that returns options array
  */
 export const getZabbixAlertMethodsDataSource = (
   datasourceId: string,
@@ -33,24 +33,24 @@ export const getZabbixAlertMethodsDataSource = (
   props?: SelectDataSourceProps,
 ) => Promise<DataSourceOption[]>) => {
   return async (props?: SelectDataSourceProps) => {
-    // 确保datasourceId是字符串
+    // Ensure datasourceId is a string
     const datasourceIdStr =
       typeof datasourceId === 'string' ? datasourceId : String(datasourceId);
 
     const pagination = props?.pageReq || { skip: 0, limit: 1000 };
 
-    // ✅ 正确：使用 logger 记录调试信息
+    // ✅ Correct: Use logger to record debug information
     logger.debug({
-      message: '开始获取媒介类型',
+      message: 'Starting to fetch media types',
       data: { datasourceId: datasourceIdStr, pagination },
       source: 'ZabbixAlertMethodsDataSource',
       component: 'getZabbixAlertMethodsDataSource',
     });
 
     try {
-      // 注意：Zabbix的mediatypes接口目前不支持分页，所以我们只在第一页时获取数据
+      // Note: Zabbix mediatypes API currently doesn't support pagination, so we only fetch data on first page
       if (pagination.skip > 0) {
-        return []; // 分页时返回空数组，表示没有更多数据
+        return []; // Return empty array when paginating, indicating no more data
       }
 
       const response =
@@ -59,9 +59,9 @@ export const getZabbixAlertMethodsDataSource = (
             datasourceId: datasourceIdStr,
           },
         );
-      // ✅ 正确：使用 logger 记录调试信息
+      // ✅ Correct: Use logger to record debug information
       logger.debug({
-        message: '媒介类型响应',
+        message: 'Media type response',
         data: { code: response.code, hasData: Boolean(response.data) },
         source: 'ZabbixAlertMethodsDataSource',
         component: 'getZabbixAlertMethodsDataSource',
@@ -74,9 +74,9 @@ export const getZabbixAlertMethodsDataSource = (
             extra: mediatype,
           })) || [];
 
-        // ✅ 正确：使用 logger 记录成功信息
+        // ✅ Correct: Use logger to record success information
         logger.info({
-          message: '媒介类型获取成功',
+          message: 'Media types fetched successfully',
           data: { count: options.length, pagination },
           source: 'ZabbixAlertMethodsDataSource',
           component: 'getZabbixAlertMethodsDataSource',
@@ -85,9 +85,9 @@ export const getZabbixAlertMethodsDataSource = (
         return options;
       }
 
-      // ✅ 正确：使用 logger 记录错误
+      // ✅ Correct: Use logger to record error
       logger.error({
-        message: '接口返回错误',
+        message: 'API returned error',
         data: {
           code: response.code,
           message: response.message,
@@ -98,11 +98,11 @@ export const getZabbixAlertMethodsDataSource = (
       });
       return [];
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
-        message: '获取媒介类型失败',
+        message: 'Failed to fetch media types',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
@@ -118,21 +118,21 @@ export const getZabbixAlertMethodsDataSource = (
 };
 
 /**
- * 获取 Zabbix 媒介类型数据源配置（保持兼容性）
+ * Get Zabbix media type data source configuration (maintain compatibility)
  *
- * @param datasourceId - 数据源ID
- * @returns 异步函数，返回 options 数组
- * @deprecated 使用 getZabbixAlertMethodsDataSource 代替
+ * @param datasourceId - Data source ID
+ * @returns Async function that returns options array
+ * @deprecated Use getZabbixAlertMethodsDataSource instead
  */
 export const getZabbixMediatypeDataSource = (datasourceId: string) => {
   return getZabbixAlertMethodsDataSource(datasourceId);
 };
 
 /**
- * 获取 Zabbix 联系组数据源配置
+ * Get Zabbix contact group data source configuration
  *
- * @param datasourceId - 数据源ID
- * @returns 异步函数，返回 options 数组
+ * @param datasourceId - Data source ID
+ * @returns Async function that returns options array
  */
 export const getZabbixContactGroupDataSource = (
   datasourceId: string,
@@ -142,18 +142,18 @@ export const getZabbixContactGroupDataSource = (
   return async (props?: SelectDataSourceProps) => {
     const pagination = props?.pageReq || { skip: 0, limit: 100 };
 
-    // ✅ 正确：使用 logger 记录调试信息
+    // ✅ Correct: Use logger to record debug information
     logger.debug({
-      message: '开始获取联系组',
+      message: 'Starting to fetch contact groups',
       data: { datasourceId, pagination },
       source: 'ZabbixContactGroupDataSource',
       component: 'getZabbixContactGroupDataSource',
     });
 
     try {
-      // 注意：Zabbix的usergroups接口目前不支持分页，所以我们只在第一页时获取数据
+      // Note: Zabbix usergroups API currently doesn't support pagination, so we only fetch data on first page
       if (pagination.skip > 0) {
-        return []; // 分页时返回空数组，表示没有更多数据
+        return []; // Return empty array when paginating, indicating no more data
       }
 
       const response =
@@ -170,9 +170,9 @@ export const getZabbixContactGroupDataSource = (
           extra: group,
         }));
 
-        // ✅ 正确：使用 logger 记录成功信息
+        // ✅ Correct: Use logger to record success information
         logger.info({
-          message: '联系组获取成功',
+          message: 'Contact groups fetched successfully',
           data: { count: options.length, pagination },
           source: 'ZabbixContactGroupDataSource',
           component: 'getZabbixContactGroupDataSource',
@@ -181,9 +181,9 @@ export const getZabbixContactGroupDataSource = (
         return options;
       }
 
-      // ✅ 正确：使用 logger 记录错误
+      // ✅ Correct: Use logger to record error
       logger.error({
-        message: '接口返回错误',
+        message: 'API returned error',
         data: {
           code: response.code,
           message: response.message,
@@ -194,11 +194,11 @@ export const getZabbixContactGroupDataSource = (
       });
       return [];
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
-        message: '获取联系组失败',
+        message: 'Failed to fetch contact groups',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,

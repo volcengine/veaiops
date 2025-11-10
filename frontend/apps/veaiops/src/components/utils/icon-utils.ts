@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * Lucide图标SVG路径映射 - 完全匹配layout-prototype.html中的Lucide图标
- * 基于Lucide React图标库的官方SVG路径，确保与原型文件完全一致
+ * Lucide icon SVG path mapping - exactly matches Lucide icons in layout-prototype.html
+ * Based on official SVG paths from Lucide React icon library, ensuring complete consistency with prototype file
  */
 export const iconPaths: Record<string, string> = {
-  // 侧边栏菜单图标 - 完全匹配layout-prototype.html中的Lucide图标
+  // Sidebar menu icons - exactly matches Lucide icons in layout-prototype.html
   settings:
     'M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z',
   plug: 'M12 22v-5M9 8h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2zM8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2',
@@ -39,7 +39,7 @@ export const iconPaths: Record<string, string> = {
   folder:
     'M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z',
 
-  // 头部和特殊图标 - 完全匹配layout-prototype.html中的Lucide图标
+  // Header and special icons - exactly matches Lucide icons in layout-prototype.html
   'brain-circuit':
     'M12 4.5a2.5 2.5 0 0 0-4.96-.46 2.5 2.5 0 0 0-1.98 3 2.5 2.5 0 0 0-1.32 4.24 3 3 0 0 0 .34 5.58 2.5 2.5 0 0 0 2.96 3.08 2.5 2.5 0 0 0 4.91.05L12 20V4.5ZM16 8V5c0-1.1.9-2 2-2ZM12 13h4ZM12 18h6a2 2 0 0 1 2 2v1ZM12 8h8ZM20.5 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM16.5 13a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM20.5 21a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM18.5 3a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z',
   'panel-left-close':
@@ -54,7 +54,7 @@ export const iconPaths: Record<string, string> = {
     'M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-6.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z',
   download: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3',
 
-  // 新增缺失的图标路径 - 完全匹配Lucide图标库
+  // New missing icon paths - exactly matches Lucide icon library
   'arrow-right': 'M5 12h14M12 5l7 7-7 7',
   'arrow-up': 'M12 19V5M5 12l7-7 7 7',
   'bar-chart-3': 'M3 3v18h18M18 17V9M13 17V5M8 17v-3',
@@ -180,9 +180,9 @@ export const iconPaths: Record<string, string> = {
 };
 
 /**
- * 获取图标的SVG路径
- * @param iconName 图标名称
- * @returns SVG路径字符串
+ * Get SVG path for icon
+ * @param iconName Icon name
+ * @returns SVG path string
  */
 export const getIconPath = (iconName: string): string => {
   return iconPaths[iconName] || iconPaths.settings;

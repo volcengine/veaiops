@@ -35,8 +35,8 @@ import {
 } from './lib';
 
 /**
- * 账号弹窗组件
- * 提供账号的新增和编辑功能
+ * Account modal component
+ * Provides account creation and editing functionality
  */
 export const AccountModal: React.FC<AccountModalProps> = ({
   visible,
@@ -45,12 +45,12 @@ export const AccountModal: React.FC<AccountModalProps> = ({
   onSubmit,
   form,
 }) => {
-  // 使用公共的抽屉表单提交 Hook
+  // Use common drawer form submit Hook
   const { submitting, handleSubmit } = useDrawerFormSubmit({
     form,
     onSubmit,
     resetOnSuccess: true,
-    closeOnSuccess: false, // 不自动关闭，由父组件控制
+    closeOnSuccess: false, // Don't auto-close, controlled by parent component
   });
 
   return (
@@ -89,20 +89,20 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           autoComplete="off"
           disabled={Boolean(editingUser)}
         >
-          {/* 新增账号说明 */}
+          {/* Create account info */}
           {!editingUser && <CreateAccountInfoCard />}
 
-          {/* 修改密码说明 - 普通用户 */}
+          {/* Change password info - regular user */}
           {editingUser && !editingUser.is_supervisor && (
             <ChangePasswordInfoCard />
           )}
 
-          {/* 系统管理员警告 */}
+          {/* System administrator warning */}
           {editingUser?.is_supervisor && (
             <AdminWarningCard username={editingUser.username} />
           )}
 
-          {/* 基本信息 */}
+          {/* Basic information */}
           <CardWithTitle title="基本信息" className="mb-4">
             <BasicInfoFields
               editingUser={editingUser}
@@ -115,7 +115,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
             />
           </CardWithTitle>
 
-          {/* 账号信息（仅编辑时显示） */}
+          {/* Account information (only shown when editing) */}
           {editingUser && (
             <CardWithTitle title="账号信息" className="mb-4">
               <AccountInfo editingUser={editingUser} />

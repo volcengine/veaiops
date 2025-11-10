@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接管理器主组件
+ * Connection manager main component
  */
 
 import { useConnections } from '@/hooks/use-connections';
@@ -30,42 +30,27 @@ const { Title } = Typography;
 export interface ConnectionManagerProps {
   visible: boolean;
   onClose: () => void;
-  defaultActiveTab?: DataSourceType;
 }
 
 /**
- * 连接管理器组件
+ * Connection manager component
  */
 export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
   visible,
   onClose,
-  defaultActiveTab = DataSourceType.VOLCENGINE,
 }) => {
   logger.info({
     message: '🎨 ConnectionManager component rendering',
-    data: { visible, defaultActiveTab },
+    data: { visible },
     source: 'ConnectionManager',
     component: 'render',
   });
 
-  const [activeTab, setActiveTab] = useState<DataSourceType>(defaultActiveTab);
+  const [activeTab, setActiveTab] = useState<DataSourceType>(
+    DataSourceType.VOLCENGINE,
+  );
 
-  // 🔥 当弹窗打开时，同步 activeTab 状态
-  useEffect(() => {
-    if (visible && defaultActiveTab) {
-      logger.info({
-        message: '🔄 Syncing activeTab with defaultActiveTab when drawer opens',
-        data: {
-          defaultActiveTab,
-        },
-        source: 'ConnectionManager',
-        component: 'visible-sync-effect',
-      });
-      setActiveTab(defaultActiveTab);
-    }
-  }, [visible, defaultActiveTab]);
-
-  // 🔥 监控组件挂载和卸载
+  // 🔥 Monitor component mount and unmount
   useEffect(() => {
     logger.info({
       message: '✨ ConnectionManager mounted',
@@ -83,7 +68,7 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     };
   }, []);
 
-  // 🔥 监控 visible 属性变化
+  // 🔥 Monitor visible prop changes
   useEffect(() => {
     logger.info({
       message: '📊 visible prop changed',
@@ -112,7 +97,7 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     }
   }, [visible]);
 
-  // 🔥 监控 activeTab 变化
+  // 🔥 Monitor activeTab changes
   useEffect(() => {
     logger.info({
       message: '📑 activeTab changed',
@@ -122,11 +107,11 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     });
   }, [activeTab]);
 
-  // 只获取当前激活标签页的连接信息，避免重复调用
+  // Only get connection information for currently active tab, avoid duplicate calls
   const { connections: activeConnections } = useConnections(activeTab);
 
-  // 为了显示标签页的连接数量，我们需要一个轻量级的统计方法
-  // 这里暂时使用空数组，后续可以考虑添加专门的统计API
+  // To display connection count for tabs, we need a lightweight statistics method
+  // Temporarily use empty array here, can consider adding dedicated statistics API later
   const getConnectionCount = (type: DataSourceType) => {
     return type === activeTab ? activeConnections.length : 0;
   };
@@ -161,7 +146,7 @@ export const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     },
   ];
 
-  // 🔥 包装 onClose 以添加日志
+  // 🔥 Wrap onClose to add logging
   const handleClose = () => {
     logger.info({
       message: '🚪 Drawer onCancel triggered - closing drawer',

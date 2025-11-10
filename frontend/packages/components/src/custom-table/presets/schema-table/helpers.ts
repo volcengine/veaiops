@@ -16,26 +16,26 @@ import { EMPTY_CONTENT_TEXT } from '@veaiops/constants';
 import type React from 'react';
 
 /**
- * 将值安全转换为字符串
+ * Safely convert value to string
  */
 export const safeToString = (value: unknown): string => {
   if (value === null || value === undefined || value === '') {
     return EMPTY_CONTENT_TEXT;
   }
-  // 基本类型直接转换
+  // Primitive types directly convert
   if (typeof value === 'string') {
     return value;
   }
   if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
   }
-  // 对象类型尝试字符串化
+  // Object types try to stringify
   if (typeof value === 'object') {
     try {
       return JSON.stringify(value);
     } catch (error: unknown) {
-      // ✅ 静默处理 JSON.stringify 错误（避免阻塞渲染），使用占位符
-      // 不需要记录警告，因为这是正常的容错处理
+      // ✅ Silently handle JSON.stringify errors (avoid blocking rendering), use placeholder
+      // No need to log warning, as this is normal error tolerance handling
       return EMPTY_CONTENT_TEXT;
     }
   }
@@ -43,13 +43,13 @@ export const safeToString = (value: unknown): string => {
 };
 
 /**
- * 将值安全转换为 ReactNode
+ * Safely convert value to ReactNode
  */
 export const safeToReactNode = (value: unknown): React.ReactNode => {
   if (value === null || value === undefined || value === '') {
     return EMPTY_CONTENT_TEXT;
   }
-  // 基本类型直接转换
+  // Primitive types directly convert
   if (
     typeof value === 'string' ||
     typeof value === 'number' ||
@@ -57,13 +57,13 @@ export const safeToReactNode = (value: unknown): React.ReactNode => {
   ) {
     return value;
   }
-  // 对象类型尝试字符串化
+  // Object types try to stringify
   if (typeof value === 'object') {
     try {
       return JSON.stringify(value);
     } catch (error: unknown) {
-      // ✅ 静默处理 JSON.stringify 错误（避免阻塞渲染），使用占位符
-      // 不需要记录警告，因为这是正常的容错处理
+      // ✅ Silently handle JSON.stringify errors (avoid blocking rendering), use placeholder
+      // No need to log warning, as this is normal error tolerance handling
       return EMPTY_CONTENT_TEXT;
     }
   }

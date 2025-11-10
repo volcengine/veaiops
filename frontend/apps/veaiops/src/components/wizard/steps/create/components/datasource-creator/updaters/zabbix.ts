@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Zabbix 数据源更新函数
+ * Zabbix data source update function
  */
 
 import type { WizardState } from '@/components/wizard/types';
@@ -27,9 +27,9 @@ export const updateZabbixDataSource = async (
   datasourceId: string,
   state: WizardState,
 ): Promise<CreateResult> => {
-  // 为每个选中的主机找到对应的 item
+  // Find corresponding item for each selected host
   const targets = state.zabbix.selectedHosts.map((host) => {
-    // 优先使用host对象自带的itemid（编辑模式下从prefill保留的）
+    // Prefer using itemid from host object (preserved from prefill in edit mode)
     if (host.itemid) {
       return {
         itemid: host.itemid,
@@ -37,7 +37,7 @@ export const updateZabbixDataSource = async (
       };
     }
 
-    // 否则从 items 数组中找到匹配的 item
+    // Otherwise find matching item from items array
     const item = state.zabbix.items.find(
       (item) => item.hostname === host.host || item.hostname === host.name,
     );

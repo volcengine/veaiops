@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ✅ 优化：使用统一导出
+// ✅ Optimization: Use unified export
 import { channelTypeOptions } from '@ec/strategy';
 import type { FieldItem, HandleFilterProps } from '@veaiops/components';
 import { useCallback } from 'react';
 
 /**
- * 策略表格筛选器配置 Hook
+ * Strategy table filter configuration Hook
  */
 export const useStrategyTableFilters = () => {
   const handleFilters = useCallback(

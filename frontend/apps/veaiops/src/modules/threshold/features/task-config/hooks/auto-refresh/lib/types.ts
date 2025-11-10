@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 自动刷新操作相关类型定义
+ * Auto-refresh operation related type definitions
  */
 
 /**
- * 通用的自动刷新CRUD操作类型
+ * Generic auto-refresh CRUD operations type
  */
 export interface AutoRefreshOperations {
   delete: (id: string) => Promise<boolean>;
@@ -26,7 +26,7 @@ export interface AutoRefreshOperations {
 }
 
 /**
- * 自定义操作包装器参数接口
+ * Custom operation wrapper parameters interface
  */
 export interface CreateOperationWrapperParams<TArgs extends any[], TResult> {
   operation: (...args: TArgs) => Promise<TResult>;
@@ -35,7 +35,7 @@ export interface CreateOperationWrapperParams<TArgs extends any[], TResult> {
 }
 
 /**
- * 自动刷新操作Hook参数接口
+ * Auto-refresh operations Hook parameters interface
  */
 export interface UseAutoRefreshOperationsParams {
   refreshFn: () => Promise<boolean> | Promise<{ success: boolean; error?: Error }>;

@@ -27,7 +27,7 @@ interface VolcCredentialsProps {
 }
 
 /**
- * 火山引擎凭证配置区块组件
+ * Volcengine credentials configuration section component
  */
 export const VolcCredentials: React.FC<VolcCredentialsProps> = ({
   showAdvancedConfig,

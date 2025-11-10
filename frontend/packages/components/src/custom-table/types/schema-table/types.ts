@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Schema表格类型定义
- * @description 配置化表格的类型定义
+ * Schema table type definitions
+ * @description Type definitions for configurable tables
 
  * @date 2025-12-19
  */
@@ -26,7 +26,7 @@ import type { ReactNode } from 'react';
 // Re-export BaseRecord for use in schema-table preset
 export type { BaseRecord };
 
-// 字段值类型枚举
+// Field value type enumeration
 export type FieldValueType =
   | 'text'
   | 'number'
@@ -48,7 +48,7 @@ export type FieldValueType =
   | 'json'
   | 'custom';
 
-// 筛选器类型
+// Filter type
 export type FilterType =
   | 'input'
   | 'select'
@@ -59,7 +59,7 @@ export type FilterType =
   | 'treeSelect'
   | 'custom';
 
-// 筛选器配置（Schema Table 专用，避免与 components 中的 FilterConfig 冲突）
+// Filter configuration (Schema Table specific, avoid conflict with FilterConfig in components)
 export interface SchemaFilterConfig {
   type: FilterType;
   label?: string;
@@ -69,8 +69,8 @@ export interface SchemaFilterConfig {
   allowClear?: boolean;
   showSearch?: boolean;
   request?: <TParams = unknown>(params: TParams) => Promise<unknown[]>;
-  dependencies?: string[]; // 依赖的其他筛选字段
-  transform?: <TValue = unknown, TResult = unknown>(value: TValue) => TResult; // 值转换函数
+  dependencies?: string[]; // Dependent filter fields
+  transform?: <TValue = unknown, TResult = unknown>(value: TValue) => TResult; // Value transformation function
   rules?: Array<{
     required?: boolean;
     message?: string;
@@ -78,15 +78,15 @@ export interface SchemaFilterConfig {
   }>;
 }
 
-// 列Schema定义
+// Column schema definition
 export interface ColumnSchema<T = BaseRecord> {
-  // 基础属性
+  // Basic properties
   key: string;
   title: string;
   dataIndex: string;
   valueType?: FieldValueType;
 
-  // 显示控制
+  // Display control
   width?: number | string;
   fixed?: 'left' | 'right';
   align?: 'left' | 'center' | 'right';
@@ -94,17 +94,17 @@ export interface ColumnSchema<T = BaseRecord> {
   tooltip?: boolean | string;
   copyable?: boolean;
 
-  // 排序
+  // Sorting
   sortable?: boolean;
   sorter?: boolean | ((a: T, b: T) => number);
   defaultSortOrder?: 'ascend' | 'descend';
 
-  // 筛选
+  // Filtering
   filterable?: boolean;
   filterConfig?: SchemaFilterConfig;
   hideInSearch?: boolean;
 
-  // 渲染
+  // Rendering
   render?: <TValue = unknown>(
     value: TValue,
     record: T,
@@ -112,7 +112,7 @@ export interface ColumnSchema<T = BaseRecord> {
   ) => ReactNode;
   renderText?: <TValue = unknown>(value: TValue, record: T) => string;
 
-  // 编辑
+  // Editing
   editable?: boolean;
   editConfig?: {
     type: 'input' | 'select' | 'date' | 'number';
@@ -120,7 +120,7 @@ export interface ColumnSchema<T = BaseRecord> {
     rules?: Array<Record<string, unknown>>;
   };
 
-  // 值枚举（用于select类型）
+  // Value enumeration (for select type)
   valueEnum?: Record<
     string,
     {
@@ -131,25 +131,25 @@ export interface ColumnSchema<T = BaseRecord> {
     }
   >;
 
-  // 格式化
+  // Formatting
   format?: {
-    precision?: number; // 数字精度
+    precision?: number; // Number precision
     prefix?: string;
     suffix?: string;
     dateFormat?: string;
     moneySymbol?: string;
   };
 
-  // 显示隐藏
+  // Show/hide
   hideInTable?: boolean;
   hideInForm?: boolean;
   hideInDetail?: boolean;
 
-  // 其他Arco Table列属性
+  // Other Arco Table column properties
   [key: string]: unknown;
 }
 
-// 操作按钮配置（Schema Table 专用，避免与 components 中的 ActionConfig 冲突）
+// Action button configuration (Schema Table specific, avoid conflict with ActionConfig in components)
 export interface SchemaActionConfig {
   key: string;
   label: string;
@@ -165,7 +165,7 @@ export interface SchemaActionConfig {
   };
 }
 
-// 工具栏配置（Schema Table 专用，避免与 components 中的 ToolbarConfig 冲突）
+// Toolbar configuration (Schema Table specific, avoid conflict with ToolbarConfig in components)
 export interface SchemaToolbarConfig {
   title?: string;
   subTitle?: string;
@@ -177,14 +177,14 @@ export interface SchemaToolbarConfig {
     onClick: () => void;
   }>;
   settings?: {
-    density?: boolean; // 密度调整
-    columnSetting?: boolean; // 列设置
-    fullScreen?: boolean; // 全屏
-    reload?: boolean; // 刷新
+    density?: boolean; // Density adjustment
+    columnSetting?: boolean; // Column settings
+    fullScreen?: boolean; // Full screen
+    reload?: boolean; // Refresh
   };
 }
 
-// 分页配置（Schema Table 专用，避免与 components 中的 PaginationConfig 冲突）
+// Pagination configuration (Schema Table specific, avoid conflict with PaginationConfig in components)
 export interface SchemaPaginationConfig {
   current?: number;
   pageSize?: number;
@@ -204,7 +204,7 @@ export interface SchemaPaginationConfig {
     | 'bottomRight';
 }
 
-// 请求配置
+// Request configuration
 export interface RequestConfig<T = BaseRecord> {
   url?: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -220,16 +220,16 @@ export interface RequestConfig<T = BaseRecord> {
   onSuccess?: (data: T[]) => void;
 }
 
-// 表格Schema主配置
+// Table schema main configuration
 export interface TableSchema<T = BaseRecord> {
-  // 基础信息
+  // Basic information
   title?: string;
   description?: string;
 
-  // 列定义
+  // Column definitions
   columns: ColumnSchema<T>[];
 
-  // 数据源
+  // Data source
   dataSource?: T[];
   request?:
     | RequestConfig<T>
@@ -241,9 +241,9 @@ export interface TableSchema<T = BaseRecord> {
         success?: boolean;
       }>);
 
-  // 功能配置
+  // Feature configuration
   features?: {
-    // 基础功能
+    // Basic features
     pagination?: boolean | SchemaPaginationConfig;
     search?:
       | boolean
@@ -256,7 +256,7 @@ export interface TableSchema<T = BaseRecord> {
         };
     toolbar?: boolean | SchemaToolbarConfig;
 
-    // 高级功能
+    // Advanced features
     rowSelection?:
       | boolean
       | {
@@ -272,26 +272,26 @@ export interface TableSchema<T = BaseRecord> {
           rowExpandable?: (record: T) => boolean;
         };
 
-    // 交互功能
+    // Interactive features
     draggable?: boolean;
     resizable?: boolean;
     editable?: boolean;
 
-    // 样式功能
+    // Style features
     bordered?: boolean;
     size?: 'default' | 'middle' | 'small';
     loading?: boolean;
     empty?: ReactNode;
   };
 
-  // 操作列
+  // Action column
   actions?: {
     width?: number;
     fixed?: 'left' | 'right';
     items: SchemaActionConfig[];
   };
 
-  // 事件回调
+  // Event callbacks
   events?: {
     onRow?: <TReturn = Record<string, unknown>>(
       record: T,
@@ -310,7 +310,7 @@ export interface TableSchema<T = BaseRecord> {
     onReset?: () => void;
   };
 
-  // 样式配置
+  // Style configuration
   style?: {
     className?: string;
     tableClassName?: string;
@@ -319,7 +319,7 @@ export interface TableSchema<T = BaseRecord> {
     footerClassName?: string;
   };
 
-  // 预设模板
+  // Preset templates
   preset?:
     | 'basic'
     | 'advanced'
@@ -328,18 +328,18 @@ export interface TableSchema<T = BaseRecord> {
     | 'mobile'
     | 'dashboard';
 
-  // 扩展配置
+  // Extended configuration
   plugins?: string[];
   customConfig?: Record<string, unknown>;
 }
 
-// Schema构建器接口
+// Schema builder interface
 export interface TableSchemaBuilder<T = BaseRecord> {
-  // 基础方法
+  // Basic methods
   setTitle: (title: string) => this;
   setDescription: (description: string) => this;
 
-  // 列管理
+  // Column management
   addColumn: (column: ColumnSchema<T>) => this;
   removeColumn: (key: string) => this;
   updateColumn: (params: {
@@ -347,13 +347,13 @@ export interface TableSchemaBuilder<T = BaseRecord> {
     updates: Partial<ColumnSchema<T>>;
   }) => this;
 
-  // 功能配置
+  // Feature configuration
   enablePagination: (config?: SchemaPaginationConfig) => this;
   enableSearch: (config?: boolean | object) => this;
   enableToolbar: (config?: SchemaToolbarConfig) => this;
   enableRowSelection: (config?: boolean | object) => this;
 
-  // 数据源
+  // Data source
   setDataSource: (dataSource: T[]) => this;
   setRequest: (
     request:
@@ -367,25 +367,25 @@ export interface TableSchemaBuilder<T = BaseRecord> {
         }>),
   ) => this;
 
-  // 操作
+  // Operations
   addAction: (action: SchemaActionConfig) => this;
 
-  // 构建
+  // Build
   build: () => TableSchema<T>;
 
-  // 验证
+  // Validate
   validate: () => { valid: boolean; errors: string[] };
 }
 
-// 预设模板类型
+// Preset template type
 export interface PresetTemplate {
   name: string;
   description: string;
   schema: Partial<TableSchema>;
-  preview?: string; // 预览图片URL
+  preview?: string; // Preview image URL
 }
 
-// Schema验证结果
+// Schema validation result
 export interface ValidationResult {
   valid: boolean;
   errors: Array<{
@@ -395,41 +395,41 @@ export interface ValidationResult {
   }>;
 }
 
-// 表格实例方法
+// Table instance methods
 export interface SchemaTableInstance<T = BaseRecord> {
-  // 数据操作
+  // Data operations
   reload: () => Promise<void>;
   getDataSource: () => T[];
   setDataSource: (data: T[]) => void;
 
-  // 筛选操作
+  // Filter operations
   getFilters: () => Record<string, unknown>;
   setFilters: (filters: Record<string, unknown>) => void;
   resetFilters: () => void;
 
-  // 选择操作
+  // Selection operations
   getSelectedRows: () => T[];
   getSelectedRowKeys: () => React.Key[];
   setSelectedRows: (keys: React.Key[]) => void;
   clearSelection: () => void;
 
-  // 分页操作
+  // Pagination operations
   getCurrentPage: () => number;
   getPageSize: () => number;
   setPage: (page: number, pageSize?: number) => void;
 
-  // 排序操作
+  // Sorting operations
   getSorter: () => { field: string; order: 'ascend' | 'descend' } | null;
   setSorter: (field: string, order: 'ascend' | 'descend' | null) => void;
 
-  // 导出功能
+  // Export functionality
   exportData: (format?: 'csv' | 'excel' | 'json') => void;
 
-  // 刷新
+  // Refresh
   refresh: () => void;
 }
 
-// 组件Props
+// Component props
 export interface SchemaTableProps<T = BaseRecord> {
   schema: TableSchema<T>;
   className?: string;

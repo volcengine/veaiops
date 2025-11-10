@@ -19,12 +19,7 @@ import type {
   FieldItem,
   HandleFilterProps,
 } from "@veaiops/components";
-import {
-  convertLocalTimeRangeToUtc,
-  convertUtcTimeRangeToLocal,
-  disabledDate,
-  logger
-} from "@veaiops/utils";
+import { disabledDate, ensureArray, logger } from "@veaiops/utils";
 import type { ListIntelligentThresholdTaskRequest } from "api-generate";
 
 // 🔍 Import log collector
@@ -130,7 +125,7 @@ export const getTaskFilters = (
         onChange: (v: string) => {
           filterLogger.info({
             component: 'TaskConfigFilters',
-            message: '🔵 Datasource type onChange triggered',
+            message: '🔵 数据源类型 onChange 被触发',
             data: {
               newValue: v,
               oldValue: query.datasource_type,
@@ -147,7 +142,7 @@ export const getTaskFilters = (
 
           filterLogger.info({
             component: 'TaskConfigFilters',
-            message: '🔵 handleChange called',
+            message: '🔵 handleChange 已调用',
             data: {
               key: 'datasource_type',
               value: v,
@@ -204,25 +199,16 @@ export const getTaskFilters = (
       type: 'RangePicker',
       componentProps: {
         placeholder: ['开始时间', '结束时间'],
-        // Display: UTC → Local Time
-        value:
-          query.created_at_start && query.created_at_end
-            ? convertUtcTimeRangeToLocal([
-                query.created_at_start,
-                query.created_at_end,
-              ])
-            : undefined,
+        value: ensureArray([
+          query.created_at_start,
+          query.created_at_end,
+        ]) as [string, string] | undefined,
         showTime: true,
         disabledDate,
-        // Note: RangePicker returns date strings in user timezone, need to convert to UTC
-        onChange: (v: [string, string] | null) => {
+        onChange: (v: [string, string]) => {
           if (v && v.length === 2) {
-            // Send: Local Time → UTC
-            const utcRange = convertLocalTimeRangeToUtc(v);
-            if (utcRange) {
-              handleChange({ key: 'created_at_start', value: utcRange[0] });
-              handleChange({ key: 'created_at_end', value: utcRange[1] });
-            }
+            handleChange({ key: 'created_at_start', value: v[0] });
+            handleChange({ key: 'created_at_end', value: v[1] });
           } else {
             handleChange({ key: 'created_at_start', value: undefined });
             handleChange({ key: 'created_at_end', value: undefined });
@@ -236,25 +222,16 @@ export const getTaskFilters = (
       type: 'RangePicker',
       componentProps: {
         placeholder: ['开始时间', '结束时间'],
-        // Display: UTC → Local Time
-        value:
-          query.updated_at_start && query.updated_at_end
-            ? convertUtcTimeRangeToLocal([
-                query.updated_at_start,
-                query.updated_at_end,
-              ])
-            : undefined,
+        value: ensureArray([
+          query.updated_at_start,
+          query.updated_at_end,
+        ]) as [string, string] | undefined,
         showTime: true,
         disabledDate,
-        // Note: RangePicker returns date strings in user timezone, need to convert to UTC
-        onChange: (v: [string, string] | null) => {
+        onChange: (v: [string, string]) => {
           if (v && v.length === 2) {
-            // Send: Local Time → UTC
-            const utcRange = convertLocalTimeRangeToUtc(v);
-            if (utcRange) {
-              handleChange({ key: 'updated_at_start', value: utcRange[0] });
-              handleChange({ key: 'updated_at_end', value: utcRange[1] });
-            }
+            handleChange({ key: 'updated_at_start', value: v[0] });
+            handleChange({ key: 'updated_at_end', value: v[1] });
           } else {
             handleChange({ key: 'updated_at_start', value: undefined });
             handleChange({ key: 'updated_at_end', value: undefined });

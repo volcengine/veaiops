@@ -15,23 +15,23 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type IntelligentThresholdConfig = {
   /**
-   * 开始小时
+   * Start hour
    */
   start_hour: number;
   /**
-   * 结束小时
+   * End hour
    */
   end_hour: number;
   /**
-   * 上界
+   * Upper bound
    */
   upper_bound?: number | null;
   /**
-   * 下界
+   * Lower bound
    */
   lower_bound?: number | null;
   /**
-   * 窗口大小
+   * Window size
    */
   window_size: number;
 };

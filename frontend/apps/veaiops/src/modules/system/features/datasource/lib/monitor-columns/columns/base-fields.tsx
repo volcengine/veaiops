@@ -21,7 +21,7 @@ import type React from 'react';
 import { getConfigData } from '../../config-data-utils';
 
 /**
- * 创建基础配置字段列（所有数据源都有）
+ * Create base config field columns (all data sources have)
  */
 export const createBaseConfigFields = (
   dataSourceType: DataSourceType,

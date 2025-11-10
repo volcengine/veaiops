@@ -26,18 +26,18 @@ type SubscribeFunc<T> = (callback: (data: T) => void) => () => void;
 type UnsubscribeFunc = (id: number) => void;
 type PublishFunc<T> = (data: T) => void;
 
-// 引入泛型
+// Introduce generics
 interface ISubscription<T> {
   subscribe: SubscribeFunc<T>;
   unsubscribe: UnsubscribeFunc;
   publish: PublishFunc<T>;
 }
 
-// channels 类型也需要修改，每个 channel 的数据类型可以不同
+// Channel types also need modification, each channel can have different data types
 export interface ChannelType {
-  // mttr时间轴
+  // MTTR timeline
   mttrTimeLines?: ISubscription<Record<string, string>>;
-  // activeKey变化通道
+  // activeKey change channel
   activeKeyChange?: ISubscription<Record<string, unknown>>;
 }
 
@@ -60,7 +60,7 @@ export const SubscriptionProvider: React.FC<PropsWithChildren<unknown>> = ({
   return <Index.Provider value={channels}>{children}</Index.Provider>;
 };
 
-// 把创建通道的函数也暴露出去
+// Expose channel creation function
 export const useSubscription = (): {
   channels: ChannelType;
   createChannel: <T extends ChannelKeys>(channelName: T) => void;

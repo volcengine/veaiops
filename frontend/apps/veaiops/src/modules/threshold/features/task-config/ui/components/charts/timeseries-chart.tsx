@@ -23,7 +23,7 @@ import { createTooltipIndex, renderTooltip } from './tooltip-utils';
 export interface TimeseriesChartProps {
   timeseriesData: TimeseriesDataPoint[];
   className?: string;
-  timeRange?: [Date, Date]; // 添加时间范围参数
+  timeRange?: [Date, Date]; // Add time range parameter
 }
 
 export const TimeseriesChart: React.FC<TimeseriesChartProps> = ({
@@ -31,7 +31,7 @@ export const TimeseriesChart: React.FC<TimeseriesChartProps> = ({
   className = 'w-full h-[500px]',
   timeRange,
 }) => {
-  // 预构建 tooltip 数据索引，按 timestamp 聚合（避免 hover 时每次 O(n) 过滤）
+  // Pre-build tooltip data index, aggregate by timestamp (avoid O(n) filtering on each hover)
   const tooltipIndexByTimestamp = useMemo(() => {
     return createTooltipIndex(timeseriesData);
   }, [timeseriesData]);
@@ -40,20 +40,20 @@ export const TimeseriesChart: React.FC<TimeseriesChartProps> = ({
     ...getChartConfig(timeseriesData, {
       // maxXTicks: 8,
       // xLabelOptionalAngles: [0, 25, 45, 60],
-      timeRange, // 传递时间范围
+      timeRange, // Pass time range
     }),
-    // 使用 G2 v5 Tooltip API：通过 title/items 配置内容，由 interaction.tooltip.render 渲染
+    // Use G2 v5 Tooltip API: configure content via title/items, rendered by interaction.tooltip.render
     tooltip: {
-      // 标题使用 ISO，便于作为索引键
+      // Title uses ISO format for easy indexing
       title: (d: any) => new Date(d.timestamp).toISOString(),
-      // items 走默认通道，这里不强制声明，render 中按索引自定义
+      // items use default channel, not explicitly declared here, customize by index in render
     },
     interaction: {
       tooltip: {
         shared: true,
         series: true,
         crosshairs: true,
-        // 提高等待时间，降低渲染频率
+        // Increase wait time to reduce rendering frequency
         wait: 120,
         render: (_event: any, { title }: any) => {
           return renderTooltip(_event, { title }, tooltipIndexByTimestamp);

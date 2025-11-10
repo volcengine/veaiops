@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 数据转换器统一导出
+ * Data transformer unified export
  */
 
 export * from './aliyun';

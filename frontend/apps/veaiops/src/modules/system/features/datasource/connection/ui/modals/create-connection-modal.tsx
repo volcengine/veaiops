@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 创建连接弹窗组件
+ * Create connection modal component
  */
 
 import { getDataSourceDisplayName } from '@/utils/data-source-utils';
@@ -38,7 +38,7 @@ export const CreateConnectionModal: React.FC<CreateConnectionModalProps> = ({
 }) => {
   const [form] = Form.useForm();
 
-  // 组件销毁时重置表单
+  // Reset form when component is destroyed
   useEffect(() => {
     if (!visible) {
       form.resetFields();

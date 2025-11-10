@@ -41,3 +41,4 @@ export interface LoggerConfig {
   maxEntries: number;
   moduleName: string;
 }
+

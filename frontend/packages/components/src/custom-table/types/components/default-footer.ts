@@ -13,32 +13,32 @@
 // limitations under the License.
 
 /**
- * DefaultFooter 组件类型定义
- * 从 components/default-footer/types.ts 迁移而来
+ * DefaultFooter component type definitions
+ * Migrated from components/default-footer/types.ts
  */
 
 /**
- * @name 默认底部组件属性
+ * @name Default footer component properties
  */
 export interface DefaultFooterProps {
-  /** @name 是否有更多数据 */
+  /** @name Whether there is more data */
   hasMoreData?: boolean;
-  /** @name 加载更多数据回调 */
+  /** @name Load more data callback */
   onLoadMore?: () => void;
-  /** @name 容器样式类名 */
+  /** @name Container style class name */
   className?: string;
 }
 
 /**
- * @name 默认流式底部组件属性
+ * @name Default stream footer component properties
  */
 export interface DefaultStreamFooterProps {
-  /** @name 是否有更多数据 */
+  /** @name Whether there is more data */
   hasMoreData?: boolean;
-  /** @name 是否需要继续加载 */
+  /** @name Whether to continue loading */
   needContinue?: boolean;
-  /** @name 加载更多数据回调 */
+  /** @name Load more data callback */
   onLoadMore?: () => void;
-  /** @name 容器样式类名 */
+  /** @name Container style class name */
   className?: string;
 }

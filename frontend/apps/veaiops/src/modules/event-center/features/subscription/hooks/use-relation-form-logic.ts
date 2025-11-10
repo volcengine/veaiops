@@ -21,7 +21,7 @@ import { ModuleType } from '@/types/module';
 import type { InformStrategy } from 'api-generate';
 import { useMemo, useState } from 'react';
 
-// AgentType 枚举（保留用于向后兼容）
+// AgentType enum (kept for backward compatibility)
 export enum AgentType {
   chatops_interest_agent = '会话检测',
   chatops_reactive_reply_agent = '旁路回复',
@@ -29,7 +29,7 @@ export enum AgentType {
   intelligent_threshold_agent = '智能阈值',
 }
 
-// 事件级别选项
+// Event level options
 export const EVENT_LEVEL_OPTIONS = [
   { label: 'P0', value: 'P0' },
   { label: 'P1', value: 'P1' },
@@ -37,13 +37,13 @@ export const EVENT_LEVEL_OPTIONS = [
 ];
 
 /**
- * 订阅关系表单逻辑Hook
- * @param moduleType 模块类型，用于决定显示哪些Agent选项
+ * Subscription relation form logic Hook
+ * @param moduleType Module type, used to determine which Agent options to display
  */
 export const useSubscribeRelationFormLogic = (moduleType?: ModuleType) => {
   const [informStrategies] = useState<InformStrategy[]>([]);
 
-  // 根据模块类型返回对应的Agent选项
+  // Return corresponding Agent options based on module type
   const agentTypeOptions = useMemo(() => {
     switch (moduleType) {
       case ModuleType.ONCALL:

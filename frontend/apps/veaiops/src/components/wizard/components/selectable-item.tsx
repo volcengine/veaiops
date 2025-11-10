@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 可选择项组件
- * @description 统一的选择项组件，支持单选、图标、标题、描述等
+ * Selectable item component
+ * @description Unified selectable item component supporting radio, icon, title, description, etc.
  * @author AI Assistant
  * @date 2025-10-19
  */
@@ -27,27 +27,27 @@ import styles from './selectable-item.module.less';
 const { Text } = Typography;
 
 export interface SelectableItemProps {
-  /** 是否选中 */
+  /** Whether selected */
   selected: boolean;
-  /** 点击事件 */
+  /** Click event */
   onClick: () => void;
-  /** 图标 */
+  /** Icon */
   icon?: ReactNode;
-  /** 主标题 */
+  /** Main title */
   title: ReactNode;
-  /** 描述信息 */
+  /** Description */
   description?: ReactNode;
-  /** 额外信息 */
+  /** Extra information */
   extra?: ReactNode;
-  /** 子内容（在选中时显示） */
+  /** Child content (displayed when selected) */
   children?: ReactNode;
-  /** 自定义类名 */
+  /** Custom class name */
   className?: string;
-  /** 选择器类型 */
+  /** Selector type */
   selectorType?: 'radio' | 'checkbox' | 'none';
-  /** Radio 的 value（用于 Radio.Group） */
+  /** Radio value (for Radio.Group) */
   radioValue?: string;
-  /** Checkbox change 事件（用于多选） */
+  /** Checkbox change event (for multi-select) */
   onCheckboxChange?: (checked: boolean) => void;
 }
 

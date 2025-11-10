@@ -16,34 +16,34 @@ import type { FieldItem, HandleFilterProps } from '@veaiops/components';
 import type { AttributeKey } from 'api-generate';
 
 /**
- * Bot属性筛选查询参数接口
+ * Bot attribute filter query parameters interface
  */
 export interface BotAttributeFiltersQuery {
   /**
-   * 类目筛选（多选）
-   * 对应后端 names 参数
+   * Category filter (multiple selection)
+   * Corresponds to backend names parameter
    */
   names?: AttributeKey[];
   /**
-   * 内容筛选（模糊搜索）
-   * 对应后端 value 参数
+   * Content filter (fuzzy search)
+   * Corresponds to backend value parameter
    */
   value?: string;
   /**
-   * 索引签名，满足 BaseQuery 约束
+   * Index signature, satisfies BaseQuery constraint
    */
   [key: string]: unknown;
 }
 
 /**
- * Bot属性表格筛选器配置
- * 按照后端接口参数要求进行配置
+ * Bot attribute table filter configuration
+ * Configured according to backend interface parameter requirements
  *
- * ⚠️ 修复说明（解决无限循环问题）：
- * - 移除了直接调用 handleChange 的逻辑，避免在 handleFilters 函数中触发状态更新
- * - handleFilters 会在每次渲染时被调用（在 useMemo 中），不应该有副作用
- * - 默认值应该通过 CustomTable 的 initQuery 属性设置，而不是在 handleFilters 中设置
- * - 参考：frontend/packages/components/src/custom-table/types/components/props.ts (initQuery)
+ * ⚠️ Fix notes (resolving infinite loop issue):
+ * - Removed logic that directly calls handleChange to avoid triggering state updates in handleFilters function
+ * - handleFilters will be called on every render (in useMemo), should not have side effects
+ * - Default values should be set through CustomTable's initQuery property, not in handleFilters
+ * - Reference: frontend/packages/components/src/custom-table/types/components/props.ts (initQuery)
  */
 export const getBotAttributeFilters = ({
   query,
@@ -52,8 +52,8 @@ export const getBotAttributeFilters = ({
   query: BotAttributeFiltersQuery;
   handleChange: HandleFilterProps<BotAttributeFiltersQuery>['handleChange'];
 }): FieldItem[] => {
-  // 使用传入的 query.names，如果不存在则使用默认值（但不在函数中调用 handleChange）
-  // 默认值应该在组件层面通过 initQuery 设置
+  // Use the passed query.names, if it doesn't exist use default value (but don't call handleChange in the function)
+  // Default values should be set at component level through initQuery
   const currentNames = query?.names || ['project'];
 
   return [
@@ -66,8 +66,8 @@ export const getBotAttributeFilters = ({
         value: currentNames,
         mode: 'multiple',
         maxTagCount: 2,
-        allowClear: false, // 不可清除
-        disabled: true, // 禁用选择，因为只有一个选项且必选
+        allowClear: false, // Cannot be cleared
+        disabled: true, // Disabled selection because there is only one option and it is required
         options: [{ label: '项目', value: 'project' }],
         onChange: (v: AttributeKey[]) => {
           handleChange({ key: 'names', value: v });

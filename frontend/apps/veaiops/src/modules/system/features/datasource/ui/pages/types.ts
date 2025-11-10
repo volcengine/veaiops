@@ -15,24 +15,24 @@
 import type { DataSourceType } from 'api-generate';
 
 /**
- * 数据源配置接口
+ * Data source configuration interface
  */
 export interface DataSourceConfig {
-  /** Tab 的唯一键 */
+  /** Unique key for Tab */
   key: string;
-  /** 数据源类型 */
+  /** Data source type */
   type: DataSourceType;
-  /** 删除处理器 */
+  /** Delete handler */
   deleteHandler: (
     monitorId: string,
     dataSourceType?: DataSourceType,
   ) => Promise<boolean>;
-  /** 表格 Ref 键名 */
+  /** Table Ref key name */
   tableRefKey: 'volcengineTableRef' | 'aliyunTableRef' | 'zabbixTableRef';
 }
 
 /**
- * 表格 Ref 映射类型
+ * Table Ref mapping type
  */
 export interface TableRefMap {
   volcengineTableRef: React.RefObject<any>;

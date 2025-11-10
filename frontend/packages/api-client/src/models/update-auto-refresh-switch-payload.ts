@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type UpdateAutoRefreshSwitchPayload = {
   /**
-   * 任务ID列表
+   * List of task IDs
    */
   task_ids: Array<string>;
   /**
-   * 自动更新开关值
+   * Auto update switch value
    */
   auto_update: boolean;
 };

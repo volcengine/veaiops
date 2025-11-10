@@ -24,7 +24,7 @@ import { useCallback } from 'react';
 import type { UseCopyReturn } from '../hooks';
 
 /**
- * 示例展示组件属性
+ * Example display component properties
  */
 export interface ExamplesProps {
   positiveExamples: string[];
@@ -33,7 +33,7 @@ export interface ExamplesProps {
 }
 
 /**
- * 示例展示组件
+ * Example display component
  */
 export const Examples: React.FC<ExamplesProps> = ({
   positiveExamples,
@@ -43,7 +43,7 @@ export const Examples: React.FC<ExamplesProps> = ({
   const { copiedText, handleCopy } = copyHook;
 
   /**
-   * 渲染示例内容
+   * Render example content
    */
   const renderExampleContent = useCallback(
     (examples: string[], type: 'positive' | 'negative') => {

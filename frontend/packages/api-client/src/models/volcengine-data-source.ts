@@ -17,19 +17,19 @@ import type { DataSource } from './data-source';
 export type VolcengineDataSource = (DataSource & {
   config?: {
     /**
-     * 火山引擎AccessKey
+     * Volcano Engine AccessKey
      */
     access_key?: string;
     /**
-     * 火山引擎SecretKey
+     * Volcano Engine SecretKey
      */
     secret_key?: string;
     /**
-     * 火山引擎地域
+     * Volcano Engine region
      */
     region: string;
     /**
-     * 服务端点
+     * Service endpoint
      */
     endpoint?: string;
   };

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 注意：utils/global-guide-analyzer.ts 向后兼容文件已删除
-// 直接从当前目录的 global-guide-analyzer.ts 导出
+// Note: utils/global-guide-analyzer.ts backward compatibility file has been removed
+// Export directly from global-guide-analyzer.ts in current directory
 export {
   analyzeGlobalGuideIssue,
   exportAllGlobalGuideLogs,

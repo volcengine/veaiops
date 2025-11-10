@@ -28,10 +28,10 @@ const OPTIONS: GuideOptions = {
 };
 
 /**
- * 设置引导组件配置
- * @param config 配置选项
- * @param config.margin 外边距，可选
- * @param config.padding 内边距，可选
+ * Set guide component configuration
+ * @param config Configuration options
+ * @param config.margin Margin, optional
+ * @param config.padding Padding, optional
  */
 export function setConfig({ margin, padding }: ConfigOptions): void {
   if (margin !== undefined) {
@@ -42,7 +42,7 @@ export function setConfig({ margin, padding }: ConfigOptions): void {
   }
 }
 
-// CSS 类名前缀常量
+// CSS class name prefix constants
 export const PREFIX_CLS = {
   GUIDE: 'tod-guide',
   GUIDE_CARD: 've-o-guide-card',

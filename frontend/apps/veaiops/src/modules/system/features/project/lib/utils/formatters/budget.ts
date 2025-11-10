@@ -15,7 +15,7 @@
 import { PROJECT_BUDGET_CONFIG } from '../../constants';
 
 /**
- * 格式化预算显示
+ * Format budget display
  */
 export const formatBudget = (budget: number): string => {
   if (!budget || budget === 0) {

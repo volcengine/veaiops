@@ -15,8 +15,8 @@
 import type { BaseRecord, PluginContext } from '@/custom-table/types';
 import { PluginNames } from '@/custom-table/types/constants/enum';
 /**
- * 智能单元格插件
- * 基于 EPS 平台的智能空值处理能力
+ * Smart cell plugin
+ * Based on EPS platform smart empty value handling capability
  */
 import React from 'react';
 import { SmartEmptyCell } from './components';
@@ -29,7 +29,7 @@ import type {
 } from './types';
 
 /**
- * 插件基础接口
+ * Base plugin interface
  */
 interface BasePlugin<ConfigType = unknown, StateType = unknown> {
   name: string;
@@ -43,7 +43,7 @@ interface BasePlugin<ConfigType = unknown, StateType = unknown> {
 }
 
 /**
- * 智能单元格插件类
+ * Smart cell plugin class
  */
 export class SmartCellPlugin<RecordType extends BaseRecord = BaseRecord>
   implements BasePlugin<Required<SmartCellConfig>, SmartCellState>
@@ -59,22 +59,22 @@ export class SmartCellPlugin<RecordType extends BaseRecord = BaseRecord>
   }
 
   install() {
-    // 插件安装逻辑
+    // Plugin installation logic
     return Promise.resolve();
   }
 
   uninstall() {
-    // 插件卸载逻辑
+    // Plugin uninstallation logic
     return Promise.resolve();
   }
 
   activate() {
-    // 插件激活逻辑
+    // Plugin activation logic
     return Promise.resolve();
   }
 
   deactivate() {
-    // 插件停用逻辑
+    // Plugin deactivation logic
     return Promise.resolve();
   }
 
@@ -93,14 +93,14 @@ export class SmartCellPlugin<RecordType extends BaseRecord = BaseRecord>
 
   getMethods() {
     return {
-      // 插件方法会通过 hooks 提供
+      // Plugin methods will be provided through hooks
     };
   }
 
   render() {
     return {
-      // 智能单元格主要通过 column render 函数实现
-      // 这里可以提供统计信息或其他辅助组件
+      // Smart cell is mainly implemented through column render function
+      // Here can provide statistics or other auxiliary components
       footer: (context: PluginContext) => {
         const { state } = context;
 
@@ -108,13 +108,13 @@ export class SmartCellPlugin<RecordType extends BaseRecord = BaseRecord>
           return null;
         }
 
-        // TODO: 可以添加空值统计信息
+        // TODO: Can add empty value statistics
         return null;
       },
     };
   }
 
-  // 转换列配置以支持智能单元格
+  // Transform column configuration to support smart cell
   transformColumns<
     ColumnType extends { dataIndex?: string; [key: string]: unknown },
   >(columns: ColumnType[]): ColumnType[] {
@@ -134,13 +134,13 @@ export class SmartCellPlugin<RecordType extends BaseRecord = BaseRecord>
         return column;
       }
 
-      // 原始渲染函数
+      // Original render function
       const originalRender = column.render;
 
       return {
         ...column,
         render: (value: unknown, record: RecordType, index: number) => {
-          // 在实际使用时，这些方法会从 context 中获取
+          // In actual use, these methods will be obtained from context
           const { userRole } = this.config;
           const context = {
             fieldName: dataIndex,
@@ -151,14 +151,14 @@ export class SmartCellPlugin<RecordType extends BaseRecord = BaseRecord>
             rowIndex: index,
           };
 
-          // 如果不是空值，使用原始渲染
+          // If not empty value, use original render
           if (!this.isEmpty(value)) {
             return originalRender
               ? (originalRender as any)(value, record, index)
               : value;
           }
 
-          // 渲染智能空值单元格
+          // Render smart empty value cell
           const handleEmptyValueClick = this.config.onEmptyValueClick
             ? (params: CellRenderParams<RecordType>) => {
                 this.config.onEmptyValueClick?.(params as any);
@@ -187,7 +187,7 @@ export class SmartCellPlugin<RecordType extends BaseRecord = BaseRecord>
     });
   }
 
-  // 判断是否为空值
+  // Check if value is empty
   private isEmpty(value: unknown): boolean {
     if (value === null || value === undefined) {
       return true;
@@ -228,7 +228,9 @@ export class SmartCellPlugin<RecordType extends BaseRecord = BaseRecord>
       (!this.config.fieldConfigs ||
         Object.keys(this.config.fieldConfigs).length === 0)
     ) {
-      errors.push('启用智能单元格时建议配置字段规则');
+      errors.push(
+        'It is recommended to configure field rules when enabling smart cells',
+      );
     }
 
     return {

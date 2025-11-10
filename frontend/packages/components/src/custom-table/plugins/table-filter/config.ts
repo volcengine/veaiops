@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格过滤器默认配置
+ * Table filter default configuration
  */
 import type { TableFilterConfig } from '@/custom-table/types';
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
@@ -21,7 +21,7 @@ import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 export const DEFAULT_TABLE_FILTER_CONFIG: TableFilterConfig = {
   enabled: true,
   priority: PluginPriorityEnum.MEDIUM,
-  showReset: true, // 🎯 默认启用重置按钮
+  showReset: true, // 🎯 Default enable reset button
   isFilterAffixed: false,
   isFilterCollection: false,
   filterStyleCfg: { isWithBackgroundAndBorder: true },

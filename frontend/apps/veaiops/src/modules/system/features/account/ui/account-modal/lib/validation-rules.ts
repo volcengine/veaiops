@@ -15,10 +15,10 @@
 import type { ValidationRule } from './types';
 
 /**
- * 密码验证器
+ * Password validator
  *
- * @param value - 待验证的密码值
- * @param callback - Arco Design Form 的验证回调函数，接受可选的错误消息字符串
+ * @param value - Password value to validate
+ * @param callback - Arco Design Form validation callback function, accepts optional error message string
  */
 const passwordValidator = (
   value: string | undefined,
@@ -34,7 +34,7 @@ const passwordValidator = (
   // } else {
   //   callback();
   // }
-  // 暂时使用简单验证
+  // Temporarily using simple validation
   if (value && value.length < 6) {
     callback('密码长度不能少于6位');
   } else {
@@ -43,10 +43,10 @@ const passwordValidator = (
 };
 
 /**
- * 用户名验证器
+ * Username validator
  *
- * @param value - 待验证的用户名
- * @param callback - Arco Design Form 的验证回调函数，接受可选的错误消息字符串
+ * @param value - Username to validate
+ * @param callback - Arco Design Form validation callback function, accepts optional error message string
  */
 const usernameValidator = (
   value: string | undefined,
@@ -60,7 +60,7 @@ const usernameValidator = (
 };
 
 /**
- * 统一的密码校验规则 - 与登录时的校验逻辑保持一致
+ * Unified password validation rules - Consistent with login validation logic
  */
 export const passwordRules: ValidationRule[] = [
   { required: true, message: '请输入密码' },
@@ -68,7 +68,7 @@ export const passwordRules: ValidationRule[] = [
 ];
 
 /**
- * 新密码的校验规则 - 使用基础密码校验
+ * New password validation rules - Uses basic password validation
  */
 export const newPasswordRules: ValidationRule[] = [
   { required: true, message: '请输入密码' },
@@ -76,7 +76,7 @@ export const newPasswordRules: ValidationRule[] = [
 ];
 
 /**
- * 用户名校验规则
+ * Username validation rules
  */
 export const usernameRules: ValidationRule[] = [
   { required: true, message: '请输入用户名' },
@@ -86,7 +86,7 @@ export const usernameRules: ValidationRule[] = [
 ];
 
 /**
- * 邮箱校验规则
+ * Email validation rules
  */
 export const emailRules: ValidationRule[] = [
   { required: true, message: '请输入邮箱' },
@@ -94,14 +94,14 @@ export const emailRules: ValidationRule[] = [
 ];
 
 /**
- * 角色校验规则
+ * Role validation rules
  */
 export const roleRules: ValidationRule[] = [
   { required: true, message: '请选择角色' },
 ];
 
 /**
- * 状态校验规则
+ * Status validation rules
  */
 export const statusRules: ValidationRule[] = [
   { required: true, message: '请选择状态' },

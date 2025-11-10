@@ -13,44 +13,44 @@
 // limitations under the License.
 
 /**
- * 类型安全工具函数
- * 替代 any 类型，提供更安全的类型操作
+ * Type-safe utility functions
+ * Replaces any type, provides safer type operations
  */
 
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
 
 /**
- * 安全的记录类型字段访问
+ * Safe record type field access
  */
 export type SafeRecordAccess<T extends BaseRecord, K extends keyof T> = T[K];
 
 /**
- * 安全的查询参数类型
+ * Safe query parameters type
  */
 export type SafeQueryParams<T extends BaseQuery> = {
   [K in keyof T]: T[K];
 };
 
 /**
- * 配置对象的类型安全访问
+ * Type-safe access to configuration objects
  */
 export interface TypeSafeConfig<T = Record<string, unknown>> {
-  /** 原始配置 */
+  /** Raw configuration */
   raw: T;
-  /** 获取配置值 */
+  /** Get configuration value */
   get: <K extends keyof T>(key: K) => T[K];
-  /** 设置配置值 */
+  /** Set configuration value */
   set: <K extends keyof T>(key: K, value: T[K]) => void;
-  /** 检查配置键是否存在 */
+  /** Check if configuration key exists */
   has: <K extends keyof T>(key: K) => boolean;
-  /** 获取所有键 */
+  /** Get all keys */
   keys: () => (keyof T)[];
-  /** 验证配置格式 */
+  /** Validate configuration format */
   validate: () => boolean;
 }
 
 /**
- * 创建类型安全的配置对象
+ * Create type-safe configuration object
  */
 export function createTypeSafeConfig<T extends Record<string, unknown>>(
   initialConfig: T,
@@ -78,32 +78,32 @@ export function createTypeSafeConfig<T extends Record<string, unknown>>(
 }
 
 /**
- * 安全的数组操作工具
+ * Safe array operation utilities
  */
 export interface SafeArrayUtils<T> {
-  /** 过滤数组 */
+  /** Filter array */
   filter: (predicate: (item: T, index: number) => boolean) => T[];
-  /** 映射数组 */
+  /** Map array */
   map: <U>(mapper: (item: T, index: number) => U) => U[];
-  /** 查找元素 */
+  /** Find element */
   find: (predicate: (item: T, index: number) => boolean) => T | undefined;
-  /** 检查是否存在 */
+  /** Check if exists */
   some: (predicate: (item: T, index: number) => boolean) => boolean;
-  /** 检查所有元素 */
+  /** Check all elements */
   every: (predicate: (item: T, index: number) => boolean) => boolean;
-  /** 归约操作 */
+  /** Reduce operation */
   reduce: <U>(
     reducer: (acc: U, item: T, index: number) => U,
     initialValue: U,
   ) => U;
-  /** 获取长度 */
+  /** Get length */
   length: number;
-  /** 原始数组 */
+  /** Raw array */
   raw: T[];
 }
 
 /**
- * 创建安全的数组工具
+ * Create safe array utilities
  */
 export function createSafeArrayUtils<T>(array: T[]): SafeArrayUtils<T> {
   const safeArray = Array.isArray(array) ? [...array] : [];
@@ -140,7 +140,7 @@ export function createSafeArrayUtils<T>(array: T[]): SafeArrayUtils<T> {
 }
 
 /**
- * 事件处理器的类型安全封装
+ * Type-safe encapsulation of event handlers
  */
 export type SafeEventHandler<EventType extends string, EventData = unknown> = {
   eventType: EventType;
@@ -149,57 +149,57 @@ export type SafeEventHandler<EventType extends string, EventData = unknown> = {
 };
 
 /**
- * 请求参数的类型安全处理
+ * Type-safe handling of request parameters
  */
 export interface SafeRequestParams<T = Record<string, unknown>> {
-  /** 查询参数 */
+  /** Query parameters */
   query?: T;
-  /** 路径参数 */
+  /** Path parameters */
   params?: Record<string, string | number>;
-  /** 请求体 */
+  /** Request body */
   body?: unknown;
-  /** 请求头 */
+  /** Request headers */
   headers?: Record<string, string>;
 }
 
 /**
- * 响应数据的类型安全处理
+ * Type-safe handling of response data
  */
 export interface SafeResponseData<T = unknown> {
-  /** 响应数据 */
+  /** Response data */
   data: T;
-  /** 状态码 */
+  /** Status code */
   status: number;
-  /** 状态文本 */
+  /** Status text */
   statusText: string;
-  /** 响应头 */
+  /** Response headers */
   headers: Record<string, string>;
-  /** 是否成功 */
+  /** Whether successful */
   success: boolean;
 }
 
 /**
- * 分页数据的类型安全处理
+ * Type-safe handling of pagination data
  */
 export interface SafePaginationData<T = unknown> {
-  /** 数据列表 */
+  /** Data list */
   list: T[];
-  /** 当前页码 */
+  /** Current page number */
   current: number;
-  /** 每页大小 */
+  /** Page size */
   pageSize: number;
-  /** 总数据量 */
+  /** Total data count */
   total: number;
-  /** 总页数 */
+  /** Total pages */
   totalPages: number;
-  /** 是否有下一页 */
+  /** Whether has next page */
   hasNext: boolean;
-  /** 是否有上一页 */
+  /** Whether has previous page */
   hasPrev: boolean;
 }
 
 /**
- * 创建类型安全的分页数据
+ * Create type-safe pagination data
  */
 export function createSafePaginationData<T>(
   list: T[],
@@ -221,19 +221,19 @@ export function createSafePaginationData<T>(
 }
 
 /**
- * 字段验证器类型
+ * Field validator type
  */
 export type FieldValidator<T> = (value: T) => boolean | string;
 
 /**
- * 表单验证的类型安全处理
+ * Type-safe handling of form validation
  */
 export interface SafeFormValidation<T extends Record<string, unknown>> {
-  /** 验证规则 */
+  /** Validation rules */
   rules: {
     [K in keyof T]?: FieldValidator<T[K]>[];
   };
-  /** 执行验证 */
+  /** Execute validation */
   validate: (data: T) => {
     isValid: boolean;
     errors: Partial<Record<keyof T, string[]>>;
@@ -241,7 +241,7 @@ export interface SafeFormValidation<T extends Record<string, unknown>> {
 }
 
 /**
- * 创建类型安全的表单验证器
+ * Create type-safe form validator
  */
 export function createSafeFormValidation<T extends Record<string, unknown>>(
   rules: {

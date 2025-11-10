@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 组件类型定义统一导出
- * 按照类型导出优化规范，使用 export * from 统一导出
+ * Unified export of component type definitions
+ * Following type export optimization standards, using export * from for unified export
  */
 
-// ==================== 组件类型 ====================
+// ==================== Component Types ====================
 export * from './base';
 export * from './table';
 export * from './filter-plugin';

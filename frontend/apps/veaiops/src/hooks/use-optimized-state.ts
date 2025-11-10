@@ -16,12 +16,12 @@ import { memoryCache } from '@/utils/cache-manager';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
- * 优化的状态管理 Hook
- * 提供防抖、节流、缓存等功能
+ * Optimized state management Hook
+ * Provides debounce, throttle, cache and other functionality
  */
 
 /**
- * 防抖状态 Hook
+ * Debounced state Hook
  */
 export interface UseDebouncedStateParams<T> {
   initialValue: T;
@@ -56,7 +56,7 @@ export function useDebouncedState<T>({
 }
 
 /**
- * 节流状态 Hook
+ * Throttled state Hook
  */
 export interface UseThrottledStateParams<T> {
   initialValue: T;
@@ -112,10 +112,10 @@ export function useThrottledState<T>({
 }
 
 /**
- * 缓存状态 Hook
- * @param key 缓存键
- * @param initialValue 初始值
- * @param ttl 缓存生存时间（毫秒）
+ * Cached state Hook
+ * @param key Cache key
+ * @param initialValue Initial value
+ * @param ttl Cache time to live (milliseconds)
  */
 export interface UseCachedStateParams<T> {
   key: string;
@@ -128,7 +128,7 @@ export function useCachedState<T>({
   initialValue,
   ttl = 5 * 60 * 1000,
 }: UseCachedStateParams<T>) {
-  // 尝试从缓存获取初始值
+  // Try to get initial value from cache
   const getCachedValue = useCallback(() => {
     const cached = memoryCache.get(key);
     return cached !== null ? cached : initialValue;
@@ -136,7 +136,7 @@ export function useCachedState<T>({
 
   const [value, setValue] = useState<T>(getCachedValue);
 
-  // 更新状态并缓存
+  // Update state and cache
   const setCachedValue = useCallback(
     (newValue: T | ((prev: T) => T)) => {
       setValue((prev) => {
@@ -145,7 +145,7 @@ export function useCachedState<T>({
             ? (newValue as (prev: T) => T)(prev)
             : newValue;
 
-        // 缓存新值
+        // Cache new value
         memoryCache.set({ key, value: nextValue, ttl });
         return nextValue;
       });
@@ -157,8 +157,8 @@ export function useCachedState<T>({
 }
 
 /**
- * 异步状态 Hook
- * 提供加载状态、错误处理和重试功能
+ * Async state Hook
+ * Provides loading state, error handling and retry functionality
  */
 export interface UseAsyncStateParams<T, E = Error> {
   asyncFunction: () => Promise<T>;
@@ -188,7 +188,7 @@ export function useAsyncState<T, E = Error>({
       return data;
     } catch (error: unknown) {
       setState({ data: null, loading: false, error: error as E });
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;
@@ -211,8 +211,8 @@ export function useAsyncState<T, E = Error>({
 }
 
 /**
- * 优化的对象状态 Hook
- * 提供浅比较优化，避免不必要的重渲染
+ * Optimized object state Hook
+ * Provides shallow comparison optimization to avoid unnecessary re-renders
  */
 export interface UseOptimizedObjectStateParams<T extends Record<string, any>> {
   initialValue: T;
@@ -231,7 +231,7 @@ export function useOptimizedObjectState<T extends Record<string, any>>({
           typeof newState === 'function' ? newState(prev) : newState;
         const nextState = { ...prev, ...updates };
 
-        // 浅比较，如果没有变化则不更新
+        // Shallow comparison, do not update if no changes
         const hasChanged = Object.keys(updates).some(
           (key) => prev[key] !== nextState[key],
         );
@@ -251,8 +251,8 @@ export function useOptimizedObjectState<T extends Record<string, any>>({
 }
 
 /**
- * 列表状态 Hook
- * 提供常用的列表操作方法
+ * List state Hook
+ * Provides common list operation methods
  */
 interface InsertParams<T> {
   index: number;
@@ -284,56 +284,56 @@ export function useListState<T>({
   const [list, setList] = useState<T[]>(initialValue);
 
   const actions = {
-    // 添加项
+    // Add item
     append: useCallback((item: T) => {
       setList((prev) => [...prev, item]);
     }, []),
 
-    // 添加到开头
+    // Add to beginning
     prepend: useCallback((item: T) => {
       setList((prev) => [item, ...prev]);
     }, []),
 
-    // 在指定位置插入
+    // Insert at specified position
     insert: useCallback(({ index, item }: InsertParams<T>) => {
       setList((prev) => [...prev.slice(0, index), item, ...prev.slice(index)]);
     }, []),
 
-    // 删除指定索引的项
+    // Remove item at specified index
     remove: useCallback((index: number) => {
       setList((prev) => prev.filter((_, i) => i !== index));
     }, []),
 
-    // 删除符合条件的项
+    // Remove items matching condition
     removeWhere: useCallback((predicate: (item: T) => boolean) => {
       setList((prev) => prev.filter((item) => !predicate(item)));
     }, []),
 
-    // 更新指定索引的项
+    // Update item at specified index
     update: useCallback(({ index, item }: UpdateParams<T>) => {
       setList((prev) =>
         prev.map((prevItem, i) => (i === index ? item : prevItem)),
       );
     }, []),
 
-    // 更新符合条件的项
+    // Update items matching condition
     updateWhere: useCallback(({ predicate, updater }: UpdateWhereParams<T>) => {
       setList((prev) =>
         prev.map((item) => (predicate(item) ? updater(item) : item)),
       );
     }, []),
 
-    // 清空列表
+    // Clear list
     clear: useCallback(() => {
       setList([]);
     }, []),
 
-    // 重置为初始值
+    // Reset to initial value
     reset: useCallback(() => {
       setList(initialValue);
     }, [initialValue]),
 
-    // 移动项
+    // Move item
     move: useCallback(({ fromIndex, toIndex }: MoveParams) => {
       setList((prev) => {
         const newList = [...prev];
@@ -348,8 +348,8 @@ export function useListState<T>({
 }
 
 /**
- * 表单状态 Hook
- * 提供表单验证和错误处理
+ * Form state Hook
+ * Provides form validation and error handling
  */
 export interface UseFormStateParams<T extends Record<string, any>> {
   initialValues: T;
@@ -375,7 +375,7 @@ export function useFormState<T extends Record<string, any>>({
     ({ field, value }: SetValueParams) => {
       setValues({ [field]: value } as Partial<T>);
 
-      // 验证字段
+      // Validate field
       if (validators?.[field]) {
         const error = validators[field](value);
         setErrors((prev) => ({

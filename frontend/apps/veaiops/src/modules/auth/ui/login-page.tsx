@@ -14,18 +14,18 @@
 
 import type React from 'react';
 
-// 使用路径别名导入 - 组件
+// Import using path alias - Components
 
 import { AnimatedBackground } from '@/components';
-// 本地组件导入
+// Local component imports
 import LoginCard from './login-card';
 import LoginForm from './login-form';
 import LoginHeader from './login-header';
 
-// 使用路径别名导入 - 配置
+// Import using path alias - Configuration
 import { loginStyles } from '@/modules/auth';
 
-// 使用路径别名导入 - Hooks
+// Import using path alias - Hooks
 import { useLogin } from '@/hooks';
 
 const LoginPage: React.FC = () => {

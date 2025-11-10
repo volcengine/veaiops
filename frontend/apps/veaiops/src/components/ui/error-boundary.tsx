@@ -14,7 +14,7 @@
 
 import React from 'react';
 
-// 错误边界组件
+// Error boundary component
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean; error?: Error }
@@ -29,8 +29,8 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(_error: Error, _errorInfo: React.ErrorInfo) {
-    // 错误边界捕获子组件错误，防止整个应用崩溃
-    // 错误信息已通过state.hasError在render中处理
+    // Error boundary catches child component errors to prevent the entire app from crashing
+    // Error information is handled in render through state.hasError
     this.setState({ hasError: true });
   }
 
@@ -46,13 +46,14 @@ class ErrorBoundary extends React.Component<
               className="text-2xl font-bold mb-4"
               style={{ color: 'var(--color-text-base)' }}
             >
-              应用加载出错
+              Application Load Error
             </h1>
             <p
               className="mb-4"
               style={{ color: 'var(--color-text-secondary)' }}
             >
-              抱歉，应用程序遇到了错误。请尝试刷新页面。
+              Sorry, the application encountered an error. Please try refreshing
+              the page.
             </p>
             <button
               type="button"
@@ -69,7 +70,7 @@ class ErrorBoundary extends React.Component<
                 e.currentTarget.style.backgroundColor = 'var(--color-primary)';
               }}
             >
-              刷新页面
+              Refresh Page
             </button>
           </div>
         </div>

@@ -20,7 +20,7 @@ import { useMemo } from 'react';
 import { PasswordRequirementItem } from './password-requirement-item';
 
 /**
- * 密码强度指示器组件
+ * Password strength indicator component
  */
 interface PasswordStrengthIndicatorProps {
   password: string;
@@ -29,7 +29,7 @@ interface PasswordStrengthIndicatorProps {
 export const PasswordStrengthIndicator: React.FC<
   PasswordStrengthIndicatorProps
 > = ({ password }) => {
-  // 计算密码要求是否满足
+  // Calculate whether password requirements are met
   const requirements = useMemo(() => {
     return {
       length: password.length >= 6,
@@ -65,7 +65,7 @@ export const PasswordStrengthIndicator: React.FC<
   const validation = validatePassword(password);
   const { strength } = validation;
 
-  // 密码强度配置
+  // Password strength configuration
   const strengthConfig = {
     weak: {
       color: 'red',
@@ -102,7 +102,7 @@ export const PasswordStrengthIndicator: React.FC<
     <div
       className={`mt-3 mb-4 p-3 rounded-lg border ${config.bgColor} ${config.borderColor}`}
     >
-      {/* 强度指示器 */}
+      {/* Strength indicator */}
       <div className="mb-3">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-xs font-medium text-gray-700">密码强度</span>
@@ -120,7 +120,7 @@ export const PasswordStrengthIndicator: React.FC<
 
       <Divider className="my-2" />
 
-      {/* 密码要求检查列表 */}
+      {/* Password requirements checklist */}
       <div className="space-y-0.5">
         <PasswordRequirementItem
           met={requirements.length}
@@ -152,7 +152,7 @@ export const PasswordStrengthIndicator: React.FC<
         />
       </div>
 
-      {/* 安全建议 */}
+      {/* Security suggestions */}
       <div className={`mt-3 mb-3 pt-2 border-t ${config.borderColor}`}>
         <div className="flex items-start gap-2">
           <IconInfoCircleFill

@@ -14,18 +14,18 @@
 
 import * as businessPresets from './business';
 /**
- * 预设注册器
+ * Preset registry
  */
 import type { PresetGenerator, PresetRegistry } from './types';
 
 /**
- * 预设注册器类
+ * Preset registry class
  */
 class FilterPresetRegistry {
   private presets: PresetRegistry = {};
 
   /**
-   * 注册预设
+   * Register preset
    */
   register({
     name,
@@ -38,7 +38,7 @@ class FilterPresetRegistry {
   }
 
   /**
-   * 批量注册预设
+   * Batch register presets
    */
   registerBatch(presets: Record<string, PresetGenerator>): void {
     Object.entries(presets).forEach(([name, generator]) => {
@@ -47,28 +47,28 @@ class FilterPresetRegistry {
   }
 
   /**
-   * 获取预设
+   * Get preset
    */
   get(name: string): PresetGenerator | undefined {
     return this.presets[name];
   }
 
   /**
-   * 检查预设是否存在
+   * Check if preset exists
    */
   has(name: string): boolean {
     return name in this.presets;
   }
 
   /**
-   * 获取所有预设名称
+   * Get all preset names
    */
   getNames(): string[] {
     return Object.keys(this.presets);
   }
 
   /**
-   * 获取预设统计信息
+   * Get preset statistics
    */
   getStats(): {
     total: number;
@@ -81,40 +81,40 @@ class FilterPresetRegistry {
   }
 
   /**
-   * 清空所有预设
+   * Clear all presets
    */
   clear(): void {
     this.presets = {};
   }
 }
 
-// 创建单例实例
+// Create singleton instance
 export const filterPresetRegistry = new FilterPresetRegistry();
 
-// 注册默认的业务预设
+// Register default business presets
 filterPresetRegistry.registerBatch({
-  // 账户相关
+  // Account related
   'account-select': businessPresets.accountSelectPreset,
-  'customer-select': businessPresets.accountSelectPreset, // 别名
+  'customer-select': businessPresets.accountSelectPreset, // Alias
 
-  // 产品相关
+  // Product related
   'product-select': businessPresets.productSelectPreset,
 
-  // 事件相关
+  // Event related
   'event-type-select': businessPresets.eventTypeSelectPreset,
   'event-id-input': businessPresets.eventIdInputPreset,
   'subscription-name-input': businessPresets.subscriptionNameInputPreset,
 
-  // 业务场景
+  // Business scene
   'business-scene-cascader': businessPresets.businessSceneCascaderPreset,
 
-  // 数据源
+  // Data source
   'datasource-type-select': businessPresets.datasourceTypeSelectPreset,
 
-  // 任务相关
+  // Task related
   'task-status-select': businessPresets.taskStatusSelectPreset,
   'task-id-select': businessPresets.taskIdSelectPreset,
 });
 
-// 导出类供自定义使用
+// Export class for custom use
 export { FilterPresetRegistry };

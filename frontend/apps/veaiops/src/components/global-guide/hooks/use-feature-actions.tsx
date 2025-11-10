@@ -19,7 +19,7 @@ import { useElementWait } from './use-element-wait';
 import { useGuideLogger } from './use-guide-logger';
 
 /**
- * Highlight guide parameters interface
+ * Highlight guide parameter interface
  */
 interface HighlightAndGuideParams {
   selector: string;
@@ -30,7 +30,7 @@ interface HighlightAndGuideParams {
 }
 
 /**
- * Direct trigger action parameters interface
+ * Direct trigger action parameter interface
  */
 interface TriggerDirectActionParams {
   selector: string;
@@ -41,15 +41,15 @@ interface TriggerDirectActionParams {
 }
 
 /**
- * Feature actions related Hook
- * Includes highlight guide, direct trigger and other features
+ * Feature action related Hook
+ * Includes highlight guide, direct trigger, and other functionality
  */
 export const useFeatureActions = () => {
   const { waitForElement } = useElementWait();
   const guideLogger = useGuideLogger();
 
   /**
-   * Highlight target element and show guide tooltip
+   * Highlight target element and show guide tip
    */
   const highlightAndGuide = useCallback(
     async ({
@@ -88,8 +88,8 @@ export const useFeatureActions = () => {
             selector,
             placement,
             showArrow: true,
-            buttonText: 'Got it',
-            autoClose: false, // Don't auto close, user clicks to close
+            buttonText: '知道了',
+            autoClose: false, // Don't auto-close, user clicks to close
             closeOnOutsideClick: true, // Close when clicking outside area
           });
 
@@ -131,7 +131,7 @@ export const useFeatureActions = () => {
         // Log error
         guideLogger.logError({
           category: 'HighlightGuide',
-          action: 'Highlight guide failed',
+          action: '高亮引导失败',
           error: errorMessage,
           context: {
             featureId,
@@ -145,7 +145,7 @@ export const useFeatureActions = () => {
   );
 
   /**
-   * Directly trigger feature (e.g., open modal)
+   * Directly trigger functionality (e.g., open modal)
    */
   const triggerDirectAction = useCallback(
     async ({
@@ -179,18 +179,18 @@ export const useFeatureActions = () => {
           if (isDisabled && allowDisabled) {
             const totalTime = Date.now() - startTime;
 
-            // Show guide tooltip at disabled element position
+            // Show guide tip at disabled element position
             showGuideTip({
               content: tooltipContent,
               selector,
               placement: placement || 'top',
               showArrow: true,
-              buttonText: 'Got it',
+              buttonText: '知道了',
               autoClose: false,
               closeOnOutsideClick: true,
             });
 
-            // Log successful guide display (even though click wasn't triggered)
+            // Log successful guide display (even though click was not triggered)
             guideLogger.logDirectAction({
               featureId,
               selector,
@@ -240,7 +240,7 @@ export const useFeatureActions = () => {
         // Log error
         guideLogger.logError({
           category: 'DirectAction',
-          action: 'Direct trigger failed',
+          action: '直接触发失败',
           error: errorMessage,
           context: {
             featureId,

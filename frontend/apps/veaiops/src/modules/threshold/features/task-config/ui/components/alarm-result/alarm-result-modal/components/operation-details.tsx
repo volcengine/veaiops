@@ -26,7 +26,7 @@ interface OperationDetailsProps {
 }
 
 /**
- * 操作详情区块
+ * Operation details section
  */
 export const OperationDetails: React.FC<OperationDetailsProps> = ({
   data,

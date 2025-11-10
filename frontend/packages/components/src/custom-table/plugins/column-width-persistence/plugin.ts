@@ -13,11 +13,9 @@
 // limitations under the License.
 
 /**
- * 列宽持久化插件实现
- * 集成Arco Table列宽检测和持久化功能，解决翻页时列宽变化问题
- *
-
- *
+ * Column Width Persistence Plugin Implementation
+ * Integrates Arco Table column width detection and persistence functionality,
+ * solving the issue of column width changes when paginating
  */
 
 import type {
@@ -42,7 +40,7 @@ import {
 } from './utils';
 
 /**
- * 列宽持久化插件工厂函数
+ * Column Width Persistence Plugin Factory Function
  */
 export const ColumnWidthPersistencePlugin: PluginFactory<
   ColumnWidthPersistenceConfig
@@ -56,7 +54,7 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
     description: PLUGIN_CONSTANTS.DESCRIPTION,
     priority: finalConfig.priority || 'medium',
     enabled: finalConfig.enabled !== false,
-    dependencies: ['table-columns'], // 依赖列管理插件
+    dependencies: ['table-columns'], // Depends on table-columns plugin
     conflicts: [],
 
     install(context: PluginContext) {
@@ -65,7 +63,7 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
         message: 'Plugin installed',
       });
 
-      // 初始化插件状态
+      // Initialize plugin state
       Object.assign(context.state, {
         columnWidthPersistence: {
           persistentWidths: {},
@@ -82,10 +80,10 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
         message: 'Plugin setup',
       });
 
-      // 获取表格相关信息
+      // Get table related information
       const { props } = context;
 
-      // 自动生成tableId - 优先使用用户指定的，然后基于标题和路径自动生成
+      // Auto-generate tableId - prioritize user-specified, then auto-generate based on title and path
       const propsWithTitle = props as { tableId?: string; title?: string };
       pluginTableId =
         propsWithTitle.tableId ||
@@ -100,7 +98,7 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
       const stateWithColumns = context.state as { columns?: ColumnProps[] };
       const baseColumns = stateWithColumns.columns || [];
 
-      // 从本地存储恢复列宽度
+      // Restore column widths from local storage
       if (
         finalConfig.enableLocalStorage &&
         localStorageUtils.isAvailable() &&
@@ -126,7 +124,7 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
             },
           });
 
-          // 应用到列配置中
+          // Apply to column configuration
           const updatedColumns = baseColumns.map((col: ColumnProps) => {
             const persistentWidth = savedWidths[col.dataIndex || ''];
             if (persistentWidth && col.dataIndex) {
@@ -142,7 +140,7 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
         }
       }
 
-      // 将tableId存储到上下文中，供其他方法使用
+      // Store tableId in context for use by other methods
       Object.assign(context.state, {
         columnWidthPersistence: {
           ...(
@@ -150,11 +148,11 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
               columnWidthPersistence?: Record<string, unknown>;
             }
           ).columnWidthPersistence,
-          tableId: pluginTableId, // 存储生成的tableId
+          tableId: pluginTableId, // Store generated tableId
         },
       });
 
-      // 添加列宽持久化相关方法到上下文
+      // Add column width persistence related methods to context
       Object.assign(
         context.helpers,
         createColumnWidthHelpers({
@@ -167,7 +165,7 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
     },
 
     update(_context: PluginContext) {
-      // 当配置或数据更新时的操作
+      // Operations when configuration or data is updated
       devLog.log({
         component: PLUGIN_CONSTANTS.PLUGIN_NAME,
         message: 'Plugin updated',
@@ -175,7 +173,7 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
     },
 
     uninstall(_context: PluginContext) {
-      // 卸载时的清理操作
+      // Cleanup operations during uninstallation
       devLog.log({
         component: PLUGIN_CONSTANTS.PLUGIN_NAME,
         message: 'Plugin uninstalled',
@@ -183,23 +181,23 @@ export const ColumnWidthPersistencePlugin: PluginFactory<
     },
 
     onMount(_context: PluginContext) {
-      // DOM挂载后的操作，主要用于自动检测功能
+      // Operations after DOM mount, mainly for auto-detection functionality
       devLog.log({
         component: PLUGIN_CONSTANTS.PLUGIN_NAME,
         message: 'Plugin mounted - DOM is ready',
       });
     },
 
-    // 插件钩子方法
+    // Plugin hook methods
     hooks: (() => {
-      // 延迟初始化 hooks，确保 tableId 已设置
+      // Lazy initialize hooks, ensure tableId is set
       if (!pluginTableId) {
         return {};
       }
       return createPluginHooks(finalConfig, pluginTableId);
     })(),
 
-    // 表格事件处理
+    // Table event handlers
     tableEvents: createTableEvents(),
   };
 };

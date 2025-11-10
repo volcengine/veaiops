@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * Tabs - 统一导出入口
- * 职责：导出所有标签页组件
+ * Tabs - Unified export entry
+ * Responsibility: Export all tab components
  */
 
-// 导出数据源标签页组件
+// Export data source tab component
 export { DataSourceTab } from './data-source-tab';

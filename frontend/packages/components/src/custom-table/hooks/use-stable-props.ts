@@ -13,31 +13,31 @@
 // limitations under the License.
 
 /**
- * Props 稳定化工具集
+ * Props stabilization utilities
  *
- * 🎯 目的：防止 props 对象/函数引用变化导致的无限循环
+ * 🎯 Purpose: Prevent infinite loops caused by props object/function reference changes
  *
- * 使用场景：
- * - handleColumns/handleFilters 等函数 props
- * - tableActions 等对象 props
- * - 任何可能频繁变化但内容相同的 props
+ * Use cases:
+ * - Function props like handleColumns/handleFilters
+ * - Object props like tableActions
+ * - Any props that may change frequently but have the same content
  */
 
 import { isEqual } from 'lodash-es';
 import { useRef } from 'react';
 
 /**
- * 稳定化回调函数
+ * Stabilize callback function
  *
- * 通过 useRef 保持函数引用稳定，同时始终调用最新的函数实现
+ * Maintains stable function reference through useRef while always calling the latest function implementation
  *
- * @param callback - 回调函数
- * @returns 稳定的函数引用
+ * @param callback - Callback function
+ * @returns Stable function reference
  *
  * @example
  * ```typescript
  * const stableOnEdit = useStableCallback(onEdit);
- * // stableOnEdit 的引用永远不变，但内部调用的是最新的 onEdit
+ * // stableOnEdit's reference never changes, but internally calls the latest onEdit
  * ```
  */
 export function useStableCallback<T extends (...args: any[]) => any>(
@@ -45,10 +45,10 @@ export function useStableCallback<T extends (...args: any[]) => any>(
 ): T | undefined {
   const callbackRef = useRef(callback);
 
-  // 始终保持最新的函数引用
+  // Always keep the latest function reference
   callbackRef.current = callback;
 
-  // 返回稳定的包装函数
+  // Return stable wrapper function
   const stableCallbackRef = useRef<T>();
 
   if (!stableCallbackRef.current && callback) {
@@ -61,17 +61,17 @@ export function useStableCallback<T extends (...args: any[]) => any>(
 }
 
 /**
- * 稳定化对象
+ * Stabilize object
  *
- * 使用深度对比（isEqual），只在内容真正变化时才返回新引用
+ * Uses deep comparison (isEqual), only returns new reference when content actually changes
  *
- * @param obj - 对象
- * @returns 稳定的对象引用
+ * @param obj - Object
+ * @returns Stable object reference
  *
  * @example
  * ```typescript
  * const stableActions = useStableObject({ onEdit, onDelete, onCreate });
- * // 只有当对象内容真正变化时，stableActions 的引用才会改变
+ * // stableActions reference only changes when object content actually changes
  * ```
  */
 export function useStableObject<T extends Record<string, any>>(
@@ -79,7 +79,7 @@ export function useStableObject<T extends Record<string, any>>(
 ): T | undefined {
   const ref = useRef(obj);
 
-  // 深度对比：只在内容真正变化时更新
+  // Deep comparison: only update when content actually changes
   if (!isEqual(ref.current, obj)) {
     ref.current = obj;
   }
@@ -88,17 +88,17 @@ export function useStableObject<T extends Record<string, any>>(
 }
 
 /**
- * 稳定化处理函数（高阶函数）
+ * Stabilize handler function (higher-order function)
  *
- * 特殊处理：handleColumns/handleFilters 等返回函数的函数
+ * Special handling: functions that return functions like handleColumns/handleFilters
  *
- * @param handler - 处理函数
- * @returns 稳定的处理函数
+ * @param handler - Handler function
+ * @returns Stable handler function
  *
  * @example
  * ```typescript
  * const stableHandleColumns = useStableHandler(handleColumns);
- * // stableHandleColumns 的引用永远不变
+ * // stableHandleColumns reference never changes
  * ```
  */
 export function useStableHandler<T extends (...args: any[]) => any>(
@@ -106,10 +106,10 @@ export function useStableHandler<T extends (...args: any[]) => any>(
 ): T | undefined {
   const handlerRef = useRef(handler);
 
-  // 始终保持最新的函数引用
+  // Always keep the latest function reference
   handlerRef.current = handler;
 
-  // 返回稳定的包装函数
+  // Return stable wrapper function
   const stableHandlerRef = useRef<T>();
 
   if (!stableHandlerRef.current && handler) {
@@ -122,12 +122,12 @@ export function useStableHandler<T extends (...args: any[]) => any>(
 }
 
 /**
- * 批量稳定化 Props（简化版本）
+ * Batch stabilize Props (simplified version)
  *
- * 使用深度对比稳定化整个对象
+ * Uses deep comparison to stabilize entire object
  *
- * @param props - Props对象
- * @returns 稳定的Props对象
+ * @param props - Props object
+ * @returns Stable Props object
  *
  * @example
  * ```typescript

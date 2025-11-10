@@ -21,32 +21,28 @@ import { ModuleType } from '@/types/module';
 import apiClient from '@/utils/api-client';
 import { Message } from '@arco-design/web-react';
 import { EVENT_LEVEL_OPTIONS } from '@ec/subscription';
-// 订阅关系过滤器配置函数
-// 按照 CustomTable 最佳实践，提供完整的过滤器配置
+// Subscription relation filter configuration function
+// Follow CustomTable best practices to provide complete filter configuration
 export const getSubscriptionFilters = ({
   query,
   handleChange,
   moduleType,
 }: {
   query: any;
-  handleChange: (
-    params:
-      | { key: string; value?: unknown }
-      | { updates: Record<string, unknown> },
-  ) => void;
+  handleChange: (key: any, value: unknown) => void;
   moduleType?: ModuleType;
 }) => {
-  // 根据模块类型选择智能体选项
+  // Select agent options based on module type
   const getAgentOptions = () => {
-    // Oncall模块：仅内容识别Agent
+    // Oncall module: Only content recognition Agent
     if (moduleType === ModuleType.ONCALL) {
       return AGENT_OPTIONS_ONCALL_SUBSCRIPTION;
     }
-    // 智能阈值模块：仅智能阈值Agent
+    // Intelligent threshold module: Only intelligent threshold Agent
     if (moduleType === ModuleType.INTELLIGENT_THRESHOLD) {
       return AGENT_OPTIONS_THRESHOLD_FILTER;
     }
-    // 事件中心模块和默认情况：内容识别Agent + 智能阈值Agent
+    // Event center module and default case: Content recognition Agent + Intelligent threshold Agent
     return AGENT_OPTIONS_EVENT_CENTER_SUBSCRIPTION;
   };
 
@@ -59,7 +55,7 @@ export const getSubscriptionFilters = ({
         value: query?.name,
         allowClear: true,
         onChange: (v: string) => {
-          handleChange({ key: 'name', value: v });
+          handleChange('name', v);
         },
       },
     },
@@ -77,7 +73,7 @@ export const getSubscriptionFilters = ({
             Message.warning('智能体不能为空!');
             return;
           }
-          handleChange({ key: 'agents', value: v });
+          handleChange('agents', v);
         },
       },
     },
@@ -91,7 +87,7 @@ export const getSubscriptionFilters = ({
         mode: 'multiple',
         options: EVENT_LEVEL_OPTIONS,
         onChange: (v: string[]) => {
-          handleChange({ key: 'eventLevels', value: v });
+          handleChange('eventLevels', v);
         },
       },
     },
@@ -107,7 +103,7 @@ export const getSubscriptionFilters = ({
           { label: '未开启', value: false },
         ],
         onChange: (v: boolean) => {
-          handleChange({ key: 'enableWebhook', value: v });
+          handleChange('enableWebhook', v);
         },
       },
     },
@@ -126,11 +122,11 @@ export const getSubscriptionFilters = ({
           responseEntityKey: 'data',
           optionCfg: {
             labelKey: 'name',
-            valueKey: 'name',
+            valueKey: 'name', // Use name (display name) to keep consistent with bot-attributes
           },
         },
         onChange: (v: string[]) => {
-          handleChange({ key: 'projects', value: v });
+          handleChange('projects', v);
         },
       },
     },

@@ -21,7 +21,7 @@ import type React from 'react';
 import { UpdateTooltip } from '../update-tooltip';
 
 /**
- * 消息卡片通知策略配置组件属性接口
+ * Message card notification strategy configuration component props interface
  */
 interface NotificationConfigProps {
   strategyRefreshTrigger: number;
@@ -31,8 +31,8 @@ interface NotificationConfigProps {
 }
 
 /**
- * 消息卡片通知策略配置组件
- * 包含消息卡片消息卡片通知策略的配置
+ * Message card notification strategy configuration component
+ * Contains message card notification strategy configuration
  */
 export const NotificationConfig: React.FC<NotificationConfigProps> = ({
   strategyRefreshTrigger,

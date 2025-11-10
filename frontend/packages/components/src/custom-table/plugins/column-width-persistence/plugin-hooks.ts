@@ -19,14 +19,14 @@ import { PLUGIN_CONSTANTS } from './config';
 import { detectAllColumnWidthsFromDOM } from './utils';
 
 /**
- * 创建插件 hooks 方法
+ * Create plugin hooks methods
  */
 export function createPluginHooks(
   config: { enableAutoDetection?: boolean },
   tableId: string | undefined,
 ) {
   return {
-    // 获取持久化列宽度
+    // Get persistent column widths
     getPersistentColumnWidths(...args: unknown[]) {
       const context = args[0] as PluginContext;
       const persistenceState = (
@@ -39,7 +39,7 @@ export function createPluginHooks(
       return persistenceState?.persistentWidths || {};
     },
 
-    // 应用持久化列宽度到列配置
+    // Apply persistent column widths to column configuration
     applyPersistentWidthsToColumns(...args: unknown[]) {
       const context = args[0] as PluginContext;
       const columns = (args[1] as Record<string, unknown>[]) || [];
@@ -61,23 +61,23 @@ export function createPluginHooks(
       });
     },
 
-    // 应用持久化配置到表格属性 - 默认配置方法
+    // Apply persistent configuration to table properties - default configuration method
     applyPersistentWidths: (...args: unknown[]) => {
       const context = args[0] as PluginContext;
       const originalProps = (args[1] as Record<string, unknown>) || {};
 
       return {
-        // 默认启用列宽调整
+        // Default enable column width adjustment
         resizable: true,
-        // 默认启用水平滚动
+        // Default enable horizontal scrolling
         scroll: {
           x: 'max-content',
           ...((originalProps.scroll as Record<string, unknown>) || {}),
         },
-        // 保留原始属性
+        // Preserve original properties
         ...originalProps,
 
-        // 增强列宽调整回调
+        // Enhanced column width adjustment callback
         onHeaderCell: (column: Record<string, unknown>) => {
           const originalOnHeaderCell =
             (typeof originalProps.onHeaderCell === 'function'
@@ -90,7 +90,7 @@ export function createPluginHooks(
               event: React.SyntheticEvent,
               { size }: { size?: { width?: number } },
             ) => {
-              // 处理列宽调整
+              // Handle column width adjustment
               if (size?.width && column.dataIndex) {
                 const helpers = context.helpers as {
                   setPersistentColumnWidth?: (params: {
@@ -109,7 +109,7 @@ export function createPluginHooks(
                 }
               }
 
-              // 调用原始回调
+              // Call original callback
               if (
                 originalOnHeaderCell &&
                 typeof originalOnHeaderCell.onResize === 'function'
@@ -120,10 +120,10 @@ export function createPluginHooks(
           };
         },
 
-        // 增强表格引用回调，用于DOM检测
+        // Enhanced table reference callback for DOM detection
         ref: (tableRef: HTMLElement) => {
           if (tableRef && config.enableAutoDetection) {
-            // 延迟检测，确保DOM已完全渲染并且helpers方法已就绪
+            // Delay detection to ensure DOM is fully rendered and helpers methods are ready
             setTimeout(() => {
               const helpers = context.helpers as unknown as {
                 detectAndSaveColumnWidths?: (ref: HTMLElement) => void;
@@ -137,7 +137,7 @@ export function createPluginHooks(
               ) {
                 helpers.detectAndSaveColumnWidths(tableRef);
               } else {
-                // 兜底：直接在此处进行一次列宽检测并保存，避免helpers未注入时丢失
+                // Fallback: directly perform column width detection and save here to avoid loss when helpers are not injected
                 try {
                   const stateWithBaseColumns = context.state as unknown as {
                     baseColumns?: Array<{ dataIndex?: string }>;
@@ -174,7 +174,7 @@ export function createPluginHooks(
                           'Fallback applied: detected widths saved via setBatchPersistentColumnWidths',
                         data: detectedWidths,
                       });
-                      // 同时在此时补充 helpers.detectAndSaveColumnWidths，避免后续再次缺失
+                      // Also supplement helpers.detectAndSaveColumnWidths at this time to avoid missing it again later
                       (
                         helpers as unknown as {
                           detectAndSaveColumnWidths?: (
@@ -200,13 +200,13 @@ export function createPluginHooks(
                     }
                   }
                 } catch (_fallbackError) {
-                  // 静默处理错误
+                  // Silently handle errors
                 }
               }
             }, 100);
           }
 
-          // 调用原始ref
+          // Call original ref
           if (typeof originalProps.ref === 'function') {
             originalProps.ref(tableRef);
           } else if (
@@ -220,20 +220,20 @@ export function createPluginHooks(
       };
     },
 
-    // 创建增强的Table组件props，集成列宽检测（兼容旧方法名）
+    // Create enhanced Table component props, integrate column width detection (compatible with old method name)
     enhanceTableProps(...args: unknown[]) {
       const _context = args[0] as PluginContext;
       const originalProps = (args[1] as Record<string, unknown>) || {};
 
       return {
-        // 默认启用列宽调整
+        // Default enable column width adjustment
         resizable: true,
-        // 默认启用水平滚动
+        // Default enable horizontal scrolling
         scroll: {
           x: 'max-content',
           ...((originalProps.scroll as Record<string, unknown>) || {}),
         },
-        // 保留原始属性
+        // Preserve original properties
         ...originalProps,
       };
     },

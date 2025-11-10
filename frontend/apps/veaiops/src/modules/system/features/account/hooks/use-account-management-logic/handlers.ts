@@ -23,7 +23,7 @@ import type { UseAccountStateReturn } from './state';
 import type { UserFormData } from './types';
 
 /**
- * 事件处理器Hook的参数
+ * Event handler Hook parameters
  */
 interface UseAccountHandlersParams {
   state: UseAccountStateReturn;
@@ -34,7 +34,7 @@ interface UseAccountHandlersParams {
 }
 
 /**
- * 账号管理的事件处理器Hook
+ * Account management event handler Hook
  */
 export const useAccountHandlers = ({
   state,
@@ -46,21 +46,21 @@ export const useAccountHandlers = ({
   const { form, editingUser, setEditingUser, modalVisible, setModalVisible } =
     state;
 
-  // 使用管理刷新 Hook
-  // ✅ 注意：删除操作的刷新已由 useBusinessTable 自动处理，无需 afterDelete
-  // 仅保留 afterCreate 和 afterUpdate 用于表单提交后的刷新
+  // Use management refresh Hook
+  // ✅ Note: Delete operation refresh is automatically handled by useBusinessTable, no need for afterDelete
+  // Only keep afterCreate and afterUpdate for refresh after form submission
   const { afterCreate, afterUpdate } = useManagementRefresh(refreshTable);
 
-  // 删除用户
-  // ✅ 注意：删除后的刷新已由 useBusinessTable 自动处理，无需手动调用 afterDelete
+  // Delete user
+  // ✅ Note: Refresh after delete is automatically handled by useBusinessTable, no need to manually call afterDelete
   const handleDelete = useCallback(
     async (userId: string) => {
       try {
         const success = await deleteUser(userId);
-        // ✅ 刷新已由 useBusinessTable 自动处理，无需手动刷新
+        // ✅ Refresh is automatically handled by useBusinessTable, no need to manually refresh
         return success;
       } catch (error) {
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
           error instanceof Error ? error.message : '删除失败，请重试';
         Message.error(errorMessage);
@@ -70,7 +70,7 @@ export const useAccountHandlers = ({
     [deleteUser],
   );
 
-  // 创建用户
+  // Create user
   const handleCreate = useCallback(
     async (values: UserFormData) => {
       try {
@@ -78,14 +78,14 @@ export const useAccountHandlers = ({
         if (success) {
           setModalVisible(false);
           form.resetFields();
-          // 创建成功后刷新表格
+          // Refresh table after successful creation
           const refreshResult = await afterCreate();
           if (!refreshResult.success && refreshResult.error) {
-            // 刷新失败，但不影响创建操作本身
-            // ✅ 正确：使用 logger 记录警告，传递完整的错误信息
+            // Refresh failed, but does not affect the create operation itself
+            // ✅ Correct: Use logger to record warning, pass complete error information
             const errorObj = refreshResult.error;
             logger.warn({
-              message: '创建后刷新表格失败',
+              message: 'Failed to refresh table after creation',
               data: {
                 error: errorObj.message,
                 stack: errorObj.stack,
@@ -100,7 +100,7 @@ export const useAccountHandlers = ({
         }
         return false;
       } catch (error) {
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
           error instanceof Error ? error.message : '创建失败，请重试';
         Message.error(errorMessage);
@@ -110,7 +110,7 @@ export const useAccountHandlers = ({
     [createUser, form, afterCreate, setModalVisible],
   );
 
-  // 更新用户
+  // Update user
   const handleUpdate = useCallback(
     async (values: UserFormData) => {
       if (!editingUser || !editingUser._id) {
@@ -127,14 +127,14 @@ export const useAccountHandlers = ({
           setModalVisible(false);
           setEditingUser(null);
           form.resetFields();
-          // 更新成功后刷新表格
+          // Refresh table after successful update
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
-            // 刷新失败，但不影响更新操作本身
-            // ✅ 正确：使用 logger 记录警告，传递完整的错误信息
+            // Refresh failed, but does not affect the update operation itself
+            // ✅ Correct: Use logger to record warning, pass complete error information
             const errorObj = refreshResult.error;
             logger.warn({
-              message: '更新后刷新表格失败',
+              message: 'Failed to refresh table after update',
               data: {
                 error: errorObj.message,
                 stack: errorObj.stack,
@@ -150,7 +150,7 @@ export const useAccountHandlers = ({
         }
         return false;
       } catch (error) {
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
           error instanceof Error ? error.message : '更新失败，请重试';
         Message.error(errorMessage);
@@ -167,7 +167,7 @@ export const useAccountHandlers = ({
     ],
   );
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = useCallback(
     async (values: UserFormData) => {
       if (editingUser) {
@@ -179,7 +179,7 @@ export const useAccountHandlers = ({
     [editingUser, handleUpdate, handleCreate],
   );
 
-  // 打开编辑弹窗
+  // Open edit modal
   const handleEdit = useCallback(
     (user: User) => {
       setEditingUser(user);
@@ -194,14 +194,14 @@ export const useAccountHandlers = ({
     [form, setEditingUser, setModalVisible],
   );
 
-  // 打开新增弹窗
+  // Open add modal
   const handleAdd = useCallback(() => {
     setEditingUser(null);
     form.resetFields();
     setModalVisible(true);
   }, [form, setEditingUser, setModalVisible]);
 
-  // 关闭弹窗
+  // Close modal
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     setEditingUser(null);

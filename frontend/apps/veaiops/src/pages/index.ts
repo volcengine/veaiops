@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 层层导出所有页面模块
+// Export all page modules layer by layer
 export * from './auth';
 export * from './common';
 export * from './statistics';

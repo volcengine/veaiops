@@ -15,7 +15,7 @@
 import type { User, UserFormData } from '@account';
 
 /**
- * 用户列表查询参数
+ * User list query parameters
  */
 export interface UserListParams {
   skip?: number;
@@ -28,7 +28,7 @@ export interface UserListParams {
 }
 
 /**
- * 用户列表响应
+ * User list response
  */
 export interface UserListResponse {
   users: User[];
@@ -38,7 +38,7 @@ export interface UserListResponse {
 }
 
 /**
- * 更新用户参数接口
+ * Update user parameters interface
  */
 export interface UpdateUserParams {
   id: string;

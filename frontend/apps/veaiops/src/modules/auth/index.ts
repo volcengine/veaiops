@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 认证模块导出
+// Authentication module exports
 
-// 配置和常量导出
+// Configuration and constants exports
 export * from './lib';
 
-// UI 组件导出
+// UI component exports
 export * from './ui';

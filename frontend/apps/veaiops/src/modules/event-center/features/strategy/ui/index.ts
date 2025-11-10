@@ -13,28 +13,28 @@
 // limitations under the License.
 
 /**
- * 策略管理 UI 组件统一导出
+ * Strategy management UI components unified export
  *
- * 目录结构说明：
- * - modal/    - 策略弹窗组件（已拆分，262 lines → 多文件）
- * - table/    - 策略表格组件（已重组，文件名简化）
- * - form.tsx  - 策略表单组件（168 lines）
- * - detail-drawer.tsx - 详情抽屉组件（107 lines）
- * - main.tsx  - 主页面组件（83 lines）
+ * Directory structure:
+ * - modal/    - Strategy modal components (split, 262 lines → multiple files)
+ * - table/    - Strategy table components (reorganized, file names simplified)
+ * - form.tsx  - Strategy form component (168 lines)
+ * - detail-drawer.tsx - Detail drawer component (107 lines)
+ * - main.tsx  - Main page component (83 lines)
  */
 
-// ✅ 重组：modal 目录（拆分后的组件）
+// ✅ Reorganized: modal directory (split components)
 export {
   default as StrategyModal,
   CardTemplateConfigMessage,
   type StrategyModalProps,
 } from './modal';
 
-// ✅ 重组：table 目录（文件名简化）
+// ✅ Reorganized: table directory (file names simplified)
 export { StrategyTable, type StrategyTableRef } from './table';
 
-// ✅ 简化文件名：strategy-detail-drawer.tsx → detail-drawer.tsx
+// ✅ Simplified file name: strategy-detail-drawer.tsx → detail-drawer.tsx
 export { StrategyDetailDrawer } from './detail-drawer';
 
-// ✅ 主组件（避免与 index.ts 循环依赖）
+// ✅ Main component (avoid circular dependency with index.ts)
 export { default as StrategyManagement } from './main';

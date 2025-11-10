@@ -16,10 +16,10 @@ import apiClient from '@/utils/api-client';
 import type { DataSourceSetter } from './types';
 
 /**
- * 获取 Volcengine 联系组数据源配置
+ * Get Volcengine contact group data source configuration
  *
- * @param datasourceId - 数据源ID
- * @returns DataSourceSetter 配置对象
+ * @param datasourceId - Data source ID
+ * @returns DataSourceSetter configuration object
  */
 export const getVolcengineContactGroupDataSource = (
   datasourceId: string,
@@ -35,14 +35,14 @@ export const getVolcengineContactGroupDataSource = (
 });
 
 /**
- * 获取 Volcengine 告警方式数据源配置
+ * Get Volcengine alert method data source configuration
  *
- * @param _datasourceId - 数据源ID
- * @returns DataSourceSetter 配置对象或undefined（使用静态选项）
+ * @param _datasourceId - Data source ID
+ * @returns DataSourceSetter configuration object or undefined (use static options)
  */
 export const getVolcengineAlertMethodsDataSource = (
   _datasourceId: string,
 ) => {
-  // Volcengine使用静态选项，不需要动态获取
+  // Volcengine uses static options, no need for dynamic fetching
   return undefined;
 };

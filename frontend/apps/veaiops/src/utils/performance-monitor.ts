@@ -15,31 +15,31 @@
 import React from 'react';
 
 /**
- * 性能监控工具
- * 用于监控应用性能指标和优化建议
+ * Performance monitoring tool
+ * Used to monitor application performance metrics and optimization suggestions
  */
 
 interface PerformanceMetrics {
-  /** 页面加载时间 */
+  /** Page load time */
   loadTime: number;
-  /** 首次内容绘制时间 */
+  /** First Contentful Paint time */
   fcp: number;
-  /** 最大内容绘制时间 */
+  /** Largest Contentful Paint time */
   lcp: number;
-  /** 累积布局偏移 */
+  /** Cumulative Layout Shift */
   cls: number;
-  /** 首次输入延迟 */
+  /** First Input Delay */
   fid: number;
 }
 
 interface ComponentPerformance {
-  /** 组件名称 */
+  /** Component name */
   name: string;
-  /** 渲染时间 */
+  /** Render time */
   renderTime: number;
-  /** 重新渲染次数 */
+  /** Rerender count */
   rerenderCount: number;
-  /** 最后更新时间 */
+  /** Last update time */
   lastUpdate: number;
 }
 
@@ -53,17 +53,17 @@ class PerformanceMonitor {
   }
 
   /**
-   * 初始化性能观察器
+   * Initialize performance observers
    */
   private initializeObservers() {
     if (typeof window === 'undefined') {
       return;
     }
 
-    // 观察导航时间
+    // Observe navigation timing
     if ('PerformanceObserver' in window) {
       try {
-        // 观察页面加载性能
+        // Observe page load performance
         const navigationObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
           entries.forEach((entry) => {
@@ -77,7 +77,7 @@ class PerformanceMonitor {
         navigationObserver.observe({ entryTypes: ['navigation'] });
         this.observers.push(navigationObserver);
 
-        // 观察绘制性能
+        // Observe paint performance
         const paintObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
           entries.forEach((entry) => {
@@ -89,7 +89,7 @@ class PerformanceMonitor {
         paintObserver.observe({ entryTypes: ['paint'] });
         this.observers.push(paintObserver);
 
-        // 观察最大内容绘制
+        // Observe Largest Contentful Paint
         const lcpObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
@@ -98,13 +98,13 @@ class PerformanceMonitor {
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
         this.observers.push(lcpObserver);
       } catch (error) {
-        // PerformanceObserver 初始化失败（浏览器不支持或权限问题），静默处理
+        // PerformanceObserver initialization failed (browser not supported or permission issue), silently handle
       }
     }
   }
 
   /**
-   * 记录组件性能
+   * Record component performance
    */
   recordComponentPerformance({
     componentName,
@@ -129,30 +129,30 @@ class PerformanceMonitor {
   }
 
   /**
-   * 获取性能指标
+   * Get performance metrics
    */
   getMetrics(): Partial<PerformanceMetrics> {
     return { ...this.metrics };
   }
 
   /**
-   * 获取组件性能指标
+   * Get component performance metrics
    */
   getComponentMetrics(): ComponentPerformance[] {
     return Array.from(this.componentMetrics.values());
   }
 
   /**
-   * 获取性能报告
+   * Get performance report
    */
   getPerformanceReport() {
     const metrics = this.getMetrics();
     const componentMetrics = this.getComponentMetrics();
 
-    // 性能评分
+    // Performance score
     const score = this.calculatePerformanceScore(metrics);
 
-    // 优化建议
+    // Optimization suggestions
     const suggestions = this.generateOptimizationSuggestions(
       metrics,
       componentMetrics,
@@ -168,14 +168,14 @@ class PerformanceMonitor {
   }
 
   /**
-   * 计算性能评分 (0-100)
+   * Calculate performance score (0-100)
    */
   private calculatePerformanceScore(
     metrics: Partial<PerformanceMetrics>,
   ): number {
     let score = 100;
 
-    // FCP 评分 (理想 < 1.8s)
+    // FCP score (ideal < 1.8s)
     if (metrics.fcp) {
       if (metrics.fcp > 3000) {
         score -= 20;
@@ -184,7 +184,7 @@ class PerformanceMonitor {
       }
     }
 
-    // LCP 评分 (理想 < 2.5s)
+    // LCP score (ideal < 2.5s)
     if (metrics.lcp) {
       if (metrics.lcp > 4000) {
         score -= 25;
@@ -193,7 +193,7 @@ class PerformanceMonitor {
       }
     }
 
-    // 加载时间评分 (理想 < 3s)
+    // Load time score (ideal < 3s)
     if (metrics.loadTime) {
       if (metrics.loadTime > 5000) {
         score -= 20;
@@ -206,7 +206,7 @@ class PerformanceMonitor {
   }
 
   /**
-   * 生成优化建议
+   * Generate optimization suggestions
    */
   private generateOptimizationSuggestions(
     metrics: Partial<PerformanceMetrics>,
@@ -214,24 +214,24 @@ class PerformanceMonitor {
   ): string[] {
     const suggestions: string[] = [];
 
-    // 基于性能指标的建议
+    // Suggestions based on performance metrics
     if (metrics.fcp && metrics.fcp > 1800) {
-      suggestions.push('首次内容绘制时间较长，建议优化关键资源加载');
+      suggestions.push('First Contentful Paint time is long, consider optimizing critical resource loading');
     }
 
     if (metrics.lcp && metrics.lcp > 2500) {
-      suggestions.push('最大内容绘制时间较长，建议优化图片和字体加载');
+      suggestions.push('Largest Contentful Paint time is long, consider optimizing image and font loading');
     }
 
     if (metrics.loadTime && metrics.loadTime > 3000) {
-      suggestions.push('页面加载时间较长，建议启用代码分割和懒加载');
+      suggestions.push('Page load time is long, consider enabling code splitting and lazy loading');
     }
 
-    // 基于组件性能的建议
+    // Suggestions based on component performance
     const slowComponents = componentMetrics.filter((c) => c.renderTime > 100);
     if (slowComponents.length > 0) {
       suggestions.push(
-        `发现 ${slowComponents.length} 个渲染较慢的组件，建议使用 React.memo 优化`,
+        `Found ${slowComponents.length} slow-rendering components, consider optimizing with React.memo`,
       );
     }
 
@@ -240,7 +240,7 @@ class PerformanceMonitor {
     );
     if (frequentRerenders.length > 0) {
       suggestions.push(
-        `发现 ${frequentRerenders.length} 个频繁重渲染的组件，建议检查依赖项`,
+        `Found ${frequentRerenders.length} frequently rerendering components, consider checking dependencies`,
       );
     }
 
@@ -248,7 +248,7 @@ class PerformanceMonitor {
   }
 
   /**
-   * 清理观察器
+   * Cleanup observers
    */
   cleanup() {
     this.observers.forEach((observer) => observer.disconnect());
@@ -256,11 +256,11 @@ class PerformanceMonitor {
   }
 }
 
-// 创建全局实例
+// Create global instance
 export const performanceMonitor = new PerformanceMonitor();
 
 /**
- * React Hook 用于监控组件性能
+ * React Hook for monitoring component performance
  */
 export const usePerformanceMonitor = (componentName: string) => {
   const startTime = performance.now();
@@ -277,7 +277,7 @@ export const usePerformanceMonitor = (componentName: string) => {
 };
 
 /**
- * 高阶组件用于自动监控组件性能
+ * Higher-order component for automatic component performance monitoring
  */
 export const withPerformanceMonitor = <P extends object>(
   WrappedComponent: React.ComponentType<P>,

@@ -15,29 +15,29 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type VolcCfgPayload = {
   /**
-   * 火山引擎Access Key
+   * Volcano Engine Access Key
    */
   ak?: string;
   /**
-   * 火山引擎Secret Key
+   * Volcano Engine Secret Key
    */
   sk?: string;
   /**
-   * TOS区域
+   * TOS region
    */
   tos_region: VolcCfgPayload.tos_region;
   /**
-   * 网络类型
+   * Network type
    */
   network_type: VolcCfgPayload.network_type;
   /**
-   * 额外的知识库集合
+   * Additional knowledge base collections
    */
   extra_kb_collections?: Array<string>;
 };
 export namespace VolcCfgPayload {
   /**
-   * TOS区域
+   * TOS region
    */
   export enum tos_region {
     CN_BEIJING = 'cn-beijing',
@@ -48,7 +48,7 @@ export namespace VolcCfgPayload {
     AP_SOUTHEAST_3 = 'ap-southeast-3',
   }
   /**
-   * 网络类型
+   * Network type
    */
   export enum network_type {
     PUBLIC = 'public',

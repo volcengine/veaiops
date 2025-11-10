@@ -16,7 +16,7 @@ import { Message } from '@arco-design/web-react';
 import { TokenManager } from './api-client';
 
 /**
- * 登录响应数据类型
+ * Login response data type
  */
 export interface LoginResponse {
   token: string;
@@ -29,50 +29,50 @@ export interface LoginResponse {
 }
 
 /**
- * 登录成功后的处理
- * @param loginResponse 登录接口返回的数据
+ * Handle login success
+ * @param loginResponse Login API response data
  */
 export const handleLoginSuccess = (loginResponse: LoginResponse): void => {
   try {
-    // 存储token到sessionStorage
+    // Store token to localStorage
     TokenManager.setToken(loginResponse.token);
 
-    // 如果有refresh token，也存储起来
+    // If refresh token exists, also store it
     if (loginResponse.refreshToken) {
       TokenManager.setRefreshToken(loginResponse.refreshToken);
     }
 
-    Message.success('登录成功');
+    Message.success('Login successful');
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Expose actual error information
     const errorObj = error instanceof Error ? error : new Error(String(error));
-    const errorMessage = errorObj.message || '登录状态保存失败';
+    const errorMessage = errorObj.message || 'Failed to save login state';
     Message.error(errorMessage);
   }
 };
 
 /**
- * 登出处理
+ * Handle logout
  */
 export const handleLogout = (): void => {
   try {
-    // 清除所有token
+    // Clear all tokens
     TokenManager.clearTokens();
 
-    Message.success('已退出登录');
+    Message.success('Logged out successfully');
 
-    // 延迟跳转，确保消息显示
+    // Delay redirect to ensure message is displayed
     setTimeout(() => {
       window.location.href = '/login';
     }, 500);
   } catch (error: unknown) {
-    // 即使出错也要跳转到登录页（静默处理，不记录日志）
-    // ✅ 注意：这里静默处理是预期的行为，确保用户能够跳转到登录页
+    // Even if error occurs, redirect to login page (silent handling, no logging)
+    // ✅ Note: Silent handling here is expected behavior to ensure user can redirect to login page
     if (process.env.NODE_ENV === 'development') {
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       console.warn(
-        '[auth-helpers] 登出处理失败（静默处理）:',
+        '[auth-helpers] Logout handling failed (silent handling):',
         errorObj.message,
       );
     }
@@ -81,20 +81,20 @@ export const handleLogout = (): void => {
 };
 
 /**
- * 检查用户是否已登录
+ * Check if user is logged in
  */
 export const isUserLoggedIn = (): boolean => {
   try {
     const token = TokenManager.getToken();
     return Boolean(token);
   } catch (error: unknown) {
-    // Token 检查失败，返回 false（静默处理）
-    // ✅ 注意：这里静默处理是预期的行为，确保登录状态检查不会因为异常而阻塞
+    // Token check failed, return false (silent handling)
+    // ✅ Note: Silent handling here is expected behavior to ensure login status check is not blocked by exceptions
     if (process.env.NODE_ENV === 'development') {
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       console.warn(
-        '[auth-helpers] Token 检查失败（静默处理）:',
+        '[auth-helpers] Token check failed (silent handling):',
         errorObj.message,
       );
     }
@@ -103,19 +103,19 @@ export const isUserLoggedIn = (): boolean => {
 };
 
 /**
- * 获取当前用户token
+ * Get current user token
  */
 export const getCurrentToken = (): string | null => {
   try {
     return TokenManager.getToken();
   } catch (error: unknown) {
-    // 获取 token 失败，返回 null（静默处理）
-    // ✅ 注意：这里静默处理是预期的行为，确保不会因为异常而阻塞
+    // Failed to get token, return null (silent handling)
+    // ✅ Note: Silent handling here is expected behavior to ensure it's not blocked by exceptions
     if (process.env.NODE_ENV === 'development') {
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       console.warn(
-        '[auth-helpers] 获取 token 失败（静默处理）:',
+        '[auth-helpers] Failed to get token (silent handling):',
         errorObj.message,
       );
     }
@@ -124,8 +124,8 @@ export const getCurrentToken = (): string | null => {
 };
 
 /**
- * 强制刷新token
- * @returns 新的token
+ * Force refresh token
+ * @returns New token
  */
 export const forceRefreshToken = async (): Promise<string | null> => {
   try {
@@ -133,13 +133,13 @@ export const forceRefreshToken = async (): Promise<string | null> => {
 
     return newToken;
   } catch (error: unknown) {
-    // Token 刷新失败，返回 null（静默处理）
-    // ✅ 注意：这里静默处理是预期的行为，确保不会因为异常而阻塞
+    // Token refresh failed, return null (silent handling)
+    // ✅ Note: Silent handling here is expected behavior to ensure it's not blocked by exceptions
     if (process.env.NODE_ENV === 'development') {
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       console.warn(
-        '[auth-helpers] Token 刷新失败（静默处理）:',
+        '[auth-helpers] Token refresh failed (silent handling):',
         errorObj.message,
       );
     }

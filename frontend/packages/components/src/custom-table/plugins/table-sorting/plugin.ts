@@ -14,7 +14,7 @@
 
 import { PluginNames } from '@/custom-table/constants/enum';
 /**
- * 表格排序插件
+ * Table sorting plugin
  */
 import type {
   PluginContext,
@@ -33,7 +33,7 @@ export const TableSortingPlugin: PluginFactory<TableSortingConfig> = (
   return {
     name: PluginNames.TABLE_SORTING,
     version: '1.0.0',
-    description: '表格排序插件',
+    description: 'Table sorting plugin',
     priority: finalConfig.priority || PluginPriorityEnum.MEDIUM,
     enabled: finalConfig.enabled !== false,
     config: finalConfig,
@@ -41,67 +41,67 @@ export const TableSortingPlugin: PluginFactory<TableSortingConfig> = (
     conflicts: [],
 
     install(_context: PluginContext) {
-      // 安装时的操作
+      // Operations during installation
     },
 
     setup(context: PluginContext) {
-      // 初始化排序处理
+      // Initialize sorting processing
       const propsWithSortFieldMap = context.props as any;
       const sortFieldMap = propsWithSortFieldMap.sortFieldMap || {};
 
-      // 插件设置逻辑 - 不调用 Hook，只进行配置
-      // Hook 调用已移到组件层面
-      // 排序状态由外层组件管理，这里只设置默认值
+      // Plugin setup logic - do not call Hooks, only configure
+      // Hook calls have been moved to component level
+      // Sorting state is managed by external components, only set default values here
       Object.assign(context.state, {
         sorter: context.state.sorter || {},
         sortFieldMap: sortFieldMap || {},
       });
 
-      // 添加排序相关方法到上下文
+      // Add sorting-related methods to context
       Object.assign(context.helpers, {
         setSorter: context.helpers.setSorter,
         resetSorter: () => {
-          // 重置排序的逻辑
+          // Logic for resetting sorting
           context.helpers.setSorter?.({});
         },
         getSorterParam: () =>
-          // 获取排序参数的逻辑
+          // Logic for getting sorting parameters
           context.state.sorter,
       });
     },
 
     update(_context: PluginContext) {
-      // 当配置或数据更新时的操作
+      // Operations when configuration or data is updated
     },
 
     uninstall(_context: PluginContext) {
-      // 卸载时的清理操作
+      // Cleanup operations during uninstallation
     },
 
-    // 排序钩子
+    // Sorting hooks
     hooks: {
-      // 获取当前排序信息
+      // Get current sorting information
       getSorterInfo: (...args: unknown[]) => {
         const context = args[0] as PluginContext;
         return context.state.sorter || {};
       },
 
-      // 获取排序参数
+      // Get sorting parameters
       getSorterParam: (...args: unknown[]) => {
         const context = args[0] as PluginContext;
         return context.helpers.getSorterParam?.() || {};
       },
 
-      // 重置排序
+      // Reset sorting
       resetSorter: (...args: unknown[]) => {
         const context = args[0] as PluginContext;
         return context.helpers.resetSorter?.();
       },
     },
 
-    // 处理表格变更事件
+    // Handle table change events
     tableEvents: {
-      // 处理表格排序变更
+      // Handle table sorting change
       onSorterChange(
         context: PluginContext,
         sorter: unknown,

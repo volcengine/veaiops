@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Bot 表单相关 Hooks 统一导出
+ * Bot form related Hooks unified export
  */
 
 export { useBotForm } from './form';

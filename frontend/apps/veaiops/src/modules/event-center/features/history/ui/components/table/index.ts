@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格组件导出
+ * Table components export
  */
 
 export { HistoryTable } from './history-table';

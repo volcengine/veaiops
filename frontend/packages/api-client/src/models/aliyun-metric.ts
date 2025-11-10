@@ -15,31 +15,31 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type AliyunMetric = {
   /**
-   * 指标名称
+   * Metric name
    */
   MetricName?: string;
   /**
-   * 指标描述
+   * Metric description
    */
   Description?: string;
   /**
-   * 命名空间
+   * Namespace
    */
   Namespace?: string;
   /**
-   * 维度（逗号分隔）
+   * Dimensions (comma-separated)
    */
   Dimensions?: string;
   /**
-   * 单位
+   * Unit
    */
   Unit?: string;
   /**
-   * 支持的周期（逗号分隔）
+   * Supported periods (comma-separated)
    */
   Periods?: string;
   /**
-   * 支持的统计方式（逗号分隔）
+   * Supported statistics (comma-separated)
    */
   Statistics?: string;
 };

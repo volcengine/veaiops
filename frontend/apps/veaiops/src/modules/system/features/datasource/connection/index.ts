@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 数据源连接管理功能模块统一导出
+ * Data source connection management feature module unified export
  */
 
-// UI 组件
+// UI components
 export * from './ui';
 
-// 工具函数和类型
+// Utility functions and types
 export * from './lib';
 
-// 主要组件的默认导出
+// Default export of main components
 export { ConnectionTable as DataSourceConnectionTable } from './ui/tables/connection-table';

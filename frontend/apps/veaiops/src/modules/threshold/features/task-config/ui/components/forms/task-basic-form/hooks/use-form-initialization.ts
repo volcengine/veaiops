@@ -16,7 +16,7 @@ import type { FormInstance } from '@arco-design/web-react/es/Form';
 import { useEffect } from 'react';
 
 /**
- * useFormInitialization Hook 参数接口
+ * Parameters interface for useFormInitialization Hook
  */
 export interface UseFormInitializationParams {
   form: FormInstance;
@@ -27,7 +27,7 @@ export interface UseFormInitializationParams {
 }
 
 /**
- * 表单初始化Hook
+ * Form initialization Hook
  */
 export const useFormInitialization = ({
   form,
@@ -38,7 +38,7 @@ export const useFormInitialization = ({
 }: UseFormInitializationParams) => {
   useEffect(() => {
     if (taskDrawerVisible && operationType === 'copy' && editingTask) {
-      // 复制任务时，填充表单数据
+      // When copying task, populate form data
       const newDatasourceType = editingTask.datasource_type || 'Volcengine';
       form.setFieldsValue({
         taskName: editingTask.task_name || `${editingTask.task_name}_副本`,
@@ -58,7 +58,7 @@ export const useFormInitialization = ({
       operationType === 'create' &&
       !editingTask
     ) {
-      // 新建任务时，重置表单
+      // When creating new task, reset form
       form.setFieldsValue({
         nCount: 3,
         sensitivity: 0.5,

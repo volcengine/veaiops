@@ -15,14 +15,14 @@
 import { CustomPagination } from '@/custom-table/components';
 import type { CustomPaginationProps } from '@/custom-table/components';
 /**
- * 表格分页插件渲染方法
+ * Table pagination plugin render methods
  */
 import { devLog } from '@/custom-table/utils';
 import type { ExtendedPaginationConfig } from './types';
 import { getStateNumber, isCallableFunction } from './utils';
 
 /**
- * renderPagination 参数接口
+ * renderPagination parameters interface
  */
 export interface RenderPaginationParams {
   context: any;
@@ -30,7 +30,7 @@ export interface RenderPaginationParams {
 }
 
 /**
- * 渲染分页组件
+ * Render pagination component
  */
 export function renderPagination({
   context,
@@ -67,7 +67,7 @@ export function renderPagination({
     return null;
   }
 
-  // 构建分页 props，使用类型安全的方式
+  // Build pagination props using type-safe approach
   const basePaginationProps: Partial<CustomPaginationProps> = {
     position,
     total: tableTotal,
@@ -103,7 +103,7 @@ export function renderPagination({
   const paginationProps: CustomPaginationProps = {
     ...basePaginationProps,
     ...extraProps,
-    // 确保关键属性不被覆盖
+    // Ensure key properties are not overridden
     total: tableTotal,
     current,
     pageSize,

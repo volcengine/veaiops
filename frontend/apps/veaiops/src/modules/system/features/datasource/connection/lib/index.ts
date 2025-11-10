@@ -13,20 +13,20 @@
 // limitations under the License.
 
 /**
- * lib 模块统一导出
+ * lib module unified export
  */
 
-// 类型定义
+// Type definitions
 export type * from "./types";
 
-// 本地常量定义（模块特定）
+// Local constant definitions (module-specific)
 export * from "./constants";
 
-// 共享常量（从 @veaiops/constants 重新导出，向后兼容）
+// Shared constants (re-exported from @veaiops/constants for backward compatibility)
 export * from "@veaiops/constants";
 
-// 工具函数
+// Utility functions
 export * from "./utils";
 
-// 错误处理
+// Error handling
 export * from "./error-handler";

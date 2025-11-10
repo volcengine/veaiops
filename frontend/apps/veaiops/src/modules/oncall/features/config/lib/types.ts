@@ -16,15 +16,15 @@ import type { FormInstance } from '@arco-design/web-react';
 import type { Interest } from 'api-generate';
 
 /**
- * 规则表单数据类型
- * 注意：examples_positive 和 examples_negative 在表单中是字符串（换行符分隔），提交时转换为数组
+ * Rule form data type
+ * Note: examples_positive and examples_negative are strings in the form (newline-separated), converted to arrays when submitting
  */
 export interface RuleFormData {
   name: string;
   description?: string;
   level?: Interest['level'];
-  examples_positive?: string; // 表单中是字符串，换行符分隔
-  examples_negative?: string; // 表单中是字符串，换行符分隔
+  examples_positive?: string; // String in form, newline-separated
+  examples_negative?: string; // String in form, newline-separated
   action_category?: Interest['action_category'];
   inspect_category?: Interest['inspect_category'];
   regular_expression?: string;
@@ -34,14 +34,14 @@ export interface RuleFormData {
 }
 
 /**
- * 提交时的规则数据类型（API 格式）
+ * Rule data type when submitting (API format)
  */
 export interface RuleSubmitData {
   name: string;
   description?: string;
   level?: Interest['level'];
-  examples_positive?: string[]; // API 中是数组
-  examples_negative?: string[]; // API 中是数组
+  examples_positive?: string[]; // Array in API
+  examples_negative?: string[]; // Array in API
   regular_expression?: string;
   inspect_history?: number;
   silence_delta?: string;
@@ -49,7 +49,7 @@ export interface RuleSubmitData {
 }
 
 /**
- * 规则抽屉组件属性
+ * Rule drawer component properties
  */
 export interface RuleDrawerProps {
   visible: boolean;

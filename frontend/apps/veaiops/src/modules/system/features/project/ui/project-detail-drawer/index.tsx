@@ -17,12 +17,6 @@ import type { Project } from 'api-generate';
 import type React from 'react';
 import { BasicInfoCard, OperationInfoCard, TimeInfoCard } from './sections';
 
-/**
- * Format date time
- * Delegate to unified formatDateTime from @veaiops/utils for consistent timezone handling
- */
-import { formatDateTime as formatDateTimeUtils } from '@veaiops/utils';
-
 const { Title } = Typography;
 
 /**
@@ -34,17 +28,20 @@ interface ProjectDetailDrawerProps {
   onClose: () => void;
 }
 
+/**
+ * Format date time
+ */
 const formatDateTime = (dateTime?: string) => {
-  return dateTime ? formatDateTimeUtils(dateTime, true) : '-';
+  return dateTime ? new Date(dateTime).toLocaleString('zh-CN') : '-';
 };
 
 /**
  * Project detail drawer component - refactored version
  *
- * Splitting strategy:
- * - sections/ directory stores each information card component
+ * 🎯 Split strategy:
+ * - sections/ directory stores various info card components
  * - hooks/ directory stores business logic (if needed)
- * - index.tsx is responsible for assembly and rendering
+ * - index.tsx responsible for assembly and rendering
  * - types.ts stores type definitions
  */
 export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
@@ -63,7 +60,7 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
         <div className="flex items-center justify-between py-2">
           <Space align="center" size="medium">
             <Title heading={5} className="m-0 text-gray-900">
-              项目详情
+              Project Details
             </Title>
           </Space>
         </div>
@@ -82,11 +79,11 @@ export const ProjectDetailDrawer: React.FC<ProjectDetailDrawerProps> = ({
     >
       <div className="p-6">
         <Space direction="vertical" size="large" className="w-full">
-          {/* Basic information card */}
+          {/* Basic info card */}
           <BasicInfoCard project={project} />
 
-          {/* Time information card */}
-          <TimeInfoCard project={project} />
+          {/* Time info card */}
+          <TimeInfoCard project={project} formatDateTime={formatDateTime} />
 
           {/* Operation instructions card */}
           <OperationInfoCard />

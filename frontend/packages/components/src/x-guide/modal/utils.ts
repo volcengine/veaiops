@@ -42,12 +42,12 @@ export const calcArrowGradientStyle = ({
   height,
 }: CalcArrowGradientStyleParams) => {
   /**
-   * 箭头的样式通过一个 div 单独画出一个正方形，且不使用 shadow、border ，然后使用 clipPath 来截取箭头
-   * 类似 style.bottom - x 的 magic number 是为了对齐外面的边框
-   * bits-light 的 background-size 是把箭头一起考虑到了渐变范围里
-   * 所以箭头本身的  background-size 也多了 7.07 的 magic number
+   * Arrow style is drawn as a separate square div without shadow or border, then uses clipPath to crop the arrow
+   * Magic numbers like style.bottom - x are used to align with the outer border
+   * bits-light's background-size includes the arrow in the gradient range
+   * So the arrow's background-size also has an extra 7.07 magic number
    */
-  // 顶部
+  // Top
   if (style.borderLeft && style.borderTop) {
     const bottom = style.bottom - 1;
     const left = style.left - 2;
@@ -62,7 +62,7 @@ export const calcArrowGradientStyle = ({
     };
   }
 
-  // 底部
+  // Bottom
   if (style.borderRight && style.borderBottom) {
     const top = style.top - 1;
     const left = style.left - 2;
@@ -78,7 +78,7 @@ export const calcArrowGradientStyle = ({
     };
   }
 
-  // 右边
+  // Right
   if (style.borderRight && style.borderTop) {
     const left = style.left - 1;
     const top = style.top - 2;
@@ -93,7 +93,7 @@ export const calcArrowGradientStyle = ({
     };
   }
 
-  // 左边
+  // Left
   if (style.borderLeft && style.borderBottom) {
     const right = style.right - 1;
     const top = style.top - 2;

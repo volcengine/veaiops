@@ -31,15 +31,15 @@ import { SubscribeRelationForm } from './relation-form';
 import { SubscribeRelationTable } from './subscribe-relation-table/subscribe-relation-table';
 
 interface SubscribeRelationPageProps {
-  /** 模块类型，用于过滤订阅关系 */
+  /** Module type, used to filter subscription relations */
   moduleType?: ModuleType;
-  /** 页面标题 */
+  /** Page title */
   title?: string;
 }
 
 /**
- * 订阅关系管理页面
- * @description 提供事件订阅关系的管理功能，支持根据模块类型进行过滤
+ * Subscription relation management page
+ * @description Provides event subscription relation management functionality, supports filtering by module type
  */
 const SubscribeRelationPage: React.FC<SubscribeRelationPageProps> = ({
   moduleType,
@@ -47,7 +47,7 @@ const SubscribeRelationPage: React.FC<SubscribeRelationPageProps> = ({
 }) => {
   const location = useLocation();
 
-  // 根据路由自动判断模块类型
+  // Automatically determine module type based on route
   const detectedModuleType = useMemo(() => {
     if (moduleType) {
       return moduleType;
@@ -56,7 +56,7 @@ const SubscribeRelationPage: React.FC<SubscribeRelationPageProps> = ({
     return detectModuleTypeFromPath(location.pathname);
   }, [moduleType, location.pathname]);
 
-  // 根据模块类型设置页面标题
+  // Set page title based on module type
   const pageTitle = useMemo(() => {
     if (title) {
       return title;
@@ -66,7 +66,7 @@ const SubscribeRelationPage: React.FC<SubscribeRelationPageProps> = ({
     return config.pageTitle;
   }, [title, detectedModuleType]);
 
-  // 使用订阅关系管理hook
+  // Use subscription relation management hook
   const {
     loading,
     fetchSubscribeRelations,
@@ -75,52 +75,52 @@ const SubscribeRelationPage: React.FC<SubscribeRelationPageProps> = ({
     deleteSubscribeRelation,
   } = useSubscribeRelation(detectedModuleType);
 
-  // 表单抽屉状态
+  // Form drawer state
   const [formVisible, setFormVisible] = useState(false);
   const [editingData, setEditingData] =
     useState<SubscribeRelationWithAttributes | null>(null);
   /**
-   * 编辑订阅关系
+   * Edit subscription relation
    */
   const handleEdit = (record: SubscribeRelationWithAttributes) => {
-    // 编辑订阅关系
+    // Edit subscription relation
     setEditingData(record);
     setFormVisible(true);
   };
 
   /**
-   * 删除订阅关系
+   * Delete subscription relation
    */
   const handleDelete = async (id: string) => {
     await deleteSubscribeRelation(id);
   };
 
   /**
-   * 创建新的订阅关系
+   * Create new subscription relation
    */
   const handleCreate = () => {
-    // 创建新订阅关系
+    // Create new subscription relation
     setEditingData(null);
     setFormVisible(true);
   };
 
   /**
-   * 处理表单提交
+   * Handle form submission
    */
   const handleFormSubmit = async (
     data: SubscribeRelationCreate | SubscribeRelationUpdate,
   ) => {
     try {
       if (editingData?._id) {
-        // 编辑模式
+        // Edit mode
         return await updateSubscribeRelation({ id: editingData._id, data });
       } else {
-        // 创建模式
+        // Create mode
         return await createSubscribeRelation(data);
       }
     } catch (error: unknown) {
-      // ✅ 注意：错误已在 Hook 中处理，此处静默处理是预期的行为
-      // 使用 logger 记录调试信息（logger 内部会处理开发环境判断）
+      // ✅ Note: Error has been handled in Hook, silent handling here is expected behavior
+      // Use logger to record debug information (logger internally handles development environment check)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.debug({
@@ -138,14 +138,14 @@ const SubscribeRelationPage: React.FC<SubscribeRelationPageProps> = ({
   };
 
   /**
-   * 关闭表单抽屉
+   * Close form drawer
    */
   const handleFormClose = () => {
     setFormVisible(false);
     setEditingData(null);
   };
 
-  // 页面加载时获取订阅关系数据
+  // Fetch subscription relation data when page loads
   useEffect(() => {
     fetchSubscribeRelations();
   }, [fetchSubscribeRelations]);
@@ -163,7 +163,7 @@ const SubscribeRelationPage: React.FC<SubscribeRelationPageProps> = ({
         loading={loading}
       />
 
-      {/* 订阅关系表单抽屉 */}
+      {/* Subscription relation form drawer */}
       <SubscribeRelationForm
         visible={formVisible}
         onClose={handleFormClose}

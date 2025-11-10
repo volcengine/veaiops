@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 火山引擎子命名空间选择步骤组件
- * @description 提供火山引擎子命名空间选择功能
+ * Volcengine sub-namespace selection step component
+ * @description Provides sub-namespace selection functionality for Volcengine
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -49,13 +49,13 @@ export const SubnamespaceSelectionStep: React.FC<
   onSubNamespacesFetch,
   onSubnamespaceSelect,
 }) => {
-  // 使用 useRef 同步跟踪已获取的命名空间，避免 useState 异步更新导致的重复请求
+  // Use useRef to synchronously track fetched namespace, avoiding duplicate requests caused by useState async updates
   const fetchedNamespaceRef = useRef<string | null>(null);
 
-  // 搜索文本状态
+  // Search text state
   const [searchText, setSearchText] = useState<string>('');
 
-  // 当选择的产品改变时，自动获取子命名空间并清空搜索文本
+  // Automatically fetch sub-namespaces and clear search text when selected product changes
   useEffect(() => {
     if (
       selectedProduct?.namespace &&
@@ -66,7 +66,7 @@ export const SubnamespaceSelectionStep: React.FC<
       const currentNamespace = selectedProduct.namespace;
 
       logger.info({
-        message: '产品切换，开始获取子命名空间',
+        message: 'Product switched, starting to fetch sub-namespaces',
         data: {
           previousNamespace,
           currentNamespace,
@@ -76,14 +76,14 @@ export const SubnamespaceSelectionStep: React.FC<
         component: 'useEffect-product-change',
       });
 
-      // 使用 ref 同步更新，防止 React Strict Mode 下的重复调用
+      // Use ref for synchronous update to prevent duplicate calls in React Strict Mode
       fetchedNamespaceRef.current = currentNamespace;
       onSubNamespacesFetch(currentNamespace);
-      // 切换产品时清空搜索文本
+      // Clear search text when switching products
       setSearchText('');
 
       logger.info({
-        message: '产品切换完成，已清空搜索文本',
+        message: 'Product switch completed, search text cleared',
         data: {
           namespace: currentNamespace,
         },
@@ -93,8 +93,8 @@ export const SubnamespaceSelectionStep: React.FC<
     }
   }, [selectedProduct?.namespace, loading, onSubNamespacesFetch]);
 
-  // 首次加载时，如果没有选中项且有可用子命名空间，自动选中第一个
-  // 注意：只有在没有搜索文本时才自动选中，避免搜索时触发自动选中导致循环
+  // On first load, if no item is selected and sub-namespaces are available, automatically select the first one
+  // Note: Only auto-select when there is no search text to avoid triggering auto-selection loop during search
   useEffect(() => {
     const hasNoSearch = !searchText.trim();
     if (
@@ -106,7 +106,7 @@ export const SubnamespaceSelectionStep: React.FC<
       const firstSubNamespace = subNamespaces[0];
 
       logger.info({
-        message: '首次加载，自动选中第一个子命名空间',
+        message: 'First load, automatically selecting first sub-namespace',
         data: {
           subNamespace: firstSubNamespace,
           totalCount: subNamespaces.length,
@@ -127,21 +127,21 @@ export const SubnamespaceSelectionStep: React.FC<
     onSubnamespaceSelect,
   ]);
 
-  // 验证选中项的有效性：
-  // 1. 如果选中的子命名空间不在当前列表中，清空选中状态
-  // 2. 如果有搜索输入，且选中的项不在搜索结果中，清空选中状态
+  // Validate selected item validity:
+  // 1. If selected sub-namespace is not in current list, clear selection
+  // 2. If there is search input and selected item is not in search results, clear selection
   useEffect(() => {
     if (!selectedSubnamespace || loading) {
       return;
     }
 
-    // 情况 1: 选中的子命名空间不在原始列表中（无论是否有搜索都要检查）
+    // Case 1: Selected sub-namespace is not in original list (check regardless of search)
     if (
       subNamespaces.length > 0 &&
       !subNamespaces.includes(selectedSubnamespace)
     ) {
       logger.warn({
-        message: '选中的子命名空间不在当前列表中，清空选中状态',
+        message: 'Selected sub-namespace is not in current list, clearing selection',
         data: {
           selectedSubNamespace: selectedSubnamespace,
           availableSubNamespaces: subNamespaces,
@@ -155,8 +155,8 @@ export const SubnamespaceSelectionStep: React.FC<
       return;
     }
 
-    // 情况 2: 有搜索输入，且选中的项不在搜索结果中
-    // 注意：只有在有搜索文本时才验证，避免无搜索时误清空
+    // Case 2: There is search input and selected item is not in search results
+    // Note: Only validate when there is search text to avoid mistakenly clearing when no search
     const trimmedSearch = searchText.trim();
     if (!trimmedSearch) {
       return;
@@ -174,7 +174,7 @@ export const SubnamespaceSelectionStep: React.FC<
 
     if (!isSelectedInFiltered) {
       logger.info({
-        message: '搜索时选中项不匹配搜索条件，清空选中状态',
+        message: 'Selected item does not match search criteria, clearing selection',
         data: {
           searchText: trimmedSearch,
           selectedSubNamespace: selectedSubnamespace,
@@ -197,7 +197,7 @@ export const SubnamespaceSelectionStep: React.FC<
 
   const handleSubNamespaceSelect = (subNamespace: string) => {
     logger.info({
-      message: '用户选择子命名空间',
+      message: 'User selected sub-namespace',
       data: {
         subNamespace,
         previousSelection: selectedSubnamespace,
@@ -211,16 +211,16 @@ export const SubnamespaceSelectionStep: React.FC<
     onSubnamespaceSelect(subNamespace);
   };
 
-  // 前端过滤：根据搜索文本过滤子命名空间列表
-  // 边界情况处理：
-  // 1. 空数组或 undefined/null 处理
-  // 2. 搜索文本为空或只有空格时返回全部
-  // 3. 即使选中项不在搜索结果中，也要包含它（确保选中状态可见）
+  // Frontend filtering: Filter sub-namespace list based on search text
+  // Edge case handling:
+  // 1. Empty array or undefined/null handling
+  // 2. Return all when search text is empty or only whitespace
+  // 3. Include selected item even if not in search results (to ensure selected state is visible)
   const filteredSubNamespaces = useMemo(() => {
-    // 边界情况 1: 空数组或无效数据
+    // Edge case 1: Empty array or invalid data
     if (!Array.isArray(subNamespaces) || subNamespaces.length === 0) {
       logger.debug({
-        message: '子命名空间列表为空，返回空数组',
+        message: 'Sub-namespace list is empty, returning empty array',
         data: {
           subNamespacesType: typeof subNamespaces,
           isArray: Array.isArray(subNamespaces),
@@ -232,11 +232,11 @@ export const SubnamespaceSelectionStep: React.FC<
       return [];
     }
 
-    // 边界情况 2: 搜索文本为空或只有空格
+    // Edge case 2: Search text is empty or only whitespace
     const trimmedSearch = searchText.trim();
     if (!trimmedSearch) {
       logger.debug({
-        message: '搜索文本为空，返回全部子命名空间',
+        message: 'Search text is empty, returning all sub-namespaces',
         data: {
           totalCount: subNamespaces.length,
           subNamespaces,
@@ -247,25 +247,25 @@ export const SubnamespaceSelectionStep: React.FC<
       return subNamespaces;
     }
 
-    // 边界情况 3: 搜索过滤（不区分大小写）
+    // Edge case 3: Search filtering (case-insensitive)
     const searchLower = trimmedSearch.toLowerCase();
     const filtered = subNamespaces.filter((subNamespace) => {
-      // 边界情况 4: 处理 null/undefined 子命名空间
+      // Edge case 4: Handle null/undefined sub-namespace
       if (!subNamespace || typeof subNamespace !== 'string') {
         return false;
       }
       return subNamespace.toLowerCase().includes(searchLower);
     });
 
-    // 边界情况 5: 当有搜索输入时，如果选中的项不在搜索结果中，应该清空选中状态
-    // 这样可以确保搜索时只显示匹配的结果，避免显示不相关的选中项
+    // Edge case 5: When there is search input, if selected item is not in search results, should clear selection
+    // This ensures only matching results are shown during search, avoiding display of irrelevant selected items
     if (
       selectedSubnamespace &&
       subNamespaces.includes(selectedSubnamespace) &&
       !filtered.includes(selectedSubnamespace)
     ) {
       logger.debug({
-        message: '选中项不在搜索结果中，将在渲染时清空选中状态',
+        message: 'Selected item is not in search results, will clear selection during render',
         data: {
           searchText: trimmedSearch,
           selectedSubNamespace: selectedSubnamespace,
@@ -275,11 +275,11 @@ export const SubnamespaceSelectionStep: React.FC<
         source: 'SubnamespaceSelectionStep',
         component: 'filteredSubNamespaces',
       });
-      // 注意：不在这里清空选中状态，而是在 useEffect 中处理，避免在渲染过程中修改状态
+      // Note: Do not clear selection here, handle it in useEffect to avoid modifying state during render
     }
 
     logger.debug({
-      message: '搜索过滤完成',
+      message: 'Search filtering completed',
       data: {
         searchText: trimmedSearch,
         originalCount: subNamespaces.length,
@@ -295,8 +295,8 @@ export const SubnamespaceSelectionStep: React.FC<
     return filtered;
   }, [subNamespaces, searchText, selectedSubnamespace]);
 
-  // 将已选中的项放到第一位，方便编辑时快速查看
-  // 边界情况处理：确保数组非空，避免排序错误
+  // Put selected item first for quick viewing during editing
+  // Edge case handling: Ensure array is not empty to avoid sorting errors
   const sortedSubNamespaces = useMemo(() => {
     if (
       !Array.isArray(filteredSubNamespaces) ||
@@ -306,7 +306,7 @@ export const SubnamespaceSelectionStep: React.FC<
     }
 
     return [...filteredSubNamespaces].sort((a, b) => {
-      // 边界情况：处理 null/undefined 值
+      // Edge case: Handle null/undefined values
       if (!a || !b) {
         return 0;
       }
@@ -319,7 +319,7 @@ export const SubnamespaceSelectionStep: React.FC<
       if (!aSelected && bSelected) {
         return 1;
       }
-      // 如果都不是选中项或都是选中项，按字母顺序排序
+      // If neither is selected or both are selected, sort alphabetically
       return a.localeCompare(b, undefined, { sensitivity: 'base' });
     });
   }, [filteredSubNamespaces, selectedSubnamespace]);
@@ -327,7 +327,7 @@ export const SubnamespaceSelectionStep: React.FC<
   if (!selectedProduct) {
     return (
       <div>
-        <Empty icon={<IconCloud />} description="请先选择火山引擎产品" />
+        <Empty icon={<IconCloud />} description="Please select a Volcengine product first" />
       </div>
     );
   }
@@ -335,28 +335,28 @@ export const SubnamespaceSelectionStep: React.FC<
   return (
     <div>
       <div style={{ marginBottom: 24 }}>
-        <Title heading={6}>选择子命名空间</Title>
+        <Title heading={6}>Select Sub-namespace</Title>
         <Text type="secondary">
-          为产品 "{selectedProduct.description}"
-          选择一个子命名空间，用于指标监控配置
+          Select a sub-namespace for product "{selectedProduct.description}"
+          for metric monitoring configuration
         </Text>
       </div>
 
-      {/* 搜索输入框 */}
-      {/* 边界情况：只有在有数据且不在加载状态时才显示搜索框 */}
+      {/* Search input */}
+      {/* Edge case: Only show search box when there is data and not in loading state */}
       {Array.isArray(subNamespaces) && subNamespaces.length > 0 && !loading && (
         <div style={{ marginBottom: 16 }}>
           <Input
             prefix={<IconSearch />}
-            placeholder="搜索子命名空间"
+            placeholder="Search sub-namespace"
             value={searchText || ''}
             onChange={(value) => {
-              // 边界情况：确保 value 是字符串类型
+              // Edge case: Ensure value is string type
               const newSearchText = typeof value === 'string' ? value : '';
               const previousSearchText = searchText;
 
               logger.debug({
-                message: '搜索文本变化',
+                message: 'Search text changed',
                 data: {
                   previousSearchText,
                   newSearchText,
@@ -372,7 +372,7 @@ export const SubnamespaceSelectionStep: React.FC<
             allowClear
             onClear={() => {
               logger.info({
-                message: '用户清空搜索文本',
+                message: 'User cleared search text',
                 data: {
                   previousSearchText: searchText,
                   totalSubNamespaces: subNamespaces.length,
@@ -381,42 +381,42 @@ export const SubnamespaceSelectionStep: React.FC<
                 component: 'search-input-onClear',
               });
 
-              // 边界情况：清空时确保设置为空字符串
+              // Edge case: Ensure set to empty string when clearing
               setSearchText('');
             }}
           />
         </div>
       )}
 
-      {/* 边界情况处理：空数组、null、undefined */}
+      {/* Edge case handling: Empty array, null, undefined */}
       {(!Array.isArray(subNamespaces) || subNamespaces.length === 0) &&
       !loading ? (
         <Empty
           icon={<IconCloud />}
-          description="该产品下暂无可用的子命名空间"
+          description="No available sub-namespaces for this product"
         />
       ) : (
         <div>
-          {/* 搜索后无结果提示 */}
-          {/* 边界情况：搜索文本不为空且过滤结果为空 */}
+          {/* No results after search prompt */}
+          {/* Edge case: Search text is not empty and filtered results are empty */}
           {sortedSubNamespaces.length === 0 && searchText.trim() ? (
             <Empty
               icon={<IconSearch />}
-              description={`未找到包含 "${searchText.trim()}" 的子命名空间`}
+              description={`No sub-namespaces found containing "${searchText.trim()}"`}
             />
           ) : (
             <Radio.Group
               className="w-full"
               value={selectedSubnamespace || undefined}
               onChange={(value) => {
-                // 边界情况：确保 value 是字符串类型
+                // Edge case: Ensure value is string type
                 const validValue =
                   typeof value === 'string' && value.trim()
                     ? value.trim()
                     : null;
 
                 logger.info({
-                  message: 'Radio.Group 选择变化',
+                  message: 'Radio.Group selection changed',
                   data: {
                     rawValue: value,
                     validValue,
@@ -433,7 +433,7 @@ export const SubnamespaceSelectionStep: React.FC<
               }}
             >
               {sortedSubNamespaces.map((subNamespace) => {
-                // 边界情况：确保 subNamespace 是有效的字符串
+                // Edge case: Ensure subNamespace is a valid string
                 if (!subNamespace || typeof subNamespace !== 'string') {
                   return null;
                 }
@@ -446,7 +446,7 @@ export const SubnamespaceSelectionStep: React.FC<
                     onClick={() => handleSubNamespaceSelect(subNamespace)}
                     icon={<IconCloud />}
                     title={subNamespace}
-                    description={`产品: ${selectedProduct.description} (${selectedProduct.namespace})`}
+                    description={`Product: ${selectedProduct.description} (${selectedProduct.namespace})`}
                   />
                 );
               })}
@@ -455,14 +455,14 @@ export const SubnamespaceSelectionStep: React.FC<
         </div>
       )}
 
-      {/* 边界情况：只有当选中的子命名空间在当前列表中时才显示 */}
+      {/* Edge case: Only show when selected sub-namespace is in current list */}
       {selectedSubnamespace &&
         Array.isArray(subNamespaces) &&
         subNamespaces.includes(selectedSubnamespace) && (
           <Alert
             className={'mt-2'}
             type="success"
-            content={`已选择子命名空间: ${selectedSubnamespace}`}
+            content={`Selected sub-namespace: ${selectedSubnamespace}`}
             showIcon
             closable={false}
           />

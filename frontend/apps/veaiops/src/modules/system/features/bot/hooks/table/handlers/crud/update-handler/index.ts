@@ -22,7 +22,7 @@ import { useUpdateLogic } from './update-logic';
 import { validateUpdateRequest } from './validation';
 
 /**
- * 更新处理器参数
+ * Update handler parameters
  */
 interface UpdateHandlerParams {
   editingBot: Bot | null;
@@ -35,13 +35,13 @@ interface UpdateHandlerParams {
 }
 
 /**
- * 更新Bot处理器
+ * Update Bot handler
  *
- * 拆分说明：
- * - validation.ts: 更新前验证（validateUpdateRequest）
- * - update-logic.ts: 更新逻辑（executeUpdate，包含API调用和刷新）
- * - error-handler.ts: 错误处理（handleUpdateError）
- * - index.ts: 统一导出，组合所有逻辑
+ * Split description:
+ * - validation.ts: Pre-update validation (validateUpdateRequest)
+ * - update-logic.ts: Update logic (executeUpdate, includes API call and refresh)
+ * - error-handler.ts: Error handling (handleUpdateError)
+ * - index.ts: Unified export, combine all logic
  */
 export const useUpdateHandler = ({
   editingBot,
@@ -52,10 +52,10 @@ export const useUpdateHandler = ({
   refreshTable,
   setLoading,
 }: UpdateHandlerParams) => {
-  // 使用管理刷新 Hook
+  // Use management refresh hook
   const { afterUpdate } = useManagementRefresh(refreshTable);
 
-  // 更新逻辑
+  // Update logic
   const { executeUpdate } = useUpdateLogic({
     editingBot,
     updateBot,
@@ -68,12 +68,12 @@ export const useUpdateHandler = ({
 
   const handleUpdate = useCallback(
     async (values: BotUpdateRequest) => {
-      // 验证
+      // Validate
       if (!validateUpdateRequest({ editingBot })) {
         return false;
       }
 
-      // 执行更新
+      // Execute update
       try {
         return await executeUpdate(values);
       } catch (error) {

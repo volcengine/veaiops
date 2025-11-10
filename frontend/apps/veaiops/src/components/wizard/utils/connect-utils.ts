@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 连接相关工具函数
- * @description 提供连接状态和数据源类型的工具函数
+ * Connection-related utility functions
+ * @description Provides utility functions for connection status and data source types
  * @date 2025-01-19
  */
 
@@ -26,7 +26,7 @@ import type { Connect } from '@veaiops/api-client';
 import type { DataSourceType } from '../types';
 
 /**
- * 连接过滤参数接口
+ * Connection filter parameters interface
  */
 export interface UseConnectFilterParams {
   connects: Connect[];
@@ -35,8 +35,8 @@ export interface UseConnectFilterParams {
 }
 
 /**
- * 连接过滤 Hook
- * @description 根据数据源类型和搜索文本过滤连接列表
+ * Connection filter Hook
+ * @description Filters connection list based on data source type and search text
  */
 export const useConnectFilter = ({
   connects,
@@ -44,7 +44,7 @@ export const useConnectFilter = ({
   searchText = '',
 }: UseConnectFilterParams) => {
   const filteredConnects = connects.filter((connect) => {
-    // 根据数据源类型过滤 - 转换API类型到本地类型
+    // Filter by data source type - convert API type to local type
     let typeMatch = !dataSourceType || dataSourceType === 'all';
     if (!typeMatch) {
       if (
@@ -65,7 +65,7 @@ export const useConnectFilter = ({
       }
     }
 
-    // 根据搜索文本过滤
+    // Filter by search text
     const searchMatch =
       !searchText ||
       connect.name?.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -78,14 +78,14 @@ export const useConnectFilter = ({
 };
 
 /**
- * 获取数据源类型的中文标签
- * @param type 数据源类型（支持本地类型和 API 类型）
- * @returns 中文标签
+ * Get data source type label
+ * @param type Data source type (supports local type and API type)
+ * @returns Label
  */
 export const getDataSourceTypeLabel = (
   type: ApiDataSourceType | string,
 ): string => {
-  // 将类型转换为小写进行比较（兼容API类型和本地类型）
+  // Convert type to lowercase for comparison (compatible with API type and local type)
   const typeStr = String(type).toLowerCase();
 
   switch (typeStr) {
@@ -101,27 +101,27 @@ export const getDataSourceTypeLabel = (
 };
 
 /**
- * 获取连接状态的颜色
- * @param isActive 是否激活
- * @returns 颜色标识
+ * Get connection status color
+ * @param isActive Whether active
+ * @returns Color identifier
  */
 export const getConnectStatusColor = (isActive?: boolean) => {
   return isActive ? 'green' : 'red';
 };
 
 /**
- * 获取连接状态的Badge类型
- * @param isActive 是否激活
- * @returns Badge状态
+ * Get connection status Badge type
+ * @param isActive Whether active
+ * @returns Badge status
  */
 export const getConnectStatusBadge = (isActive?: boolean) => {
   return isActive ? 'success' : 'error';
 };
 
 /**
- * 获取连接状态的中文文本
- * @param isActive 是否激活
- * @returns 中文状态文本
+ * Get connection status text (Chinese)
+ * @param isActive Whether active
+ * @returns Status text (Chinese)
  */
 export const getConnectStatusText = (isActive?: boolean) => {
   return isActive ? '已激活' : '未激活';

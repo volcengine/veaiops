@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 账号管理验证函数
- * @description 用户表单数据验证相关函数
+ * Account management validation functions
+ * @description User form data validation related functions
  */
 
 import type { UserFormData } from '@account';
@@ -25,26 +25,26 @@ import {
 } from './validation-helpers';
 
 /**
- * 验证表单数据
+ * Validate form data
  */
 export const validateUserFormData = (
   data: UserFormData,
 ): { valid: boolean; errors: Record<string, string> } => {
   const errors: Record<string, string> = {};
 
-  // 验证用户名
+  // Validate username
   const usernameValidation = validateUsername(data.username);
   if (!usernameValidation.valid) {
     errors.username = usernameValidation.error!;
   }
 
-  // 验证邮箱
+  // Validate email
   const emailValidation = validateEmail(data.email);
   if (!emailValidation.valid) {
     errors.email = emailValidation.error!;
   }
 
-  // 验证密码（仅在提供密码时）
+  // Validate password (only when password is provided)
   if (data.password) {
     const passwordValidation = validatePassword(data.password);
     if (!passwordValidation.valid) {

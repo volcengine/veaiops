@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Hook在同目录中
+// Hooks are in the same directory
 export { useSorting } from './use-sorting';

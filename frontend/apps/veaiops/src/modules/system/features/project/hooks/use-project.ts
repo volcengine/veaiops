@@ -23,48 +23,49 @@ import {
   importProjects,
   validateProjectFormData,
 } from '@project';
+import { logger } from '@veaiops/utils';
 import type React from 'react';
 import { useCallback, useState } from 'react';
 
 /**
- * 项目管理业务逻辑Hook
- * 基于CustomTable标准模式的完整实现
+ * Project management business logic Hook
+ * Complete implementation based on CustomTable standard pattern
  *
- * @description 提供项目管理的完整业务逻辑，包括：
- * - 表单状态管理
- * - CRUD操作处理
- * - 权限控制
- * - 错误处理
- * - 用户交互反馈
- * - 🎯 刷新逻辑由 operationWrapper 自动处理，无需手动传递 refreshTable
+ * @description Provides complete business logic for project management, including:
+ * - Form state management
+ * - CRUD operation handling
+ * - Permission control
+ * - Error handling
+ * - User interaction feedback
+ * - 🎯 Refresh logic is automatically handled by operationWrapper, no need to manually pass refreshTable
  */
 export const useProject = ({
   tableRef,
 }: {
   tableRef?: React.RefObject<{ refresh: () => Promise<void> }>;
 } = {}) => {
-  // 表单实例
+  // Form instance
   const [form] = Form.useForm<ProjectFormData>();
 
-  // 状态管理
+  // State management
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // 导入相关逻辑
+  // Import-related logic
   const importLogic = useProjectImportLogic({ tableRef });
 
-  // 新建项目相关逻辑
+  // Create project-related logic
   const createLogic = useProjectCreateLogic({ tableRef });
 
   /**
-   * 处理表单提交
-   * 支持新增和编辑两种模式
+   * Handle form submission
+   * Supports both create and edit modes
    */
   const handleSubmit = useCallback(
     async (values: ProjectFormData): Promise<boolean> => {
       try {
-        // 表单验证
+        // Form validation
         const validationErrors = validateProjectFormData(values);
         if (validationErrors.length > 0) {
           Message.error(validationErrors[0]);
@@ -76,11 +77,11 @@ export const useProject = ({
         let success = false;
 
         if (editingProject) {
-          // 编辑模式 - 暂时只支持创建，编辑功能待后端API支持
-          Message.warning('编辑功能暂未开放，请联系管理员');
+          // Edit mode - Currently only supports create, edit functionality pending backend API support
+          Message.warning('Edit feature is not yet available, please contact administrator');
           return false;
         } else {
-          // 新增模式
+          // Create mode
           const createSuccess = await createProject(values);
           success = createSuccess;
         }
@@ -90,15 +91,17 @@ export const useProject = ({
           setEditingProject(null);
           form.resetFields();
 
-          // ✅ 刷新逻辑由 operationWrapper 自动处理
+          // ✅ Refresh logic is automatically handled by operationWrapper
           return true;
         }
 
         return false;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
-          error instanceof Error ? error.message : '操作失败，请重试';
+          error instanceof Error
+            ? error.message
+            : 'Operation failed, please try again';
         Message.error(errorMessage);
         return false;
       } finally {
@@ -109,7 +112,7 @@ export const useProject = ({
   );
 
   /**
-   * 关闭弹窗
+   * Close modal
    */
   const handleCancel = useCallback(() => {
     setModalVisible(false);
@@ -119,23 +122,25 @@ export const useProject = ({
   }, [form]);
 
   /**
-   * 删除项目
-   * 包含权限检查和用户确认
+   * Delete project
+   * Includes permission check and user confirmation
    */
   const handleDelete = useCallback(
     async (projectId: string): Promise<boolean> => {
       try {
-        // 注意：这里需要项目完整信息来进行权限检查
-        // 在实际实现中，可能需要先获取项目详情
-        // 暂时跳过权限检查，直接删除
+        // Note: Full project information is needed here for permission check
+        // In actual implementation, may need to fetch project details first
+        // Temporarily skip permission check and delete directly
 
         const result = await deleteProject(projectId);
-        // ✅ 刷新逻辑由 operationWrapper 自动处理
+        // ✅ Refresh logic is automatically handled by operationWrapper
         return result;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
-          error instanceof Error ? error.message : '删除项目失败，请重试';
+          error instanceof Error
+            ? error.message
+            : 'Failed to delete project, please try again';
         Message.error(errorMessage);
         return false;
       }
@@ -144,7 +149,7 @@ export const useProject = ({
   );
 
   /**
-   * 检查项目删除权限
+   * Check project delete permission
    */
   const checkDeletePermission = useCallback((project: Project): boolean => {
     const canDelete = canDeleteProject(project);
@@ -160,30 +165,30 @@ export const useProject = ({
   }, []);
 
   return {
-    // 状态
+    // State
     modalVisible,
     editingProject,
     submitting,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleCancel,
     handleSubmit,
     handleDelete,
     checkDeletePermission,
 
-    // 导入相关
+    // Import-related
     ...importLogic,
 
-    // 新建项目相关
+    // Create project-related
     ...createLogic,
   };
 };
 
 /**
- * 新建项目管理Hook
- * 提供新建项目相关的状态和逻辑
- * 🎯 刷新逻辑由 operationWrapper 自动处理
+ * Create project management Hook
+ * Provides state and logic related to creating projects
+ * 🎯 Refresh logic is automatically handled by operationWrapper
  */
 export const useProjectCreateLogic = ({
   tableRef,
@@ -194,8 +199,8 @@ export const useProjectCreateLogic = ({
   const [creating, setCreating] = useState(false);
 
   /**
-   * 处理新建项目
-   * ✅ 创建成功后手动刷新表格
+   * Handle project creation
+   * ✅ Manually refresh table after successful creation
    */
   const handleCreate = async (values: {
     project_id: string;
@@ -206,47 +211,70 @@ export const useProjectCreateLogic = ({
       const success = await createProject(values);
 
       if (success) {
-        Message.success('项目创建成功');
+        Message.success('Project created successfully');
         setCreateDrawerVisible(false);
 
-        // ✅ 手动调用表格刷新
-        console.log('[useProject] 🔄 项目创建成功，准备刷新表格', {
-          timestamp: Date.now(),
-          hasTableRef: Boolean(tableRef),
-          hasRefCurrent: Boolean(tableRef?.current),
-          hasRefresh: Boolean(tableRef?.current?.refresh),
+        // ✅ Manually call table refresh
+        logger.debug({
+          message: '[useProject] 🔄 Project created successfully, preparing to refresh table',
+          data: {
+            timestamp: Date.now(),
+            hasTableRef: Boolean(tableRef),
+            hasRefCurrent: Boolean(tableRef?.current),
+            hasRefresh: Boolean(tableRef?.current?.refresh),
+          },
+          source: 'useProject',
+          component: 'handleCreate',
         });
 
         if (tableRef?.current?.refresh) {
           try {
             await tableRef.current.refresh();
-            console.log('[useProject] ✅ 表格刷新成功', {
-              timestamp: Date.now(),
+            logger.debug({
+              message: '[useProject] ✅ Table refreshed successfully',
+              data: {
+                timestamp: Date.now(),
+              },
+              source: 'useProject',
+              component: 'handleCreate',
             });
           } catch (refreshError) {
-            console.error('[useProject] ❌ 表格刷新失败', {
-              error:
-                refreshError instanceof Error
-                  ? refreshError.message
-                  : String(refreshError),
-              timestamp: Date.now(),
+            const errorObj =
+              refreshError instanceof Error
+                ? refreshError
+                : new Error(String(refreshError));
+            logger.error({
+              message: '[useProject] ❌ Failed to refresh table',
+              data: {
+                error: errorObj.message,
+                stack: errorObj.stack,
+                errorObj,
+                timestamp: Date.now(),
+              },
+              source: 'useProject',
+              component: 'handleCreate',
             });
           }
         } else {
-          console.warn('[useProject] ⚠️ 无法刷新表格：tableRef 不可用', {
-            timestamp: Date.now(),
+          logger.warn({
+            message: '[useProject] ⚠️ Cannot refresh table: tableRef is not available',
+            data: {
+              timestamp: Date.now(),
+            },
+            source: 'useProject',
+            component: 'handleCreate',
           });
         }
 
         return true;
       } else {
-        Message.error('项目创建失败');
+        Message.error('Failed to create project');
         return false;
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Extract actual error information
       const errorMessage =
-        error instanceof Error ? error.message : '项目创建失败，请重试';
+        error instanceof Error ? error.message : 'Failed to create project, please try again';
       Message.error(errorMessage);
       return false;
     } finally {
@@ -255,33 +283,43 @@ export const useProjectCreateLogic = ({
   };
 
   /**
-   * 打开新建抽屉
+   * Open create drawer
    */
   const handleOpenCreateDrawer = () => {
-    console.log('[useProject] 🚪 打开新建项目抽屉', {
-      timestamp: Date.now(),
-      currentVisible: createDrawerVisible,
+    logger.debug({
+      message: '[useProject] 🚪 Opening create project drawer',
+      data: {
+        timestamp: Date.now(),
+        currentVisible: createDrawerVisible,
+      },
+      source: 'useProject',
+      component: 'handleOpenCreateDrawer',
     });
     setCreateDrawerVisible(true);
   };
 
   /**
-   * 关闭新建抽屉
+   * Close create drawer
    */
   const handleCloseCreateDrawer = () => {
-    console.log('[useProject] 🚪 关闭新建项目抽屉', {
-      timestamp: Date.now(),
-      currentVisible: createDrawerVisible,
+    logger.debug({
+      message: '[useProject] 🚪 Closing create project drawer',
+      data: {
+        timestamp: Date.now(),
+        currentVisible: createDrawerVisible,
+      },
+      source: 'useProject',
+      component: 'handleCloseCreateDrawer',
     });
     setCreateDrawerVisible(false);
   };
 
   return {
-    // 状态
+    // State
     createDrawerVisible,
     creating,
 
-    // 事件处理器
+    // Event handlers
     handleCreate,
     handleOpenCreateDrawer,
     handleCloseCreateDrawer,
@@ -289,9 +327,9 @@ export const useProjectCreateLogic = ({
 };
 
 /**
- * 项目导入管理Hook
- * 提供项目导入相关的状态和逻辑
- * 🎯 刷新逻辑由 operationWrapper 自动处理
+ * Project import management Hook
+ * Provides state and logic related to importing projects
+ * 🎯 Refresh logic is automatically handled by operationWrapper
  */
 export const useProjectImportLogic = ({
   tableRef,
@@ -302,8 +340,8 @@ export const useProjectImportLogic = ({
   const [uploading, setUploading] = useState(false);
 
   /**
-   * 处理项目导入
-   * ✅ 导入成功后手动刷新表格
+   * Handle project import
+   * ✅ Manually refresh table after successful import
    */
   const handleImport = async (file: File): Promise<boolean> => {
     try {
@@ -311,47 +349,70 @@ export const useProjectImportLogic = ({
       const success = await importProjects(file);
 
       if (success) {
-        Message.success('项目导入成功');
+        Message.success('Projects imported successfully');
         setImportDrawerVisible(false);
 
-        // ✅ 手动调用表格刷新
-        console.log('[useProject] 🔄 项目导入成功，准备刷新表格', {
-          timestamp: Date.now(),
-          hasTableRef: Boolean(tableRef),
-          hasRefCurrent: Boolean(tableRef?.current),
-          hasRefresh: Boolean(tableRef?.current?.refresh),
+        // ✅ Manually call table refresh
+        logger.debug({
+          message: '[useProject] 🔄 Project imported successfully, preparing to refresh table',
+          data: {
+            timestamp: Date.now(),
+            hasTableRef: Boolean(tableRef),
+            hasRefCurrent: Boolean(tableRef?.current),
+            hasRefresh: Boolean(tableRef?.current?.refresh),
+          },
+          source: 'useProject',
+          component: 'handleImport',
         });
 
         if (tableRef?.current?.refresh) {
           try {
             await tableRef.current.refresh();
-            console.log('[useProject] ✅ 表格刷新成功', {
-              timestamp: Date.now(),
+            logger.debug({
+              message: '[useProject] ✅ Table refreshed successfully',
+              data: {
+                timestamp: Date.now(),
+              },
+              source: 'useProject',
+              component: 'handleImport',
             });
           } catch (refreshError) {
-            console.error('[useProject] ❌ 表格刷新失败', {
-              error:
-                refreshError instanceof Error
-                  ? refreshError.message
-                  : String(refreshError),
-              timestamp: Date.now(),
+            const errorObj =
+              refreshError instanceof Error
+                ? refreshError
+                : new Error(String(refreshError));
+            logger.error({
+              message: '[useProject] ❌ Failed to refresh table',
+              data: {
+                error: errorObj.message,
+                stack: errorObj.stack,
+                errorObj,
+                timestamp: Date.now(),
+              },
+              source: 'useProject',
+              component: 'handleImport',
             });
           }
         } else {
-          console.warn('[useProject] ⚠️ 无法刷新表格：tableRef 不可用', {
-            timestamp: Date.now(),
+          logger.warn({
+            message: '[useProject] ⚠️ Cannot refresh table: tableRef is not available',
+            data: {
+              timestamp: Date.now(),
+            },
+            source: 'useProject',
+            component: 'handleImport',
           });
         }
 
         return true;
       } else {
-        Message.error('项目导入失败');
+        Message.error('Failed to import projects');
         return false;
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Extract actual error information
       const errorMessage =
-        error instanceof Error ? error.message : '项目导入失败，请重试';
+        error instanceof Error ? error.message : 'Failed to import projects, please try again';
       Message.error(errorMessage);
       return false;
     } finally {
@@ -360,33 +421,43 @@ export const useProjectImportLogic = ({
   };
 
   /**
-   * 打开导入抽屉
+   * Open import drawer
    */
   const handleOpenImportDrawer = () => {
-    console.log('[useProject] 🚪 打开导入项目抽屉', {
-      timestamp: Date.now(),
-      currentVisible: importDrawerVisible,
+    logger.debug({
+      message: '[useProject] 🚪 Opening import project drawer',
+      data: {
+        timestamp: Date.now(),
+        currentVisible: importDrawerVisible,
+      },
+      source: 'useProject',
+      component: 'handleOpenImportDrawer',
     });
     setImportDrawerVisible(true);
   };
 
   /**
-   * 关闭导入抽屉
+   * Close import drawer
    */
   const handleCloseImportDrawer = () => {
-    console.log('[useProject] 🚪 关闭导入项目抽屉', {
-      timestamp: Date.now(),
-      currentVisible: importDrawerVisible,
+    logger.debug({
+      message: '[useProject] 🚪 Closing import project drawer',
+      data: {
+        timestamp: Date.now(),
+        currentVisible: importDrawerVisible,
+      },
+      source: 'useProject',
+      component: 'handleCloseImportDrawer',
     });
     setImportDrawerVisible(false);
   };
 
   return {
-    // 状态
+    // State
     importDrawerVisible,
     uploading,
 
-    // 事件处理器
+    // Event handlers
     handleImport,
     handleOpenImportDrawer,
     handleCloseImportDrawer,

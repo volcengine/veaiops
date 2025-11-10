@@ -13,44 +13,44 @@
 // limitations under the License.
 
 /**
- * 智能阈值清洗结果相关类型定义
+ * Intelligent threshold cleaning result related type definitions
  */
 
 export interface ThresholdConfig {
-  /** 开始小时 */
+  /** Start hour */
   start_hour: number;
-  /** 结束小时 */
+  /** End hour */
   end_hour: number;
-  /** 上界阈值 */
+  /** Upper bound threshold */
   upper_bound: number;
-  /** 下界阈值 */
+  /** Lower bound threshold */
   lower_bound: number;
-  /** 窗口大小 */
+  /** Window size */
   window_size: number;
 }
 
 export interface IntelligentThresholdResult {
-  /** 唯一标识，作为主键 */
+  /** Unique identifier, used as primary key */
   id?: string;
-  /** 指标名称 */
+  /** Metric name */
   name: string;
-  /** 阈值配置列表 */
+  /** Threshold configuration list */
   thresholds: ThresholdConfig[];
-  /** 标签信息 */
+  /** Label information */
   labels: Record<string, string>;
-  /** 唯一标识 */
+  /** Unique identifier */
   unique_key: string;
-  /** 索引签名，满足 BaseRecord 约束 */
+  /** Index signature to satisfy BaseRecord constraint */
   [key: string]: any;
 }
 
 export interface CleaningResultDrawerProps {
-  /** 抽屉是否可见 */
+  /** Whether drawer is visible */
   visible: boolean;
-  /** 任务记录 */
+  /** Task record */
   taskRecord?: any;
-  /** 版本记录 */
+  /** Version record */
   versionRecord?: any;
-  /** 关闭回调 */
+  /** Close callback */
   onClose: () => void;
 }

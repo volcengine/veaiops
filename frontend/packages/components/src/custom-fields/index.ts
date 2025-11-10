@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * CustomFields 组件统一导出
+ * CustomFields component unified export
  */
 
-// 重新导出组件 (不使用扩展名)
+// Re-export components (without extension)
 export { CustomFields } from './custom-fields';
 
-// 导出类型
+// Export types
 export type * from './types';
 
-// 导出工具函数
+// Export utility functions
 export * from './utils';

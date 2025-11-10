@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 项目详情抽屉区块组件统一导出
+ * Project detail drawer section components unified export
  */
 
 export * from './basic-info-card';

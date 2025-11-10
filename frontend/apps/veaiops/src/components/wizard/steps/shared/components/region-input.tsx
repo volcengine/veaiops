@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Region 输入组件
- * @description 处理阿里云/火山引擎 Region 的输入
+ * Region input component
+ * @description Handles Aliyun/Volcengine Region input
  */
 
 import { Input } from '@arco-design/web-react';

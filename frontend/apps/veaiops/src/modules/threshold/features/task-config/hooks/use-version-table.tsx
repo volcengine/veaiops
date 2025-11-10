@@ -19,8 +19,8 @@ import { useMemo } from 'react';
 import { createTaskVersionTableRequestWrapper } from '../lib/task-version-request';
 
 /**
- * 任务版本表格配置Hook
- * 提供CustomTable所需的配置
+ * Task version table configuration Hook
+ * Provides configuration required by CustomTable
  */
 export const useTaskVersionTableConfig = (
   taskId?: string,
@@ -32,7 +32,7 @@ export const useTaskVersionTableConfig = (
     [taskId],
   );
 
-  // 🎯 使用工具函数创建数据源
+  // 🎯 Use utility function to create data source
   const dataSource = useMemo(
     () =>
       createServerPaginationDataSource({

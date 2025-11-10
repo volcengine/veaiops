@@ -16,7 +16,7 @@ import { useBotAttributes } from '@bot/hooks';
 import type { AttributeKey, ChannelType } from 'api-generate';
 
 /**
- * Bot属性业务逻辑Hook
+ * Bot attribute business logic Hook
  */
 export const useBotAttributesBusinessLogic = ({
   botId,
@@ -25,9 +25,9 @@ export const useBotAttributesBusinessLogic = ({
   botId?: string;
   channel?: string;
 }) => {
-  // 业务逻辑 Hook
-  // 注意：botId 和 channel 可能为 undefined，但 useBotAttributes 需要非 undefined 值
-  // 如果未提供，使用空字符串作为默认值（实际使用时会通过 API 进行验证）
+  // Business logic Hook
+  // Note: botId and channel may be undefined, but useBotAttributes requires non-undefined values
+  // If not provided, use empty string as default value (will be validated by API in actual use)
   const { loading, createAttribute, updateAttribute, deleteAttribute } =
     useBotAttributes({
       botId: botId || '',

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 事件中心模块导出
+// Event center module export
 
-// 功能模块导出
+// Feature modules export
 export {
   StrategyManagement,
   StrategyTable,
@@ -36,8 +36,8 @@ export {
   useStatisticsLogic,
 } from './features';
 
-// 页面级组件导出
+// Page-level components export
 export * from './pages';
 
-// 共享资源导出
+// Shared resources export
 export * from './shared';

@@ -26,14 +26,14 @@ import type {
 } from '../types';
 
 /**
- * 验证输入参数
+ * Validate input parameters
  */
 export const validateInputs = ({
   metric,
   task,
 }: ValidateInputsParams): boolean => {
   if (!metric || !task) {
-    // ✅ 正确：使用 logger 记录警告
+    // ✅ Correct: use logger to record warning
     logger.warn({
       message: 'fetchTimeseriesData: metric or task is missing',
       data: { hasMetric: Boolean(metric), hasTask: Boolean(task) },
@@ -46,7 +46,7 @@ export const validateInputs = ({
 };
 
 /**
- * 验证时间范围
+ * Validate time range
  */
 export const validateTimeRange = ({
   timeRange,
@@ -81,8 +81,8 @@ export const validateTimeRange = ({
     return null;
   }
 
-  // 边界检查：时间范围不应该太大（例如超过90天）
-  const MAX_TIME_RANGE_MS = 90 * 24 * 60 * 60 * 1000; // 90天
+  // Boundary check: time range should not be too large (e.g., exceed 90 days)
+  const MAX_TIME_RANGE_MS = 90 * 24 * 60 * 60 * 1000; // 90 days
   if (endTime - startTime > MAX_TIME_RANGE_MS) {
     Message.warning('时间范围过大，可能导致数据加载缓慢');
   }
@@ -91,8 +91,8 @@ export const validateTimeRange = ({
 };
 
 /**
- * 处理 metric labels
- * MetricThresholdResult.labels 已经是 Record<string, string> 类型
+ * Process metric labels
+ * MetricThresholdResult.labels is already Record<string, string> type
  */
 export const processMetricLabels = ({
   metric,
@@ -100,6 +100,6 @@ export const processMetricLabels = ({
   if (!metric || !metric.labels) {
     return undefined;
   }
-  // MetricThresholdResult.labels 已经是 Record<string, string>，直接返回
+  // MetricThresholdResult.labels is already Record<string, string>, return directly
   return [metric.labels];
 };

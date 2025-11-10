@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ZabbixTriggerTag = {
   /**
-   * 标签键
+   * Tag key
    */
   tag: string;
   /**
-   * 标签值
+   * Tag value
    */
   value: string;
 };

@@ -30,7 +30,7 @@ interface IconProps {
 }
 
 /**
- * 根据数据源类型获取对应图标
+ * Get the corresponding icon based on data source type
  */
 export const getDataSourceIcon = (
   type: 'Zabbix' | 'Aliyun' | 'Volcengine' | string,

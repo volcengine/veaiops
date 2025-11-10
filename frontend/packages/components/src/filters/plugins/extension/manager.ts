@@ -20,15 +20,15 @@ import type {
 import { filterPluginRegistry } from '../registry';
 
 /**
- * 插件扩展管理器
- * 提供插件的动态配置、热加载和扩展功能
+ * Plugin extension manager
+ * Provides dynamic configuration, hot loading, and extension functionality for plugins
  */
 export class PluginExtensionManager {
   private hooks: Map<string, FilterPluginHooks> = new Map();
   private globalConfigs: Map<string, PluginConfig> = new Map();
 
   /**
-   * 注册插件钩子
+   * Register plugin hooks
    */
   registerHooks({
     pluginType,
@@ -41,14 +41,14 @@ export class PluginExtensionManager {
   }
 
   /**
-   * 获取插件钩子
+   * Get plugin hooks
    */
   getHooks(pluginType: string): FilterPluginHooks | undefined {
     return this.hooks.get(pluginType);
   }
 
   /**
-   * 设置插件全局配置
+   * Set plugin global configuration
    */
   setGlobalConfig({
     pluginType,
@@ -61,14 +61,14 @@ export class PluginExtensionManager {
   }
 
   /**
-   * 获取插件全局配置
+   * Get plugin global configuration
    */
   getGlobalConfig(pluginType: string): PluginConfig | undefined {
     return this.globalConfigs.get(pluginType);
   }
 
   /**
-   * 合并配置（全局配置 + 实例配置）
+   * Merge configuration (global config + instance config)
    */
   mergeConfig(
     pluginType: string,
@@ -79,7 +79,7 @@ export class PluginExtensionManager {
   }
 
   /**
-   * 创建插件的增强版本
+   * Create enhanced version of plugin
    */
   enhancePlugin(
     plugin: FilterPlugin,
@@ -93,12 +93,12 @@ export class PluginExtensionManager {
       render: (props) => {
         let enhancedProps = props;
 
-        // 应用 beforeRender 钩子
+        // Apply beforeRender hook
         if (hooks?.beforeRender) {
           enhancedProps = hooks.beforeRender(props);
         }
 
-        // 合并全局配置
+        // Merge global configuration
         const mergedConfig = this.mergeConfig(
           plugin.type,
           enhancedProps.componentProps as PluginConfig,
@@ -108,10 +108,10 @@ export class PluginExtensionManager {
           componentProps: mergedConfig,
         };
 
-        // 渲染组件
+        // Render component
         let element = plugin.render(enhancedProps);
 
-        // 应用 afterRender 钩子
+        // Apply afterRender hook
         if (hooks?.afterRender) {
           element = hooks.afterRender(element, enhancedProps);
         }
@@ -119,12 +119,12 @@ export class PluginExtensionManager {
         return element;
       },
       validateConfig: (config) => {
-        // 先使用插件自己的验证
+        // First use plugin's own validation
         if (plugin.validateConfig && !plugin.validateConfig(config)) {
           return false;
         }
 
-        // 再使用钩子验证
+        // Then use hook validation
         if (hooks?.validateConfig) {
           const result = hooks.validateConfig(config);
           return typeof result === 'boolean' ? result : false;
@@ -136,7 +136,7 @@ export class PluginExtensionManager {
   }
 
   /**
-   * 批量增强插件并重新注册
+   * Batch enhance plugins and re-register
    */
   enhanceAndRegisterPlugins(
     plugins: FilterPlugin[],
@@ -149,7 +149,7 @@ export class PluginExtensionManager {
   }
 
   /**
-   * 动态创建插件
+   * Dynamically create plugin
    */
   createDynamicPlugin(config: {
     type: string;
@@ -166,10 +166,10 @@ export class PluginExtensionManager {
       validateConfig: config.validateConfig,
       defaultConfig: config.defaultConfig,
       version: '1.0.0-dynamic',
-      description: `动态创建的 ${config.name} 插件`,
+      description: `Dynamically created ${config.name} plugin`,
     };
 
-    // 注册钩子
+    // Register hooks
     if (config.hooks) {
       this.registerHooks({ pluginType: config.type, hooks: config.hooks });
     }
@@ -178,21 +178,21 @@ export class PluginExtensionManager {
   }
 
   /**
-   * 获取所有已注册的钩子
+   * Get all registered hooks
    */
   getAllHooks(): Record<string, FilterPluginHooks> {
     return Object.fromEntries(this.hooks.entries());
   }
 
   /**
-   * 获取所有全局配置
+   * Get all global configurations
    */
   getAllGlobalConfigs(): Record<string, PluginConfig> {
     return Object.fromEntries(this.globalConfigs.entries());
   }
 
   /**
-   * 清空所有扩展数据
+   * Clear all extension data
    */
   clear(): void {
     this.hooks.clear();
@@ -200,7 +200,7 @@ export class PluginExtensionManager {
   }
 
   /**
-   * 获取扩展统计信息
+   * Get extension statistics
    */
   getStats(): {
     hooksCount: number;
@@ -221,5 +221,5 @@ export class PluginExtensionManager {
   }
 }
 
-// 导出单例实例
+// Export singleton instance
 export const pluginExtensionManager = new PluginExtensionManager();

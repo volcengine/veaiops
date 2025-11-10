@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * CustomTable 核心组件统一导出
+ * CustomTable core components unified exports
  */
 
-// 渲染器
+// Renderers
 export * from './renderers';

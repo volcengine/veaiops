@@ -14,4 +14,4 @@
 
 export { TableFilterPlugin } from './plugin';
 export * from './types';
-// hooks/components 目录已删除，移除对应导出以避免构建报错
+// hooks/components directory has been removed, remove corresponding exports to avoid build errors

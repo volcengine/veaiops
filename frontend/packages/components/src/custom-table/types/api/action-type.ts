@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * CustomTable 实例API类型定义
+ * CustomTable instance API type definition
  */
 import type {
   BaseQuery,
@@ -21,243 +21,243 @@ import type {
   ExtendedSorterInfo,
   FiltersProps,
 } from '../core/common';
-// 使用相对路径避免循环依赖（不能使用 @/custom-table/types，因为 types/index.ts 会导出此文件）
+// Use relative path to avoid circular dependency (Cannot use @/custom-table/types, because types/index.ts will export this file)
 import type {
   CustomTableHelpers,
   CustomTableState,
 } from '../plugins/core/state';
 
 /**
- * CustomTable 实例 API 类型
+ * CustomTable instance API type
  */
 export interface CustomTableActionType<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  // 数据操作
-  /** 重新加载数据 */
+  // Data operation
+  /** Reload data */
   reload: () => Promise<void>;
-  /** 重载并重置 */
+  /** Reload and reset */
   reloadAndReset?: () => Promise<void>;
-  /** 刷新数据 */
+  /** Refresh data */
   refresh: () => Promise<void>;
-  /** 取消当前请求 */
+  /** Cancel current request */
   cancel: () => void;
-  /** 获取当前数据 */
+  /** Get current data */
   getData: () => RecordType[];
-  /** 获取数据源 */
+  /** Fetch data source */
   getDataSource: () => RecordType[];
-  /** 获取格式化数据 */
+  /** Get formatted data */
   getFormattedData: () => RecordType[];
-  /** 导出数据 */
+  /** Export data */
   exportData: () => RecordType[];
-  /** 设置数据 */
+  /** Set data */
   setData: (data: RecordType[]) => void;
 
-  // 分页操作
-  /** 设置当前页 */
+  // Pagination operation
+  /** Set current page */
   setCurrentPage: (page: number) => void;
-  /** 设置每页大小 */
+  /** Set page size */
   setPageSize: (size: number) => void;
-  /** 获取当前页 */
+  /** Get current page */
   getCurrentPage: () => number;
-  /** 获取每页大小 */
+  /** Get page size */
   getPageSize: () => number;
-  /** 获取总数 */
+  /** Get total */
   getTotal: () => number;
-  /** 获取分页信息 */
+  /** Get pagination info */
   getPageInfo: () => { current: number; pageSize: number; total: number };
-  /** 设置分页信息 */
+  /** Set pagination info */
   setPageInfo: (pageInfo: {
     current?: number;
     pageSize?: number;
     total?: number;
   }) => void;
-  /** 重置分页 */
+  /** Reset pagination */
   resetPagination: () => void;
 
-  // 过滤操作
-  /** 设置过滤器 */
+  // Filter operation
+  /** Set filters */
   setFilters: (filters: FiltersProps) => void;
-  /** 获取过滤器 */
+  /** Get filters */
   getFilters: () => FiltersProps;
-  /** 重置过滤器 */
+  /** Reset filters */
   resetFilters: () => void;
-  /** 清除过滤器 */
+  /** Clear filters */
   clearFilters: () => void;
-  /** 应用过滤器 */
+  /** Apply filters */
   applyFilters: (filters: FiltersProps) => void;
 
-  // 排序操作
-  /** 设置排序 */
+  // Sort operation
+  /** Set sorter */
   setSorter: (sorter: ExtendedSorterInfo) => void;
-  /** 获取排序 */
+  /** Get sorter */
   getSorter: () => ExtendedSorterInfo;
-  /** 重置排序 */
+  /** Reset sorter */
   resetSorter: () => void;
-  /** 清除排序 */
+  /** Clear sorter */
   clearSorter: () => void;
 
-  // 查询操作
-  /** 设置查询参数 */
+  // Query operation
+  /** Set query parameters */
   setQuery: (query: QueryType | ((prev: QueryType) => QueryType)) => void;
-  /** 获取查询参数 */
+  /** Get query parameters */
   getQuery: () => QueryType;
-  /** 重置查询参数 */
+  /** Reset query parameters */
   resetQuery: () => void;
-  /** 合并查询参数 */
+  /** Merge query parameters */
   mergeQuery: (query: Partial<QueryType>) => void;
 
-  // 选择操作
-  /** 设置选中行 */
+  // Select operation
+  /** Set selected rows */
   setSelectedRows: (keys: (string | number)[]) => void;
-  /** 获取选中行键 */
+  /** Get selected row keys */
   getSelectedRowKeys: () => (string | number)[];
-  /** 获取选中行数据 */
+  /** Get selected row data */
   getSelectedRows: () => RecordType[];
-  /** 获取选中的数据 */
+  /** Get selected data */
   getSelectedData: () => RecordType[];
-  /** 清除选中 */
+  /** Clear selection */
   clearSelection: () => void;
-  /** 全选 */
+  /** Select all */
   selectAll: () => void;
-  /** 反选 */
+  /** Invert selection */
   invertSelection: () => void;
 
-  // 展开操作
-  /** 设置展开行 */
+  // Expand operation
+  /** Set expanded rows */
   setExpandedRows: (keys: (string | number)[]) => void;
-  /** 设置展开行键 */
+  /** Set expanded row keys */
   setExpandedRowKeys: (keys: (string | number)[]) => void;
-  /** 获取展开行键 */
+  /** Get expanded row keys */
   getExpandedRowKeys: () => (string | number)[];
-  /** 展开所有行 */
+  /** Expand all rows */
   expandAll: () => void;
-  /** 收起所有行 */
+  /** Collapse all rows */
   collapseAll: () => void;
 
-  // 状态操作
-  /** 获取加载状态 */
+  // State operation
+  /** Get loading state */
   getLoading: () => boolean;
-  /** 设置加载状态 */
+  /** Set loading state */
   setLoading: (loading: boolean) => void;
-  /** 获取错误信息 */
+  /** Get error info */
   getError: () => Error | null;
-  /** 重置状态 */
+  /** Reset state */
   reset: (options?: {
     resetData?: boolean;
     resetQuery?: boolean;
     resetFilters?: boolean;
   }) => void;
 
-  // 滚动操作
-  /** 滚动到顶部 */
+  // Scroll operation
+  /** Scroll to top */
   scrollToTop: () => void;
-  /** 滚动到底部 */
+  /** Scroll to bottom */
   scrollToBottom: () => void;
-  /** 滚动到指定行 */
+  /** Scroll to specified row */
   scrollToRow: (index: number) => void;
 
-  // 插件操作
-  /** 执行插件方法 */
+  // Plugin operation
+  /** Execute plugin method */
   executePlugin: (
     { pluginName, methodName }: { pluginName: string; methodName: string },
     ...args: unknown[]
   ) => unknown;
-  /** 渲染插件内容 */
+  /** Render plugin content */
   renderPlugin: (
     { pluginName, renderer }: { pluginName: string; renderer: string },
     ...args: unknown[]
   ) => React.ReactNode;
 
-  // 状态访问
-  /** 获取当前状态 */
+  // State access
+  /** Get current state */
   state: CustomTableState<RecordType, QueryType>;
-  /** 获取辅助方法 */
+  /** Get auxiliary methods */
   helpers: CustomTableHelpers<RecordType, QueryType>;
 
-  // 数据快照访问
-  /** 格式化后的表格数据 */
+  // Data snapshot access
+  /** Formatted table data */
   formattedTableData: RecordType[];
-  /** 加载状态 */
+  /** Loading state */
   loading: boolean;
-  /** 当前页 */
+  /** Current page */
   current: number;
-  /** 每页大小 */
+  /** Page size */
   pageSize: number;
-  /** 总数 */
+  /** Total */
   total: number;
-  /** 过滤器状态 */
+  /** Filter state */
   filters: Record<string, (string | number)[]>;
-  /** 排序状态 */
+  /** Sort state */
   sorter: ExtendedSorterInfo;
 
-  // 工具方法
-  /** 验证数据 */
+  // Utility methods
+  /** Validate data */
   validate: () => Promise<boolean>;
-  /** 获取表格实例 */
+  /** Get table instance */
   getTableInstance: () => unknown;
-  /** 获取插件管理器 */
+  /** Get plugin manager */
   getPluginManager: () => unknown;
-  /** 导出重置日志 */
+  /** Export reset logs */
   exportResetLogs: () => void;
-  /** 获取重置日志统计 */
+  /** Get reset log statistics */
   getResetLogStats: () => Record<string, unknown>;
 }
 
 /**
- * CustomTable 实例状态
+ * CustomTable instance state
  */
 export interface CustomTableInstanceState<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 当前数据 */
+  /** Current data */
   data: RecordType[];
-  /** 当前页 */
+  /** Current page */
   current: number;
-  /** 每页大小 */
+  /** Page size */
   pageSize: number;
-  /** 总数 */
+  /** Total */
   total: number;
-  /** 查询参数 */
+  /** Query parameters */
   query: QueryType;
-  /** 过滤器 */
+  /** Filters */
   filters: FiltersProps;
-  /** 排序 */
+  /** Sort */
   sorter: ExtendedSorterInfo;
-  /** 选中行键 */
+  /** Selected row keys */
   selectedRowKeys: (string | number)[];
-  /** 展开行键 */
+  /** Expanded row keys */
   expandedRowKeys: (string | number)[];
-  /** 加载状态 */
+  /** Loading state */
   loading: boolean;
-  /** 错误信息 */
+  /** Error info */
   error: Error | null;
 }
 
 /**
- * CustomTable 实例配置
+ * CustomTable instance configuration
  */
 export interface CustomTableInstanceConfig<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 默认查询参数 */
+  /** Default query parameters */
   defaultQuery?: Partial<QueryType>;
-  /** 默认过滤器 */
+  /** Default filters */
   defaultFilters?: FiltersProps;
-  /** 默认排序 */
+  /** Default sorter */
   defaultSorter?: ExtendedSorterInfo;
-  /** 是否自动加载 */
+  /** Whether auto load */
   autoLoad?: boolean;
-  /** 缓存配置 */
+  /** Cache configuration */
   cache?: {
     enabled: boolean;
     key?: string;
     ttl?: number;
   };
-  /** 验证配置 */
+  /** Validation configuration */
   validation?: {
     enabled: boolean;
     rules?: Record<string, ValidationRule[]>;
@@ -265,7 +265,7 @@ export interface CustomTableInstanceConfig<
 }
 
 /**
- * 验证规则
+ * Validation rules
  */
 export interface ValidationRule {
   required?: boolean;
@@ -277,35 +277,35 @@ export interface ValidationRule {
 }
 
 /**
- * 实例事件类型
+ * Instance event types
  */
 export interface CustomTableInstanceEvents<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 数据变化 */
+  /** Data change */
   onDataChange?: (data: RecordType[]) => void;
-  /** 查询变化 */
+  /** Query change */
   onQueryChange?: (query: QueryType) => void;
-  /** 过滤器变化 */
+  /** Filters change */
   onFiltersChange?: (filters: FiltersProps) => void;
-  /** 排序变化 */
+  /** Sort change */
   onSorterChange?: (sorter: ExtendedSorterInfo) => void;
-  /** 选择变化 */
+  /** Selection change */
   onSelectionChange?: (
     selectedRowKeys: (string | number)[],
     selectedRows: RecordType[],
   ) => void;
-  /** 展开变化 */
+  /** Expand change */
   onExpandChange?: (expandedRowKeys: (string | number)[]) => void;
-  /** 加载状态变化 */
+  /** Loading state change */
   onLoadingChange?: (loading: boolean) => void;
-  /** 错误发生 */
+  /** Error occurred */
   onError?: (error: Error) => void;
 }
 
 /**
- * 实例操作结果
+ * Instance operation result
  */
 export interface OperationResult<T = unknown> {
   success: boolean;
@@ -315,29 +315,29 @@ export interface OperationResult<T = unknown> {
 }
 
 /**
- * 批量操作配置
+ * Batch operation configuration
  */
 export interface BatchOperationConfig {
-  /** 并发数 */
+  /** Concurrency */
   concurrency?: number;
-  /** 是否在出错时停止 */
+  /** Whether stop on error */
   stopOnError?: boolean;
-  /** 进度回调 */
+  /** Progress callback */
   onProgress?: (completed: number, total: number) => void;
 }
 
 /**
- * 导出配置
+ * Export configuration
  */
 export interface ExportConfig {
-  /** 导出格式 */
+  /** Export format */
   format?: 'json' | 'csv' | 'xlsx';
-  /** 导出文件名 */
+  /** Export filename */
   filename?: string;
-  /** 是否包含表头 */
+  /** Whether includes header */
   includeHeader?: boolean;
-  /** 自定义列 */
+  /** Custom columns */
   columns?: string[];
-  /** 数据转换 */
+  /** Data transform */
   transform?: (data: BaseRecord[]) => unknown[];
 }

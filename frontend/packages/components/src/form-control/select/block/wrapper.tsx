@@ -20,22 +20,22 @@ import { SelectBlock } from './select-block';
 import type { veArchSelectBlockProps } from './types/interface';
 
 /**
- * 包装了 FormItemWrapper 的 SelectBlock 组件
- * 提供表单项包装功能，支持垂直布局等特性
+ * SelectBlock component wrapped with FormItemWrapper
+ * Provides form item wrapper functionality, supports vertical layout and other features
  */
 const WrappedSelectBlock: FC<FormItemControlProps<veArchSelectBlockProps>> = (
   props,
 ) => {
   const { controlProps, ...wrapperProps } = props;
 
-  // 🔧 添加 wrapper 层日志 - 重点追踪 dependency
+  // 🔧 Add wrapper layer logging - focus on tracking dependency
   logger.debug(
     'WrappedSelectBlock',
-    '🔵 Props 接收 (Wrapper层)',
+    '🔵 Props received (Wrapper layer)',
     {
       hasControlProps: Boolean(controlProps),
       controlPropsKeys: controlProps ? Object.keys(controlProps) : [],
-      // 🎯 重点：dependency 追踪
+      // 🎯 Focus: dependency tracking
       hasDependency: Boolean(controlProps?.dependency),
       dependency: controlProps?.dependency,
       dependencyString: JSON.stringify(controlProps?.dependency),
@@ -47,7 +47,7 @@ const WrappedSelectBlock: FC<FormItemControlProps<veArchSelectBlockProps>> = (
       dependencyFirstItem: Array.isArray(controlProps?.dependency)
         ? controlProps.dependency[0]
         : undefined,
-      // dataSource 信息
+      // dataSource information
       hasDataSource: Boolean(controlProps?.dataSource),
       dataSourceType: typeof controlProps?.dataSource,
       dataSourceKeys:
@@ -58,7 +58,7 @@ const WrappedSelectBlock: FC<FormItemControlProps<veArchSelectBlockProps>> = (
         controlProps?.dataSource && typeof controlProps?.dataSource === 'object'
           ? (controlProps.dataSource as any).api
           : undefined,
-      // 其他关键 props
+      // Other key props
       placeholder: controlProps?.placeholder,
       disabled: controlProps?.disabled,
       canFetch: controlProps?.canFetch,

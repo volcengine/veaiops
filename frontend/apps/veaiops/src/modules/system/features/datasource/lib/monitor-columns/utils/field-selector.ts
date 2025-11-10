@@ -21,7 +21,7 @@ import {
 } from '../columns';
 
 /**
- * 根据数据源类型获取特定字段列
+ * Get specific field columns based on data source type
  */
 export const getSpecificFields = (
   dataSourceType: DataSourceType,

@@ -16,7 +16,7 @@ import type { ThemeConfig } from '@arco-design/web-react/es/ConfigProvider/inter
 import type React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-// 主题类型定义
+// Theme type definition
 export type ThemeMode = 'light' | 'dark';
 
 interface ThemeContextType {
@@ -26,116 +26,116 @@ interface ThemeContextType {
   setTheme: (theme: ThemeMode) => void;
 }
 
-// VE-O Design 暗色主题配置
+// VE-O Design dark theme configuration
 const darkThemeConfig: ThemeConfig = {
   token: {
-    // VE-O Design 基础颜色 - 暗色主题
+    // VE-O Design base colors - dark theme
     colorBgBase: '#1a1a1a',
     colorTextBase: '#ffffff',
     colorBorder: '#3a3a3a',
     colorBgContainer: '#262626',
-    colorPrimary: '#3370ff', // VE-O Design 主色
+    colorPrimary: '#3370ff', // VE-O Design primary color
 
-    // 表格相关颜色
+    // Table related colors
     colorBgElevated: '#262626',
     colorBorderSecondary: '#3a3a3a',
     colorFillSecondary: '#333333',
     colorFillTertiary: '#262626',
     colorFillQuaternary: '#1a1a1a',
 
-    // 文本颜色
+    // Text colors
     colorTextSecondary: '#bfbfbf',
     colorTextTertiary: '#8c8c8c',
     colorTextQuaternary: '#595959',
 
-    // VE-O Design 状态颜色
+    // VE-O Design status colors
     colorSuccess: '#00b42a',
     colorWarning: '#ff7d00',
     colorError: '#f53f3f',
     colorInfo: '#3370ff',
 
-    // 悬停和激活状态
+    // Hover and active states
     colorBgTextHover: '#333333',
     colorBgTextActive: '#3a3a3a',
 
-    // VE-O Design 特有颜色
+    // VE-O Design specific colors
     colorLink: '#3370ff',
     colorLinkHover: '#4080ff',
     colorLinkActive: '#2c5aa0',
   },
 };
 
-// VE-O Design 亮色主题配置
+// VE-O Design light theme configuration
 const lightThemeConfig: ThemeConfig = {
   token: {
-    // VE-O Design 基础颜色 - 亮色主题
+    // VE-O Design base colors - light theme
     colorBgBase: '#ffffff',
     colorTextBase: '#1d2129',
     colorBorder: '#e5e6eb',
     colorBgContainer: '#ffffff',
-    colorPrimary: '#3370ff', // VE-O Design 主色
+    colorPrimary: '#3370ff', // VE-O Design primary color
 
-    // 表格相关颜色
+    // Table related colors
     colorBgElevated: '#ffffff',
     colorBorderSecondary: '#e5e6eb',
     colorFillSecondary: '#f7f8fa',
     colorFillTertiary: '#ffffff',
     colorFillQuaternary: '#f2f3f5',
 
-    // 文本颜色
+    // Text colors
     colorTextSecondary: '#4e5969',
     colorTextTertiary: '#86909c',
     colorTextQuaternary: '#c9cdd4',
 
-    // VE-O Design 状态颜色
+    // VE-O Design status colors
     colorSuccess: '#00b42a',
     colorWarning: '#ff7d00',
     colorError: '#f53f3f',
     colorInfo: '#3370ff',
 
-    // 悬停和激活状态
+    // Hover and active states
     colorBgTextHover: '#f7f8fa',
     colorBgTextActive: '#f2f3f5',
 
-    // VE-O Design 特有颜色
+    // VE-O Design specific colors
     colorLink: '#3370ff',
     colorLinkHover: '#4080ff',
     colorLinkActive: '#2c5aa0',
   },
 };
 
-// 创建主题上下文
+// Create theme context
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// 主题提供者组件
+// Theme provider component
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
-    // 从sessionStorage读取保存的主题，默认为亮色主题
+    // Read saved theme from sessionStorage, default to light theme
     const savedTheme = sessionStorage.getItem('theme') as ThemeMode;
     return savedTheme || 'light';
   });
 
-  // 获取当前主题配置
+  // Get current theme configuration
   const themeConfig = theme === 'dark' ? darkThemeConfig : lightThemeConfig;
 
-  // 切换主题
+  // Toggle theme
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
   };
 
-  // 设置主题
+  // Set theme
   const setTheme = (newTheme: ThemeMode) => {
     setThemeState(newTheme);
     sessionStorage.setItem('theme', newTheme);
 
-    // 更新HTML根元素的data-theme属性，用于CSS变量切换
+    // Update HTML root element's data-theme attribute for CSS variable switching
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
-  // 初始化时设置主题
+  // Set theme on initialization
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
@@ -152,7 +152,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// 使用主题的hook
+// Hook for using theme
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
   if (context === undefined) {

@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * API 客户端类型定义
+ * API client type definitions
  *
- * 这个文件定义了 API 客户端的类型接口，使得 hooks 可以独立于具体的 API 生成代码
+ * This file defines the type interfaces for API clients, allowing hooks to be independent of specific API-generated code
  */
 
-// 基础 API 类型
+// Base API types
 export interface APIResponse<T = unknown> {
   data: T;
   message?: string;
@@ -37,12 +37,12 @@ export interface RequestConfig {
   params?: Record<string, unknown>;
 }
 
-// API 客户端接口
+// API client interface
 export interface APIClient {
-  // 认证相关
+  // Authentication related
   login_for_access_token: (config?: RequestConfig) => Promise<unknown>;
 
-  // 用户管理
+  // User management
   list_users: (config?: RequestConfig) => Promise<unknown>;
   get_user: (config?: { user_id: string } & RequestConfig) => Promise<unknown>;
   create_user: (config?: RequestConfig) => Promise<unknown>;
@@ -54,14 +54,14 @@ export interface APIClient {
     config?: { user_id: string } & RequestConfig,
   ) => Promise<unknown>;
 
-  // 系统配置
+  // System configuration
   get_global_config: (config?: RequestConfig) => Promise<unknown>;
 
   // Webhook
   payload_webhook: (config?: RequestConfig) => Promise<unknown>;
 }
 
-// 服务接口
+// Service interfaces
 export interface AuthService {
   login_for_access_token: (config?: RequestConfig) => Promise<unknown>;
 }
@@ -79,21 +79,21 @@ export interface ManagerService {
   ) => Promise<unknown>;
 }
 
-// 默认的 API 客户端实例（将在运行时注入）
+// Default API client instances (will be injected at runtime)
 let apiClientInstance: APIClient;
 let authServiceInstance: AuthService;
 let managerServiceInstance: ManagerService;
 
 /**
- * 设置 API 客户端实例
- * 这个函数需要在应用启动时调用
+ * Set API client instance
+ * This function needs to be called at application startup
  */
 export function setApiClient(client: APIClient) {
   apiClientInstance = client;
 }
 
 /**
- * 设置服务实例
+ * Set service instances
  */
 export function setAuthService(service: AuthService) {
   authServiceInstance = service;
@@ -104,7 +104,7 @@ export function setManagerService(service: ManagerService) {
 }
 
 /**
- * 获取 API 客户端实例
+ * Get API client instance
  */
 export function getApiClient(): APIClient {
   if (!apiClientInstance) {
@@ -114,7 +114,7 @@ export function getApiClient(): APIClient {
 }
 
 /**
- * 获取认证服务实例
+ * Get authentication service instance
  */
 export function getAuthService(): AuthService {
   if (!authServiceInstance) {
@@ -126,7 +126,7 @@ export function getAuthService(): AuthService {
 }
 
 /**
- * 获取管理服务实例
+ * Get manager service instance
  */
 export function getManagerService(): ManagerService {
   if (!managerServiceInstance) {

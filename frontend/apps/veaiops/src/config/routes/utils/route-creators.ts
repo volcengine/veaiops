@@ -18,8 +18,8 @@ import { RouteErrorBoundary, RouteLoadingFallback } from './components';
 import type { LazyComponent, RouteConfig, RouteConfigItem } from './types';
 
 /**
- * 创建懒加载路由配置
- * @param config 路由配置对象
+ * Create lazy-loaded route configuration
+ * @param config Route configuration object
  */
 export const createLazyRoute = (config: {
   path: string;
@@ -40,29 +40,29 @@ export const createLazyRoute = (config: {
     fallback,
   } = config;
 
-  // 预加载功能
+  // Preload functionality
   const handlePreload = !preload
     ? undefined
     : () => {
         try {
-          // 触发组件预加载
+          // Trigger component preload
           (LazyComponent as any).preload?.();
         } catch (error) {
-          // 静默处理：预加载失败不影响组件正常加载
+          // Silent handling: preload failure does not affect normal component loading
         }
       };
 
-  // 创建包装组件以支持性能监控
+  // Create wrapped component to support performance monitoring
   const WrappedComponent = memo((props: any) => {
     const startTime = performance.now();
-    // 开始路由加载监控
+    // Start route load monitoring
     routePerformanceAnalyzer.startRouteLoad({ path, componentName: title });
 
     React.useEffect(() => {
       const endTime = performance.now();
       const loadTime = endTime - startTime;
 
-      // 结束路由加载监控
+      // End route load monitoring
       routePerformanceAnalyzer.endRouteLoad({
         path,
         options: {
@@ -70,9 +70,9 @@ export const createLazyRoute = (config: {
         },
       });
 
-      // 记录路由加载性能
+      // Record route load performance
       if (loadTime > 100) {
-        // 只记录超过100ms的加载
+        // Only record loads exceeding 100ms
       }
     }, [startTime]);
 
@@ -102,11 +102,11 @@ export const createLazyRoute = (config: {
 };
 
 /**
- * 批量创建路由配置
- * @param routes 路由配置数组
+ * Batch create route configurations
+ * @param routes Route configuration array
  */
 export const createLazyRoutes = (routes: RouteConfigItem[]): RouteConfig[] => {
-  // 使用 Map 缓存已创建的路由，避免重复创建
+  // Use Map to cache created routes, avoid duplicate creation
   const routeCache = new Map<string, RouteConfig>();
 
   return routes.map((routeConfig) => {
@@ -124,8 +124,8 @@ export const createLazyRoutes = (routes: RouteConfigItem[]): RouteConfig[] => {
 };
 
 /**
- * 创建路由组，支持嵌套路由
- * @param groupConfig 路由组配置
+ * Create route group, supports nested routes
+ * @param groupConfig Route group configuration
  */
 export const createRouteGroup = (groupConfig: {
   prefix: string;
@@ -141,7 +141,7 @@ export const createRouteGroup = (groupConfig: {
 
   let createdRoutes = createLazyRoutes(processedRoutes);
 
-  // 应用中间件
+  // Apply middleware
   middleware.forEach((middlewareFn) => {
     createdRoutes = createdRoutes.map(middlewareFn);
   });

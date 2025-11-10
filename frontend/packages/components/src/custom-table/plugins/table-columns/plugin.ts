@@ -15,7 +15,7 @@
 import { ResizableTableTitle as ResizableHeader } from '@/custom-table/components/resize-col';
 import { PluginNames } from '@/custom-table/constants/enum';
 /**
- * 表格列管理插件
+ * Table columns management plugin
  */
 import type {
   BaseQuery,
@@ -36,14 +36,14 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
   return {
     name: PluginNames.TABLE_COLUMNS,
     version: '1.0.0',
-    description: '表格列管理插件',
+    description: 'Table columns management plugin',
     priority: finalConfig.priority || PluginPriorityEnum.HIGH,
     enabled: finalConfig.enabled !== false,
     dependencies: [],
     conflicts: [],
 
     install(_context: PluginContext) {
-      // 安装时的操作
+      // Operations during installation
     },
 
     setup<
@@ -56,7 +56,7 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
         TableColumnsPluginProps<TRecord, TQuery>
       >,
     ) {
-      // 初始化列处理
+      // Initialize column processing
       const {
         props,
         state: { query },
@@ -66,7 +66,7 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
       const handleColumnsProps = props.handleColumnsProps || {};
       const { initFilters } = props;
 
-      // 生成基础列
+      // Generate base columns
       const baseColumns =
         typeof handleColumns === 'function'
           ? handleColumns({
@@ -75,26 +75,26 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
             })
           : [];
 
-      // 插件设置逻辑 - 不调用 Hook，只进行配置
-      // Hook 调用已移到组件层面
-      // 直接使用基础列配置
+      // Plugin setup logic - do not call Hooks, only configure
+      // Hook calls have been moved to component level
+      // Directly use base column configuration
       Object.assign(context.state, {
         columns: baseColumns,
         originalColumns: baseColumns,
         columnSettings: {},
       });
 
-      // 设置初始过滤器状态
+      // Set initial filter state
       if (!context.state.filters) {
         Object.assign(context.state, {
           filters: initFilters || {},
         });
       }
 
-      // 添加列相关方法到上下文
+      // Add column-related methods to context
       Object.assign(context.helpers, {
         setColumnVisible: (dataIndex: string, visible: boolean) => {
-          // 基于 pro-components 的列可见性控制实现
+          // Implementation based on pro-components column visibility control
           const currentColumns =
             (context.state as { columns?: Record<string, unknown>[] })
               .columns || [];
@@ -105,7 +105,7 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
           Object.assign(context.state, { columns: updatedColumns });
         },
         setColumnWidth: (dataIndex: string, width: number) => {
-          // 设置指定列的宽度
+          // Set width for specified column
           const currentColumns =
             (context.state as { columns?: Record<string, unknown>[] })
               .columns || [];
@@ -119,7 +119,7 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
           dataIndex: string,
           fixed: 'left' | 'right' | false,
         ) => {
-          // 设置列固定位置
+          // Set column fixed position
           const currentColumns =
             (context.state as { columns?: Record<string, unknown>[] })
               .columns || [];
@@ -130,7 +130,7 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
           Object.assign(context.state, { columns: updatedColumns });
         },
         setColumnOrder: (newOrder: string[]) => {
-          // 重新排序列
+          // Reorder columns
           const currentColumns =
             (context.state as { columns?: Record<string, unknown>[] })
               .columns || [];
@@ -144,7 +144,7 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
           Object.assign(context.state, { columns: orderedColumns });
         },
         resetColumns: () => {
-          // 重置列配置到初始状态
+          // Reset column configuration to initial state
           Object.assign(context.state, {
             columns: baseColumns,
             originalColumns: baseColumns,
@@ -155,19 +155,19 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
     },
 
     update(_context: PluginContext) {
-      // 当配置或数据更新时的操作
+      // Operations when configuration or data is updated
     },
 
     uninstall(_context: PluginContext) {
-      // 卸载时的清理操作
+      // Cleanup operations during uninstallation
     },
 
-    // 列管理钩子
+    // Column management hooks
     hooks: {
-      // 获取当前列配置
+      // Get current column configuration
       getColumns(...args: unknown[]) {
         const context = args[0] as PluginContext;
-        // 优先从state获取，如果没有则从props.baseColumns获取
+        // Priority: get from state, if not available then from props.baseColumns
         return (
           (context.state as { columns?: unknown[] }).columns ||
           context.props.baseColumns ||
@@ -175,13 +175,13 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
         );
       },
 
-      // 重置列配置
+      // Reset column configuration
       resetColumns(...args: unknown[]) {
         const context = args[0] as PluginContext;
         (context.helpers as { resetColumns?: () => void }).resetColumns?.();
       },
 
-      // 过滤列
+      // Filter columns
       filterColumns(...args: unknown[]) {
         const context = args[0] as PluginContext;
         const predicate = args[1] as (
@@ -192,7 +192,7 @@ export const TableColumnsPlugin: PluginFactory<TableColumnsConfig> = (
           []
         ).filter(predicate);
       },
-      // 列宽拖拽（兼容 legacy）：返回可用于 Table 的 onHeaderCell 配置
+      // Column width dragging (backward compatibility): returns onHeaderCell configuration for Table
       getResizableHeaderProps(...args: unknown[]) {
         const context = args[0] as PluginContext;
         const dataIndex = args[1] as string;

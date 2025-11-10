@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 账号管理模块的共享类型定义
+ * Shared type definitions for account management module
  */
 
 export interface User {
@@ -28,7 +28,7 @@ export interface User {
   is_active?: boolean;
   is_supervisor?: boolean;
   is_system_admin: boolean;
-  [key: string]: any; // 添加索引签名以满足 BaseRecord 约束
+  [key: string]: any; // Add index signature to satisfy BaseRecord constraint
 }
 
 export interface UserFormData {

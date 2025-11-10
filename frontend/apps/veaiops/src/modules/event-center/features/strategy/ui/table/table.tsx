@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge imports from same source
 import {
   STRATEGY_MANAGEMENT_CONFIG,
   getStrategyColumns,
@@ -31,31 +31,31 @@ import type { InformStrategy } from 'api-generate';
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
 /**
- * 策略表格 Ref 接口
+ * Strategy table ref interface
  *
- * 根据 .cursorrules 规范：
- * - 异步方法必须返回 { success: boolean; error?: Error } 格式
- * - 便于调用方进行判断和处理
+ * According to .cursorrules specification:
+ * - Async methods must return { success: boolean; error?: Error } format
+ * - Facilitates caller judgment and handling
  */
 export interface StrategyTableRef {
   refresh: () => Promise<{ success: boolean; error?: Error }>;
 }
 
 /**
- * 策略表格组件属性接口
+ * Strategy table component props interface
  *
- * 类型分析（基于 Python 源码）：
- * - Python InformStrategyVO (API 响应): bot: BotVO, group_chats: List[GroupChatVO]
- * - Python InformStrategyPayload (API 请求): bot_id: str, chat_ids: List[str]
- * - 前端 InformStrategy (api-generate) = InformStrategyVO
- * - 编辑时需要使用适配器转换为扁平化格式（bot_id, chat_ids）
+ * Type analysis (based on Python source code):
+ * - Python InformStrategyVO (API response): bot: BotVO, group_chats: List[GroupChatVO]
+ * - Python InformStrategyPayload (API request): bot_id: str, chat_ids: List[str]
+ * - Frontend InformStrategy (api-generate) = InformStrategyVO
+ * - When editing, need to use adapter to convert to flattened format (bot_id, chat_ids)
  *
- * 根据 .cursorrules 规范：优先使用 api-generate 中的类型
- * onEdit 接收 InformStrategy，通过 adaptStrategyForEdit 转换为表单需要的格式
+ * According to .cursorrules specification: prioritize using types from api-generate
+ * onEdit receives InformStrategy, converts to form-required format via adaptStrategyForEdit
  */
 interface StrategyTableProps {
-  // ✅ 修复：统一使用 InformStrategy（来自 api-generate），符合单一数据源原则
-  // 编辑表单会通过 adaptStrategyForEdit 适配器提取 bot_id 和 chat_ids
+  // ✅ Fix: Unified use of InformStrategy (from api-generate), conforms to single source of truth principle
+  // Edit form will extract bot_id and chat_ids via adaptStrategyForEdit adapter
   onEdit: (strategy: InformStrategy) => void;
   onDelete: (strategyId: string) => Promise<boolean>;
   onAdd: () => void;
@@ -64,32 +64,32 @@ interface StrategyTableProps {
 const queryFormat = {};
 
 /**
- * 策略表格组件
+ * Strategy table component
  *
- * 重构说明（对比 origin/feat/web-v2）：
- * - 原分支: 使用 useManagementRefresh 手动处理刷新
- * - 当前分支: 使用 useBusinessTable 自动处理刷新（符合 .cursorrules 规范）
- * - StrategyTableRef.refresh: 返回 Promise<{ success: boolean; error?: Error }>（符合规范）
- * - 功能等价性: ✅ 已使用 useBusinessTable 的 operations 自动刷新
+ * Refactoring notes (compared to origin/feat/web-v2):
+ * - Original branch: uses useManagementRefresh to manually handle refresh
+ * - Current branch: uses useBusinessTable to automatically handle refresh (conforms to .cursorrules specification)
+ * - StrategyTableRef.refresh: returns Promise<{ success: boolean; error?: Error }> (conforms to specification)
+ * - Functional equivalence: ✅ Already uses useBusinessTable's operations for automatic refresh
  *
- * 架构特点：
- * - 使用 useStrategyTableConfig Hook（内部使用 useBusinessTable）
- * - 通过 useImperativeHandle 暴露刷新接口
- * - 使用类型适配器函数移除 as any（adaptStrategyForEdit）
- * - 遵循 Feature-Based 模块化架构
+ * Architecture features:
+ * - Uses useStrategyTableConfig Hook (internally uses useBusinessTable)
+ * - Exposes refresh interface via useImperativeHandle
+ * - Uses type adapter functions to remove as any (adaptStrategyForEdit)
+ * - Follows Feature-Based modular architecture
  */
 export const StrategyTable = forwardRef<StrategyTableRef, StrategyTableProps>(
   ({ onEdit, onDelete, onAdd }, ref) => {
     const { data: botsOptions } = useBotsList();
     const { chatOptions: chatsOptions, fetchChats: chartRun } = useChatsList();
 
-    // CustomTable 的内部 ref（使用泛型类型）
-    // 直接使用 InformStrategy（符合 .cursorrules 规范：优先使用 api-generate 中的类型）
+    // CustomTable's internal ref (using generic types)
+    // Directly use InformStrategy (conforms to .cursorrules specification: prioritize types from api-generate)
     const tableRef =
       useRef<CustomTableActionType<InformStrategy, BaseQuery>>(null);
 
-    // 表格配置（已使用 useBusinessTable 自动处理刷新）
-    // ✅ 传递 tableRef 给 useStrategyTableConfig，让 useBusinessTable 可以使用 ref 刷新
+    // Table configuration (already uses useBusinessTable for automatic refresh)
+    // ✅ Pass tableRef to useStrategyTableConfig, allowing useBusinessTable to use ref for refresh
     const {
       customTableProps,
       handleColumns: configHandleColumns,
@@ -100,36 +100,36 @@ export const StrategyTable = forwardRef<StrategyTableRef, StrategyTableProps>(
       onEdit,
       onDelete,
       onCreate: onAdd,
-      ref: tableRef, // ✅ 传递 ref 给 Hook
+      ref: tableRef, // ✅ Pass ref to Hook
     });
 
-    // 操作按钮配置
-    // 注意：创建操作（onAdd）只是打开弹窗，真正的创建提交在弹窗中处理
-    // 弹窗提交后需要手动刷新表格，或在弹窗组件中使用 useBusinessTable 的 afterCreate
+    // Action button configuration
+    // Note: Create operation (onAdd) only opens modal, actual create submission is handled in modal
+    // After modal submission, need to manually refresh table, or use useBusinessTable's afterCreate in modal component
     const { actions } = useStrategyActionConfig(onAdd);
 
-    // 创建 handleColumns 函数，传递操作回调给列配置
+    // Create handleColumns function, pass action callbacks to column configuration
     const handleColumns = useCallback(
       (props: Record<string, unknown>) => {
         return getStrategyColumns({
           ...props,
           onEdit,
-          // ✅ 使用 onDelete，删除操作在 useStrategyTableConfig 中已通过 operationWrapper 自动刷新
+          // ✅ Use onDelete, delete operation in useStrategyTableConfig already auto-refreshes via operationWrapper
           onDelete,
         });
       },
       [onEdit, onDelete],
     );
 
-    // 将 CustomTable 的 ref 适配为 StrategyTableRef
-    // 只暴露 refresh 方法，符合 StrategyTableRef 接口定义
-    // 直接调用 tableRef.current.refresh() 来刷新表格（因为 operations.refresh 返回 void，不是 Promise）
+    // Adapt CustomTable's ref to StrategyTableRef
+    // Only expose refresh method, conforms to StrategyTableRef interface definition
+    // Directly call tableRef.current.refresh() to refresh table (because operations.refresh returns void, not Promise)
     useImperativeHandle(
       ref,
       () => ({
         refresh: async () => {
-          // 直接调用 tableRef.current.refresh()，它返回 Promise<void>
-          // 我们需要将其转换为 Promise<{ success: boolean; error?: Error }>
+          // Directly call tableRef.current.refresh(), it returns Promise<void>
+          // We need to convert it to Promise<{ success: boolean; error?: Error }>
           try {
             await tableRef.current?.refresh();
             return { success: true };
@@ -137,7 +137,7 @@ export const StrategyTable = forwardRef<StrategyTableRef, StrategyTableProps>(
             const errorObj =
               error instanceof Error ? error : new Error(String(error));
             logger.error({
-              message: '刷新策略表格失败',
+              message: 'Failed to refresh strategy table',
               data: {
                 error: errorObj.message,
                 stack: errorObj.stack,
@@ -165,7 +165,7 @@ export const StrategyTable = forwardRef<StrategyTableRef, StrategyTableProps>(
           chatsOptions,
           chartRun,
         }}
-        initQuery={{}} // 添加 initQuery 参数，确保 URL 参数能正确同步
+        initQuery={{}} // Add initQuery parameter to ensure URL parameters sync correctly
         queryFormat={queryFormat}
         syncQueryOnSearchParams
         useActiveKeyHook

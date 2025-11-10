@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 指标模板管理模块统一导出
+ * Metric template management module unified exports
  */
 
-// 导出主要组件
+// Export main components
 export { default as MetricTemplateManagement } from './ui/management';
 
-// 导出其他UI组件
+// Export other UI components
 export { MetricTemplateTable } from './ui';
 
-// 导出Hooks
+// Export Hooks
 export * from './hooks';

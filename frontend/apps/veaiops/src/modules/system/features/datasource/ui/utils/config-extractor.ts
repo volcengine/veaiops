@@ -16,7 +16,7 @@ import type { ConfigItem } from '../types/column-types';
 import { getFieldTranslation } from './field-translation';
 
 /**
- * 提取基本配置项
+ * Extract basic configuration items
  */
 const extractBasicConfigItems = (
   record: Record<string, unknown>,
@@ -39,20 +39,20 @@ const extractBasicConfigItems = (
 };
 
 /**
- * 提取数据源特定配置项
+ * Extract data source specific configuration items
  */
 const extractDataSourceConfigItems = (
   record: Record<string, unknown>,
 ): ConfigItem[] => {
   const configItems: ConfigItem[] = [];
 
-  // 处理 Zabbix 配置
+  // Process Zabbix configuration
   if (record.zabbix_config && typeof record.zabbix_config === 'object') {
     Object.entries(record.zabbix_config).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== '') {
         const translationKey =
           key === 'targets' ? 'zabbix_targets' : `zabbix_${key}`;
-        // 只添加有翻译的字段
+        // Only add fields that have translations
         if (getFieldTranslation(translationKey)) {
           configItems.push({ configKey: translationKey, value });
         }
@@ -60,17 +60,17 @@ const extractDataSourceConfigItems = (
     });
   }
 
-  // 处理火山引擎配置
+  // Process Volcengine configuration
   if (
     record.volcengine_config &&
     typeof record.volcengine_config === 'object'
   ) {
     Object.entries(record.volcengine_config).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== '') {
-        // 特殊处理 instances 字段
+        // Special handling for instances field
         const translationKey =
           key === 'instances' ? 'volcengine_instances' : `volcengine_${key}`;
-        // 只添加有翻译的字段
+        // Only add fields that have translations
         if (getFieldTranslation(translationKey)) {
           configItems.push({ configKey: translationKey, value });
         }
@@ -78,29 +78,29 @@ const extractDataSourceConfigItems = (
     });
   }
 
-  // 处理阿里云配置
+  // Process Aliyun configuration
   if (record.aliyun_config && typeof record.aliyun_config === 'object') {
     Object.entries(record.aliyun_config).forEach(([key, value]) => {
-      // 跳过空值
+      // Skip empty values
       if (value === null || value === undefined || value === '') {
         return;
       }
 
-      // 特殊处理 dimensions 字段，如果为空数组则跳过
+      // Special handling for dimensions field, skip if empty array
       if (key === 'dimensions' && Array.isArray(value) && value.length === 0) {
         return;
       }
 
-      // 构建翻译键：直接使用 aliyun_${key}
+      // Build translation key: directly use aliyun_${key}
       const translationKey = `aliyun_${key}`;
-      // 只添加有翻译的字段
+      // Only add fields that have translations
       if (getFieldTranslation(translationKey)) {
         configItems.push({ configKey: translationKey, value });
       }
     });
   }
 
-  // 处理通用 targets 字段
+  // Process common targets field
   if (record.targets) {
     const translationKey = 'targets';
     if (getFieldTranslation(translationKey)) {
@@ -108,7 +108,7 @@ const extractDataSourceConfigItems = (
     }
   }
 
-  // 处理通用 instances 字段
+  // Process common instances field
   if (record.instances) {
     const translationKey = 'instances';
     if (getFieldTranslation(translationKey)) {
@@ -120,7 +120,7 @@ const extractDataSourceConfigItems = (
 };
 
 /**
- * 提取所有配置项
+ * Extract all configuration items
  */
 export const extractAllConfigItems = (
   record: Record<string, unknown>,

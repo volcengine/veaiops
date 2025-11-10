@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 查询参数同步工具模块
+ * Query parameter synchronization utility module
  *
- * 此模块提供了查询参数与URL同步的工具类和相关函数
+ * This module provides utility classes and related functions for synchronizing query parameters with URL
  */
 
 export {
@@ -26,7 +26,7 @@ export {
 export { QuerySyncUtils } from './query-sync-utils';
 export type { CreateQuerySyncUtilsParams } from './types';
 
-// 导出辅助函数（如果需要）
+// Export helper functions (if needed)
 export {
   convertParamsTypes,
   filterEmptyDataByKeys,

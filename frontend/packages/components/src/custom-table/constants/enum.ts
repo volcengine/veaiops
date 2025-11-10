@@ -13,18 +13,18 @@
 // limitations under the License.
 
 /**
- * 枚举类型定义
- * 类型已迁移到 ../types/constants/enum.ts
- * 此文件保留以兼容现有引用，实际类型请从types目录导入
+ * Enumeration type definitions
+ * Types have been migrated to ../types/constants/enum.ts
+ * This file is kept for compatibility with existing references, actual types should be imported from types directory
  */
 
-// 重新导出枚举值 - 直接从具体文件导入避免循环引用
+// Re-export enum values - Import directly from specific files to avoid circular references
 export {
   PluginNames,
   PluginMethods,
   RendererNames,
 } from '@/custom-table/types/constants/enum';
 
-// PluginPriority 在 types/core/enums.ts 中定义，需要从 core 导入
-// 注意：PluginPriority 是类型别名，不是枚举，通过 types/index.ts 统一导出
+// PluginPriority is defined in types/core/enums.ts, needs to be imported from core
+// Note: PluginPriority is a type alias, not an enum, exported uniformly through types/index.ts
 export type { PluginPriority } from '@/custom-table/types/core/enums';

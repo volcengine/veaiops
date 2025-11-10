@@ -15,31 +15,31 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type User = {
   /**
-   * 用户ID
+   * User ID
    */
   _id?: string;
   /**
-   * 用户名
+   * Username
    */
   username: string;
   /**
-   * 邮箱地址
+   * Email address
    */
   email: string;
   /**
-   * 是否激活
+   * Whether the user is active
    */
   is_active?: boolean;
   /**
-   * 是否为管理员
+   * Whether the user is a supervisor
    */
   is_supervisor?: boolean;
   /**
-   * 创建时间
+   * Creation timestamp
    */
   created_at?: string;
   /**
-   * 更新时间
+   * Last update timestamp
    */
   updated_at?: string;
 };

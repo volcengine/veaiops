@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * 智能阈值任务配置模块 - Hooks 统一导出
+ * Intelligent threshold task configuration module - Hooks unified exports
  */
 
-// 🎯 表格配置 Hook（推荐使用 - 按照 CUSTOM_TABLE_REFACTOR_TASKS.md 规范）
+// 🎯 Table configuration Hook (recommended - follows CUSTOM_TABLE_REFACTOR_TASKS.md specification)
 export {
   useTaskTableConfig,
   type UseTaskTableConfigReturn,
 } from './use-table-config';
 
-// 🎯 自动刷新CRUD操作 Hook（通用解决方案）
+// 🎯 Auto-refresh CRUD operations Hook (general solution)
 export {
   useAutoRefreshOperations,
   createOperationWrapper,
@@ -31,7 +31,7 @@ export {
   type CreateOperationWrapperParams,
 } from './auto-refresh';
 
-// 其他业务 Hooks
+// Other business Hooks
 export { useTaskFormHandlers } from './use-form-handlers';
 export { useTaskOperations } from './use-operations';
 export { useTaskVersionTableConfig } from './use-version-table';

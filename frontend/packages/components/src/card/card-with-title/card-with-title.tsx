@@ -23,8 +23,8 @@ interface CardWithTitleProps extends Omit<CardProps, 'title'> {
 }
 
 /**
- * 带装饰条的Card组件
- * @description 在标题前添加蓝色装饰条，与wrapper-with-title保持一致的视觉风格
+ * Card component with decorative bar
+ * @description Adds blue decorative bar before title, maintaining consistent visual style with wrapper-with-title
  */
 export const CardWithTitle: React.FC<CardWithTitleProps> = ({
   title,

@@ -13,23 +13,23 @@
 // limitations under the License.
 
 import { commonDateRangePickerProps } from '@/constants';
+import { DatePicker } from '@arco-design/web-react';
 import type { FilterPlugin } from '@veaiops/types';
-import {
-  TimezoneAwareDatePicker as DatePicker,
-  TimezoneAwareRangePicker as RangePicker,
-} from '../../../timezone-aware';
+import React from 'react';
+
+const { RangePicker } = DatePicker;
 
 // DatePicker plugin
 export const DatePickerPlugin: FilterPlugin = {
   type: 'DatePicker',
-  name: '日期选择器',
-  description: '单日期选择组件',
+  name: 'Date Picker',
+  description: 'Single date selection component',
   version: '1.0.0',
   render: ({ hijackedProps }: { hijackedProps?: Record<string, unknown> }) => {
     // Filter out properties that should not be passed to DOM elements, including addBefore
     const { subType, addBefore, ...filteredProps } = hijackedProps || {};
 
-    // If there is an addBefore property, convert it to prefix
+    // If addBefore property exists, convert it to prefix
     const finalProps = addBefore
       ? { ...filteredProps, prefix: addBefore }
       : filteredProps;
@@ -39,7 +39,7 @@ export const DatePickerPlugin: FilterPlugin = {
   validateConfig: (config: Record<string, unknown>) =>
     typeof config === 'object',
   defaultConfig: {
-    placeholder: '请选择日期...',
+    placeholder: 'Please select date...',
     allowClear: true,
   },
 };
@@ -47,14 +47,14 @@ export const DatePickerPlugin: FilterPlugin = {
 // RangePicker plugin
 export const RangePickerPlugin: FilterPlugin = {
   type: 'RangePicker',
-  name: '日期范围选择器',
-  description: '日期范围选择组件',
+  name: 'Date Range Picker',
+  description: 'Date range selection component',
   version: '1.0.0',
   render: ({ hijackedProps }: { hijackedProps?: Record<string, unknown> }) => {
     // Filter out properties that should not be passed to DOM elements, including addBefore
     const { subType, addBefore, ...filteredProps } = hijackedProps || {};
 
-    // If there is an addBefore property, convert it to prefix
+    // If addBefore property exists, convert it to prefix
     const finalProps = addBefore
       ? { ...filteredProps, prefix: addBefore }
       : filteredProps;
@@ -64,7 +64,7 @@ export const RangePickerPlugin: FilterPlugin = {
   validateConfig: (config: Record<string, unknown>) =>
     typeof config === 'object',
   defaultConfig: {
-    placeholder: ['开始日期', '结束日期'],
+    placeholder: ['Start date', 'End date'],
     allowClear: true,
   },
 };
@@ -72,14 +72,15 @@ export const RangePickerPlugin: FilterPlugin = {
 // DateRangePicker plugin (compatible with old configuration, equivalent to RangePicker)
 export const DateRangePickerPlugin: FilterPlugin = {
   type: 'DateRangePicker',
-  name: '日期范围选择器(兼容)',
-  description: '与 RangePicker 等价，用于兼容旧的配置项',
+  name: 'Date Range Picker (Compatible)',
+  description:
+    'Equivalent to RangePicker, used for compatibility with old configuration items',
   version: '1.0.0',
   render: ({ hijackedProps }: { hijackedProps?: Record<string, unknown> }) => {
     // Filter out properties that should not be passed to DOM elements, including addBefore
     const { subType, addBefore, ...filteredProps } = hijackedProps || {};
 
-    // If there is an addBefore property, convert it to prefix
+    // If addBefore property exists, convert it to prefix
     const finalProps = addBefore
       ? { ...filteredProps, prefix: addBefore }
       : filteredProps;
@@ -89,7 +90,7 @@ export const DateRangePickerPlugin: FilterPlugin = {
   validateConfig: (config: Record<string, unknown>) =>
     typeof config === 'object',
   defaultConfig: {
-    placeholder: ['开始日期', '结束日期'],
+    placeholder: ['Start date', 'End date'],
     allowClear: true,
   },
 };

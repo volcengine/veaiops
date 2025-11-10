@@ -17,8 +17,8 @@ import type { veArchSelectBlockProps } from '../types/interface';
 import type { SelectBlockState } from '../types/plugin';
 
 /**
- * 调试副作用Hook
- * 负责处理状态变化监控、全局调试方法暴露等调试相关副作用
+ * Debug side effects Hook
+ * Responsible for state change monitoring, global debug method exposure and other debug-related side effects
  */
 export function useDebugEffects({
   currentState,
@@ -37,7 +37,7 @@ export function useDebugEffects({
   consoleDebugLogs: Array<Record<string, unknown>>;
   addDebugLog: (action: string, data: Record<string, unknown>) => void;
 }) {
-  // === 渲染开始日志 ===
+  // === Render start logging ===
   addDebugLog('HOOK_RENDER_START', {
     renderCount: renderCountRef.current,
     propsHash: JSON.stringify(props).slice(0, 100),
@@ -48,7 +48,7 @@ export function useDebugEffects({
     },
   });
 
-  // === 状态变化监控 ===
+  // === State change monitoring ===
   useEffect(() => {
     addDebugLog('STATE_CHANGE', {
       currentState: {
@@ -65,7 +65,7 @@ export function useDebugEffects({
     currentState,
   ]);
 
-  // === 全局调试方法暴露 ===
+  // === Global debug method exposure ===
   useEffect(() => {
     const exportMethodName = `getSelectBlockDebugLogs`;
     Reflect.set(window, exportMethodName, () => debugLogs);

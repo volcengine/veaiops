@@ -16,25 +16,25 @@
 import type { MetricThresholdResult } from './metric-threshold-result';
 export type UpdateTaskResultRequest = {
   /**
-   * 任务ID
+   * Task ID
    */
   task_id: string;
   /**
-   * 任务版本
+   * Task version
    */
   task_version: number;
   /**
-   * 任务状态
+   * Task status
    */
   status: UpdateTaskResultRequest.status;
   /**
-   * 算法结果
+   * Algorithm result
    */
   results?: Array<MetricThresholdResult>;
 };
 export namespace UpdateTaskResultRequest {
   /**
-   * 任务状态
+   * Task status
    */
   export enum status {
     UNKNOWN = 'Unknown',

@@ -23,7 +23,7 @@ import { renderActions } from "./actions";
 const { InfoWithCode, StampTime, TagEllipsis } = CellRender;
 
 /**
- * 基础信息列配置
+ * Basic information column configuration
  */
 export const getBasicColumns = (): ModernTableColumnProps<IntelligentThresholdTask>[] => [
   {
@@ -46,7 +46,7 @@ export const getBasicColumns = (): ModernTableColumnProps<IntelligentThresholdTa
 ];
 
 /**
- * 资源信息列配置
+ * Resource information column configuration
  */
 export const getResourceColumns = (): ModernTableColumnProps<IntelligentThresholdTask>[] => [
     {
@@ -76,7 +76,7 @@ export const getResourceColumns = (): ModernTableColumnProps<IntelligentThreshol
   ];
 
 /**
- * 配置信息列配置
+ * Configuration information column configuration
  */
 export const getConfigColumns = (): ModernTableColumnProps<IntelligentThresholdTask>[] => [
   {
@@ -89,11 +89,11 @@ export const getConfigColumns = (): ModernTableColumnProps<IntelligentThresholdT
 ];
 
 /**
- * 元数据列配置
+ * Metadata column configuration
  */
 export const getMetadataColumns = (): ModernTableColumnProps<IntelligentThresholdTask>[] => [
     // {
-    //   title: '创建人',
+    //   title: 'Creator',
     //   dataIndex: 'createdUser',
     //   key: 'createdUser',
     //   width: 180,
@@ -124,7 +124,7 @@ export const getMetadataColumns = (): ModernTableColumnProps<IntelligentThreshol
   ];
 
 /**
- * 操作列配置
+ * Operation column configuration
  */
 export const getActionColumn = (
   actions: TaskTableActions

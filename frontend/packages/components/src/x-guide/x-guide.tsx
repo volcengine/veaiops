@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 注意：此文件已不再导出任何内容
-// 所有导出已迁移到 index.ts，避免重复导出
-// 类型已在 index.ts 中导出：export * from './interface';
-// 组件已在 guide/guide.tsx 中导出：export { XGuide };
+// Note: This file no longer exports any content
+// All exports have been migrated to index.ts to avoid duplicate exports
+// Types are exported in index.ts: export * from './interface';
+// Component is exported in guide/guide.tsx: export { XGuide };
 
 // import global styles
 
-// 类型已在 index.ts 中导出，避免重复导出
+// Types are exported in index.ts to avoid duplicate exports
 // export type {
 //   IGuide,
 //   IStep,
@@ -31,4 +31,4 @@
 // };
 
 // export class hooks
-// export * from './constant/class-name'; // 已在 constant/index.ts 中导出
+// export * from './constant/class-name'; // Already exported in constant/index.ts

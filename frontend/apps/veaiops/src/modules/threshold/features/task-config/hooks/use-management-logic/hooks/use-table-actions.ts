@@ -22,47 +22,47 @@ interface UseTableActionsParams {
 }
 
 /**
- * 表格操作配置 Hook
+ * Table operation configuration Hook
  */
 export const useTableActions = ({
   handleTaskDetail,
 }: UseTableActionsParams): TaskTableActions => {
-  // 🎯 构造表格操作配置 - 使用传入的回调函数
+  // 🎯 Build table operation configuration - use passed callback functions
   const tableActions: TaskTableActions = useMemo(
     () => ({
       onAdd: async (): Promise<boolean> => {
-        // 新增任务 - 由调用方实现
+        // Add task - implemented by caller
         return true;
       },
       onTaskDetail:
         handleTaskDetail ||
         (() => {
-          // 任务详情 - 由调用方实现
+          // Task details - implemented by caller
         }),
       onRerun: () => {
-        // 重新执行 - 由调用方实现
+        // Rerun - implemented by caller
       },
       onViewVersions: () => {
-        // 查看版本 - 由调用方实现
+        // View versions - implemented by caller
       },
       onCreateAlarm: () => {
-        // 创建告警 - 由调用方实现
+        // Create alarm - implemented by caller
       },
       onCopy: () => {
-        // 复制任务 - 由调用方实现
+        // Copy task - implemented by caller
       },
       onBatchRerun: () => {
-        // 批量重新执行 - 由调用方实现
+        // Batch rerun - implemented by caller
       },
       onDelete: async (taskId: string): Promise<boolean> => {
-        // ✅ 正确：使用 logger 记录信息
+        // ✅ Correct: use logger to record information
         logger.info({
           message: '删除任务',
           data: { taskId },
           source: 'useManagementLogic',
           component: 'onDelete',
         });
-        // 删除任务 - 由调用方实现
+        // Delete task - implemented by caller
         return true;
       },
     }),

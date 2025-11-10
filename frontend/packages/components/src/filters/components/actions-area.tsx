@@ -20,23 +20,23 @@ import { commonClassName } from '../core/constants';
 import { renderActions } from '../core/renderer';
 
 interface ActionsAreaProps {
-  /** 包装器类名 */
+  /** Wrapper class name */
   wrapperClassName?: string;
-  /** 是否显示重置按钮 */
+  /** Whether to show reset button */
   showReset?: boolean;
-  /** 是否可以重置 */
+  /** Whether reset is available */
   canReset?: boolean;
-  /** 重置处理函数 */
+  /** Reset handler function */
   onReset?: () => void;
-  /** 自定义操作按钮 */
+  /** Custom action buttons */
   customActions?: ReactNode[] | ReactNode;
-  /** 自定义操作按钮样式 */
+  /** Custom action buttons style */
   customActionsStyle?: React.CSSProperties;
 }
 
 /**
- * 操作区域组件
- * 负责渲染重置按钮和自定义操作按钮
+ * Actions area component
+ * Responsible for rendering reset button and custom action buttons
  */
 const ActionsArea: FC<ActionsAreaProps> = ({
   wrapperClassName = '',
@@ -46,7 +46,7 @@ const ActionsArea: FC<ActionsAreaProps> = ({
   customActions,
   customActionsStyle = {},
 }) => {
-  // 处理重置按钮点击
+  // Handle reset button click
   const handleResetClick = () => {
     resetLogCollector.log({
       component: 'ActionsArea',
@@ -95,21 +95,21 @@ const ActionsArea: FC<ActionsAreaProps> = ({
     }
   };
 
-  // 如果没有任何操作，不渲染
+  // If no actions, don't render
   if (!showReset && !customActions) {
     return null;
   }
 
   return (
     <div className={`${commonClassName} ${wrapperClassName}`}>
-      {/* 重置按钮 */}
+      {/* Reset button */}
       {showReset && canReset && onReset && (
         <Button type="outline" onClick={handleResetClick}>
-          重置
+          Reset
         </Button>
       )}
 
-      {/* 自定义操作按钮 */}
+      {/* Custom action buttons */}
       {customActions && (
         <div className={commonClassName} style={customActionsStyle}>
           {renderActions(ensureArray(customActions))}

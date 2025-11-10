@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useTaskConfigStore } from '@/stores/task-config-store';
 import { Button } from '@arco-design/web-react';
 import { IconPlus, IconRefresh } from '@arco-design/web-react/icon';
 import {
@@ -29,11 +28,10 @@ import type {
   ListIntelligentThresholdTaskRequest,
   PaginatedAPIResponseIntelligentThresholdTask,
 } from 'api-generate';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { getTaskColumns, getTaskFilters } from '../lib';
 import { taskDataSource } from '../lib/data-source';
 import type { TaskQueryParams } from '../lib/data-source/types';
-import type { TaskFiltersQuery } from '../lib/filters/types';
 import type { TaskTableActions } from '../lib/types';
 
 /**
@@ -58,10 +56,10 @@ export interface UseTaskTableConfigReturn {
 /**
  * Task table configuration Hook
  *
- * 🎯 Fully implemented according to UI Extension Guide specifications:
- * - Hook cohesion pattern: Cohesively aggregates all table-related logic, including tableActions
- * - Auto-refresh mechanism: Direct refresh through operations, supports no-ref mode
- * - Fully cohesive props: Unified return of all table props, reducing component code lines
+ * 🎯 Fully implemented according to UI Extension Guidelines:
+ * - Hook cohesion pattern: Cohesive all table-related logic, including tableActions
+ * - Auto-refresh mechanism: Refresh directly through operations, supports no-ref mode
+ * - Props fully cohesive: Returns all table props uniformly, reducing component code lines
  * - Standardized types: Uses standard types from @veaiops/components and api-generate
  * - Standardized architecture: Unified configuration structure and return interface
  *
@@ -98,12 +96,12 @@ export interface UseTaskTableConfigParams {
   onBatchRerun?: () => void;
   onDelete?: (taskId: string) => Promise<boolean>;
   handleTaskDetail?: (task: IntelligentThresholdTask) => void;
-  onViewDatasource?: (task: IntelligentThresholdTask) => void;
   selectedTasks?: string[];
   tableRef?: React.RefObject<any>;
 }
 
 export const useTaskTableConfig = ({
+  onEdit,
   onRerun,
   onViewVersions,
   onCreateAlarm,
@@ -112,7 +110,6 @@ export const useTaskTableConfig = ({
   onBatchRerun,
   onDelete,
   handleTaskDetail,
-  onViewDatasource,
   selectedTasks,
   tableRef,
 }: UseTaskTableConfigParams): UseTaskTableConfigReturn => {
@@ -174,13 +171,13 @@ export const useTaskTableConfig = ({
     [],
   );
 
-  // 🎯 Data source configuration - using utility functions
+  // 🎯 Data source configuration - Use utility functions
   const dataSource = useMemo(
     () => createServerPaginationDataSource({ request }),
     [request],
   );
 
-  // 🎯 Table configuration - using utility functions
+  // 🎯 Table configuration - Use utility functions
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
@@ -191,14 +188,14 @@ export const useTaskTableConfig = ({
     [],
   );
 
-  // 🎯 Business operation wrapping - add handlers to support auto-refresh
+  // 🎯 Business operation wrapping - Add handlers to support auto-refresh
   const { customTableProps, customOperations, wrappedHandlers, operations } =
     useBusinessTable({
       dataSource,
       tableProps,
       // ✅ Add handlers configuration to wrap delete operation, enabling auto-refresh after success
       handlers: {
-        // Delete operation - returns boolean indicating success
+        // Delete operation - Returns boolean indicating success
         delete: onDelete
           ? async (id: string) => {
               const success = await onDelete(id);
@@ -212,14 +209,14 @@ export const useTaskTableConfig = ({
       },
       refreshConfig: {
         enableRefreshFeedback: true,
-        successMessage: 'Operation successful',
-        errorMessage: 'Operation failed, please retry',
+        successMessage: '操作成功',
+        errorMessage: '操作失败，请重试',
       },
       // ✅ Pass tableRef so useBusinessTable can call ref.current.refresh()
       ref: tableRef,
     });
 
-  // 🎯 Cohesive table operation configuration - use wrappedHandlers.delete instead of original onDelete
+  // 🎯 Cohesive table action configuration - Use wrappedHandlers.delete to replace original onDelete
   const tableActions: TaskTableActions = useMemo(
     () => ({
       onRerun,
@@ -228,14 +225,13 @@ export const useTaskTableConfig = ({
       onCopy,
       onAdd,
       onBatchRerun,
-      // ✅ Use wrappedHandlers.delete (auto-refresh), fallback to original onDelete if not available
+      // ✅ Use wrappedHandlers.delete (auto-refresh), or use original onDelete if not available
       onDelete: wrappedHandlers?.delete || onDelete,
       onTaskDetail:
         handleTaskDetail ||
         (() => {
           // Default empty handler for task detail
         }),
-      onViewDatasource,
     }),
     [
       onRerun,
@@ -247,11 +243,10 @@ export const useTaskTableConfig = ({
       onDelete,
       wrappedHandlers,
       handleTaskDetail,
-      onViewDatasource,
     ],
   );
 
-  // 🎯 Column configuration - using standard types
+  // 🎯 Column configuration - Use standard types
   const handleColumns = useMemo(
     () =>
       (
@@ -261,61 +256,10 @@ export const useTaskTableConfig = ({
     [tableActions],
   );
 
-  // ✅ Fix: Sync store at Hook top level to avoid side effects in getTaskFilters pure function
-  // Listen to URL parameter changes and sync datasource_type to store
-  const lastSyncedDatasourceTypeRef = useRef<string | undefined>(undefined);
-
-  // Helper function to sync URL parameters to store
-  const syncUrlToStore = useMemo(() => {
-    return () => {
-      if (typeof window === 'undefined') {
-        return;
-      }
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlDatasourceType = urlParams.get('datasource_type');
-      const lastSyncedValue = lastSyncedDatasourceTypeRef.current;
-
-      // Only sync when value changes to avoid repeated execution
-      if (urlDatasourceType && urlDatasourceType !== lastSyncedValue) {
-        const { setFilterDatasourceType } = useTaskConfigStore.getState();
-        const currentFilterType =
-          useTaskConfigStore.getState().filterDatasourceType;
-
-        // Only update when value is different to avoid unnecessary state updates
-        if (currentFilterType !== urlDatasourceType) {
-          setFilterDatasourceType(urlDatasourceType);
-          lastSyncedDatasourceTypeRef.current = urlDatasourceType;
-        }
-      }
-    };
-  }, []);
-
-  // Sync once when component mounts
-  useEffect(() => {
-    syncUrlToStore();
-  }, [syncUrlToStore]);
-
-  // Listen to popstate event (browser forward/back)
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return undefined;
-    }
-
-    const handlePopState = () => {
-      syncUrlToStore();
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, [syncUrlToStore]);
-
-  // 🎯 Filter configuration - using standard types
+  // 🎯 Filter configuration - Use standard types
   const handleFilters = useMemo(() => getTaskFilters, []);
 
-  // 🎯 Operation configuration - includes add and batch operation buttons
+  // 🎯 Action configuration - Includes add and batch operation buttons
   const renderActions = useMemo(
     () =>
       (_props?: Record<string, unknown>): JSX.Element[] => {
@@ -329,14 +273,13 @@ export const useTaskTableConfig = ({
               type="primary"
               icon={<IconPlus />}
               onClick={onAdd}
-              data-testid="new-task-btn"
             >
-              创建任务
+              Create Task
             </Button>,
           );
         }
 
-        // Add batch rerun button (always displayed, disabled when nothing is selected)
+        // Add batch rerun button (always shown, disabled when nothing is selected)
         if (onBatchRerun) {
           actionButtons.push(
             <Button
@@ -346,7 +289,7 @@ export const useTaskTableConfig = ({
               onClick={onBatchRerun}
               disabled={!selectedTasks || selectedTasks.length === 0}
             >
-              批量重新执行
+              Batch Rerun{' '}
               {selectedTasks &&
                 selectedTasks.length > 0 &&
                 `(${selectedTasks.length})`}

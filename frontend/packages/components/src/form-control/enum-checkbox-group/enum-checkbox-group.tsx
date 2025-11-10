@@ -17,7 +17,7 @@ import styles from './index.module.less';
 
 export interface EnumsCheckBoxGroupProps<EnumsObject = any> {
   multi: boolean;
-  enums: Array<keyof EnumsObject>; // 枚举值，支持数组和枚举对象两种格式
+  enums: Array<keyof EnumsObject>; // Enum values, supports both array and enum object formats
   labels: EnumsObject;
   value: any;
   onChange: (values: Array<keyof EnumsObject> | keyof EnumsObject) => void;

@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 智能阈值模块导出 - 新架构
+// Intelligent threshold module exports - new architecture
 
-// 功能模块导出
+// Feature module exports
 export * from './features';
 
-// 导出共享资源（包含 PushHistory 组件等）
-// 注意：PushHistoryManager 从 shared 导出，features/history 只是重新导出，避免重复导出
+// Export shared resources (including PushHistory component, etc.)
+// Note: PushHistoryManager is exported from shared, features/history only re-exports to avoid duplicate exports
 export * from './shared';

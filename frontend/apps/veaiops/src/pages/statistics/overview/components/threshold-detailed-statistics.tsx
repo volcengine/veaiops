@@ -22,8 +22,8 @@ interface ThresholdDetailedStatisticsProps {
 }
 
 /**
- * 智能阈值任务详细统计组件
- * @description 展示智能阈值任务的详细执行情况统计
+ * Intelligent threshold task detailed statistics component
+ * @description Display detailed execution statistics for intelligent threshold tasks
  */
 export const ThresholdDetailedStatistics: React.FC<
   ThresholdDetailedStatisticsProps

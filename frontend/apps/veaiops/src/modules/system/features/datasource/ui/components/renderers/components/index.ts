@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Components - 统一导出入口
- * 职责：提供渲染器相关的UI组件
+ * Components - Unified export entry
+ * Responsibility: Provide renderer-related UI components
  */
 
 export { CollapsibleConfigItems } from './collapsible-config-items';

@@ -21,13 +21,13 @@ import type { UserFormData } from '../../../types';
 import { createUser, deleteUser, updateUser } from '../lib/api';
 
 /**
- * 账号管理逻辑Hook
- * 提供账号管理页面的所有业务逻辑
+ * Account management logic Hook
+ * Provides all business logic for account management page
  */
 export const useAccountManagementLogic = (
   refreshTable?: () => Promise<boolean>,
 ) => {
-  // 使用管理刷新 Hook
+  // Use management refresh Hook
   const { afterCreate, afterUpdate, afterDelete } =
     useManagementRefresh(refreshTable);
 
@@ -35,7 +35,7 @@ export const useAccountManagementLogic = (
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 删除用户
+  // Delete user
   const handleDelete = useCallback(
     async (userId: string) => {
       try {
@@ -56,7 +56,7 @@ export const useAccountManagementLogic = (
             component: 'handleDelete',
           });
 
-          // 删除成功后刷新表格
+          // Refresh table after successful deletion
           logger.debug({
             message:
               '[AccountManagementLogic] 🔄 准备调用 afterDelete 刷新表格',
@@ -91,7 +91,7 @@ export const useAccountManagementLogic = (
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Extract actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '删除失败，请重试';
@@ -108,7 +108,7 @@ export const useAccountManagementLogic = (
     [afterDelete],
   );
 
-  // 创建用户
+  // Create user
   const handleCreate = useCallback(
     async (values: UserFormData) => {
       try {
@@ -131,7 +131,7 @@ export const useAccountManagementLogic = (
           setModalVisible(false);
           form.resetFields();
 
-          // 创建成功后刷新表格
+          // Refresh table after successful creation
           logger.debug({
             message:
               '[AccountManagementLogic] 🔄 准备调用 afterCreate 刷新表格',
@@ -166,7 +166,7 @@ export const useAccountManagementLogic = (
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Extract actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '创建失败，请重试';
@@ -183,7 +183,7 @@ export const useAccountManagementLogic = (
     [form, afterCreate],
   );
 
-  // 更新用户
+  // Update user
   const handleUpdate = useCallback(
     async (values: UserFormData) => {
       if (!editingUser || !editingUser._id) {
@@ -220,7 +220,7 @@ export const useAccountManagementLogic = (
           setEditingUser(null);
           form.resetFields();
 
-          // 更新成功后刷新表格
+          // Refresh table after successful update
           logger.debug({
             message:
               '[AccountManagementLogic] 🔄 准备调用 afterUpdate 刷新表格',
@@ -255,7 +255,7 @@ export const useAccountManagementLogic = (
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Extract actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '更新失败，请重试';
@@ -272,7 +272,7 @@ export const useAccountManagementLogic = (
     [editingUser, form, afterUpdate],
   );
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = useCallback(
     async (values: UserFormData) => {
       if (editingUser) {
@@ -284,7 +284,7 @@ export const useAccountManagementLogic = (
     [editingUser, handleUpdate, handleCreate],
   );
 
-  // 打开编辑弹窗
+  // Open edit modal
   const handleEdit = useCallback(
     (user: User) => {
       setEditingUser(user);
@@ -300,11 +300,11 @@ export const useAccountManagementLogic = (
     [form],
   );
 
-  // 打开新增弹窗
+  // Open add modal
   const handleAdd = useCallback(() => {
     setEditingUser(null);
     form.resetFields();
-    // 设置默认值：新增账号默认为普通用户，状态为活跃
+    // Set default values: new account defaults to regular user, status active
     form.setFieldsValue({
       role: 'user',
       status: 'active',
@@ -313,7 +313,7 @@ export const useAccountManagementLogic = (
     setModalVisible(true);
   }, [form]);
 
-  // 关闭弹窗
+  // Close modal
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     setEditingUser(null);
@@ -321,12 +321,12 @@ export const useAccountManagementLogic = (
   }, [form]);
 
   return {
-    // 状态
+    // State
     modalVisible,
     editingUser,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,

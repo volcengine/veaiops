@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Stats 功能模块统一导出
+ * Stats feature module unified export
  */
 
 export { OncallStatsPage } from './page';

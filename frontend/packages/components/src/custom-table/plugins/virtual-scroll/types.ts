@@ -14,71 +14,71 @@
 
 import type { VirtualListHandle } from '@arco-design/web-react/es/_class/VirtualList';
 /**
- * 虚拟滚动插件类型定义
- * 基于 Arco Table VirtualList 能力
+ * Virtual scroll plugin type definitions
+ * Based on Arco Table VirtualList capability
  */
 import type { RefObject } from 'react';
 
 /**
- * 虚拟滚动配置
+ * Virtual scroll configuration
  */
 export interface VirtualScrollConfig {
-  /** 是否启用插件 */
+  /** Whether to enable plugin */
   enabled?: boolean;
-  /** 插件优先级 */
+  /** Plugin priority */
   priority?: number;
-  /** 虚拟滚动容器高度 */
+  /** Virtual scroll container height */
   height?: number | string;
-  /** 每项的高度 */
+  /** Height of each item */
   itemHeight?: number | ((index: number) => number);
-  /** 缓冲区大小 */
+  /** Buffer size */
   buffer?: number;
-  /** 是否启用水平虚拟滚动 */
+  /** Whether to enable horizontal virtual scroll */
   horizontal?: boolean;
-  /** 阈值，超过此数量才启用虚拟滚动 */
+  /** Threshold, virtual scroll is only enabled when exceeding this count */
   threshold?: number;
-  /** 滚动到指定位置的回调 */
+  /** Callback when scrolling to specified position */
   onScroll?: (scrollTop: number, scrollLeft: number) => void;
-  /** 滚动到顶部的回调 */
+  /** Callback when scrolling to top */
   onScrollToTop?: () => void;
-  /** 滚动到底部的回调 */
+  /** Callback when scrolling to bottom */
   onScrollToBottom?: () => void;
 }
 
 /**
- * 虚拟滚动方法
+ * Virtual scroll methods
  */
 export interface VirtualScrollMethods {
-  /** 滚动到指定索引 */
+  /** Scroll to specified index */
   scrollToIndex: (index: number) => void;
-  /** 滚动到指定位置 */
+  /** Scroll to specified position */
   scrollTo: (scrollTop: number) => void;
-  /** 获取当前滚动位置 */
+  /** Get current scroll offset */
   getScrollOffset: () => { scrollTop: number; scrollLeft: number };
-  /** 刷新虚拟列表 */
+  /** Refresh virtual list */
   refresh: () => void;
 }
 
 /**
- * 插件状态
+ * Plugin state
  */
 export interface VirtualScrollState {
-  /** 是否启用虚拟滚动 */
+  /** Whether virtual scroll is enabled */
   isVirtualEnabled: boolean;
-  /** 虚拟列表引用 */
+  /** Virtual list reference */
   virtualListRef: RefObject<VirtualListHandle>;
-  /** 可见范围 */
+  /** Visible range */
   visibleRange: {
     start: number;
     end: number;
   };
-  /** 当前滚动位置 */
+  /** Current scroll offset */
   scrollOffset: {
     top: number;
     left: number;
   };
-  /** 总数据量 */
+  /** Total data count */
   totalCount: number;
-  /** 可见数据量 */
+  /** Visible data count */
   visibleCount: number;
 }

@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type PaginationRequest = {
   /**
-   * 页码
+   * Page number
    */
   page: number;
   /**
-   * 每页大小
+   * Page size
    */
   page_size: number;
 };

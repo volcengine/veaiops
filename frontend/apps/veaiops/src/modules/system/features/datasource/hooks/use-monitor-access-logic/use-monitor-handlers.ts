@@ -18,7 +18,7 @@ import { logger } from '@veaiops/utils';
 import { useCallback } from 'react';
 
 /**
- * 监控数据源处理器Hook参数
+ * Monitor data source handler Hook parameters
  */
 interface UseMonitorHandlersParams {
   setEditingMonitor: (monitor: DataSource | null) => void;
@@ -31,8 +31,8 @@ interface UseMonitorHandlersParams {
 }
 
 /**
- * 监控数据源事件处理器Hook
- * 提供所有UI事件的处理函数
+ * Monitor data source event handler Hook
+ * Provides handler functions for all UI events
  */
 export const useMonitorHandlers = ({
   setEditingMonitor,
@@ -43,12 +43,12 @@ export const useMonitorHandlers = ({
   form,
   deleteMonitor,
 }: UseMonitorHandlersParams) => {
-  // 处理添加
+  // Handle add
   const handleAdd = useCallback(() => {
     setWizardVisible(true);
   }, [setWizardVisible]);
 
-  // 处理编辑
+  // Handle edit
   const handleEdit = useCallback(
     (monitor: DataSource) => {
       setEditingMonitor(monitor);
@@ -57,7 +57,7 @@ export const useMonitorHandlers = ({
     [setEditingMonitor, setModalVisible],
   );
 
-  // 处理删除
+  // Handle delete
   interface HandleDeleteParams {
     id: string;
     datasourceType: DataSourceType;
@@ -68,7 +68,7 @@ export const useMonitorHandlers = ({
         const success = await deleteMonitor(id, datasourceType);
         return success;
       } catch (error: unknown) {
-        // ✅ 正确：记录错误并返回失败
+        // ✅ Correct: record error and return failure
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
@@ -89,7 +89,7 @@ export const useMonitorHandlers = ({
     [deleteMonitor],
   );
 
-  // 处理查看详情
+  // Handle view details
   const handleViewDetails = useCallback(
     (monitor: DataSource) => {
       setSelectedMonitor(monitor);
@@ -98,20 +98,20 @@ export const useMonitorHandlers = ({
     [setSelectedMonitor, setDetailDrawerVisible],
   );
 
-  // 处理关闭详情抽屉
+  // Handle close detail drawer
   const handleDetailDrawerClose = useCallback(() => {
     setDetailDrawerVisible(false);
     setSelectedMonitor(null);
   }, [setDetailDrawerVisible, setSelectedMonitor]);
 
-  // 处理模态框取消
+  // Handle modal cancel
   const handleModalCancel = useCallback(() => {
     setModalVisible(false);
     setEditingMonitor(null);
     form.resetFields();
   }, [setModalVisible, setEditingMonitor, form]);
 
-  // 处理向导关闭
+  // Handle wizard close
   const handleWizardClose = useCallback(() => {
     setWizardVisible(false);
   }, [setWizardVisible]);

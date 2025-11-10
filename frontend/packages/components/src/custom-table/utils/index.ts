@@ -13,24 +13,24 @@
 // limitations under the License.
 
 /**
- * CustomTable 工具函数统一导出
+ * CustomTable utility functions unified export
  */
 
-// 数据处理工具
+// Data processing utilities
 export {
   filterEmptyDataByKeys,
   formatTableData,
   filterTableData,
 } from './data';
 
-// 生命周期管理器
+// Lifecycle manager
 export {
   LifecycleManager,
   createLifecycleManager,
   mergeLifecycleConfigs,
 } from './lifecycle-manager';
 
-// 插件生命周期增强器
+// Plugin lifecycle enhancer
 export {
   enhancePluginLifecycle,
   enhancePluginsLifecycle,
@@ -39,25 +39,25 @@ export {
   getPluginLifecyclePhases,
 } from './plugin-lifecycle-enhancer';
 
-// 格式化工具
+// Formatting utilities
 
-// 查询参数工具
+// Query parameter utilities
 export { getParamsObject } from './query';
 
-// Legacy 工具函数
+// Legacy utility functions
 export * from './legacy-utils';
 
-// 数据源工具函数（从 data-source-helpers 导出）
+// Data source utility functions (exported from data-source-helpers)
 export {
   buildRequestResult,
   extractResponseData,
   handleRequestError,
 } from './data-source-helpers';
 
-// 日志工具 - 通过层层导出实现最短路径（@/custom-table/utils）
+// Log utilities - achieve shortest path through layered exports (@/custom-table/utils)
 export { devLog } from './log-utils';
 export { resetLogCollector } from './reset-log-collector';
 
-// 工具类型 - 已移动到 types 目录统一管理
-// ResponseErrorType 可能不存在于 @veaiops/types，暂时注释
+// Utility types - moved to types directory for unified management
+// ResponseErrorType may not exist in @veaiops/types, temporarily commented
 // export type { ResponseErrorType } from '@veaiops/types';

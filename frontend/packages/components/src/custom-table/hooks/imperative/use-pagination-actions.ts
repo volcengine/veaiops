@@ -13,10 +13,9 @@
 // limitations under the License.
 
 /**
- * CustomTable 分页操作 Hook
- * 负责处理分页相关的所有操作
+ * CustomTable pagination operations Hook
+ * Responsible for handling all pagination-related operations
  *
-
  * @date 2025-12-19
  */
 import type {
@@ -26,7 +25,7 @@ import type {
 } from '@/custom-table/types';
 
 /**
- * @name 分页信息接口
+ * @name Pagination information interface
  */
 export interface PageInfo {
   current: number;
@@ -35,28 +34,28 @@ export interface PageInfo {
 }
 
 /**
- * @name 分页操作相关的实例方法
+ * @name Pagination operation related instance methods
  */
 export interface PaginationActionMethods {
-  /** @name 设置当前页码 */
+  /** @name Set current page number */
   setCurrentPage: (page: number) => void;
-  /** @name 设置页面大小 */
+  /** @name Set page size */
   setPageSize: (size: number) => void;
-  /** @name 设置页码和页面大小 */
+  /** @name Set page number and page size */
   setPage: (page: number, pageWidth?: number) => void;
-  /** @name 获取当前页码 */
+  /** @name Get current page number */
   getCurrentPage: () => number;
-  /** @name 获取页面大小 */
+  /** @name Get page size */
   getPageSize: () => number;
-  /** @name 获取总条数 */
+  /** @name Get total count */
   getTotal: () => number;
-  /** @name 重置分页配置 */
+  /** @name Reset pagination configuration */
   resetPagination: () => void;
-  /** @name 获取分页信息 */
+  /** @name Get pagination information */
   getPage: () => PageInfo;
-  /** @name 获取页面信息 (别名) */
+  /** @name Get page information (alias) */
   getPageInfo: () => { current: number; pageSize: number; total: number };
-  /** @name 设置页面信息 */
+  /** @name Set page information */
   setPageInfo: (pageInfo: {
     current?: number;
     pageSize?: number;
@@ -65,8 +64,8 @@ export interface PaginationActionMethods {
 }
 
 /**
- * @name 创建分页操作方法
- * @description 基于 pro-components 分页设计模式
+ * @name Create pagination operation methods
+ * @description Based on pro-components pagination design pattern
  */
 export const createPaginationActions = <
   RecordType extends BaseRecord = BaseRecord,
@@ -82,13 +81,13 @@ export const createPaginationActions = <
   const { current, pageSize, tableTotal } = state;
 
   return {
-    /** @name 设置当前页码 */
+    /** @name Set current page number */
     setCurrentPage: (page: number) => context.helpers.setCurrent(page),
 
-    /** @name 设置页面大小 */
+    /** @name Set page size */
     setPageSize: (size: number) => context.helpers.setPageSize(size),
 
-    /** @name 设置页码和页面大小 */
+    /** @name Set page number and page size */
     setPage: (page: number, pageWidth?: number) => {
       context.helpers.setCurrent(page);
       if (pageWidth) {
@@ -96,36 +95,36 @@ export const createPaginationActions = <
       }
     },
 
-    /** @name 获取当前页码 */
+    /** @name Get current page number */
     getCurrentPage: () => current,
 
-    /** @name 获取页面大小 */
+    /** @name Get page size */
     getPageSize: () => pageSize,
 
-    /** @name 获取总条数 */
+    /** @name Get total count */
     getTotal: () => tableTotal,
 
-    /** @name 重置分页配置 */
+    /** @name Reset pagination configuration */
     resetPagination: () => {
       context.helpers.setCurrent(1);
       context.helpers.setPageSize(10);
     },
 
-    /** @name 获取分页信息 */
+    /** @name Get pagination information */
     getPage: () => ({
       current,
       pageSize,
       total: tableTotal,
     }),
 
-    /** @name 获取页面信息 (别名) */
+    /** @name Get page information (alias) */
     getPageInfo: () => ({
       current,
       pageSize,
       total: tableTotal,
     }),
 
-    /** @name 设置页面信息 */
+    /** @name Set page information */
     setPageInfo: (pageInfo: {
       current?: number;
       pageSize?: number;
@@ -137,7 +136,7 @@ export const createPaginationActions = <
       if (pageInfo.pageSize !== undefined) {
         context.helpers.setPageSize(pageInfo.pageSize);
       }
-      // total 通常通过数据加载自动设置，这里暂不处理
+      // total is usually set automatically through data loading, not handled here for now
     },
   };
 };

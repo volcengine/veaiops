@@ -16,8 +16,8 @@ import type React from 'react';
 import { TaskManagement } from '../management';
 
 /**
- * 智能阈值配置管理页面
- * @description 智能阈值任务配置管理
+ * Intelligent threshold configuration management page
+ * @description Intelligent threshold task configuration management
  */
 const ConfigManagementPage: React.FC = () => {
   return <TaskManagement />;

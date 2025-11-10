@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 阿里云数据转换工具
- * @description 处理阿里云API响应数据的格式转换
+ * Aliyun data transformation utilities
+ * @description Handles format conversion of Aliyun API response data
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -22,7 +22,7 @@
 import type { AliyunInstance, AliyunMetric, AliyunProject } from '../../types';
 
 /**
- * 转换项目数据
+ * Transform project data
  */
 export const transformProjectData = (rawData: any[]): AliyunProject[] => {
   return rawData.map((item: any) => ({
@@ -33,7 +33,7 @@ export const transformProjectData = (rawData: any[]): AliyunProject[] => {
 };
 
 /**
- * 转换指标数据
+ * Transform metric data
  */
 export const transformMetricData = (rawData: any[]): AliyunMetric[] => {
   return (
@@ -43,7 +43,7 @@ export const transformMetricData = (rawData: any[]): AliyunMetric[] => {
       description: item.Description,
       unit: item.Unit,
       dimensions: item.Dimensions || [],
-      // 解析 Dimensions 字符串（逗号分隔）为数组
+      // Parse Dimensions string (comma-separated) into array
       dimensionKeys: item.Dimensions
         ? item.Dimensions.split(',')
             .map((d: string) => d.trim())
@@ -54,16 +54,16 @@ export const transformMetricData = (rawData: any[]): AliyunMetric[] => {
 };
 
 /**
- * 转换实例数据
+ * Transform instance data
  *
- * 后端接口: /apis/v1/datasource/connect/aliyun/metrics/instances (POST)
- * 返回的数据格式：[{instanceId: "xxx", userId: "yyy"}, ...]
- * 每个对象本身就是 dimensions，需要提取 instanceId 等字段用于展示
+ * Backend API: /apis/v1/datasource/connect/aliyun/metrics/instances (POST)
+ * Response format: [{instanceId: "xxx", userId: "yyy"}, ...]
+ * Each object itself is dimensions, need to extract instanceId and other fields for display
  *
- * 字段兼容性说明：
- * - instanceId: 可能是 instanceId, InstanceId, instance_id
- * - instanceName: 可能是 instanceName, InstanceName, instance_name，如果没有则使用 instanceId
- * - region: 可能是 region, Region
+ * Field compatibility notes:
+ * - instanceId: may be instanceId, InstanceId, instance_id
+ * - instanceName: may be instanceName, InstanceName, instance_name, if not available use instanceId
+ * - region: may be region, Region
  */
 export const transformInstanceData = (rawData: unknown): AliyunInstance[] => {
   const dataArray = rawData as any[];
@@ -73,17 +73,17 @@ export const transformInstanceData = (rawData: unknown): AliyunInstance[] => {
   }
 
   return dataArray.map((item: any) => {
-    // 尝试从多个可能的字段获取实例ID
-    // 当只有 userId 而没有 instanceId 时，使用 userId 作为 instanceId（用于兼容性）
+    // Try to get instance ID from multiple possible fields
+    // When only userId is available without instanceId, use userId as instanceId (for compatibility)
     const instanceId =
       item.instanceId ||
       item.InstanceId ||
       item.instance_id ||
-      item.userId || // 当只有 userId 时，使用 userId 作为 instanceId
+      item.userId || // When only userId is available, use userId as instanceId
       '';
 
-    // 尝试从多个可能的字段获取实例名称，如果没有则使用 instanceId
-    // 当只有 userId 时，使用 "userId: xxx" 格式作为名称
+    // Try to get instance name from multiple possible fields, if not available use instanceId
+    // When only userId is available, use "userId: xxx" format as name
     const instanceName =
       item.instanceName ||
       item.InstanceName ||
@@ -94,21 +94,21 @@ export const transformInstanceData = (rawData: unknown): AliyunInstance[] => {
       instanceId ||
       '';
 
-    // 尝试从多个可能的字段获取区域
+    // Try to get region from multiple possible fields
     const region = item.region || item.Region || '';
 
     return {
       instanceId,
       instanceName,
       region,
-      // 整个 item 就是 dimensions，包含所有的维度信息
+      // The entire item is dimensions, containing all dimension information
       dimensions: item,
     };
   });
 };
 
 /**
- * 获取模拟实例数据（用于API失败时的后备）
+ * Get mock instance data (fallback for API failures)
  */
 export const getMockInstanceData = (): AliyunInstance[] => {
   return [];

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 数据源创建器类型定义
+ * Data source creator type definitions
  */
 
 export interface CreateResult {

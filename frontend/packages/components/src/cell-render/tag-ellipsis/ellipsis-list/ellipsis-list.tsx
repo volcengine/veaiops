@@ -36,25 +36,25 @@ import { prefixCls } from './style/variable';
 import './style/index.less';
 
 export interface EllipsisListProps<T> {
-  /** 数据源 */
+  /** Data source */
   dataList: any[];
-  /** 外部展示的员工数量上限 */
+  /** Maximum number of items to display externally */
   maxCount?: number;
-  /** 渲染对外显示的数据 */
+  /** Render function for externally displayed data */
   render: (data: T[]) => ReactNode | ReactNode[];
-  /** 渲染Popover悬浮窗的内容 */
+  /** Render function for Popover content */
   renderContent: (data: T[]) => ReactNode | ReactNode[];
-  /** 鼠标离开卡片时关闭卡片 */
+  /** Close card when mouse leaves */
   closeMoveOut?: boolean;
-  /** 关闭按钮的文案 */
+  /** Close button text */
   closeText?: string;
-  /** 多余卡片的样式 */
+  /** Style for overflow items */
   ellipsisListStyle?: CSSProperties;
-  /** 多余卡片中员工卡片的配置 */
+  /** Popover configuration for overflow items */
   ellipsisListPopover?: PopoverProps;
-  /** 展示模式 */
+  /** Display mode */
   showMode: ShowMode;
-  /** 展示模式 */
+  /** Actions */
   actions: Array<Action>;
 }
 

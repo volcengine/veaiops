@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 统一导出 Hooks
+ * Unified export of Hooks
  */
 export {
   useSecretViewer,

@@ -25,11 +25,11 @@ import type { FieldItem, FilterStyle } from './types';
 import { createPluginContext, isFieldVisible, mergeFilterStyle } from './utils';
 
 /**
- * 使用插件系统初始化钩子
- * @returns 插件系统状态
+ * Hook for initializing plugin system
+ * @returns - Plugin system state
  */
 export const usePluginSystem = () => {
-  // 初始化插件系统（仅在首次渲染时）
+  // Initialize plugin system (only on first render)
   const pluginSystemStats = useMemo(() => {
     return initializeCorePlugins();
   }, []);
@@ -41,14 +41,14 @@ export const usePluginSystem = () => {
 };
 
 /**
- * 使用筛选器表单钩子
- * @param query 查询对象
- * @returns 表单实例和相关方法
+ * Hook for filter form
+ * @param query - Query object
+ * @returns - Form instance and related methods
  */
 export const useFilterForm = (query: Record<string, unknown>) => {
   const [form] = Form.useForm();
 
-  // 当查询对象变化时更新表单值
+  // Update form values when query object changes
   useEffect(() => {
     form.setFieldsValue(query);
   }, [form, query]);
@@ -62,10 +62,10 @@ export const useFilterForm = (query: Record<string, unknown>) => {
 };
 
 /**
- * 使用插件上下文钩子
- * @param form 表单实例
- * @param filterStyle 筛选器样式
- * @returns 插件上下文
+ * Hook for plugin context
+ * @param form - Form instance
+ * @param filterStyle - Filter style
+ * @returns - Plugin context
  */
 export const usePluginContext = (
   form: unknown,
@@ -82,9 +82,9 @@ export const usePluginContext = (
 };
 
 /**
- * 使用字段渲染钩子
- * @param context 插件上下文
- * @returns 字段渲染函数
+ * Hook for field rendering
+ * @param context - Plugin context
+ * @returns - Field rendering function
  */
 export const useFieldRenderer = (context: FilterPluginContext) => {
   return useCallback(
@@ -100,9 +100,9 @@ export const useFieldRenderer = (context: FilterPluginContext) => {
 };
 
 /**
- * 使用筛选器样式钩子
- * @param filterStyle 自定义样式
- * @returns 最终样式配置
+ * Hook for filter style
+ * @param filterStyle - Custom style
+ * @returns - Final style configuration
  */
 export const useFilterStyle = (filterStyle?: Partial<FilterStyle>) => {
   return useMemo(() => {
@@ -111,9 +111,9 @@ export const useFilterStyle = (filterStyle?: Partial<FilterStyle>) => {
 };
 
 /**
- * 使用筛选器配置钩子
- * @param config 字段配置数组
- * @returns 处理后的配置和统计信息
+ * Hook for filter configuration
+ * @param config - Field configuration array
+ * @returns - Processed configuration and statistics
  */
 export const useFilterConfig = (config: FieldItem[] = []) => {
   const configStats = useMemo(() => {
@@ -148,10 +148,10 @@ export const useFilterConfig = (config: FieldItem[] = []) => {
 };
 
 /**
- * 使用重置筛选器钩子
- * @param resetFilterValues 重置回调函数
- * @param config 字段配置
- * @returns 重置相关方法
+ * Hook for resetting filter
+ * @param resetFilterValues - Reset callback function
+ * @param config - Field configuration
+ * @returns - Reset related methods
  */
 export const useFilterReset = (
   resetFilterValues?: (props: { resetEmptyData?: boolean }) => void,

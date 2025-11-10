@@ -18,9 +18,9 @@ import type { RefObject } from 'react';
 import { useCallback } from 'react';
 
 /**
- * 创建机器人表格刷新函数
- * @param tableRef - BotTable 的 ref，用于刷新表格
- * @returns 刷新表格的函数
+ * Create bot table refresh function
+ * @param tableRef - BotTable ref for refreshing the table
+ * @returns Function to refresh the table
  */
 export const useRefreshBotTable = (
   tableRef?: RefObject<BotTableRef>,
@@ -34,7 +34,7 @@ export const useRefreshBotTable = (
         component: 'useBot',
       });
 
-      // ✅ 正确：处理刷新方法的返回值
+      // ✅ Correct: Handle refresh method return value
       const result = await tableRef.current.refresh();
       if (!result.success && result.error) {
         logger.error({

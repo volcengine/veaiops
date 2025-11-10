@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 插件系统基础类型定义
+ * Plugin system base type definition
  */
 
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
-// Key 类型已在 core/common.ts 中定义，此处导入供内部使用
+// Key type already defined in core/common.ts, import here for internal use
 import type { Key } from '../../core/common';
 import type {
   LifecyclePhaseEnum,
@@ -27,21 +27,21 @@ import type {
 } from '../../core/enums';
 
 /**
- * Arco Table 滚动配置类型
+ * Arco Table scroll configuration type
  */
 export interface ArcoScrollConfig {
   x?: number | string | boolean;
   y?: number | string | boolean;
 }
 
-// 注意：枚举和 Key 类型已在 core 中导出，此处不重复导出，避免与 core 冲突
-// 插件系统内部使用这些类型时，从 core 或顶层 types 导入即可
-// 如需在插件系统内部使用，可以：
-// 1. 从 core 导入：import { PluginPriorityEnum } from '../../core/enums'
-// 2. 从顶层导入：import { PluginPriorityEnum } from '@/custom-table/types'
+// Note: Enums and Key types are already exported in core, do not re-export here to avoid conflicts with core
+// When using these types within plugin system, import from core or top-level types
+// To use within plugin system, you can:
+// 1. Import from core: import { PluginPriorityEnum } from '../../core/enums'
+// 2. Import from top-level: import { PluginPriorityEnum } from '@/custom-table/types'
 
 /**
- * 插件生命周期阶段（基于枚举，扩展版本）
+ * Plugin lifecycle phase (based on enum, extended version)
  */
 export type PluginLifecycle =
   | LifecyclePhaseEnum
@@ -54,6 +54,6 @@ export type PluginLifecycle =
   | 'onDestroy';
 
 /**
- * 插件状态（基于枚举）
+ * Plugin status (based on enum)
  */
 export type PluginStatus = PluginStatusEnum;

@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * Oncall 功能模块导出
- * 每个子目录对应一个路由
+ * Oncall feature module exports
+ * Each subdirectory corresponds to a route
  */
 
-// Config - 对应 /oncall/config（规则配置管理）
+// Config - corresponds to /oncall/config (rule configuration management)
 export { OncallConfigPage } from './config';
-// History - 对应 /oncall/history（历史事件）
+// History - corresponds to /oncall/history (historical events)
 export { OncallHistoryPage } from './history';
 
-// Stats - 对应 /oncall/stats（统计分析）
+// Stats - corresponds to /oncall/stats (statistical analysis)
 export { OncallStatsPage } from './stats';

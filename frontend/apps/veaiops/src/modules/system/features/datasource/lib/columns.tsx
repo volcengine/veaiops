@@ -29,11 +29,11 @@ import type {
 } from "./types";
 
 // Destructure CellRender component to avoid repeated calls
-const { CustomOutlineTag, StampTime } = CellRender;
+const { CustomOutlineTag } = CellRender;
 
 /**
  * Monitor intervention table column configuration
- * Implemented following CustomTable's handleColumns pattern
+ * Implemented according to CustomTable's handleColumns pattern
  */
 export const getMonitorColumns = (props: {
   onEdit: (monitor: MonitorIntervention) => void;
@@ -120,7 +120,12 @@ export const getMonitorColumns = (props: {
       key: "created_at",
       width: 180,
       sorter: true,
-      render: (value: string) => <StampTime time={value} />,
+      render: (value: string) => {
+        if (!value) {
+          return "-";
+        }
+        return new Date(value).toLocaleString("zh-CN");
+      },
     },
     {
       title: "更新时间",
@@ -128,7 +133,12 @@ export const getMonitorColumns = (props: {
       key: "updated_at",
       width: 180,
       sorter: true,
-      render: (value: string) => <StampTime time={value} />,
+      render: (value: string) => {
+        if (!value) {
+          return "-";
+        }
+        return new Date(value).toLocaleString("zh-CN");
+      },
     },
     {
       title: "操作",

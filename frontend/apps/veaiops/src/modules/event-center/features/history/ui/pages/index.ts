@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 页面组件导出
+ * Page components export
  */
 
 export { EventCenterHistoryPage } from './history-page';

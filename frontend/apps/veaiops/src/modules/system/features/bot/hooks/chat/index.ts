@@ -17,28 +17,28 @@ import { useBotChatHandlers } from './handlers';
 import { useBotChatState } from './state';
 
 /**
- * Bot聊天管理业务逻辑Hook
+ * Bot chat management business logic Hook
  *
- * 拆分说明：
- * - state.ts: 状态管理（selectedBotId、chats、loading、configModalVisible等）
- * - api.ts: API调用（fetchBotOptions、fetchChats、updateChatConfig）
- * - handlers.ts: 事件处理（handleConfigEdit、handleConfigSubmit、handleConfigCancel、handleBotChange）
- * - index.ts: 主入口，组合所有逻辑
+ * Split explanation:
+ * - state.ts: State management (selectedBotId, chats, loading, configModalVisible, etc.)
+ * - api.ts: API calls (fetchBotOptions, fetchChats, updateChatConfig)
+ * - handlers.ts: Event handling (handleConfigEdit, handleConfigSubmit, handleConfigCancel, handleBotChange)
+ * - index.ts: Main entry, combines all logic
  */
 export const useBotChat = (
   afterUpdate?: () => Promise<{ success: boolean; error?: Error }>,
 ) => {
-  // 状态管理
+  // State management
   const state = useBotChatState();
 
-  // API调用
+  // API calls
   const api = useBotChatApi({
     setChats: state.setChats,
     setLoading: state.setLoading,
     setBotOptions: state.setBotOptions,
   });
 
-  // 事件处理
+  // Event handling
   const handlers = useBotChatHandlers({
     editingChat: state.editingChat,
     setEditingChat: state.setEditingChat,
@@ -53,7 +53,7 @@ export const useBotChat = (
   });
 
   return {
-    // 状态
+    // State
     selectedBotId: state.selectedBotId,
     chats: handlers.tableData,
     loading: state.loading,
@@ -61,7 +61,7 @@ export const useBotChat = (
     editingChat: state.editingChat,
     botOptions: state.botOptions,
 
-    // 方法
+    // Methods
     fetchBotOptions: api.fetchBotOptions,
     fetchChats: api.fetchChats,
     handleConfigEdit: handlers.handleConfigEdit,
@@ -71,8 +71,8 @@ export const useBotChat = (
   };
 };
 
-// 导出表格配置Hook
+// Export table configuration Hook
 export { useChatTableConfig } from './table-config';
 
-// 导出群管理逻辑Hook
+// Export chat management logic Hook
 export { useChatManagementLogic } from './management';

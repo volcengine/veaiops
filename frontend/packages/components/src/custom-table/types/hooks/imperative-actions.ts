@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 命令式操作 Hook 相关类型定义
- * 重新导出 api/imperative-actions.ts 中的类型以保持向后兼容
+ * Imperative action Hook related type definitions
+ * Re-export types from api/imperative-actions.ts to maintain backward compatibility
  */
 import type {
   DataActionMethods,
@@ -28,7 +28,7 @@ import type {
 } from '../api';
 import type { BaseQuery, BaseRecord } from '../core';
 
-// 重新导出 API 类型以保持向后兼容
+// Re-export API types to maintain backward compatibility
 export type {
   DataActionMethods,
   FilterActionMethods,
@@ -41,31 +41,31 @@ export type {
 } from '../api/imperative-actions';
 
 /**
- * ResetOptions 已在 api/imperative-actions.ts 中定义，此处移除避免重复
- * 如需使用，请从 '@/custom-table/types/api' 或 '@/custom-table/types' 导入
+ * ResetOptions is already defined in api/imperative-actions.ts, removed here to avoid duplication
+ * If needed, please import from '@/custom-table/types/api' or '@/custom-table/types'
  */
 
 /**
- * 命令式操作上下文
+ * Imperative action context
  */
 export interface ImperativeActionContext<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 数据操作方法 */
+  /** Data operation methods */
   data: DataActionMethods<RecordType>;
-  /** 筛选操作方法 */
+  /** Filter operation methods */
   filter: FilterActionMethods<BaseQuery>;
-  /** 分页操作方法 */
+  /** Pagination operation methods */
   pagination: PaginationActionMethods;
-  /** 选择操作方法 */
+  /** Selection operation methods */
   selection: SelectionActionMethods<RecordType>;
-  /** 展开操作方法 */
+  /** Expand operation methods */
   expand: ExpandActionMethods;
-  /** 工具类操作方法 */
+  /** Utility operation methods */
   utility: UtilityActionMethods<RecordType>;
-  /** 状态操作方法 */
+  /** State operation methods */
   state: StateActionMethods;
-  /** 重置操作 */
+  /** Reset operation */
   reset: (options?: ResetOptions) => void;
 }
 
@@ -75,34 +75,34 @@ export interface ImperativeActionContext<
 export interface UseImperativeActionsProps<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 表格引用 */
+  /** Table reference */
   tableRef?: React.RefObject<ImperativeActionContext<RecordType>>;
-  /** 数据刷新函数 */
+  /** Data refresh function */
   onRefresh?: () => Promise<void>;
-  /** 查询变更回调 */
+  /** Query change callback */
   onQueryChange?: (query: BaseQuery) => void;
-  /** 选择变更回调 */
+  /** Selection change callback */
   onSelectionChange?: (
     selectedKeys: React.Key[],
     selectedRows: RecordType[],
   ) => void;
-  /** 展开变更回调 */
+  /** Expand change callback */
   onExpandChange?: (expandedKeys: React.Key[]) => void;
 }
 
 /**
- * useImperativeActions Hook 返回值
+ * useImperativeActions Hook return value
  */
 export interface UseImperativeActionsReturn<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 命令式操作上下文 */
+  /** Imperative action context */
   actions: ImperativeActionContext<RecordType>;
-  /** 是否正在执行操作 */
+  /** Whether an action is pending */
   isActionPending: boolean;
-  /** 最后执行的操作 */
+  /** Last executed action */
   lastAction: string | null;
-  /** 操作历史记录 */
+  /** Action history record */
   actionHistory: Array<{
     action: string;
     timestamp: number;

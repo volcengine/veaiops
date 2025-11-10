@@ -31,7 +31,7 @@ const BaseSelectFooter: FC<SelectCustomWithFooterProps> = (props) => {
   const { value, options, onChange, onVisibleChange, loading, ...otherProps } =
     props;
 
-  /** 是否显示下拉框 */
+  /** Whether to show dropdown */
   const [visible, setVisible] = useState(false);
 
   const handleVisibleChange = useCallback(
@@ -65,7 +65,7 @@ const BaseSelectFooter: FC<SelectCustomWithFooterProps> = (props) => {
           {menu}
           <div className={`${styles.footer} justify-center`}>
             <Button size="mini" className={styles.selectAll} onClick={resetAll}>
-              重置
+              Reset
             </Button>
           </div>
         </div>

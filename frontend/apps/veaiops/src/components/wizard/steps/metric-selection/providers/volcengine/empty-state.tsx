@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 空状态组件
- * @description 显示暂无可用的火山引擎监控指标状态
+ * Empty state component
+ * @description Displays the state when no Volcengine monitoring metrics are available
  */
 
 import { Empty } from '@arco-design/web-react';

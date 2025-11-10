@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 连接测试相关类型定义
+ * Connection test related type definitions
  */
 
-// 步骤枚举
+// Step enumeration
 export enum TestStep {
   FORM = 1,
   TEST = 2,
 }
 
-// 步骤状态类型
+// Step status type
 export type StepStatus = 'wait' | 'process' | 'finish' | 'error';

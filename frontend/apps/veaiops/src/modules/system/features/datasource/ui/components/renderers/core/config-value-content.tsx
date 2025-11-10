@@ -19,28 +19,28 @@ import { renderComplexObject } from './object-renderer';
 import { renderTargets } from './target-renderer';
 
 /**
- * 值内容渲染（用于垂直布局）
+ * Value content renderer (for vertical layout)
  */
 export const ConfigValueContent = ({ configKey, value }: ConfigItem) => {
-  // 特殊处理火山引擎实例列表
+  // Special handling for Volcengine instances list
   if (configKey === 'instances' || configKey === 'volcengine_instances') {
     return renderInstances(value);
   }
 
-  // 特殊处理阿里云实例列表（dimensions）
+  // Special handling for Aliyun instances list (dimensions)
   if (configKey === 'aliyun_dimensions') {
     return renderAliyunInstancesList(value);
   }
 
-  // 特殊处理 Zabbix 主机列表
+  // Special handling for Zabbix hosts list
   if (configKey === 'zabbix_targets' || configKey === 'targets') {
     return renderTargets(value);
   }
 
-  // 处理复杂对象和数组
+  // Handle complex objects and arrays
   if (typeof value === 'object' && value !== null) {
     return renderComplexObject({ obj: value });
   }
 
-  return null; // 不应发生
+  return null; // Should not happen
 };

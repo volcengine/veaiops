@@ -43,7 +43,7 @@ interface UseSchemaTableInstanceOptions {
 }
 
 /**
- * Schema Table 实例方法 Hook
+ * Schema Table Instance Methods Hook
  */
 export const useSchemaTableInstance = ({
   dataSource,
@@ -84,8 +84,8 @@ export const useSchemaTableInstance = ({
       },
       getCurrentPage: () => pagination.current,
       getPageSize: () => pagination.pageSize,
-      // 修复方法签名：SchemaTableInstance.setPage 期望 (page, pageSize?) => void
-      // 但实现中使用对象解构，改为位置参数以匹配接口定义
+      // Fix method signature: SchemaTableInstance.setPage expects (page, pageSize?) => void
+      // But implementation uses object destructuring, changed to positional parameters to match interface definition
       setPage: (page: number, pageSize?: number) => {
         setPagination((prev) => ({
           ...prev,
@@ -93,12 +93,12 @@ export const useSchemaTableInstance = ({
           pageSize: pageSize || prev.pageSize,
         }));
       },
-      getSorter: () => null, // TODO: 实现排序状态获取
+      getSorter: () => null, // TODO: Implement sorter state retrieval
       setSorter: () => {
-        // TODO: 实现排序设置
+        // TODO: Implement sorter configuration
       },
       exportData: () => {
-        // TODO: 实现数据导出
+        // TODO: Implement data export
       },
       refresh: () => loadData(),
     }),

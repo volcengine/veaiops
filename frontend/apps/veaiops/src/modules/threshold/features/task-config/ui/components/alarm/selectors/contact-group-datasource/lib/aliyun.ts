@@ -21,15 +21,15 @@ import type {
 } from './types';
 
 /**
- * 获取 Aliyun 联系组列表（函数式数据源）
+ * Get Aliyun contact group list (functional data source)
  *
- * Aliyun 的联系组接口需要：
- * 1. 先通过 datasourceId 获取 DataSource 详情
- * 2. 从 DataSource 中提取 connect_id
- * 3. 使用 connect_id 调用联系组接口
+ * Aliyun contact group API requires:
+ * 1. First get DataSource details through datasourceId
+ * 2. Extract connect_id from DataSource
+ * 3. Use connect_id to call contact group API
  *
- * @param datasourceId - 数据源ID
- * @returns 异步函数，返回 options 数组
+ * @param datasourceId - Data source ID
+ * @returns Async function that returns options array
  */
 export const getAliyunContactGroupDataSource = (
   datasourceId: string,
@@ -39,25 +39,25 @@ export const getAliyunContactGroupDataSource = (
   return async (props?: SelectDataSourceProps) => {
     const pagination = props?.pageReq || { skip: 0, limit: 100 };
 
-    // ✅ 正确：使用 logger 记录调试信息
+    // ✅ Correct: Use logger to record debug information
     logger.debug({
-      message: '开始获取联系组',
+      message: 'Starting to fetch contact groups',
       data: { datasourceId, pagination },
       source: 'AliyunContactGroupDataSource',
       component: 'getAliyunContactGroupDataSource',
     });
 
     try {
-      // 步骤1: 获取 DataSource 详情
+      // Step 1: Get DataSource details
       const datasourceResponse =
         await apiClient.dataSources.getApisV1DatasourceAliyun1({
           datasourceId,
         });
 
       if (datasourceResponse.code !== API_RESPONSE_CODE.SUCCESS) {
-        // ✅ 正确：使用 logger 记录错误
+        // ✅ Correct: Use logger to record error
         logger.error({
-          message: '获取数据源信息失败',
+          message: 'Failed to fetch datasource information',
           data: {
             code: datasourceResponse.code,
             message: datasourceResponse.message,
@@ -70,9 +70,9 @@ export const getAliyunContactGroupDataSource = (
       }
 
       if (!datasourceResponse.data) {
-        // ✅ 正确：使用 logger 记录错误
+        // ✅ Correct: Use logger to record error
         logger.error({
-          message: '数据源信息为空',
+          message: 'Datasource information is empty',
           data: { datasourceId },
           source: 'AliyunContactGroupDataSource',
           component: 'getAliyunContactGroupDataSource',
@@ -80,15 +80,15 @@ export const getAliyunContactGroupDataSource = (
         return [];
       }
 
-      // 步骤2: 提取 connect_id
+      // Step 2: Extract connect_id
       const dataSourceData = datasourceResponse.data;
       const connectId =
         dataSourceData?.connect?.id || dataSourceData?.connect?._id;
 
       if (!connectId) {
-        // ✅ 正确：使用 logger 记录错误
+        // ✅ Correct: Use logger to record error
         logger.error({
-          message: '数据源未配置连接信息',
+          message: 'Datasource connection information not configured',
           data: { datasourceId },
           source: 'AliyunContactGroupDataSource',
           component: 'getAliyunContactGroupDataSource',
@@ -96,15 +96,15 @@ export const getAliyunContactGroupDataSource = (
         return [];
       }
 
-      // ✅ 正确：使用 logger 记录调试信息
+      // ✅ Correct: Use logger to record debug information
       logger.debug({
-        message: '使用 connect_id 获取联系组',
+        message: 'Using connect_id to fetch contact groups',
         data: { connectId, pagination },
         source: 'AliyunContactGroupDataSource',
         component: 'getAliyunContactGroupDataSource',
       });
 
-      // 步骤3: 调用联系组接口，支持分页
+      // Step 3: Call contact group API, supports pagination
       const response =
         await apiClient.dataSourceConnect.postApisV1DatasourceConnectAliyunDescribeContactGroupList(
           {
@@ -121,9 +121,9 @@ export const getAliyunContactGroupDataSource = (
           extra: group,
         }));
 
-        // ✅ 正确：使用 logger 记录成功信息
+        // ✅ Correct: Use logger to record success information
         logger.info({
-          message: '联系组获取成功',
+          message: 'Contact groups fetched successfully',
           data: { count: options.length, pagination },
           source: 'AliyunContactGroupDataSource',
           component: 'getAliyunContactGroupDataSource',
@@ -132,9 +132,9 @@ export const getAliyunContactGroupDataSource = (
         return options;
       }
 
-      // ✅ 正确：使用 logger 记录错误
+      // ✅ Correct: Use logger to record error
       logger.error({
-        message: '接口返回错误',
+        message: 'API returned error',
         data: {
           code: response.code,
           message: response.message,
@@ -145,11 +145,11 @@ export const getAliyunContactGroupDataSource = (
       });
       return [];
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
-        message: '获取联系组失败',
+        message: 'Failed to fetch contact groups',
         data: {
           error: errorObj.message,
           stack: errorObj.stack,

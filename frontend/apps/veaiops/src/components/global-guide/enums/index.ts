@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * GlobalGuide 枚举统一导出
+ * Unified exports for GlobalGuide enums
  */
 
 export * from './guide-steps.enum';

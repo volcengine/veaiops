@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Schema表格基础使用示例
- * @description 展示如何通过配置化+Schema的方式快速搭建表格
+ * Schema table basic usage example
+ * @description Demonstrates how to quickly build tables through configuration + Schema approach
 
  * @date 2025-12-19
  */
@@ -29,7 +29,7 @@ import { TableSchemaBuilder } from '../utils';
 
 import { SchemaTable } from '../schema-table';
 
-// 示例数据类型
+// Example data type
 interface UserRecord extends BaseRecord {
   id: string;
   name: string;
@@ -43,11 +43,11 @@ interface UserRecord extends BaseRecord {
   tags: string[];
 }
 
-// 模拟数据
+// Mock data
 const mockUsers: UserRecord[] = [
   {
     id: '1',
-    name: '张三',
+    name: '张三', // Keep Chinese for mock data
     email: 'zhangsan@example.com',
     age: 28,
     status: 'active',
@@ -55,11 +55,11 @@ const mockUsers: UserRecord[] = [
     salary: 15000,
     joinDate: '2023-01-15',
     avatar: 'https://via.placeholder.com/40',
-    tags: ['前端', 'React'],
+    tags: ['前端', 'React'], // Keep Chinese for mock data
   },
   {
     id: '2',
-    name: '李四',
+    name: '李四', // Keep Chinese for mock data
     email: 'lisi@example.com',
     age: 32,
     status: 'active',
@@ -67,11 +67,11 @@ const mockUsers: UserRecord[] = [
     salary: 12000,
     joinDate: '2022-08-20',
     avatar: 'https://via.placeholder.com/40',
-    tags: ['UI', '设计'],
+    tags: ['UI', '设计'], // Keep Chinese for mock data
   },
   {
     id: '3',
-    name: '王五',
+    name: '王五', // Keep Chinese for mock data
     email: 'wangwu@example.com',
     age: 25,
     status: 'pending',
@@ -79,21 +79,21 @@ const mockUsers: UserRecord[] = [
     salary: 10000,
     joinDate: '2024-03-10',
     avatar: 'https://via.placeholder.com/40',
-    tags: ['后端', 'Node.js'],
+    tags: ['后端', 'Node.js'], // Keep Chinese for mock data
   },
 ];
 
-// 方式1: 使用Schema Builder构建配置
+// Method 1: Use Schema Builder to build configuration
 const buildSchemaWithBuilder = (): TableSchema<UserRecord> => {
   return (
     new TableSchemaBuilder<UserRecord>()
-      .setTitle('用户管理')
-      .setDescription('系统用户信息管理')
+      .setTitle('User Management')
+      .setDescription('System user information management')
 
-      // 添加列配置
+      // Add column configuration
       .addColumn({
         key: 'avatar',
-        title: '头像',
+        title: 'Avatar',
         dataIndex: 'avatar',
         valueType: 'image',
         width: 80,
@@ -101,32 +101,32 @@ const buildSchemaWithBuilder = (): TableSchema<UserRecord> => {
       })
       .addColumn({
         key: 'name',
-        title: '姓名',
+        title: 'Name',
         dataIndex: 'name',
         valueType: 'text',
         filterable: true,
         filterConfig: {
           type: 'input',
-          placeholder: '请输入姓名',
+          placeholder: 'Please enter name',
         },
         copyable: true,
       })
       .addColumn({
         key: 'email',
-        title: '邮箱',
+        title: 'Email',
         dataIndex: 'email',
         valueType: 'text',
         filterable: true,
         filterConfig: {
           type: 'input',
-          placeholder: '请输入邮箱',
+          placeholder: 'Please enter email',
         },
         ellipsis: true,
         tooltip: true,
       })
       .addColumn({
         key: 'age',
-        title: '年龄',
+        title: 'Age',
         dataIndex: 'age',
         valueType: 'number',
         width: 80,
@@ -138,7 +138,7 @@ const buildSchemaWithBuilder = (): TableSchema<UserRecord> => {
       })
       .addColumn({
         key: 'status',
-        title: '状态',
+        title: 'Status',
         dataIndex: 'status',
         valueType: 'select',
         width: 100,
@@ -146,35 +146,35 @@ const buildSchemaWithBuilder = (): TableSchema<UserRecord> => {
         filterConfig: {
           type: 'select',
           options: [
-            { label: '激活', value: 'active' },
-            { label: '未激活', value: 'inactive' },
-            { label: '待审核', value: 'pending' },
+            { label: 'Active', value: 'active' },
+            { label: 'Inactive', value: 'inactive' },
+            { label: 'Pending', value: 'pending' },
           ],
         },
         valueEnum: {
-          active: { text: '激活', status: 'success' },
-          inactive: { text: '未激活', status: 'error' },
-          pending: { text: '待审核', status: 'warning' },
+          active: { text: 'Active', status: 'success' },
+          inactive: { text: 'Inactive', status: 'error' },
+          pending: { text: 'Pending', status: 'warning' },
         },
       })
       .addColumn({
         key: 'role',
-        title: '角色',
+        title: 'Role',
         dataIndex: 'role',
         valueType: 'select',
         filterable: true,
         filterConfig: {
           type: 'select',
           options: [
-            { label: '开发者', value: 'developer' },
-            { label: '设计师', value: 'designer' },
-            { label: '产品经理', value: 'pm' },
+            { label: 'Developer', value: 'developer' },
+            { label: 'Designer', value: 'designer' },
+            { label: 'Product Manager', value: 'pm' },
           ],
         },
       })
       .addColumn({
         key: 'salary',
-        title: '薪资',
+        title: 'Salary',
         dataIndex: 'salary',
         valueType: 'money',
         width: 120,
@@ -183,7 +183,7 @@ const buildSchemaWithBuilder = (): TableSchema<UserRecord> => {
       })
       .addColumn({
         key: 'joinDate',
-        title: '入职日期',
+        title: 'Join Date',
         dataIndex: 'joinDate',
         valueType: 'date',
         width: 120,
@@ -195,13 +195,13 @@ const buildSchemaWithBuilder = (): TableSchema<UserRecord> => {
       })
       .addColumn({
         key: 'tags',
-        title: '标签',
+        title: 'Tags',
         dataIndex: 'tags',
         valueType: 'tag',
         hideInSearch: true,
       })
 
-      // 配置功能
+      // Configure features
       .enablePagination({
         pageSize: 10,
         showSizeChanger: true,
@@ -212,18 +212,18 @@ const buildSchemaWithBuilder = (): TableSchema<UserRecord> => {
         collapsed: false,
       })
       .enableToolbar({
-        title: '用户列表',
+        title: 'User List',
         actions: [
           {
             key: 'add',
-            label: '新增用户',
+            label: 'Add User',
             type: 'primary',
-            onClick: () => Message.info('点击新增用户'),
+            onClick: () => Message.info('Click to add user'),
           },
           {
             key: 'export',
-            label: '导出数据',
-            onClick: () => Message.info('点击导出数据'),
+            label: 'Export Data',
+            onClick: () => Message.info('Click to export data'),
           },
         ],
         settings: {
@@ -236,104 +236,104 @@ const buildSchemaWithBuilder = (): TableSchema<UserRecord> => {
       .enableRowSelection({
         type: 'checkbox',
         onChange: (_keys: React.Key[], _rows: UserRecord[]) => {
-          // 行选择变化处理
+          // Handle row selection change
         },
       })
 
-      // 添加操作
+      // Add actions
       .addAction({
         key: 'view',
-        label: '查看',
+        label: 'View',
         icon: <IconEye />,
         onClick: (record: BaseRecord, _index: number) => {
           const userRecord = record as UserRecord;
           const name: string = userRecord.name || '';
-          Message.info(`查看用户: ${name}`);
+          Message.info(`View user: ${name}`);
         },
       })
       .addAction({
         key: 'edit',
-        label: '编辑',
+        label: 'Edit',
         type: 'primary',
         icon: <IconEdit />,
         onClick: (record: BaseRecord, _index: number) => {
           const userRecord = record as UserRecord;
           const name: string = userRecord.name || '';
-          Message.info(`编辑用户: ${name}`);
+          Message.info(`Edit user: ${name}`);
         },
       })
       .addAction({
         key: 'delete',
-        label: '删除',
+        label: 'Delete',
         type: 'text',
         status: 'danger',
         icon: <IconDelete />,
         confirm: {
-          title: '确认删除',
-          content: '删除后无法恢复，确认删除吗？',
+          title: 'Confirm Delete',
+          content: 'Cannot be recovered after deletion, confirm to delete?',
         },
         onClick: (record: BaseRecord, _index: number) => {
           const userRecord = record as UserRecord;
           const name: string = userRecord.name || '';
-          Message.success(`删除用户: ${name}`);
+          Message.success(`Delete user: ${name}`);
         },
       })
 
-      // 设置数据源
+      // Set data source
       .setDataSource(mockUsers)
 
       .build()
   );
 };
 
-// 方式2: 直接使用Schema配置
+// Method 2: Directly use Schema configuration
 const directSchema: TableSchema<UserRecord> = {
-  title: '用户管理 - 直接配置',
-  description: '通过直接配置Schema的方式创建表格',
-  preset: 'advanced', // 使用高级预设
+  title: 'User Management - Direct Configuration',
+  description: 'Create table by directly configuring Schema',
+  preset: 'advanced', // Use advanced preset
 
   columns: [
     {
       key: 'name',
-      title: '姓名',
+      title: 'Name',
       dataIndex: 'name',
       valueType: 'text',
       filterable: true,
       filterConfig: {
         type: 'input',
-        placeholder: '请输入姓名',
+        placeholder: 'Please enter name',
       },
     },
     {
       key: 'email',
-      title: '邮箱',
+      title: 'Email',
       dataIndex: 'email',
       valueType: 'text',
       ellipsis: true,
     },
     {
       key: 'status',
-      title: '状态',
+      title: 'Status',
       dataIndex: 'status',
       valueType: 'select',
       filterable: true,
       filterConfig: {
         type: 'select',
         options: [
-          { label: '激活', value: 'active' },
-          { label: '未激活', value: 'inactive' },
-          { label: '待审核', value: 'pending' },
+          { label: 'Active', value: 'active' },
+          { label: 'Inactive', value: 'inactive' },
+          { label: 'Pending', value: 'pending' },
         ],
       },
       valueEnum: {
-        active: { text: '激活', status: 'success' },
-        inactive: { text: '未激活', status: 'error' },
-        pending: { text: '待审核', status: 'warning' },
+        active: { text: 'Active', status: 'success' },
+        inactive: { text: 'Inactive', status: 'error' },
+        pending: { text: 'Pending', status: 'warning' },
       },
     },
     {
       key: 'salary',
-      title: '薪资',
+      title: 'Salary',
       dataIndex: 'salary',
       valueType: 'money',
       sortable: true,
@@ -346,54 +346,54 @@ const directSchema: TableSchema<UserRecord> = {
     items: [
       {
         key: 'edit',
-        label: '编辑',
+        label: 'Edit',
         type: 'primary',
         onClick: (record: BaseRecord, index: number) => {
           const userRecord = record as UserRecord;
-          Message.info(`编辑: ${userRecord.name}`);
+          Message.info(`Edit: ${userRecord.name}`);
         },
       },
     ],
   },
 };
 
-// 方式3: 使用请求函数的Schema
+// Method 3: Use request function in Schema
 const requestSchema: TableSchema<UserRecord> = {
-  title: '用户管理 - 异步数据',
+  title: 'User Management - Async Data',
   preset: 'basic',
 
   columns: [
     {
       key: 'name',
-      title: '姓名',
+      title: 'Name',
       dataIndex: 'name',
       valueType: 'text',
     },
     {
       key: 'email',
-      title: '邮箱',
+      title: 'Email',
       dataIndex: 'email',
       valueType: 'text',
     },
     {
       key: 'status',
-      title: '状态',
+      title: 'Status',
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
-        active: { text: '激活', status: 'success' },
-        inactive: { text: '未激活', status: 'error' },
-        pending: { text: '待审核', status: 'warning' },
+        active: { text: 'Active', status: 'success' },
+        inactive: { text: 'Inactive', status: 'error' },
+        pending: { text: 'Pending', status: 'warning' },
       },
     },
   ],
 
-  // 模拟异步请求
+  // Simulate async request
   request: async <TParams = unknown>(params: TParams) => {
-    // 模拟网络延迟
+    // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // 模拟分页数据
+    // Simulate paginated data
     const paramsObj = params as Record<string, unknown>;
     const current = (paramsObj.current as number) || 1;
     const pageSize = (paramsObj.pageSize as number) || 10;
@@ -409,21 +409,21 @@ const requestSchema: TableSchema<UserRecord> = {
 };
 
 /**
- * 基础示例组件
+ * Basic example component
  */
 export const BasicExample: React.FC = () => {
   const tableRef = useRef<SchemaTableInstance>(null);
 
   const handleTableReady = (instance: SchemaTableInstance) => {
-    // 表格就绪处理
+    // Handle table ready
   };
 
   return (
     <div style={{ padding: 24 }}>
-      <h2>Schema表格使用示例</h2>
+      <h2>Schema Table Usage Examples</h2>
 
       <div style={{ marginBottom: 32 }}>
-        <h3>方式1: 使用Schema Builder</h3>
+        <h3>Method 1: Use Schema Builder</h3>
         <SchemaTable
           ref={tableRef}
           schema={
@@ -434,14 +434,14 @@ export const BasicExample: React.FC = () => {
       </div>
 
       <div style={{ marginBottom: 32 }}>
-        <h3>方式2: 直接配置Schema</h3>
+        <h3>Method 2: Direct Schema Configuration</h3>
         <SchemaTable
           schema={directSchema as unknown as TableSchema<BaseRecord>}
         />
       </div>
 
       <div style={{ marginBottom: 32 }}>
-        <h3>方式3: 异步数据请求</h3>
+        <h3>Method 3: Async Data Request</h3>
         <SchemaTable
           schema={requestSchema as unknown as TableSchema<BaseRecord>}
         />

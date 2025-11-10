@@ -15,58 +15,58 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type OncallScheduleCreateRequest = {
   /**
-   * 值班计划名称
+   * Oncall schedule name
    */
   name: string;
   /**
-   * 值班计划描述
+   * Oncall schedule description
    */
   description?: string;
   /**
-   * 值班计划类型
+   * Oncall schedule type
    */
   schedule_type: OncallScheduleCreateRequest.schedule_type;
   /**
-   * 值班参与者列表
+   * Oncall participants list
    */
   participants: Array<{
     /**
-     * 用户ID
+     * User ID
      */
     user_id: string;
     /**
-     * 用户名
+     * User name
      */
     user_name: string;
     /**
-     * 联系信息
+     * Contact information
      */
     contact_info?: Record<string, any>;
     /**
-     * 优先级
+     * Priority
      */
     priority?: number;
   }>;
   /**
-   * 值班计划配置
+   * Oncall schedule configuration
    */
   schedule_config: Record<string, any>;
   /**
-   * 升级策略
+   * Escalation policy
    */
   escalation_policy?: Record<string, any>;
   /**
-   * 生效开始时间
+   * Effective start time
    */
   effective_start?: string;
   /**
-   * 生效结束时间
+   * Effective end time
    */
   effective_end?: string;
 };
 export namespace OncallScheduleCreateRequest {
   /**
-   * 值班计划类型
+   * Oncall schedule type
    */
   export enum schedule_type {
     DAILY = 'daily',

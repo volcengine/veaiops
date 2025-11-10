@@ -15,23 +15,23 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type PaginationMeta = {
   /**
-   * 每页数量
+   * Number of records per page
    */
   limit: number;
   /**
-   * 跳过数量
+   * Number of records to skip
    */
   skip: number;
   /**
-   * 总数量
+   * Total number of records
    */
   total: number;
   /**
-   * 当前页码
+   * Current page number
    */
   page?: number;
   /**
-   * 总页数
+   * Total number of pages
    */
   pages?: number;
 };

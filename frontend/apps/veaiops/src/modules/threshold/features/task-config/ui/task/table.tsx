@@ -13,83 +13,144 @@
 // limitations under the License.
 
 import { TASK_CONFIG_MANAGEMENT_CONFIG } from '@task-config/lib';
-import type { TaskFiltersQuery } from '@task-config/lib/filters';
-import {
-  type BaseQuery,
-  CustomTable,
-  type CustomTableActionType,
-} from '@veaiops/components';
+import { deleteTask } from '@task-config/lib/data-source/api';
+import { CustomTable } from '@veaiops/components';
+import { logger } from '@veaiops/utils';
 import type { IntelligentThresholdTask } from 'api-generate';
-import { forwardRef, useMemo, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { useAutoRefreshOperations, useTaskTableConfig } from '../../hooks';
 import { TASK_TABLE_QUERY_FORMAT } from './config';
-import { useTableConfig, useTableOperations, useTableRef } from './hooks';
-import type { TaskTableProps, TaskTableRef } from './types';
+
+/**
+ * Task table component props interface
+ */
+interface TaskTableProps {
+  onEdit: (task: IntelligentThresholdTask) => void;
+  onRerun: (task: IntelligentThresholdTask) => void;
+  onViewVersions: (task: IntelligentThresholdTask) => void;
+  onCreateAlarm: (task: IntelligentThresholdTask) => void;
+  onCopy: (task: IntelligentThresholdTask) => void;
+  onAdd: () => void;
+  onBatchRerun: () => void;
+  onDelete?: (taskId: string) => Promise<boolean>; // Optional, because we have auto-refresh operations
+  selectedTasks: string[];
+  onSelectedTasksChange: (selectedTasks: string[]) => void;
+  handleTaskDetail: (task: IntelligentThresholdTask) => void;
+}
+
+/**
+ * Task table component ref interface
+ * Provides refresh functionality and auto-refresh CRUD operations
+ */
+export interface TaskTableRef {
+  refresh: () => Promise<{ success: boolean; error?: Error }>;
+  operations: {
+    delete: (id: string) => Promise<boolean>;
+    update: () => Promise<{ success: boolean; error?: Error }>;
+    create?: (data: any) => Promise<{ success: boolean; error?: Error }>;
+  };
+}
 
 /**
  * Intelligent threshold task table component
- * Encapsulates table rendering logic and provides a clear interface
+ * Encapsulates table rendering logic, provides clear interface
  */
 export const TaskTable = forwardRef<TaskTableRef, TaskTableProps>(
-  (props, ref) => {
-    // Create internal ref to pass to CustomTable
-    const customTableRef =
-      useRef<
-        CustomTableActionType<
-          IntelligentThresholdTask,
-          TaskFiltersQuery & BaseQuery
-        >
-      >(null);
+  (
+    {
+      onEdit,
+      onRerun,
+      onViewVersions,
+      onCreateAlarm,
+      onCopy,
+      onAdd,
+      onBatchRerun,
+      onDelete,
+      selectedTasks,
+      onSelectedTasksChange,
+      handleTaskDetail,
+    },
+    ref,
+  ) => {
+    // 🎯 Create internal ref, pass to CustomTable
+    const customTableRef = useRef<any>(null);
 
-    // Use cohesive table configuration Hook
+    // 🎯 Use cohesive table configuration Hook - tableActions already cohesive, no need to pass from outside
     const {
       customTableProps,
       handleColumns,
       handleFilters,
       renderActions,
+      refresh,
       operations,
-    } = useTableConfig(props, customTableRef);
+    } = useTaskTableConfig({
+      onEdit: async (task) => {
+        onEdit(task);
+        return true;
+      },
+      onRerun,
+      onViewVersions,
+      onCreateAlarm,
+      onCopy,
+      onAdd: onAdd
+        ? async () => {
+            onAdd();
+            return true;
+          }
+        : undefined,
+      onBatchRerun,
+      onDelete,
+      handleTaskDetail,
+      selectedTasks,
+      // ✅ Pass internal ref so useBusinessTable can call CustomTable's refresh
+      tableRef: customTableRef,
+    });
 
-    // Manage auto-refresh operations
-    const autoRefreshOperations = useTableOperations({
-      refreshFn: operations.refresh,
+    // 🎯 Create auto-refresh CRUD operations (deprecated, use operations)
+    // ⚠️ Note: Delete operation already auto-refreshes through wrappedHandlers.delete, no need to use autoRefreshOperations
+    const autoRefreshOperations = useAutoRefreshOperations({
+      refreshFn: operations.refresh || (async () => {}),
+      // Delete API (deprecated, handled by wrappedHandlers.delete)
+      deleteApi: async (id: string) => {
+        return await deleteTask(id);
+      },
+      // Update API (batch operations)
+      updateApi: async () => {
+        // ✅ Correct: Use logger to record information
+        logger.info({
+          message: 'Executing batch update operation',
+          data: {},
+          source: 'TaskTable',
+          component: 'batchUpdate',
+        });
+        // Batch rerun and other operations can be implemented here
+      },
     });
 
     // Expose refresh function and auto-refresh operations to parent component
-    useTableRef(ref, customTableRef, {
-      operations: autoRefreshOperations,
-    });
-
-    // Extract base table props with type safety
-    const baseTableProps = useMemo(() => {
-      if (
-        customTableProps.tableProps &&
-        typeof customTableProps.tableProps === 'object' &&
-        !Array.isArray(customTableProps.tableProps)
-      ) {
-        return customTableProps.tableProps as Record<string, unknown>;
-      }
-      return {};
-    }, [customTableProps.tableProps]);
-
-    // Configure row selection
-    const rowSelection = useMemo(
+    useImperativeHandle(
+      ref,
       () => ({
-        selectedRowKeys: props.selectedTasks,
-        type: 'checkbox' as const,
-        onChange: (selectedRowKeys: (string | number)[]) => {
-          props.onSelectedTasksChange(selectedRowKeys as string[]);
+        // ✅ Use CustomTable's refresh method
+        refresh: async () => {
+          logger.info({
+            message: '[TaskTable] 🔄 External refresh call',
+            data: {
+              hasCustomTableRef: Boolean(customTableRef.current),
+              hasCustomTableRefresh: Boolean(customTableRef.current?.refresh),
+            },
+            source: 'TaskTable',
+            component: 'useImperativeHandle.refresh',
+          });
+          if (customTableRef.current?.refresh) {
+            await customTableRef.current.refresh();
+            return { success: true };
+          }
+          return { success: false, error: new Error('CustomTable ref not ready') };
         },
+        operations: autoRefreshOperations,
       }),
-      [props.selectedTasks, props.onSelectedTasksChange],
-    );
-
-    // Merge table props
-    const mergedTableProps = useMemo(
-      () => ({
-        ...baseTableProps,
-        rowSelection,
-      }),
-      [baseTableProps, rowSelection],
+      [autoRefreshOperations],
     );
 
     return (
@@ -100,7 +161,20 @@ export const TaskTable = forwardRef<TaskTableRef, TaskTableProps>(
         actions={renderActions()}
         handleColumns={handleColumns}
         handleFilters={handleFilters}
-        tableProps={mergedTableProps}
+        tableProps={{
+          ...(customTableProps.tableProps &&
+          typeof customTableProps.tableProps === 'object' &&
+          !Array.isArray(customTableProps.tableProps)
+            ? (customTableProps.tableProps as Record<string, unknown>)
+            : {}),
+          rowSelection: {
+            selectedRowKeys: selectedTasks,
+            type: 'checkbox',
+            onChange: (selectedRowKeys) => {
+              onSelectedTasksChange(selectedRowKeys as string[]);
+            },
+          },
+        }}
         queryFormat={TASK_TABLE_QUERY_FORMAT}
         syncQueryOnSearchParams
         useActiveKeyHook

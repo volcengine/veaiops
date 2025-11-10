@@ -22,10 +22,9 @@ import { CardTemplateGuide } from './components/guide';
 import CardTemplateDrawer from './components/modal';
 
 /**
- * 事件中心 - 卡片模版管理页面
- * @description 提供消息卡片模版的创建、管理和配置功能
- * 🎯 使用 Hook 聚合模式 + 自动刷新机制
-
+ * Event Center - Card template management page
+ * @description Provides message card template creation, management, and configuration functionality
+ * 🎯 Uses Hook aggregation pattern + auto-refresh mechanism
  */
 export const CardTemplateManagement: React.FC = () => {
   const [, setData] = useState<AgentTemplate[]>([]);
@@ -33,26 +32,26 @@ export const CardTemplateManagement: React.FC = () => {
   const [showGuide, setShowGuide] = useState(false);
   const [guideVisible, setGuideVisible] = useState(false);
 
-  // 🎯 使用内聚的表格配置 Hook（包含所有业务逻辑）
+  // 🎯 Use cohesive table configuration Hook (contains all business logic)
   const {
-    // 表格配置
+    // Table configuration
     customTableProps,
     handleColumns,
     handleFilters,
     renderActions,
     queryFormat,
 
-    // 业务逻辑状态
+    // Business logic state
     modalVisible,
     editingTemplate,
     form,
 
-    // 业务逻辑处理器
+    // Business logic handlers
     handleCancel,
     handleSubmit,
   } = useCardTemplateTableConfig({});
 
-  // 检查是否需要显示引导页面
+  // Check if guide page needs to be displayed
   useEffect(() => {
     const checkInitialState = async () => {
       try {
@@ -71,7 +70,7 @@ export const CardTemplateManagement: React.FC = () => {
         }
         setData(response.data || []);
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : '获取模版列表失败，请重试';
         Message.error(errorMessage);
@@ -83,7 +82,7 @@ export const CardTemplateManagement: React.FC = () => {
     checkInitialState();
   }, []);
 
-  // 如果是初始状态且列表为空，显示引导页面
+  // If initial state and list is empty, show guide page
   if (showGuide && guideVisible) {
     return (
       <div className="page-container">
@@ -93,7 +92,7 @@ export const CardTemplateManagement: React.FC = () => {
           onComplete={() => {
             setShowGuide(false);
             setGuideVisible(false);
-            // 刷新页面数据
+            // Refresh page data
             // window.location.reload();
           }}
         />

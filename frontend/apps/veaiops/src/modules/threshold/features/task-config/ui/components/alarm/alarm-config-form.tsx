@@ -28,17 +28,17 @@ interface AlarmConfigFormProps {
 }
 
 /**
- * 告警配置表单组件
+ * Alarm configuration form component
  *
- * 用于配置智能阈值任务的告警规则，包括：
- * 1. 告警级别（所有数据源必需）
- * 2. 联系组（Volcengine 和 Aliyun 可选）
- * 3. 告警通知方式（仅 Volcengine 可选）
+ * Used to configure alarm rules for intelligent threshold tasks, including:
+ * 1. Alarm level (required for all data sources)
+ * 2. Contact group (optional for Volcengine and Aliyun)
+ * 3. Alert notification method (optional only for Volcengine)
  *
- * @param form - Arco Form 实例
- * @param loading - 加载状态
- * @param datasourceType - 数据源类型（Volcengine | Aliyun | Zabbix）
- * @param datasourceId - 数据源ID
+ * @param form - Arco Form instance
+ * @param loading - Loading state
+ * @param datasourceType - Data source type (Volcengine | Aliyun | Zabbix)
+ * @param datasourceId - Data source ID
  */
 export const AlarmConfigForm: React.FC<AlarmConfigFormProps> = ({
   form,
@@ -46,7 +46,7 @@ export const AlarmConfigForm: React.FC<AlarmConfigFormProps> = ({
   datasourceType,
   datasourceId,
 }) => {
-  // 判断是否需要显示告警通知方式选择器
+  // Determine whether to show alert notification method selector
   const showAlertMethods = ['Volcengine', 'Zabbix'].includes(datasourceType);
 
   return (
@@ -59,10 +59,10 @@ export const AlarmConfigForm: React.FC<AlarmConfigFormProps> = ({
       }}
     >
       <Form layout="vertical" form={form} disabled={loading}>
-        {/* 告警级别 - 所有数据源都需要 */}
+        {/* Alarm level - required for all data sources */}
         <AlarmLevelSelector loading={loading} />
 
-        {/* 告警通知方式 - 仅 Volcengine 和 Zabbix 需要 */}
+        {/* Alert notification method - only required for Volcengine and Zabbix */}
         {showAlertMethods && (
           <AlertMethodsSelector
             loading={loading}
@@ -71,7 +71,7 @@ export const AlarmConfigForm: React.FC<AlarmConfigFormProps> = ({
           />
         )}
 
-        {/* 联系组 */}
+        {/* Contact group */}
         <ContactGroupSelector
           loading={loading}
           datasourceType={datasourceType}

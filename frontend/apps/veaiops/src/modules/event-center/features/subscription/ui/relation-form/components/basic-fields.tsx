@@ -19,7 +19,7 @@ import { Select } from '@veaiops/components';
 import type React from 'react';
 
 /**
- * 基础字段组件属性
+ * Basic fields component props
  */
 interface BasicFieldsProps {
   form: FormInstance;
@@ -27,8 +27,8 @@ interface BasicFieldsProps {
 }
 
 /**
- * 基础字段组件
- * 包含订阅名称和智能体选择
+ * Basic fields component
+ * Includes subscription name and agent selection
  */
 export const BasicFields: React.FC<BasicFieldsProps> = ({
   form,

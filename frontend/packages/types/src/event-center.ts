@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 事件中心相关类型定义
- * 基于 api-generate 类型，避免重复定义
+ * Event Center related type definitions
+ * Based on api-generate types, avoiding duplicate definitions
  */
 
-// 注意：api-generate 位于 apps/veaiops 中，packages 不应该直接依赖
-// 这里使用类型别名，实际类型从 api-generate 导入
+// Note: api-generate is located in apps/veaiops, packages should not directly depend on it
+// Here we use type aliases, actual types are imported from api-generate
 
 /**
- * 智能体类型枚举
+ * Agent type enumeration
  */
 export type AgentType =
   | 'chatops_interest_agent'
@@ -30,11 +30,11 @@ export type AgentType =
   | 'intelligent_threshold_agent';
 
 /**
- * 事件级别枚举
+ * Event level enumeration
  */
 export type EventLevel = 'P0' | 'P1' | 'P2';
 
-// Event 类型需要从 api-generate 导入，这里只定义接口
+// Event type needs to be imported from api-generate, here we only define the interface
 export interface Event {
   _id?: string;
   event_id?: string;
@@ -53,8 +53,8 @@ export interface Event {
 }
 
 /**
- * 事件查询参数
- * 对齐后端 API 参数（使用复数形式：projects, products, customers）
+ * Event query parameters
+ * Aligned with backend API parameters (using plural form: projects, products, customers)
  */
 export interface EventQueryParams {
   agentType?: AgentType | AgentType[];
@@ -71,8 +71,8 @@ export interface EventQueryParams {
 }
 
 /**
- * 事件过滤器类型
- * 用于前端筛选表单（使用复数形式：projects, products, customers）
+ * Event filter type
+ * Used for frontend filter forms (using plural form: projects, products, customers)
  */
 export interface EventFilters {
   agentType?: AgentType[];
@@ -86,7 +86,7 @@ export interface EventFilters {
 }
 
 /**
- * 事件表格数据类型
- * 直接使用 api-generate 的 Event 类型
+ * Event table data type
+ * Directly uses api-generate's Event type
  */
 export type EventTableData = Event;

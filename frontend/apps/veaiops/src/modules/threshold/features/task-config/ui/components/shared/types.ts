@@ -47,18 +47,18 @@ export interface ChartConfigData extends TimeseriesDataPoint {
 }
 
 /**
- * 联系组接口
+ * Contact group interface
  */
 export interface ContactGroup {
   ContactGroupId?: string;
   ContactGroupName?: string;
-  Name?: string; // Aliyun使用Name字段
+  Name?: string; // Aliyun uses Name field
   id?: string;
   name?: string;
 }
 
 /**
- * 告警规则提交结果
+ * Alarm rule submission result
  */
 export interface AlarmSubmitResult {
   success: boolean;
@@ -67,7 +67,7 @@ export interface AlarmSubmitResult {
 }
 
 /**
- * 告警表单字段
+ * Alarm form fields
  */
 export interface AlarmFormValues {
   alarmLevel: SyncAlarmRulesPayload['alarm_level'];
@@ -77,7 +77,7 @@ export interface AlarmFormValues {
 }
 
 /**
- * 告警抽屉组件属性接口
+ * Alarm drawer component props interface
  */
 export interface AlarmDrawerProps {
   visible: boolean;

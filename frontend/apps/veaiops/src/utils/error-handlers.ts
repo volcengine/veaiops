@@ -20,40 +20,63 @@ import { TokenManager } from './token-manager';
 
 interface HandleUnauthorizedErrorParams<T> {
   options: ApiRequestOptions;
-  resolve: (value: T) => void;
+  /**
+   * Promise resolve function
+   * Why use (value: T | PromiseLike<T>) => void:
+   * - resolve is the standard Promise resolve function type
+   * - Accepts a result value of generic type T or PromiseLike<T>
+   * - Matches the resolve type in CancelablePromise executor
+   */
+  resolve: (value: T | PromiseLike<T>) => void;
   reject: (reason?: unknown) => void;
   onCancel: OnCancel;
   error: ApiError;
   apiClient: any;
-  retryRequest: <T>(options: ApiRequestOptions) => Promise<T>;
+  retryRequest: <TResult>(options: ApiRequestOptions) => Promise<TResult>;
 }
 
-interface HandleServerErrorParams {
+interface HandleServerErrorParams<T> {
   options: ApiRequestOptions;
-  resolve: (value: unknown) => void;
+  /**
+   * Promise resolve function
+   * Why use (value: T | PromiseLike<T>) => void:
+   * - resolve is the standard Promise resolve function type
+   * - Accepts a result value of generic type T or PromiseLike<T>
+   * - Matches the resolve type in CancelablePromise executor
+   */
+  resolve: (value: T | PromiseLike<T>) => void;
   reject: (reason?: unknown) => void;
   onCancel: OnCancel;
   error: ApiError;
   apiClient: any;
-  handleUnauthorizedError: <T>(
-    params: HandleUnauthorizedErrorParams<T>,
+  handleUnauthorizedError: <TResult>(
+    params: HandleUnauthorizedErrorParams<TResult>,
   ) => Promise<void>;
-  retryRequest: <T>(options: ApiRequestOptions) => Promise<T>;
+  retryRequest: <TResult>(options: ApiRequestOptions) => Promise<TResult>;
 }
 
-interface HandleApiErrorParams {
+interface HandleApiErrorParams<T> {
   error: ApiError;
   options: ApiRequestOptions;
-  resolve: (value: unknown) => void;
+  /**
+   * Promise resolve function
+   * Why use (value: T | PromiseLike<T>) => void:
+   * - resolve is the standard Promise resolve function type
+   * - Accepts a result value of generic type T or PromiseLike<T>
+   * - Matches the resolve type in CancelablePromise executor
+   */
+  resolve: (value: T | PromiseLike<T>) => void;
   reject: (reason?: unknown) => void;
   onCancel: OnCancel;
   apiClient: any;
-  handleUnauthorizedError: <T>(
-    params: HandleUnauthorizedErrorParams<T>,
+  handleUnauthorizedError: <TResult>(
+    params: HandleUnauthorizedErrorParams<TResult>,
   ) => Promise<void>;
-  handleServerError: (params: HandleServerErrorParams) => Promise<void>;
+  handleServerError: <TResult>(
+    params: HandleServerErrorParams<TResult>,
+  ) => Promise<void>;
   handleOtherHttpErrors: (error: ApiError) => string;
-  retryRequest: <T>(options: ApiRequestOptions) => Promise<T>;
+  retryRequest: <TResult>(options: ApiRequestOptions) => Promise<TResult>;
 }
 
 export async function handleUnauthorizedError<T>({
@@ -100,7 +123,7 @@ export async function handleUnauthorizedError<T>({
   }
 }
 
-export async function handleServerError({
+export async function handleServerError<T>({
   options,
   resolve,
   reject,
@@ -109,7 +132,7 @@ export async function handleServerError({
   apiClient,
   handleUnauthorizedError: handleUnauthorizedErrorFn,
   retryRequest,
-}: HandleServerErrorParams): Promise<void> {
+}: HandleServerErrorParams<T>): Promise<void> {
   const errorBody =
     error.body && typeof error.body === 'object'
       ? (error.body as { message?: string })
@@ -258,7 +281,7 @@ export function handleOtherHttpErrors(error: ApiError): string {
   return finalErrorMessage;
 }
 
-export async function handleApiError({
+export async function handleApiError<T>({
   error,
   options,
   resolve,
@@ -269,7 +292,7 @@ export async function handleApiError({
   handleServerError: handleServerErrorFn,
   handleOtherHttpErrors: handleOtherHttpErrorsFn,
   retryRequest,
-}: HandleApiErrorParams): Promise<void> {
+}: HandleApiErrorParams<T>): Promise<void> {
   logger.info({
     message: '[API Client] handleApiError called',
     data: {

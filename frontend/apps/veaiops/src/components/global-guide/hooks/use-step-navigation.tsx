@@ -25,7 +25,7 @@ import {
 } from '../lib';
 
 /**
- * Auto highlight frontend feature parameters interface
+ * Auto-highlight frontend feature parameter interface
  */
 interface HandleAutoHighlightFeatureParams {
   featureId: string;
@@ -35,7 +35,7 @@ interface HandleAutoHighlightFeatureParams {
 }
 
 /**
- * useStepNavigation Hook parameters interface
+ * useStepNavigation Hook parameter interface
  */
 export interface UseStepNavigationParams {
   onAutoHighlightFeature?: (params: HandleAutoHighlightFeatureParams) => void;
@@ -43,7 +43,7 @@ export interface UseStepNavigationParams {
 
 /**
  * Step navigation related Hook
- * Handles step click, status retrieval, step completion, etc.
+ * Handles step click, status retrieval, step completion, and other logic
  */
 export const useStepNavigation = ({
   onAutoHighlightFeature,
@@ -54,14 +54,14 @@ export const useStepNavigation = ({
 
   const steps: GlobalGuideStep[] = GUIDE_STEPS_CONFIG;
 
-  // Track whether frontend feature highlight has been manually triggered
+  // Track whether frontend feature highlighting has been manually triggered
   const manualHighlightTriggered = useRef<Set<string>>(new Set());
 
   // Mark manually triggered frontend feature
   const markManualHighlight = useCallback((featureId: string) => {
     manualHighlightTriggered.current.add(featureId);
     logger.info({
-      message: '[GlobalGuide] Mark manually triggered frontend feature',
+      message: '[GlobalGuide] 标记手动触发的前端功能',
       data: {
         featureId,
         triggeredFeatures: Array.from(manualHighlightTriggered.current),
@@ -88,7 +88,7 @@ export const useStepNavigation = ({
   const handleStepSelect = useCallback(
     (stepNumber: GlobalGuideStepNumber) => {
       logger.info({
-        message: '[GlobalGuide] Step selection - only update state',
+        message: '[GlobalGuide] 步骤选择 - 只更新状态',
         data: {
           stepNumber,
           previousStep: currentStep,
@@ -101,7 +101,7 @@ export const useStepNavigation = ({
       updateCurrentStep(stepNumber);
 
       logger.info({
-        message: '[GlobalGuide] Step selection completed - state updated',
+        message: '[GlobalGuide] 步骤选择完成 - 状态已更新',
         data: {
           stepNumber,
           newCurrentStep: stepNumber,
@@ -117,7 +117,7 @@ export const useStepNavigation = ({
   const handleStepClick = useCallback(
     (stepNumber: number) => {
       logger.info({
-        message: `[GlobalGuide] Step click started`,
+        message: `[GlobalGuide] 步骤点击开始`,
         data: {
           stepNumber,
           currentPath: window.location.pathname,
@@ -131,7 +131,7 @@ export const useStepNavigation = ({
       const step = steps.find((s) => s.number === stepNumber);
       if (step) {
         logger.info({
-          message: `[GlobalGuide] Found step configuration`,
+          message: `[GlobalGuide] 找到步骤配置`,
           data: {
             stepNumber,
             stepTitle: step.title,
@@ -150,7 +150,7 @@ export const useStepNavigation = ({
           const [path, search] = step.route.split('?');
 
           logger.info({
-            message: `[GlobalGuide] Route already contains parameters, use navigate to jump`,
+            message: `[GlobalGuide] 路由已包含参数，使用 navigate 跳转`,
             data: {
               stepNumber,
               targetRoute: step.route,
@@ -166,12 +166,12 @@ export const useStepNavigation = ({
           // Use navigate for SPA route navigation
           navigate({ pathname: path, search: `?${search}` });
         } else {
-          // If route doesn't contain parameters, check if specific parameters need to be added
+          // If route does not include parameters, check if specific parameters need to be added
           const currentPath = window.location.pathname;
           const currentSearch = window.location.search;
 
           logger.info({
-            message: `[GlobalGuide] Check if parameters need to be added`,
+            message: `[GlobalGuide] 检查是否需要添加参数`,
             data: {
               stepNumber,
               currentPath,
@@ -189,9 +189,9 @@ export const useStepNavigation = ({
             currentPath === step.route ||
             currentPath === step.route.split('?')[0]
           ) {
-            // Already on target page, no need to navigate, only trigger frontend feature highlight
+            // Already on target page, no navigation needed, only trigger frontend feature highlighting
             logger.info({
-              message: `[GlobalGuide] Already on target page, trigger frontend feature highlight`,
+              message: `[GlobalGuide] 已在目标页面，触发前端功能高亮`,
               data: {
                 stepNumber,
                 currentPath,
@@ -204,7 +204,7 @@ export const useStepNavigation = ({
             // If not on target page, navigate to target route (without URL parameters)
             const baseRoute = step.route.split('?')[0];
             logger.info({
-              message: `[GlobalGuide] Not on target page, navigate to route`,
+              message: `[GlobalGuide] 不在目标页面，导航到路由`,
               data: {
                 stepNumber,
                 targetRoute: baseRoute,
@@ -218,10 +218,10 @@ export const useStepNavigation = ({
 
         globalGuideTracker.trackStepView(stepNumber);
 
-        // Delayed check of final URL state and auto trigger frontend feature highlight
+        // Delay checking final URL state and automatically trigger frontend feature highlighting
         setTimeout(() => {
           logger.info({
-            message: `[GlobalGuide] Step click completed (delayed check)`,
+            message: `[GlobalGuide] 步骤点击完成（延迟检查）`,
             data: {
               stepNumber,
               finalUrl: window.location.href,
@@ -232,8 +232,8 @@ export const useStepNavigation = ({
             component: 'handleStepClick-delayed',
           });
 
-          // Auto trigger highlight guide for first frontend feature
-          // Only auto highlight first feature when no feature in this step has been manually triggered
+          // Automatically trigger highlighting guide for first frontend feature
+          // Only automatically highlight first feature if no features in this step have been manually triggered
           if (
             onAutoHighlightFeature &&
             step.frontendFeatures &&
@@ -241,19 +241,18 @@ export const useStepNavigation = ({
           ) {
             const firstFeature = step.frontendFeatures[0];
 
-            // Check if any feature in current step has been manually triggered
+            // Check if any features in current step have been manually triggered
             const hasAnyManualHighlight = step.frontendFeatures.some(
               (feature) => isManualHighlighted(feature.id),
             );
 
-            // Only auto highlight first feature when no feature has been manually triggered
+            // Only automatically highlight first feature if no features have been manually triggered
             if (
               !hasAnyManualHighlight &&
               !isManualHighlighted(firstFeature.id)
             ) {
               logger.info({
-                message:
-                  '[GlobalGuide] Auto trigger frontend feature highlight',
+                message: '[GlobalGuide] 自动触发前端功能高亮',
                 data: {
                   stepNumber,
                   featureId: firstFeature.id,
@@ -261,13 +260,13 @@ export const useStepNavigation = ({
                   selector: firstFeature.selector,
                   placement: firstFeature.placement,
                   tooltipContent: firstFeature.tooltipContent,
-                  reason: 'No manually triggered feature in step',
+                  reason: '步骤内无手动触发过的功能',
                 },
                 source: 'GlobalGuide',
                 component: 'handleStepClick-autoHighlight',
               });
 
-              // Delayed trigger to ensure page has loaded
+              // Delay trigger to ensure page has loaded
               setTimeout(() => {
                 onAutoHighlightFeature?.({
                   featureId: firstFeature.id,
@@ -278,16 +277,15 @@ export const useStepNavigation = ({
               }, 1000);
             } else {
               logger.info({
-                message:
-                  '[GlobalGuide] Skip auto trigger frontend feature highlight',
+                message: '[GlobalGuide] 跳过自动触发前端功能高亮',
                 data: {
                   stepNumber,
                   featureId: firstFeature.id,
                   featureName: firstFeature.name,
                   hasAnyManualHighlight,
                   reason: hasAnyManualHighlight
-                    ? 'Feature in step already manually triggered'
-                    : 'This feature has been manually triggered',
+                    ? '步骤内已有功能被手动触发'
+                    : '该功能已手动触发过',
                 },
                 source: 'GlobalGuide',
                 component: 'handleStepClick-autoHighlight',
@@ -297,7 +295,7 @@ export const useStepNavigation = ({
         }, 200);
 
         logger.info({
-          message: `[GlobalGuide] Step click completed`,
+          message: `[GlobalGuide] 步骤点击完成`,
           data: {
             stepNumber,
             finalUrl: window.location.href,
@@ -307,7 +305,7 @@ export const useStepNavigation = ({
         });
       } else {
         logger.warn({
-          message: `[GlobalGuide] Step configuration not found`,
+          message: `[GlobalGuide] 未找到步骤配置`,
           data: {
             stepNumber,
             availableSteps: steps.map((s) => ({
@@ -335,8 +333,8 @@ export const useStepNavigation = ({
       updateStepStatus(stepNumber, 'completed');
       globalGuideTracker.trackStepComplete(stepNumber);
 
-      // No longer auto navigate, let user manually control
-      // Can show a hint to inform user what the next step is
+      // No longer auto-navigate, let user manually control
+      // Can display a prompt to inform user what the next step is
       const nextStep = steps.find((s) => s.number === stepNumber + 1);
     },
     [steps, updateStepStatus],

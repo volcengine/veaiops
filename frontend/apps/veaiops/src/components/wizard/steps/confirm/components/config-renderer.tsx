@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 配置信息渲染组件
- * @description 渲染不同数据源类型的配置信息
+ * Configuration information rendering component
+ * @description Renders configuration information for different data source types
  * @author AI Assistant
  * @date 2025-01-17
  */

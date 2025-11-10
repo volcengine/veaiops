@@ -26,7 +26,7 @@ interface ApiKeyFieldProps {
 }
 
 /**
- * API Key 输入字段组件
+ * API Key input field component
  */
 export const ApiKeyField: React.FC<ApiKeyFieldProps> = ({
   showAdvancedConfig,

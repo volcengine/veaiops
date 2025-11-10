@@ -24,12 +24,12 @@ import {
 import { getConfigData } from '../utils';
 
 /**
- * 配置信息列配置 - 根据数据源类型动态生成表头分组
+ * Configuration information column configuration - Dynamically generate table header grouping based on data source type
  */
 export const getConfigColumns = (
   dataSourceType: DataSourceType,
 ): ModernTableColumnProps<DataSource> => {
-  // 基础字段（所有数据源都有）
+  // Base fields (all data sources have)
   const baseFields: ModernTableColumnProps<DataSource>[] = [
     {
       title: '连接名称',
@@ -63,7 +63,7 @@ export const getConfigColumns = (
     },
   ];
 
-  // 根据数据源类型添加特定字段
+  // Add specific fields based on data source type
   let specificFields: Array<ModernTableColumnProps<DataSource>> = [];
 
   switch (dataSourceType) {

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Zabbix指标选择业务逻辑 Hook
- * @description 处理Zabbix指标选择的核心业务逻辑
+ * Zabbix metric selection business logic Hook
+ * @description Handles core business logic for Zabbix metric selection
  */
 
 import type { ZabbixTemplateMetric } from 'api-generate';

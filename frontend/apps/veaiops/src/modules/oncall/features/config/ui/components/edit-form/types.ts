@@ -16,7 +16,7 @@ import type { FormInstance } from '@arco-design/web-react';
 import type { Interest } from 'api-generate';
 
 /**
- * 编辑表单组件属性
+ * Edit form component props
  */
 export interface EditFormProps {
   form: FormInstance;
@@ -27,7 +27,7 @@ export interface EditFormProps {
 }
 
 /**
- * 示例输入组件属性
+ * Example input component props
  */
 export interface ExampleInputProps {
   value?: string;

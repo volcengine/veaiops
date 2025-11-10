@@ -26,7 +26,7 @@ import type { Project } from 'api-generate';
 import React, { useRef } from 'react';
 
 /**
- * Project Table Hook options type
+ * Options type for Project Table Hook
  */
 export interface UseProjectTableOptions {
   onDelete: (projectId: string) => Promise<boolean>;
@@ -35,7 +35,7 @@ export interface UseProjectTableOptions {
 }
 
 /**
- * Project Table Hook return value type
+ * Return type for Project Table Hook
  */
 export interface UseProjectTableReturn {
   customTableProps: {
@@ -89,7 +89,10 @@ const getProjectColumns = (
       key: 'created_at',
       width: 180,
       render: (createdAt: string) => (
-        <StampTime time={createdAt} template="YYYY-MM-DD HH:mm:ss" />
+        <StampTime
+          time={new Date(createdAt).getTime()}
+          template="YYYY-MM-DD HH:mm:ss"
+        />
       ),
     },
     {
@@ -98,7 +101,10 @@ const getProjectColumns = (
       key: 'updated_at',
       width: 180,
       render: (updatedAt: string) => (
-        <StampTime time={updatedAt} template="YYYY-MM-DD HH:mm:ss" />
+        <StampTime
+          time={new Date(updatedAt).getTime()}
+          template="YYYY-MM-DD HH:mm:ss"
+        />
       ),
     },
     {
@@ -112,7 +118,7 @@ const getProjectColumns = (
           content={`确定要删除项目"${record.name}"吗？此操作不可恢复。`}
           onOk={async () => {
             await onDelete(record.project_id || '');
-            // Delete operation will automatically refresh through operationWrapper, no manual refresh needed
+            // Delete operation will be auto refreshed by operationWrapper, no need to manually refresh
           }}
           okText="确认删除"
           cancelText="取消"
@@ -122,7 +128,6 @@ const getProjectColumns = (
             size="small"
             status="danger"
             icon={<IconDelete />}
-            data-testid="delete-project-btn"
           >
             删除
           </Button>
@@ -208,16 +213,10 @@ export const useProjectTable = ({
         type="primary"
         icon={<IconPlus />}
         onClick={onCreate}
-        data-testid="new-project-btn"
       >
         新建项目
       </Button>,
-      <Button
-        key="import"
-        icon={<IconUpload />}
-        onClick={onImport}
-        data-testid="import-project-btn"
-      >
+      <Button key="import" icon={<IconUpload />} onClick={onImport}>
         导入项目
       </Button>,
     ],

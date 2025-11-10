@@ -18,7 +18,7 @@ import type { Chat } from 'api-generate';
 import { useCallback, useMemo } from 'react';
 
 /**
- * Bot聊天管理事件处理Hook
+ * Bot chat management event handler Hook
  */
 export const useBotChatHandlers = ({
   editingChat,
@@ -46,7 +46,7 @@ export const useBotChatHandlers = ({
   }) => Promise<boolean>;
   afterUpdate?: () => Promise<{ success: boolean; error?: Error }>;
 }) => {
-  // 处理配置编辑
+  // Handle config edit
   const handleConfigEdit = useCallback(
     (chat: Chat) => {
       setEditingChat(chat);
@@ -55,7 +55,7 @@ export const useBotChatHandlers = ({
     [setEditingChat, setConfigModalVisible],
   );
 
-  // 处理配置提交
+  // Handle config submission
   const handleConfigSubmit = useCallback(
     async (config: ChatConfigFormData) => {
       if (!editingChat?._id) {
@@ -72,12 +72,12 @@ export const useBotChatHandlers = ({
 
       if (success) {
         setConfigModalVisible(false);
-        // 配置更新成功后刷新表格
+        // Refresh table after successful config update
         if (afterUpdate) {
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
-              message: '更新后刷新表格失败',
+              message: 'Failed to refresh table after update',
               data: {
                 error: refreshResult.error.message,
                 stack: refreshResult.error.stack,
@@ -94,13 +94,13 @@ export const useBotChatHandlers = ({
     [editingChat, updateChatConfig, afterUpdate, setConfigModalVisible],
   );
 
-  // 处理配置取消
+  // Handle config cancel
   const handleConfigCancel = useCallback(() => {
     setConfigModalVisible(false);
     setEditingChat(null);
   }, [setConfigModalVisible, setEditingChat]);
 
-  // 处理机器人选择变化
+  // Handle bot selection change
   const handleBotChange = useCallback(
     (botId: string) => {
       setSelectedBotId(botId);
@@ -113,7 +113,7 @@ export const useBotChatHandlers = ({
     [setSelectedBotId, fetchChats, setChats],
   );
 
-  // 转换为表格数据
+  // Transform to table data
   const tableData = useMemo((): Chat[] => {
     return chats.map((chat) => ({
       ...chat,

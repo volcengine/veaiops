@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Project Hook 类型定义
+ * Project Hook type definitions
  */
 
 import type { Form } from '@arco-design/web-react';
@@ -29,7 +29,7 @@ import type { Project } from 'api-generate';
 import type React from 'react';
 
 /**
- * Project 表格配置 Hook 的选项类型
+ * Options type for Project table configuration Hook
  */
 export interface UseProjectTableConfigOptions {
   onEdit?: (record: Project) => Promise<boolean>;
@@ -37,14 +37,14 @@ export interface UseProjectTableConfigOptions {
   onCreate?: () => void;
   onImport?: () => void;
   onToggleStatus?: (projectId: string, status: boolean) => Promise<boolean>;
-  ref?: React.Ref<{ refresh: () => Promise<void> }>; // ✅ 添加 ref 参数
+  ref?: React.Ref<{ refresh: () => Promise<void> }>; // ✅ Add ref parameter
 }
 
 /**
- * Project 表格配置 Hook 的返回值类型
+ * Return type for Project table configuration Hook
  */
 export interface UseProjectTableConfigReturn {
-  // 表格配置
+  // Table configuration
   customTableProps: ReturnType<typeof useBusinessTable>['customTableProps'];
   wrappedHandlers: ReturnType<typeof useBusinessTable>['wrappedHandlers'];
   handleColumns: (
@@ -54,32 +54,32 @@ export interface UseProjectTableConfigReturn {
   renderActions: (props?: Record<string, unknown>) => React.ReactNode[];
   actions: React.ReactNode[];
 
-  // 业务逻辑状态
+  // Business logic state
   modalVisible: boolean;
   editingProject: Project | null;
   submitting: boolean;
   form: ReturnType<typeof Form.useForm<ProjectFormData>>[0];
 
-  // 导入相关状态
+  // Import related state
   importDrawerVisible: boolean;
   uploading: boolean;
 
-  // 新建项目相关状态
+  // Create project related state
   createDrawerVisible: boolean;
   creating: boolean;
 
-  // 业务逻辑处理器
+  // Business logic handlers
   handleCancel: () => void;
   handleSubmit: (values: ProjectFormData) => Promise<boolean>;
   handleDelete: (projectId: string) => Promise<boolean>;
   checkDeletePermission: (project: Project) => boolean;
 
-  // 导入相关处理器
+  // Import related handlers
   handleImport: (file: File) => Promise<boolean>;
   handleOpenImportDrawer: () => void;
   handleCloseImportDrawer: () => void;
 
-  // 新建项目相关处理器
+  // Create project related handlers
   handleCreate: (values: {
     project_id: string;
     name: string;

@@ -16,27 +16,27 @@ import { Message, Modal } from '@arco-design/web-react';
 import { useCallback } from 'react';
 
 /**
- * 表格刷新配置选项
+ * Table refresh configuration options
  */
 export interface TableRefreshOptions {
-  /** 刷新成功提示消息 */
+  /** Success message for refresh */
   successMessage?: string;
-  /** 刷新失败提示消息 */
+  /** Error message for refresh failure */
   errorMessage?: string;
-  /** 是否显示加载状态 */
+  /** Whether to show loading state */
   showLoading?: boolean;
-  /** 是否静默刷新（不显示任何提示） */
+  /** Whether to refresh silently (no prompts) */
   silent?: boolean;
-  /** 自定义错误处理 */
+  /** Custom error handler */
   onError?: (error: Error) => void;
-  /** 刷新前的回调 */
+  /** Callback before refresh */
   onBeforeRefresh?: () => void | Promise<void>;
-  /** 刷新后的回调 */
+  /** Callback after refresh */
   onAfterRefresh?: () => void | Promise<void>;
 }
 
 /**
- * 表格刷新 Hook 的参数接口
+ * Parameters interface for table refresh Hook
  */
 export interface UseTableRefreshParams {
   refreshTable?: () => Promise<void> | Promise<boolean>;
@@ -44,11 +44,11 @@ export interface UseTableRefreshParams {
 }
 
 /**
- * 表格刷新 Hook
- * 提供统一的表格刷新逻辑，支持成功/失败提示、加载状态等
+ * Table refresh Hook
+ * Provides unified table refresh logic with success/failure prompts, loading state, etc.
  *
- * @param params 包含 refreshTable 和 options 的参数对象
- * @returns 封装后的刷新函数
+ * @param params Parameter object containing refreshTable and options
+ * @returns Wrapped refresh function
  *
  * @example
  * ```tsx
@@ -60,7 +60,7 @@ export interface UseTableRefreshParams {
  *   }
  * });
  *
- * // 在操作成功后调用
+ * // Call after successful operation
  * await refreshWithFeedback();
  * ```
  */
@@ -79,7 +79,7 @@ export const useTableRefresh = ({
   } = options;
 
   /**
-   * 带反馈的刷新函数
+   * Refresh function with feedback
    */
   const refreshWithFeedback = useCallback(async (): Promise<{
     success: boolean;
@@ -90,42 +90,42 @@ export const useTableRefresh = ({
     }
 
     try {
-      // 刷新前回调
+      // Callback before refresh
       if (onBeforeRefresh) {
         await onBeforeRefresh();
       }
 
-      // 显示加载状态
+      // Show loading state
       if (showLoading && !silent) {
         Message.loading('正在刷新数据...');
       }
 
-      // 执行刷新
+      // Execute refresh
       const result = await refreshTable();
 
-      // 刷新后回调
+      // Callback after refresh
       if (onAfterRefresh) {
         await onAfterRefresh();
       }
 
-      // 如果 refreshTable 返回 boolean，使用返回值；否则默认为成功
+      // If refreshTable returns boolean, use the return value; otherwise default to success
       const success = typeof result === 'boolean' ? result : true;
 
-      // 显示成功提示（仅在成功时显示）
+      // Show success message (only when successful)
       if (success && successMessage && !silent) {
         Message.success(successMessage);
       }
 
       return { success };
     } catch (error: unknown) {
-      // ✅ 正确：透出实际错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
-      // 自定义错误处理
+      // Custom error handling
       if (onError) {
         onError(errorObj);
       } else if (!silent) {
-        // ✅ 正确：透出实际错误信息，而不是固定消息
+        // ✅ Correct: Expose actual error information, not fixed message
         const errorMessageToShow =
           error instanceof Error
             ? error.message
@@ -146,7 +146,7 @@ export const useTableRefresh = ({
   ]);
 
   /**
-   * 静默刷新函数（不显示任何提示）
+   * Silent refresh function (no prompts)
    */
   const refreshSilently = useCallback(async (): Promise<{
     success: boolean;
@@ -158,14 +158,14 @@ export const useTableRefresh = ({
 
     try {
       const result = await refreshTable();
-      // 如果 refreshTable 返回 boolean，使用返回值；否则默认为成功
+      // If refreshTable returns boolean, use the return value; otherwise default to success
       const success = typeof result === 'boolean' ? result : true;
       return { success };
     } catch (error: unknown) {
-      // ✅ 正确：透出实际错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
-      // 静默模式下不显示错误提示，但可以通过 onError 处理
+      // In silent mode, no error prompt is shown, but can be handled via onError
       if (onError) {
         onError(errorObj);
       }
@@ -174,7 +174,7 @@ export const useTableRefresh = ({
   }, [refreshTable, onError]);
 
   /**
-   * 带确认的刷新函数
+   * Refresh function with confirmation
    */
   const refreshWithConfirm = useCallback(
     (confirmMessage = '确定要刷新数据吗？') => {
@@ -196,35 +196,35 @@ export const useTableRefresh = ({
   );
 
   return {
-    /** 带反馈的刷新函数 */
+    /** Refresh function with feedback */
     refreshWithFeedback,
-    /** 静默刷新函数 */
+    /** Silent refresh function */
     refreshSilently,
-    /** 带确认的刷新函数 */
+    /** Refresh function with confirmation */
     refreshWithConfirm,
-    /** 原始刷新函数 */
+    /** Original refresh function */
     refresh: refreshTable,
   };
 };
 
 /**
- * 管理操作后的表格刷新 Hook
- * 专门用于 CRUD 操作后的表格刷新，提供统一的成功反馈
+ * Table refresh Hook after management operations
+ * Specifically for table refresh after CRUD operations, providing unified success feedback
  *
- * @param refreshTable - 原始的刷新函数
- * @returns 各种操作后的刷新函数
+ * @param refreshTable - Original refresh function
+ * @returns Refresh functions for various operations
  *
  * @example
  * ```tsx
  * const { afterCreate, afterUpdate, afterDelete } = useManagementRefresh(refreshTable);
  *
- * // 创建成功后
+ * // After successful creation
  * await afterCreate();
  *
- * // 更新成功后
+ * // After successful update
  * await afterUpdate();
  *
- * // 删除成功后
+ * // After successful deletion
  * await afterDelete();
  * ```
  */
@@ -261,17 +261,17 @@ export const useManagementRefresh = (
   }, [refreshSilently]);
 
   return {
-    /** 创建操作后刷新 */
+    /** Refresh after create operation */
     afterCreate,
-    /** 更新操作后刷新 */
+    /** Refresh after update operation */
     afterUpdate,
-    /** 删除操作后刷新 */
+    /** Refresh after delete operation */
     afterDelete,
-    /** 导入操作后刷新 */
+    /** Refresh after import operation */
     afterImport,
-    /** 批量操作后刷新 */
+    /** Refresh after batch operation */
     afterBatchOperation,
-    /** 通用刷新 */
+    /** General refresh */
     refresh: refreshSilently,
   };
 };

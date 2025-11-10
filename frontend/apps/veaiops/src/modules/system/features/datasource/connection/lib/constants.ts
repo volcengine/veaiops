@@ -13,31 +13,31 @@
 // limitations under the License.
 
 /**
- * 数据源连接管理常量定义
+ * Data source connection management constant definitions
  */
 
 import { DataSourceType } from "api-generate";
 
-// 数据源类型显示名称映射
+// Data source type display name mapping
 export const DATA_SOURCE_DISPLAY_NAMES = {
   [DataSourceType.ZABBIX]: "Zabbix",
   [DataSourceType.ALIYUN]: "阿里云",
   [DataSourceType.VOLCENGINE]: "火山引擎",
 } as const;
 
-// 连接状态
+// Connection status
 export const CONNECTION_STATUS = {
   ACTIVE: "active",
   INACTIVE: "inactive",
 } as const;
 
-// 表格配置
+// Table configuration
 export const TABLE_CONFIG = {
   PAGE_SIZE: 10,
-  SCROLL_X: 1200, // 调整宽度，因为现在每种类型只显示自己的配置列
+  SCROLL_X: 1200, // Adjust width, as each type now only displays its own configuration columns
 } as const;
 
-// 表单验证规则
+// Form validation rules
 export const FORM_RULES = {
   NAME: {
     required: true,
@@ -73,7 +73,7 @@ export const FORM_RULES = {
   },
 } as const;
 
-// 操作按钮文本
+// Action button text
 export const ACTION_TEXTS = {
   TEST: "测试连接",
   EDIT: "编辑连接",
@@ -83,20 +83,20 @@ export const ACTION_TEXTS = {
   CREATE: "新建连接",
 } as const;
 
-// 确认对话框文本
+// Confirm dialog text
 export const CONFIRM_TEXTS = {
   DELETE_TITLE: "确定要删除这个连接吗？",
   DELETE_CONTENT: "删除后无法恢复，请谨慎操作。",
 } as const;
 
-// 空状态文本
+// Empty state text
 export const EMPTY_TEXTS = {
   NO_DATA: "暂无数据",
   NO_CONNECTION: "暂无连接",
   CLICK_REFRESH: "点击下方按钮刷新或新建连接",
 } as const;
 
-// 列宽配置
+// Column width configuration
 export const COLUMN_WIDTHS = {
   NAME: 150,
   STATUS: 100,

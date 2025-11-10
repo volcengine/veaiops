@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出类型定义
+// Export type definitions
 export type { AccountModalProps, FormFieldType, ValidationRule } from './types';
 
-// 导出验证规则
+// Export validation rules
 export {
   emailRules,
   newPasswordRules,

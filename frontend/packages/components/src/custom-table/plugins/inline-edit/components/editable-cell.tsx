@@ -31,8 +31,8 @@ import {
 } from '@arco-design/web-react';
 import { IconCheck, IconClose, IconEdit } from '@arco-design/web-react/icon';
 /**
- * 可编辑单元格组件
- * 基于 EPS 平台的 EditableCell 实现
+ * Editable cell component
+ * Implementation based on EPS platform's EditableCell
  */
 import type React from 'react';
 import {
@@ -45,29 +45,29 @@ import {
 import styles from './editable-cell.module.less';
 
 export interface EditableCellProps<RecordType extends BaseRecord = BaseRecord> {
-  /** 单元格值 */
+  /** Cell value */
   value: unknown;
-  /** 行数据 */
+  /** Row data */
   record: RecordType;
-  /** 字段配置 */
+  /** Field configuration */
   fieldConfig: FieldEditConfig<RecordType>;
-  /** 编辑模式 */
+  /** Edit mode */
   mode: EditMode;
-  /** 触发方式 */
+  /** Trigger method */
   trigger: EditTrigger;
-  /** 是否正在编辑 */
+  /** Whether currently editing */
   editing: boolean;
-  /** 开始编辑 */
+  /** Start editing */
   onStartEdit: () => void;
-  /** 结束编辑 */
+  /** Finish editing */
   onFinishEdit: (value: unknown) => Promise<void>;
-  /** 取消编辑 */
+  /** Cancel editing */
   onCancelEdit: () => void;
-  /** 验证函数 */
+  /** Validation function */
   onValidate?: (value: unknown) => Promise<string | null>;
-  /** 样式类名 */
+  /** CSS class name */
   className?: string;
-  /** 子元素 */
+  /** Children elements */
   children?: ReactNode;
 }
 
@@ -95,19 +95,19 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
     blur: () => void;
   }>(null);
 
-  // 开始编辑时初始化值
+  // Initialize value when editing starts
   useEffect(() => {
     if (editing) {
       setEditValue(value);
       setValidationError(null);
-      // 聚焦到输入框
+      // Focus on input field
       setTimeout(() => {
         inputRef.current?.dom?.focus();
       }, 0);
     }
   }, [editing, value]);
 
-  // 处理键盘事件
+  // Handle keyboard events
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (!editing) {
@@ -136,7 +136,7 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
     [editing, editValue, fieldConfig.confirmOnTab],
   );
 
-  // 处理保存
+  // Handle save
   const handleSave = useCallback(async () => {
     if (saving || !editing) {
       return;
@@ -146,7 +146,7 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
       setSaving(true);
       setValidationError(null);
 
-      // 验证
+      // Validate
       if (onValidate) {
         setValidating(true);
         const error = await onValidate(editValue);
@@ -159,7 +159,7 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
         setValidating(false);
       }
 
-      // 保存
+      // Save
       await onFinishEdit(editValue);
       devLog.log({
         component: 'EditableCell',
@@ -170,8 +170,9 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
         },
       });
     } catch (error) {
-      // ✅ 正确：透出实际错误信息
-      const errorMessage = error instanceof Error ? error.message : '保存失败';
+      // ✅ Correct: Extract actual error message
+      const errorMessage =
+        error instanceof Error ? error.message : 'Save failed';
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       devLog.error({
@@ -196,21 +197,21 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
     fieldConfig.dataIndex,
   ]);
 
-  // 处理取消
+  // Handle cancel
   const handleCancel = useCallback(() => {
     setEditValue(value);
     setValidationError(null);
     onCancelEdit();
   }, [value, onCancelEdit]);
 
-  // 处理失焦
+  // Handle blur
   const handleBlur = useCallback(() => {
     if (fieldConfig.exitOnBlur && editing && !saving) {
       handleSave();
     }
   }, [editing, saving, fieldConfig.exitOnBlur, handleSave]);
 
-  // 渲染编辑器
+  // Render editor
   const renderEditor = () => {
     const editorProps: CustomEditorProps<RecordType> = {
       value: editValue,
@@ -219,18 +220,18 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
       onFinish: handleSave,
       onCancel: handleCancel,
       fieldName: fieldConfig.fieldName,
-      rowIndex: 0, // TODO: 从外部传入
-      columnIndex: 0, // TODO: 从外部传入
+      rowIndex: 0, // TODO: Pass from external
+      columnIndex: 0, // TODO: Pass from external
       editorProps: fieldConfig.editor?.props,
     };
 
-    // 自定义编辑器
+    // Custom editor
     if (fieldConfig.editor?.component) {
       const CustomEditor = fieldConfig.editor.component;
       return <CustomEditor {...editorProps} />;
     }
 
-    // 内置编辑器渲染
+    // Built-in editor rendering
 
     switch (fieldConfig.editor?.type || 'input') {
       case 'input':
@@ -328,7 +329,7 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
     }
   };
 
-  // 渲染操作按钮
+  // Render action buttons
   const renderActions = () => {
     if (mode === 'cell' && editing) {
       return (
@@ -354,7 +355,7 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
     return null;
   };
 
-  // 渲染编辑触发器
+  // Render edit trigger
   const renderTrigger = () => {
     if (editing || !fieldConfig.showEditIcon) {
       return null;
@@ -363,7 +364,7 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
     return <IconEdit className={styles.editIcon} onClick={onStartEdit} />;
   };
 
-  // 编辑状态
+  // Editing state
   if (editing) {
     return (
       <div
@@ -382,14 +383,14 @@ export const EditableCell = <RecordType extends BaseRecord = BaseRecord>({
     );
   }
 
-  // 状态
+  // Display state
   const handleTriggerEdit = () => {
     if (fieldConfig.disabled || fieldConfig.readOnly) {
       return;
     }
 
     if (trigger === 'doubleClick') {
-      // 双击触发在父组件处理
+      // Double-click trigger is handled in parent component
       return;
     }
 

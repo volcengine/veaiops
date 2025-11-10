@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接相关Hooks导出
+ * Connection related Hooks exports
  */
 
 export { useConnectionPanelHandlers } from './use-connection-panel-handlers';

@@ -18,13 +18,13 @@ import type { InputNumberProps } from '@arco-design/web-react/es/InputNumber/int
 import type { FC } from 'react';
 
 const commonInputNumberProps = {
-  placeholder: '请输入',
+  placeholder: 'Please enter',
   style: { width: '100%' },
 };
 
 /**
- * InputNumber 组件包装器
- * 提供表单项包装功能，支持垂直布局等特性
+ * InputNumber component wrapper
+ * Provides form item wrapper functionality, supports vertical layout and other features
  */
 const InputNumberComponent: FC<FormItemControlProps<InputNumberProps>> = (
   props,

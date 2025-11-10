@@ -33,7 +33,7 @@ interface DataSourceTabProps {
 }
 
 /**
- * 数据源Tab组件
+ * Data source Tab component
  */
 export const DataSourceTab: React.FC<DataSourceTabProps> = ({
   tabKey,

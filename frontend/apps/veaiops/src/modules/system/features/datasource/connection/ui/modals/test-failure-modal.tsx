@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 测试失败弹窗组件
+ * Test failure modal component
  */
 
 import { Alert, Button, Modal } from '@arco-design/web-react';

@@ -19,7 +19,7 @@ import {
 } from '../components/guide-content';
 
 /**
- * 监控数据源管理管理页面引导步骤配置
+ * Monitor data source management page guide steps configuration
  */
 export const MONITOR_MANAGEMENT_GUIDE_STEPS: IStep[] = [
   {
@@ -37,7 +37,7 @@ export const MONITOR_MANAGEMENT_GUIDE_STEPS: IStep[] = [
 ];
 
 /**
- * 引导配置常量
+ * Guide configuration constants
  */
 export const GUIDE_CONFIG_CONSTANTS = {
   LOCAL_KEY: 'monitor-access-management-guide',

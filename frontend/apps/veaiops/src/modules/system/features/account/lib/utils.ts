@@ -13,30 +13,30 @@
 // limitations under the License.
 
 /**
- * 账号管理工具函数 - 统一导出
- * @description 账号管理相关的工具函数和辅助方法
+ * Account management utility functions - Unified export
+ * @description Account management related utility functions and helper methods
  *
- * 此文件已拆分为多个子模块以提高可维护性：
- * - formatters.ts: 格式化函数
- * - validators.ts: 验证函数
- * - validation-helpers.ts: 验证辅助函数
- * - permissions.ts: 权限检查函数
- * - helpers.ts: 辅助函数
+ * This file has been split into multiple sub-modules for better maintainability:
+ * - formatters.ts: Formatting functions
+ * - validators.ts: Validation functions
+ * - validation-helpers.ts: Validation helper functions
+ * - permissions.ts: Permission check functions
+ * - helpers.ts: Helper functions
  *
- * 为保持向后兼容，统一从此文件重新导出所有函数
+ * For backward compatibility, all functions are re-exported from this file
  */
 
-// 导出格式化函数
+// Export formatting functions
 export * from './formatters';
 
-// 导出验证函数
+// Export validation functions
 export * from './validators';
 
-// 导出验证辅助函数
+// Export validation helper functions
 export * from './validation-helpers';
 
-// 导出权限函数
+// Export permission functions
 export * from './permissions';
 
-// 导出辅助函数
+// Export helper functions
 export * from './helpers';

@@ -13,17 +13,17 @@
 // limitations under the License.
 
 /**
- * 订阅管理UI组件导出
+ * Subscription management UI components export
  */
 
 export { UpdateTooltip } from '../update-tooltip';
 
-// 导出表单组件
+// Export form components
 export { BasicInfoForm } from './basic-info-form';
 export { EventLevelConfig } from './event-level-config';
 export { InterestConfig } from './interest-config';
 export { NotificationConfig } from './notification-config';
 export { WebhookConfig } from './webhook-config';
 
-// 导出表格相关组件
+// Export table related components
 // export * from './tables'; // TODO: Add tables components if needed

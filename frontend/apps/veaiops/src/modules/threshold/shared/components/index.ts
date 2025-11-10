@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 共享组件导出
- * 通过层层导出简化导入路径
+ * Shared component exports
+ * Simplify import paths through layered exports
  */
 
-// 重新导出 Push History 组件
+// Re-export Push History components
 export {
   PushHistoryManager,
   PushHistoryTable,

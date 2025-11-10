@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 实例选择步骤通用组件导出
+ * Instance selection step generic component export
  */
 
 export { SearchBox } from './search-box';

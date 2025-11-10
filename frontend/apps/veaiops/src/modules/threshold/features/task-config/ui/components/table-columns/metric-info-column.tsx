@@ -17,7 +17,7 @@ import type { MetricThresholdResult } from 'api-generate';
 import type React from 'react';
 
 /**
- * 指标信息列渲染组件
+ * Metric information column render component
  */
 export const MetricInfoColumn: React.FC<{
   name: string;

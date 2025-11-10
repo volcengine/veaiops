@@ -16,8 +16,8 @@ import type React from 'react';
 import { MonitorAccessManagement } from '../../features/datasource';
 
 /**
- * 系统配置 - 增强配置页面
- * @description 数据源配置管理页面
+ * System configuration - Enhanced configuration page
+ * @description Data source configuration management page
  */
 export const EnhancedConfigPage: React.FC = () => {
   return <MonitorAccessManagement />;

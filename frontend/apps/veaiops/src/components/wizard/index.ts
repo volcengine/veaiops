@@ -27,24 +27,24 @@
 // limitations under the License.
 
 /**
- * 数据源向导组件导出
- * @description 统一导出数据源向导相关组件和类型
+ * Data source wizard component exports
+ * @description Unified export of data source wizard related components and types
  * @author AI Assistant
  * @date 2025-01-15
  */
 
-// 主组件
+// Main component
 export { DataSourceWizard } from './datasource-wizard';
 export type { DataSourceWizardProps } from './datasource-wizard';
 
-// 子组件
+// Sub-components
 export * from './components';
 
-// 配置和工具
+// Configuration and utilities
 export * from './config/datasource-configs';
 export * from './utils/wizard-logic';
 
-// 类型定义
+// Type definitions
 export * from './types';
 
 // Hooks

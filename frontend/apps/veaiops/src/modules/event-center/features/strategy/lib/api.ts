@@ -23,11 +23,11 @@ import type {
 import { Message } from '@arco-design/web-react';
 
 /**
- * 策略 API 统一接口
+ * Strategy API unified interface
  *
- * ✅ 简化命名：合并 strategy-service.ts 的功能到 strategyApi
+ * ✅ Simplified naming: Merged strategy-service.ts functionality into strategyApi
  *
- * 根据 Python 源码分析（veaiops/handler/routers/apis/v1/event_center/inform_strategy.py）：
+ * Based on Python source code analysis (veaiops/handler/routers/apis/v1/event_center/inform_strategy.py):
  * - GET /inform-strategy/ → getStrategies
  * - POST /inform-strategy/ → createStrategy
  * - PUT /inform-strategy/{uid} → updateStrategy
@@ -35,10 +35,10 @@ import { Message } from '@arco-design/web-react';
  */
 export const strategyApi = {
   /**
-   * 创建策略
+   * Create strategy
    *
-   * @param strategyData - 策略创建数据（InformStrategyCreate，来自 api-generate）
-   * @returns 创建成功返回 true，失败返回 false
+   * @param strategyData - Strategy creation data (InformStrategyCreate, from api-generate)
+   * @returns Returns true on success, false on failure
    */
   async createStrategy(
     strategyData: InformStrategyCreate,
@@ -89,11 +89,11 @@ export const strategyApi = {
   },
 
   /**
-   * 更新策略
+   * Update strategy
    *
-   * @param strategyId - 策略 ID
-   * @param updateData - 策略更新数据（InformStrategyUpdate，来自 api-generate）
-   * @returns 更新成功返回 true，失败返回 false
+   * @param strategyId - Strategy ID
+   * @param updateData - Strategy update data (InformStrategyUpdate, from api-generate)
+   * @returns Returns true on success, false on failure
    */
   async updateStrategy(
     strategyId: string,
@@ -146,10 +146,10 @@ export const strategyApi = {
   },
 
   /**
-   * 删除策略
+   * Delete strategy
    *
-   * @param strategyId - 策略 ID
-   * @returns 删除成功返回 true，失败返回 false
+   * @param strategyId - Strategy ID
+   * @returns Returns true on success, false on failure
    */
   async deleteStrategy(
     strategyId: string,
@@ -200,10 +200,10 @@ export const strategyApi = {
   },
 
   /**
-   * 获取策略列表
+   * Get strategy list
    *
-   * @param params - 查询参数
-   * @returns 策略列表响应
+   * @param params - Query parameters
+   * @returns Strategy list response
    */
   async getStrategies(params?: {
     skip?: number;
@@ -224,11 +224,11 @@ export const strategyApi = {
   },
 
   /**
-   * 检查策略名称是否重复
+   * Check if strategy name is duplicate
    *
-   * @param name - 策略名称
-   * @param excludeId - 排除的策略 ID（用于更新时检查）
-   * @returns 重复返回 true，不重复返回 false
+   * @param name - Strategy name
+   * @param excludeId - Excluded strategy ID (for update check)
+   * @returns Returns true if duplicate, false if not duplicate
    */
   async checkNameDuplicate(
     name: string,

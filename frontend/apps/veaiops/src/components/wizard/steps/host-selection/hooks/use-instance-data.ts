@@ -13,13 +13,12 @@
 // limitations under the License.
 
 /**
- * 实例选择步骤数据管理Hook
- * @description 处理不同数据源的实例数据获取
+ * Instance selection step data management Hook
+ * @description Handles instance data fetching for different data sources
  * @author AI Assistant
  * @date 2025-01-16
  */
 
-import { DataSource } from '@veaiops/api-client';
 import type {
   Connect,
   ZabbixHost,
@@ -36,23 +35,23 @@ import type {
   WizardActions,
 } from '../../../types';
 
-// 定义 ZabbixMetric 类型别名
+// Define ZabbixMetric type alias
 type ZabbixMetric = ZabbixTemplateMetric;
 
 export interface UseInstanceDataProps {
   dataSourceType: DataSourceType;
   connect: Connect;
-  // Zabbix 相关
+  // Zabbix related
   selectedTemplate?: ZabbixTemplate | null;
   selectedZabbixMetric?: ZabbixMetric | null;
   zabbixHosts: ZabbixHost[];
-  // 阿里云相关
+  // Alibaba Cloud related
   selectedAliyunMetric?: AliyunMetric | null;
   aliyunInstances: AliyunInstance[];
-  // 火山引擎相关
+  // Volcano Engine related
   selectedVolcengineMetric?: VolcengineMetric | null;
   volcengineInstances: VolcengineInstance[];
-  volcengineRegion?: string | null; // 火山引擎区域
+  volcengineRegion?: string | null; // Volcano Engine region
   loading: boolean;
   actions: WizardActions;
 }
@@ -71,7 +70,7 @@ export const useInstanceData = ({
   loading,
   actions,
 }: UseInstanceDataProps) => {
-  // 使用 useRef 来跟踪请求状态，防止重复请求
+  // Use useRef to track request state, preventing duplicate requests
   const requestTracker = useRef<{
     zabbix: string | null;
     aliyun: string | null;
@@ -82,16 +81,16 @@ export const useInstanceData = ({
     volcengine: null,
   });
 
-  // 使用 useEffect 来处理数据获取
+  // Use useEffect to handle data fetching
   useEffect(() => {
-    // 添加调试日志
+    // Add debug logging
     if (process.env.NODE_ENV === 'development') {
       // Development mode debugging can be added here
     }
 
-    // Zabbix 数据源处理
+    // Zabbix data source handling
     if (
-      dataSourceType === DataSource.type.ZABBIX &&
+      dataSourceType === 'zabbix' &&
       connect?.name &&
       selectedTemplate?.templateid &&
       zabbixHosts.length === 0 &&
@@ -99,7 +98,7 @@ export const useInstanceData = ({
     ) {
       const requestKey = `${connect.name}-${selectedTemplate.templateid}`;
 
-      // 检查是否已经发起过相同的请求
+      // Check if the same request has already been made
       if (requestTracker.current.zabbix !== requestKey) {
         requestTracker.current.zabbix = requestKey;
         actions.fetchZabbixHosts(connect.name, selectedTemplate.templateid);
@@ -107,9 +106,9 @@ export const useInstanceData = ({
       // Already requested, skip
     }
 
-    // 阿里云数据源处理
+    // Alibaba Cloud data source handling
     else if (
-      dataSourceType === DataSource.type.ALIYUN &&
+      dataSourceType === 'aliyun' &&
       connect?.name &&
       selectedAliyunMetric?.metricName &&
       aliyunInstances.length === 0 &&
@@ -128,16 +127,16 @@ export const useInstanceData = ({
       // Already requested, skip
     }
 
-    // 火山引擎数据源处理
+    // Volcano Engine data source handling
     else if (
-      dataSourceType === DataSource.type.VOLCENGINE &&
+      dataSourceType === 'volcengine' &&
       connect?.name &&
       selectedVolcengineMetric?.metricName &&
       selectedVolcengineMetric?.namespace &&
       volcengineInstances.length === 0 &&
       !loading &&
-      volcengineRegion && // 确保 region 已选择
-      volcengineRegion.trim() // 确保 region 不是空字符串
+      volcengineRegion && // Ensure region is selected
+      volcengineRegion.trim() // Ensure region is not empty string
     ) {
       const requestKey = `${connect.name}-${volcengineRegion}-${selectedVolcengineMetric.metricName}`;
 
@@ -147,13 +146,13 @@ export const useInstanceData = ({
         try {
           actions.fetchVolcengineInstances(
             connect.name,
-            volcengineRegion, // 使用传入的 region
+            volcengineRegion, // Use the passed region
             selectedVolcengineMetric.namespace,
             selectedVolcengineMetric.subNamespace || '',
             selectedVolcengineMetric.metricName,
           );
         } catch (error) {
-          // 重置请求跟踪器，允许重试
+          // Reset request tracker to allow retry
           requestTracker.current.volcengine = null;
         }
       }
@@ -173,7 +172,7 @@ export const useInstanceData = ({
     actions,
   ]);
 
-  // 重置请求跟踪器当数据源类型或连接改变时
+  // Reset request tracker when data source type or connect changes
   useEffect(() => {
     requestTracker.current = {
       zabbix: null,

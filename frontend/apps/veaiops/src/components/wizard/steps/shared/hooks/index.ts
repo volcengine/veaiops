@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 共享hooks导出
+ * Shared hooks export
  */
 
 export { useMetricLogs } from './use-metric-logs';

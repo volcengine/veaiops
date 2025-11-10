@@ -38,11 +38,12 @@ interface HandleUnauthorizedErrorParams<T> {
   options: ApiRequestOptions;
   /**
    * Promise resolve function
-   * Why use (value: T) => void:
+   * Why use (value: T | PromiseLike<T>) => void:
    * - resolve is the standard Promise resolve function type
-   * - Accepts a result value of generic type T
+   * - Accepts a result value of generic type T or PromiseLike<T>
+   * - Matches the resolve type in CancelablePromise executor
    */
-  resolve: (value: T) => void;
+  resolve: (value: T | PromiseLike<T>) => void;
   /**
    * Promise reject function
    * Why use (reason?: unknown) => void:
@@ -77,13 +78,17 @@ interface HandleServerErrorParams {
   error: ApiError;
 }
 
-interface HandleApiErrorParams {
+interface HandleApiErrorParams<T> {
   error: ApiError;
   options: ApiRequestOptions;
   /**
    * Promise resolve function
+   * Why use (value: T | PromiseLike<T>) => void:
+   * - resolve is the standard Promise resolve function type
+   * - Accepts a result value of generic type T or PromiseLike<T>
+   * - Matches the resolve type in CancelablePromise executor
    */
-  resolve: (value: unknown) => void;
+  resolve: (value: T | PromiseLike<T>) => void;
   /**
    * Promise reject function
    */
@@ -155,15 +160,15 @@ class CustomFetchHttpRequest extends FetchHttpRequest {
     return handleOtherHttpErrorsFn(error);
   }
 
-  private async handleApiError({
+  private async handleApiError<T>({
     error,
     options,
     resolve,
     reject,
     onCancel,
-  }: HandleApiErrorParams): Promise<void> {
+  }: HandleApiErrorParams<T>): Promise<void> {
     const apiClient = this.apiClient || getApiClient();
-    await handleApiErrorFn({
+    await handleApiErrorFn<T>({
       error,
       options,
       resolve,
@@ -330,7 +335,11 @@ const apiClient = new VolcAIOpsApi(
 apiClientInstance = apiClient;
 (window as any).__volcaiopsApiClient = apiClient;
 
-const httpRequest = apiClient.request as any;
+// Note: Type assertion is used because apiClient.request has type BaseHttpRequest,
+// but at runtime it's actually a CustomFetchHttpRequest instance that extends FetchHttpRequest
+// and adds the setApiClient method
+// TODO: Remove type assertion if openapi-typescript-codegen supports extending BaseHttpRequest interface
+const httpRequest = apiClient.request as CustomFetchHttpRequest;
 if (httpRequest?.setApiClient) {
   httpRequest.setApiClient(apiClient);
 }

@@ -18,7 +18,6 @@
  */
 
 import type { FilterPlugin } from '@veaiops/types';
-import { filterPluginRegistry } from './registry';
 
 // Import all plugins
 import {
@@ -48,7 +47,7 @@ export const corePlugins: FilterPlugin[] = [
   InputNumberPlugin,
   InputTagPlugin,
 
-  // Selection type plugins
+  // Select type plugins
   SelectPlugin,
   CascaderPlugin,
   TreeSelectPlugin,
@@ -65,8 +64,10 @@ export const corePlugins: FilterPlugin[] = [
 
 /**
  * Get plugin statistics
- * @returns Plugin registry statistics
+ * @returns - Plugin registry statistics
  */
 export const getPluginStats = () => {
+  // Lazy import to avoid circular dependency
+  const { filterPluginRegistry } = require('./registry');
   return filterPluginRegistry.getStats();
 };

@@ -17,33 +17,33 @@ import type { Bot } from "../types";
 import { getTableColumns } from './table-columns';
 
 /**
- * Bot 表格列配置函数的参数接口
+ * Bot table column configuration function parameters interface
  *
- * 对应 CustomTable 的 handleColumns 函数参数结构
- * 包含查询参数和操作回调函数
+ * Corresponds to CustomTable's handleColumns function parameter structure
+ * Contains query parameters and operation callback functions
  */
 export interface BotColumnsProps {
-  /** 编辑 Bot 的回调函数 */
+  /** Edit Bot callback function */
   onEdit?: (bot: Bot) => void;
-  /** 删除 Bot 的回调函数 */
+  /** Delete Bot callback function */
   onDelete?: (botId: string) => void;
-  /** 查看 Bot 属性的回调函数 */
+  /** View Bot attributes callback function */
   onViewAttributes?: (bot: Bot) => void;
-  /** Bot 分组管理的回调函数（可选） */
+  /** Bot group management callback function (optional) */
   onGroupManagement?: (bot: Bot) => void;
-  /** 查询参数（来自 CustomTable） */
+  /** Query parameters (from CustomTable) */
   query?: Record<string, unknown>;
 }
 
 /**
- * 获取Bot表格列配置 - CustomTable方式
- * @param props - CustomTable传递的props对象，包含操作回调
- * @returns 表格列配置数组
+ * Get Bot table column configuration - CustomTable approach
+ * @param props - Props object passed by CustomTable, contains operation callbacks
+ * @returns Table column configuration array
  */
 export const getBotColumns = (
   props: BotColumnsProps,
 ): ColumnProps<Bot>[] => {
-  // 从props中提取onEdit、onDelete、onViewAttributes和onGroupManagement回调函数
+  // Extract onEdit, onDelete, onViewAttributes and onGroupManagement callback functions from props
   const {
     onEdit,
     onDelete,

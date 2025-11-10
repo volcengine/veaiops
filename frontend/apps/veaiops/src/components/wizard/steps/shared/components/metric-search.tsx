@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 指标搜索组件
- * @description 处理指标名称的搜索功能
+ * Metric search component
+ * @description Handles metric name search functionality
  */
 
 import { Input } from '@arco-design/web-react';

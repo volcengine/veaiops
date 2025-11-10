@@ -15,8 +15,8 @@
 import { useCrudOperations, useFormHandlers, useModalState } from './hooks';
 
 /**
- * 账号管理逻辑Hook
- * 提供账号管理页面的所有业务逻辑
+ * Account management logic Hook
+ * Provides all business logic for account management page
  */
 export const useAccountManagementLogic = (
   refreshTable?: () => Promise<boolean>,
@@ -45,12 +45,12 @@ export const useAccountManagementLogic = (
   });
 
   return {
-    // 状态
+    // State
     modalVisible,
     editingUser,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,
@@ -59,10 +59,10 @@ export const useAccountManagementLogic = (
   };
 };
 
-// ✅ 注意：useAccountTableConfig 和 useAccountActionConfig 已拆分到独立文件
+// ✅ Note: useAccountTableConfig and useAccountActionConfig have been split into separate files
 // - useAccountTableConfig: ./use-account-table-config.ts
 // - useAccountActionConfig: ./use-account-action-config.ts
 
-// 导出类型和工具函数
+// Export types and utility functions
 export type { UserFormData, UpdateUserParams } from './types';
 export { transformUserToTableData } from './utils';

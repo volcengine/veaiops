@@ -20,7 +20,7 @@ import type {
   PluginRegistryOptions,
 } from '@veaiops/types';
 
-// 简单的事件总线实现
+// Simple event bus implementation
 class EventBus implements FilterEventBus {
   private events: Map<string, EventHandler[]> = new Map();
 
@@ -57,7 +57,7 @@ class EventBus implements FilterEventBus {
   }
 }
 
-// 插件注册器
+// Plugin registry
 class FilterPluginRegistry {
   private plugins: Map<string, FilterPlugin> = new Map();
   private eventBus: FilterEventBus = new EventBus();
@@ -66,7 +66,7 @@ class FilterPluginRegistry {
   };
 
   /**
-   * 注册插件
+   * Register plugin
    */
   register(plugin: FilterPlugin, options: PluginRegistryOptions = {}): void {
     const { override = false } = options;
@@ -75,7 +75,7 @@ class FilterPluginRegistry {
       return;
     }
 
-    // 验证插件依赖
+    // Validate plugin dependencies
     if (plugin.dependencies) {
       const missingDeps = plugin.dependencies.filter(
         (dep) => !this.plugins.has(dep),
@@ -94,7 +94,7 @@ class FilterPluginRegistry {
   }
 
   /**
-   * 注销插件
+   * Unregister plugin
    */
   unregister(type: string): boolean {
     const plugin = this.plugins.get(type);
@@ -108,35 +108,35 @@ class FilterPluginRegistry {
   }
 
   /**
-   * 获取插件
+   * Get plugin
    */
   get(type: string): FilterPlugin | undefined {
     return this.plugins.get(type);
   }
 
   /**
-   * 检查插件是否存在
+   * Check if plugin exists
    */
   has(type: string): boolean {
     return this.plugins.has(type);
   }
 
   /**
-   * 获取所有注册的插件
+   * Get all registered plugins
    */
   getAll(): FilterPlugin[] {
     return Array.from(this.plugins.values());
   }
 
   /**
-   * 获取插件类型列表
+   * Get plugin type list
    */
   getTypes(): string[] {
     return Array.from(this.plugins.keys());
   }
 
   /**
-   * 批量注册插件
+   * Batch register plugins
    */
   registerBatch(
     plugins: FilterPlugin[],
@@ -146,28 +146,28 @@ class FilterPluginRegistry {
   }
 
   /**
-   * 设置全局上下文
+   * Set global context
    */
   setGlobalContext(context: Partial<FilterPluginContext>): void {
     this.globalContext = { ...this.globalContext, ...context };
   }
 
   /**
-   * 获取全局上下文
+   * Get global context
    */
   getGlobalContext(): FilterPluginContext {
     return this.globalContext;
   }
 
   /**
-   * 获取事件总线
+   * Get event bus
    */
   getEventBus(): FilterEventBus {
     return this.eventBus;
   }
 
   /**
-   * 清空所有插件
+   * Clear all plugins
    */
   clear(): void {
     this.plugins.clear();
@@ -175,7 +175,7 @@ class FilterPluginRegistry {
   }
 
   /**
-   * 获取插件统计信息
+   * Get plugin statistics
    */
   getStats(): {
     total: number;
@@ -195,8 +195,8 @@ class FilterPluginRegistry {
   }
 }
 
-// 导出单例实例
+// Export singleton instance
 export const filterPluginRegistry = new FilterPluginRegistry();
 
-// 导出类供自定义使用
+// Export class for custom use
 export { FilterPluginRegistry };

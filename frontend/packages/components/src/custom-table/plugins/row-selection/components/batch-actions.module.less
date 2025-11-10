@@ -1,5 +1,5 @@
 /**
- * 批量操作组件样式
+ * Batch actions component styles
  */
 
 .batchActions {
@@ -18,7 +18,7 @@
     font-weight: 500;
   }
 
-  // 响应式设计
+  // Responsive design
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: flex-start;
@@ -30,12 +30,12 @@
   }
 }
 
-// 空状态时隐藏
+// Hide when empty
 .batchActions:empty {
   display: none;
 }
 
-// 危险操作按钮样式调整
+// Danger action button style adjustments
 .batchActions :global(.arco-btn-status-danger) {
   &:hover {
     background-color: var(--color-danger-6, #f53f3f);
@@ -43,7 +43,7 @@
   }
 }
 
-// 加载状态样式
+// Loading state styles
 .batchActions :global(.arco-btn-loading) {
   pointer-events: none;
 }

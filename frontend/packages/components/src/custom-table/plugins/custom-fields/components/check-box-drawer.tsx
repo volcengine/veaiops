@@ -14,10 +14,10 @@
 
 import type { BaseRecord, CustomFieldsProps } from '@/custom-table/types';
 import { Checkbox, Drawer, Space } from '@arco-design/web-react';
-// import type { CustomFieldsProps } from '@veaiops/types'; // 注意：CustomFieldsProps 类型不存在
+// import type { CustomFieldsProps } from '@veaiops/types'; // Note: CustomFieldsProps type does not exist
 /**
- * CheckBox Drawer 组件
- * 用于 CustomFields 的配置抽屉
+ * CheckBox Drawer component
+ * Configuration drawer for CustomFields
  */
 import React from 'react';
 
@@ -90,8 +90,8 @@ export const CheckBoxDrawer = <T extends Record<string, unknown>>({
       visible={visible}
       onOk={handleConfirm}
       onCancel={close}
-      okText="确认"
-      cancelText="取消"
+      okText="Confirm"
+      cancelText="Cancel"
       width={400}
       focusLock={false}
     >

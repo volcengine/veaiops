@@ -15,19 +15,19 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type AgentCfg = {
   /**
-   * Agent名称
+   * Agent name
    */
   name?: string;
   /**
-   * 嵌入模型名称
+   * Embedding model name
    */
   embedding_name?: string;
   /**
-   * API基础URL
+   * API base URL
    */
   api_base?: string;
   /**
-   * API密钥
+   * API key
    */
   api_key?: string;
 };

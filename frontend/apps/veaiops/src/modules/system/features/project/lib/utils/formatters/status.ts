@@ -16,7 +16,7 @@ import type { ProjectStatus } from '@project/types';
 import { PROJECT_STATUS_CONFIG } from '../../constants';
 
 /**
- * 格式化项目状态显示
+ * Format project status display
  */
 export const formatProjectStatus = (status: ProjectStatus) => {
   const config = PROJECT_STATUS_CONFIG[status];

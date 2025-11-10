@@ -15,39 +15,39 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type SyncAlarmRulesResponse = {
   /**
-   * 处理的规则总数
+   * Total number of rules processed
    */
   total: number;
   /**
-   * 创建的规则数量
+   * Number of rules created
    */
   created: number;
   /**
-   * 更新的规则数量
+   * Number of rules updated
    */
   updated: number;
   /**
-   * 删除的规则数量
+   * Number of rules deleted
    */
   deleted: number;
   /**
-   * 失败的规则数量
+   * Number of rules failed
    */
   failed: number;
   /**
-   * 创建的规则ID列表
+   * List of created rule IDs
    */
   created_rule_ids?: Array<string>;
   /**
-   * 更新的规则ID列表
+   * List of updated rule IDs
    */
   updated_rule_ids?: Array<string>;
   /**
-   * 删除的规则ID列表
+   * List of deleted rule IDs
    */
   deleted_rule_ids?: Array<string>;
   /**
-   * 规则操作列表
+   * List of rule operations
    */
   rule_operations?: Array<Record<string, any>>;
 };

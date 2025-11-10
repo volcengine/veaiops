@@ -16,6 +16,7 @@ import { Button, Popconfirm } from '@arco-design/web-react';
 import { IconDelete } from '@arco-design/web-react/icon';
 import { PROJECT_MANAGEMENT_CONFIG } from '@project';
 import { CellRender } from '@veaiops/components';
+import { logger } from '@veaiops/utils';
 import type { Project } from 'api-generate';
 import type { ModernTableColumnProps } from '@veaiops/components';
 import type { GetProjectTableColumnsParams } from './types';
@@ -62,7 +63,7 @@ export const getProjectTableColumns = ({
     width: 180,
     render: (createdAt: string) => (
       <StampTime
-        time={createdAt}
+        time={new Date(createdAt).getTime()}
         template="YYYY-MM-DD HH:mm:ss"
       />
     ),
@@ -74,7 +75,7 @@ export const getProjectTableColumns = ({
     width: 180,
     render: (updatedAt: string) => (
       <StampTime
-        time={updatedAt}
+        time={new Date(updatedAt).getTime()}
         template="YYYY-MM-DD HH:mm:ss"
       />
     ),
@@ -89,21 +90,26 @@ export const getProjectTableColumns = ({
         return null;
       }
 
-      // ✅ Fix: Remove delete restriction, restore original branch behavior
+      // ✅ Fix: Remove deletion restriction, restore original branch behavior
       // Reason: Backend Project model only has is_active field, all projects are enabled by default
-      // If we restrict deletion to only disabled projects, no projects can be deleted
-      // Already protected by confirmation popup, safe to allow deleting any project
+      // If we restrict deletion to only inactive projects, it would prevent deletion of any project
+      // Already has confirmation popup protection, can safely allow deletion of any project
       return (
         <Popconfirm
           title="确认删除"
           content={`确定要删除项目"${record.name}"吗？此操作不可恢复。`}
           onOk={async () => {
-            console.log('[ProjectTableColumns] 🗑️ 确认删除项目', {
-              projectId: record.project_id,
-              projectName: record.name,
-              timestamp: Date.now(),
+            logger.debug({
+              message: '[ProjectTableColumns] 🗑️ Confirm delete project',
+              data: {
+                projectId: record.project_id,
+                projectName: record.name,
+                timestamp: Date.now(),
+              },
+              source: 'ProjectTableColumns',
+              component: 'onDelete',
             });
-            // Delete operation will automatically refresh through operationWrapper, no manual refresh needed
+            // Delete operation will be auto refreshed by operationWrapper, no need to manually refresh
             await onDelete(record.project_id || '');
           }}
           okText="确认删除"
@@ -115,7 +121,6 @@ export const getProjectTableColumns = ({
             size="small"
             status="danger"
             icon={<IconDelete />}
-            data-testid="delete-project-btn"
           >
             删除
           </Button>

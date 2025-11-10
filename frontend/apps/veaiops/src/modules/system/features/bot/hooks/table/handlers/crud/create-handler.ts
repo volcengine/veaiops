@@ -20,7 +20,7 @@ import { logger } from '@veaiops/utils';
 import { useCallback } from 'react';
 
 /**
- * 创建处理器参数
+ * Create handler parameters
  */
 interface CreateHandlerParams {
   createBot: (data: BotCreateRequest) => Promise<boolean>;
@@ -31,7 +31,7 @@ interface CreateHandlerParams {
 }
 
 /**
- * 创建Bot处理器
+ * Create Bot handler
  */
 export const useCreateHandler = ({
   createBot,
@@ -40,7 +40,7 @@ export const useCreateHandler = ({
   refreshTable,
   setLoading,
 }: CreateHandlerParams) => {
-  // 使用管理刷新 Hook
+  // Use management refresh hook
   const { afterCreate } = useManagementRefresh(refreshTable);
 
   const handleCreate = useCallback(
@@ -74,7 +74,7 @@ export const useCreateHandler = ({
             component: 'handleCreate',
           });
 
-          // 创建成功后刷新表格
+          // Refresh table after create success
           const refreshResult = await afterCreate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({

@@ -15,6 +15,7 @@
 import { Message } from '@arco-design/web-react';
 import type { FormInstance } from '@arco-design/web-react/es/Form';
 import { useManagementRefresh } from '@veaiops/hooks';
+import { logger } from '@veaiops/utils';
 import type {
   SubscribeRelationCreate,
   SubscribeRelationUpdate,
@@ -39,7 +40,7 @@ interface UseFormHandlersParams {
 }
 
 /**
- * 表单处理器 Hook
+ * Form handler Hook
  */
 export const useFormHandlers = ({
   form,
@@ -51,17 +52,17 @@ export const useFormHandlers = ({
   deleteSubscription,
   refreshTable,
 }: UseFormHandlersParams) => {
-  // 使用管理刷新 Hook
+  // Use management refresh Hook
   const { afterCreate, afterUpdate, afterDelete } =
     useManagementRefresh(refreshTable);
 
-  // 删除订阅关系处理器
+  // Delete subscription relation handler
   const handleDelete = useCallback(
     async (subscriptionId: string) => {
       try {
         const success = await deleteSubscription(subscriptionId);
         if (success) {
-          // 删除成功后刷新表格
+          // Refresh table after successful deletion
           const refreshResult = await afterDelete();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
@@ -79,7 +80,7 @@ export const useFormHandlers = ({
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '删除失败，请重试';
@@ -90,7 +91,7 @@ export const useFormHandlers = ({
     [deleteSubscription, afterDelete],
   );
 
-  // 创建订阅关系处理器
+  // Create subscription relation handler
   const handleCreate = useCallback(
     async (values: SubscribeRelationCreate) => {
       try {
@@ -98,7 +99,7 @@ export const useFormHandlers = ({
         if (success) {
           setModalVisible(false);
           form.resetFields();
-          // 创建成功后刷新表格
+          // Refresh table after successful creation
           const refreshResult = await afterCreate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
@@ -116,7 +117,7 @@ export const useFormHandlers = ({
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '创建失败，请重试';
@@ -127,7 +128,7 @@ export const useFormHandlers = ({
     [createSubscription, form, afterCreate, setModalVisible],
   );
 
-  // 更新订阅关系处理器
+  // Update subscription relation handler
   const handleUpdate = useCallback(
     async (values: SubscribeRelationUpdate) => {
       try {
@@ -139,7 +140,7 @@ export const useFormHandlers = ({
           setModalVisible(false);
           setEditingSubscription(null);
           form.resetFields();
-          // 更新成功后刷新表格
+          // Refresh table after successful update
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
@@ -157,7 +158,7 @@ export const useFormHandlers = ({
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '更新失败，请重试';
@@ -175,7 +176,7 @@ export const useFormHandlers = ({
     ],
   );
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = useCallback(
     async (
       values: SubscribeRelationCreate | SubscribeRelationUpdate,
@@ -185,7 +186,7 @@ export const useFormHandlers = ({
         : await handleCreate(values as SubscribeRelationCreate);
 
       if (!success) {
-        // 阻止弹窗在失败时自动关闭
+        // Prevent modal from closing automatically on failure
         throw new Error('Operation failed but error message was displayed.');
       }
       return success;

@@ -23,17 +23,17 @@ import { logger } from './logger';
 import type { veArchSelectBlockProps } from './types/interface';
 
 /**
- * 重构后的SelectBlock组件，使用插件系统架构
- * 🔧 使用 React.memo 优化重渲染
+ * Refactored SelectBlock component using plugin system architecture
+ * 🔧 Optimize re-renders with React.memo
  */
 const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
   const componentTraceId = logger.generateTraceId();
 
-  // 🔧 使用 useRef 追踪渲染次数，避免日志爆炸
+  // 🔧 Use useRef to track render count, avoid log explosion
   const renderCountRef = React.useRef(0);
   renderCountRef.current++;
 
-  // 🔧 详细记录 dataSource 信息（所有渲染都记录）
+  // 🔧 Record dataSource information in detail (record all renders)
   const dataSourceDetail =
     props.dataSource && typeof props.dataSource === 'object'
       ? {
@@ -44,21 +44,21 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
         }
       : null;
 
-  // 🔧 全链路追踪标记点 1：组件入口
+  // 🔧 Full trace marker point 1: Component entry
   logger.info(
     'SelectBlock',
-    '🔴 [全链路-1] 组件接收 props',
+    '🔴 [Full Trace-1] Component received props',
     {
       renderCount: renderCountRef.current,
       addBefore: (props as any).addBefore,
-      // 🎯 核心参数
+      // 🎯 Core parameters
       defaultActiveFirstOption: props.defaultActiveFirstOption,
       value: props.value,
       hasOnChange: Boolean(props.onChange),
       mode: props.mode,
       hasOptions: Boolean(props.options?.length),
       optionsLength: props.options?.length || 0,
-      // dependency 详细信息
+      // dependency detailed information
       hasDependency: Boolean(props.dependency),
       dependency: props.dependency,
       dependencyString: JSON.stringify(props.dependency),
@@ -70,11 +70,11 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
       dependencyFirstItem: Array.isArray(props.dependency)
         ? props.dependency[0]
         : undefined,
-      // dataSource 信息
+      // dataSource information
       hasDataSource: Boolean(props.dataSource),
       dataSourceType: typeof props.dataSource,
       dataSourceDetail,
-      // 其他关键信息
+      // Other key information
       placeholder: props.placeholder,
       disabled: props.disabled,
       canFetch: props.canFetch,
@@ -85,11 +85,11 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
     componentTraceId,
   );
 
-  // 只记录前几次渲染和每隔10次的渲染
+  // Only record first few renders and every 10th render
   if (renderCountRef.current <= 3 || renderCountRef.current % 10 === 0) {
     logger.info(
       'SelectBlock',
-      '组件开始渲染',
+      'Component starting to render',
       {
         renderCount: renderCountRef.current,
         props: {
@@ -114,7 +114,7 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
 
   logger.debug(
     'SelectBlock',
-    '组件props解析完成',
+    'Component props parsing completed',
     {
       visible,
       hasInlineSuffixDom: Boolean(inlineSuffixDom),
@@ -126,7 +126,7 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
     componentTraceId,
   );
 
-  // 使用主Hook获取所有状态和处理函数
+  // Use main Hook to get all state and handler functions
   const hookResult = useSelectBlock(props);
 
   const {
@@ -142,7 +142,7 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
     filterOption,
   } = hookResult;
 
-  // 如果是多选模式且未设置allowClear，则默认为true
+  // If multiple mode and allowClear is not set, default to true
   const selectProps = { ...restArcoSelectProps };
   if (
     selectProps &&
@@ -152,12 +152,12 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
     selectProps.allowClear = true;
   }
 
-  // 🔍 包装onChange以添加日志（必须在条件返回之前定义，遵循 React Hooks 规则）
+  // 🔍 Wrap onChange to add logging (must be defined before conditional return, follow React Hooks rules)
   const wrappedOnChange = React.useCallback(
     (value: any, option: any) => {
       logger.info(
         'SelectBlock',
-        '🟢 onChange 被触发',
+        '🟢 onChange triggered',
         {
           value,
           option,
@@ -170,11 +170,11 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
         componentTraceId,
       );
 
-      // 调用原始的onChange
+      // Call original onChange
       if (selectProps.onChange) {
         logger.info(
           'SelectBlock',
-          '🟢 调用原始 onChange',
+          '🟢 Calling original onChange',
           {
             value,
             onChangeFunctionName: selectProps.onChange.name || 'anonymous',
@@ -185,7 +185,7 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
         selectProps.onChange(value, option);
         logger.info(
           'SelectBlock',
-          '🟢 原始 onChange 已执行完成',
+          '🟢 Original onChange execution completed',
           { value },
           'onChange',
           componentTraceId,
@@ -193,7 +193,7 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
       } else {
         logger.warn(
           'SelectBlock',
-          '⚠️ onChange 不存在!',
+          '⚠️ onChange does not exist!',
           {
             selectPropsKeys: Object.keys(selectProps),
           },
@@ -205,11 +205,11 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
     [selectProps.onChange, props.placeholder, componentTraceId],
   );
 
-  // 如果不可见则不渲染（必须在所有 Hooks 调用之后）
+  // If not visible, don't render (must be after all Hooks calls)
   if (!visible) {
     logger.debug(
       'SelectBlock',
-      '组件不可见，跳过渲染',
+      'Component not visible, skipping render',
       { visible },
       'SelectBlockRefactored',
       componentTraceId,
@@ -219,7 +219,7 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
 
   logger.debug(
     'SelectBlock',
-    'Hook执行结果',
+    'Hook execution result',
     {
       loading,
       finalOptionsLength: finalOptions?.length || 0,
@@ -237,23 +237,23 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
 
   logger.debug(
     'SelectBlock',
-    '多选模式自动设置allowClear=true',
+    'Multiple mode automatically set allowClear=true',
     { mode: selectProps.mode },
     'SelectBlockRefactored',
     componentTraceId,
   );
 
-  // 🔧 动态调整placeholder，提供搜索状态反馈
-  let dynamicPlaceholder = '请选择';
+  // 🔧 Dynamically adjust placeholder to provide search state feedback
+  let dynamicPlaceholder = 'Please select';
   if (loading) {
-    dynamicPlaceholder = '搜索中...';
+    dynamicPlaceholder = 'Searching...';
   } else if (finalOptions?.length > 0) {
-    dynamicPlaceholder = '请选择或输入搜索';
+    dynamicPlaceholder = 'Please select or type to search';
   }
 
   logger.debug(
     'SelectBlock',
-    '动态placeholder计算完成',
+    'Dynamic placeholder calculation completed',
     {
       loading,
       finalOptionsLength: finalOptions?.length || 0,
@@ -263,10 +263,10 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
     componentTraceId,
   );
 
-  // 渲染Select组件
+  // Render Select component
   logger.debug(
     'SelectBlock',
-    '开始渲染Select组件',
+    'Starting to render Select component',
     {
       finalOptionsLength: finalOptions?.length || 0,
       loading,
@@ -302,7 +302,7 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
 
   logger.debug(
     'SelectBlock',
-    'Select组件创建完成',
+    'Select component creation completed',
     {
       hasSelectElement: Boolean(selectElement),
     },
@@ -310,11 +310,11 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
     componentTraceId,
   );
 
-  // 如果有内联后缀DOM，则包装在容器中
+  // If there's inline suffix DOM, wrap in container
   if (inlineSuffixDom) {
     logger.debug(
       'SelectBlock',
-      '渲染带内联后缀的包装器',
+      'Rendering wrapper with inline suffix',
       {
         hasInlineSuffixDom: Boolean(inlineSuffixDom),
         hasWrapperStyle: Boolean(wrapperStyle),
@@ -339,7 +339,7 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
 
     logger.info(
       'SelectBlock',
-      '组件渲染完成 (带内联后缀)',
+      'Component render completed (with inline suffix)',
       {
         renderType: 'wrapped',
         hasInlineSuffixDom: true,
@@ -353,7 +353,7 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
 
   logger.info(
     'SelectBlock',
-    '组件渲染完成 (标准模式)',
+    'Component render completed (standard mode)',
     {
       renderType: 'standard',
       hasInlineSuffixDom: false,
@@ -365,17 +365,17 @@ const SelectBlockRefactoredInner = (props: veArchSelectBlockProps) => {
   return selectElement;
 };
 
-// 🔧 使用 React.memo 优化性能，自定义比较函数
+// 🔧 Use React.memo to optimize performance, custom comparison function
 const SelectBlockRefactored = React.memo(
   SelectBlockRefactoredInner,
   (prevProps, nextProps) => {
-    // 🔧 重点：比较 dependency 数组
+    // 🔧 Key point: Compare dependency array
     const prevDependency = JSON.stringify(prevProps.dependency);
     const nextDependency = JSON.stringify(nextProps.dependency);
     if (prevDependency !== nextDependency) {
       logger.info(
         'SelectBlock',
-        '🔄 dependency 变化 - 触发重新渲染',
+        '🔄 dependency changed - triggering re-render',
         {
           prevDependency,
           nextDependency,
@@ -383,10 +383,10 @@ const SelectBlockRefactored = React.memo(
         },
         'React.memo',
       );
-      return false; // dependency 变化，需要重新渲染
+      return false; // dependency changed, need to re-render
     }
 
-    // 🔧 重点：比较 dataSource 对象
+    // 🔧 Key point: Compare dataSource object
     const prevDataSource = prevProps.dataSource;
     const nextDataSource = nextProps.dataSource;
     if (prevDataSource !== nextDataSource) {
@@ -400,7 +400,7 @@ const SelectBlockRefactored = React.memo(
           : undefined;
       logger.info(
         'SelectBlock',
-        '🔄 dataSource 变化 - 触发重新渲染',
+        '🔄 dataSource changed - triggering re-render',
         {
           prevApi,
           nextApi,
@@ -408,18 +408,18 @@ const SelectBlockRefactored = React.memo(
         },
         'React.memo',
       );
-      return false; // dataSource 变化，需要重新渲染
+      return false; // dataSource changed, need to re-render
     }
 
-    // 🔥 修复：正确处理 options 从 undefined/[] 到有值的情况
+    // 🔥 Fix: Properly handle options changing from undefined/[] to having values
     const prevHasOptions = prevProps.options && prevProps.options.length > 0;
     const nextHasOptions = nextProps.options && nextProps.options.length > 0;
 
-    // 如果 options 状态发生变化（从无到有，或从有到无）
+    // If options state changes (from none to some, or from some to none)
     if (prevHasOptions !== nextHasOptions) {
       logger.info(
         'SelectBlock',
-        '🔄 options 状态变化 - 触发重新渲染',
+        '🔄 options state changed - triggering re-render',
         {
           prevHasOptions,
           nextHasOptions,
@@ -432,12 +432,12 @@ const SelectBlockRefactored = React.memo(
       return false;
     }
 
-    // 如果都有 options，比较内容
+    // If both have options, compare content
     if (prevHasOptions && nextHasOptions) {
       if (prevProps.options.length !== nextProps.options.length) {
         logger.info(
           'SelectBlock',
-          '🔄 options 长度变化 - 触发重新渲染',
+          '🔄 options length changed - triggering re-render',
           {
             prevLength: prevProps.options.length,
             nextLength: nextProps.options.length,
@@ -447,13 +447,13 @@ const SelectBlockRefactored = React.memo(
         );
         return false;
       }
-      // 简单比较，不做深度比较
+      // Simple comparison, no deep comparison
       const optionsChanged =
         JSON.stringify(prevProps.options) !== JSON.stringify(nextProps.options);
       if (optionsChanged) {
         logger.info(
           'SelectBlock',
-          '🔄 options 内容变化 - 触发重新渲染',
+          '🔄 options content changed - triggering re-render',
           {
             id: nextProps.id,
           },
@@ -463,7 +463,7 @@ const SelectBlockRefactored = React.memo(
       }
     }
 
-    // 比较关键 props
+    // Compare key props
     const keysToCompare: (keyof veArchSelectBlockProps)[] = [
       'value',
       'mode',
@@ -473,14 +473,14 @@ const SelectBlockRefactored = React.memo(
       'visible',
       'allowClear',
       'showSearch',
-      'canFetch', // 🔧 添加 canFetch 比较
+      'canFetch', // 🔧 Add canFetch comparison
     ];
 
     for (const key of keysToCompare) {
       if (prevProps[key] !== nextProps[key]) {
         logger.debug(
           'SelectBlock',
-          `🔄 ${key} 变化 - 触发重新渲染`,
+          `🔄 ${key} changed - triggering re-render`,
           {
             prevValue: prevProps[key],
             nextValue: nextProps[key],
@@ -492,10 +492,10 @@ const SelectBlockRefactored = React.memo(
       }
     }
 
-    // 其他 props 相同，不重新渲染
+    // Other props are the same, don't re-render
     logger.debug(
       'SelectBlock',
-      '✋ Props 未变化 - 跳过重新渲染',
+      '✋ Props unchanged - skipping re-render',
       {
         id: nextProps.id,
         prevOptionsLength: prevProps.options?.length || 0,
@@ -507,5 +507,5 @@ const SelectBlockRefactored = React.memo(
   },
 );
 
-// 为了向后兼容，导出重构后的组件作为默认组件
+// For backward compatibility, export refactored component as default component
 export { SelectBlockRefactored as SelectBlock };

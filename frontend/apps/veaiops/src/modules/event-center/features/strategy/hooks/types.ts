@@ -14,6 +14,6 @@
 
 import type { InformStrategy } from 'api-generate';
 
-// ✅ 根据 .cursorrules 规范：优先使用 api-generate 中的类型（单一数据源原则）
-// 直接使用 InformStrategy，无需类型别名
-// 从 Python 源码分析：API 返回 InformStrategyVO，对应 TypeScript 的 InformStrategy
+// ✅ According to .cursorrules specification: Prefer types from api-generate (single source of truth principle)
+// Use InformStrategy directly, no type alias needed
+// From Python source code analysis: API returns InformStrategyVO, corresponding to TypeScript's InformStrategy

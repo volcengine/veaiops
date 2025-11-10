@@ -16,7 +16,7 @@ import type { Event } from 'api-generate';
 import type React from 'react';
 
 /**
- * 历史事件详情抽屉组件属性接口
+ * History event detail drawer component props interface
  */
 export interface HistoryDetailDrawerProps {
   visible: boolean;
@@ -25,7 +25,7 @@ export interface HistoryDetailDrawerProps {
 }
 
 /**
- * 可折叠章节组件属性接口
+ * Collapsible section component props interface
  */
 export interface CollapsibleSectionProps {
   title: string;
@@ -34,25 +34,25 @@ export interface CollapsibleSectionProps {
   defaultExpanded?: boolean;
   expandedSections: Set<string>;
   onToggle: (section: string) => void;
-  collapsedHint?: string; // 收起状态下的提示文本
+  collapsedHint?: string; // Hint text when collapsed
 }
 
 /**
- * 事件概览组件属性接口
+ * Event overview component props interface
  */
 export interface EventOverviewProps {
   selectedRecord: Event;
 }
 
 /**
- * 时间信息组件属性接口
+ * Time info component props interface
  */
 export interface TimeInfoProps {
   selectedRecord: Event;
 }
 
 /**
- * 原始数据组件属性接口
+ * Raw data component props interface
  */
 export interface RawDataProps {
   selectedRecord: Event;
@@ -61,7 +61,7 @@ export interface RawDataProps {
 }
 
 /**
- * 事件类型配置接口
+ * Event type configuration interface
  */
 export interface EventTypeConfig {
   color: string;
@@ -72,7 +72,7 @@ export interface EventTypeConfig {
 }
 
 /**
- * 事件级别配置接口
+ * Event level configuration interface
  */
 export interface EventLevelConfig {
   color: string;

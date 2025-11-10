@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * @name CustomTable 核心枚举定义
- * @description 基于现有源码提取的枚举值，替代字面量提升类型安全性
+ * @name CustomTable core enum definitions
+ * @description Enum values extracted from existing source code, replacing literals to improve type safety
 
  *
  */
 
 /**
- * 插件优先级枚举
+ * Plugin priority enum
  */
 export enum PluginPriorityEnum {
   CRITICAL = 'critical',
@@ -30,12 +30,12 @@ export enum PluginPriorityEnum {
 }
 
 /**
- * 插件优先级类型别名（保持向后兼容）
+ * Plugin priority type alias (maintain backward compatibility)
  */
 export type PluginPriority = PluginPriorityEnum;
 
 /**
- * 插件状态枚举
+ * Plugin status enum
  */
 export enum PluginStatusEnum {
   INACTIVE = 'inactive',
@@ -48,7 +48,7 @@ export enum PluginStatusEnum {
 }
 
 /**
- * 插件生命周期阶段枚举
+ * Plugin lifecycle phase enum
  */
 export enum LifecyclePhaseEnum {
   BEFORE_MOUNT = 'beforeMount',
@@ -64,7 +64,7 @@ export enum LifecyclePhaseEnum {
 }
 
 /**
- * 表格操作类型枚举
+ * Table action type enum
  */
 export enum TableActionEnum {
   PAGINATE = 'paginate',
@@ -73,7 +73,7 @@ export enum TableActionEnum {
 }
 
 /**
- * 排序方向枚举
+ * Sort direction enum
  */
 export enum SortDirectionEnum {
   ASCEND = 'ascend',
@@ -81,7 +81,7 @@ export enum SortDirectionEnum {
 }
 
 /**
- * 表格特性枚举
+ * Table feature enum
  */
 export enum TableFeatureEnum {
   PAGINATION = 'enablePagination',
@@ -93,18 +93,18 @@ export enum TableFeatureEnum {
 }
 
 /**
- * 分页属性枚举
+ * Pagination property enum
  */
 export enum PaginationPropertyEnum {
   SHOW_TOTAL = 'showTotal',
   SHOW_JUMPER = 'showJumper',
-  SHOW_PAGE_SIZE = 'showSizeChanger', // 注意：Arco 的实际属性名
+  SHOW_PAGE_SIZE = 'showSizeChanger', // Note: Arco's actual property name
   PAGE_SIZE_OPTIONS = 'pageSizeOptions',
   SIZE = 'size',
 }
 
 /**
- * 列固定位置枚举
+ * Column fixed position enum
  */
 export enum ColumnFixedEnum {
   LEFT = 'left',
@@ -112,7 +112,7 @@ export enum ColumnFixedEnum {
 }
 
 /**
- * 表格尺寸枚举
+ * Table size enum
  */
 export enum TableSizeEnum {
   MINI = 'mini',
@@ -122,7 +122,7 @@ export enum TableSizeEnum {
 }
 
 /**
- * 提示类型枚举
+ * Alert type enum
  */
 export enum AlertTypeEnum {
   INFO = 'info',
@@ -132,7 +132,7 @@ export enum AlertTypeEnum {
 }
 
 /**
- * 插件名称枚举
+ * Plugin name enum
  */
 export enum PluginNameEnum {
   TABLE_ALERT = 'tableAlert',
@@ -145,12 +145,12 @@ export enum PluginNameEnum {
 }
 
 /**
- * 优先级映射类型
+ * Priority mapping type
  */
 export type PriorityMap = Record<PluginPriorityEnum, number>;
 
 /**
- * 优先级映射常量
+ * Priority mapping constant
  */
 export const PRIORITY_MAP: PriorityMap = {
   [PluginPriorityEnum.CRITICAL]: -1,
@@ -160,7 +160,7 @@ export const PRIORITY_MAP: PriorityMap = {
 };
 
 /**
- * 默认分页配置
+ * Default pagination configuration
  */
 export const DEFAULT_PAGINATION_CONFIG = {
   current: 1,
@@ -173,7 +173,7 @@ export const DEFAULT_PAGINATION_CONFIG = {
 } as const;
 
 /**
- * 默认表格特性配置
+ * Default table feature configuration
  */
 export const DEFAULT_FEATURE_CONFIG = {
   [TableFeatureEnum.PAGINATION]: true,

@@ -16,35 +16,35 @@
 import type { ImportLog } from './import-log';
 export type ImportResult = {
   /**
-   * 总行数
+   * Total number of rows
    */
   total_rows: number;
   /**
-   * 成功导入数量
+   * Number of successful imports
    */
   successful_imports: number;
   /**
-   * 失败导入数量
+   * Number of failed imports
    */
   failed_imports: number;
   /**
-   * 跳过行数
+   * Number of skipped rows
    */
   skipped_rows: number;
   /**
-   * 错误信息列表
+   * List of error messages
    */
   errors: Array<string>;
   /**
-   * 导入日志列表
+   * List of import logs
    */
   logs: Array<ImportLog>;
   /**
-   * 开始时间
+   * Start time
    */
   start_time: string;
   /**
-   * 结束时间
+   * End time
    */
   end_time?: string | null;
 };

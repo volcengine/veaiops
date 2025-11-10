@@ -17,7 +17,7 @@ import { Form, Message } from '@arco-design/web-react';
 import { BOT_MESSAGES, type BotFormData } from '@bot/lib';
 
 /**
- * 表单提交处理器参数
+ * Form submission handler parameters
  */
 interface FormHandlersParams {
   form: FormInstance;
@@ -26,14 +26,14 @@ interface FormHandlersParams {
 }
 
 /**
- * 表单提交处理器Hook
+ * Form submission handler Hook
  */
 export const useFormHandlers = ({
   form,
   showAdvancedConfig,
   kbCollections,
 }: FormHandlersParams) => {
-  // 表单提交处理
+  // Form submission handling
   const createSubmitHandler = (
     onSubmit: (values: BotFormData) => Promise<boolean>,
   ) => {
@@ -42,7 +42,7 @@ export const useFormHandlers = ({
         let submitData: BotFormData;
 
         if (showAdvancedConfig) {
-          // 过滤空的知识库集合
+          // Filter empty knowledge base collections
           const filteredKbCollections = kbCollections.filter(
             (collection) => collection.trim() !== '',
           );
@@ -58,7 +58,7 @@ export const useFormHandlers = ({
             agent_cfg: values.agent_cfg,
           };
         } else {
-          // 只提交基础配置
+          // Only submit basic configuration
           submitData = {
             channel: values.channel,
             bot_id: values.bot_id,
@@ -76,7 +76,7 @@ export const useFormHandlers = ({
           return false;
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : BOT_MESSAGES.create.error;
         Message.error(errorMessage);

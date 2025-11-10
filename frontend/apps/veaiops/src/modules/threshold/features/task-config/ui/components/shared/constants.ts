@@ -15,7 +15,7 @@
 import { EventLevel } from 'api-generate';
 
 /**
- * 数据源类型中文映射
+ * Data source type Chinese labels mapping
  */
 export const DATASOURCE_TYPE_LABELS: Record<string, string> = {
   Volcengine: '火山引擎',
@@ -24,7 +24,7 @@ export const DATASOURCE_TYPE_LABELS: Record<string, string> = {
 };
 
 /**
- * 任务状态中文映射
+ * Task status Chinese labels mapping
  */
 export const TASK_STATUS_LABELS: Record<string, string> = {
   Running: '运行中',
@@ -35,7 +35,7 @@ export const TASK_STATUS_LABELS: Record<string, string> = {
 };
 
 /**
- * 告警级别选项
+ * Alarm level options
  */
 export const ALARM_LEVEL_OPTIONS = [
   { label: 'P0', value: EventLevel.P0 },
@@ -44,7 +44,7 @@ export const ALARM_LEVEL_OPTIONS = [
 ];
 
 /**
- * 告警通知方式选项（仅Volcengine）
+ * Alarm notification method options (Volcengine only)
  */
 export const ALERT_METHODS_OPTIONS = [
   { label: '邮件', value: 'Email' },

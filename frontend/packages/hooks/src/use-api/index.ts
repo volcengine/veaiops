@@ -15,46 +15,46 @@
 import { useCallback, useEffect, useState } from 'react';
 
 /**
- * API调用选项
+ * API call options
  */
 export interface UseApiOptions {
-  /** 是否立即执行 */
+  /** Whether to execute immediately */
   immediate?: boolean;
-  /** 依赖项 */
+  /** Dependencies */
   deps?: any[];
-  /** 错误处理函数 */
+  /** Error handler function */
   onError?: (error: Error) => void;
-  /** 成功回调 */
+  /** Success callback */
   onSuccess?: (data: any) => void;
-  /** 缓存键 */
+  /** Cache key */
   cacheKey?: string;
-  /** 缓存时间(毫秒) */
+  /** Cache time (milliseconds) */
   cacheTime?: number;
 }
 
 /**
- * API调用状态
+ * API call state
  */
 export interface UseApiResult<T> {
-  /** 数据 */
+  /** Data */
   data: T | null;
-  /** 加载状态 */
+  /** Loading state */
   loading: boolean;
-  /** 错误信息 */
+  /** Error information */
   error: Error | null;
-  /** 执行API调用 */
+  /** Execute API call */
   execute: (...args: any[]) => Promise<T>;
-  /** 重置状态 */
+  /** Reset state */
   reset: () => void;
-  /** 刷新数据 */
+  /** Refresh data */
   refresh: () => Promise<T>;
 }
 
-// 简单的内存缓存
+// Simple in-memory cache
 const cache = new Map<string, { data: any; timestamp: number; ttl: number }>();
 
 /**
- * 通用API调用Hook的参数接口
+ * Parameters interface for generic API call Hook
  */
 export interface UseApiParams<T, P extends any[] = any[]> {
   apiCall: (...params: P) => Promise<T>;
@@ -62,10 +62,8 @@ export interface UseApiParams<T, P extends any[] = any[]> {
 }
 
 /**
- * 通用API调用Hook
- * @description 提供统一的API调用、错误处理、加载状态管理
-
-
+ * Generic API call Hook
+ * @description Provides unified API calls, error handling, and loading state management
  */
 export const useApi = <T, P extends any[] = any[]>({
   apiCall,
@@ -77,7 +75,7 @@ export const useApi = <T, P extends any[] = any[]>({
     onError,
     onSuccess,
     cacheKey,
-    cacheTime = 5 * 60 * 1000, // 默认5分钟缓存
+    cacheTime = 5 * 60 * 1000, // Default 5-minute cache
   } = options;
 
   const [data, setData] = useState<T | null>(null);
@@ -89,7 +87,7 @@ export const useApi = <T, P extends any[] = any[]>({
     key: string;
   }
 
-  // 检查缓存
+  // Check cache
   const getCachedData = useCallback(
     ({ key }: GetCachedDataParams): T | null => {
       if (!cacheKey) {
@@ -101,7 +99,7 @@ export const useApi = <T, P extends any[] = any[]>({
         return cached.data;
       }
 
-      // 清理过期缓存
+      // Clean up expired cache
       if (cached) {
         cache.delete(key);
       }
@@ -116,7 +114,7 @@ export const useApi = <T, P extends any[] = any[]>({
     data: T;
   }
 
-  // 设置缓存
+  // Set cache
   const setCachedData = useCallback(
     ({ key, data }: SetCachedDataParams) => {
       if (!cacheKey) {
@@ -132,7 +130,7 @@ export const useApi = <T, P extends any[] = any[]>({
     [cacheKey, cacheTime],
   );
 
-  // 执行API调用
+  // Execute API call
   const execute = useCallback(
     async (...params: P): Promise<T> => {
       try {
@@ -140,7 +138,7 @@ export const useApi = <T, P extends any[] = any[]>({
         setError(null);
         setLastParams(params);
 
-        // 检查缓存
+        // Check cache
         if (cacheKey) {
           const cachedData = getCachedData({ key: cacheKey });
           if (cachedData) {
@@ -154,12 +152,12 @@ export const useApi = <T, P extends any[] = any[]>({
 
         setData(result);
 
-        // 设置缓存
+        // Set cache
         if (cacheKey) {
           setCachedData({ key: cacheKey, data: result });
         }
 
-        // 成功回调
+        // Success callback
         if (onSuccess) {
           onSuccess(result);
         }
@@ -169,11 +167,11 @@ export const useApi = <T, P extends any[] = any[]>({
         const error = err instanceof Error ? err : new Error(String(err));
         setError(error);
 
-        // 错误处理
+        // Error handling
         if (onError) {
           onError(error);
         } else {
-          // 默认错误处理可以在这里添加
+          // Default error handling can be added here
         }
 
         throw error;
@@ -184,26 +182,26 @@ export const useApi = <T, P extends any[] = any[]>({
     [apiCall, onError, onSuccess, cacheKey, getCachedData, setCachedData],
   );
 
-  // 重置状态
+  // Reset state
   const reset = useCallback(() => {
     setData(null);
     setError(null);
     setLoading(false);
     setLastParams(null);
 
-    // 清理缓存
+    // Clean up cache
     if (cacheKey) {
       cache.delete(cacheKey);
     }
   }, [cacheKey]);
 
-  // 刷新数据
+  // Refresh data
   const refresh = useCallback(async (): Promise<T> => {
     if (!lastParams) {
-      throw new Error('没有可刷新的请求参数');
+      throw new Error('No request parameters available for refresh');
     }
 
-    // 清理缓存后重新请求
+    // Clear cache and re-request
     if (cacheKey) {
       cache.delete(cacheKey);
     }
@@ -211,7 +209,7 @@ export const useApi = <T, P extends any[] = any[]>({
     return execute(...lastParams);
   }, [execute, lastParams, cacheKey]);
 
-  // 立即执行
+  // Execute immediately
   useEffect(() => {
     if (immediate) {
       execute(...([] as unknown as P));
@@ -229,7 +227,7 @@ export const useApi = <T, P extends any[] = any[]>({
 };
 
 /**
- * 批量API调用Hook的参数接口
+ * Parameters interface for batch API call Hook
  */
 export interface UseBatchApiParams<T> {
   apiCalls: Array<() => Promise<T>>;
@@ -237,7 +235,7 @@ export interface UseBatchApiParams<T> {
 }
 
 /**
- * 批量API调用Hook
+ * Batch API call Hook
  */
 export const useBatchApi = <T>({
   apiCalls,

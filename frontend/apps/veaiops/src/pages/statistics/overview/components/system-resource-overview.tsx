@@ -22,13 +22,13 @@ interface SystemResourceOverviewProps {
 }
 
 /**
- * 系统资源概览组件
- * @description 展示系统各模块资源使用情况统计
+ * System resource overview component
+ * @description Display statistics of resource usage for each module of the system
  */
 export const SystemResourceOverview: React.FC<SystemResourceOverviewProps> = ({
   getSystemOverviewData,
 }) => {
-  // 将系统概览数据转换为 ModernCard 的 statistics 格式
+  // Convert system overview data to ModernCard statistics format
   const systemOverviewStats = getSystemOverviewData().flatMap((category) =>
     category.items.map((item) => ({
       label: item.name,

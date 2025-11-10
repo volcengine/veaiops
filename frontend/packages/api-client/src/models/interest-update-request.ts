@@ -15,41 +15,41 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type InterestUpdateRequest = {
   /**
-   * 规则名称
+   * Rule name
    */
   name?: string;
   /**
-   * 描述
+   * Description
    */
   description?: string;
   /**
-   * 告警等级
+   * Alert level
    */
   level?: InterestUpdateRequest.level;
   /**
-   * 告警抑制间隔
+   * Alert suppression interval
    */
   silence_delta?: string;
   /**
-   * 是否启用状态
+   * Whether enabled
    */
   is_active?: boolean;
   /**
-   * 正面示例（当检测类别为语义分析时可编辑）
+   * Positive examples (editable when inspection category is semantic analysis)
    */
   examples_positive?: Array<string>;
   /**
-   * 反面示例（当检测类别为语义分析时可编辑）
+   * Negative examples (editable when inspection category is semantic analysis)
    */
   examples_negative?: Array<string>;
   /**
-   * 正则表达式（当检测类别为正则表达式时可编辑）
+   * Regular expression (editable when inspection category is regular expression)
    */
   regular_expression?: string;
 };
 export namespace InterestUpdateRequest {
   /**
-   * 告警等级
+   * Alert level
    */
   export enum level {
     P0 = 'P0',

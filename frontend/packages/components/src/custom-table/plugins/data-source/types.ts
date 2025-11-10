@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * 数据源插件类型定义
- * 类型已迁移到 ../../types/plugins/data-source.ts
- * 此文件保留以兼容现有引用，实际类型请从types目录导入
+ * Data source plugin type definitions
+ * Types have been migrated to ../../types/plugins/data-source.ts
+ * This file is kept for backward compatibility, actual types should be imported from types directory
  */
 
-// 重新导出核心类型
+// Re-export core types
 export type {
   DataSourceConfig,
   DataSourceState,

@@ -19,13 +19,13 @@ import type { DataSourceConfig } from '@/custom-table/types/plugins/data-source'
 import { Empty } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 /**
- * 数据源插件实现
+ * Data Source Plugin Implementation
  */
 import type React from 'react';
 import { DEFAULT_DATA_SOURCE_CONFIG } from './config';
 
 /**
- * 数据源插件工厂函数
+ * Data Source Plugin Factory Function
  */
 export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
   config: Partial<DataSourceConfig> = {},
@@ -38,7 +38,7 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
   return {
     name: PluginNames.DATA_SOURCE,
     version: '1.0.0',
-    description: '表格监控数据源管理插件',
+    description: 'Table data source management plugin',
     priority: finalConfig.priority || PluginPriorityEnum.HIGH,
     enabled: finalConfig.enabled !== false,
     dependencies: [],
@@ -46,13 +46,13 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
     config: finalConfig,
 
     install(_context: PluginContext) {
-      // 安装时的操作
+      // Operations during installation
     },
 
     setup(context: PluginContext) {
-      // 插件设置逻辑 - 不调用 Hook，只进行配置
-      // Hook 调用已移到 useCustomTable 中
-      // 存储配置到状态中，而不是直接返回
+      // Plugin setup logic - don't call Hooks, only configure
+      // Hook calls have been moved to useCustomTable
+      // Store configuration in state instead of directly returning
       Object.assign(context.state, {
         hookConfig: {
           dataSource: context.props.dataSource,
@@ -62,16 +62,16 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
     },
 
     update(_context: PluginContext) {
-      // 当配置或数据更新时的操作
+      // Operations when configuration or data is updated
     },
 
     uninstall(_context: PluginContext) {
-      // 卸载时的清理操作
+      // Cleanup operations during uninstallation
     },
 
-    // 数据处理钩子
+    // Data processing hooks
     hooks: {
-      // 加载数据的钩子
+      // Hook for loading data
       loadData(...args: unknown[]) {
         const context = args[0] as PluginContext;
         if (context.helpers.run) {
@@ -79,7 +79,7 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
         }
       },
 
-      // 重置数据的钩子
+      // Hook for resetting data
       resetData(...args: unknown[]) {
         const context = args[0] as PluginContext;
         if (context.helpers.reset) {
@@ -87,7 +87,7 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
         }
       },
 
-      // 加载更多数据的钩子
+      // Hook for loading more data
       loadMore(...args: unknown[]) {
         const context = args[0] as PluginContext;
         if (context.helpers.loadMoreData) {
@@ -96,21 +96,26 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
       },
     },
 
-    // 渲染方法 - 根据上下文动态渲染内容
+    // Render methods - dynamically render content based on context
     render: {
-      // 空状态渲染器（对齐 RendererNames.EMPTY_STATE）
+      // Empty state renderer (aligned with RendererNames.EMPTY_STATE)
       emptyState(context: PluginContext) {
         const props = context.props as unknown as {
           noDataElement?: React.ReactNode;
         };
-        // 优先使用外部传入的 noDataElement
+        // Priority: use externally provided noDataElement
         if (props.noDataElement) {
           return props.noDataElement;
         }
-        return <Empty description="暂无数据" style={{ padding: '40px 0' }} />;
+        return (
+          <Empty
+            description="No data available"
+            style={{ padding: '40px 0' }}
+          />
+        );
       },
 
-      // 错误状态渲染器（对齐 RendererNames.ERROR_STATE）
+      // Error state renderer (aligned with RendererNames.ERROR_STATE)
       errorState(context: PluginContext) {
         const props = context.props as unknown as {
           noDataElement?: React.ReactNode;
@@ -118,7 +123,9 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
         if (props.noDataElement) {
           return props.noDataElement;
         }
-        return <Empty description="请求失败" style={{ padding: '40px 0' }} />;
+        return (
+          <Empty description="Request failed" style={{ padding: '40px 0' }} />
+        );
       },
       footer(context: PluginContext) {
         const props = context.props as unknown as {
@@ -140,16 +147,19 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
         const { dataSource } = props;
         const { loadMoreData } = context.helpers;
 
-        // 如果有错误，渲染错误状态
+        // If there is an error, render error state
         if (context.state.error) {
           return (
             props.noDataElement || (
-              <Empty description="请求失败" style={{ padding: '40px 0' }} />
+              <Empty
+                description="Request failed"
+                style={{ padding: '40px 0' }}
+              />
             )
           );
         }
 
-        // 如果需要加载更多，渲染加载更多按钮
+        // If need to load more, render load more button
         if (dataSource?.scrollFetchData && dataSource?.hasMoreData) {
           if (props.customFooter) {
             if (typeof props.customFooter === 'function') {
@@ -159,7 +169,7 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
                 onLoadMore:
                   loadMoreData ||
                   (() => {
-                    // 加载更多数据
+                    // Load more data handler
                   }),
               });
             }
@@ -173,20 +183,25 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
               onClick={loadMoreData || undefined}
             >
               <IconSearch />
-              {dataSource?.needContinue ? '继续搜索更多数据' : '加载更多'}
+              {dataSource?.needContinue
+                ? 'Continue searching for more data'
+                : 'Load more'}
             </div>
           );
         }
 
-        // 默认渲染空数据状态
+        // Default: render empty data state
         return (
           props.noDataElement || (
-            <Empty description="暂无数据" style={{ padding: '40px 0' }} />
+            <Empty
+              description="No data available"
+              style={{ padding: '40px 0' }}
+            />
           )
         );
       },
 
-      // 加载更多按钮（对齐 RendererNames.LOAD_MORE_BUTTON）
+      // Load more button (aligned with RendererNames.LOAD_MORE_BUTTON)
       loadMoreButton(context: PluginContext) {
         const props = context.props as unknown as {
           dataSource?: {
@@ -207,7 +222,9 @@ export const DataSourcePlugin: PluginFactory<DataSourceConfig> = (
             onClick={loadMoreData || undefined}
           >
             <IconSearch />
-            {dataSource?.needContinue ? '继续搜索更多数据' : '加载更多'}
+            {dataSource?.needContinue
+              ? 'Continue searching for more data'
+              : 'Load more'}
           </div>
         );
       },

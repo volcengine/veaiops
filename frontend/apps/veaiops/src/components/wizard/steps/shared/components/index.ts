@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 共享组件导出
+ * Shared components export
  */
 
 export { AliyunRegionPrompt } from './aliyun-region-prompt';

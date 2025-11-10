@@ -20,9 +20,9 @@ import type React from 'react';
 import { useState } from 'react';
 
 /**
- * ChatOps 历史事件页面
- * 使用统一的历史事件表格组件，自动过滤只显示ChatOps相关Agent
- * （内容识别Agent、主动回复Agent、被动回复Agent）
+ * ChatOps history events page
+ * Uses unified history events table component, automatically filters to show only ChatOps-related Agents
+ * (Content Recognition Agent, Proactive Reply Agent, Passive Reply Agent)
  */
 export const OncallHistoryPage: React.FC = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);

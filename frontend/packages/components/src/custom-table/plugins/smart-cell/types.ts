@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 智能单元格插件类型定义
- * 基于 EPS 平台的智能空值单元格能力
+ * Smart cell plugin type definitions
+ * Based on EPS platform smart empty value cell capability
  */
 
-// 重新导出核心类型
+// Re-export core types
 export type {
   EmptyValueStrategy,
   UserRole,

@@ -13,27 +13,27 @@
 // limitations under the License.
 
 /**
- * 任务版本筛选器样式
- * 用于覆盖全局响应式宽度类名，确保 RangePicker 使用固定宽度 400px
+ * Task version filter styles
+ * Used to override global responsive width class names, ensuring RangePicker uses fixed width 400px
  *
- * 问题说明：
- * - Filters 组件会自动添加响应式类名（xl:w-p24 等）
- * - globals.css 中的 .w-p24 使用 !important，优先级高于内联样式
- * - hijackComponentProps 会覆盖 componentProps.className，所以不能直接使用 CSS 模块类名
- * - 解决方案：使用 :global() 创建全局样式，通过属性选择器匹配包含自定义类名的元素
+ * Problem description:
+ * - Filters component automatically adds responsive class names (xl:w-p24, etc.)
+ * - .w-p24 in globals.css uses !important, which has higher priority than inline styles
+ * - hijackComponentProps will override componentProps.className, so CSS module class names cannot be used directly
+ * - Solution: Use :global() to create global styles, match elements with custom class names through attribute selectors
  */
 
-// 使用 :global() 创建全局样式，通过 data 属性标识需要自定义宽度的 RangePicker
-// 使用 data-* 属性是因为 hijackComponentProps 会覆盖 className
+// Use :global() to create global styles, identify RangePicker that needs custom width through data attribute
+// Use data-* attribute because hijackComponentProps will override className
 :global {
-  // 匹配带有 data-custom-width 属性的 RangePicker 元素
-  // 使用更高的选择器优先级来覆盖 globals.css 中的 !important
+  // Match RangePicker elements with data-custom-width attribute
+  // Use higher selector priority to override !important in globals.css
   .arco-picker-range[data-custom-width='400px'] {
     width: 400px !important;
   }
 
-  // 覆盖所有响应式宽度类名（使用组合选择器提高优先级）
-  // 注意：此选择器已覆盖所有响应式类名，无需在媒体查询中重复设置
+  // Override all responsive width class names (use combined selectors to increase priority)
+  // Note: This selector has already covered all responsive class names, no need to repeat in media queries
   .arco-picker-range[data-custom-width='400px'].sm\:w-p20,
   .arco-picker-range[data-custom-width='400px'].md\:w-p21,
   .arco-picker-range[data-custom-width='400px'].lg\:w-p22,

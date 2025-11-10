@@ -18,13 +18,13 @@ import React from 'react';
 import { CHANNEL_OPTIONS, COMPARISON_OPERATORS } from '../constants/rules';
 import type { ThresholdConfig, ThresholdRule } from '../types/rules';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 const { Text } = Typography;
 
 /**
- * 渲染通知Channel标签
+ * Render notification Channel tags
  */
 export const renderChannelTags = (channels: string[]) => {
   return channels.map((channel) => {
@@ -38,7 +38,7 @@ export const renderChannelTags = (channels: string[]) => {
 };
 
 /**
- * 渲染阈值配置信息
+ * Render threshold configuration information
  */
 export const renderThresholdConfig = (config: ThresholdConfig) => {
   const operator = COMPARISON_OPERATORS.find(
@@ -75,7 +75,7 @@ export const renderThresholdConfig = (config: ThresholdConfig) => {
 };
 
 /**
- * 渲染规则状态
+ * Render rule status
  */
 export const renderRuleStatus = (rule: ThresholdRule) => {
   if (!rule.is_active) {
@@ -99,7 +99,7 @@ export const renderRuleStatus = (rule: ThresholdRule) => {
 };
 
 /**
- * 格式化相对时间
+ * Format relative time
  */
 export const formatRelativeTime = (dateString: string) => {
   const date = new Date(dateString);
@@ -121,7 +121,7 @@ export const formatRelativeTime = (dateString: string) => {
 };
 
 /**
- * 获取操作符显示文本
+ * Get operator display text
  */
 export const getOperatorLabel = (value: string) => {
   const operator = COMPARISON_OPERATORS.find((op) => op.value === value);
@@ -129,7 +129,7 @@ export const getOperatorLabel = (value: string) => {
 };
 
 /**
- * 获取Channel显示文本
+ * Get Channel display text
  */
 export const getChannelLabel = (value: string) => {
   const channel = CHANNEL_OPTIONS.find((opt) => opt.value === value);
@@ -137,7 +137,7 @@ export const getChannelLabel = (value: string) => {
 };
 
 /**
- * 验证规则配置
+ * Validate rule configuration
  */
 export const validateRuleConfig = (values: any) => {
   const errors: Record<string, string> = {};

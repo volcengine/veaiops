@@ -13,34 +13,34 @@
 // limitations under the License.
 
 /**
- * GlobalGuide lib 统一导出
+ * GlobalGuide lib unified export
  *
- * 架构说明（符合 .cursorrules Feature-Based 架构）：
- * - config.ts - 引导配置
- * - store.ts - 状态管理
- * - tracker.ts - 跟踪器
- * - types.ts - 类型定义
- * - debug-collector.ts - 调试日志收集器
- * - utils/ - 工具函数
+ * Architecture notes (conforms to .cursorrules Feature-Based architecture):
+ * - config.ts - Guide configuration
+ * - store.ts - State management
+ * - tracker.ts - Tracker
+ * - types.ts - Type definitions
+ * - debug-collector.ts - Debug log collector
+ * - utils/ - Utility functions
  */
 
-// 导出配置
+// Export configuration
 export * from './config';
 
-// 导出状态管理
+// Export state management
 export * from './store';
 
-// 导出跟踪器
+// Export tracker
 export * from './tracker';
 
-// 导出类型
+// Export types
 export * from './types';
 
-// 导出调试日志收集器
+// Export debug log collector
 export * from './debug-collector';
 
-// 导出自动日志初始化
+// Export auto log initialization
 export { initializeAutoLogCollection } from './auto-log-init';
 
-// 导出工具函数
+// Export utility functions
 export * from './utils';

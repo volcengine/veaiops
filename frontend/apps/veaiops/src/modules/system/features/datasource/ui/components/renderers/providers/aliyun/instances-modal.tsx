@@ -19,20 +19,20 @@ import * as React from 'react';
 const { Text } = Typography;
 
 /**
- * 阿里云实例列表组件（点击弹出 Modal）
+ * Aliyun instances list component (click to open Modal)
  */
 const AliyunInstancesListModal: React.FC<{ value: unknown[] }> = ({
   value,
 }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
 
-  // 生成表格列配置
+  // Generate table column configuration
   const columns = React.useMemo(() => {
     if (!value || value.length === 0) {
       return [];
     }
 
-    // 从第一个实例获取所有键
+    // Get all keys from the first instance
     const firstInstance = value[0];
     if (typeof firstInstance !== 'object' || firstInstance === null) {
       return [
@@ -44,7 +44,7 @@ const AliyunInstancesListModal: React.FC<{ value: unknown[] }> = ({
       ];
     }
 
-    // 为每个键创建一列
+    // Create a column for each key
     return Object.keys(firstInstance).map((key) => ({
       title: key,
       dataIndex: key,
@@ -54,7 +54,7 @@ const AliyunInstancesListModal: React.FC<{ value: unknown[] }> = ({
     }));
   }, [value]);
 
-  // 处理表格数据
+  // Process table data
   const tableData = React.useMemo(() => {
     if (!value) {
       return [];
@@ -103,7 +103,7 @@ const AliyunInstancesListModal: React.FC<{ value: unknown[] }> = ({
 };
 
 /**
- * 渲染阿里云实例列表（点击弹出 Modal）
+ * Render Aliyun instances list (click to open Modal)
  */
 export const renderAliyunInstancesList = (value: unknown) => {
   if (!value || !Array.isArray(value) || value.length === 0) {

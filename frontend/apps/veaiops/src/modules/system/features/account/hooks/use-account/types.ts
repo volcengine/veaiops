@@ -15,7 +15,7 @@
 import type { User } from 'api-generate';
 
 /**
- * 用户表单数据接口
+ * User form data interface
  */
 export interface UserFormData {
   username: string;
@@ -26,12 +26,12 @@ export interface UserFormData {
 }
 
 /**
- * 用户表格数据类型
+ * User table data type
  */
 export type UserTableData = User;
 
 /**
- * 更新用户信息的参数接口
+ * Update user information parameters interface
  */
 export interface UpdateUserParams {
   userId: string;

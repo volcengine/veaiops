@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * 账号管理验证辅助函数
- * @description 基础验证函数（用户名、邮箱、密码等）
+ * Account management validation helper functions
+ * @description Basic validation functions (username, email, password, etc.)
  */
 
 /**
- * 验证用户名格式
+ * Validate username format
  */
 export const validateUsername = (
   username: string,
@@ -43,7 +43,7 @@ export const validateUsername = (
 };
 
 /**
- * 验证邮箱格式
+ * Validate email format
  */
 export const validateEmail = (
   email: string,
@@ -61,7 +61,7 @@ export const validateEmail = (
 };
 
 /**
- * 验证密码强度
+ * Validate password strength
  */
 export const validatePassword = (
   password: string,
@@ -85,27 +85,27 @@ export const validatePassword = (
   let strength: 'weak' | 'medium' | 'strong' = 'weak';
   let score = 0;
 
-  // 检查包含小写字母
+  // Check for lowercase letters
   if (/[a-z]/.test(password)) {
     score++;
   }
 
-  // 检查包含大写字母
+  // Check for uppercase letters
   if (/[A-Z]/.test(password)) {
     score++;
   }
 
-  // 检查包含数字
+  // Check for numbers
   if (/\d/.test(password)) {
     score++;
   }
 
-  // 检查包含特殊字符
+  // Check for special characters
   if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
     score++;
   }
 
-  // 检查长度
+  // Check length
   if (password.length >= 12) {
     score++;
   }
@@ -120,8 +120,8 @@ export const validatePassword = (
 };
 
 /**
- * 基础密码校验 - 与登录时的校验逻辑保持一致
- * 用于旧密码校验，只要求基本的长度限制
+ * Basic password validation - Consistent with login validation logic
+ * Used for old password validation, only requires basic length restrictions
  */
 export const validateBasicPassword = (
   password: string,
@@ -142,8 +142,8 @@ export const validateBasicPassword = (
 };
 
 /**
- * 复杂密码校验 - 用于新密码设置
- * 只要求基本的长度限制，不强制要求大小写字母和特殊字符
+ * Complex password validation - Used for new password setting
+ * Only requires basic length restrictions, does not force uppercase letters and special characters
  */
 export const validateComplexPassword = (
   password: string,

@@ -25,10 +25,10 @@ import {
 } from './utils';
 
 /**
- * 将字符串类型的时间转换为Unix时间戳
- * @param time 时间字符串
- * @param format 格式化模板（可选）
- * @returns 对应的Unix时间戳
+ * Convert string type time to Unix timestamp
+ * @param time Time string
+ * @param format Format template (optional)
+ * @returns Corresponding Unix timestamp
  */
 export const convertToUnixTimestamp = ({
   time,
@@ -64,12 +64,12 @@ export const convertToUnixTimestamp = ({
 };
 
 /**
- * 将字符串类型的时间范围转换为Unix时间戳范围
- * @param timeRange 时间范围数组，包含起始时间和结束时间
- * @param format 格式化模板（可选）
- * @param isToSecondTimestamp 是否转换为秒级时间戳（可选，默认为false）
- * @param isToMillSecondTimestamp 是否转换为毫秒级时间戳（可选，默认为false）
- * @returns 对应的Unix时间戳范围
+ * Convert string type time range to Unix timestamp range
+ * @param timeRange Time range array, containing start time and end time
+ * @param format Format template (optional)
+ * @param isToSecondTimestamp Whether to convert to second-level timestamp (optional, default false)
+ * @param isToMillSecondTimestamp Whether to convert to millisecond-level timestamp (optional, default false)
+ * @returns Corresponding Unix timestamp range
  */
 export const convertTimeRangeToUnixTimestampRange = ({
   timeRange,
@@ -88,7 +88,7 @@ export const convertTimeRangeToUnixTimestampRange = ({
   const [startTime, endTime] = timeRange.map((value) =>
     canConvertToNumberFromCommon(value) ? Number(value) : value,
   );
-  // 如果是['1640995200000', '1672531199999']，转成数值类型数组后直接返回
+  // If it's ['1640995200000', '1672531199999'], convert to number array and return directly
   if (isNumber(startTime) && isNumber(endTime)) {
     return [startTime, endTime];
   }
@@ -108,9 +108,9 @@ export const convertTimeRangeToUnixTimestampRange = ({
 };
 
 /**
- * 将对象中指定的字段转换为时间戳并返回转换后的对象
- * @param fields 包含字段和对应值的对象
- * @returns 转换后的对象
+ * Convert specified fields in object to timestamps and return the converted object
+ * @param fields Object containing fields and their corresponding values
+ * @returns Converted object
  */
 export const convertFieldsToTimestamp = <T>({
   fields,

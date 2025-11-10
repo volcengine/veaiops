@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 日志导出功能演示组件
- * @description 展示如何使用日志导出工具
+ * Log export feature demo component
+ * @description Demonstrates how to use log export utilities
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -43,25 +43,25 @@ export const LogExportDemo: React.FC = () => {
   const [logCount, setLogCount] = useState(0);
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(false);
 
-  // 模拟生成一些测试日志
+  // Simulate generating some test logs
   const generateTestLogs = () => {
-    // 更新日志计数
+    // Update log count
     setLogCount((prev) => prev + 4);
   };
 
-  // 开始日志收集
+  // Start log collection
   const handleStartCollection = () => {
     startLogCollection();
     setIsCollecting(true);
   };
 
-  // 停止日志收集
+  // Stop log collection
   const handleStopCollection = () => {
     stopLogCollection();
     setIsCollecting(false);
   };
 
-  // 导出日志
+  // Export logs
   const handleExportLogs = () => {
     try {
       exportLogsToFile(
@@ -73,14 +73,14 @@ export const LogExportDemo: React.FC = () => {
     }
   };
 
-  // 切换自动保存
+  // Toggle auto-save
   const handleToggleAutoSave = () => {
     if (autoSaveEnabled) {
       disableAutoSave();
       setAutoSaveEnabled(false);
     } else {
       enableAutoSave({
-        interval: 10000, // 10秒间隔
+        interval: 10000, // 10 second interval
         directory: '/Users/bytedance/Desktop/logs',
         maxFiles: 5,
       });
@@ -88,7 +88,7 @@ export const LogExportDemo: React.FC = () => {
     }
   };
 
-  // 组件挂载时的初始化
+  // Component mount initialization
   useEffect(() => {
     return () => {};
   }, []);
@@ -104,7 +104,7 @@ export const LogExportDemo: React.FC = () => {
       />
 
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
-        {/* 日志收集控制 */}
+        {/* Log collection control */}
         <Card title="日志收集控制" size="small">
           <Space>
             <Button
@@ -132,7 +132,7 @@ export const LogExportDemo: React.FC = () => {
           </Space>
         </Card>
 
-        {/* 测试日志生成 */}
+        {/* Test log generation */}
         <Card title="测试日志生成" size="small">
           <Space direction="vertical" style={{ width: '100%' }}>
             <Paragraph>
@@ -148,7 +148,7 @@ export const LogExportDemo: React.FC = () => {
           </Space>
         </Card>
 
-        {/* 日志导出 */}
+        {/* Log export */}
         <Card title="日志导出" size="small">
           <Space direction="vertical" style={{ width: '100%' }}>
             <Paragraph>
@@ -182,7 +182,7 @@ export const LogExportDemo: React.FC = () => {
           </Space>
         </Card>
 
-        {/* 使用说明 */}
+        {/* Usage instructions */}
         <Card title="使用说明" size="small">
           <Space direction="vertical" style={{ width: '100%' }}>
             <Title heading={4}>在您的组件中使用日志工具：</Title>
@@ -196,28 +196,28 @@ export const LogExportDemo: React.FC = () => {
                 overflow: 'auto',
               }}
             >
-              {`// 1. 导入日志工具
+              {`// 1. Import log utilities
 
-// 2. 在组件中使用
+// 2. Use in component
 const MyComponent = () => {
-  // 开始收集日志
+  // Start log collection
   useEffect(() => {
     startLogCollection();
     return () => stopLogCollection();
   }, []);
 
-  // 记录日志
+  // Log events
   const handleAction = () => {
 
   };
 
-  // 导出日志
+  // Export logs
   const handleExport = () => {
     exportLogsToFile('my-app-logs.log');
   };
 
   return (
-    <Button onClick={handleExport}>导出日志</Button>
+    <Button onClick={handleExport}>Export Logs</Button>
   );
 };`}
             </pre>

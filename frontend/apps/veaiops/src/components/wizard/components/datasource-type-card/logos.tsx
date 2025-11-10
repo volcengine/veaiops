@@ -13,37 +13,37 @@
 // limitations under the License.
 
 /**
- * 数据源Logo组件集合
- * @description 各数据源类型的SVG图标定义
+ * Data source logo component collection
+ * @description SVG icon definitions for each data source type
  */
 
 import type React from 'react';
 import styles from './styles.module.less';
 
-/** 火山引擎Logo */
+/** Volcengine logo */
 export const VolcengineLogo: React.FC = () => (
   <svg viewBox="0 0 64 64" className={styles.logo}>
-    {/* 火山底座 */}
+    {/* Volcano base */}
     <ellipse cx="32" cy="52" rx="24" ry="3" fill="currentColor" opacity="0.2" />
-    {/* 火山左侧山体 */}
+    {/* Volcano left side */}
     <path
       d="M16 52 C 18 50, 20 38, 22 32 L 26 20 L 28 16 L 30 18 L 32 28 L 32 52 Z"
       fill="currentColor"
       opacity="0.7"
     />
-    {/* 火山右侧山体 */}
+    {/* Volcano right side */}
     <path
       d="M48 52 C 46 50, 44 38, 42 32 L 38 20 L 36 16 L 34 18 L 32 28 L 32 52 Z"
       fill="currentColor"
       opacity="0.5"
     />
-    {/* 火山口凹陷 */}
+    {/* Volcano crater depression */}
     <path
       d="M 26 20 Q 28 14, 32 13 Q 36 14, 38 20 L 36 24 L 28 24 Z"
       fill="currentColor"
       opacity="0.3"
     />
-    {/* 熔岩/火焰效果 */}
+    {/* Lava/flame effect */}
     <g opacity="0.6">
       <circle cx="30" cy="12" r="2" fill="currentColor" />
       <circle cx="32" cy="10" r="2.5" fill="currentColor" />
@@ -55,7 +55,7 @@ export const VolcengineLogo: React.FC = () => (
         strokeWidth="1"
       />
     </g>
-    {/* 火山主体高光 */}
+    {/* Volcano main body highlight */}
     <path
       d="M 28 30 Q 30 24, 32 22 Q 34 24, 36 30 L 38 45 L 26 45 Z"
       fill="currentColor"
@@ -64,11 +64,11 @@ export const VolcengineLogo: React.FC = () => (
   </svg>
 );
 
-/** 阿里云Logo */
+/** Aliyun logo */
 export const AliyunLogo: React.FC = () => (
   <svg viewBox="0 0 120 80" className={styles.logo}>
-    {/* 阿里云官方logo样式 */}
-    {/* 左侧圆角矩形 */}
+    {/* Aliyun official logo style */}
+    {/* Left rounded rectangle */}
     <path
       d="M 10 20
          L 10 20
@@ -86,7 +86,7 @@ export const AliyunLogo: React.FC = () => (
          Z"
       fill="currentColor"
     />
-    {/* 右侧圆角矩形 */}
+    {/* Right rounded rectangle */}
     <path
       d="M 110 20
          L 110 20
@@ -104,21 +104,21 @@ export const AliyunLogo: React.FC = () => (
          Z"
       fill="currentColor"
     />
-    {/* 中间横杠 */}
+    {/* Middle horizontal bar */}
     <rect x="45" y="35" width="30" height="10" rx="3" fill="currentColor" />
   </svg>
 );
 
-/** Zabbix Logo */
+/** Zabbix logo */
 export const ZabbixLogo: React.FC = () => (
   <svg viewBox="0 0 80 60" className={styles.logo}>
-    {/* Zabbix logo - 清晰的Z字母 */}
+    {/* Zabbix logo - clear Z letter */}
     <g>
-      {/* Z字母顶部横线 */}
+      {/* Z letter top horizontal line */}
       <rect x="18" y="12" width="44" height="8" fill="currentColor" />
-      {/* Z字母中间斜线 - 从右上到左下 */}
+      {/* Z letter middle diagonal line - from top right to bottom left */}
       <path d="M 62 20 L 18 40 L 18 32 L 54 20 Z" fill="currentColor" />
-      {/* Z字母底部横线 */}
+      {/* Z letter bottom horizontal line */}
       <rect x="18" y="40" width="44" height="8" fill="currentColor" />
     </g>
   </svg>

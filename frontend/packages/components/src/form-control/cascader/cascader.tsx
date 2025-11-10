@@ -40,14 +40,14 @@ export interface CascaderBlockProps {
 }
 
 const CascaderBlock: FC<CascaderBlockProps> = (props: CascaderBlockProps) => {
-  // 解构属性对象，获取 options 和 dataSource 属性，并将剩余属性赋值给 rest 变量
+  // Destructure props object, get options and dataSource properties, assign remaining properties to rest variable
   const { options: initialOptions = [], dataSource, ...rest } = props;
 
   const [options, setOptions] = useState<CascaderOption[]>(initialOptions);
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  // 定义 retrieveDataSource 异步函数，用于获取数据源
+  // Define retrieveDataSource async function to fetch data source
   const retrieveDataSource = async () => {
     if (!dataSource) {
       return;
@@ -57,16 +57,16 @@ const CascaderBlock: FC<CascaderBlockProps> = (props: CascaderBlockProps) => {
       const newOptions = await dataSource({});
       setOptions(newOptions);
     } catch (error: unknown) {
-      // 记录错误但不中断流程，级联选择器的数据加载失败不应影响整体
+      // Log error but don't interrupt flow, cascader data loading failure should not affect overall functionality
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
-      console.error('[CascaderBlock] 数据源加载失败:', errorObj);
+      console.error('[CascaderBlock] Data source loading failed:', errorObj);
     } finally {
       setLoading(false);
     }
   };
 
-  // 使用 useDeepCompareEffect 钩子来处理 initialOptions 的深比较副作用
+  // Use useDeepCompareEffect hook to handle deep comparison side effects for initialOptions
   useDeepCompareEffect(() => {
     if (!initialOptions) {
       return;
@@ -74,7 +74,7 @@ const CascaderBlock: FC<CascaderBlockProps> = (props: CascaderBlockProps) => {
     setOptions(initialOptions);
   }, [initialOptions]);
 
-  // 使用 useMount 钩子来处理组件挂载时的副作用
+  // Use useMount hook to handle side effects when component mounts
   useMount(async () => {
     await retrieveDataSource();
   });

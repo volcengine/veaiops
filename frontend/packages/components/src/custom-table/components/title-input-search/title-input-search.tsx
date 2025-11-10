@@ -13,36 +13,35 @@
 // limitations under the License.
 
 /**
- * TitleInputSearch 表格标题输入搜索组件
- * @description 提供输入框搜索功能的表格标题组件
- (迁移自 apps/meta-web)
- *
+ * TitleInputSearch Table Title Input Search Component
+ * @description Table title component that provides input search functionality
+ * (Migrated from apps/meta-web)
  */
 
 import { type FC, useMemo } from 'react';
 
-// 公共组件
+// Common components
 import { Input, Popover } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import { selectColor, unselectColor } from '@veaiops/constants';
 import type { TableColumnTitleProps } from '@veaiops/types';
 import { get } from 'lodash-es';
 
-// 工具
+// Utilities
 
-// 样式
+// Styles
 import styles from '../title-search/base.module.less';
 
-// 从命名空间获取常量和组件
+// Get constants and components from namespace
 import { Tip } from '@/tip';
 
 /**
- * 输入搜索标题
- * @param title 标题
- * @param dataIndex 数据索引
- * @param filters 过滤器
- * @param onChange 过滤器改变回调
- * @param tip 提示
+ * Input search title
+ * @param title Title
+ * @param dataIndex Data index
+ * @param filters Filters
+ * @param onChange Filter change callback
+ * @param tip Tip
  */
 const TitleInputSearch: FC<TableColumnTitleProps> = ({
   title,
@@ -82,7 +81,7 @@ const TitleInputSearch: FC<TableColumnTitleProps> = ({
               value={value}
               onChange={handleChange}
               allowClear
-              placeholder={'请输入'}
+              placeholder={'Please enter'}
               style={{ width: 200 }}
             />
           }

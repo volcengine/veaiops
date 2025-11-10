@@ -22,20 +22,20 @@ import { PasswordStrengthIndicator } from './password-strength-indicator';
 const { Password } = Input;
 
 /**
- * 密码字段组件 Props
+ * Password fields component Props
  */
 interface PasswordFieldsProps {
-  /** 是否为编辑模式（修改密码） */
+  /** Whether in edit mode (change password) */
   isEditing: boolean;
-  /** 旧密码验证规则 */
+  /** Old password validation rules */
   passwordRules: ValidationRule[];
-  /** 新密码验证规则 */
+  /** New password validation rules */
   newPasswordRules: ValidationRule[];
 }
 
 /**
- * 密码字段组件
- * 根据是否编辑模式显示不同的密码字段
+ * Password fields component
+ * Displays different password fields based on whether in edit mode
  */
 export const PasswordFields: React.FC<PasswordFieldsProps> = ({
   isEditing,
@@ -46,10 +46,10 @@ export const PasswordFields: React.FC<PasswordFieldsProps> = ({
   const [createPassword, setCreatePassword] = useState('');
 
   if (isEditing) {
-    // 修改密码模式
+    // Change password mode
     return (
       <div className="space-y-4">
-        {/* 旧密码字段 */}
+        {/* Old password field */}
         <Form.Item
           label={
             <Space size={4}>
@@ -69,7 +69,7 @@ export const PasswordFields: React.FC<PasswordFieldsProps> = ({
           />
         </Form.Item>
 
-        {/* 身份验证说明 */}
+        {/* Identity verification info */}
         <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-start gap-2">
             <IconInfoCircleFill className="text-blue-500 text-sm mt-0.5 flex-shrink-0" />
@@ -80,7 +80,7 @@ export const PasswordFields: React.FC<PasswordFieldsProps> = ({
           </div>
         </div>
 
-        {/* 新密码字段 */}
+        {/* New password field */}
         <Form.Item
           label={
             <Space size={4}>
@@ -108,7 +108,7 @@ export const PasswordFields: React.FC<PasswordFieldsProps> = ({
     );
   }
 
-  // 新增账号模式
+  // Create account mode
   return (
     <>
       <Form.Item

@@ -23,7 +23,7 @@ import type { BotAttributePayload, ChannelType } from 'api-generate';
 import { useCallback, useRef } from 'react';
 
 /**
- * 使用 ref 来稳定参数引用
+ * Use ref to stabilize parameter references
  */
 interface UseCreateAttributeParams {
   botId: string;
@@ -33,7 +33,7 @@ interface UseCreateAttributeParams {
 }
 
 /**
- * 创建特别关注 Hook
+ * Create special attention Hook
  */
 export function useCreateAttribute({
   botId,
@@ -41,11 +41,11 @@ export function useCreateAttribute({
   lastRequestParamsRef,
   setLoading,
 }: UseCreateAttributeParams) {
-  // 使用ref来稳定botId和channel的引用，避免循环依赖
+  // Use refs to stabilize botId and channel references, avoid circular dependencies
   const botIdRef = useRef(botId);
   const channelRef = useRef(channel);
 
-  // 更新ref值，但不触发重新渲染
+  // Update ref values without triggering re-render
   botIdRef.current = botId;
   channelRef.current = channel;
 
@@ -64,7 +64,7 @@ export function useCreateAttribute({
 
         if (success) {
           Message.success('特别关注创建成功');
-          // 记录：创建成功，由组件负责刷新表格
+          // Log: create successful, component responsible for refreshing table
           logger.info({
             message: '特别关注创建成功',
             data: {
@@ -76,7 +76,7 @@ export function useCreateAttribute({
             source: 'useBotAttributes',
             component: 'createAttribute',
           });
-          // 不在这里刷新，由组件通过 CustomTable 的 refresh 方法刷新
+          // Don't refresh here, component will refresh via CustomTable's refresh method
           return true;
         }
 

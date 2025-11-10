@@ -15,9 +15,8 @@
 import { DataSourceWizard } from '@/components';
 import { Tabs } from '@arco-design/web-react';
 import type { DataSourceType, MonitorAccessProps } from '@datasource/lib';
-import { XGuide } from '@veaiops/components'; // 暂时注释，有样式问题
+import { XGuide } from '@veaiops/components'; // Temporarily commented, has style issues
 import { logger } from '@veaiops/utils';
-import { DataSourceType as ApiDataSourceType } from 'api-generate';
 import type React from 'react';
 import { useCallback, useEffect, useMemo } from 'react';
 import { ConnectionManager } from '../../connection/ui/panels/connection-manager';
@@ -31,34 +30,15 @@ import { useUrlParamHandlers } from './hooks/use-url-param-handlers';
 import style from './index.module.less';
 
 /**
- * 将小写的 tab key 转换为 DataSourceType 枚举值
- * @param tabKey - 小写的 tab key（如 'zabbix'）
- * @returns DataSourceType 枚举值（如 'Zabbix'）
- */
-const convertTabKeyToDataSourceType = (tabKey: string): ApiDataSourceType => {
-  const tabKeyLower = tabKey.toLowerCase();
-  switch (tabKeyLower) {
-    case 'zabbix':
-      return ApiDataSourceType.ZABBIX;
-    case 'aliyun':
-      return ApiDataSourceType.ALIYUN;
-    case 'volcengine':
-      return ApiDataSourceType.VOLCENGINE;
-    default:
-      return ApiDataSourceType.VOLCENGINE; // 默认值
-  }
-};
-
-/**
- * 监控接入管理页面
- * 提供监控接入的增删改查功能 - 使用拆分组件和业务逻辑分离
+ * Monitor access management page
+ * Provides CRUD functionality for monitor access - uses split components and business logic separation
  *
- * 架构特点：
- * - 使用自定义Hook封装业务逻辑（useTabManagement, useMonitorAccessLogic, useDataSourceHandlers）
- * - 组件职责单一，易于维护（拆分为独立的组件和配置文件）
- * - 状态管理与UI渲染分离
- * - 支持配置化和扩展（createDataSourceConfigs）
- * - 模块化拆分：types.ts, config.ts, hooks/, components/
+ * Architecture features:
+ * - Use custom Hooks to encapsulate business logic (useTabManagement, useMonitorAccessLogic, useDataSourceHandlers)
+ * - Single responsibility components, easy to maintain (split into independent components and configuration files)
+ * - State management separated from UI rendering
+ * - Supports configuration and extension (createDataSourceConfigs)
+ * - Modular split: types.ts, config.ts, hooks/, components/
  */
 export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
   props,
@@ -70,13 +50,13 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
     component: 'render',
   });
 
-  // Tab 管理逻辑
+  // Tab management logic
   const { activeTab, handleTabChange } = useTabManagement();
 
-  // 引导配置
+  // Guide configuration
   const guideConfig = useGuide();
 
-  // 🔥 监控组件挂载和卸载
+  // 🔥 Monitor component mount and unmount
   useEffect(() => {
     logger.info({
       message: '✨ MonitorAccessManagement mounted',
@@ -94,16 +74,39 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
     };
   }, []);
 
-  // 使用自定义Hook获取所有业务逻辑
+  // Use custom Hook to get all business logic
   const {
-    // 状态
+    // State
     pageTitle,
 
-    // 事件处理器
+    // Event handlers
     handleDelete,
   } = useMonitorAccessLogic(props);
 
-  // 包装handleDelete函数以匹配 useDataSourceHandlers 期望的类型（对象参数，返回boolean）
+  /**
+   * Delete parameters interface
+   */
+  interface HandleDeleteParams {
+    id: string;
+    datasourceType: DataSourceType;
+  }
+
+  // Wrap handleDelete function to match createDataSourceConfigs expected type (positional parameters)
+  const wrappedHandleDeleteForConfig = useCallback(
+    async (
+      monitorId: string,
+      dataSourceType?: DataSourceType,
+    ): Promise<boolean> => {
+      const result = await handleDelete({
+        id: monitorId,
+        datasourceType: dataSourceType || ('Prometheus' as DataSourceType),
+      });
+      return result.success;
+    },
+    [handleDelete],
+  );
+
+  // Wrap handleDelete function to match useDataSourceHandlers expected type (object parameter, returns boolean)
   const wrappedHandleDeleteForHandlers = useCallback(
     async (params: {
       id: string;
@@ -115,9 +118,9 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
     [handleDelete],
   );
 
-  // 数据源处理器逻辑
+  // Data source handler logic
   const {
-    // 状态
+    // State
     connectionDrawerVisible,
     wizardVisible,
     editingDataSource,
@@ -125,7 +128,7 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
     aliyunTableRef,
     zabbixTableRef,
 
-    // 事件处理器
+    // Event handlers
     handleDeleteZabbix,
     handleDeleteAliyun,
     handleDeleteVolcengine,
@@ -135,7 +138,7 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
     handleOpenConnectionManager,
     handleCloseConnectionManager,
 
-    // 设置器
+    // Setters
     setWizardVisible,
     setEditingDataSource,
   } = useDataSourceHandlers({
@@ -143,7 +146,7 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
     handleTabChange,
   });
 
-  // 🔥 监控 connectionDrawerVisible 状态变化
+  // 🔥 Monitor connectionDrawerVisible state changes
   useEffect(() => {
     logger.info({
       message: '📊 connectionDrawerVisible changed in ManagementPage',
@@ -156,7 +159,7 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
     });
   }, [connectionDrawerVisible]);
 
-  // 🔥 监控 wizardVisible 状态变化
+  // 🔥 Monitor wizardVisible state changes
   useEffect(() => {
     logger.info({
       message: '📊 wizardVisible changed in ManagementPage',
@@ -169,7 +172,7 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
     });
   }, [wizardVisible]);
 
-  // URL 参数处理逻辑（提取到独立 Hook）
+  // URL parameter handling logic (extracted to independent Hook)
   const {
     wrappedHandleOpenConnectionManager,
     wrappedHandleCloseConnectionManager,
@@ -186,7 +189,7 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
     setWizardVisible,
   });
 
-  // 数据源配置列表
+  // Data source configuration list
   const dataSourceConfigs = useMemo(
     () =>
       createDataSourceConfigs({
@@ -194,11 +197,11 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
         handleDeleteAliyun,
         handleDeleteZabbix,
       }),
-    // 注意：wrappedHandleDeleteForConfig 未使用，但保留以备将来需要
+    // Note: wrappedHandleDeleteForConfig is unused but kept for future needs
     [handleDeleteVolcengine, handleDeleteAliyun, handleDeleteZabbix],
   );
 
-  // 表格 Ref 映射
+  // Table ref mapping
   const tableRefMap = useMemo(
     () => ({
       volcengineTableRef,
@@ -210,10 +213,10 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
 
   return (
     <div className="monitor-access-management">
-      {/* 页面头部 */}
+      {/* Page header */}
       <ManagementHeader pageTitle={pageTitle} />
 
-      {/* 数据源Tabs */}
+      {/* Data source Tabs */}
       <Tabs
         activeTab={activeTab}
         onChange={handleTabChange}
@@ -233,7 +236,7 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
         )}
       </Tabs>
 
-      {/* 数据源创建/编辑向导 - 用于新增和编辑 */}
+      {/* Data source create/edit wizard - for create and edit */}
       <DataSourceWizard
         visible={wizardVisible}
         onClose={() => {
@@ -244,18 +247,17 @@ export const MonitorAccessManagement: React.FC<MonitorAccessProps> = (
         editingDataSource={editingDataSource}
       />
 
-      {/* 全局连接管理器 */}
+      {/* Global connection manager */}
       <ConnectionManager
         visible={connectionDrawerVisible}
         onClose={wrappedHandleCloseConnectionManager}
-        defaultActiveTab={convertTabKeyToDataSourceType(activeTab)}
       />
 
-      {/* 引导组件 */}
+      {/* Guide component */}
       <XGuide {...guideConfig} />
     </div>
   );
 };
 
-// 默认导出，用于向后兼容
+// Default export for backward compatibility
 export default MonitorAccessManagement;

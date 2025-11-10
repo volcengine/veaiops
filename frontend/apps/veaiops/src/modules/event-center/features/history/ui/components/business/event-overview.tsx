@@ -14,7 +14,7 @@
 
 import { AIAgentIcon } from '@/components/global-guide';
 import { Card, Typography } from '@arco-design/web-react';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge same-source imports
 import { renderEventStatus } from '@ec/history';
 import {
   EVENT_LEVEL_VISUAL_MAP,
@@ -31,13 +31,13 @@ const { Text } = Typography;
 const { CopyableText, CustomOutlineTag } = CellRender;
 
 /**
- * 事件概览组件
- * 显示事件的基本信息概览
+ * Event overview component
+ * Displays basic information overview of the event
  */
 export const EventOverview: React.FC<EventOverviewProps> = ({
   selectedRecord,
 }) => {
-  // 渲染事件类型标签 - 增强视觉设计，统一使用AIAgentIcon
+  // Render event type label - Enhanced visual design, unified use of AIAgentIcon
   const renderEventType = (value: string) => {
     const config = getEventTypeConfig(value, EVENT_TYPE_MAP);
 
@@ -56,7 +56,7 @@ export const EventOverview: React.FC<EventOverviewProps> = ({
     );
   };
 
-  // 渲染事件级别标签 - 使用CustomOutlineTag
+  // Render event level label - Use CustomOutlineTag
   const renderEventLevel = (value: string) => {
     const config = getEventLevelConfig(value, EVENT_LEVEL_VISUAL_MAP);
 
@@ -81,7 +81,7 @@ export const EventOverview: React.FC<EventOverviewProps> = ({
       }}
     >
       <div className="grid grid-cols-2 gap-6">
-        {/* 左侧：事件类型和级别 */}
+        {/* Left: Event type and level */}
         <div>
           <div className="mb-4">
             <Text
@@ -111,7 +111,7 @@ export const EventOverview: React.FC<EventOverviewProps> = ({
           </div>
         </div>
 
-        {/* 右侧：状态和时间 */}
+        {/* Right: Status and time */}
         <div>
           <div className="mb-4">
             <Text

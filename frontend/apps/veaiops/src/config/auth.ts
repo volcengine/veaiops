@@ -14,7 +14,7 @@
 
 import { useEffect, useState } from 'react';
 
-// 认证状态接口
+// Authentication state interface
 export interface AuthState {
   isAuthenticated: boolean | null;
   isLoading: boolean;
@@ -26,24 +26,24 @@ export interface AuthState {
   } | null;
 }
 
-// 认证配置
+// Authentication configuration
 export const authConfig = {
-  // 存储键名
+  // Storage key names
   storageKeys: {
     token: 'access_token',
     username: 'username',
     isSupervisor: 'is_supervisor',
     userData: 'id',
   },
-  // 默认重定向路径 - 跳转到第一个顶导的第一个菜单
+  // Default redirect path - redirect to the first menu of the first top navigation
   defaultRedirectPath: '/statistics/overview',
   loginPath: '/login',
-  // Token过期时间（毫秒）
-  tokenExpireTime: 7 * 24 * 60 * 60 * 1000, // 7天
-  // 开发模式配置 - 设置为 true 可绕过登录验证
+  // Token expiration time (milliseconds)
+  tokenExpireTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+  // Development mode configuration - set to true to bypass login verification
   devMode: {
-    enabled: process.env.NODE_ENV === 'development', // 仅在开发环境启用
-    bypassAuth: false, // 设置为 false 使用真实认证，true 绕过认证
+    enabled: process.env.NODE_ENV === 'development', // Only enabled in development environment
+    bypassAuth: false, // Set to false to use real authentication, true to bypass authentication
     mockUser: {
       username: 'dev-user',
       token: `dev-mock-token-${Date.now()}`,
@@ -51,7 +51,7 @@ export const authConfig = {
   },
 } as const;
 
-// 认证Hook
+// Authentication Hook
 export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: null,
@@ -59,11 +59,11 @@ export const useAuth = () => {
     user: null,
   });
 
-  // 初始化认证状态
+  // Initialize authentication state
   useEffect(() => {
-    // 修复：使用 localStorage 替代 sessionStorage，以支持跨标签页共享认证状态
-    // 原因：sessionStorage 是基于浏览器会话的，每个标签页都有独立的存储空间
-    // 当使用 target="_blank" 打开新标签页时，新标签页无法访问父标签页的 sessionStorage
+    // Fix: Use localStorage instead of sessionStorage to support cross-tab authentication state sharing
+    // Reason: sessionStorage is session-based, each tab has independent storage space
+    // When opening a new tab with target="_blank", the new tab cannot access the parent tab's sessionStorage
     const token = localStorage.getItem(authConfig.storageKeys.token);
     const username = localStorage.getItem(authConfig.storageKeys.username);
 
@@ -82,14 +82,14 @@ export const useAuth = () => {
     }
   }, []);
 
-  // 登录
+  // Login
   interface LoginParams {
     username: string;
     token: string;
   }
 
   const login = ({ username, token }: LoginParams) => {
-    // 修复：使用 localStorage 替代 sessionStorage，以支持跨标签页共享认证状态
+    // Fix: Use localStorage instead of sessionStorage to support cross-tab authentication state sharing
     localStorage.setItem(authConfig.storageKeys.token, token);
     localStorage.setItem(authConfig.storageKeys.username, username);
 
@@ -100,9 +100,9 @@ export const useAuth = () => {
     });
   };
 
-  // 登出
+  // Logout
   const logout = () => {
-    // 修复：使用 localStorage 替代 sessionStorage
+    // Fix: Use localStorage instead of sessionStorage
     localStorage.removeItem(authConfig.storageKeys.token);
     localStorage.removeItem(authConfig.storageKeys.username);
     localStorage.removeItem(authConfig.storageKeys.isSupervisor);
@@ -115,12 +115,12 @@ export const useAuth = () => {
     });
   };
 
-  // 检查是否已认证
+  // Check if authenticated
   const isAuthenticated = () => {
     return authState.isAuthenticated === true;
   };
 
-  // 检查是否正在加载
+  // Check if loading
   const isLoading = () => {
     return authState.isLoading;
   };

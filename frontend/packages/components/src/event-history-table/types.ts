@@ -17,55 +17,55 @@ import { AgentType } from '@veaiops/api-client';
 import type { TableDataResponse } from '@veaiops/utils';
 
 /**
- * 历史事件模块类型
+ * History event module type
  */
 export enum HistoryModuleType {
-  /** 智能阈值模块 */
+  /** Intelligent threshold module */
   INTELLIGENT_THRESHOLD = 'intelligent_threshold',
-  /** ChatOps模块 */
+  /** ChatOps module */
   CHATOPS = 'chatops',
-  /** 事件中心模块 */
+  /** Event center module */
   EVENT_CENTER = 'event_center',
 }
 
 /**
- * 历史事件筛选参数
+ * History event filter parameters
  */
 export interface EventHistoryFilters {
-  /** 智能体类型（数组） */
+  /** Agent type (array) */
   agent_type?: AgentType[];
-  /** 事件级别 */
+  /** Event level */
   event_level?: EventLevel | '';
-  /** 显示状态（中文状态数组） */
+  /** Display status (Chinese status array) */
   show_status?: string[];
-  /** 项目列表 */
+  /** Project list */
   projects?: string[];
-  /** 区域列表 */
+  /** Region list */
   region?: string[];
-  /** 开始时间 */
+  /** Start time */
   start_time?: string;
-  /** 结束时间 */
+  /** End time */
   end_time?: string;
 }
 
 /**
- * 事件历史表格组件属性
+ * Event history table component properties
  */
 export interface EventHistoryTableProps {
-  /** 模块类型，用于确定智能体筛选范围 */
+  /** Module type, used to determine agent filter scope */
   moduleType: HistoryModuleType;
-  /** 表格标题 */
+  /** Table title */
   title?: string;
-  /** 是否显示导出按钮 */
+  /** Whether to show export button */
   showExport?: boolean;
-  /** 查看详情回调 */
+  /** View detail callback */
   onViewDetail?: (record: Event) => void;
-  /** 自定义操作列 */
+  /** Custom action column */
   customActions?: (record: Event) => React.ReactNode;
   /**
-   * API请求函数
-   * 由业务层传入，避免组件库层直接依赖应用层的API客户端
-   * 使用 @veaiops/utils 中的 createTableRequestWithResponseHandler 创建
+   * API request function
+   * Passed from business layer to avoid component library directly depending on application layer API client
+   * Created using createTableRequestWithResponseHandler from @veaiops/utils
    */
   request: (
     params: Record<string, unknown>,
@@ -73,7 +73,7 @@ export interface EventHistoryTableProps {
 }
 
 /**
- * 根据模块类型获取允许的智能体类型
+ * Get allowed agent types based on module type
  */
 export function getAllowedAgentTypes(
   moduleType: HistoryModuleType,
@@ -88,7 +88,7 @@ export function getAllowedAgentTypes(
         AgentType.CHATOPS_REACTIVE_REPLY_AGENT,
       ];
     case HistoryModuleType.EVENT_CENTER:
-      // 事件中心支持所有智能体类型
+      // Event center supports all agent types
       return Object.values(AgentType);
     default:
       return Object.values(AgentType);

@@ -139,3 +139,4 @@ export function syncResetQueryToUrl<QueryType extends Record<string, unknown>>(
     context.setSearchParams(newParams);
   }
 }
+

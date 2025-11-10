@@ -26,5 +26,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ✅ 已拆分：从 lib 目录统一导出
+// ✅ Split: Unified export from lib directory
 export * from './lib';

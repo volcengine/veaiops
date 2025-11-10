@@ -22,7 +22,9 @@ import type {
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 import { devLog } from '@/custom-table/utils/log-utils';
 /**
- * Custom Fields 插件
+ * Custom Fields Plugin
+ *
+ * Provides column selection and count display functionality
  */
 import React from 'react';
 import { CustomFieldsWithCount } from './components';
@@ -37,7 +39,8 @@ export const CustomFieldsPlugin: PluginFactory<CustomFieldsConfig> = (
   return {
     name: PluginNames.CUSTOM_FIELDS,
     version: '1.0.0',
-    description: '自定义字段插件 - 支持列选择和计数显示',
+    description:
+      'Custom Fields Plugin - Supports column selection and count display',
     priority: finalConfig.priority || PluginPriorityEnum.MEDIUM,
     enabled: finalConfig.enabled !== false,
     dependencies: [],
@@ -55,7 +58,7 @@ export const CustomFieldsPlugin: PluginFactory<CustomFieldsConfig> = (
         props: { baseColumns },
       } = context;
 
-      // 设置插件状态
+      // Set plugin state
       Object.assign(context.state, {
         enableCustomFields: finalConfig.enableCustomFields,
         customFieldsProps: finalConfig.customFieldsProps,
@@ -73,7 +76,7 @@ export const CustomFieldsPlugin: PluginFactory<CustomFieldsConfig> = (
     },
 
     update(_context: PluginContext) {
-      // 当配置或数据更新时的操作
+      // Operations when configuration or data is updated
     },
 
     uninstall(_context: PluginContext) {
@@ -83,9 +86,9 @@ export const CustomFieldsPlugin: PluginFactory<CustomFieldsConfig> = (
       });
     },
 
-    // 渲染方法
+    // Render methods
     render: {
-      // 渲染自定义字段组件
+      // Render custom fields component
       customFields(context: PluginContext) {
         const {
           state: { enableCustomFields, customFieldsProps, baseColumns },
@@ -100,24 +103,24 @@ export const CustomFieldsPlugin: PluginFactory<CustomFieldsConfig> = (
           columns: baseColumns || [],
           value: [],
           confirm: (value: string[]) => {
-            // 确认自定义字段值
+            // Confirm custom fields value
           },
           ...customFieldsProps,
         };
 
-        // 如果有自定义渲染函数，使用自定义渲染
+        // If custom render function exists, use custom render
         if (finalConfig.customRender) {
           return finalConfig.customRender(props);
         }
 
-        // 否则使用默认的带计数组件
+        // Otherwise use default component with count
         return (
           <CustomFieldsWithCount key="custom-fields-with-count" {...props} />
         );
       },
     },
 
-    // 插件钩子
+    // Plugin hooks
     hooks: {
       onFieldsChange: (...args: unknown[]) => {
         const [fields] = args as [string[]];

@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 历史事件 UI 组件统一导出
+ * History event UI components unified export
  */
 
-// 导出基础组件
+// Export base components
 export * from './base';
 
-// 导出业务组件
+// Export business components
 export * from './business';
 
-// 导出表格组件
+// Export table components
 export * from './table';

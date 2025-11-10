@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 步骤内容组件
- * @description 根据当前步骤渲染对应的内容组件
+ * Step content component
+ * @description Renders the corresponding content component based on the current step
  * @author AI Assistant
  * @date 2025-01-15
  */
@@ -62,9 +62,10 @@ export const StepContent: React.FC<StepContentProps> = ({
   if (!currentStepConfig) {
     return (
       <div>
-        <div className={styles.stepTitle}>配置错误</div>
+        <div className={styles.stepTitle}>Configuration Error</div>
         <div className={styles.stepDescription}>
-          无法找到当前步骤的配置信息，请重新开始。
+          Unable to find configuration information for the current step. Please
+          start over.
         </div>
       </div>
     );
@@ -83,7 +84,7 @@ export const StepContent: React.FC<StepContentProps> = ({
             />
           )}
 
-          {/* 命名空间选择步骤 - 阿里云 */}
+          {/* Namespace selection step - Aliyun */}
           {currentStepConfig.key === 'project' && state.selectedConnect && (
             <NamespaceSelectionStep
               connect={state.selectedConnect}
@@ -95,7 +96,7 @@ export const StepContent: React.FC<StepContentProps> = ({
             />
           )}
 
-          {/* 产品选择步骤 - 火山引擎 */}
+          {/* Product selection step - Volcengine */}
           {currentStepConfig.key === 'product' && (
             <ProductSelectionStep
               products={state.volcengine.products}
@@ -117,7 +118,7 @@ export const StepContent: React.FC<StepContentProps> = ({
             />
           )}
 
-          {/* 模版选择步骤 - Zabbix */}
+          {/* Template selection step - Zabbix */}
           {currentStepConfig.key === 'template' && state.selectedConnect && (
             <TemplateSelectionStep
               connect={state.selectedConnect}
@@ -131,7 +132,7 @@ export const StepContent: React.FC<StepContentProps> = ({
             />
           )}
 
-          {/* 指标选择步骤 */}
+          {/* Metric selection step */}
           {currentStepConfig.key === 'metric' && state.selectedConnect && (
             <MetricSelectionStep
               dataSourceType={selectedType}
@@ -141,7 +142,7 @@ export const StepContent: React.FC<StepContentProps> = ({
             />
           )}
 
-          {/* 主机选择步骤 */}
+          {/* Host selection step */}
           {currentStepConfig.key === 'host' &&
             state.selectedConnect &&
             state.zabbix.selectedTemplate && (
@@ -170,7 +171,7 @@ export const StepContent: React.FC<StepContentProps> = ({
               />
             )}
 
-          {/* 实例选择步骤 */}
+          {/* Instance selection step */}
           {currentStepConfig.key === 'instance' && state.selectedConnect && (
             <InstanceSelectionStep
               dataSourceType={selectedType}

@@ -20,24 +20,24 @@ import { useErrorHandler, useFormattedData } from './hooks';
 import type { AlarmResultModalProps } from './types';
 
 /**
- * 告警规则创建结果详情弹窗组件
+ * Alarm rule creation result detail modal component
  *
- * 功能特点：
- * - 采用渐变背景和卡片式设计，提升视觉美感
- * - 层次化展示统计信息和详细操作结果
- * - 使用图标和颜色编码优化视觉呈现
- * - 支持错误信息的特殊渲染
- * - 提供历史记录查看入口
+ * Features:
+ * - Uses gradient background and card-style design to enhance visual appeal
+ * - Hierarchical display of statistics and detailed operation results
+ * - Uses icons and color coding to optimize visual presentation
+ * - Supports special rendering of error information
+ * - Provides history record viewing entry
  */
 export const AlarmResultModal: React.FC<AlarmResultModalProps> = ({
   visible,
   data,
   onClose,
 }) => {
-  // 格式化数据
+  // Format data
   const formattedData = useFormattedData(data);
 
-  // 错误处理
+  // Error handling
   const { handleCopyError } = useErrorHandler();
 
   return (

@@ -16,27 +16,27 @@ import { AttributeKey } from 'api-generate';
 import type { BotAttributeFiltersQuery } from './attributes-filters';
 
 /**
- * Bot 属性表格配置常量
+ * Bot attribute table configuration constants
  */
 
 /**
- * 表格初始查询参数
- * 默认选中"项目"类目，避免在 handleFilters 中设置导致无限循环
+ * Table initial query parameters
+ * Default to "project" category to avoid infinite loop when setting in handleFilters
  *
- * 注意：v2分支没有 initQuery，但会在 getBotAttributeFilters 中设置默认值
- * 当前分支使用 initQuery 避免无限循环，这是更安全的做法
+ * Note: v2 branch does not have initQuery, but will set default values in getBotAttributeFilters
+ * Current branch uses initQuery to avoid infinite loop, which is a safer approach
  */
 export const BOT_ATTRIBUTES_TABLE_INIT_QUERY: BotAttributeFiltersQuery = {
   names: [AttributeKey.PROJECT],
 };
 
 /**
- * 功能说明提示文本
+ * Feature description hint text
  */
 export const BOT_ATTRIBUTES_INFO_MESSAGE =
   '为机器人添加关注项目，以便在事件中心订阅和管理相关事件。选择要关注的项目后，系统将自动为该机器人启用对应项目的事件推送和ChatOps功能。';
 
 /**
- * 表格滚动配置
+ * Table scroll configuration
  */
 export const BOT_ATTRIBUTES_TABLE_SCROLL = { x: 800 };

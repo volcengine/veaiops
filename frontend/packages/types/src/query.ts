@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 查询参数相关类型定义
- * 用于统一所有 API 查询和筛选场景
+ * Query parameter related type definitions
+ * Used to unify all API query and filter scenarios
  */
 
 /**
- * 筛选值类型
- * 支持常见的筛选值类型
+ * Filter value type
+ * Supports common filter value types
  */
 export type FilterValue =
   | string
@@ -31,28 +31,28 @@ export type FilterValue =
   | null;
 
 /**
- * 筛选参数
- * 使用索引签名支持动态字段
+ * Filter parameters
+ * Uses index signature to support dynamic fields
  */
 export interface FilterParams {
   [key: string]: FilterValue;
 }
 
 /**
- * 完整的查询参数
+ * Complete query parameters
  */
 export type QueryParams = FilterParams;
 
 /**
- * 表格查询参数
- * 包含页面请求和其他参数
+ * Table query parameters
+ * Includes page request and other parameters
  */
 export interface TableQueryParams {
-  /** 分页请求 */
+  /** Page request */
   page_req?: {
     skip: number;
     limit: number;
   };
-  /** 其他筛选参数 */
+  /** Other filter parameters */
   [key: string]: FilterValue | { skip: number; limit: number } | undefined;
 }

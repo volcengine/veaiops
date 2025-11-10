@@ -14,7 +14,7 @@
 
 import type { TablePaginationConfig } from '@/custom-table/types';
 /**
- * 分页管理Hook
+ * Pagination management Hook
  */
 import { useCallback, useEffect, useState } from 'react';
 import { DEFAULT_TABLE_PAGINATION_CONFIG } from '../config';
@@ -36,12 +36,12 @@ export const usePagination = ({
     autoReset = true,
   } = { ...DEFAULT_TABLE_PAGINATION_CONFIG, ...config };
 
-  // 分页状态
+  // Pagination state
   const [current, setCurrent] = useState(defaultCurrent);
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const [isChanging, setIsChanging] = useState(false);
 
-  // 重置分页
+  // Reset pagination
   const reset = useCallback(() => {
     if (!isPaginationInCache) {
       setCurrent(defaultCurrent);
@@ -49,7 +49,7 @@ export const usePagination = ({
     }
   }, [isPaginationInCache, defaultCurrent, defaultPageSize]);
 
-  // 切换到下一页
+  // Go to next page
   const goToNext = useCallback(() => {
     const maxPage = Math.ceil(total / pageSize);
     if (current < maxPage) {
@@ -57,21 +57,21 @@ export const usePagination = ({
     }
   }, [current, pageSize, total]);
 
-  // 切换到上一页
+  // Go to previous page
   const goToPrevious = useCallback(() => {
     if (current > 1) {
       setCurrent(current - 1);
     }
   }, [current]);
 
-  // 切换到第一页
+  // Go to first page
   const goToFirst = useCallback(() => {
     if (current !== 1) {
       setCurrent(1);
     }
   }, [current]);
 
-  // 切换到最后一页
+  // Go to last page
   const goToLast = useCallback(() => {
     const maxPage = Math.ceil(total / pageSize);
     if (current !== maxPage) {
@@ -79,7 +79,7 @@ export const usePagination = ({
     }
   }, [current, pageSize, total]);
 
-  // 页码或页大小变更处理
+  // Handle page number or page size change
   const handleChange = useCallback(
     (page: number, size: number) => {
       setIsChanging(true);
@@ -91,7 +91,7 @@ export const usePagination = ({
       if (size !== pageSize) {
         setPageSize(size);
 
-        // 如果页大小变更，重新计算合适的页码
+        // If page size changes, recalculate appropriate page number
         if (autoReset) {
           const newMaxPage = Math.ceil(total / size);
           if (current > newMaxPage) {
@@ -107,7 +107,7 @@ export const usePagination = ({
     [current, pageSize, total, autoReset],
   );
 
-  // 监听查询条件变更，重置分页
+  // Listen for query condition changes, reset pagination
   useEffect(() => {
     if (autoReset && !isPaginationInCache) {
       setCurrent(defaultCurrent);

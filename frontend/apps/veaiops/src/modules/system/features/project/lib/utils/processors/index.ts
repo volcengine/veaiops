@@ -16,7 +16,7 @@ import type { Project } from '@project/types';
 import { formatDateTime } from '../formatters';
 
 /**
- * 过滤项目列表
+ * Filter project list
  */
 export const filterProjects = (
   projects: Project[],
@@ -26,7 +26,7 @@ export const filterProjects = (
   },
 ): Project[] => {
   return projects.filter((project) => {
-    // 名称过滤
+    // Name filter
     if (
       filters.name &&
       !project.name.toLowerCase().includes(filters.name.toLowerCase())
@@ -34,7 +34,7 @@ export const filterProjects = (
       return false;
     }
 
-    // 状态过滤（基于is_active）
+    // Status filter (based on is_active)
     if (
       filters.is_active !== undefined &&
       project.is_active !== filters.is_active
@@ -47,7 +47,7 @@ export const filterProjects = (
 };
 
 /**
- * 排序项目列表
+ * Sort project list
  */
 export const sortProjects = (
   projects: Project[],
@@ -79,7 +79,7 @@ export const sortProjects = (
 };
 
 /**
- * 获取项目统计信息
+ * Get project statistics
  */
 export const getProjectStats = (projects: Project[]) => {
   const stats = {
@@ -89,7 +89,7 @@ export const getProjectStats = (projects: Project[]) => {
   };
 
   projects.forEach((project) => {
-    // 状态统计（基于is_active）
+    // Status statistics (based on is_active)
     if (project.is_active) {
       stats.active++;
     } else {
@@ -101,7 +101,7 @@ export const getProjectStats = (projects: Project[]) => {
 };
 
 /**
- * 导出项目数据为CSV
+ * Export project data as CSV
  */
 export const exportProjectsToCSV = (projects: Project[]): void => {
   const headers = [

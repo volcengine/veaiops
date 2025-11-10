@@ -14,12 +14,12 @@
 
 import type { PluginBaseConfig } from '@/custom-table/types';
 /**
- * 表格排序插件类型定义
+ * Table sorting plugin type definitions
  */
 import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
 
 /**
- * 排序配置
+ * Sorting configuration
  */
 export interface TableSortingConfig extends PluginBaseConfig {
   defaultSorterField?: string;
@@ -30,7 +30,7 @@ export interface TableSortingConfig extends PluginBaseConfig {
 }
 
 /**
- * 排序状态
+ * Sorting state
  */
 export interface TableSortingState {
   sorter: SorterInfo | SorterInfo[];
@@ -38,7 +38,7 @@ export interface TableSortingState {
 }
 
 /**
- * 排序方法
+ * Sorting methods
  */
 export interface TableSortingMethods {
   setSorter: (sorter: SorterInfo | SorterInfo[]) => void;

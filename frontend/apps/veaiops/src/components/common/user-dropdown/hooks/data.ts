@@ -19,29 +19,29 @@ import { getUserInfo } from '../lib/api';
 import type { ExtendedUser } from '../lib/types';
 
 /**
- * useUserData Hook 参数
+ * Parameters for useUserData Hook
  */
 export interface UseUserDataParams {
   username?: string;
 }
 
 /**
- * 用户数据管理 Hook
+ * User data management Hook
  *
- * 功能：
- * - 从 localStorage 读取用户数据
- * - 根据 username 获取用户的 supervisor 状态
- * - 缓存用户数据到 localStorage
+ * Features:
+ * - Read user data from localStorage
+ * - Get user's supervisor status based on username
+ * - Cache user data to localStorage
  */
 export const useUserData = ({ username }: UseUserDataParams) => {
-  // 从 localStorage 读取用户数据
+  // Read user data from localStorage
   const getStoredUserData = (): ExtendedUser => {
     try {
       const raw = localStorage.getItem(authConfig.storageKeys.userData) || '{}';
       return JSON.parse(raw) as ExtendedUser;
     } catch (e) {
       logger.warn({
-        message: '用户数据解析失败，已回退为空对象',
+        message: 'Failed to parse user data, fallback to empty object',
         data: {
           error: e instanceof Error ? e.message : String(e),
           stack: e instanceof Error ? e.stack : undefined,
@@ -56,14 +56,14 @@ export const useUserData = ({ username }: UseUserDataParams) => {
 
   const editingUser = getStoredUserData();
 
-  // 获取用户 supervisor 状态
+  // Get user supervisor status
   const { data: isSupervisor } = useRequest(
     async () => {
       if (!username) {
         return undefined;
       }
 
-      // 先从 localStorage 读取缓存
+      // Read cache from localStorage first
       const cachedSupervisor = localStorage.getItem(
         authConfig.storageKeys.isSupervisor,
       );
@@ -71,17 +71,17 @@ export const useUserData = ({ username }: UseUserDataParams) => {
         return cachedSupervisor;
       }
 
-      // 从 API 获取用户信息
+      // Get user information from API
       const data = await getUserInfo({ username });
       if (!data) {
         return undefined;
       }
 
-      // 类型安全访问：is_supervisor 是 boolean 类型
+      // Type-safe access: is_supervisor is a boolean type
       const isSupervisorValue = data.is_supervisor ?? false;
       const supervisorString = isSupervisorValue ? 'true' : 'false';
 
-      // 缓存到 localStorage
+      // Cache to localStorage
       localStorage.setItem(
         authConfig.storageKeys.isSupervisor,
         supervisorString,

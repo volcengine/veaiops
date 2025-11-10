@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 阿里云数据源配置详情组件
+ * Aliyun data source configuration details component
  */
 
 import { Descriptions, Divider, Space, Tag } from '@arco-design/web-react';
@@ -30,7 +30,7 @@ import type { WizardState } from '../../../types';
 
 const { Ellipsis, CustomOutlineTagList } = CellRender;
 
-// 步骤标题组件
+// Step title component
 const StepTitle: React.FC<{ icon: React.ReactNode; title: string }> = ({
   icon,
   title,
@@ -81,7 +81,7 @@ export const AliyunDetails: React.FC<{ state: WizardState }> = ({ state }) => {
   const step3Data: DataType = [
     {
       label: 'Region',
-      // 从 state.aliyun.region 读取（用户在连接选择步骤输入）
+      // Read from state.aliyun.region (entered by user in connection selection step)
       value: <Ellipsis text={state.aliyun.region || '-'} />,
     },
     {
@@ -129,7 +129,7 @@ export const AliyunDetails: React.FC<{ state: WizardState }> = ({ state }) => {
           useEllipsis
         />
       ),
-      span: 12, // 独占一行
+      span: 12, // Occupy full row
     });
   }
 
@@ -152,7 +152,7 @@ export const AliyunDetails: React.FC<{ state: WizardState }> = ({ state }) => {
 
   return (
     <Space direction="vertical" size={16} style={{ width: '100%' }}>
-      {/* 第1步：选择连接 */}
+      {/* Step 1: Select connection */}
       <div>
         <div
           style={{
@@ -178,7 +178,7 @@ export const AliyunDetails: React.FC<{ state: WizardState }> = ({ state }) => {
         />
       </div>
 
-      {/* 第2步：选择命名空间 */}
+      {/* Step 2: Select namespace */}
       <div>
         <div
           style={{
@@ -199,7 +199,7 @@ export const AliyunDetails: React.FC<{ state: WizardState }> = ({ state }) => {
         />
       </div>
 
-      {/* 第3步：选择监控项 */}
+      {/* Step 3: Select metric */}
       <div>
         <div
           style={{
@@ -220,7 +220,7 @@ export const AliyunDetails: React.FC<{ state: WizardState }> = ({ state }) => {
         />
       </div>
 
-      {/* 第4步：选择实例 */}
+      {/* Step 4: Select instance */}
       <div>
         <div
           style={{
@@ -241,7 +241,7 @@ export const AliyunDetails: React.FC<{ state: WizardState }> = ({ state }) => {
         />
       </div>
 
-      {/* 第5步：创建数据源 */}
+      {/* Step 5: Create data source */}
       <div>
         <div
           style={{

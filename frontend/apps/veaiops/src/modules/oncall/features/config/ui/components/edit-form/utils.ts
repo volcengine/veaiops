@@ -19,7 +19,7 @@ import {
 import { Interest } from 'api-generate';
 
 /**
- * 格式化告警类别显示文本
+ * Format action category display text
  */
 export const formatActionCategoryText = (
   category: Interest['action_category'],
@@ -34,7 +34,7 @@ export const formatActionCategoryText = (
 };
 
 /**
- * 格式化检测类别显示文本
+ * Format inspect category display text
  */
 export const formatInspectCategoryText = (
   category: Interest['inspect_category'],

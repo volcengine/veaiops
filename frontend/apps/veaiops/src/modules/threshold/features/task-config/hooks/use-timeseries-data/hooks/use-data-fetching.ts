@@ -23,7 +23,7 @@ import { callTimeseriesApi } from '../hooks/use-api-call';
 import type { RequestParams } from '../types';
 
 /**
- * 数据获取Hook参数接口
+ * Data fetching Hook parameter interface
  */
 export interface UseDataFetchingParams {
   metric?: MetricThresholdResult;
@@ -32,8 +32,8 @@ export interface UseDataFetchingParams {
 }
 
 /**
- * 数据获取Hook
- * 负责获取和处理时序数据
+ * Data fetching Hook
+ * Responsible for fetching and processing timeseries data
  */
 export const useDataFetching = ({
   metric,
@@ -44,10 +44,10 @@ export const useDataFetching = ({
   const [timeseriesData, setTimeseriesData] = useState<TimeseriesDataPoint[]>(
     [],
   );
-  // 用于防止竞态条件的请求计数器
+  // Request counter used to prevent race conditions
   const requestIdRef = useRef(0);
 
-  // 🔧 渲染计数器 - 用于检测死循环
+  // 🔧 Render counter - used to detect infinite loops
   const renderCountRef = useRef(0);
   renderCountRef.current++;
 
@@ -62,7 +62,7 @@ export const useDataFetching = ({
     });
   }
 
-  // 获取时序数据 - 使用 useCallback 稳定化引用，避免死循环
+  // Fetch timeseries data - use useCallback to stabilize reference, avoid infinite loops
   const fetchTimeseriesData = useCallback(async () => {
     logger.info({
       message: '📊 开始获取时序数据',
@@ -87,7 +87,7 @@ export const useDataFetching = ({
       return;
     }
 
-    // 递增请求ID，用于检测竞态条件
+    // Increment request ID to detect race conditions
     const currentRequestId = ++requestIdRef.current;
 
     logger.info({
@@ -118,7 +118,7 @@ export const useDataFetching = ({
           component: 'fetchTimeseriesData',
         });
       } catch (_apiError: unknown) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: use logger to record error, expose actual error information
         const errorObj =
           _apiError instanceof Error ? _apiError : new Error(String(_apiError));
         logger.error({
@@ -133,12 +133,12 @@ export const useDataFetching = ({
           source: 'useTimeseriesData',
           component: 'fetchTimeseriesData',
         });
-        throw _apiError; // 重新抛出，让外层 catch 处理
+        throw _apiError; // Re-throw, let outer catch handle
       }
 
-      // 检查是否是最新的请求（防止竞态条件）
+      // Check if this is the latest request (prevent race conditions)
       if (currentRequestId !== requestIdRef.current) {
-        // ✅ 正确：使用 logger 记录信息
+        // ✅ Correct: use logger to record information
         logger.info({
           message: 'Request superseded, ignoring response',
           data: {
@@ -151,17 +151,17 @@ export const useDataFetching = ({
         return;
       }
 
-      // 边界检查：响应必须存在
+      // Boundary check: response must exist
       if (!response) {
         Message.error('服务器响应为空');
         return;
       }
 
-      // 边界检查：响应码和数据
+      // Boundary check: response code and data
       if (response.code === API_RESPONSE_CODE.SUCCESS) {
-        // 边界检查：response.data 可能是 null、undefined 或不是数组
+        // Boundary check: response.data may be null, undefined, or not an array
         if (!response.data) {
-          // ✅ 正确：使用 logger 记录警告
+          // ✅ Correct: use logger to record warning
           logger.warn({
             message: 'Response data is empty',
             data: { responseCode: response.code },
@@ -175,9 +175,9 @@ export const useDataFetching = ({
 
         const dataArray = Array.isArray(response.data) ? response.data : [];
 
-        // 边界检查：数据数组为空
+        // Boundary check: data array is empty
         if (dataArray.length === 0) {
-          // ✅ 正确：使用 logger 记录信息
+          // ✅ Correct: use logger to record info
           logger.info({
             message: 'No timeseries data returned',
             data: { timeRange },
@@ -189,7 +189,7 @@ export const useDataFetching = ({
           return;
         }
 
-        // 边界检查：数据量过大警告
+        // Boundary check: data volume too large warning
         const totalDataPoints = dataArray.reduce((sum, item) => {
           return sum + (item.timestamps?.length || 0);
         }, 0);
@@ -201,21 +201,21 @@ export const useDataFetching = ({
         }
 
         try {
-          // 边界检查：metric 必须存在
+          // Boundary check: metric must exist
           if (!metric) {
             Message.error('指标信息无效');
             setTimeseriesData([]);
             return;
           }
-          // metric 已经验证存在，类型为 MetricThresholdResult
+          // metric has been verified to exist, type is MetricThresholdResult
           const chartData = convertTimeseriesData({
             backendData: dataArray,
             metric,
           });
 
-          // 边界检查：转换后的数据应该有效
+          // Boundary check: converted data should be valid
           if (!chartData || chartData.length === 0) {
-            // ✅ 正确：使用 logger 记录警告
+            // ✅ Correct: use logger to record warning
             logger.warn({
               message: 'Converted chart data is empty',
               data: { dataArrayLength: dataArray.length },
@@ -229,7 +229,7 @@ export const useDataFetching = ({
 
           setTimeseriesData(chartData);
         } catch (conversionError: unknown) {
-          // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+          // ✅ Correct: use logger to record error, expose actual error information
           const errorObj =
             conversionError instanceof Error
               ? conversionError
@@ -252,15 +252,15 @@ export const useDataFetching = ({
           setTimeseriesData([]);
         }
       } else {
-        // API 返回了错误码
+        // API returned error code
         const errorMessage = response.message || '获取时序数据失败';
         Message.error(errorMessage);
         setTimeseriesData([]);
       }
     } catch (error: unknown) {
-      // 只在请求未被取代时显示错误
+      // Only show error if request was not superseded
       if (currentRequestId === requestIdRef.current) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: use logger to record error, expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
@@ -274,14 +274,14 @@ export const useDataFetching = ({
           component: 'fetchTimeseriesData',
         });
 
-        // 边界检查：错误对象的类型
+        // Boundary check: error object type
         const errorMessage = errorObj.message || '获取时序数据失败';
 
         Message.error(errorMessage);
         setTimeseriesData([]);
       }
     } finally {
-      // 只在请求未被取代时更新 loading 状态
+      // Only update loading state if request was not superseded
       if (currentRequestId === requestIdRef.current) {
         setLoading(false);
         logger.info({
@@ -295,7 +295,7 @@ export const useDataFetching = ({
         });
       }
     }
-  }, [prepareRequestParams, metric, timeRange]); // ✅ 添加依赖数组，稳定化函数引用
+  }, [prepareRequestParams, metric, timeRange]); // ✅ Add dependency array, stabilize function reference
 
   return {
     loading,

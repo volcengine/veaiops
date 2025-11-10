@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 插件系统核心类型定义 (拆分版本)
+ * Plugin system core type definitions (split version)
  *
- * 此文件现在从拆分后的子模块中重新导出所有类型，
- * 保持向后兼容性，同时提升代码可读性和维护性。
+ * This file now re-exports all types from split sub-modules,
+ * maintaining backward compatibility while improving code readability and maintainability.
  */
 
-// 重新导出所有拆分后的类型
+// Re-export all split types
 export * from './core/index';

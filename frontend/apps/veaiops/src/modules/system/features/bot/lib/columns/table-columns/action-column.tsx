@@ -25,7 +25,7 @@ import {
 import type { Bot } from '@bot/types';
 
 /**
- * 操作列定义（编辑、删除、特别关注）
+ * Action column definition (edit, delete, special attention)
  */
 export const getActionColumn = ({
   onEdit,
@@ -51,9 +51,9 @@ export const getActionColumn = ({
           type: 'text',
           size: 'small',
           icon: <IconEdit />,
-          // 注意：使用 as any 是因为 Arco Design Button 的 BaseButtonProps 类型定义不包含 data-testid
-          // 但 data-testid 是 HTML 标准属性，在运行时会被正确传递
-          // TODO: 检查 Arco Design 源码，确认是否需要扩展类型定义
+          // Note: Using as any because Arco Design Button's BaseButtonProps type definition does not include data-testid
+          // But data-testid is an HTML standard attribute and will be correctly passed at runtime
+          // TODO: Check Arco Design source code to confirm if type definition needs to be extended
           'data-testid': 'edit-bot-btn',
         } as any,
         tooltip: '编辑Bot配置',
@@ -66,10 +66,10 @@ export const getActionColumn = ({
         popConfirmTitle: '确认删除',
         popConfirmContent: '确定要删除这个Bot吗？删除后无法恢复。',
         onClick: async () => {
-          // 支持异步操作，如果 onDelete 返回 Promise，ButtonGroupRender 内部会处理 loading 状态
+          // Supports async operations, if onDelete returns Promise, ButtonGroupRender internally handles loading state
           if (record._id) {
             const result = onDelete(record._id);
-            // 如果返回 Promise，等待完成
+            // If returns Promise, wait for completion
             if (result instanceof Promise) {
               await result;
             }
@@ -80,9 +80,9 @@ export const getActionColumn = ({
           size: 'small',
           status: 'danger',
           icon: <IconDelete />,
-          // 注意：使用 as any 是因为 Arco Design Button 的 BaseButtonProps 类型定义不包含 data-testid
-          // 但 data-testid 是 HTML 标准属性，在运行时会被正确传递
-          // TODO: 检查 Arco Design 源码，确认是否需要扩展类型定义
+          // Note: Using as any because Arco Design Button's BaseButtonProps type definition does not include data-testid
+          // But data-testid is an HTML standard attribute and will be correctly passed at runtime
+          // TODO: Check Arco Design source code to confirm if type definition needs to be extended
           'data-testid': 'delete-bot-btn',
         } as any,
         popconfirmProps: {
@@ -96,16 +96,16 @@ export const getActionColumn = ({
         visible: true,
         disabled: false,
         onClick: () => {
-          // 调用onViewAttributes回调函数
+          // Call onViewAttributes callback function
           onViewAttributes(record);
         },
         buttonProps: {
           type: 'text',
           size: 'small',
           icon: <IconEye />,
-          // 注意：使用 as any 是因为 Arco Design Button 的 BaseButtonProps 类型定义不包含 data-testid
-          // 但 data-testid 是 HTML 标准属性，在运行时会被正确传递
-          // TODO: 检查 Arco Design 源码，确认是否需要扩展类型定义
+          // Note: Using as any because Arco Design Button's BaseButtonProps type definition does not include data-testid
+          // But data-testid is an HTML standard attribute and will be correctly passed at runtime
+          // TODO: Check Arco Design source code to confirm if type definition needs to be extended
           'data-testid': 'view-bot-attributes-btn',
         } as any,
         tooltip: '查看Bot详细属性',

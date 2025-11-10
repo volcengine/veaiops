@@ -17,7 +17,7 @@ import { resetLogCollector } from '@/custom-table/utils';
 import { formatQuerySync, getParamsObject } from './query-formatters';
 
 /**
- * Sync URL search parameters to query parameters
+ * Sync query parameters from URL search parameters
  */
 export function syncUrlToQuery<QueryType extends Record<string, unknown>>(
   config: QuerySyncConfig,
@@ -26,36 +26,14 @@ export function syncUrlToQuery<QueryType extends Record<string, unknown>>(
   const { useActiveKeyHook = false } = config;
 
   // 🐛 Use logger to record detailed debug information
-  const { search: windowLocationSearch } = window.location;
-
-  // 🔍 Add detailed logging: Record URL synchronization process
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[syncUrlToQuery] Starting to sync URL to query', {
-      useActiveKeyHook,
-      windowLocationSearch,
-      contextSearchParams: context.searchParams.toString(),
-      querySearchParamsFormat: Object.keys(
-        config.querySearchParamsFormat || {},
-      ),
-      queryFormat: Object.keys(config.queryFormat || {}),
-    });
-  }
+  const { search: _windowLocationSearch } = window.location;
 
   try {
     const searchParams = useActiveKeyHook
       ? (() => {
-          // 🔧 Fix: In useActiveKeyHook mode, get latest parameters directly from window.location
+          // 🔧 Fix: In useActiveKeyHook mode, directly get latest parameters from window.location
           const { search } = window.location;
           const windowParams = new URLSearchParams(search);
-
-          // 🔍 Add detailed logging
-          if (process.env.NODE_ENV === 'development') {
-            console.log('[syncUrlToQuery] useActiveKeyHook mode', {
-              search,
-              windowParamsEntries: Array.from(windowParams.entries()),
-              contextSearchParams: context.searchParams.toString(),
-            });
-          }
 
           // If window.location.search has parameters, use it
           if (search) {
@@ -79,16 +57,6 @@ export function syncUrlToQuery<QueryType extends Record<string, unknown>>(
     for (const [key, value] of searchParams.entries()) {
       const { querySearchParamsFormat = {} } = config;
 
-      // 🔍 Add detailed logging: Record conversion process for each parameter
-      if (process.env.NODE_ENV === 'development' && key === 'datasource_type') {
-        console.log('[syncUrlToQuery] Processing datasource_type parameter', {
-          key,
-          value,
-          hasFormatter: Boolean(querySearchParamsFormat?.[key]),
-          formatter: querySearchParamsFormat?.[key],
-        });
-      }
-
       if (querySearchParamsFormat?.[key]) {
         raw[key] = querySearchParamsFormat[key](value);
       } else {
@@ -96,40 +64,16 @@ export function syncUrlToQuery<QueryType extends Record<string, unknown>>(
       }
     }
 
-    // 🔍 Add detailed logging: Record converted raw object
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[syncUrlToQuery] Converted raw object', {
-        raw,
-        datasourceType: raw.datasource_type,
-      });
-    }
-
-    // Filter empty value parameters
+    // Filter out empty value parameters
     const filteredRaw = getParamsObject(raw);
 
-    // 🔍 Add detailed logging: Record filtered results
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[syncUrlToQuery] Filtered filteredRaw', {
-        filteredRaw,
-        datasourceType: filteredRaw.datasource_type,
-      });
-    }
-
-    // Unified formatQuery for secondary formatting (changed to synchronous)
+    // Unified formatting through formatQuery for secondary formatting (changed to synchronous)
     const result = formatQuerySync(filteredRaw, config.queryFormat || {});
-
-    // 🔍 Add detailed logging: Record final result
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[syncUrlToQuery] Final result', {
-        result,
-        datasourceType: result.datasource_type,
-      });
-    }
 
     return result;
   } catch (error: unknown) {
-    // ✅ Correct: Use resetLogCollector to record error and expose actual error information
-    // Record error but don't interrupt flow, return empty object on error
+    // ✅ Correct: Use resetLogCollector to log errors and expose actual error information
+    // Log errors but don't interrupt flow, return empty object on error
     const errorObj = error instanceof Error ? error : new Error(String(error));
     resetLogCollector.log({
       component: 'QuerySyncUtils',

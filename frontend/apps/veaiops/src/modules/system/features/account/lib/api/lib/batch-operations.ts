@@ -13,18 +13,18 @@
 // limitations under the License.
 
 /**
- * 批量删除用户
+ * Batch delete users
  *
- * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+ * @returns Returns result object in format { success: boolean; error?: Error }
  */
 export const batchDeleteUsers = async (
   _ids: string[],
 ): Promise<{ success: boolean; error?: Error }> => {
   try {
-    // TODO: 替换为实际的API调用
+    // TODO: Replace with actual API call
     // await apiClient.post('/api/users/batch-delete', { ids });
 
-    // 模拟API调用延迟
+    // Simulate API call delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return { success: true };
   } catch (error: unknown) {

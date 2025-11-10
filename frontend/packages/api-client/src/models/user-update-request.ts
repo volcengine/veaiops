@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type UserUpdateRequest = {
   /**
-   * 是否激活
+   * Whether the user is active
    */
   is_active?: boolean;
   /**
-   * 是否为管理员
+   * Whether the user is a supervisor
    */
   is_supervisor?: boolean;
 };

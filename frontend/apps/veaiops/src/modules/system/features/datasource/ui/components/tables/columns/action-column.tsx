@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 操作列配置
+ * Action column configuration
  */
 
 import apiClient from '@/utils/api-client';
@@ -36,7 +36,7 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import type { DataSource } from 'api-generate';
 
 /**
- * 获取操作列配置
+ * Get action column configuration
  */
 export const getActionColumn = (
   onDelete: DeleteHandler,
@@ -48,7 +48,7 @@ export const getActionColumn = (
   width: 200,
   fixed: 'right' as const,
   render: (_: unknown, record: DataSource) => {
-    // 激活/停用处理函数
+    // Activate/deactivate handler function
     const handleToggleActive = async () => {
       const id = record._id;
       if (!id) {
@@ -63,7 +63,7 @@ export const getActionColumn = (
         });
         if (response.code === API_RESPONSE_CODE.SUCCESS) {
           Message.success(nextActive ? '激活成功' : '停用成功');
-          // refresh table after toggle
+          // Refresh table after toggle
           onToggled?.();
         } else {
           Message.error(response.message || '操作失败');
@@ -116,7 +116,7 @@ export const getActionColumn = (
           content={`确定要删除数据源 "${record.name}" 吗？此操作不可恢复。`}
           onOk={async () => {
             const result = await onDelete(record._id || '');
-            // ✅ 如果返回结果对象，根据结果判断是否显示错误
+            // ✅ If result object is returned, determine whether to show error based on result
             if (
               result &&
               typeof result === 'object' &&
@@ -124,10 +124,10 @@ export const getActionColumn = (
               !result.success &&
               result.error
             ) {
-              // 错误已在函数内部处理（通过 logger），这里不需要额外处理
-              // 如果需要显示用户提示，可以在这里添加 Message.error
+              // Error has been handled inside the function (via logger), no additional handling needed here
+              // If user prompt is needed, can add Message.error here
             }
-            // 如果返回 void 或 undefined，表示操作已完成（成功或失败已在函数内部处理）
+            // If void or undefined is returned, it means the operation is complete (success or failure has been handled inside the function)
           }}
           okText="确认"
           cancelText="取消"

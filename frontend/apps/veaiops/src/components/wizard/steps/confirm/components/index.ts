@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 确认步骤组件导出
- * @description 统一导出确认步骤相关组件
+ * Confirm step component export
+ * @description Unified export of confirm step related components
  * @author AI Assistant
  * @date 2025-01-17
  */

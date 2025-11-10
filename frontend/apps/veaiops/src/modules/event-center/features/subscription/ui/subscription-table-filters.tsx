@@ -25,7 +25,7 @@ import {
 import { useCallback } from 'react';
 
 /**
- * 订阅关系表格筛选器配置 Hook
+ * Subscription relation table filter configuration Hook
  */
 export const useSubscriptionTableFilters = () => {
   const location = useLocation();
@@ -34,7 +34,7 @@ export const useSubscriptionTableFilters = () => {
   const handleFilters = useCallback(
     (props: HandleFilterProps<Record<string, unknown>>): FieldItem[] => {
       const { query, handleChange } = props;
-      // 根据模块类型选择智能体选项
+      // Select agent options based on module type
       const getAgentOptions = () => {
         if (moduleType === ModuleType.ONCALL) {
           return AGENT_OPTIONS_ONCALL_SUBSCRIPTION;

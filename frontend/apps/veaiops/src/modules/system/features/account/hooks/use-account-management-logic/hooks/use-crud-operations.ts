@@ -19,21 +19,21 @@ import { useCallback } from 'react';
 import type { UpdateUserParams, UserFormData } from '../types';
 
 /**
- * CRUD 操作 Hook
+ * CRUD operations Hook
  */
 export const useCrudOperations = () => {
   /**
-   * 创建用户
+   * Create user
    */
   const createUser = useCallback(
     async (userData: UserFormData): Promise<boolean> => {
       try {
-        // 使用 Users API
+        // Use Users API
         const response = await apiClient.users.postApisV1ManagerUsers({
           requestBody: {
             username: userData.username,
             email: userData.email,
-            password: userData.password || 'defaultPassword123', // 提供默认密码
+            password: userData.password || 'defaultPassword123', // Provide default password
           },
         });
 
@@ -44,7 +44,7 @@ export const useCrudOperations = () => {
           throw new Error(response.message || '创建用户失败');
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
           error instanceof Error ? error.message : '创建用户失败';
         Message.error(errorMessage);
@@ -55,19 +55,19 @@ export const useCrudOperations = () => {
   );
 
   /**
-   * 更新用户
+   * Update user
    */
   const updateUser = useCallback(
     async ({ userId, updateData }: UpdateUserParams): Promise<boolean> => {
       try {
-        // 如果提供了密码，更新密码
+        // If password is provided, update password
         if (updateData.password) {
           const response = await apiClient.users.putApisV1ManagerUsersPassword({
             userId,
             requestBody: {
               old_password: '',
               new_password: updateData.password,
-              confirm_password: updateData.password, // 与新密码一致
+              confirm_password: updateData.password, // Match new password
             },
           });
 
@@ -79,11 +79,11 @@ export const useCrudOperations = () => {
           throw new Error(response.message || '更新密码失败');
         }
 
-        // TODO: 添加其他字段更新的API调用（username, email, is_active, is_supervisor）
+        // TODO: Add API calls for updating other fields (username, email, is_active, is_supervisor)
         Message.success('用户信息已保存');
         return true;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
           error instanceof Error ? error.message : '更新用户失败';
         Message.error(errorMessage);
@@ -94,11 +94,11 @@ export const useCrudOperations = () => {
   );
 
   /**
-   * 删除用户
+   * Delete user
    */
   const deleteUser = useCallback(async (userId: string): Promise<boolean> => {
     try {
-      // 使用 Users API
+      // Use Users API
       const response = await apiClient.users.deleteApisV1ManagerUsers({
         userId,
       });
@@ -110,7 +110,7 @@ export const useCrudOperations = () => {
 
       throw new Error(response.message || '删除用户失败');
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Extract actual error information
       const errorMessage =
         error instanceof Error ? error.message : '删除用户失败';
       Message.error(errorMessage);

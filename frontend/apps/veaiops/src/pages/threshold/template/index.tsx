@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 指标模板管理页面入口
+ * Metric template management page entry
  */
 
 import { MetricTemplateManagement } from '@/modules/threshold';
 import type React from 'react';
 
 /**
- * 指标模板管理页面
+ * Metric template management page
  */
 const MetricTemplatePage: React.FC = () => {
   return <MetricTemplateManagement />;

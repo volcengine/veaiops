@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ZabbixHost = {
   /**
-   * Zabbix 主机
+   * Zabbix host
    */
   host: string;
   /**
-   * Zabbix 主机名称
+   * Zabbix host name
    */
   name: string;
 };

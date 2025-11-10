@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 重置日志分析工具
- * 提供日志数据的深度分析和可视化功能
+ * Reset log analysis tool
+ * Provides deep analysis and visualization functionality for log data
  */
 
 import {
@@ -24,7 +24,7 @@ import {
 } from './reset-log-collector';
 
 export interface LogAnalysisResult {
-  /** 会话概览 */
+  /** Session overview */
   sessionOverview: {
     totalSessions: number;
     averageDuration: number;
@@ -32,7 +32,7 @@ export interface LogAnalysisResult {
     errorRate: number;
   };
 
-  /** 组件性能分析 */
+  /** Component performance analysis */
   componentAnalysis: Array<{
     component: string;
     method: string;
@@ -42,7 +42,7 @@ export interface LogAnalysisResult {
     successRate: number;
   }>;
 
-  /** 调用链路分析 */
+  /** Call chain analysis */
   callChainAnalysis: Array<{
     sessionId: string;
     chain: Array<{
@@ -56,7 +56,7 @@ export interface LogAnalysisResult {
     success: boolean;
   }>;
 
-  /** 错误分析 */
+  /** Error analysis */
   errorAnalysis: Array<{
     component: string;
     method: string;
@@ -65,7 +65,7 @@ export interface LogAnalysisResult {
     sessions: string[];
   }>;
 
-  /** 性能瓶颈 */
+  /** Performance bottlenecks */
   performanceBottlenecks: Array<{
     component: string;
     method: string;
@@ -76,11 +76,11 @@ export interface LogAnalysisResult {
 }
 
 /**
- * 重置日志分析器
+ * Reset log analyzer
  */
 export class ResetLogAnalyzer {
   /**
-   * 分析所有会话的日志数据
+   * Analyze log data for all sessions
    */
   analyzeLogs(): LogAnalysisResult {
     const sessions = resetLogCollector.getAllSessions();
@@ -99,7 +99,7 @@ export class ResetLogAnalyzer {
   }
 
   /**
-   * 分析会话概览
+   * Analyze session overview
    */
   private analyzeSessionOverview(sessions: ResetLogSession[]) {
     const totalSessions = sessions.length;
@@ -126,7 +126,7 @@ export class ResetLogAnalyzer {
   }
 
   /**
-   * 分析组件性能
+   * Analyze component performance
    */
   private analyzeComponentPerformance(sessions: ResetLogSession[]) {
     const componentStats = new Map<
@@ -142,7 +142,7 @@ export class ResetLogAnalyzer {
       >
     >();
 
-    // 收集统计数据
+    // Collect statistics
     sessions.forEach((session) => {
       session.logs.forEach((log) => {
         if (!componentStats.has(log.component)) {
@@ -173,7 +173,7 @@ export class ResetLogAnalyzer {
       });
     });
 
-    // 生成分析结果
+    // Generate analysis results
     const result: LogAnalysisResult['componentAnalysis'] = [];
 
     componentStats.forEach((methodStats, component) => {
@@ -197,7 +197,7 @@ export class ResetLogAnalyzer {
   }
 
   /**
-   * 分析调用链路
+   * Analyze call chains
    */
   private analyzeCallChains(sessions: ResetLogSession[]) {
     return sessions.map((session) => {
@@ -226,7 +226,7 @@ export class ResetLogAnalyzer {
   }
 
   /**
-   * 分析错误
+   * Analyze errors
    */
   private analyzeErrors(sessions: ResetLogSession[]) {
     const errorMap = new Map<
@@ -279,7 +279,7 @@ export class ResetLogAnalyzer {
   }
 
   /**
-   * 分析性能瓶颈
+   * Analyze performance bottlenecks
    */
   private analyzePerformanceBottlenecks(sessions: ResetLogSession[]) {
     const componentStats = new Map<
@@ -293,7 +293,7 @@ export class ResetLogAnalyzer {
       >
     >();
 
-    // 收集持续时间数据
+    // Collect duration data
     sessions.forEach((session) => {
       session.logs
         .filter((log) => log.duration !== undefined)
@@ -316,7 +316,7 @@ export class ResetLogAnalyzer {
         });
     });
 
-    // 计算性能指标
+    // Calculate performance metrics
     const result: LogAnalysisResult['performanceBottlenecks'] = [];
 
     componentStats.forEach((methodStats, component) => {
@@ -338,11 +338,11 @@ export class ResetLogAnalyzer {
 
     return result
       .sort((a, b) => b.averageDuration - a.averageDuration)
-      .slice(0, 10); // 返回前10个性能瓶颈
+      .slice(0, 10); // Return top 10 performance bottlenecks
   }
 
   /**
-   * 获取空结果
+   * Get empty result
    */
   private getEmptyResult(): LogAnalysisResult {
     return {
@@ -360,28 +360,28 @@ export class ResetLogAnalyzer {
   }
 
   /**
-   * 生成分析报告
+   * Generate analysis report
    */
   generateReport(): string {
     const analysis = this.analyzeLogs();
 
-    let report = '# CustomTable 重置操作分析报告\n\n';
-    report += `生成时间: ${new Date().toISOString()}\n\n`;
+    let report = '# CustomTable Reset Operation Analysis Report\n\n';
+    report += `Generated at: ${new Date().toISOString()}\n\n`;
 
-    // 会话概览
-    report += '## 会话概览\n\n';
-    report += `- 总会话数: ${analysis.sessionOverview.totalSessions}\n`;
-    report += `- 平均持续时间: ${analysis.sessionOverview.averageDuration.toFixed(
+    // Session overview
+    report += '## Session Overview\n\n';
+    report += `- Total Sessions: ${analysis.sessionOverview.totalSessions}\n`;
+    report += `- Average Duration: ${analysis.sessionOverview.averageDuration.toFixed(
       2,
     )}ms\n`;
-    report += `- 成功率: ${analysis.sessionOverview.successRate.toFixed(2)}%\n`;
-    report += `- 错误率: ${analysis.sessionOverview.errorRate.toFixed(2)}%\n\n`;
+    report += `- Success Rate: ${analysis.sessionOverview.successRate.toFixed(2)}%\n`;
+    report += `- Error Rate: ${analysis.sessionOverview.errorRate.toFixed(2)}%\n\n`;
 
-    // 组件性能分析
+    // Component performance analysis
     if (analysis.componentAnalysis.length > 0) {
-      report += '## 组件性能分析\n\n';
+      report += '## Component Performance Analysis\n\n';
       report +=
-        '| 组件 | 方法 | 调用次数 | 平均耗时(ms) | 错误次数 | 成功率 |\n';
+        '| Component | Method | Call Count | Avg Duration(ms) | Error Count | Success Rate |\n';
       report +=
         '|------|------|----------|--------------|----------|--------|\n';
 
@@ -395,10 +395,11 @@ export class ResetLogAnalyzer {
       report += '\n';
     }
 
-    // 性能瓶颈
+    // Performance bottlenecks
     if (analysis.performanceBottlenecks.length > 0) {
-      report += '## 性能瓶颈\n\n';
-      report += '| 组件 | 方法 | 平均耗时(ms) | 最大耗时(ms) | 调用次数 |\n';
+      report += '## Performance Bottlenecks\n\n';
+      report +=
+        '| Component | Method | Avg Duration(ms) | Max Duration(ms) | Call Count |\n';
       report += '|------|------|--------------|--------------|----------|\n';
 
       analysis.performanceBottlenecks.forEach((item) => {
@@ -411,10 +412,11 @@ export class ResetLogAnalyzer {
       report += '\n';
     }
 
-    // 错误分析
+    // Error analysis
     if (analysis.errorAnalysis.length > 0) {
-      report += '## 错误分析\n\n';
-      report += '| 组件 | 方法 | 错误信息 | 出现次数 | 影响会话数 |\n';
+      report += '## Error Analysis\n\n';
+      report +=
+        '| Component | Method | Error Message | Occurrence Count | Affected Sessions |\n';
       report += '|------|------|----------|----------|------------|\n';
 
       analysis.errorAnalysis.forEach((item) => {
@@ -427,7 +429,7 @@ export class ResetLogAnalyzer {
   }
 
   /**
-   * 导出分析报告
+   * Export analysis report
    */
   exportAnalysisReport(): void {
     const report = this.generateReport();
@@ -444,14 +446,14 @@ export class ResetLogAnalyzer {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    console.log(`[ResetLogAnalyzer] 分析报告已导出: ${filename}`);
+    console.log(`[ResetLogAnalyzer] Analysis report exported: ${filename}`);
   }
 }
 
-// 创建全局实例
+// Create global instance
 export const resetLogAnalyzer = new ResetLogAnalyzer();
 
-// 开发环境下自动暴露到全局
+// Automatically expose to global in development environment
 if (process.env.NODE_ENV === 'development') {
   (window as unknown as Record<string, unknown>).resetLogAnalyzer = {
     analyze: () => resetLogAnalyzer.analyzeLogs(),

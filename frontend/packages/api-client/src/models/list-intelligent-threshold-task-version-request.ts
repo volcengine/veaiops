@@ -18,18 +18,18 @@ import type { SortColumn } from './sort-column';
 import type { TimeRange } from './time-range';
 export type ListIntelligentThresholdTaskVersionRequest = {
   /**
-   * 任务ID
+   * Task ID
    */
   task_id: string;
   /**
-   * 任务状态列表
+   * List of task statuses
    */
   statuses?: Array<'launching' | 'running' | 'completed' | 'failed' | 'cancelled'>;
   create_time_range?: TimeRange;
   update_time_range?: TimeRange;
   page_req: PaginationRequest;
   /**
-   * 排序列
+   * Sort columns
    */
   sort_columns?: Array<SortColumn>;
 };

@@ -17,14 +17,14 @@ import type { FormInstance } from '@arco-design/web-react';
 import type React from 'react';
 
 /**
- * Webhook字段组件属性
+ * Webhook fields component props
  */
 interface WebhookFieldsProps {
   form: FormInstance;
 }
 
 /**
- * Webhook字段组件
+ * Webhook fields component
  */
 export const WebhookFields: React.FC<WebhookFieldsProps> = ({ form }) => {
   return (
@@ -84,7 +84,7 @@ export const WebhookFields: React.FC<WebhookFieldsProps> = ({ form }) => {
                         JSON.parse(value);
                         callback();
                       } catch (error: unknown) {
-                        // ✅ 正确：透出实际的错误信息
+                        // ✅ Correct: Extract actual error information
                         const errorObj =
                           error instanceof Error
                             ? error

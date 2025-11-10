@@ -16,12 +16,12 @@ import type { BotCreateRequest, BotUpdateRequest } from '@bot/lib';
 import { useCallback } from 'react';
 
 /**
- * 提交处理器参数接口
+ * Submit handler parameters interface
  */
 export interface UseBotCompleteSubmitParams {
   /**
-   * 提交处理器
-   * 接受 BotCreateRequest 或 BotUpdateRequest，返回 Promise<boolean>
+   * Submit handler
+   * Accepts BotCreateRequest or BotUpdateRequest, returns Promise<boolean>
    */
   onSubmit: (values: BotCreateRequest | BotUpdateRequest) => Promise<boolean>;
 }
@@ -30,8 +30,8 @@ export const useBotCompleteSubmit = ({
   onSubmit,
 }: UseBotCompleteSubmitParams) => {
   /**
-   * 创建表单提交处理器
-   * 字段已对齐，直接透传即可
+   * Create form submit handler
+   * Fields are aligned, can directly pass through
    */
   const handleCreateSubmit = useCallback(
     async (values: BotCreateRequest): Promise<boolean> => {
@@ -41,8 +41,8 @@ export const useBotCompleteSubmit = ({
   );
 
   /**
-   * 编辑表单提交处理器
-   * 直接透传 BotUpdateRequest
+   * Edit form submit handler
+   * Directly pass through BotUpdateRequest
    */
   const handleEditSubmit = useCallback(
     async (values: BotUpdateRequest): Promise<boolean> => {

@@ -29,7 +29,7 @@ import { METRIC_TEMPLATE_MANAGEMENT_CONFIG } from '../lib/config';
 import { getMetricTypeOptions } from '../lib/metric-type-translations';
 
 /**
- * 指标模板抽屉组件属性接口
+ * Metric template drawer component props interface
  */
 interface MetricTemplateDrawerProps {
   visible: boolean;
@@ -39,10 +39,10 @@ interface MetricTemplateDrawerProps {
   onCancel: () => void;
 }
 
-/** 使用共享的枚举翻译选项，保证表单与列表一致显示中文 */
+/** Use shared enum translation options to ensure form and list display Chinese consistently */
 
 /**
- * 指标模板抽屉组件
+ * Metric template drawer component
  */
 export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
   visible,
@@ -54,17 +54,17 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
   const isEditing = Boolean(editingTemplate);
   const title = isEditing ? '编辑指标模板' : '新建指标模板';
 
-  // 使用公共的抽屉表单提交 Hook
-  // 注意：onOk 已经在父组件中处理了表单验证，这里只需要包装为 onSubmit
+  // Use common drawer form submit Hook
+  // Note: onOk has already handled form validation in parent component, here just wrap as onSubmit
   const { submitting, handleSubmit } = useDrawerFormSubmit({
     form,
     onSubmit: async (values) => {
-      // onOk 已经在父组件中处理了表单验证和提交逻辑
-      // 这里直接调用 onOk，它会内部处理表单验证
+      // onOk has already handled form validation and submission logic in parent component
+      // Here directly call onOk, it will internally handle form validation
       return await onOk();
     },
     resetOnSuccess: true,
-    closeOnSuccess: false, // 不自动关闭，由父组件控制
+    closeOnSuccess: false, // Don't auto-close, controlled by parent component
   });
 
   return (
@@ -91,7 +91,7 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
       <DrawerFormContent loading={submitting}>
         <div>
           <Form form={form} layout="vertical">
-            {/* 指标模版名称 */}
+            {/* Metric template name */}
             <Form.Item
               label="指标模版名称"
               field="name"
@@ -105,7 +105,7 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
               />
             </Form.Item>
 
-            {/* 指标模版类型 */}
+            {/* Metric template type */}
             <Form.Item
               label="指标模版类型"
               field="metric_type"
@@ -121,11 +121,11 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
               />
             </Form.Item>
 
-            {/* 指标详情区域 - 只显示核心参数 */}
+            {/* Metric details area - only show core parameters */}
             <div>
               <h3 className="mb-4 text-sm font-medium">指标详情</h3>
               <div className="flex flex-wrap justify-between p-4 border border-[#e5e5e5] rounded-md bg-[#f9f9f9] gap-4">
-                {/* 第一行 */}
+                {/* First row */}
                 <div className="flex gap-4 w-full">
                   <Form.Item
                     label="指标最小值"
@@ -156,7 +156,7 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
                   </Form.Item>
                 </div>
 
-                {/* 第二行 */}
+                {/* Second row */}
                 <div className="flex gap-4 w-full">
                   <Form.Item
                     label="默认阈值下界"
@@ -187,7 +187,7 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
                   </Form.Item>
                 </div>
 
-                {/* 第三行 - 隐藏字段（后端必填，前端使用默认值） */}
+                {/* Third row - hidden fields (required by backend, frontend uses default values) */}
                 <div className="flex gap-4 w-full">
                   <Form.Item
                     label="展示系数"

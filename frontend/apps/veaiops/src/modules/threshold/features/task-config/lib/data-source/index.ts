@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出所有API函数
+// Export all API functions
 export {
   realApiRequest,
   createTask,
@@ -21,14 +21,14 @@ export {
   updateAutoRefreshSwitch,
 } from "./api";
 
-// 导出数据转换函数
+// Export data transformation functions
 export {
   transformQueryToApiRequest,
   transformApiResponseToTableData,
 } from "./transformers";
 
-// 导出数据源配置
+// Export data source configuration
 export { taskDataSource } from "./data-source";
 
-// 导出类型定义
+// Export type definitions
 export type { TaskQueryParams, DataSourcePayload } from "./types";

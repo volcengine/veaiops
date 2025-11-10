@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 统计页面模块导出
+ * Statistics page module exports
  */
 
-// 导出概览页面
+// Export overview page
 export { default as StatisticsOverview } from './overview';
 
-// 导出类型定义
+// Export type definitions
 export type {
   ThresholdTrendData,
   EventTrendData,
@@ -29,7 +29,7 @@ export type {
   StatisticsDataCheck,
 } from './overview/types';
 
-// 导出组件
+// Export components
 export {
   PageHeader,
   CoreMetricsCards,
@@ -40,5 +40,5 @@ export {
   BottomSection,
 } from './overview/components';
 
-// 导出hooks
+// Export hooks
 export { useStatisticsData } from './overview/hooks/use-statistics-data';

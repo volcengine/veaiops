@@ -43,7 +43,7 @@ interface MetricCardProps {
 }
 
 /**
- * 单个指标卡片组件
+ * Single metric card component
  */
 const MetricCard: React.FC<MetricCardProps> = ({
   title,
@@ -115,8 +115,8 @@ const MetricCard: React.FC<MetricCardProps> = ({
 };
 
 /**
- * 核心指标卡片组件
- * @description 展示系统核心指标的卡片组
+ * Core metrics cards component
+ * @description Display card group for system core metrics
  */
 export const CoreMetricsCards: React.FC<CoreMetricsCardsProps> = ({
   statistics,

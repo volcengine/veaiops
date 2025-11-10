@@ -15,7 +15,7 @@
 import type React from 'react';
 
 /**
- * 智能阈值趋势数据类型
+ * Intelligent threshold trend data type
  */
 export interface ThresholdTrendData {
   period: string;
@@ -24,7 +24,7 @@ export interface ThresholdTrendData {
 }
 
 /**
- * 事件趋势数据类型
+ * Event trend data type
  */
 export interface EventTrendData {
   period: string;
@@ -32,7 +32,7 @@ export interface EventTrendData {
 }
 
 /**
- * 消息趋势数据类型
+ * Message trend data type
  */
 export interface MessageTrendData {
   period: string;
@@ -40,7 +40,7 @@ export interface MessageTrendData {
 }
 
 /**
- * 系统资源概览项目类型
+ * System resource overview item type
  */
 export interface SystemOverviewItem {
   name: string;
@@ -49,7 +49,7 @@ export interface SystemOverviewItem {
 }
 
 /**
- * 系统资源概览数据类型
+ * System resource overview data type
  */
 export interface SystemOverviewData {
   category: string;
@@ -57,7 +57,7 @@ export interface SystemOverviewData {
 }
 
 /**
- * 统计数据检查结果类型
+ * Statistics data check result type
  */
 export interface StatisticsDataCheck {
   hasData: boolean;

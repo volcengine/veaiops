@@ -19,7 +19,7 @@ import { Bot, ChannelType, VolcCfgPayload } from 'api-generate';
 import { useEffect } from 'react';
 
 /**
- * Bot创建表单的副作用管理
+ * Bot create form side effects management
  */
 export const useBotCreateFormEffects = ({
   form,
@@ -28,11 +28,11 @@ export const useBotCreateFormEffects = ({
   form: FormInstance<BotFormData>;
   showAdvancedConfig: boolean;
 }) => {
-  // 初始化表单默认值
+  // Initialize form default values
   useEffect(() => {
-    // 类型安全转换：ChannelType 枚举值 -> Bot.channel 枚举值
-    // ChannelType.LARK = 'lark'，Bot.channel.LARK = 'Lark'（首字母大写）
-    // 使用类型适配函数，避免直接类型断言
+    // Type-safe conversion: ChannelType enum value -> Bot.channel enum value
+    // ChannelType.LARK = 'lark', Bot.channel.LARK = 'Lark' (capitalized first letter)
+    // Use type adapter function to avoid direct type assertion
     const channelMap: Record<ChannelType, Bot.channel> = {
       [ChannelType.LARK]: Bot.channel.LARK,
       [ChannelType.DING_TALK]: Bot.channel.DING_TALK,
@@ -46,7 +46,7 @@ export const useBotCreateFormEffects = ({
     });
   }, [form]);
 
-  // 当启用/禁用ChatOps配置时，设置对应的初始值
+  // When enabling/disabling ChatOps configuration, set corresponding initial values
   useEffect(() => {
     if (showAdvancedConfig) {
       form.setFieldsValue({

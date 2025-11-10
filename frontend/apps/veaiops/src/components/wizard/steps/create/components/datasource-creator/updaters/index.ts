@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 数据源更新函数统一导出
+ * Data source update function unified export
  */
 
 import type { DataSourceType, WizardState } from '@/components/wizard/types';
@@ -28,7 +28,7 @@ export { updateVolcengineDataSource } from './volcengine';
 export { updateZabbixDataSource } from './zabbix';
 
 /**
- * 根据数据源类型更新数据源
+ * Update data source based on data source type
  */
 export const updateDataSource = async (
   dataSourceType: DataSourceType,

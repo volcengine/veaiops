@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 重置日志导出组件索引
+ * Reset log export component index
  */
 
 export {

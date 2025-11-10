@@ -16,36 +16,36 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import { logger } from './logger/core';
 
 /**
- * Custom Table 相关工具函数
+ * Custom Table utility functions
  */
 
 /**
- * Custom Table 分页参数接口
+ * Custom Table pagination parameters interface
  */
 export interface CustomTablePageReq {
-  skip: number; // 跳过的记录数
-  limit: number; // 限制返回的记录数
+  skip: number; // Number of records to skip
+  limit: number; // Limit of records to return
 }
 
 /**
- * Custom Table 请求参数接口
+ * Custom Table request parameters interface
  *
- * @template Q - 查询参数类型，表示除分页参数外的其他查询条件（如 name、channel、status 等）
+ * @template Q - Query parameter type, representing other query conditions besides pagination parameters (e.g., name, channel, status, etc.)
  *
- * 为什么使用泛型而不是 unknown：
- * - 泛型可以提供更好的类型推断，在使用时可以自动推导出查询参数的具体类型
- * - 业务代码传入具体的 QueryType 时，可以享受到完整的类型安全和 IDE 自动补全
- * - 默认使用 Record<string, unknown> 作为兜底，保证兼容性
+ * Why use generics instead of unknown:
+ * - Generics provide better type inference, automatically deriving specific types of query parameters when used
+ * - When business code passes specific QueryType, it can enjoy full type safety and IDE autocomplete
+ * - Default to Record<string, unknown> as fallback to ensure compatibility
  *
  * @example
  * ```typescript
- * // 定义具体的查询参数类型
+ * // Define specific query parameter type
  * interface BotQuery {
  *   name?: string;
  *   channel?: ChannelType;
  * }
  *
- * // 使用时类型会被推断为 BotQuery
+ * // Type will be inferred as BotQuery when used
  * const params: CustomTableParams<BotQuery> = {
  *   page_req: { skip: 0, limit: 10 },
  *   name: 'test',
@@ -60,26 +60,26 @@ export type CustomTableParams<
 } & Q;
 
 /**
- * API 分页参数接口
+ * API pagination parameters interface
  */
 export interface ApiPaginationParams {
-  skip: number; // 跳过的记录数
-  limit: number; // 限制返回的记录数
+  skip: number; // Number of records to skip
+  limit: number; // Limit of records to return
 }
 
 /**
- * 将 Custom Table 的分页参数转换为 API 分页参数
+ * Convert Custom Table pagination parameters to API pagination parameters
  *
- * @param params - 参数对象
- * @param params.page_req - Custom Table 分页参数
- * @param params.defaultLimit - 默认限制数量，默认为 10
- * @returns API 分页参数
+ * @param params - Parameter object
+ * @param params.page_req - Custom Table pagination parameters
+ * @param params.defaultLimit - Default limit, defaults to 10
+ * @returns API pagination parameters
  *
  * @example
  * ```typescript
  * const page_req = { skip: 20, limit: 20 };
  * const apiParams = convertTablePaginationToApi({ page_req });
- * // 结果: { skip: 20, limit: 20 }
+ * // Result: { skip: 20, limit: 20 }
  * ```
  */
 export interface ConvertTablePaginationToApiParams {
@@ -107,17 +107,17 @@ export function convertTablePaginationToApi({
 }
 
 /**
- * 从 Custom Table 参数中提取分页和其他参数
+ * Extract pagination and other parameters from Custom Table parameters
  *
- * @template Q - 查询参数类型，会从 CustomTableParams<Q> 中自动推断
- * @param params - 提取参数
- * @param params.params - Custom Table 请求参数
- * @param params.defaultLimit - 默认限制数量，默认为 10
- * @returns 包含分页参数和其他参数的对象，otherParams 的类型会被推断为 Q
+ * @template Q - Query parameter type, automatically inferred from CustomTableParams<Q>
+ * @param params - Extraction parameters
+ * @param params.params - Custom Table request parameters
+ * @param params.defaultLimit - Default limit, defaults to 10
+ * @returns Object containing pagination parameters and other parameters, otherParams type will be inferred as Q
  *
  * @example
  * ```typescript
- * // 定义查询参数类型
+ * // Define query parameter type
  * interface BotQuery {
  *   name?: string;
  *   channel?: ChannelType;
@@ -131,7 +131,7 @@ export function convertTablePaginationToApi({
  *
  * const { pagination, otherParams } = extractTableParams({ params });
  * // pagination: { skip: 20, limit: 20 }
- * // otherParams: BotQuery - 类型会被自动推断
+ * // otherParams: BotQuery - type will be automatically inferred
  * ```
  */
 export interface ExtractTableParamsParams<
@@ -149,16 +149,16 @@ export function extractTableParams<
 }: ExtractTableParamsParams<Q>): {
   pagination: ApiPaginationParams;
   /**
-   * 其他参数（除了 page_req 之外的所有参数）
-   * 类型会被推断为 Q，提供完整的类型安全
+   * Other parameters (all parameters except page_req)
+   * Type will be inferred as Q, providing full type safety
    */
   otherParams: Q;
 } {
   const { page_req, ...rest } = params;
   const pagination = convertTablePaginationToApi({ page_req, defaultLimit });
 
-  // 类型断言：rest 的类型就是 Q，因为 CustomTableParams<Q> = { page_req?: CustomTablePageReq } & Q
-  // 解构后排除 page_req 的剩余属性就是 Q
+  // Type assertion: rest type is Q, because CustomTableParams<Q> = { page_req?: CustomTablePageReq } & Q
+  // After destructuring, the remaining properties excluding page_req are Q
   const otherParams = rest as Q;
 
   return {
@@ -168,35 +168,35 @@ export function extractTableParams<
 }
 
 /**
- * CustomTable 排序列项接口
- * 对应 CustomTable use-data-source 构建的 sort_columns 格式
+ * CustomTable sort column item interface
+ * Corresponds to the sort_columns format built by CustomTable use-data-source
  */
 export interface TableSortColumn {
-  column: string; // 字段名（snake_case）
-  desc: boolean; // true=降序, false=升序
+  column: string; // Field name (snake_case)
+  desc: boolean; // true=descending, false=ascending
 }
 
 /**
- * 将 CustomTable 的排序参数转换为 API 排序参数
+ * Convert CustomTable sorting parameters to API sorting parameters
  *
- * CustomTable 传递格式: sort_columns: [{ column: "created_at", desc: false }]
- * API 需要的格式: sortOrder: 'asc' | 'desc'
+ * CustomTable format: sort_columns: [{ column: "created_at", desc: false }]
+ * API required format: sortOrder: 'asc' | 'desc'
  *
- * @param params - 参数对象
- * @param params.sortColumns - CustomTable 的 sort_columns 参数
- * @param params.allowedFields - 允许排序的字段列表（可选）。如果提供，只有在列表中的字段才会被处理
- * @returns API 排序参数 ('asc' | 'desc' | undefined)
+ * @param params - Parameter object
+ * @param params.sortColumns - CustomTable sort_columns parameter
+ * @param params.allowedFields - List of allowed sortable fields (optional). If provided, only fields in the list will be processed
+ * @returns API sorting parameter ('asc' | 'desc' | undefined)
  *
  * @example
  * ```typescript
- * // 基本用法
+ * // Basic usage
  * const sortOrder = convertTableSortToApi({ sortColumns: params.sort_columns });
  * // sortOrder: 'asc' | 'desc' | undefined
  *
- * // 限制只允许 created_at 字段排序
+ * // Restrict to only allow created_at field sorting
  * const sortOrder = convertTableSortToApi({ sortColumns: params.sort_columns, allowedFields: ['created_at'] });
  *
- * // 在 API 请求中使用
+ * // Use in API request
  * const apiParams = {
  *   skip: 0,
  *   limit: 10,
@@ -213,14 +213,14 @@ export function convertTableSortToApi({
   sortColumns,
   allowedFields,
 }: ConvertTableSortToApiParams): 'asc' | 'desc' | undefined {
-  // 验证 sort_columns 是否为有效数组
+  // Validate if sort_columns is a valid array
   if (!Array.isArray(sortColumns) || sortColumns.length === 0) {
     return undefined;
   }
 
   const firstSortColumn = sortColumns[0];
 
-  // 验证 sort_columns 结构
+  // Validate sort_columns structure
   if (
     !firstSortColumn ||
     typeof firstSortColumn !== 'object' ||
@@ -234,36 +234,36 @@ export function convertTableSortToApi({
 
   const typedColumn = firstSortColumn as TableSortColumn;
 
-  // 如果指定了允许的字段列表，验证字段是否在列表中
+  // If allowed fields list is specified, validate if field is in the list
   if (allowedFields && allowedFields.length > 0) {
     if (!allowedFields.includes(typedColumn.column)) {
       return undefined;
     }
   }
 
-  // 转换规则：desc: false -> 'asc'（升序），desc: true -> 'desc'（降序）
+  // Conversion rule: desc: false -> 'asc' (ascending), desc: true -> 'desc' (descending)
   return typedColumn.desc ? 'desc' : 'asc';
 }
 
 /**
- * 创建 Custom Table 的 request 函数包装器
+ * Create Custom Table request function wrapper
  *
- * @template T - API 响应类型
- * @template Q - 查询参数类型，用于推断 CustomTableParams<Q> 和其他参数类型
- * @param params - 参数对象
- * @param params.apiCall - 实际的 API 调用函数，接收分页参数和查询参数
- * @param params.defaultLimit - 默认限制数量，默认为 10
- * @returns 包装后的 request 函数，接收 CustomTableParams<Q> 参数
+ * @template T - API response type
+ * @template Q - Query parameter type, used to infer CustomTableParams<Q> and other parameter types
+ * @param params - Parameter object
+ * @param params.apiCall - Actual API call function, receives pagination parameters and query parameters
+ * @param params.defaultLimit - Default limit, defaults to 10
+ * @returns Wrapped request function that receives CustomTableParams<Q> parameters
  *
  * @example
  * ```typescript
- * // 定义查询参数类型
+ * // Define query parameter type
  * interface BotQuery {
  *   name?: string;
  *   channel?: ChannelType;
  * }
  *
- * // 定义响应类型
+ * // Define response type
  * interface BotListResponse {
  *   data: Bot[];
  *   total: number;
@@ -271,14 +271,14 @@ export function convertTableSortToApi({
  *
  * const request = createTableRequestWrapper<BotListResponse, BotQuery>({
  *   apiCall: async ({ skip, limit, name, channel }) => {
- *     // name 和 channel 的类型会被正确推断为 BotQuery 中的类型
+ *     // name and channel types will be correctly inferred as types in BotQuery
  *     return await apiClient.bots.getApisV1ManagerSystemConfigBots({
  *       skip, limit, name, channel
  *     });
  *   }
  * });
  *
- * // 在 dataSource 中使用
+ * // Use in dataSource
  * const dataSource = {
  *   request,
  *   ready: true,
@@ -312,8 +312,8 @@ export function createTableRequestWrapper<
 }
 
 /**
- * 标准 API 响应接口
- * 对应后端返回的标准响应格式
+ * Standard API response interface
+ * Corresponds to standard response format returned by backend
  */
 export interface StandardApiResponse<T = unknown> {
   code: number;
@@ -324,8 +324,8 @@ export interface StandardApiResponse<T = unknown> {
 }
 
 /**
- * 兼容类型：支持 code 为可选的分页响应
- * 用于处理 PaginatedAPIResponse 等类型
+ * Compatibility type: supports pagination response with optional code
+ * Used to handle types like PaginatedAPIResponse
  */
 export interface PaginatedApiResponse<T = unknown> {
   code?: number;
@@ -336,8 +336,8 @@ export interface PaginatedApiResponse<T = unknown> {
 }
 
 /**
- * 表格数据响应接口
- * CustomTable 需要的响应格式
+ * Table data response interface
+ * Response format required by CustomTable
  */
 export interface TableDataResponse<T = unknown> {
   data: T[];
@@ -346,33 +346,33 @@ export interface TableDataResponse<T = unknown> {
 }
 
 /**
- * 处理 API 响应的配置选项
+ * Configuration options for handling API responses
  */
 export interface HandleApiResponseOptions {
   /**
-   * 错误消息前缀，默认为空
+   * Error message prefix, defaults to empty string
    */
   errorMessagePrefix?: string;
   /**
-   * 默认错误消息，当无法提取错误信息时使用
+   * Default error message, used when error information cannot be extracted
    */
   defaultErrorMessage?: string;
   /**
-   * 是否显示错误消息，默认为 true
+   * Whether to show error message, defaults to true
    */
   showErrorMessage?: boolean;
   /**
-   * 数据转换函数，将 API 响应的 data 转换为表格需要的格式
+   * Data transformation function, converts API response data to format required by table
    */
   transformData?: <T>(data: unknown) => T[];
   /**
-   * 提取 total 的函数，如果 API 响应中没有 total 字段，可以使用此函数计算
+   * Function to extract total, if API response doesn't have total field, can use this function to calculate
    */
   extractTotal?: (
     response: StandardApiResponse | PaginatedApiResponse,
   ) => number;
   /**
-   * 自定义错误处理函数
+   * Custom error handling function
    */
   onError?: (
     error: unknown,
@@ -381,20 +381,20 @@ export interface HandleApiResponseOptions {
 }
 
 /**
- * 处理标准 API 响应，转换为表格数据格式
+ * Handle standard API response, convert to table data format
  *
- * @param params - 处理参数
- * @param params.response - API 响应
- * @param params.options - 处理选项
- * @returns 表格数据响应
+ * @param params - Processing parameters
+ * @param params.response - API response
+ * @param params.options - Processing options
+ * @returns Table data response
  *
  * @example
  * ```typescript
- * // 基本用法
+ * // Basic usage
  * const tableResponse = handleApiResponse({ response });
- * // 结果: { data: [...], total: 100, success: true }
+ * // Result: { data: [...], total: 100, success: true }
  *
- * // 带数据转换
+ * // With data transformation
  * const tableResponse = handleApiResponse({
  *   response,
  *   options: {
@@ -402,12 +402,12 @@ export interface HandleApiResponseOptions {
  *   }
  * });
  *
- * // 自定义错误处理
+ * // Custom error handling
  * const tableResponse = handleApiResponse({
  *   response,
  *   options: {
  *     onError: (error) => {
- *       logger.error({ message: '自定义错误处理', data: { error }, source: 'Module', component: 'method' });
+ *       logger.error({ message: 'Custom error handling', data: { error }, source: 'Module', component: 'method' });
  *     }
  *   }
  * });
@@ -424,31 +424,31 @@ export function handleApiResponse<T = unknown>({
 }: HandleApiResponseParams<T>): TableDataResponse<T> {
   const {
     errorMessagePrefix = '',
-    defaultErrorMessage = '获取数据失败，请重试',
+    defaultErrorMessage = 'Failed to fetch data, please retry',
     showErrorMessage = true,
     transformData,
     extractTotal,
     onError,
   } = options;
 
-  // 检查响应是否成功（兼容 code 可选的情况）
+  // Check if response is successful (compatible with optional code)
   const responseCode = response.code ?? API_RESPONSE_CODE.SUCCESS;
   if (
     responseCode === API_RESPONSE_CODE.SUCCESS &&
     response.data !== undefined
   ) {
-    // 处理数据
+    // Process data
     let dataArray: T[] = [];
     if (transformData) {
       dataArray = transformData<T>(response.data);
     } else if (Array.isArray(response.data)) {
       dataArray = response.data as T[];
     } else {
-      // 如果 data 不是数组，转换为数组
+      // If data is not an array, convert to array
       dataArray = [response.data as T];
     }
 
-    // 提取总数
+    // Extract total
     let total = 0;
     if (extractTotal) {
       total = extractTotal(response);
@@ -457,7 +457,7 @@ export function handleApiResponse<T = unknown>({
       if (typeof responseTotal === 'number' && responseTotal >= 0) {
         total = responseTotal;
       } else {
-        // 如果没有 total 字段，使用数据长度
+        // If no total field, use data length
         total = dataArray.length;
       }
     }
@@ -469,13 +469,13 @@ export function handleApiResponse<T = unknown>({
     };
   }
 
-  // 处理错误响应
+  // Handle error response
   const errorMessage = response.message || defaultErrorMessage;
   const fullErrorMessage = errorMessagePrefix
     ? `${errorMessagePrefix}: ${errorMessage}`
     : errorMessage;
 
-  // ✅ 使用 logger 记录错误（不直接使用 Message，避免在 utils 包中依赖 UI 库）
+  // ✅ Use logger to record errors (not directly using Message, avoid depending on UI library in utils package)
   if (showErrorMessage) {
     logger.error({
       message: fullErrorMessage,
@@ -497,49 +497,49 @@ export function handleApiResponse<T = unknown>({
 }
 
 /**
- * 创建带错误处理的表格请求函数包装器
+ * Create table request function wrapper with error handling
  *
- * 该函数自动处理：
- * - 分页参数转换（page_req -> skip/limit）
- * - API 响应格式转换（StandardApiResponse -> TableDataResponse）
- * - 错误处理和消息提示
+ * This function automatically handles:
+ * - Pagination parameter conversion (page_req -> skip/limit)
+ * - API response format conversion (StandardApiResponse -> TableDataResponse)
+ * - Error handling and message display
  *
- * @template T - API 响应数据类型
- * @template Q - 查询参数类型，用于推断 CustomTableParams<Q> 和其他参数类型
- * @param params - 参数对象
- * @param params.apiCall - 实际的 API 调用函数，接收分页参数和查询参数，返回 StandardApiResponse
- * @param params.options - 配置选项
- * @returns 包装后的 request 函数，接收 CustomTableParams<Q> 参数，返回 TableDataResponse
+ * @template T - API response data type
+ * @template Q - Query parameter type, used to infer CustomTableParams<Q> and other parameter types
+ * @param params - Parameter object
+ * @param params.apiCall - Actual API call function, receives pagination parameters and query parameters, returns StandardApiResponse
+ * @param params.options - Configuration options
+ * @returns Wrapped request function that receives CustomTableParams<Q> parameters and returns TableDataResponse
  *
  * @example
  * ```typescript
- * // 定义查询参数类型
+ * // Define query parameter type
  * interface BotQuery {
  *   name?: string;
  *   channel?: ChannelType;
  * }
  *
- * // 定义响应数据类型
+ * // Define response data type
  * interface Bot {
  *   _id: string;
  *   name: string;
  *   channel: ChannelType;
  * }
  *
- * // 使用泛型参数
+ * // Use generic parameters
  * const request = createTableRequestWithResponseHandler<Bot, BotQuery>({
  *   apiCall: async ({ skip, limit, name, channel }) => {
- *     // name 和 channel 的类型会被正确推断为 BotQuery 中的类型
+ *     // name and channel types will be correctly inferred as types in BotQuery
  *     return await apiClient.bots.getApisV1ManagerSystemConfigBots({
  *       skip, limit, name, channel
  *     });
  *   },
  *   options: {
- *     errorMessagePrefix: '获取机器人列表失败'
+ *     errorMessagePrefix: 'Failed to fetch bot list'
  *   }
  * });
  *
- * // 在 dataSource 中使用
+ * // Use in dataSource
  * const dataSource = {
  *   request,
  *   ready: true,
@@ -572,35 +572,35 @@ export function createTableRequestWithResponseHandler<
     params: CustomTableParams<Q>,
   ): Promise<TableDataResponse<T>> => {
     try {
-      // 提取分页和其他参数
+      // Extract pagination and other parameters
       const { pagination, otherParams } = extractTableParams({
         params,
         defaultLimit,
       });
 
-      // 调用 API
+      // Call API
       const apiResponse = await apiCall({
         ...pagination,
         ...otherParams,
       });
 
-      // 处理响应（支持 StandardApiResponse 和 PaginatedApiResponse）
-      // handleApiResponse 函数内部会处理类型兼容性，确保 code 被正确转换为 number
+      // Handle response (supports StandardApiResponse and PaginatedApiResponse)
+      // handleApiResponse function internally handles type compatibility, ensuring code is correctly converted to number
       return handleApiResponse<T>({
         response: apiResponse,
         options: responseOptions,
       });
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage =
         errorObj.message ||
         options.defaultErrorMessage ||
-        '获取数据失败，请重试';
+        'Failed to fetch data, please retry';
 
-      // ✅ 使用 logger 记录错误（不直接使用 Message，避免在 utils 包中依赖 UI 库）
-      // 注意：如果需要显示用户友好的错误提示，应在调用方使用 onError 回调处理
+      // ✅ Use logger to record errors (not directly using Message, avoid depending on UI library in utils package)
+      // Note: If user-friendly error messages need to be displayed, should use onError callback in the calling code
       if (options.showErrorMessage !== false) {
         const fullErrorMessage = options.errorMessagePrefix
           ? `${options.errorMessagePrefix}: ${errorMessage}`
@@ -618,7 +618,7 @@ export function createTableRequestWithResponseHandler<
         });
       }
 
-      // 自定义错误处理
+      // Custom error handling
       if (options.onError) {
         options.onError(error);
       }
@@ -633,9 +633,9 @@ export function createTableRequestWithResponseHandler<
 }
 
 /**
- * 标准表格数据源配置
+ * Standard table data source configuration
  *
- * @template Q - 查询参数类型，用于推断 CustomTableParams<Q>
+ * @template Q - Query parameter type, used to infer CustomTableParams<Q>
  */
 export interface StandardTableDataSource<
   Q extends Record<string, unknown> = Record<string, unknown>,
@@ -648,27 +648,27 @@ export interface StandardTableDataSource<
 }
 
 /**
- * 创建标准服务器端分页数据源配置
+ * Create standard server-side pagination data source configuration
  *
- * @template Q - 查询参数类型，用于推断 CustomTableParams<Q>
- * @param params - 参数对象
- * @param params.request - 请求函数，接收 CustomTableParams<Q> 参数
- * @param params.ready - 是否准备就绪，默认为 true
- * @returns 数据源配置对象
+ * @template Q - Query parameter type, used to infer CustomTableParams<Q>
+ * @param params - Parameter object
+ * @param params.request - Request function that receives CustomTableParams<Q> parameters
+ * @param params.ready - Whether ready, defaults to true
+ * @returns Data source configuration object
  *
  * @example
  * ```typescript
- * // 定义查询参数类型
+ * // Define query parameter type
  * interface BotQuery {
  *   name?: string;
  *   channel?: ChannelType;
  * }
  *
  * const request = (params: CustomTableParams<BotQuery>) => {
- *   // 实现请求逻辑
+ *   // Implement request logic
  * };
  * const dataSource = createServerPaginationDataSource<BotQuery>({ request });
- * // 结果: { request, ready: true, isServerPagination: true }
+ * // Result: { request, ready: true, isServerPagination: true }
  * ```
  */
 export interface CreateServerPaginationDataSourceParams<
@@ -684,9 +684,9 @@ export function createServerPaginationDataSource<
   request,
   ready = true,
 }: CreateServerPaginationDataSourceParams<Q>): StandardTableDataSource<Q> {
-  // 调试：验证 request 参数
+  // Debug: validate request parameter
   logger.debug({
-    message: '[createServerPaginationDataSource] 创建数据源',
+    message: '[createServerPaginationDataSource] Creating data source',
     data: {
       hasRequest: Boolean(request),
       requestType: typeof request,
@@ -702,9 +702,9 @@ export function createServerPaginationDataSource<
     isServerPagination: true,
   };
 
-  // 验证返回的对象
+  // Validate returned object
   logger.debug({
-    message: '[createServerPaginationDataSource] 返回数据源',
+    message: '[createServerPaginationDataSource] Returning data source',
     data: {
       hasRequest: Boolean(dataSource.request),
       requestType: typeof dataSource.request,
@@ -719,17 +719,17 @@ export function createServerPaginationDataSource<
 }
 
 /**
- * 创建本地数据源配置
+ * Create local data source configuration
  *
- * @param params - 参数对象
- * @param params.dataList - 数据列表
- * @param params.ready - 是否准备就绪，默认为 true
- * @returns 数据源配置对象
+ * @param params - Parameter object
+ * @param params.dataList - Data list
+ * @param params.ready - Whether ready, defaults to true
+ * @returns Data source configuration object
  *
  * @example
  * ```typescript
  * const dataSource = createLocalDataSource({ dataList: [{ id: 1, name: 'test' }] });
- * // 结果: { dataList: [...], manual: true, ready: true }
+ * // Result: { dataList: [...], manual: true, ready: true }
  * ```
  */
 export interface CreateLocalDataSourceParams {
@@ -751,7 +751,7 @@ export function createLocalDataSource({
 }
 
 /**
- * 标准表格属性配置接口
+ * Standard table properties configuration interface
  */
 export interface StandardTableProps {
   rowKey?: string;
@@ -767,21 +767,21 @@ export interface StandardTableProps {
 }
 
 /**
- * 创建标准表格属性配置
+ * Create standard table properties configuration
  *
- * @param options - 配置选项
- * @returns 表格属性配置对象
+ * @param options - Configuration options
+ * @returns Table properties configuration object
  *
  * @example
  * ```typescript
- * // 基本用法
+ * // Basic usage
  * const tableProps = createStandardTableProps({
  *   rowKey: '_id',
  *   pageSize: 10,
  *   scrollX: 1200
  * });
  *
- * // 自定义分页选项
+ * // Custom pagination options
  * const tableProps = createStandardTableProps({
  *   rowKey: '_id',
  *   pageSize: 20,
@@ -822,9 +822,9 @@ export function createStandardTableProps(
     sizeOptions,
   };
 
-  // 处理 showTotal
+  // Handle showTotal
   if (showTotalOption) {
-    pagination.showTotal = (total: number) => `共 ${total} 条记录`;
+    pagination.showTotal = (total: number) => `Total ${total} records`;
   } else if (typeof showTotalOption === 'function') {
     pagination.showTotal = showTotalOption;
   }

@@ -23,20 +23,20 @@ import {
 } from './lib';
 
 /**
- * 创建自动刷新CRUD操作的Hook
+ * Hook for creating auto-refresh CRUD operations
  *
- * 这个Hook提供了一种通用的方式来包装CRUD操作，使其在执行成功后自动触发表格刷新。
- * 适用于任何需要自动刷新表格的异步操作场景。
+ * This Hook provides a generic way to wrap CRUD operations so they automatically trigger table refresh after successful execution.
+ * Suitable for any async operation scenario that requires automatic table refresh.
  *
- * ## 核心特性
+ * ## Core Features
  *
- * ✅ **自动刷新**: 操作成功后自动触发表格刷新，无需手动调用
- * ✅ **错误处理**: 统一的错误处理和日志记录
- * ✅ **类型安全**: 完整的TypeScript类型支持
- * ✅ **灵活配置**: 支持可选的API函数配置
- * ✅ **通用性**: 可用于任何表格组件的CRUD操作
+ * ✅ **Auto-refresh**: Automatically triggers table refresh after successful operation, no manual call needed
+ * ✅ **Error handling**: Unified error handling and logging
+ * ✅ **Type safety**: Full TypeScript type support
+ * ✅ **Flexible configuration**: Supports optional API function configuration
+ * ✅ **Generality**: Can be used for CRUD operations in any table component
  *
- * ## 基本用法
+ * ## Basic Usage
  *
  * ```typescript
  * import { useAutoRefreshOperations } from '@/modules/threshold/features/task-config/hooks';
@@ -44,29 +44,29 @@ import {
  * const MyComponent = () => {
  *   const tableRef = useRef<TaskTableRef>(null);
  *
- *   // 获取刷新函数
+ *   // Get refresh function
  *   const refreshTable = useCallback(async () => {
  *     await tableRef.current?.refresh();
  *   }, []);
  *
- *   // 创建自动刷新操作
+ *   // Create auto-refresh operations
  *   const operations = useAutoRefreshOperations({
- *     refreshFn: refreshTable, // 刷新函数
- *     deleteApi: async (id) => await deleteApi(id), // 删除API
- *     updateApi: async () => await batchUpdateApi(), // 更新API
- *     createApi: async (data) => await createApi(data), // 创建API（可选）
+ *     refreshFn: refreshTable, // Refresh function
+ *     deleteApi: async (id) => await deleteApi(id), // Delete API
+ *     updateApi: async () => await batchUpdateApi(), // Update API
+ *     createApi: async (data) => await createApi(data), // Create API (optional)
  *   });
  *
- *   // 使用操作
+ *   // Use operations
  *   const handleDelete = async (id: string) => {
  *     try {
  *       const success = await operations.delete(id);
  *       if (success) {
- *         // 删除成功，表格已自动刷新（由 hook 处理）
+ *         // Delete successful, table has been auto-refreshed (handled by hook)
  *       }
  *     } catch (error) {
- *       // 错误已由hook处理，这里只需要处理UI反馈
- *       message.error('删除失败');
+ *       // Error already handled by hook, only need to handle UI feedback here
+ *       message.error('Delete failed');
  *     }
  *   };
  *
@@ -74,12 +74,12 @@ import {
  * };
  * ```
  *
- * @param params - 参数对象
- * @param params.refreshFn - 表格刷新函数，支持返回 Promise<void> 或 Promise<{ success: boolean; error?: Error }>
- * @param params.deleteApi - 删除API函数，接收id参数，返回boolean表示是否成功
- * @param params.updateApi - 更新API函数，用于批量操作等，返回void
- * @param params.createApi - 创建API函数，接收数据参数（可选）
- * @returns 自动刷新的CRUD操作对象
+ * @param params - Parameter object
+ * @param params.refreshFn - Table refresh function, supports returning Promise<void> or Promise<{ success: boolean; error?: Error }>
+ * @param params.deleteApi - Delete API function, receives id parameter, returns boolean indicating success
+ * @param params.updateApi - Update API function, used for batch operations, etc., returns void
+ * @param params.createApi - Create API function, receives data parameter (optional)
+ * @returns Auto-refresh CRUD operations object
  */
 export const useAutoRefreshOperations = ({
   refreshFn,
@@ -90,14 +90,14 @@ export const useAutoRefreshOperations = ({
   return useMemo(
     () => ({
       /**
-       * 删除操作 - 执行成功后自动刷新表格
-       * @param id - 要删除的记录ID
-       * @returns 删除是否成功
+       * Delete operation - Automatically refreshes table after successful execution
+       * @param id - ID of the record to delete
+       * @returns Whether deletion was successful
        */
       delete: deleteApi
         ? createDeleteOperation(deleteApi, refreshFn)
         : async (id: string): Promise<boolean> => {
-            // ✅ 正确：使用 logger 记录警告
+            // ✅ Correct: Use logger to record warning
             logger.warn({
               message: 'useAutoRefreshOperations: deleteApi not provided',
               data: { id },
@@ -108,15 +108,15 @@ export const useAutoRefreshOperations = ({
           },
 
       /**
-       * 更新操作 - 执行成功后自动刷新表格
-       * 适用于批量更新、状态变更等操作
+       * Update operation - Automatically refreshes table after successful execution
+       * Suitable for batch updates, status changes, etc.
        *
-       * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+       * @returns Returns result object in format { success: boolean; error?: Error }
        */
       update: updateApi
         ? createUpdateOperation(updateApi, refreshFn)
         : async (): Promise<{ success: boolean; error?: Error }> => {
-            // ✅ 正确：使用 logger 记录警告
+            // ✅ Correct: Use logger to record warning
             logger.warn({
               message: 'useAutoRefreshOperations: updateApi not provided',
               data: undefined,
@@ -130,10 +130,10 @@ export const useAutoRefreshOperations = ({
           },
 
       /**
-       * 创建操作 - 执行成功后自动刷新表格（可选）
+       * Create operation - Automatically refreshes table after successful execution (optional)
        *
-       * @param data - 创建的数据
-       * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+       * @param data - Data to create
+       * @returns Returns result object in format { success: boolean; error?: Error }
        */
       create: createApi
         ? createCreateOperation(createApi, refreshFn)

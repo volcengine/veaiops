@@ -23,8 +23,8 @@ interface MetricTemplateFormProps {
 }
 
 /**
- * 指标模板表单组件
- * 基于参考项目的 MetricTemplateFormBase 组件实现
+ * Metric template form component
+ * Based on reference project's MetricTemplateFormBase component implementation
  */
 const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
   disabled = false,
@@ -37,7 +37,7 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
     [prefixField],
   );
 
-  // 清洗任务中不展示最小步长和最小异常值、最小异常比例和填充值、展示系数和单异常剔除周期
+  // In cleaning tasks, do not show min step length, min anomaly value, min anomaly ratio, fill value, display coefficient, and single anomaly exclusion period
   const isShow = operateType === 'ViewMetricTemplate' || disabled;
   const isCreate = operateType === 'create' || operateType === 'copy';
 
@@ -68,13 +68,13 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
         >
           {isCreate ? (
             <>
-              {/* 默认阈值下界 */}
+              {/* Default threshold lower bound */}
               <Input.Number
                 isControl
                 required
                 inline
                 formItemProps={{
-                  label: '默认阈值下界',
+                  label: '默认阈值下界', // Keep Chinese label in code string
                   field: getField('normal_range_start'),
                   rules: [{ required: true, message: '请输入默认阈值下界' }],
                   extra: '阈值正常范围的下限值',
@@ -83,13 +83,13 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                   disabled: isShow,
                 }}
               />
-              {/* 默认阈值上界 */}
+              {/* Default threshold upper bound */}
               <Input.Number
                 isControl
                 required
                 inline
                 formItemProps={{
-                  label: '默认阈值上界',
+                  label: '默认阈值上界', // Keep Chinese label in code string
                   field: getField('normal_range_end'),
                   rules: [{ required: true, message: '请输入默认阈值上界' }],
                   extra: '阈值正常范围的上限值',
@@ -101,7 +101,7 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
             </>
           ) : (
             <>
-              {/* 指标最小值 */}
+              {/* Metric minimum value */}
               <Input.Number
                 isControl
                 required
@@ -118,7 +118,7 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                 }}
               />
 
-              {/* 指标最大值 */}
+              {/* Metric maximum value */}
               <Input.Number
                 isControl
                 required
@@ -135,13 +135,13 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                 }}
               />
 
-              {/* 默认阈值下界 */}
+              {/* Default threshold lower bound */}
               <Input.Number
                 isControl
                 required
                 inline
                 formItemProps={{
-                  label: '默认阈值下界',
+                  label: '默认阈值下界', // Keep Chinese label in code string
                   field: getField('normal_range_start'),
                   rules: [{ required: true, message: '请输入默认阈值下界' }],
                   extra:
@@ -152,13 +152,13 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                 }}
               />
 
-              {/* 默认阈值上界 */}
+              {/* Default threshold upper bound */}
               <Input.Number
                 isControl
                 required
                 inline
                 formItemProps={{
-                  label: '默认阈值上界',
+                  label: '默认阈值上界', // Keep Chinese label in code string
                   field: getField('normal_range_end'),
                   rules: [{ required: true, message: '请输入默认阈值上界' }],
                   extra:
@@ -169,7 +169,7 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                 }}
               />
 
-              {/* 展示系数 */}
+              {/* Display coefficient */}
               <Input.Number
                 isControl
                 required
@@ -186,7 +186,7 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                 }}
               />
 
-              {/* 最长无数据时间 */}
+              {/* Maximum time without data */}
               <Input.Number
                 isControl
                 required
@@ -211,7 +211,7 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                 }}
               />
 
-              {/* 最小数据时间 */}
+              {/* Minimum data time */}
               <Input.Number
                 isControl
                 required

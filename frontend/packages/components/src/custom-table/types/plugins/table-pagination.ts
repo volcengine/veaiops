@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 表格分页插件类型定义
+ * Table pagination plugin type definition
  */
 
 import type { PluginBaseConfig } from './core';
 
 /**
- * 表格分页配置
+ * Table pagination configuration
  */
 export interface TablePaginationConfig extends PluginBaseConfig {
   enabled?: boolean;
@@ -38,7 +38,7 @@ export interface TablePaginationConfig extends PluginBaseConfig {
 }
 
 /**
- * 表格分页状态
+ * Table pagination state
  */
 export interface TablePaginationState {
   current: number;
@@ -50,7 +50,7 @@ export interface TablePaginationState {
 }
 
 /**
- * 表格分页方法
+ * Table pagination methods
  */
 export interface TablePaginationMethods {
   setPage: (page: number) => void;

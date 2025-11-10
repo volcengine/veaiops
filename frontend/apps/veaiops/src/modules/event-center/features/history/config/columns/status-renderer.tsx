@@ -19,31 +19,31 @@ import type { EventShowStatus } from 'api-generate';
 import { EventStatus } from 'api-generate';
 
 /**
- * 状态显示映射配置 - 将EVENT_STATUS_MAP转换为Badge组件需要的格式
+ * Status display mapping configuration - Convert EVENT_STATUS_MAP to format required by Badge component
  */
 const getStatusDisplayConfig = (statusCode: number) => {
   const statusOption = EVENT_STATUS_MAP[statusCode];
   if (!statusOption) {
-    return { status: 'default' as const, text: `未知状态(${statusCode})` };
+    return { status: 'default' as const, text: `Unknown Status(${statusCode})` };
   }
 
-  // 根据状态码确定Badge的status类型
+  // Determine Badge status type based on status code
   let badgeStatus: 'success' | 'error' | 'processing' | 'default';
   switch (statusCode) {
-    case EventStatus.INITIAL: // 初始状态
+    case EventStatus.INITIAL: // Initial state
       badgeStatus = 'default';
       break;
-    case EventStatus.SUBSCRIBED: // 订阅匹配已完成，待构造通知卡片
-    case EventStatus.CARD_BUILT: // 通知卡片已构造，待发送通知卡片
+    case EventStatus.SUBSCRIBED: // Subscription matching completed, waiting to construct notification card
+    case EventStatus.CARD_BUILT: // Notification card constructed, waiting to send notification card
       badgeStatus = 'processing';
       break;
-    case EventStatus.DISTRIBUTED: // 通知卡片已发送
+    case EventStatus.DISTRIBUTED: // Notification card sent
       badgeStatus = 'success';
       break;
-    case EventStatus.NO_DISTRIBUTION: // 无订阅匹配，不发送通知卡片
-    case EventStatus.CHATOPS_NO_MATCH: // 未命中检测规则，不发送通知卡片
-    case EventStatus.CHATOPS_RULE_FILTERED: // 命中过滤规则，不发送通知卡片
-    case EventStatus.CHATOPS_RULE_LIMITED: // 告警被抑制，不发送通知卡片
+    case EventStatus.NO_DISTRIBUTION: // No subscription match, do not send notification card
+    case EventStatus.CHATOPS_NO_MATCH: // Detection rule not matched, do not send notification card
+    case EventStatus.CHATOPS_RULE_FILTERED: // Filter rule matched, do not send notification card
+    case EventStatus.CHATOPS_RULE_LIMITED: // Alert suppressed, do not send notification card
       badgeStatus = 'error';
       break;
     default:
@@ -57,74 +57,74 @@ const getStatusDisplayConfig = (statusCode: number) => {
 };
 
 /**
- * 渲染事件状态枚举值 - 使用Badge显示
- * 修复：使用统一的状态映射，与筛选器选项保持一致
+ * Render event status enum value - Display using Badge
+ * Fix: Use unified status mapping, consistent with filter options
  *
- * 边界case处理：
- * - null/undefined: 显示空内容
- * - 字符串: 转换为数字
- * - NaN: 显示未知状态
- * - 负数/小数: 取整后显示
- * - 未知枚举值: 显示"未知状态(值)"
+ * Edge case handling:
+ * - null/undefined: Display empty content
+ * - string: Convert to number
+ * - NaN: Display unknown status
+ * - negative/decimal: Round and display
+ * - unknown enum value: Display "Unknown Status(value)"
  */
 export const renderEventStatus = (value?: number | string | null) => {
-  // 边界case 1: 处理 null/undefined
+  // Edge case 1: Handle null/undefined
   if (value === undefined || value === null) {
     return EMPTY_CONTENT_TEXT;
   }
 
-  // 边界case 2: 确保值是数字类型
+  // Edge case 2: Ensure value is number type
   let statusCode: number;
   if (typeof value === 'string') {
     statusCode = parseInt(value, 10);
-    // 边界case 3: 处理 NaN
+    // Edge case 3: Handle NaN
     if (Number.isNaN(statusCode)) {
-      return <Badge status="default" text={`无效状态(${value})`} />;
+      return <Badge status="default" text={`Invalid Status(${value})`} />;
     }
   } else if (typeof value === 'number') {
-    // 边界case 4: 处理小数，取整
+    // Edge case 4: Handle decimals, round down
     statusCode = Math.floor(value);
   } else {
-    // 边界case 5: 处理其他类型
-    return <Badge status="default" text={`无效状态(${String(value)})`} />;
+    // Edge case 5: Handle other types
+    return <Badge status="default" text={`Invalid Status(${String(value)})`} />;
   }
 
-  // 使用统一的状态映射配置
+  // Use unified status mapping configuration
   const config = getStatusDisplayConfig(statusCode);
 
   return <Badge status={config.status} text={config.text} />;
 };
 
 /**
- * 渲染事件状态 - 显示中文状态
- * 使用 show_status 字段（EventShowStatus 枚举）
+ * Render event status - Display Chinese status
+ * Uses show_status field (EventShowStatus enum)
  *
- * 边界case处理：
- * - null/undefined/空字符串: 显示空内容
- * - 未知枚举值: 显示原值（容错处理）
- * - 非字符串类型: 转换为字符串后处理
+ * Edge case handling:
+ * - null/undefined/empty string: Display empty content
+ * - unknown enum value: Display original value (fault-tolerant handling)
+ * - non-string type: Convert to string then process
  */
 export const renderEventShowStatus = (value?: EventShowStatus | null) => {
-  // 边界case 1: 处理 null/undefined
+  // Edge case 1: Handle null/undefined
   if (!value) {
     return EMPTY_CONTENT_TEXT;
   }
 
-  // 边界case 2: 确保值是字符串类型并去除空格
+  // Edge case 2: Ensure value is string type and trim whitespace
   const statusValue = String(value).trim();
   if (!statusValue) {
     return EMPTY_CONTENT_TEXT;
   }
 
-  // 从映射中获取配置
+  // Get configuration from mapping
   const config = EVENT_SHOW_STATUS_MAP[statusValue as EventShowStatus];
 
-  // 边界case 3: 处理未知的状态（后端新增但前端未同步）
+  // Edge case 3: Handle unknown status (backend added but frontend not synced)
   if (!config) {
     return <Badge status="default" text={statusValue} />;
   }
 
-  // 根据状态确定 Badge 样式
+  // Determine Badge style based on status
   let badgeStatus: 'success' | 'error' | 'processing' | 'warning' | 'default';
   switch (statusValue as EventShowStatus) {
     case '等待发送':

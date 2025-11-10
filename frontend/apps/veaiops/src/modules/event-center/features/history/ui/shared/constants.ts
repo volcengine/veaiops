@@ -15,7 +15,7 @@
 import { AgentType, EventLevel } from 'api-generate';
 
 /**
- * 事件类型映射配置 - 基于后端AgentType枚举，增强视觉设计
+ * Event type mapping configuration - Based on backend AgentType enum, enhanced visual design
  */
 export const EVENT_TYPE_MAP: Record<
   string,
@@ -53,7 +53,7 @@ export const EVENT_TYPE_MAP: Record<
 };
 
 /**
- * 事件级别视觉映射配置
+ * Event level visual mapping configuration
  */
 export const EVENT_LEVEL_VISUAL_MAP: Record<
   string,
@@ -86,7 +86,7 @@ export const EVENT_LEVEL_VISUAL_MAP: Record<
     icon: '🔵',
     priority: 3,
   },
-  // P3级别暂时注释，因为EventLevel枚举中可能没有P3
+  // P3 level temporarily commented out, as EventLevel enum may not have P3
   // [EventLevel.P3]: {
   //   color: '#00B42A',
   //   bgColor: '#E8FFEA',
@@ -97,17 +97,17 @@ export const EVENT_LEVEL_VISUAL_MAP: Record<
 };
 
 /**
- * 默认展开的章节
+ * Default expanded sections
  */
 export const DEFAULT_EXPANDED_SECTIONS = new Set(['basic', 'time', 'rawData']);
 
 /**
- * 原始数据视图格式类型
+ * Raw data view format type
  */
 export type RawDataFormat = 'json' | 'formatted';
 
 /**
- * 样式常量
+ * Style constants
  */
 export const STYLES = {
   CARD_SHADOW: '0 2px 8px rgba(0, 0, 0, 0.06)',

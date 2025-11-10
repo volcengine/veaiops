@@ -23,18 +23,18 @@ import type { Project } from 'api-generate';
 import type React from 'react';
 
 /**
- * Project 表格组件 - 使用 Hook 内聚模式 + 自动刷新机制
+ * Project table component - uses Hook aggregation pattern + auto refresh mechanism
  *
- * 🎯 最佳实践：Props 透传模式
- * - 接受内聚 Hook 传递的表格配置
- * - 通过 operationWrapper 实现自动刷新
- * - 组件只负责 UI 渲染，业务逻辑由内聚 Hook 处理
+ * 🎯 Best practice: Props passthrough pattern
+ * - Accepts table configuration from aggregated Hook
+ * - Achieves auto refresh through operationWrapper
+ * - Component only handles UI rendering, business logic handled by aggregated Hook
  *
- * @param props - 组件属性
- * @returns 表格组件
+ * @param props - Component props
+ * @returns Table component
  */
 export const ProjectTableConfig: React.FC<{
-  // 表格配置（来自内聚 Hook）
+  // Table configuration (from aggregated Hook)
   customTableProps: Record<string, unknown>;
   handleColumns: (
     props?: Record<string, unknown>,
@@ -42,7 +42,7 @@ export const ProjectTableConfig: React.FC<{
   handleFilters: (props: HandleFilterProps<BaseQuery>) => FieldItem[];
   renderActions: (props?: Record<string, unknown>) => React.ReactNode[];
 
-  // 业务逻辑回调
+  // Business logic callbacks
   onDelete: (projectId: string) => Promise<boolean>;
   onImport: () => void;
   onCreate: () => void;

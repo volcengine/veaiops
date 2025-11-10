@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ZabbixTemplate = {
   /**
-   * Zabbix 模板 ID
+   * Zabbix template ID
    */
   templateid: string;
   /**
-   * Zabbix 模板名称
+   * Zabbix template name
    */
   name: string;
 };

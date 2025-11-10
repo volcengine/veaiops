@@ -20,7 +20,7 @@ import type React from 'react';
 import { UpdateTooltip } from '../update-tooltip';
 
 /**
- * 关注属性配置组件属性接口
+ * Interest attribute configuration component props interface
  */
 interface InterestConfigProps {
   projectRefreshTrigger: number;
@@ -30,8 +30,8 @@ interface InterestConfigProps {
 }
 
 /**
- * 关注属性配置组件
- * 包含关注项目的配置
+ * Interest attribute configuration component
+ * Contains interest project configuration
  */
 export const InterestConfig: React.FC<InterestConfigProps> = ({
   projectRefreshTrigger,

@@ -27,11 +27,10 @@ import {
   statusLabels,
 } from '@datasource/lib';
 import { CellRender } from '@veaiops/components';
-
 import type React from 'react';
 
 const { Text } = Typography;
-const { CustomOutlineTag, StampTime } = CellRender;
+const { CustomOutlineTag } = CellRender;
 
 interface DataSourceTableProps {
   dataSources: DataSource[];
@@ -43,15 +42,15 @@ interface DataSourceTableProps {
 }
 
 // ✅ Fix: Badge's status type is 'default' | 'processing' | 'success' | 'warning' | 'error'
-// While color type is string, can accept any string value
-// Use color property instead of status property, more flexible and type-safe
+// While color type is string, which can accept any string value
+// Use color property instead of status property for more flexibility and type safety
 const renderStatus = (status: string) => {
   const statusConfig = statusLabels[status as keyof typeof statusLabels] || {
     text: status,
     color: 'gray',
   };
   // ✅ Fix: Use color property instead of status, color accepts string type
-  // Map color to Badge's status (if matched) or directly use color
+  // Map color to Badge's status (if matched) or use color directly
   let badgeStatus: 'success' | 'warning' | 'error' | 'default' | undefined;
   if (statusConfig.color === 'green') {
     badgeStatus = 'success';
@@ -135,7 +134,7 @@ export const DataSourceTable: React.FC<DataSourceTableProps> = ({
       dataIndex: 'last_sync_time',
       key: 'last_sync_time',
       width: 160,
-      render: (time?: string) => <StampTime time={time} />,
+      render: (time?: string) => (time ? new Date(time).toLocaleString() : '-'),
     },
     {
       title: '操作',

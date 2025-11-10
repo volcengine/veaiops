@@ -15,20 +15,20 @@
 import { queryBooleanFormat } from '@veaiops/utils';
 
 /**
- * 群管理查询参数格式化配置
+ * Chat management query parameter formatting configuration
  *
- * 🔧 优化说明：
- * - 只需定义**非字符串类型**的字段（数组、布尔值等）
- * - 字符串类型字段（如 name）会被CustomTable自动处理
- * - 这样可以避免遗漏字段导致的URL同步问题
+ * 🔧 Optimization notes:
+ * - Only need to define **non-string type** fields (arrays, booleans, etc.)
+ * - String type fields (such as name) will be automatically handled by CustomTable
+ * - This avoids URL synchronization issues caused by missing fields
  */
 export const CHAT_TABLE_QUERY_FORMAT = {
-  // 强制刷新 - 布尔值格式
+  // Force refresh - boolean format
   force_refresh: queryBooleanFormat,
-  // 已入群状态 - 布尔值格式
+  // Joined group status - boolean format
   is_active: queryBooleanFormat,
-  // 兴趣检测智能体状态 - 布尔值格式
+  // Interest detection agent status - boolean format
   enable_func_interest: queryBooleanFormat,
-  // 主动回复智能体状态 - 布尔值格式
+  // Proactive reply agent status - boolean format
   enable_func_proactive_reply: queryBooleanFormat,
 };

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 阿里云指标选择组件导出
+ * Aliyun metric selection component export
  */
 
 export { AliyunMetricSelection } from './aliyun-metric-selection';

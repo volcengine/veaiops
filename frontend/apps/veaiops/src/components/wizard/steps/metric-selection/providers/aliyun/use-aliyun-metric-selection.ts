@@ -13,19 +13,19 @@
 // limitations under the License.
 
 /**
- * 阿里云指标选择业务逻辑 Hook
- * @description 处理指标选择的核心业务逻辑
+ * Aliyun metric selection business logic Hook
+ * @description Handles core business logic for metric selection
  */
 
 import { useCallback } from 'react';
 import type { AliyunMetric, WizardActions } from '../../../../types';
 
 export const useAliyunMetricSelection = (actions: WizardActions) => {
-  // 处理指标选择，自动设置所有维度为选中状态（默认全选）
+  // Handle metric selection, automatically set all dimensions as selected (default select all)
   const handleMetricSelect = useCallback(
     (metric: AliyunMetric) => {
       actions.setSelectedAliyunMetric(metric);
-      // 默认选中所有维度
+      // Default select all dimensions
       if (metric.dimensionKeys && metric.dimensionKeys.length > 0) {
         actions.setSelectedGroupBy(metric.dimensionKeys);
       } else {

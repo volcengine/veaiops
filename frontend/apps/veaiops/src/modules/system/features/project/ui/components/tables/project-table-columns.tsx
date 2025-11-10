@@ -47,7 +47,7 @@ export const useProjectTableColumns = ({
   return useCallback(
     (_props: Record<string, unknown>) => [
       {
-        title: '项目信息',
+        title: 'Project Information',
         dataIndex: 'name',
         key: 'name',
         width: 250,
@@ -60,60 +60,65 @@ export const useProjectTableColumns = ({
         ),
       },
       {
-        title: '状态',
+        title: 'Status',
         dataIndex: 'is_active',
         key: 'is_active',
         width: 100,
         render: (isActive: boolean) => (
-          <CustomOutlineTag>{isActive ? '启用' : '禁用'}</CustomOutlineTag>
+          <CustomOutlineTag>{isActive ? 'Active' : 'Inactive'}</CustomOutlineTag>
         ),
       },
       {
-        title: '创建时间',
+        title: 'Created At',
         dataIndex: 'created_at',
         key: 'created_at',
         width: 180,
         render: (createdAt: string) => (
-          <StampTime time={createdAt} template="YYYY-MM-DD HH:mm:ss" />
+          <StampTime
+            time={new Date(createdAt).getTime()}
+            template="YYYY-MM-DD HH:mm:ss"
+          />
         ),
       },
       {
-        title: '更新时间',
+        title: 'Updated At',
         dataIndex: 'updated_at',
         key: 'updated_at',
         width: 180,
         render: (createdAt: string) => (
-          <StampTime time={createdAt} template="YYYY-MM-DD HH:mm:ss" />
+          <StampTime
+            time={new Date(createdAt).getTime()}
+            template="YYYY-MM-DD HH:mm:ss"
+          />
         ),
       },
       {
-        title: '操作',
+        title: 'Actions',
         key: 'actions',
         width: 120,
         fixed: 'right',
         render: (_: unknown, record: Project) => {
-          const canDelete = true; // 可以根据业务逻辑判断是否可以删除
-          const deleteReason = ''; // 删除原因
+          const canDelete = true; // Can determine if deletion is allowed based on business logic
+          const deleteReason = ''; // Deletion reason
 
           return canDelete ? (
             <Popconfirm
-              title="确认删除"
-              content={`确定要删除项目"${record.name}"吗？此操作不可恢复。`}
+              title="Confirm Delete"
+              content={`Are you sure you want to delete project "${record.name}"? This action cannot be undone.`}
               onOk={async () => {
                 await onDelete?.(record.project_id || '');
-                // Delete operation will automatically refresh through operationWrapper, no manual refresh needed
+                // Delete operation will be auto refreshed by operationWrapper, no need to manually refresh
               }}
-              okText="确认删除"
-              cancelText="取消"
+              okText="Confirm Delete"
+              cancelText="Cancel"
             >
               <Button
                 type="text"
                 size="small"
                 status="danger"
                 icon={<IconDelete />}
-                data-testid="delete-project-btn"
               >
-                删除
+                Delete
               </Button>
             </Popconfirm>
           ) : (
@@ -123,10 +128,9 @@ export const useProjectTableColumns = ({
               status="danger"
               icon={<IconDelete />}
               disabled
-              title={deleteReason || '无法删除'}
-              data-testid="delete-project-btn"
+              title={deleteReason || 'Cannot delete'}
             >
-              删除
+              Delete
             </Button>
           );
         },

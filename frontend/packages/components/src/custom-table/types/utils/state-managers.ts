@@ -13,49 +13,49 @@
 // limitations under the License.
 
 /**
- * 状态管理器类型安全工具
- * 替代 as unknown 和不安全的属性删除操作
+ * State manager type safety utilities
+ * Replaces as unknown and unsafe property deletion operations
  */
 
 import type { BaseQuery, BaseRecord, PluginContext } from '@veaiops/types';
 
 /**
- * 状态字段删除操作类型
+ * State field deletion operation type
  */
 export type StateFieldKey = string;
 
 /**
- * 安全的状态清理器
+ * Safe state cleaner
  */
 export interface SafeStateCleaner<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 移除状态字段 */
+  /** Remove state fields */
   removeStateFields: (
     context: PluginContext<RecordType, QueryType>,
     fields: StateFieldKey[],
   ) => void;
 
-  /** 移除助手方法 */
+  /** Remove helper methods */
   removeHelperMethods: (
     context: PluginContext<RecordType, QueryType>,
     methods: string[],
   ) => void;
 
-  /** 重置特定状态 */
+  /** Reset specific state fields */
   resetStateFields: <T extends Record<string, unknown>>(
     target: T,
     resetFields: Partial<T>,
   ) => T;
 
-  /** 安全地检查字段是否存在 */
+  /** Safely check if field exists */
   hasStateField: (
     context: PluginContext<RecordType, QueryType>,
     field: StateFieldKey,
   ) => boolean;
 
-  /** 安全地获取状态字段值 */
+  /** Safely get state field value */
   getStateField: <T = unknown>(
     context: PluginContext<RecordType, QueryType>,
     field: StateFieldKey,
@@ -63,7 +63,7 @@ export interface SafeStateCleaner<
 }
 
 /**
- * 创建类型安全的状态清理器
+ * Create type-safe state cleaner
  */
 export function createSafeStateCleaner<
   RecordType extends BaseRecord = BaseRecord,
@@ -76,7 +76,7 @@ export function createSafeStateCleaner<
     ): void {
       fields.forEach((field) => {
         if (field in context.state) {
-          // 使用 Reflect.deleteProperty 进行安全删除
+          // Use Reflect.deleteProperty for safe deletion
           Reflect.deleteProperty(context.state, field);
         }
       });
@@ -88,7 +88,7 @@ export function createSafeStateCleaner<
     ): void {
       methods.forEach((method) => {
         if (method in context.helpers) {
-          // 使用 Reflect.deleteProperty 进行安全删除
+          // Use Reflect.deleteProperty for safe deletion
           Reflect.deleteProperty(context.helpers, method);
         }
       });
@@ -126,27 +126,27 @@ export function createSafeStateCleaner<
 }
 
 /**
- * 分页状态管理器
+ * Pagination state manager
  */
 export interface PaginationStateManager<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 清理分页状态 */
+  /** Cleanup pagination state */
   cleanupPaginationState: (
     context: PluginContext<RecordType, QueryType>,
   ) => void;
 
-  /** 重置分页状态 */
+  /** Reset pagination state */
   resetPaginationState: (context: PluginContext<RecordType, QueryType>) => void;
 
-  /** 设置分页参数 */
+  /** Set pagination parameters */
   setPaginationParams: (
     context: PluginContext<RecordType, QueryType>,
     params: { current?: number; pageSize?: number },
   ) => void;
 
-  /** 获取分页参数 */
+  /** Get pagination parameters */
   getPaginationParams: (context: PluginContext<RecordType, QueryType>) => {
     current?: number;
     pageSize?: number;
@@ -154,7 +154,7 @@ export interface PaginationStateManager<
 }
 
 /**
- * 创建分页状态管理器
+ * Create pagination state manager
  */
 export function createPaginationStateManager<
   RecordType extends BaseRecord = BaseRecord,
@@ -166,14 +166,14 @@ export function createPaginationStateManager<
     cleanupPaginationState(
       context: PluginContext<RecordType, QueryType>,
     ): void {
-      // 清理分页相关状态字段
+      // Cleanup pagination-related state fields
       stateCleaner.removeStateFields(context, [
         'current',
         'pageSize',
         'isChangingPage',
       ]);
 
-      // 清理分页相关方法
+      // Cleanup pagination-related methods
       stateCleaner.removeHelperMethods(context, ['setCurrent', 'setPageSize']);
     },
 
@@ -187,7 +187,7 @@ export function createPaginationStateManager<
         },
       );
 
-      // 更新状态
+      // Update state
       Object.assign(context.state, resetState);
     },
 
@@ -218,32 +218,32 @@ export function createPaginationStateManager<
 }
 
 /**
- * 排序状态管理器
+ * Sorter state manager
  */
 export interface SorterStateManager<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 清理排序状态 */
+  /** Cleanup sorter state */
   cleanupSorterState: (context: PluginContext<RecordType, QueryType>) => void;
 
-  /** 重置排序状态 */
+  /** Reset sorter state */
   resetSorterState: (context: PluginContext<RecordType, QueryType>) => void;
 
-  /** 设置排序参数 */
+  /** Set sorter parameters */
   setSorterParam: (
     context: PluginContext<RecordType, QueryType>,
     sorter: Record<string, string | number>,
   ) => void;
 
-  /** 获取排序参数 */
+  /** Get sorter parameters */
   getSorterParam: (
     context: PluginContext<RecordType, QueryType>,
   ) => Record<string, string | number>;
 }
 
 /**
- * 创建排序状态管理器
+ * Create sorter state manager
  */
 export function createSorterStateManager<
   RecordType extends BaseRecord = BaseRecord,
@@ -289,19 +289,19 @@ export function createSorterStateManager<
 }
 
 /**
- * 过滤器状态管理器
+ * Filter state manager
  */
 export interface FilterStateManager<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 清理过滤器状态 */
+  /** Cleanup filter state */
   cleanupFilterState: (context: PluginContext<RecordType, QueryType>) => void;
 
-  /** 重置过滤器状态 */
+  /** Reset filter state */
   resetFilterState: (context: PluginContext<RecordType, QueryType>) => void;
 
-  /** 设置过滤器参数 */
+  /** Set filter parameters */
   setFilterParams: (
     context: PluginContext<RecordType, QueryType>,
     filters: Record<
@@ -310,7 +310,7 @@ export interface FilterStateManager<
     >,
   ) => void;
 
-  /** 获取过滤器参数 */
+  /** Get filter parameters */
   getFilterParams: (
     context: PluginContext<RecordType, QueryType>,
   ) => Record<
@@ -320,7 +320,7 @@ export interface FilterStateManager<
 }
 
 /**
- * 创建过滤器状态管理器
+ * Create filter state manager
  */
 export function createFilterStateManager<
   RecordType extends BaseRecord = BaseRecord,

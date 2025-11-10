@@ -17,7 +17,7 @@ import { QuerySyncUtils } from './query-sync-utils';
 import type { CreateQuerySyncUtilsParams } from './types';
 
 /**
- * 创建查询参数同步工具实例
+ * Create query parameter synchronization utility instance
  */
 export const createQuerySyncUtils = <
   QueryType extends Record<string, unknown> = Record<string, unknown>,
@@ -28,7 +28,7 @@ export const createQuerySyncUtils = <
   new QuerySyncUtils(config, context);
 
 /**
- * 检查是否需要同步查询参数
+ * Check if query parameter synchronization is needed
  */
 export const shouldSyncQuery = <QueryType extends Record<string, unknown>>(
   config: QuerySyncConfig,
@@ -36,9 +36,9 @@ export const shouldSyncQuery = <QueryType extends Record<string, unknown>>(
 ): boolean => Boolean(config.syncQueryOnSearchParams && context.isMounted);
 
 /**
- * 安全地执行查询参数同步
+ * Safely execute query parameter synchronization
  *
- * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+ * @returns Returns result object in format { success: boolean; error?: Error }
  */
 export const safeExecuteSync = async (
   syncFn: () => void | Promise<void>,
@@ -49,7 +49,7 @@ export const safeExecuteSync = async (
     return { success: true };
   } catch (error: unknown) {
     const errorObj = error instanceof Error ? error : new Error(String(error));
-    // 静默处理错误，避免中断流程，但返回错误信息供调用方判断
+    // Silently handle errors to avoid interrupting flow, but return error info for caller to judge
     return { success: false, error: errorObj };
   }
 };

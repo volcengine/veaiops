@@ -15,8 +15,8 @@
 import { StatisticsManagement } from '@/modules/event-center';
 
 /**
- * 事件中心 - 概述统计页面
- * 使用 CustomTable 重构后的统计管理功能
+ * Event center - Overview statistics page
+ * Statistics management functionality refactored using CustomTable
  */
 const StatisticsPage = () => {
   return <StatisticsManagement />;

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Bot表单管理Hook
- * 整合所有表单相关的逻辑
+ * Bot form management Hook
+ * Integrates all form-related logic
  */
 
 import { Form, Message } from '@arco-design/web-react';
@@ -23,7 +23,7 @@ import { logger } from '@veaiops/utils';
 import { useCallback, useState } from 'react';
 
 /**
- * Bot表单Hook
+ * Bot form Hook
  */
 export const useBotForm = () => {
   const [form] = Form.useForm();
@@ -52,7 +52,7 @@ export const useBotForm = () => {
     async (values: BotCreateRequest | BotUpdateRequest) => {
       setLoading(true);
       try {
-        // 这里应该调用实际的API
+        // Should call actual API here
         logger.debug({
           message: 'Submit bot',
           data: { values, editingBot },
@@ -62,7 +62,7 @@ export const useBotForm = () => {
         Message.success(editingBot ? '更新成功' : '创建成功');
         handleCancel();
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         let errorMessage: string;
         if (error instanceof Error) {
           errorMessage = error.message;

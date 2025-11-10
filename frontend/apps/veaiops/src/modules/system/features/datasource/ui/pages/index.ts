@@ -13,20 +13,20 @@
 // limitations under the License.
 
 /**
- * Pages - 统一导出入口
+ * Pages - Unified export entry
  */
 
-// 导出页面组件
+// Export page components
 export * from './management';
 
-// 导出页面级组件
+// Export page-level components
 export * from './components';
 
-// 导出页面级 Hooks
+// Export page-level Hooks
 export * from './hooks';
 
-// 导出类型
+// Export types
 export type * from './types';
 
-// 导出配置
+// Export configuration
 export * from './config';

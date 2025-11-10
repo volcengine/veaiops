@@ -13,21 +13,21 @@
 // limitations under the License.
 
 /**
- * 策略管理功能统一导出
+ * Strategy management feature unified export
  *
- * ✅ 层层导出原则：通过功能模块 index.ts 统一导出所有子目录内容
- * - 从功能模块 index.ts 导入，路径最短（如 `@ec/strategy`）
- * - 每个子目录通过各自的 index.ts 统一导出
+ * ✅ Layered export principle: Export all subdirectory contents through feature module index.ts
+ * - Import from feature module index.ts, shortest path (e.g., `@ec/strategy`)
+ * - Each subdirectory exports through its own index.ts
  */
 
-// ==================== Constants 导出 ====================
+// ==================== Constants Export ====================
 export {
   channelInfoMap,
   channelTypeOptions,
   STRATEGY_MANAGEMENT_CONFIG,
 } from './constants';
 
-// ==================== Hooks 导出 ====================
+// ==================== Hooks Export ====================
 export {
   useBotsList,
   useChatsList,
@@ -40,13 +40,13 @@ export {
   type UseStrategyTableConfigReturn,
 } from './hooks';
 
-// ==================== Config 导出 ====================
+// ==================== Config Export ====================
 export { getStrategyColumns, getStrategyFilters } from './config';
 
-// ==================== Lib 导出 ====================
+// ==================== Lib Export ====================
 export { adaptStrategyForEdit, strategyApi, strategyService } from './lib';
 
-// ==================== UI 组件导出 ====================
+// ==================== UI Components Export ====================
 export {
   CardTemplateConfigMessage,
   StrategyDetailDrawer,
@@ -55,5 +55,5 @@ export { default as StrategyModal } from './ui/modal';
 export { StrategyTable, type StrategyTableRef } from './ui/table';
 export { default as StrategyManagement } from './ui/main';
 
-// ==================== 默认导出 ====================
+// ==================== Default Export ====================
 export { default } from './ui/main';

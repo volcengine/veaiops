@@ -25,7 +25,7 @@ import { IconDelete, IconPlus } from '@arco-design/web-react/icon';
 import type React from 'react';
 
 /**
- * Webhook配置组件属性接口
+ * Webhook configuration component props interface
  */
 interface WebhookConfigProps {
   form: FormInstance;
@@ -40,8 +40,8 @@ interface WebhookConfigProps {
 }
 
 /**
- * Webhook配置组件
- * 包含WEBHOOK投递事件的配置
+ * Webhook configuration component
+ * Contains WEBHOOK event delivery configuration
  */
 export const WebhookConfig: React.FC<WebhookConfigProps> = ({
   form,
@@ -53,7 +53,7 @@ export const WebhookConfig: React.FC<WebhookConfigProps> = ({
   const enable_webhook = Form.useWatch('enable_webhook', form);
 
   /**
-   * 验证 Webhook URL
+   * Validate Webhook URL
    */
   const validateWebhookUrl = (url: string) => {
     if (!url) {

@@ -15,7 +15,7 @@
 import type { TimeseriesBackendItem } from '../lib/validators';
 
 /**
- * 从 labels 对象中获取指定 key 的值
+ * Get the value of the specified key from the labels object
  */
 export const getLabelValue = ({
   obj,
@@ -30,7 +30,7 @@ export const getLabelValue = ({
 
   const value = obj[key];
 
-  // 确保值可以安全转换为字符串
+  // Ensure value can be safely converted to string
   if (typeof value === 'object' && value !== null) {
     return JSON.stringify(value);
   }
@@ -38,7 +38,7 @@ export const getLabelValue = ({
 };
 
 /**
- * 生成系列标识符
+ * Generate series identifier
  */
 export const generateSeriesIdentifier = ({
   item,
@@ -53,7 +53,7 @@ export const generateSeriesIdentifier = ({
   const itemid = getLabelValue({ obj: labels, key: 'itemid' });
   const instanceId = getLabelValue({ obj: labels, key: 'instance_id' });
 
-  // 边界检查：生成有意义的系列名称（预留，未来可能用于图表系列标识）
+  // Boundary check: generate meaningful series name (reserved, may be used for chart series identification in the future)
   if (hostname) {
     return hostname;
   } else if (itemid) {

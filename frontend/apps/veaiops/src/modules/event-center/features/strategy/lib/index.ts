@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 策略管理 Lib 统一导出
+ * Strategy management Lib unified export
  *
- * ✅ 简化导出：
- * - 统一使用 strategyApi（已合并 service 功能）
- * - 简化导出路径
+ * ✅ Simplified export:
+ * - Unified use of strategyApi (merged service functionality)
+ * - Simplified export paths
  */
-// ✅ 简化导出：统一使用 strategyApi
+// ✅ Simplified export: Unified use of strategyApi
 export { strategyApi } from './api';
 export { adaptStrategyForEdit } from './types';
-// ✅ 向后兼容：导出 strategyService（如果存在）
+// ✅ Backward compatibility: Export strategyService (if exists)
 export { strategyService } from './service';
-// InformStrategy 直接从 'api-generate' 导入（符合单一数据源原则）
+// InformStrategy imported directly from 'api-generate' (conforms to single data source principle)

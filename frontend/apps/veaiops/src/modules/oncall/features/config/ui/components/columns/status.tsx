@@ -17,14 +17,14 @@ import type { Interest } from 'api-generate';
 import type React from 'react';
 
 /**
- * 状态列渲染组件
+ * Status column render component
  */
 export const StatusColumn: React.FC<{
   isActive: boolean;
   record: Interest;
   onToggle: (ruleUuid: string, checked: boolean) => void;
 }> = ({ isActive, record, onToggle }) => {
-  // 类型安全：确保 uuid 存在
+  // Type safety: ensure uuid exists
   if (!record.uuid) {
     return null;
   }

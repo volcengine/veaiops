@@ -79,3 +79,4 @@ function removeGeneratedComments(outputDir) {
 }
 
 module.exports = { removeGeneratedComments };
+

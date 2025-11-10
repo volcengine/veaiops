@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接测试模态框底部组件
+ * Connection test modal footer component
  */
 
 import { Button } from '@arco-design/web-react';

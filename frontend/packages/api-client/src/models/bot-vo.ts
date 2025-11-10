@@ -15,27 +15,27 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 import type { ChannelType } from './channel-type';
 /**
- * 机器人视图对象
+ * Bot view object
  */
 export type BotVO = {
   /**
-   * 机器人文档ID
+   * Bot document ID
    */
   id: string;
   /**
-   * 通道类型
+   * Channel type
    */
   channel: ChannelType;
   /**
-   * 机器人ID
+   * Bot ID
    */
   bot_id: string;
   /**
-   * 机器人名称
+   * Bot name
    */
   name: string;
   /**
-   * 是否激活
+   * Whether the bot is active
    */
   is_active: boolean;
 };

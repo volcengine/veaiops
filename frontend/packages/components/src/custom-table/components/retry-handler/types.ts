@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 重试处理器类型定义
- * 类型已迁移到 ../../types/components/retry-handler.ts
- * 此文件保留以兼容现有引用，实际类型请从types目录导入
+ * Retry handler type definitions
+ * Types have been migrated to ../../types/components/retry-handler.ts
+ * This file is kept for backward compatibility with existing references, actual types should be imported from types directory
  */
 export type {
   RetryHandlerProps,

@@ -13,137 +13,137 @@
 // limitations under the License.
 
 /**
- * Oncall 模块类型定义
- * 与 openapi-specs/modules/oncall.json 保持一致
+ * Oncall module type definitions
+ * Keep consistent with openapi-specs/modules/oncall.json
  */
 
 // ============================================================
-// Interest Rule 相关类型（主要规则类型）
+// Interest Rule related types (main rule types)
 // ============================================================
 
 /**
- * 告警等级枚举
+ * Alert level enumeration
  */
 export type AlertLevel = 'P0' | 'P1' | 'P2';
 
 /**
- * 规则行为类别
+ * Rule action category
  */
 export type ActionCategory = 'Detect' | 'Filter';
 
 /**
- * 规则检查类别
+ * Rule inspection category
  */
 export type InspectCategory = 'Semantic' | 'RE';
 
 /**
- * Interest Rule（Oncall 规则）
- * 对应 API: Interest schema
+ * Interest Rule (Oncall rule)
+ * Corresponds to API: Interest schema
  */
 export interface OncallRule {
-  /** 规则ID */
+  /** Rule ID */
   _id: string;
-  /** 规则名称 */
+  /** Rule name */
   name: string;
-  /** 规则描述 */
+  /** Rule description */
   description?: string;
-  /** 告警等级 */
+  /** Alert level */
   level?: AlertLevel;
-  /** 正面示例 */
+  /** Positive examples */
   examples_positive?: string[];
-  /** 反面示例 */
+  /** Negative examples */
   examples_negative?: string[];
-  /** 行为类别 */
+  /** Action category */
   action_category: ActionCategory;
-  /** 检查类别 */
+  /** Inspection category */
   inspect_category: InspectCategory;
-  /** 正则表达式（当 inspect_category 为 'RE' 时使用） */
+  /** Regular expression (used when inspect_category is 'RE') */
   regular_expression?: string;
-  /** 检查历史消息数量 */
+  /** Number of historical messages to inspect */
   inspect_history?: number;
-  /** 告警抑制间隔 */
+  /** Alert suppression interval */
   silence_delta?: string;
-  /** 是否激活 */
+  /** Whether the rule is active */
   is_active?: boolean;
-  /** 创建时间 */
+  /** Creation timestamp */
   created_at?: string;
-  /** 更新时间 */
+  /** Last update timestamp */
   updated_at?: string;
-  /** 版本号 */
+  /** Version number */
   version?: number;
 }
 
 /**
- * 规则更新请求
- * 对应 API: InterestUpdateRequest schema
+ * Rule update request
+ * Corresponds to API: InterestUpdateRequest schema
  */
 export interface OncallRuleUpdateRequest {
-  /** 规则名称 */
+  /** Rule name */
   name?: string;
-  /** 描述 */
+  /** Description */
   description?: string;
-  /** 告警等级 */
+  /** Alert level */
   level?: AlertLevel;
-  /** 告警抑制间隔 */
+  /** Alert suppression interval */
   silence_delta?: string;
-  /** 是否启用状态 */
+  /** Whether the rule is enabled */
   is_active?: boolean;
-  /** 正面示例（当检测类别为语义分析时可编辑） */
+  /** Positive examples (editable when inspection category is semantic analysis) */
   examples_positive?: string[];
-  /** 反面示例（当检测类别为语义分析时可编辑） */
+  /** Negative examples (editable when inspection category is semantic analysis) */
   examples_negative?: string[];
-  /** 正则表达式（当检测类别为正则表达式时可编辑） */
+  /** Regular expression (editable when inspection category is regular expression) */
   regular_expression?: string;
 }
 
 // ============================================================
-// Oncall Schedule 相关类型（值班计划）
+// Oncall Schedule related types (oncall schedule)
 // ============================================================
 
 /**
- * 值班计划类型
+ * Schedule type
  */
 export type ScheduleType = 'daily' | 'weekly' | 'monthly' | 'custom';
 
 /**
- * 值班参与者联系信息
+ * Oncall participant contact information
  */
 export interface ParticipantContactInfo {
-  /** 电话 */
+  /** Phone number */
   phone?: string;
-  /** 邮箱 */
+  /** Email address */
   email?: string;
-  /** 聊天ID */
+  /** Chat ID */
   chat_id?: string;
 }
 
 /**
- * 值班参与者
+ * Oncall participant
  */
 export interface OncallParticipant {
-  /** 用户ID */
+  /** User ID */
   user_id: string;
-  /** 用户名 */
+  /** User name */
   user_name: string;
-  /** 联系信息 */
+  /** Contact information */
   contact_info?: ParticipantContactInfo;
-  /** 优先级 */
+  /** Priority */
   priority?: number;
 }
 
 /**
- * 值班计划配置
+ * Oncall schedule configuration
  */
 export interface OncallScheduleConfig {
-  /** 轮换间隔（小时） */
+  /** Rotation interval (in hours) */
   rotation_interval?: number;
-  /** 开始时间 */
+  /** Start time */
   start_time?: string;
-  /** 结束时间 */
+  /** End time */
   end_time?: string;
-  /** 时区 */
+  /** Timezone */
   timezone?: string;
-  /** 工作日（0=周日，6=周六） */
+  /** Workdays (0=Sunday, 6=Saturday) */
   weekdays?: number[];
 }
 
@@ -151,136 +151,136 @@ export interface OncallScheduleConfig {
 // Use OncallScheduleConfig directly for oncall-specific scheduling
 
 /**
- * 升级级别
+ * Escalation level
  */
 export interface EscalationLevel {
-  /** 级别 */
+  /** Level */
   level?: number;
-  /** 参与者 */
+  /** Participants */
   participants?: string[];
-  /** 超时时间 */
+  /** Timeout duration */
   timeout?: number;
 }
 
 /**
- * 升级策略
+ * Escalation policy
  */
 export interface EscalationPolicy {
-  /** 是否启用升级 */
+  /** Whether escalation is enabled */
   enabled?: boolean;
-  /** 升级超时时间（分钟） */
+  /** Escalation timeout (in minutes) */
   escalation_timeout?: number;
-  /** 升级级别配置 */
+  /** Escalation level configurations */
   escalation_levels?: EscalationLevel[];
 }
 
 /**
- * 值班计划
- * 对应 API: OncallSchedule schema
+ * Oncall schedule
+ * Corresponds to API: OncallSchedule schema
  */
 export interface OncallSchedule {
-  /** 值班计划ID */
+  /** Schedule ID */
   id?: string;
-  /** 关联的规则ID */
+  /** Associated rule ID */
   rule_id: string;
-  /** 值班计划名称 */
+  /** Schedule name */
   name: string;
-  /** 值班计划描述 */
+  /** Schedule description */
   description?: string;
-  /** 值班计划类型 */
+  /** Schedule type */
   schedule_type: ScheduleType;
-  /** 值班参与者列表 */
+  /** List of oncall participants */
   participants: OncallParticipant[];
-  /** 值班计划配置 */
+  /** Schedule configuration */
   schedule_config: OncallScheduleConfig;
-  /** 升级策略 */
+  /** Escalation policy */
   escalation_policy?: EscalationPolicy;
-  /** 是否激活 */
+  /** Whether the schedule is active */
   is_active?: boolean;
-  /** 生效开始时间 */
+  /** Effective start time */
   effective_start?: string;
-  /** 生效结束时间 */
+  /** Effective end time */
   effective_end?: string;
-  /** 创建时间 */
+  /** Creation timestamp */
   created_at?: string;
-  /** 更新时间 */
+  /** Last update timestamp */
   updated_at?: string;
 }
 
 /**
- * 值班计划创建请求
- * 对应 API: OncallScheduleCreateRequest schema
+ * Oncall schedule creation request
+ * Corresponds to API: OncallScheduleCreateRequest schema
  */
 export interface OncallScheduleCreateRequest {
-  /** 值班计划名称 */
+  /** Schedule name */
   name: string;
-  /** 值班计划描述 */
+  /** Schedule description */
   description?: string;
-  /** 值班计划类型 */
+  /** Schedule type */
   schedule_type: ScheduleType;
-  /** 值班参与者列表 */
+  /** List of oncall participants */
   participants: OncallParticipant[];
-  /** 值班计划配置 */
+  /** Schedule configuration */
   schedule_config: OncallScheduleConfig;
-  /** 升级策略 */
+  /** Escalation policy */
   escalation_policy?: EscalationPolicy;
-  /** 生效开始时间 */
+  /** Effective start time */
   effective_start?: string;
-  /** 生效结束时间 */
+  /** Effective end time */
   effective_end?: string;
 }
 
 /**
- * 值班计划更新请求
- * 对应 API: OncallScheduleUpdateRequest schema
+ * Oncall schedule update request
+ * Corresponds to API: OncallScheduleUpdateRequest schema
  */
 export interface OncallScheduleUpdateRequest {
-  /** 值班计划名称 */
+  /** Schedule name */
   name?: string;
-  /** 值班计划描述 */
+  /** Schedule description */
   description?: string;
-  /** 值班参与者列表 */
+  /** List of oncall participants */
   participants?: OncallParticipant[];
-  /** 值班计划配置 */
-  schedule_config?: any; // ScheduleConfig 类型暂时未定义
-  /** 升级策略 */
+  /** Schedule configuration */
+  schedule_config?: any; // ScheduleConfig type is not yet defined
+  /** Escalation policy */
   escalation_policy?: EscalationPolicy;
-  /** 是否激活 */
+  /** Whether the schedule is active */
   is_active?: boolean;
-  /** 生效开始时间 */
+  /** Effective start time */
   effective_start?: string;
-  /** 生效结束时间 */
+  /** Effective end time */
   effective_end?: string;
 }
 
 // ============================================================
-// API 请求参数类型
+// API request parameter types
 // ============================================================
 
 /**
- * 获取 Oncall 规则列表的参数
+ * Parameters for getting Oncall rule list
  */
 export interface GetOncallRulesParams {
-  /** 渠道 */
+  /** Channel */
   channel: string;
-  /** 机器人ID */
+  /** Bot ID */
   bot_id: string;
 }
 
 /**
- * 获取值班计划列表的参数
+ * Parameters for getting oncall schedule list
  */
 export interface GetOncallSchedulesParams {
-  /** 渠道 */
+  /** Channel */
   channel: string;
-  /** 机器人ID */
+  /** Bot ID */
   bot_id: string;
-  /** 跳过数量 */
+  /** Number of records to skip */
   skip?: number;
-  /** 限制数量 */
+  /** Maximum number of records to return */
   limit?: number;
-  /** 开始时间 */
+  /** Start time */
   start_time?: string;
-  /** 结束时间 */
+  /** End time */
   end_time?: string;
 }

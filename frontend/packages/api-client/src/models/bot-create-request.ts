@@ -16,23 +16,23 @@
 import type { AgentCfgPayload } from './agent-cfg-payload';
 import type { VolcCfgPayload } from './volc-cfg-payload';
 /**
- * 创建机器人请求。支持分阶段创建：阶段1只需填写channel、bot_id和secret即可快速创建；阶段2可在编辑时补充volc_cfg和agent_cfg等ChatOps高级配置
+ * Create bot request. Supports phased creation: Phase 1 only requires channel, bot_id, and secret for quick creation; Phase 2 can add ChatOps advanced configurations such as volc_cfg and agent_cfg during editing
  */
 export type BotCreateRequest = {
   /**
-   * 企业协同工具（必填）
+   * Enterprise collaboration tool (required)
    */
   channel: BotCreateRequest.channel;
   /**
-   * 机器人App ID（必填）
+   * Bot App ID (required)
    */
   bot_id: string;
   /**
-   * 机器人App Secret（必填）
+   * Bot App Secret (required)
    */
   secret: string;
   /**
-   * Webhook URL列表（可选）
+   * Webhook URL list (optional)
    */
   webhook_urls?: Array<string>;
   volc_cfg?: VolcCfgPayload;
@@ -40,7 +40,7 @@ export type BotCreateRequest = {
 };
 export namespace BotCreateRequest {
   /**
-   * 企业协同工具（必填）
+   * Enterprise collaboration tool (required)
    */
   export enum channel {
     LARK = 'Lark',

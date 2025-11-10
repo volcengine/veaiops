@@ -16,7 +16,7 @@ import type { ProjectPriority } from '@project/types';
 import { PROJECT_PRIORITY_CONFIG } from '../../constants';
 
 /**
- * 格式化项目优先级显示
+ * Format project priority display
  */
 export const formatProjectPriority = (priority: ProjectPriority) => {
   const config = PROJECT_PRIORITY_CONFIG[priority];

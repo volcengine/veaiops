@@ -65,3 +65,4 @@ export function collectPerformanceMetrics(): PerformanceMetrics {
 
   return metrics;
 }
+

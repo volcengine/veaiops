@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源创建操作Hook
- * @description 管理各类数据源的创建逻辑
+ * Data source creation operations Hook
+ * @description Manages creation logic for various data sources
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -30,7 +30,7 @@ export const useDataSourceCreation = (
   state: WizardState,
   updateLoading: (key: keyof WizardState['loading'], value: boolean) => void,
 ) => {
-  // 创建 Zabbix 数据源
+  // Create Zabbix data source
   const createZabbixDataSource = useCallback(async () => {
     if (!state.selectedConnect) {
       throw new Error('请选择连接');
@@ -47,7 +47,7 @@ export const useDataSourceCreation = (
       throw new Error('请选择主机');
     }
 
-    // 构建 Zabbix 数据源配置
+    // Build Zabbix data source configuration
     const zabbixConfig = {
       name: state.dataSourceName,
       connect_name: state.selectedConnect.name,
@@ -56,11 +56,11 @@ export const useDataSourceCreation = (
         itemid: `${state.zabbix.selectedMetric?.metric_name || ''}_${host.host || index}`,
         hostname: host.host,
       })),
-      history_type: 0, // 默认历史类型
-      trigger_tags: [], // 默认空触发器标签
+      history_type: 0, // Default history type
+      trigger_tags: [], // Default empty trigger tags
     };
 
-    // 调用 API 创建 Zabbix 数据源
+    // Call API to create Zabbix data source
     const response = await apiClient.dataSources.postApisV1DatasourceZabbix({
       requestBody: zabbixConfig,
     });
@@ -78,7 +78,7 @@ export const useDataSourceCreation = (
     state.zabbix.selectedHosts,
   ]);
 
-  // 创建阿里云数据源
+  // Create Aliyun data source
   const createAliyunDataSource = useCallback(async () => {
     if (!state.selectedConnect) {
       throw new Error('请选择连接');
@@ -99,25 +99,25 @@ export const useDataSourceCreation = (
       throw new Error('请选择实例');
     }
 
-    // 构建阿里云数据源配置
+    // Build Aliyun data source configuration
     const aliyunConfig = {
       name: state.dataSourceName,
       connect_name: state.selectedConnect.name,
-      region: state.aliyun.region || 'cn-beijing', // 从独立的 region 字段读取
+      region: state.aliyun.region || 'cn-beijing', // Read from independent region field
       metric_name: state.aliyun.selectedMetric.metricName,
       namespace: state.aliyun.selectedMetric.namespace,
-      // dimensions: 从选中的实例中提取维度信息
+      // dimensions: Extract dimension information from selected instances
       dimensions: state.aliyun.selectedInstances.map(
         (instance) => instance.dimensions,
       ),
-      // 添加分组维度
+      // Add grouping dimensions
       group_by:
         state.aliyun.selectedGroupBy.length > 0
           ? state.aliyun.selectedGroupBy
           : undefined,
     };
 
-    // 调用 API 创建阿里云数据源
+    // Call API to create Aliyun data source
     const response = await apiClient.dataSources.postApisV1DatasourceAliyun({
       requestBody: aliyunConfig,
     });
@@ -136,7 +136,7 @@ export const useDataSourceCreation = (
     state.aliyun.selectedInstances,
   ]);
 
-  // 创建火山引擎数据源
+  // Create Volcengine data source
   const createVolcengineDataSource = useCallback(async () => {
     if (!state.selectedConnect) {
       throw new Error('请选择连接');
@@ -157,11 +157,11 @@ export const useDataSourceCreation = (
       throw new Error('请选择实例');
     }
 
-    // 构建火山引擎数据源配置
+    // Build Volcengine data source configuration
     const volcengineConfig = {
       name: state.dataSourceName,
       connect_name: state.selectedConnect.name,
-      region: state.volcengine.region, // 已通过前置校验确保必填
+      region: state.volcengine.region, // Already validated as required in pre-check
       namespace: state.volcengine.selectedProduct.namespace,
       sub_namespace: state.volcengine.selectedSubNamespace || '',
       metric_name: state.volcengine.selectedMetric.metricName,
@@ -172,7 +172,7 @@ export const useDataSourceCreation = (
       })),
     };
 
-    // 调用 API 创建火山引擎数据源
+    // Call API to create Volcengine data source
     const response = await apiClient.dataSources.postApisV1DatasourceVolcengine(
       {
         requestBody: volcengineConfig,
@@ -194,12 +194,12 @@ export const useDataSourceCreation = (
     state.volcengine.selectedInstances,
   ]);
 
-  // 统一的创建数据源入口
+  // Unified data source creation entry point
   const createDataSource = useCallback(async () => {
     updateLoading('creating', true);
 
     try {
-      // 根据数据源类型调用不同的创建API
+      // Call different creation APIs based on data source type
       if (state.dataSourceType === DataSourceType.ZABBIX) {
         return await createZabbixDataSource();
       } else if (state.dataSourceType === DataSourceType.ALIYUN) {

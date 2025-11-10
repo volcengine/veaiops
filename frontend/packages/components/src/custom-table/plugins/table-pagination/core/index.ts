@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格分页插件核心模块统一导出
+ * Table pagination plugin core module unified exports
  */
 
 export * from './types';

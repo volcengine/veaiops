@@ -24,19 +24,19 @@ import {
 } from "./column-definitions";
 
 /**
- * 获取智能阈值任务表格列配置
- * @description 组合各个模块的列配置，提供完整的表格列定义
- * @param actions 表格操作回调函数集合
- * @returns 完整的表格列配置数组
+ * Get intelligent threshold task table column configuration
+ * @description Combines column configurations from various modules to provide complete table column definitions
+ * @param actions Table operation callback function collection
+ * @returns Complete table column configuration array
  */
 export const getTaskColumns = (
   actions: TaskTableActions
 ): ModernTableColumnProps<IntelligentThresholdTask>[] => {
   return [
-    ...getBasicColumns(), // 基础信息：任务名称、数据源类型、状态
-    ...getResourceColumns(), // 资源信息：产品、项目、账户
-    ...getConfigColumns(), // 配置信息：自动更新、最新版本
-    ...getMetadataColumns(), // 元数据：创建人、创建时间、更新时间
-    getActionColumn(actions), // 操作列：编辑、重新执行、更多操作
+    ...getBasicColumns(), // Basic info: task name, datasource type, status
+    ...getResourceColumns(), // Resource info: products, projects, customers
+    ...getConfigColumns(), // Config info: auto-update, latest version
+    ...getMetadataColumns(), // Metadata: creator, created time, updated time
+    getActionColumn(actions), // Action column: edit, rerun, more operations
   ];
 };

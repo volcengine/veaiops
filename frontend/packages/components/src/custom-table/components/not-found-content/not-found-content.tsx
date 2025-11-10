@@ -18,15 +18,15 @@ import type { FC } from 'react';
 import styles from './index.module.less';
 
 export enum NotFoundStatus {
-  /** 默认状态 */
+  /** Default state */
   Default = 0,
-  /** 开始状态 */
+  /** Start state */
   Start = 1,
-  /** 查询无数据 */
+  /** Query returned no data */
   NoData = 2,
-  /** 请求失败 */
+  /** Request failed */
   RequestFail = 3,
-  /** 超时 */
+  /** Timeout */
   Timeout = 4,
 }
 
@@ -43,12 +43,12 @@ export const NotFoundContent: FC<{ notFoundStatus: NotFoundStatus }> = ({
     case NotFoundStatus.Start:
       return FetchingUI;
     case NotFoundStatus.NoData:
-      return <Empty className={styles.wrap} description="搜索结果为空" />;
+      return <Empty className={styles.wrap} description="No search results" />;
     case NotFoundStatus.RequestFail:
       return (
         <Empty
           className={styles.wrap}
-          description="请求失败"
+          description="Request failed"
           icon={<IconExclamationCircleFill />}
         />
       );
@@ -56,7 +56,7 @@ export const NotFoundContent: FC<{ notFoundStatus: NotFoundStatus }> = ({
       return (
         <Empty
           className={styles.wrap}
-          description="请求超时"
+          description="Request timeout"
           icon={<IconExclamationCircleFill />}
         />
       );

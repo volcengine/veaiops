@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 引导提示组件工具函数
+ * Guide tip component utility functions
  */
 
 import { logger } from '@veaiops/utils';
 import type { GuideTipOptions, Position, Size } from './types';
 
 /**
- * 计算元素位置和尺寸
+ * Calculate element position and size
  */
 export const getElementRect = (element: Element): Position & Size => {
   const rect = element.getBoundingClientRect();
@@ -35,7 +35,7 @@ export const getElementRect = (element: Element): Position & Size => {
 };
 
 /**
- * 创建提示框容器和元素（按原分支实现）
+ * Create tip container and elements (as per original branch implementation)
  */
 export const createTipContainer = (
   options: GuideTipOptions,
@@ -46,7 +46,7 @@ export const createTipContainer = (
   closeButton: HTMLButtonElement | null;
   arrowElement: HTMLDivElement | null;
 } => {
-  // 创建提示框容器（全屏覆盖层）
+  // Create tip container (full-screen overlay)
   const tipContainer = document.createElement('div');
   tipContainer.setAttribute('data-guide-tip', 'true');
   tipContainer.style.cssText = `
@@ -59,7 +59,7 @@ export const createTipContainer = (
     pointer-events: none;
   `;
 
-  // 创建提示框
+  // Create tip element
   const tipElement = document.createElement('div');
   const baseStyle = `
     position: absolute;
@@ -75,10 +75,10 @@ export const createTipContainer = (
 
   tipElement.style.cssText = baseStyle;
 
-  // 应用自定义样式
+  // Apply custom styles
   Object.assign(tipElement.style, options.customStyle || {});
 
-  // 创建内容区域
+  // Create content area
   const contentElement = document.createElement('div');
   contentElement.style.cssText = `
     background: rgba(255, 255, 255, 0.98);
@@ -93,7 +93,7 @@ export const createTipContainer = (
   `;
   contentElement.textContent = options.content;
 
-  // 创建按钮容器
+  // Create button container
   const buttonContainer = document.createElement('div');
   buttonContainer.style.cssText = `
     display: flex;
@@ -102,7 +102,7 @@ export const createTipContainer = (
     margin-top: 16px;
   `;
 
-  // 创建关闭按钮
+  // Create close button
   let closeButton: HTMLButtonElement | null = null;
   if (options.buttonText) {
     closeButton = document.createElement('button');
@@ -122,7 +122,7 @@ export const createTipContainer = (
       overflow: hidden;
     `;
 
-    // 添加按钮悬停效果
+    // Add button hover effects
     closeButton.addEventListener('mouseenter', () => {
       closeButton!.style.transform = 'translateY(-2px)';
       closeButton!.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
@@ -133,7 +133,7 @@ export const createTipContainer = (
       closeButton!.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)';
     });
 
-    // 添加按钮点击效果
+    // Add button click effects
     closeButton.addEventListener('mousedown', () => {
       closeButton!.style.transform = 'translateY(0) scale(0.98)';
     });
@@ -142,21 +142,21 @@ export const createTipContainer = (
       closeButton!.style.transform = 'translateY(-2px) scale(1)';
     });
 
-    // 组装按钮容器
+    // Assemble button container
     buttonContainer.appendChild(closeButton);
     contentElement.appendChild(buttonContainer);
   }
 
-  // 组装提示框
+  // Assemble tip element
   tipElement.appendChild(contentElement);
   tipContainer.appendChild(tipElement);
 
-  // 创建箭头（如果需要）- 放在tipContainer中，避免被裁剪
+  // Create arrow (if needed) - place in tipContainer to avoid clipping
   let arrowElement: HTMLDivElement | null = null;
   if (options.showArrow !== false) {
     arrowElement = document.createElement('div');
 
-    // 根据placement设置不同的箭头样式
+    // Set different arrow styles based on placement
     let arrowStyle = '';
     switch (options.placement || 'top') {
       case 'top':
@@ -220,7 +220,7 @@ export const createTipContainer = (
         `;
         break;
       default:
-        // 默认使用top样式
+        // Default to top style
         arrowStyle = `
           position: absolute;
           width: 0;
@@ -251,7 +251,7 @@ export const createTipContainer = (
 };
 
 /**
- * 计算提示框位置（按原分支实现）
+ * Calculate tip position (as per original branch implementation)
  */
 export const calculateTipPosition = (
   targetRect: Position & Size,
@@ -270,33 +270,33 @@ export const calculateTipPosition = (
     case 'top':
       left = rect.left + rect.width / 2 - tipRect.width / 2;
       top = rect.top - tipRect.height - 24;
-      // 箭头位置：在提示框底部中央
-      arrowLeft = rect.left + rect.width / 2 - 12; // 12px是箭头宽度的一半
-      arrowTop = rect.top - 8; // 8px是箭头高度
+      // Arrow position: center bottom of tip
+      arrowLeft = rect.left + rect.width / 2 - 12; // 12px is half arrow width
+      arrowTop = rect.top - 8; // 8px is arrow height
       break;
     case 'bottom':
       left = rect.left + rect.width / 2 - tipRect.width / 2;
       top = rect.bottom + 24;
-      // 箭头位置：在提示框顶部中央
-      arrowLeft = rect.left + rect.width / 2 - 12; // 12px是箭头宽度的一半
-      arrowTop = rect.bottom + 8; // 8px是箭头高度
+      // Arrow position: center top of tip
+      arrowLeft = rect.left + rect.width / 2 - 12; // 12px is half arrow width
+      arrowTop = rect.bottom + 8; // 8px is arrow height
       break;
     case 'left':
       left = rect.left - tipRect.width - 24;
       top = rect.top + rect.height / 2 - tipRect.height / 2;
-      // 箭头位置：在提示框右侧中央
-      arrowLeft = rect.left - 8; // 8px是箭头宽度
-      arrowTop = rect.top + rect.height / 2 - 12; // 12px是箭头高度的一半
+      // Arrow position: center right of tip
+      arrowLeft = rect.left - 8; // 8px is arrow width
+      arrowTop = rect.top + rect.height / 2 - 12; // 12px is half arrow height
       break;
     case 'right':
       left = rect.right + 24;
       top = rect.top + rect.height / 2 - tipRect.height / 2;
-      // 箭头位置：在提示框左侧中央
-      arrowLeft = rect.right + 8; // 8px是箭头宽度
-      arrowTop = rect.top + rect.height / 2 - 12; // 12px是箭头高度的一半
+      // Arrow position: center left of tip
+      arrowLeft = rect.right + 8; // 8px is arrow width
+      arrowTop = rect.top + rect.height / 2 - 12; // 12px is half arrow height
       break;
     default:
-      // 默认使用top样式
+      // Default to top style
       left = rect.left + rect.width / 2 - tipRect.width / 2;
       top = rect.top - tipRect.height - 24;
       arrowLeft = rect.left + rect.width / 2 - 12;
@@ -304,7 +304,7 @@ export const calculateTipPosition = (
       break;
   }
 
-  // 边界检查
+  // Boundary check
   if (left < 10) {
     left = 10;
   }
@@ -322,7 +322,7 @@ export const calculateTipPosition = (
 };
 
 /**
- * 重新计算箭头位置（考虑边界调整，按原分支实现）
+ * Recalculate arrow position (considering boundary adjustments, as per original branch implementation)
  */
 export const recalculateArrowPosition = (
   arrowElement: HTMLDivElement,
@@ -331,19 +331,19 @@ export const recalculateArrowPosition = (
   position: { left: number; top: number },
   placement: GuideTipOptions['placement'] = 'top',
 ): void => {
-  // 计算目标元素的中心位置
+  // Calculate target element center position
   const targetCenterX = targetRect.left + targetRect.width / 2;
   const targetCenterY = targetRect.top + targetRect.height / 2;
 
   switch (placement) {
     case 'top':
-      // 箭头指向目标元素的中心
+      // Arrow points to target element center
       arrowElement.style.left = `${targetCenterX}px`;
       arrowElement.style.top = `${position.top + tipRect.height}px`;
       arrowElement.style.transform = 'translateX(-50%)';
       break;
     case 'bottom':
-      // 箭头指向目标元素的中心
+      // Arrow points to target element center
       arrowElement.style.left = `${targetCenterX}px`;
       arrowElement.style.top = `${position.top - 16}px`;
       arrowElement.style.transform = 'translateX(-50%)';
@@ -351,7 +351,7 @@ export const recalculateArrowPosition = (
       arrowElement.style.borderBottom = '16px solid #667eea';
       break;
     case 'left':
-      // 箭头指向目标元素的中心
+      // Arrow points to target element center
       arrowElement.style.left = `${position.left + tipRect.width}px`;
       arrowElement.style.top = `${targetCenterY}px`;
       arrowElement.style.transform = 'translateY(-50%)';
@@ -361,7 +361,7 @@ export const recalculateArrowPosition = (
       arrowElement.style.borderRight = 'none';
       break;
     case 'right':
-      // 箭头指向目标元素的中心
+      // Arrow points to target element center
       arrowElement.style.left = `${position.left - 16}px`;
       arrowElement.style.top = `${targetCenterY}px`;
       arrowElement.style.transform = 'translateY(-50%)';
@@ -371,7 +371,7 @@ export const recalculateArrowPosition = (
       arrowElement.style.borderLeft = 'none';
       break;
     default:
-      // 默认使用top样式
+      // Default to top style
       arrowElement.style.left = `${targetCenterX}px`;
       arrowElement.style.top = `${position.top + tipRect.height}px`;
       arrowElement.style.transform = 'translateX(-50%)';
@@ -380,7 +380,7 @@ export const recalculateArrowPosition = (
 };
 
 /**
- * 清理已存在的引导提示
+ * Clean up existing guide tips
  */
 export const cleanupExistingTips = (
   selector: string,
@@ -395,7 +395,7 @@ export const cleanupExistingTips = (
   });
 
   logger.info({
-    message: '[GuideTip] 清理已存在的引导提示',
+    message: '[GuideTip] Cleaned up existing guide tips',
     data: {
       cleanedCount: existingTips.length,
       newSelector: selector,
@@ -408,13 +408,13 @@ export const cleanupExistingTips = (
 };
 
 /**
- * 验证目标元素是否存在
+ * Validate if target element exists
  */
 export const validateTargetElement = (selector: string): Element | null => {
   const targetElement = document.querySelector(selector);
   if (!targetElement) {
     logger.warn({
-      message: '[GuideTip] 目标元素不存在，无法显示引导提示',
+      message: '[GuideTip] Target element does not exist, cannot show guide tip',
       data: { selector },
       source: 'GuideTip',
       component: 'showGuideTip',
@@ -422,10 +422,10 @@ export const validateTargetElement = (selector: string): Element | null => {
     return null;
   }
 
-  // 添加详细的元素调试信息
+  // Add detailed element debugging information
   const allMatchingElements = document.querySelectorAll(selector);
   logger.info({
-    message: '[GuideTip] 目标元素调试信息',
+    message: '[GuideTip] Target element debug information',
     data: {
       selector,
       targetElement: {

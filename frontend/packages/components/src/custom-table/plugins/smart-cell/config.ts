@@ -14,7 +14,7 @@
 
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 /**
- * 智能单元格插件默认配置
+ * Smart cell plugin default configuration
  */
 import type { BaseRecord } from '@veaiops/types';
 import type { SmartCellConfig } from './types';

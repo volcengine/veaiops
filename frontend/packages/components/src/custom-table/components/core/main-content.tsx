@@ -74,3 +74,4 @@ export const MainContent: React.FC<MainContentProps> = ({
     </div>
   );
 };
+

@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * CustomTable full-chain log collector
- * Provides logging across the component lifecycle
+ * CustomTable full-link log collector
+ * Provides component full lifecycle log recording functionality
  */
 
 import { logger } from '@veaiops/utils';
 import { devLog } from './utils/log-utils';
 
 /**
- * Log phase enum
+ * Log phase enumeration
  */
 export enum LogPhase {
   /** Component initialization */
@@ -30,7 +30,7 @@ export enum LogPhase {
   STATE_INIT = 'state_init',
   /** Column configuration */
   COLUMNS_CONFIG = 'columns_config',
-  /** Query sync */
+  /** Query synchronization */
   QUERY_SYNC = 'query_sync',
   /** Data source request */
   DATA_SOURCE_REQUEST = 'data_source_request',
@@ -42,9 +42,9 @@ export enum LogPhase {
   PLUGIN_INIT = 'plugin_init',
   /** Context enhancement */
   CONTEXT_ENHANCE = 'context_enhance',
-  /** Render prepare */
+  /** Render preparation */
   RENDER_PREPARE = 'render_prepare',
-  /** Render complete */
+  /** Render completion */
   RENDER_COMPLETE = 'render_complete',
   /** Error handling */
   ERROR = 'error',
@@ -61,7 +61,7 @@ export type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 export type ComponentName = string;
 
 /**
- * Log data type — use conditional types to distinguish per phase
+ * Log data type - Use conditional types to distinguish log data from different phases
  */
 export type LogData =
   | Record<string, unknown>
@@ -73,7 +73,7 @@ export type LogData =
   | undefined;
 
 /**
- * Log entry interface — using advanced TS types
+ * Log entry interface - Uses advanced TS types
  */
 export interface LogEntry {
   readonly timestamp: number;
@@ -86,7 +86,7 @@ export interface LogEntry {
 }
 
 /**
- * CustomTable full-chain log collector
+ * CustomTable full-link log collector
  */
 export class CustomTableLogCollector {
   private static instance: CustomTableLogCollector;
@@ -118,14 +118,14 @@ export class CustomTableLogCollector {
   }
 
   /**
-   * Type guard: check if value is valid log data
+   * Type guard: Check if data is valid log data
    */
   private isValidLogData(data: unknown): data is Record<string, unknown> {
     return typeof data === 'object' && data !== null && !Array.isArray(data);
   }
 
   /**
-   * Type guard: check if value is error-like
+   * Type guard: Check if value is an error object
    */
   private isErrorLike(
     error: unknown,
@@ -137,7 +137,7 @@ export class CustomTableLogCollector {
   }
 
   /**
-   * Internal logging method — using advanced TS generics
+   * Internal log recording method - Uses advanced TS generics
    */
   private recordLog<T extends LogData>({
     phase,
@@ -165,12 +165,12 @@ export class CustomTableLogCollector {
     // Save to internal log array
     this.logs.push(entry);
 
-    // Cap log count
+    // Limit log count
     if (this.logs.length > 500) {
       this.logs = this.logs.slice(-500);
     }
 
-    // Output via logger
+    // Use logger output
     const loggerData: Record<string, unknown> = {
       traceId: this.traceId,
       phase,
@@ -182,7 +182,7 @@ export class CustomTableLogCollector {
       loggerData.data = data;
     }
 
-    // ✅ Correct: use logger signature (object destructuring)
+    // ✅ Correct: Use logger's signature (object destructuring)
     switch (level) {
       case 'error':
         logger.error({
@@ -230,7 +230,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.COMPONENT_INIT,
       level: 'info',
       component: componentName,
-      message: `[${componentName}] 组件初始化`,
+      message: `[${componentName}] Component initialized`,
       data: {
         props: Object.keys(props),
         timestamp: Date.now(),
@@ -246,7 +246,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.STATE_INIT,
       level: 'debug',
       component: 'useTableState',
-      message: '状态初始化完成',
+      message: 'State initialization completed',
       data,
     });
   }
@@ -259,7 +259,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.COLUMNS_CONFIG,
       level: 'debug',
       component: 'handleColumns',
-      message: '列配置处理完成',
+      message: 'Column configuration processed',
       data,
     });
   }
@@ -272,7 +272,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.DATA_SOURCE_REQUEST,
       level: 'info',
       component: 'useDataSource',
-      message: '数据源请求开始',
+      message: 'Data source request started',
       data: {
         requestId: requestId || this.generateTraceId(),
         params,
@@ -305,7 +305,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.DATA_SOURCE_RESPONSE,
       level: 'info',
       component: 'useDataSource',
-      message: '数据源响应接收',
+      message: 'Data source response received',
       data: responseData,
     });
   }
@@ -321,7 +321,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.PLUGIN_REGISTER,
       level: 'info',
       component: 'usePluginManager',
-      message: `插件注册: ${pluginName}`,
+      message: `Plugin registered: ${pluginName}`,
       data: {
         pluginName,
         pluginType,
@@ -340,7 +340,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.PLUGIN_INIT,
       level: 'info',
       component: 'usePluginManager',
-      message: `插件初始化完成: ${pluginName}`,
+      message: `Plugin initialization completed: ${pluginName}`,
       data: {
         pluginName,
         duration,
@@ -356,7 +356,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.CONTEXT_ENHANCE,
       level: 'debug',
       component: 'useEnhancedTableContext',
-      message: '上下文增强完成',
+      message: 'Context enhancement completed',
       data,
     });
   }
@@ -372,20 +372,20 @@ export class CustomTableLogCollector {
       phase: LogPhase.RENDER_PREPARE,
       level: 'debug',
       component: 'CustomTable',
-      message: `渲染阶段: ${phase}`,
+      message: `Render phase: ${phase}`,
       data,
     });
   }
 
   /**
-   * Record render complete
+   * Record render completion
    */
   logRenderComplete({ data }: { data: Record<string, unknown> }) {
     this.recordLog({
       phase: LogPhase.RENDER_COMPLETE,
       level: 'info',
       component: 'CustomTable',
-      message: '组件渲染完成',
+      message: 'Component render completed',
       data: {
         ...data,
         totalDuration: Date.now() - this.startTime,
@@ -397,7 +397,7 @@ export class CustomTableLogCollector {
    * Record error
    */
   /**
-   * Record error — use type guards for type safety
+   * Record error - Use type guards to ensure type safety
    */
   logError({
     stage,
@@ -422,7 +422,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.ERROR,
       level: 'error',
       component: 'CustomTable',
-      message: `错误: ${stage}`,
+      message: `Error: ${stage}`,
       data: errorData,
     });
   }
@@ -438,7 +438,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.QUERY_SYNC,
       level: 'debug',
       component: 'useTableState',
-      message: '查询变更',
+      message: 'Query changed',
       data: {
         oldQuery,
         newQuery,
@@ -457,7 +457,7 @@ export class CustomTableLogCollector {
       phase: LogPhase.QUERY_SYNC,
       level: 'debug',
       component: 'useTableState',
-      message: '排序变更',
+      message: 'Sorter changed',
       data: {
         oldSorter,
         newSorter,
@@ -489,7 +489,7 @@ export class CustomTableLogCollector {
   }
 
   /**
-   * Generate full log report
+   * Generate complete log report
    */
   generateReport(): Record<string, unknown> {
     const duration = Date.now() - this.startTime;
@@ -538,7 +538,7 @@ export class CustomTableLogCollector {
  */
 export const logCollector = CustomTableLogCollector.getInstance();
 
-// Expose to global in development
+// Expose to global in development environment
 if (process.env.NODE_ENV === 'development') {
   (window as unknown as Record<string, unknown>).customTableLogCollector =
     logCollector;

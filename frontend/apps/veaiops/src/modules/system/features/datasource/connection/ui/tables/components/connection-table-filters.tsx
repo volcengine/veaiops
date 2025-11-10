@@ -13,17 +13,17 @@
 // limitations under the License.
 
 /**
- * 数据源连接表格筛选配置
+ * Data source connection table filter configuration
  *
- * 将筛选配置逻辑单独抽象出来，提高代码可维护性
+ * Abstract filter configuration logic separately to improve code maintainability
  */
 
 import type { FieldItem, HandleFilterProps } from '@veaiops/components';
 import { useCallback } from 'react';
 
 /**
- * 数据源连接表格筛选配置 Hook
- * 负责定义所有筛选条件和表单
+ * Data source connection table filter configuration Hook
+ * Responsible for defining all filter conditions and forms
  */
 export const useConnectionTableFilters = () => {
   return useCallback(

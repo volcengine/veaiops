@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接面板事件处理 Hook
+ * Connection panel event handler Hook
  */
 
 import { Message, Modal } from '@arco-design/web-react';
@@ -25,7 +25,7 @@ import type {
 import { getErrorMessage } from '../lib/error-handler';
 
 /**
- * 更新连接参数接口
+ * Update connection parameters interface
  */
 interface UpdateConnectionParams {
   id: string;
@@ -61,26 +61,26 @@ export function useConnectionPanelHandlers({
   setTestingConnect,
   setSelectedRowKeys,
 }: UseConnectionPanelHandlersProps) {
-  // 打开创建弹窗
+  // Open create modal
   const handleCreate = () => {
     setEditingConnect(null);
     setCreateModalVisible(true);
   };
 
-  // 打开编辑弹窗
+  // Open edit modal
   const handleEdit = (record: Connect) => {
     if (!record._id) {
       Message.error('连接数据异常，缺少ID信息，请刷新页面后重试');
       return;
     }
 
-    // Connect 类型本身不包含密码字段（后端 SecretStr 不会返回）
-    // 编辑时用户需要重新输入密码
+    // Connect type itself does not include password field (backend SecretStr will not return)
+    // User needs to re-enter password when editing
     setEditingConnect(record);
     setEditModalVisible(true);
   };
 
-  // 删除单个连接
+  // Delete single connection
   const handleDelete = async (record: Connect) => {
     try {
       if (!record._id) {
@@ -95,23 +95,23 @@ export function useConnectionPanelHandlers({
         Message.warning('删除可能未完全成功，请刷新页面确认');
       }
     } catch (error) {
-      // ✅ 正确：透出实际错误信息
+      // ✅ Correct: Extract actual error information
       Message.error(getErrorMessage(error));
     }
   };
 
-  // 测试连接
+  // Test connection
   const handleTest = (record: Connect) => {
     setTestingConnect(record);
     setTestModalVisible(true);
   };
 
-  // 创建监控
+  // Create monitor
   const handleCreateMonitor = (_record: Connect) => {
     Message.info('创建监控功能开发中');
   };
 
-  // 提交创建
+  // Submit create
   const handleCreateSubmit = async (values: ConnectCreateRequest) => {
     try {
       const response = await create(values);
@@ -124,16 +124,16 @@ export function useConnectionPanelHandlers({
         setCreateModalVisible(false);
       }
     } catch (error) {
-      // ✅ 正确：透出实际错误信息
+      // ✅ Correct: Extract actual error information
       Message.error(getErrorMessage(error));
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;
     }
   };
 
-  // 提交编辑
+  // Submit edit
   const handleEditSubmit = async (values: ConnectUpdateRequest) => {
     if (!editingConnect) {
       return;
@@ -157,16 +157,16 @@ export function useConnectionPanelHandlers({
         Message.warning('更新可能未完全成功，请检查连接状态');
       }
     } catch (error) {
-      // ✅ 正确：透出实际错误信息
+      // ✅ Correct: Extract actual error information
       Message.error(getErrorMessage(error));
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;
     }
   };
 
-  // 批量删除
+  // Batch delete
   const handleBatchDelete = async () => {
     if (selectedRowKeys.length === 0) {
       Message.warning('请选择要删除的连接');
@@ -198,7 +198,7 @@ export function useConnectionPanelHandlers({
           setSelectedRowKeys([]);
           refresh();
         } catch (error) {
-          // ✅ 正确：透出实际错误信息
+          // ✅ Correct: Extract actual error information
           Message.error(getErrorMessage(error));
         }
       },

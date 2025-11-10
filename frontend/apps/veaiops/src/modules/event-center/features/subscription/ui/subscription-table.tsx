@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ModuleType } from '@/types/module';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge imports from same source
 import {
   getSubscriptionColumns,
   getSubscriptionFilters,
@@ -31,51 +31,51 @@ import { AgentType, type SubscribeRelationWithAttributes } from 'api-generate';
 import { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react';
 
 /**
- * 订阅关系表格数据类型
+ * Subscription relation table data type
  */
 interface SubscriptionTableData extends SubscribeRelationWithAttributes {
   key: string;
-  [key: string]: any; // 添加索引签名以满足 BaseRecord 约束
+  [key: string]: any; // Add index signature to satisfy BaseRecord constraint
 }
 
 /**
- * 订阅关系表格组件属性接口
+ * Subscription relation table component props interface
  */
 interface SubscriptionTableProps {
   onEdit: (subscription: SubscribeRelationWithAttributes) => void;
   onDelete: (subscriptionId: string) => Promise<boolean>;
   onAdd: () => void;
-  onView: (subscription: SubscribeRelationWithAttributes) => void; // 添加 onView prop
+  onView: (subscription: SubscribeRelationWithAttributes) => void; // Add onView prop
   moduleType?: ModuleType;
 }
 
-// 配置对象
+// Configuration object
 const SUBSCRIPTION_MANAGEMENT_CONFIG = {
-  title: '事件订阅',
+  title: 'Event Subscription',
 };
 
 const queryFormat = {
-  // 项目名称列表 - 数组格式
+  // Project name list - array format
   projects: queryArrayFormat,
-  // 产品名称列表 - 数组格式
+  // Product name list - array format
   products: queryArrayFormat,
-  // 客户名称列表 - 数组格式
+  // Customer name list - array format
   customers: queryArrayFormat,
   eventLevels: queryArrayFormat,
-  // 任务ID列表 - 数组格式
+  // Task ID list - array format
   agents: queryArrayFormat,
   statuses: queryArrayFormat,
-  // 自动更新 - 布尔值格式
+  // Auto update - boolean format
   enableWebhook: queryBooleanFormat,
 };
 
 /**
- * 订阅关系表格组件
- * 封装表格的渲染逻辑，提供清晰的接口
+ * Subscription relation table component
+ * Encapsulates table rendering logic, provides clear interface
  */
 export const SubscriptionTable = forwardRef<any, SubscriptionTableProps>(
   ({ onEdit, onDelete, onAdd, onView, moduleType }, ref) => {
-    // 🔍 渲染计数和引用追踪（用于调试）
+    // 🔍 Render count and reference tracking (for debugging)
     const renderCountRef = useRef(0);
     const prevDataSourceRef = useRef<unknown>(null);
     const prevHandleColumnsRef = useRef<unknown>(null);
@@ -83,17 +83,17 @@ export const SubscriptionTable = forwardRef<any, SubscriptionTableProps>(
 
     renderCountRef.current++;
 
-    // 表格配置
+    // Table configuration
     const { dataSource, tableProps } = useSubscriptionTableConfig({
       handleEdit: onEdit,
       handleDelete: onDelete,
     });
 
-    // 🔍 追踪 dataSource 引用变化
+    // 🔍 Track dataSource reference changes
     useEffect(() => {
       if (prevDataSourceRef.current !== dataSource) {
         logger.debug({
-          message: '[SubscriptionTable] dataSource 引用变化',
+          message: '[SubscriptionTable] dataSource reference changed',
           data: {
             renderCount: renderCountRef.current,
             prevDataSource: prevDataSourceRef.current,
@@ -109,17 +109,17 @@ export const SubscriptionTable = forwardRef<any, SubscriptionTableProps>(
       }
     }, [dataSource]);
 
-    // 操作按钮配置
+    // Action button configuration
     const { actions } = useSubscriptionActionConfig(onAdd);
 
-    // 创建 handleColumns 函数，传递操作回调给列配置
-    // 🔧 使用 useCallback 稳定化函数引用，避免触发不必要的表格刷新
+    // Create handleColumns function, pass action callbacks to column configuration
+    // 🔧 Use useCallback to stabilize function reference, avoid triggering unnecessary table refresh
     const handleColumns = useCallback(
       (
         props: Record<string, unknown>,
       ): ModernTableColumnProps<SubscriptionTableData>[] => {
-        // CustomTable 传递的 props 包含 query、handleChange 等属性
-        // 需要确保类型转换正确
+        // CustomTable passes props containing query, handleChange, etc.
+        // Need to ensure type conversion is correct
         const filterProps = props as HandleFilterProps<BaseQuery>;
         return getSubscriptionColumns({
           ...filterProps,
@@ -131,11 +131,11 @@ export const SubscriptionTable = forwardRef<any, SubscriptionTableProps>(
       [onEdit, onDelete, onView],
     );
 
-    // 🔍 追踪 handleColumns 引用变化
+    // 🔍 Track handleColumns reference changes
     useEffect(() => {
       if (prevHandleColumnsRef.current !== handleColumns) {
         logger.debug({
-          message: '[SubscriptionTable] handleColumns 引用变化',
+          message: '[SubscriptionTable] handleColumns reference changed',
           data: {
             renderCount: renderCountRef.current,
             prevHandleColumns: prevHandleColumnsRef.current,
@@ -148,8 +148,8 @@ export const SubscriptionTable = forwardRef<any, SubscriptionTableProps>(
       }
     }, [handleColumns]);
 
-    // 创建 handleFilters 函数
-    // 🔧 使用 useCallback 稳定化函数引用，避免触发不必要的表格刷新
+    // Create handleFilters function
+    // 🔧 Use useCallback to stabilize function reference, avoid triggering unnecessary table refresh
     const handleFilters = useCallback(
       (props: HandleFilterProps<BaseQuery>) =>
         getSubscriptionFilters({
@@ -160,11 +160,11 @@ export const SubscriptionTable = forwardRef<any, SubscriptionTableProps>(
       [moduleType],
     );
 
-    // 🔍 追踪 handleFilters 引用变化
+    // 🔍 Track handleFilters reference changes
     useEffect(() => {
       if (prevHandleFiltersRef.current !== handleFilters) {
         logger.debug({
-          message: '[SubscriptionTable] handleFilters 引用变化',
+          message: '[SubscriptionTable] handleFilters reference changed',
           data: {
             renderCount: renderCountRef.current,
             prevHandleFilters: prevHandleFiltersRef.current,
@@ -177,10 +177,10 @@ export const SubscriptionTable = forwardRef<any, SubscriptionTableProps>(
       }
     }, [handleFilters]);
 
-    // 🔍 记录组件渲染（仅在开发环境）
+    // 🔍 Log component render (development only)
     useEffect(() => {
       logger.debug({
-        message: '[SubscriptionTable] 组件渲染',
+        message: '[SubscriptionTable] component render',
         data: {
           renderCount: renderCountRef.current,
           moduleType,
@@ -193,17 +193,17 @@ export const SubscriptionTable = forwardRef<any, SubscriptionTableProps>(
       });
     });
 
-    // 根据模块类型设置默认筛选智能体
+    // Set default filter agent based on module type
     const initQuery = useMemo(() => {
-      // 智能阈值模块：默认筛选智能阈值Agent
+      // Intelligent threshold module: default filter intelligent threshold agent
       if (moduleType === ModuleType.INTELLIGENT_THRESHOLD) {
         return { agents: [AgentType.INTELLIGENT_THRESHOLD_AGENT] };
       }
-      // Oncall模块：默认筛选内容识别Agent
+      // Oncall module: default filter content recognition agent
       if (moduleType === ModuleType.ONCALL) {
         return { agents: [AgentType.CHATOPS_INTEREST_AGENT] };
       }
-      // 事件中心模块：默认筛选内容识别Agent + 智能阈值Agent
+      // Event center module: default filter content recognition agent + intelligent threshold agent
       return {
         agents: [
           AgentType.CHATOPS_INTEREST_AGENT,
@@ -224,7 +224,7 @@ export const SubscriptionTable = forwardRef<any, SubscriptionTableProps>(
         tableProps={tableProps}
         syncQueryOnSearchParams
         useActiveKeyHook
-        // 表格配置
+        // Table configuration
         tableClassName="subscription-management-table"
         queryFormat={queryFormat}
       />

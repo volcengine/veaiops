@@ -12,5 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Re-export styles for easier imports within expanded-panel components
-export { default } from '../../styles/index.module.less';
+/**
+ * Intelligent threshold subscription feature
+ */
+
+// UI component exports
+export { default as SubscribeRelationPage } from './ui/subscribe-relation';

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== Alert 组件 ====================
+// ==================== Alert Components ====================
 export {
   CardTemplateConfigMessage,
   TopAlert,
@@ -21,5 +21,5 @@ export {
   type WarningAlertProps,
 } from './alert-messages';
 
-// ==================== Form 组件 ====================
+// ==================== Form Components ====================
 export { FormFields, type FormFieldsProps } from './form-fields';

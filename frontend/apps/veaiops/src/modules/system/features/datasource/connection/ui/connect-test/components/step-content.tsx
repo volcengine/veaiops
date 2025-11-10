@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 步骤内容组件
+ * Step content component
  */
 
 import type { Connect, DataSourceType } from 'api-generate';

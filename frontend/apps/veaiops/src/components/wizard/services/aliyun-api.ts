@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 阿里云API服务层
- * @description 封装阿里云相关的API调用
+ * Aliyun API service layer
+ * @description Encapsulates Aliyun-related API calls
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -24,7 +24,7 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import type { AliyunMetricMetaListPayload } from 'api-generate';
 
 /**
- * 获取阿里云项目列表
+ * Fetch Aliyun project list
  */
 export const fetchAliyunProjectsAPI = async (connectId: string) => {
   const response =
@@ -45,7 +45,7 @@ export const fetchAliyunProjectsAPI = async (connectId: string) => {
 };
 
 /**
- * 获取阿里云指标列表
+ * Fetch Aliyun metric list
  */
 export const fetchAliyunMetricsAPI = async (
   connectId: string,
@@ -68,7 +68,7 @@ export const fetchAliyunMetricsAPI = async (
 };
 
 /**
- * 获取阿里云实例列表
+ * Fetch Aliyun instance list
  */
 export const fetchAliyunInstancesAPI = async (
   connectName: string,

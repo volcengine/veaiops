@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接测试弹窗组件 - 优化版
+ * Connection test modal component - optimized version
  */
 
 import { Modal } from '@arco-design/web-react';
@@ -59,11 +59,11 @@ export const ConnectTestModal: React.FC<ConnectTestModalProps> = ({
       try {
         handleRetry(params);
       } catch (error: unknown) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({
-          message: '连接测试失败',
+          message: 'Connection test failed',
           data: {
             error: errorObj.message,
             stack: errorObj.stack,
@@ -93,7 +93,7 @@ export const ConnectTestModal: React.FC<ConnectTestModalProps> = ({
     passwordFormRef.current?.submit();
   };
 
-  // 重置步骤状态
+  // Reset step status
   useEffect(() => {
     if (visible) {
       setCurrentStep(TestStep.FORM);
@@ -126,9 +126,9 @@ export const ConnectTestModal: React.FC<ConnectTestModalProps> = ({
         <StepStatus currentStep={currentStep} testing={testing} />
         <StepContent
           currentStep={currentStep}
-          // 注意：使用 as any 是因为 connect.type 的类型定义不完整
-          // TODO: 完善 Connect 类型定义，确保 type 字段类型正确
-          // ✅ 修复：Connect.type 已经是 DataSourceType 类型，无需类型断言
+          // Note: Using as any because connect.type type definition is incomplete
+          // TODO: Complete Connect type definition to ensure type field type is correct
+          // ✅ Fix: Connect.type is already DataSourceType, no type assertion needed
           connectType={connect.type}
           connect={connect}
           currentStatus={currentStatus}

@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * 防浏览器自动填充工具函数
+ * Browser autofill blocker utility function
  *
  * @description
- * 现代浏览器（Chrome/Edge/Firefox/Safari）会积极地尝试自动填充表单，
- * 即使设置了 autocomplete="off" 也会被忽略。
- * 此工具函数提供了多层防护策略来真正禁用自动填充。
+ * Modern browsers (Chrome/Edge/Firefox/Safari) actively try to autofill forms,
+ * even autocomplete="off" is ignored.
+ * This utility function provides multi-layer protection strategies to truly disable autofill.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
  * @see https://bugs.chromium.org/p/chromium/issues/detail?id=468153
@@ -27,35 +27,35 @@
  */
 
 /**
- * 防自动填充属性集合
- * 只包含安全的、不会与组件库冲突的属性
+ * Autofill blocker attribute collection
+ * Only includes safe attributes that won't conflict with component libraries
  *
- * 注意：这里不使用 InputHTMLAttributes，因为：
- * 1. Arco Design 的 InputProps 重新定义了某些属性（如 defaultValue）
- * 2. 我们只需要特定的几个属性来阻止自动填充
- * 3. 使用精确的类型定义可以避免类型冲突
+ * Note: InputHTMLAttributes is not used here because:
+ * 1. Arco Design's InputProps redefines certain attributes (e.g., defaultValue)
+ * 2. We only need specific attributes to block autofill
+ * 3. Using precise type definitions can avoid type conflicts
  */
 export interface AutofillBlockerAttributes {
-  /** HTML autocomplete 属性 */
+  /** HTML autocomplete attribute */
   autoComplete: string;
-  /** HTML name 属性 */
+  /** HTML name attribute */
   name: string;
-  /** 表单类型标记 */
+  /** Form type marker */
   'data-form-type'?: string;
-  /** 自动填充禁用标记 */
+  /** Autofill disable marker */
   'data-autofill'?: string;
-  /** LastPass 忽略标记 */
+  /** LastPass ignore marker */
   'data-lpignore'?: string;
-  /** 1Password 忽略标记 */
+  /** 1Password ignore marker */
   'data-1p-ignore'?: string;
-  /** Bitwarden 忽略标记 */
+  /** Bitwarden ignore marker */
   'data-bwignore'?: string;
-  /** Dashlane 忽略标记 */
+  /** Dashlane ignore marker */
   'data-dashlane-ignore'?: string;
 }
 
 /**
- * 字段类型枚举
+ * Field type enumeration
  */
 export type SecureFieldType =
   | 'text'
@@ -65,55 +65,55 @@ export type SecureFieldType =
   | 'custom';
 
 /**
- * 防自动填充配置选项
+ * Autofill blocker configuration options
  */
 export interface AutofillBlockerOptions {
   /**
-   * 字段类型，影响 autocomplete 和 name 属性的生成策略
+   * Field type, affects autocomplete and name attribute generation strategy
    * @default 'text'
    */
   fieldType?: SecureFieldType;
 
   /**
-   * 自定义字段名称（可选）
-   * 如果不提供，将自动生成一个随机名称以避免被浏览器识别
+   * Custom field name (optional)
+   * If not provided, a random name will be automatically generated to avoid browser recognition
    */
   customName?: string;
 
   /**
-   * 是否添加随机后缀到 name 属性
-   * 启用后可以进一步混淆浏览器的字段识别
+   * Whether to add random suffix to name attribute
+   * When enabled, can further obfuscate browser field recognition
    * @default true
    */
   useRandomSuffix?: boolean;
 
   /**
-   * 是否包含第三方密码管理器的忽略标记
-   * 包括 LastPass, 1Password, Dashlane 等
+   * Whether to include third-party password manager ignore markers
+   * Including LastPass, 1Password, Dashlane, etc.
    * @default true
    */
   blockPasswordManagers?: boolean;
 }
 
 /**
- * 生成随机字符串（用于 name 属性后缀）
+ * Generate random string (for name attribute suffix)
  */
 function generateRandomSuffix(): string {
   return Math.random().toString(36).substring(2, 9);
 }
 
 /**
- * 根据字段类型获取 autocomplete 属性值
+ * Get autocomplete attribute value based on field type
  */
 function getAutocompleteValue(fieldType: SecureFieldType): string {
   switch (fieldType) {
     case 'password':
     case 'api-key':
-      // 对于密码类型，使用 "new-password" 是最有效的
-      // 浏览器会认为这是设置新密码的场景，不会自动填充
+      // For password type, using "new-password" is most effective
+      // Browser will think this is a new password setting scenario and won't autofill
       return 'new-password';
     case 'email':
-      // 邮箱字段也使用 off，避免自动填充历史邮箱
+      // Email field also uses off to avoid autofilling historical emails
       return 'off';
     default:
       return 'off';
@@ -121,7 +121,7 @@ function getAutocompleteValue(fieldType: SecureFieldType): string {
 }
 
 /**
- * 生成字段名称
+ * Generate field name
  */
 function generateFieldName(
   fieldType: SecureFieldType,
@@ -134,7 +134,7 @@ function generateFieldName(
       : customName;
   }
 
-  // 使用不常见的前缀，避免被识别为标准字段
+  // Use uncommon prefix to avoid being recognized as standard field
   const prefix = 'secure-field';
   const typeSegment = fieldType === 'custom' ? 'input' : fieldType;
   const suffix = useRandomSuffix ? `-${generateRandomSuffix()}` : '';
@@ -143,22 +143,22 @@ function generateFieldName(
 }
 
 /**
- * 生成防自动填充的 HTML 属性
+ * Generate HTML attributes to block autofill
  *
  * @description
- * 返回一个包含多种防护策略的属性对象，可以直接展开到 Input 组件上
+ * Returns an attribute object containing multiple protection strategies that can be directly spread onto Input component
  *
  * @example
  * ```tsx
- * // 基础使用
+ * // Basic usage
  * const props = getAutofillBlockerProps({ fieldType: 'text' });
  * <Input {...props} placeholder="App ID" />
  *
- * // 密码字段
+ * // Password field
  * const secretProps = getAutofillBlockerProps({ fieldType: 'password' });
- * <Input {...secretProps} placeholder="密钥" />
+ * <Input {...secretProps} placeholder="Secret" />
  *
- * // 自定义名称
+ * // Custom name
  * const customProps = getAutofillBlockerProps({
  *   fieldType: 'text',
  *   customName: 'bot-app-id',
@@ -166,8 +166,8 @@ function generateFieldName(
  * <Input {...customProps} />
  * ```
  *
- * @param options 配置选项
- * @returns 防自动填充属性对象
+ * @param options Configuration options
+ * @returns Autofill blocker attribute object
  */
 export function getAutofillBlockerProps(
   options: AutofillBlockerOptions = {},
@@ -180,24 +180,24 @@ export function getAutofillBlockerProps(
   } = options;
 
   const props: AutofillBlockerAttributes = {
-    // 1. 核心属性：autocomplete
-    // 根据字段类型选择最合适的值
+    // 1. Core attribute: autocomplete
+    // Select the most appropriate value based on field type
     autoComplete: getAutocompleteValue(fieldType),
 
-    // 2. name 属性：使用不标准的名称
-    // 浏览器会根据 name 属性识别字段（如 "username", "password", "email"）
-    // 使用自定义名称可以避免被识别
+    // 2. name attribute: use non-standard name
+    // Browser identifies fields based on name attribute (e.g., "username", "password", "email")
+    // Using custom names can avoid recognition
     name: generateFieldName(fieldType, customName, useRandomSuffix),
 
-    // 3. 表单类型标记
-    // 告诉浏览器这不是标准的登录/注册表单
+    // 3. Form type marker
+    // Tell browser this is not a standard login/registration form
     'data-form-type': 'other',
 
-    // 4. 自动填充禁用标记
+    // 4. Autofill disable marker
     'data-autofill': 'false',
   };
 
-  // 5. 第三方密码管理器的忽略标记
+  // 5. Third-party password manager ignore markers
   if (blockPasswordManagers) {
     Object.assign(props, {
       'data-lpignore': 'true', // LastPass
@@ -211,20 +211,20 @@ export function getAutofillBlockerProps(
 }
 
 /**
- * 表单级别防自动填充属性集合
+ * Form-level autofill blocker attribute collection
  */
 export interface FormAutofillBlockerAttributes {
-  /** HTML autocomplete 属性 */
+  /** HTML autocomplete attribute */
   autoComplete: 'off';
-  /** 自动填充禁用标记 */
+  /** Autofill disable marker */
   'data-no-autofill'?: string;
 }
 
 /**
- * 表单级别的防自动填充属性
+ * Form-level autofill blocker attributes
  *
  * @description
- * 在 Form 组件上设置这些属性，可以从表单层面禁用自动填充
+ * Set these attributes on Form component to disable autofill at form level
  *
  * @example
  * ```tsx
@@ -236,72 +236,72 @@ export interface FormAutofillBlockerAttributes {
  * </Form>
  * ```
  *
- * @returns 表单防自动填充属性对象
+ * @returns Form autofill blocker attribute object
  */
 export function getFormAutofillBlockerProps(): FormAutofillBlockerAttributes {
   return {
-    // 表单级别的 autocomplete
+    // Form-level autocomplete
     autoComplete: 'off',
 
-    // 额外的标记属性
+    // Additional marker attribute
     'data-no-autofill': 'true',
 
-    // 注意：某些浏览器要求表单中至少有一个带 name 属性的输入框
-    // 否则会忽略 autocomplete="off"
-    // 使用本工具函数生成的 input 属性已经包含了 name 属性
+    // Note: Some browsers require at least one input with name attribute in the form
+    // Otherwise autocomplete="off" will be ignored
+    // The input props generated by this utility function already include name attribute
   };
 }
 
 /**
- * 预设配置：常用场景的快捷方式
+ * Preset configurations: shortcuts for common scenarios
  */
 export const AutofillBlockerPresets = {
-  /** App ID / 应用ID */
+  /** App ID */
   appId: (): AutofillBlockerAttributes =>
     getAutofillBlockerProps({ fieldType: 'text', customName: 'app-id' }),
 
-  /** App Secret / 应用密钥 */
+  /** App Secret */
   appSecret: (): AutofillBlockerAttributes =>
     getAutofillBlockerProps({
       fieldType: 'password',
       customName: 'app-secret',
     }),
 
-  /** API Key / API密钥 */
+  /** API Key */
   apiKey: (): AutofillBlockerAttributes =>
     getAutofillBlockerProps({ fieldType: 'api-key', customName: 'api-key' }),
 
-  /** Access Key / 访问密钥 */
+  /** Access Key */
   accessKey: (): AutofillBlockerAttributes =>
     getAutofillBlockerProps({
       fieldType: 'password',
       customName: 'access-key',
     }),
 
-  /** Secret Key / 私密密钥 */
+  /** Secret Key */
   secretKey: (): AutofillBlockerAttributes =>
     getAutofillBlockerProps({
       fieldType: 'password',
       customName: 'secret-key',
     }),
 
-  /** Token / 令牌 */
+  /** Token */
   token: (): AutofillBlockerAttributes =>
     getAutofillBlockerProps({ fieldType: 'password', customName: 'token' }),
 
-  /** 邮箱（不希望自动填充时） */
+  /** Email (when autofill is not desired) */
   secureEmail: (): AutofillBlockerAttributes =>
     getAutofillBlockerProps({ fieldType: 'email', customName: 'secure-email' }),
 } as const;
 
 /**
- * 工具函数：合并 autofill blocker 属性和其他属性
+ * Utility function: merge autofill blocker attributes with other attributes
  *
  * @example
  * ```tsx
  * const inputProps = mergeAutofillBlockerProps(
  *   { fieldType: 'password' },
- *   { placeholder: '请输入密码', maxLength: 100 }
+ *   { placeholder: 'Please enter password', maxLength: 100 }
  * );
  * <Input {...inputProps} />
  * ```

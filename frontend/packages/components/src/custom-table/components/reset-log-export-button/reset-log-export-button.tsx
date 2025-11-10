@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 重置日志导出按钮组件
- * 提供一键导出重置操作相关日志的功能
+ * Reset log export button component
+ * Provides one-click export functionality for reset operation related logs
  */
 
 import { devLog } from '@/custom-table/utils/log-utils';
@@ -26,27 +26,27 @@ import { IconDownload } from '@arco-design/web-react/icon';
 import React, { useState } from 'react';
 
 interface ResetLogExportButtonProps {
-  /** 按钮文本 */
+  /** Button text */
   text?: string;
-  /** 按钮类型 */
+  /** Button type */
   type?: 'primary' | 'secondary' | 'outline' | 'text';
-  /** 按钮大小 */
+  /** Button size */
   size?: 'mini' | 'small' | 'default' | 'large';
-  /** 是否显示日志数量 */
+  /** Whether to show log count */
   showCount?: boolean;
-  /** 自定义样式 */
+  /** Custom style */
   style?: React.CSSProperties;
-  /** 自定义类名 */
+  /** Custom class name */
   className?: string;
-  /** 是否启用日志收集 */
+  /** Whether to enable log collection */
   enableLogging?: boolean;
 }
 
 /**
- * 重置日志导出按钮
+ * Reset log export button
  */
 export const ResetLogExportButton: React.FC<ResetLogExportButtonProps> = ({
-  text = '导出日志',
+  text = 'Export Logs',
   type = 'primary',
   size = 'default',
   showCount = true,
@@ -57,7 +57,7 @@ export const ResetLogExportButton: React.FC<ResetLogExportButtonProps> = ({
   const [isExporting, setIsExporting] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
 
-  // 获取日志统计信息
+  // Get log statistics
   const getLogStats = () => {
     const resetStats = resetLogCollector.getStats();
     const performanceStats = performanceLogger.getStats();
@@ -82,92 +82,92 @@ export const ResetLogExportButton: React.FC<ResetLogExportButtonProps> = ({
     };
   };
 
-  // 处理导出日志
+  // Handle export logs
   const handleExportLogs = async () => {
     if (!enableLogging) {
-      Message.warning('日志收集功能未启用');
+      Message.warning('Log collection is not enabled');
       return;
     }
 
     setIsExporting(true);
 
     try {
-      // 确保当前会话结束
+      // Ensure current session ends
       if (resetLogCollector.getCurrentSession()) {
         resetLogCollector.endSession();
       }
 
-      // 导出重置日志
+      // Export reset logs
       resetLogCollector.exportResetLogs();
 
-      Message.success('重置日志导出成功');
+      Message.success('Reset logs exported successfully');
     } catch (error: unknown) {
-      // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
+      // ✅ Correct: Use devLog to record errors and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       devLog.error({
         component: 'ResetLogExportButton',
-        message: `导出日志失败: ${errorObj.message}`,
+        message: `Failed to export logs: ${errorObj.message}`,
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
           errorObj,
         },
       });
-      Message.error(`导出日志失败: ${errorObj.message}`);
+      Message.error(`Failed to export logs: ${errorObj.message}`);
     } finally {
       setIsExporting(false);
     }
   };
 
-  // 处理导出分析报告
+  // Handle export analysis report
   const handleExportAnalysis = async () => {
     if (!enableLogging) {
-      Message.warning('日志收集功能未启用');
+      Message.warning('Log collection is not enabled');
       return;
     }
 
     setIsExporting(true);
 
     try {
-      // 导出分析报告
+      // Export analysis report
       resetLogAnalyzer.exportAnalysisReport();
 
-      Message.success('分析报告导出成功');
+      Message.success('Analysis report exported successfully');
     } catch (error: unknown) {
-      // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
+      // ✅ Correct: Use devLog to record errors and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       devLog.error({
         component: 'ResetLogExportButton',
-        message: `导出分析报告失败: ${errorObj.message}`,
+        message: `Failed to export analysis report: ${errorObj.message}`,
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
           errorObj,
         },
       });
-      Message.error(`导出分析报告失败: ${errorObj.message}`);
+      Message.error(`Failed to export analysis report: ${errorObj.message}`);
     } finally {
       setIsExporting(false);
     }
   };
 
-  // 处理预览日志
+  // Handle preview logs
   const handlePreviewLogs = (e?: React.MouseEvent) => {
     if (e) {
-      e.preventDefault(); // 阻止默认右键菜单
+      e.preventDefault(); // Prevent default right-click menu
     }
 
     if (!enableLogging) {
-      Message.warning('日志收集功能未启用');
+      Message.warning('Log collection is not enabled');
       return;
     }
 
     setShowPreview(true);
   };
 
-  // 预览日志内容
+  // Preview log content
   const previewLogs = () => {
     const stats = getLogStats();
     const sessions = resetLogCollector.getAllSessions();
@@ -181,8 +181,8 @@ export const ResetLogExportButton: React.FC<ResetLogExportButtonProps> = ({
         totalPerformanceLogs: stats.performance.totalRenders,
         currentSession: stats.currentSession,
       },
-      resetSessions: sessions.slice(-5), // 最近5个会话
-      performanceStats, // 性能统计信息
+      resetSessions: sessions.slice(-5), // Last 5 sessions
+      performanceStats, // Performance statistics
     };
   };
 
@@ -205,7 +205,7 @@ export const ResetLogExportButton: React.FC<ResetLogExportButtonProps> = ({
         {showCount && totalLogs > 0 && ` (${totalLogs})`}
       </Button>
 
-      {/* 分析报告导出按钮 */}
+      {/* Analysis report export button */}
       <Button
         type="outline"
         size={size}
@@ -215,12 +215,12 @@ export const ResetLogExportButton: React.FC<ResetLogExportButtonProps> = ({
         style={{ marginLeft: '8px', ...style }}
         className={className}
       >
-        导出分析报告
+        Export Analysis Report
       </Button>
 
-      {/* 日志预览模态框 */}
+      {/* Log preview modal */}
       <Modal
-        title="日志预览"
+        title="Log Preview"
         visible={showPreview}
         onCancel={() => setShowPreview(false)}
         onOk={() => setShowPreview(false)}
@@ -245,8 +245,8 @@ export const ResetLogExportButton: React.FC<ResetLogExportButtonProps> = ({
 };
 
 /**
- * 重置日志控制面板
- * 提供日志收集的开关和统计信息
+ * Reset log control panel
+ * Provides log collection toggle and statistics
  */
 export const ResetLogControlPanel: React.FC = () => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -322,23 +322,23 @@ export const ResetLogControlPanel: React.FC = () => {
           size="small"
           onClick={handleToggleLogging}
         >
-          {isEnabled ? '停止收集' : '开始收集'}
+          {isEnabled ? 'Stop Collection' : 'Start Collection'}{' '}
         </Button>
       </div>
 
       {isEnabled && stats && (
         <div style={{ fontSize: '12px', color: '#666' }}>
-          <div>重置会话: {stats.reset.totalSessions}</div>
-          <div>重置日志: {stats.reset.totalLogs}</div>
-          <div>渲染次数: {stats.performance.totalRenders}</div>
-          <div>错误率: {stats.reset.errorRate.toFixed(1)}%</div>
+          <div>Reset Sessions: {stats.reset.totalSessions}</div>{' '}
+          <div>Reset Logs: {stats.reset.totalLogs}</div>{' '}
+          <div>Render Count: {stats.performance.totalRenders}</div>{' '}
+          <div>Error Rate: {stats.reset.errorRate.toFixed(1)}%</div>{' '}
         </div>
       )}
 
       <div style={{ marginTop: '8px', display: 'flex', gap: '4px' }}>
         <ResetLogExportButton
           size="small"
-          text="导出日志"
+          text="Export Logs"
           enableLogging={isEnabled}
         />
         <Button
@@ -347,7 +347,7 @@ export const ResetLogControlPanel: React.FC = () => {
           onClick={() => resetLogAnalyzer.exportAnalysisReport()}
           disabled={!isEnabled}
         >
-          分析报告
+          Analysis Report
         </Button>
       </div>
     </div>

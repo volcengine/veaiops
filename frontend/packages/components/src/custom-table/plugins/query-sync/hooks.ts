@@ -25,7 +25,7 @@ import type { BaseQuery } from '@veaiops/types';
 import { useDeepCompareEffect, useMount } from 'ahooks';
 import { delay, isEmpty } from 'lodash-es';
 /**
- * 查询参数同步插件 Hooks
+ * Query parameter synchronization plugin Hooks
  */
 import { useCallback, useEffect, useRef } from 'react';
 import {
@@ -35,7 +35,7 @@ import {
 } from './utils/index';
 
 /**
- * 查询参数同步 Hook
+ * Query parameter synchronization Hook
  */
 export const useQuerySync = <
   QueryType extends Record<string, unknown> = Record<string, unknown>,
@@ -46,21 +46,21 @@ export const useQuerySync = <
   initQuery: QueryType = {} as QueryType,
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  // 使用真实的订阅机制
+  // Use real subscription mechanism
   const { channels, createChannel } = useSubscription();
 
-  // 确保 activeKeyChange 通道已创建
+  // Ensure activeKeyChange channel is created
   useEffect(() => {
     createChannel('activeKeyChange');
   }, [createChannel]);
 
-  // 状态引用
+  // State references
   const mountRef = useRef(false);
   const resetRef = useRef(false);
   const activeKeyChangeRef = useRef<Record<string, unknown>>({});
   const utilsRef = useRef<QuerySyncUtils<QueryType> | null>(null);
 
-  // 创建上下文
+  // Create context
   const context: QuerySyncContext<QueryType> = {
     query,
     setQuery: setQuery as any,
@@ -71,7 +71,7 @@ export const useQuerySync = <
     activeKeyChangeRef,
   };
 
-  // 初始化工具实例
+  // Initialize utility instance
   if (!utilsRef.current) {
     utilsRef.current = createQuerySyncUtils({
       config,
@@ -79,7 +79,7 @@ export const useQuerySync = <
     }) as QuerySyncUtils<QueryType>;
   }
 
-  // 更新实例：避免直接写私有字段
+  // Update instance: avoid directly writing private fields
   if (utilsRef.current) {
     utilsRef.current = createQuerySyncUtils({
       config,
@@ -88,7 +88,7 @@ export const useQuerySync = <
   }
 
   /**
-   * 初始化查询参数
+   * Initialize query parameters
    */
   const initializeQuery = useCallback(() => {
     if (!config.syncQueryOnSearchParams) {
@@ -107,14 +107,14 @@ export const useQuerySync = <
   }, [config.syncQueryOnSearchParams, initQuery, setQuery]);
 
   /**
-   * 处理查询参数更新
+   * Handle query parameter updates
    */
   const handleQueryUpdate = useCallback(() => {
     if (!shouldSyncQuery(config, context) || !utilsRef.current) {
       return;
     }
 
-    // 确保 context.query 是最新的
+    // Ensure context.query is up to date
     utilsRef.current.context.query = query;
 
     safeExecuteSync(
@@ -124,7 +124,7 @@ export const useQuerySync = <
   }, [config, query, context]);
 
   /**
-   * 重置查询参数
+   * Reset query parameters
    */
   const resetQuery = useCallback(
     (resetEmptyData = false) => {
@@ -195,7 +195,7 @@ export const useQuerySync = <
   );
 
   /**
-   * 手动同步查询参数
+   * Manually sync query parameters
    */
   const manualSync = useCallback(() => {
     if (!utilsRef.current) {
@@ -206,7 +206,7 @@ export const useQuerySync = <
     setQuery((prev) => ({ ...prev, ...urlQuery }));
   }, [setQuery]);
 
-  // 监听activeKey变化
+  // Listen for activeKey changes
   useDeepCompareEffect(() => {
     if (!channels.activeKeyChange) {
       return undefined;
@@ -237,24 +237,24 @@ export const useQuerySync = <
     };
   }, [channels.activeKeyChange, config.useActiveKeyHook]);
 
-  // 监听查询参数变化
+  // Listen for query parameter changes
   useDeepCompareEffect(() => {
     handleQueryUpdate();
   }, [query, handleQueryUpdate]);
 
-  // 组件挂载时初始化
+  // Initialize when component mounts
   useMount(() => {
     mountRef.current = true;
 
     if (config.useActiveKeyHook) {
-      // 延迟执行以等待activeKey更新
+      // Delay execution to wait for activeKey update
       delay(initializeQuery, 500);
     } else {
       initializeQuery();
     }
   });
 
-  // 清理
+  // Cleanup
   useEffect(
     () => () => {
       mountRef.current = false;
@@ -271,7 +271,7 @@ export const useQuerySync = <
 };
 
 /**
- * 查询参数格式化 Hook
+ * Query parameter formatting Hook
  */
 export const useQueryFormat = <
   QueryType extends Record<string, unknown> = Record<string, unknown>,
@@ -298,7 +298,7 @@ export const useQueryFormat = <
 };
 
 /**
- * URL参数同步状态 Hook
+ * URL parameter synchronization state Hook
  */
 export const useUrlSyncState = (config: QuerySyncConfig) => {
   const [searchParams] = useSearchParams();

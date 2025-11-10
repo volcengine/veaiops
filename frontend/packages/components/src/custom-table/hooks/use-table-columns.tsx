@@ -21,7 +21,7 @@ import { get, omit, pickBy } from 'lodash-es';
 import { useCallback, useMemo, useState } from 'react';
 
 /**
- * 根据fields顺序对列进行排序
+ * Sort columns by fields order
  */
 function sortColumnsByFields<T = Record<string, unknown>>({
   columns,
@@ -38,33 +38,33 @@ function sortColumnsByFields<T = Record<string, unknown>>({
     const aIndex = fields.indexOf(a.dataIndex ?? '');
     const bIndex = fields.indexOf(b.dataIndex ?? '');
 
-    // 如果都不在fields中，保持原有顺序
+    // If both are not in fields, keep original order
     if (aIndex === -1 && bIndex === -1) {
       return 0;
     }
-    // 如果a不在fields中，排在后面
+    // If a is not in fields, put it at the end
     if (aIndex === -1) {
       return 1;
     }
-    // 如果b不在fields中，排在前面
+    // If b is not in fields, put it at the front
     if (bIndex === -1) {
       return -1;
     }
-    // 按照fields中的顺序排序
+    // Sort by order in fields
     return aIndex - bIndex;
   });
 }
 
 /**
- * 根据用户选择的fields过滤出需要展示的字段
+ * Filter columns to display based on user-selected fields
  */
 function filterTreeColumns<T = Record<string, unknown>>({
   baseColumns,
   fields,
 }: {
-  /** 定制的基础的columns */
+  /** Custom base columns */
   baseColumns: CustomTableColumnProps<T>[];
-  /** 需要展现的字段 */
+  /** Fields to display */
   fields?: string[];
 }): CustomTableColumnProps<T>[] {
   const filterColumns: CustomTableColumnProps<T>[] = [];
@@ -94,25 +94,25 @@ function filterTreeColumns<T = Record<string, unknown>>({
 }
 
 /**
- * 将columns进行转换，主要是有CustomTitleComponent【自定义表头】的column
+ * Transform columns, mainly for columns with CustomTitleComponent [custom header]
  */
 function transferTreeColumns<T>(params: {
   /**
-   * 特殊的columns
+   * Special columns
    */
   columns: CustomTableColumnProps<T>[];
   /**
-   * 排序的值
+   * Sorter value
    */
   sorter: SorterResult | undefined;
   /**
-   * 表格内筛选获得的值
+   * Filter values obtained from table
    */
   filters: Record<string, unknown>;
   /**
-   * 表格内部修改 排序值 和 筛选值的方法
-   * @param type 类型
-   * @param value 值
+   * Method to modify sorter and filter values within table
+   * @param type Type
+   * @param value Value
    * @returns void
    */
   handleChange: (params: {
@@ -120,7 +120,7 @@ function transferTreeColumns<T>(params: {
     value?: Record<string, unknown>;
   }) => void;
   /**
-   * 表头内部模糊查询的函数
+   * Fuzzy search function within table header
    */
   queryOptions?: any;
 }): CustomTableColumnProps<T>[] {
@@ -176,9 +176,9 @@ function transferTreeColumns<T>(params: {
 
 /**
  *
- * @param originFilters 原来的表格顶部筛选
- * @param nextFilter 需要改变的表格筛选
- * @returns 最终的表格筛选项
+ * @param originFilters Original table top filters
+ * @param nextFilter Table filter to change
+ * @returns Final table filter items
  */
 const getNextFilters = (
   originFilters: Record<string, unknown>,
@@ -201,14 +201,14 @@ const getNextFilters = (
 };
 
 /**
- * 完整的表格列业务管理Hook
+ * Complete table column business management Hook
  *
- * @description 这是完整的业务表格列管理实现，包含：
- * - 字段过滤和排序
- * - 表格内筛选功能
- * - 自定义表头组件支持
- * - 树形列结构处理
- * - 排序和筛选状态管理
+ * @description This is a complete business table column management implementation, including:
+ * - Field filtering and sorting
+ * - In-table filtering functionality
+ * - Custom header component support
+ * - Tree column structure handling
+ * - Sorter and filter state management
  *
  *
  * @example
@@ -227,15 +227,15 @@ export const useTableColumns = <T = Record<string, unknown>>({
   fields,
   defaultFilters = {},
 }: {
-  /** 基础的列 */
+  /** Base columns */
   baseColumns: CustomTableColumnProps<T>[];
-  /** 需要展示的字段 */
+  /** Fields to display */
   fields?: string[];
-  /** 默认的排序 */
+  /** Default sorter */
   defaultSorter?: SorterResult;
-  /** 默认的筛选 */
+  /** Default filters */
   defaultFilters?: Record<string, unknown>;
-  /** 字段查询的通用函数 */
+  /** Common function for field query */
   queryOptions?: any;
 }) => {
   const [query, setQuery] = useState<Record<string, unknown>>({});
@@ -245,14 +245,14 @@ export const useTableColumns = <T = Record<string, unknown>>({
   );
 
   /**
-   * 改不排序和筛选的方法的参数接口
+   * Parameter interface for methods that modify sorter and filters
    */
   interface HandleChangeParams {
     type: string;
     value?: unknown;
   }
 
-  /** 改不排序和筛选的方法 */
+  /** Method to modify sorter and filters */
   const handleChange = useCallback(({ type, value }: HandleChangeParams) => {
     switch (type) {
       case 'sorter':
@@ -274,14 +274,14 @@ export const useTableColumns = <T = Record<string, unknown>>({
     }
   }, []);
 
-  /** 最终的列 */
+  /** Final columns */
   const columns = useMemo(() => {
-    // 1. 先根据fields过滤对应的字段
+    // 1. First filter fields based on fields
     const filterColumns: CustomTableColumnProps<T>[] = filterTreeColumns<T>({
       baseColumns,
       fields,
     });
-    // 2. 将自定义的columns转换为标准的columns
+    // 2. Convert custom columns to standard columns
     const standardColumns = transferTreeColumns<T>({
       columns: filterColumns,
       sorter,
@@ -289,7 +289,7 @@ export const useTableColumns = <T = Record<string, unknown>>({
       handleChange,
       queryOptions,
     });
-    // 3.按照fields的顺序进行排序
+    // 3. Sort by fields order
     const sortColumns = sortColumnsByFields<T>({
       columns: standardColumns,
       fields,
@@ -299,15 +299,15 @@ export const useTableColumns = <T = Record<string, unknown>>({
   }, [baseColumns, fields, sorter, filters, handleChange, queryOptions]);
 
   return {
-    /** 返回的列 */
+    /** Returned columns */
     columns,
-    /** 查询 */
+    /** Query */
     query,
-    /** 排序 */
+    /** Sorter */
     sorter,
-    /** 筛选 */
+    /** Filters */
     filters,
-    /** 设置筛序 */
+    /** Set filters */
     setFilters,
   };
 };

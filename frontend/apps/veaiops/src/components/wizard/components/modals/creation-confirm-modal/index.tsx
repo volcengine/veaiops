@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * CreationConfirmModal - 创建数据源确认弹窗（入口文件）
- * @description 将"创建数据源"确认弹窗的UI与逻辑抽离，提升 wizard-controller 可读性
+ * CreationConfirmModal - Data source creation confirmation modal (entry file)
+ * @description Extracts UI and logic of "create data source" confirmation modal to improve wizard-controller readability
  */
 
 import { Modal } from '@arco-design/web-react';
@@ -41,7 +41,7 @@ export interface CreationConfirmModalProps {
 }
 
 /**
- * 创建数据源确认弹窗组件
+ * Data source creation confirmation modal component
  */
 export const CreationConfirmModal: React.FC<CreationConfirmModalProps> = ({
   visible,

@@ -17,41 +17,41 @@ import type { PropsWithChildren, ReactNode } from 'react';
 import { useMemo } from 'react';
 
 /**
- * 抽屉表单内容包装组件属性
+ * Drawer form content wrapper component props
  */
 export interface DrawerFormContentProps {
   /**
-   * 加载状态
+   * Loading state
    */
   loading?: boolean;
 
   /**
-   * Loading 提示文本
-   * @default '提交中...'
+   * Loading tip text
+   * @default 'Submitting...'
    */
   loadingTip?: string;
 
   /**
-   * 子元素
+   * Children elements
    */
   children: ReactNode;
 
   /**
-   * 自定义样式
+   * Custom styles
    */
   style?: React.CSSProperties;
 
   /**
-   * 自定义类名
+   * Custom class name
    */
   className?: string;
 }
 
 /**
- * 抽屉表单内容包装组件
+ * Drawer form content wrapper component
  *
- * 使用 Arco Design 的 Spin 组件（block 形态）包裹抽屉表单内容，
- * 在表单提交时显示 loading 状态，阻止用户操作。
+ * Uses Arco Design's Spin component (block form) to wrap drawer form content,
+ * displays loading state during form submission to prevent user operations.
  *
  * @example
  * ```tsx
@@ -75,12 +75,12 @@ export const DrawerFormContent: React.FC<
   PropsWithChildren<DrawerFormContentProps>
 > = ({
   loading = false,
-  loadingTip = '提交中...',
+  loadingTip = 'Submitting...',
   children,
   style,
   className,
 }) => {
-  // 使用 useMemo 稳定化 Spin 组件的 style，避免不必要的重新渲染
+  // Use useMemo to stabilize Spin component's style, avoiding unnecessary re-renders
   const spinStyle = useMemo<React.CSSProperties>(
     () => ({
       width: '100%',

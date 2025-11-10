@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表单相关组件导出
+ * Form related component exports
  */
 
 export { ConnectForm } from './connect-form';

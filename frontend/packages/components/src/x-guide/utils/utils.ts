@@ -83,7 +83,7 @@ export const isHTMLElement = (node: Element): boolean => {
 export const isTableElement = (node: Element): boolean =>
   ['table', 'td', 'th'].indexOf(getNodeName(node)) >= 0;
 
-/** 误差范围内 */
+/** Within error range */
 export const withErrorRange = (
   val: number,
   target: number,
@@ -92,38 +92,38 @@ export const withErrorRange = (
   return val <= target + errorRange && val >= target - errorRange;
 };
 
-/** 列表滚动封装 */
+/** List scroll wrapper */
 export const listScroll = (
   element: HTMLElement,
   targetPos: number,
   callback?: () => void,
 ): void => {
-  // 是否已成功卸载
+  // Whether successfully unmounted
   let unMountFlag = false;
-  const { scrollHeight: listHeight } = element; // 避免一些边界情况
+  const { scrollHeight: listHeight } = element; // Avoid some edge cases
 
   if (targetPos < 0 || targetPos > listHeight) {
     callback?.();
     return;
-  } // 调用滚动方法
+  } // Call scroll method
 
   element.scrollTo({
     top: targetPos,
     left: 0,
     behavior: 'smooth',
-  }); // 没有回调就直接返回
+  }); // Return directly if no callback
 
   if (!callback) {
-    // 如果已经到达目标位置了，可以先行返回
+    // If already reached target position, return early
     return;
   }
   if (withErrorRange(targetPos, element.scrollTop, 10)) {
-    // 防抖处理
+    // Debounce handling
     callback();
     return;
   }
   const cb = debounce(() => {
-    // 到达目标位置了，可以返回
+    // Reached target position, can return
     if (withErrorRange(targetPos, element.scrollTop, 10)) {
       element.removeEventListener('scroll', cb);
       unMountFlag = true;
@@ -136,7 +136,7 @@ export const listScroll = (
     cb,
     false,
   );
-  // 兜底：卸载滚动回调，避免对之后的操作产生影响
+  // Fallback: unmount scroll callback to avoid affecting subsequent operations
 
   setTimeout(() => {
     if (!unMountFlag) {

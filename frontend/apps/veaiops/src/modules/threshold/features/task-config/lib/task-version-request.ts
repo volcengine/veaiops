@@ -17,14 +17,14 @@ import type { IntelligentThresholdTaskStatus } from "api-generate";
 import apiClient from "@/utils/api-client";
 
 /**
- * 任务版本列表API调用函数
- * @param params - 包含分页和过滤参数的对象
+ * Task version list API call function
+ * @param params - Object containing pagination and filter parameters
  */
 const fetchTaskVersionList = async (params: Record<string, any>) => {
-  // 从参数中提取查询条件
+  // Extract query conditions from parameters
   const { skip, limit, task_id, sort_columns, ...otherParams } = params;
 
-  // 构建API请求参数，确保参数名称与接口对齐
+  // Build API request parameters, ensure parameter names align with interface
   const apiParams = {
     taskId: task_id as string,
     skip: skip || 0,
@@ -59,7 +59,7 @@ const fetchTaskVersionList = async (params: Record<string, any>) => {
 };
 
 /**
- * 创建任务版本表格请求包装器
+ * Create task version table request wrapper
  */
 export const createTaskVersionTableRequestWrapper = (taskId?: string) => {
   const wrappedRequest = createTableRequestWrapper({

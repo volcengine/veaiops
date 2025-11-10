@@ -17,14 +17,14 @@ import { IconEye } from '@arco-design/web-react/icon';
 import type { Event } from 'api-generate';
 
 /**
- * 历史事件列配置回调函数类型定义
+ * History event column configuration callback function type definition
  */
 export interface HistoryColumnsProps {
   onViewDetail?: (record: Event) => void;
 }
 
 /**
- * 渲染操作按钮
+ * Render action buttons
  */
 export interface RenderActionsParams {
   record: Event;

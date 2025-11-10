@@ -15,5 +15,5 @@
 export interface AxisDensityOptions {
   maxXTicks?: number;
   xLabelOptionalAngles?: number[];
-  timeRange?: [Date, Date]; // 用户选择的时间范围
+  timeRange?: [Date, Date]; // User-selected time range
 }

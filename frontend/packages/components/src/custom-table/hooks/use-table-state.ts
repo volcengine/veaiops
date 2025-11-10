@@ -23,15 +23,12 @@ import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
 import { useCallback, useRef, useState } from 'react';
 /**
  * useTableState Hook
- * 参考 pro-components 设计，提供表格状态管理能力
- *
-
- *
+ * Reference pro-components design, provides table state management capability
  */
 
 /**
- * useTableState - 表格状态管理 Hook
- * 提供完整的表格状态管理能力，参考 pro-components 设计
+ * useTableState - Table State Management Hook
+ * Provides complete table state management capability, reference pro-components design
  */
 export function useTableState<
   RecordType extends BaseRecord = BaseRecord,
@@ -49,7 +46,7 @@ export function useTableState<
     defaultCurrent = 1,
   } = props;
 
-  // 状态定义
+  // State definition
   const [dataSource, setDataSource] = useState<RecordType[]>(initialDataSource);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -73,22 +70,22 @@ export function useTableState<
 
   const [resetEmptyData, setResetEmptyData] = useState(false);
 
-  // 状态快照引用
+  // State snapshot reference
   const stateRef = useRef<TableState<RecordType, QueryType>>(
     {} as TableState<RecordType, QueryType>,
   );
 
-  // 更新状态引用
+  // Update state reference
   const updateStateRef = useCallback(() => {
     stateRef.current = {
       dataSource,
-      formattedTableData: dataSource, // 暂时使用相同的数据
+      formattedTableData: dataSource, // Temporarily use same data
       loading,
       error,
       current,
       pageSize,
       total,
-      tableTotal: total, // 使用相同的总数
+      tableTotal: total, // Use same total
       query,
       filters,
       sorter,
@@ -111,10 +108,10 @@ export function useTableState<
     resetEmptyData,
   ]);
 
-  // 实时更新状态引用
+  // Update state reference in real-time
   updateStateRef();
 
-  // 重置操作
+  // Reset operation
   const reset = useCallback(
     (options: { resetEmptyData?: boolean } = {}) => {
       setDataSource([]);
@@ -136,7 +133,7 @@ export function useTableState<
     [defaultCurrent, defaultPageSize, defaultQuery],
   );
 
-  // 增强的 setQuery 支持函数式更新
+  // Enhanced setQuery supports functional updates
   const enhancedSetQuery = useCallback(
     (newQuery: QueryType | ((prev: QueryType) => QueryType)) => {
       if (typeof newQuery === 'function') {
@@ -150,13 +147,13 @@ export function useTableState<
 
   const state: TableState<RecordType, QueryType> = {
     dataSource,
-    formattedTableData: dataSource, // 暂时使用相同的数据
+    formattedTableData: dataSource, // Temporarily use same data
     loading,
     error,
     current,
     pageSize,
     total,
-    tableTotal: total, // 使用相同的总数
+    tableTotal: total, // Use same total
     query,
     filters,
     sorter,
@@ -166,30 +163,30 @@ export function useTableState<
   };
 
   const actions: TableStateActions<RecordType, QueryType> = {
-    // 数据操作
+    // Data operations
     setDataSource,
     setLoading,
     setError,
 
-    // 分页操作
+    // Pagination operations
     setCurrent,
     setPageSize,
     setTotal,
-    setTableTotal: setTotal, // tableTotal和total使用相同的setter
+    setTableTotal: setTotal, // tableTotal and total use the same setter
 
-    // 查询操作
+    // Query operations
     setQuery: enhancedSetQuery,
     setFilters,
     setSorter,
 
-    // 选择操作
+    // Selection operations
     setSelectedRowKeys,
     setExpandedRowKeys,
 
-    // 其他操作
+    // Other operations
     setResetEmptyData,
 
-    // 组合操作
+    // Combined operations
     reset,
     updatePagination: (pagination: {
       current?: number;

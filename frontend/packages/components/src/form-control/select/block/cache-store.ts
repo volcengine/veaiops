@@ -15,13 +15,13 @@
 import store from 'store2';
 import { ensureArray } from './util';
 
-// 辅助函数：创建存储的数据
+// Helper function: Create stored data
 const createData = (value: unknown, expires?: number) => ({
   value,
   expires: expires ? Date.now() + expires : null,
 });
 
-// 辅助函数：检查数据是否过期
+// Helper function: Check if data is expired
 const isExpired = (data: { value: unknown; expires: number | null }) =>
   data?.expires && Date.now() > data.expires;
 

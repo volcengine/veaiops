@@ -44,7 +44,7 @@ interface BasicInfoFieldsProps {
 }
 
 /**
- * 基本信息字段区块
+ * Basic information fields section
  */
 export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
   form,
@@ -55,11 +55,11 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
   templateDataSource,
   projectsDataSource,
 }) => {
-  // 🔍 添加日志：追踪组件接收的 props 和表单字段值
+  // 🔍 Add log: Track component props and form field values
   useEffect(() => {
     const formDatasourceType = form.getFieldValue('datasourceType');
     logger.info({
-      message: '[BasicInfoFields] 组件 props 或表单字段值变化',
+      message: '[BasicInfoFields] Component props or form field values changed',
       data: {
         datasourceTypeProp: datasourceType,
         formFieldValue: formDatasourceType,
@@ -85,7 +85,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         justifyContent: 'space-between',
       }}
     >
-      {/* 任务名称 */}
+      {/* Task name */}
       <Input.Block
         isControl
         inline
@@ -102,7 +102,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         }}
       />
 
-      {/* 指标模版 */}
+      {/* Metric template */}
       <Select.Block
         isControl
         inline
@@ -136,7 +136,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         }}
       />
 
-      {/* 时序数据源类型 */}
+      {/* Timeseries datasource type */}
       <Select.Block
         isControl
         inline
@@ -152,7 +152,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
           onChange: (value: string) => {
             const previousFormValue = form.getFieldValue('datasourceType');
             logger.info({
-              message: '[BasicInfoFields] 监控数据源类型字段 onChange 触发',
+              message: '[BasicInfoFields] Datasource type field onChange triggered',
               data: {
                 newDatasourceType: value,
                 previousDatasourceTypeState: datasourceType,
@@ -164,9 +164,9 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
               component: 'datasourceType_onChange',
             });
 
-            // 🔍 记录状态更新前的情况
+            // 🔍 Log state before update
             logger.info({
-              message: '[BasicInfoFields] 准备更新 datasourceType 状态',
+              message: '[BasicInfoFields] Preparing to update datasourceType state',
               data: {
                 newValue: value,
                 currentState: datasourceType,
@@ -177,19 +177,19 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
             });
 
             setDatasourceType(value);
-            // ✅ 当数据源类型变化时，清空已选择的数据源（这是合理的业务逻辑）
+            // ✅ Clear selected datasource when datasource type changes (reasonable business logic)
             form.setFieldValue('datasourceId', undefined);
 
-            // 🔍 记录状态更新后的情况
+            // 🔍 Log state after update
             const afterFormValue = form.getFieldValue('datasourceType');
             logger.info({
               message:
-                '[BasicInfoFields] 监控数据源类型变化后，已清空 datasourceId',
+                '[BasicInfoFields] After datasource type changed, datasourceId has been cleared',
               data: {
                 newDatasourceType: value,
                 datasourceIdAfterClear: form.getFieldValue('datasourceId'),
                 formFieldValueAfterChange: afterFormValue,
-                // 注意：状态更新是异步的，此时 datasourceType 状态可能还是旧值
+                // Note: State update is asynchronous, datasourceType state may still be the old value
                 stateValueAfterChange: datasourceType,
                 timestamp: Date.now(),
               },
@@ -206,7 +206,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         }}
       />
 
-      {/* 时序数据源 */}
+      {/* Timeseries datasource */}
       <Select.Block
         isControl
         inline
@@ -226,11 +226,11 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
           isScrollFetching: true,
           isValueEmptyTriggerOptions: true,
           dependency: (() => {
-            // 🔍 添加日志：追踪 dependency 数组的构建
+            // 🔍 Add log: Track dependency array construction
             const formDatasourceType = form.getFieldValue('datasourceType');
             const dependencyArray = [datasourceType];
             logger.info({
-              message: '[BasicInfoFields] 监控数据源字段 dependency 数组构建',
+              message: '[BasicInfoFields] Datasource field dependency array construction',
               data: {
                 dependencyArray,
                 datasourceTypeState: datasourceType,
@@ -249,10 +249,10 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
           })(),
           searchKey: 'name',
           dataSource: (() => {
-            // 🔍 添加日志：追踪 dataSource 的传递
+            // 🔍 Add log: Track dataSource passing
             const formDatasourceType = form.getFieldValue('datasourceType');
             logger.info({
-              message: '[BasicInfoFields] 监控数据源字段 dataSource 传递',
+              message: '[BasicInfoFields] Datasource field dataSource passing',
               data: {
                 datasourceTypeState: datasourceType,
                 formFieldValue: formDatasourceType,
@@ -271,7 +271,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
           })(),
           onChange: (value: string, option: OptionInfo | OptionInfo[]) => {
             logger.info({
-              message: '[BasicInfoFields] 监控数据源字段 onChange 触发',
+              message: '[BasicInfoFields] Datasource field onChange triggered',
               data: {
                 datasourceId: value,
                 datasourceType,
@@ -311,7 +311,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         }}
       />
 
-      {/* 项目 */}
+      {/* Projects */}
       <Select.Block
         isControl
         inline
@@ -332,7 +332,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         }}
       />
 
-      {/* 自动更新阈值 */}
+      {/* Auto-update threshold */}
       <Select.Block
         isControl
         inline
@@ -352,7 +352,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         }}
       />
 
-      {/* 阈值方向 */}
+      {/* Threshold direction */}
       <Select.Block
         isControl
         inline
@@ -375,7 +375,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         }}
       />
 
-      {/* 滑动窗口 */}
+      {/* Sliding window */}
       <Input.Number
         isControl
         required

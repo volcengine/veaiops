@@ -25,7 +25,7 @@ import type {
 import apiClient from './api-client';
 
 /**
- * 更新指标模板的参数接口
+ * Parameters interface for updating metric template
  */
 interface UpdateTemplateParams {
   templateId: string;
@@ -33,11 +33,11 @@ interface UpdateTemplateParams {
 }
 
 /**
- * 智能阈值任务管理API
+ * Intelligent threshold task management API
  */
 export const IntelligentThresholdTaskAPI = {
   /**
-   * 创建智能阈值任务
+   * Create intelligent threshold task
    */
   async createTask(request: any): Promise<APIResponseIntelligentThresholdTask> {
     try {
@@ -55,12 +55,12 @@ export const IntelligentThresholdTaskAPI = {
         throw new Error(response.message || '创建智能阈值任务失败');
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorMessage =
         error instanceof Error ? error.message : '创建智能阈值任务失败';
 
       Message.error(errorMessage);
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;
@@ -69,11 +69,11 @@ export const IntelligentThresholdTaskAPI = {
 } as const;
 
 /**
- * 指标模板管理API
+ * Metric template management API
  */
 export const MetricTemplateAPI = {
   /**
-   * 获取指标模板列表
+   * Get metric template list
    */
   async listTemplates(params?: {
     skip?: number;
@@ -93,12 +93,12 @@ export const MetricTemplateAPI = {
         throw new Error(response.message || '获取指标模板列表失败');
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorMessage =
         error instanceof Error ? error.message : '获取指标模板列表失败';
 
       Message.error(errorMessage);
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;
@@ -106,7 +106,7 @@ export const MetricTemplateAPI = {
   },
 
   /**
-   * 创建指标模板
+   * Create metric template
    */
   async createTemplate(
     request: MetricTemplateCreateRequest,
@@ -124,12 +124,12 @@ export const MetricTemplateAPI = {
         throw new Error(response.message || '创建指标模板失败');
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorMessage =
         error instanceof Error ? error.message : '创建指标模板失败';
 
       Message.error(errorMessage);
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;
@@ -137,7 +137,7 @@ export const MetricTemplateAPI = {
   },
 
   /**
-   * 获取指标模板详情
+   * Get metric template details
    */
   async getTemplate(templateId: string): Promise<APIResponseMetricTemplate> {
     try {
@@ -152,12 +152,12 @@ export const MetricTemplateAPI = {
         throw new Error(response.message || '获取指标模板详情失败');
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorMessage =
         error instanceof Error ? error.message : '获取指标模板详情失败';
 
       Message.error(errorMessage);
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;
@@ -165,7 +165,7 @@ export const MetricTemplateAPI = {
   },
 
   /**
-   * 更新指标模板
+   * Update metric template
    */
   async updateTemplate({
     templateId,
@@ -185,12 +185,12 @@ export const MetricTemplateAPI = {
         throw new Error(response.message || '更新指标模板失败');
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorMessage =
         error instanceof Error ? error.message : '更新指标模板失败';
 
       Message.error(errorMessage);
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;
@@ -198,7 +198,7 @@ export const MetricTemplateAPI = {
   },
 
   /**
-   * 删除指标模板
+   * Delete metric template
    */
   async deleteTemplate(templateId: string): Promise<APIResponse> {
     try {
@@ -214,12 +214,12 @@ export const MetricTemplateAPI = {
         throw new Error(response.message || '删除指标模板失败');
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorMessage =
         error instanceof Error ? error.message : '删除指标模板失败';
 
       Message.error(errorMessage);
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;

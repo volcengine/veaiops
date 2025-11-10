@@ -26,7 +26,7 @@ interface TaskDrawerFooterProps {
 }
 
 /**
- * 任务抽屉底部按钮组件
+ * Task drawer footer button component
  */
 export const TaskDrawerFooter: React.FC<TaskDrawerFooterProps> = ({
   operationType,
@@ -34,7 +34,7 @@ export const TaskDrawerFooter: React.FC<TaskDrawerFooterProps> = ({
   form,
   onCancel,
 }) => {
-  // 只读操作只显示关闭按钮
+  // Read-only operations only show close button
   if (isReadOnlyOperation(operationType)) {
     return (
       <Space>
@@ -43,7 +43,7 @@ export const TaskDrawerFooter: React.FC<TaskDrawerFooterProps> = ({
     );
   }
 
-  // 其他操作显示取消和确认按钮
+  // Other operations show cancel and confirm buttons
   return (
     <Space>
       <Button onClick={onCancel} disabled={loading}>

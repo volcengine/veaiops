@@ -19,50 +19,50 @@ import { CCopyComponent } from './c-copy';
 
 export interface CCopyButtonProps {
   /**
-   * 要复制的文本内容
+   * Text content to copy
    */
   text: string;
   /**
-   * 按钮文案
+   * Button text
    */
   children?: React.ReactNode;
   /**
-   * 按钮类型
+   * Button type
    */
   type?: 'primary' | 'secondary' | 'outline' | 'dashed' | 'text';
   /**
-   * 按钮尺寸
+   * Button size
    */
   size?: 'mini' | 'small' | 'default' | 'large';
   /**
-   * 是否只显示图标
+   * Whether to show icon only
    */
   iconOnly?: boolean;
   /**
-   * 自定义样式
+   * Custom style
    */
   style?: React.CSSProperties;
   /**
-   * 自定义类名
+   * Custom class name
    */
   className?: string;
   /**
-   * 复制成功回调
+   * Copy success callback
    */
   onCopySuccess?: (text: string) => void;
   /**
-   * 复制失败回调
+   * Copy error callback
    */
   onCopyError?: (error: any) => void;
 }
 
 /**
- * 复制按钮组件
- * @description 基于CCopy组件封装的复制按钮，点击即可复制文本内容
+ * Copy button component
+ * @description Copy button wrapped based on CCopy component, click to copy text content
  */
 export const CopyButton: React.FC<CCopyButtonProps> = ({
   text,
-  children = '复制',
+  children = 'Copy',
   type = 'outline',
   size = 'small',
   iconOnly = false,
@@ -73,11 +73,11 @@ export const CopyButton: React.FC<CCopyButtonProps> = ({
 }) => {
   const handleCopy = (copiedText: string, result: boolean) => {
     if (result) {
-      Message.success('复制成功');
+      Message.success('Copy successful');
       onCopySuccess?.(copiedText);
     } else {
-      Message.error('复制失败');
-      onCopyError?.(new Error('复制失败'));
+      Message.error('Copy failed');
+      onCopyError?.(new Error('Copy failed'));
     }
   };
 

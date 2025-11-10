@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 表格提示插件类型定义
+ * Table alert plugin type definition
  */
 
 import type { ReactNode } from 'react';
 import type { PluginBaseConfig } from './core';
 
 /**
- * 表格提示配置
+ * Table alert configuration
  */
 export interface TableAlertConfig extends PluginBaseConfig {
   enabled?: boolean;
@@ -32,7 +32,7 @@ export interface TableAlertConfig extends PluginBaseConfig {
 }
 
 /**
- * 表格提示状态
+ * Table alert state
  */
 export interface TableAlertState {
   visible: boolean;
@@ -42,7 +42,7 @@ export interface TableAlertState {
 }
 
 /**
- * 表格提示方法
+ * Table alert methods
  */
 export interface TableAlertMethods {
   show: (config: Partial<TableAlertConfig>) => void;

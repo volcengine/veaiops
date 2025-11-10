@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 重新导出项目管理页面组件
+// Re-export project management page component
 export { ProjectPage as default } from '@/modules/system';

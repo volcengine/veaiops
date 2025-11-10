@@ -28,7 +28,7 @@ import type React from 'react';
 const { Row, Col } = Grid;
 
 /**
- * 统计概览组件属性接口
+ * Statistics overview component props interface
  */
 interface StatisticsOverviewProps {
   loading: boolean;
@@ -39,8 +39,8 @@ interface StatisticsOverviewProps {
 }
 
 /**
- * 统计概览组件
- * 提供关键指标的概览展示
+ * Statistics overview component
+ * Provides overview display of key metrics
  */
 export const StatisticsOverview: React.FC<StatisticsOverviewProps> = ({
   loading,
@@ -49,7 +49,7 @@ export const StatisticsOverview: React.FC<StatisticsOverviewProps> = ({
   onTimeRangeChange,
   onRefresh,
 }) => {
-  // 时间范围选项
+  // Time range options
   const timeRangeOptions = [
     { label: '1小时', value: '1h' as TimeRange },
     { label: '24小时', value: '24h' as TimeRange },
@@ -59,7 +59,7 @@ export const StatisticsOverview: React.FC<StatisticsOverviewProps> = ({
 
   return (
     <div className="mb-6">
-      {/* 工具栏 */}
+      {/* Toolbar */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="m-0">概述统计</h2>
         <Space>
@@ -75,7 +75,7 @@ export const StatisticsOverview: React.FC<StatisticsOverviewProps> = ({
         </Space>
       </div>
 
-      {/* 统计卡片 */}
+      {/* Statistics cards */}
       <Spin loading={loading}>
         <Row gutter={16}>
           <Col span={6}>
@@ -141,7 +141,7 @@ export const StatisticsOverview: React.FC<StatisticsOverviewProps> = ({
           </Col>
         </Row>
 
-        {/* 响应时间统计 */}
+        {/* Response time statistics */}
         <Row gutter={16} className="mt-4">
           <Col span={6}>
             <Card>

@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 组件
-import { Link as ArcoLink, type SelectProps } from '@arco-design/web-react'; // Arco Design 组件库中的 Link 和 Select 组件
-import type { BaseButtonProps } from '@arco-design/web-react/es/Button/interface'; // Arco Design 组件库中的 Button 组件的属性类型定义
+// Components
+import { Link as ArcoLink, type SelectProps } from '@arco-design/web-react'; // Link and Select components from Arco Design component library
+import type { BaseButtonProps } from '@arco-design/web-react/es/Button/interface'; // Button component property type definitions from Arco Design component library
 import type { TagProps } from '@arco-design/web-react/es/Tag/interface';
-import type { OperationsProps } from '@arco-design/web-react/es/Typography/interface'; // Arco Design 组件库中的 Typography 组件的属性类型定义
+import type { OperationsProps } from '@arco-design/web-react/es/Typography/interface'; // Typography component property type definitions from Arco Design component library
 import type { TypographyEllipsisProps } from '@arco-design/web-react/lib/Typography/interface';
-import { get, isEmpty, omit } from 'lodash-es'; // Lodash 工具库中的 get 和 isEmpty 函数
+import { get, isEmpty, omit } from 'lodash-es'; // get and isEmpty functions from Lodash utility library
 import { type CSSProperties, useCallback, useMemo } from 'react';
 import { CustomOutlineTag } from '../custom-outline-tag';
 
-// 组件相关
-import { EllipsisRender } from '../ellipsis/ellipsis'; // 省略号渲染函数
+// Component related
+import { EllipsisRender } from '../ellipsis/ellipsis'; // Ellipsis rendering function
 import styles from './index.module.less';
 
-import { EllipsisList } from './ellipsis-list/ellipsis-list'; // 标签省略列表组件
+import { EllipsisList } from './ellipsis-list/ellipsis-list'; // Tag ellipsis list component
 
-// 常量定义
+// Constant definitions
 const EMPTY_CONTENT = '-';
 const EMPTY_CONTENT_TEXT = '-';
 
-// 工具函数
+// Utility functions
 const ensureArray = <T,>(value: T | T[]): T[] => {
   if (Array.isArray(value)) {
     return value;

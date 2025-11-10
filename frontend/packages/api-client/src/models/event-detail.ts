@@ -17,7 +17,7 @@ import type { Event } from './event';
 import type { EventShowStatus } from './event-show-status';
 export type EventDetail = (Event & {
   /**
-   * The show status of the event (computed field based on status). 状态（基于status字段计算）
+   * The show status of the event (computed field based on status field)
    */
   show_status?: EventShowStatus;
 });

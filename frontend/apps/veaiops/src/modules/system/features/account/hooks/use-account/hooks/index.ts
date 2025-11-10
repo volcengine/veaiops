@@ -16,5 +16,5 @@ export { useCrudOperations } from './use-crud-operations';
 export { useModalState } from './use-modal-state';
 export { useFormHandlers } from './use-form-handlers';
 
-// 注意：useAccountTableConfig 和 useAccountActionConfig 已移至 pages/account/hooks 目录
-// 如需使用，请从 pages/account/hooks 导入
+// Note: useAccountTableConfig and useAccountActionConfig have been moved to pages/account/hooks directory
+// If needed, import from pages/account/hooks

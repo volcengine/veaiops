@@ -13,10 +13,9 @@
 // limitations under the License.
 
 /**
- * CustomTable 上下文增强 Hook
- * 负责处理插件属性增强和上下文管理
+ * CustomTable Context Enhancement Hook
+ * Responsible for handling plugin property enhancements and context management
  *
-
  * @date 2025-12-19
  */
 import type {
@@ -29,10 +28,10 @@ import type {
 import { useMemo } from 'react';
 
 /**
- * 应用插件属性增强的辅助函数
- * @param enabledPlugins 启用的插件列表
- * @param baseContext 基础上下文
- * @returns 增强后的属性
+ * Helper function to apply plugin property enhancements
+ * @param enabledPlugins List of enabled plugins
+ * @param baseContext Base context
+ * @returns Enhanced properties
  */
 const applyPluginEnhancements = <
   RecordType extends BaseRecord,
@@ -51,7 +50,7 @@ const applyPluginEnhancements = <
           enhancedProps = { ...enhancedProps, ...enhanced };
         }
       } catch (error) {
-        // 插件属性增强失败，跳过该插件（静默处理，不影响其他插件）
+        // Plugin property enhancement failed, skip this plugin (silent handling, does not affect other plugins)
       }
     }
   }
@@ -60,8 +59,8 @@ const applyPluginEnhancements = <
 };
 
 /**
- * @name 创建增强的表格上下文
- * @description 基于插件系统应用属性增强，返回最终的上下文对象
+ * @name Create enhanced table context
+ * @description Apply property enhancements based on plugin system, return final context object
  */
 export const useEnhancedTableContext = <
   RecordType extends BaseRecord = BaseRecord,
@@ -70,9 +69,9 @@ export const useEnhancedTableContext = <
   baseContext: PluginContext<RecordType, QueryType>,
   pluginManager: PluginManager,
 ): PluginContext<RecordType, QueryType> => {
-  // 第三阶段：应用插件属性增强（如果有的话）
+  // Phase 3: Apply plugin property enhancements (if any)
   const enhancedContext = useMemo(() => {
-    // 检查是否有插件需要增强属性
+    // Check if any plugins need property enhancement
     type PluginWithEnabled = Plugin & { enabled?: boolean };
     const enabledPlugins = pluginManager
       .getAllPlugins()
@@ -86,24 +85,24 @@ export const useEnhancedTableContext = <
     );
 
     if (!hasPropsEnhancer) {
-      return baseContext; // 没有增强器，直接返回基础上下文
+      return baseContext; // No enhancer, return base context directly
     }
 
-    // 安全地应用属性增强
+    // Safely apply property enhancements
     try {
-      // 安全地应用属性增强
+      // Safely apply property enhancements
       const enhancedProps = applyPluginEnhancements(
         enabledPlugins,
         baseContext,
       );
 
-      // 返回带有增强属性的新上下文
+      // Return new context with enhanced properties
       return {
         ...baseContext,
         props: enhancedProps,
       };
     } catch (error) {
-      // 上下文增强失败，回退到基础上下文（静默处理）
+      // Context enhancement failed, fallback to base context (silent handling)
       return baseContext;
     }
   }, [baseContext, pluginManager]);

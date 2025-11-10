@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 测试状态区域组件
+ * Test status section component
  */
 
 import type React from 'react';

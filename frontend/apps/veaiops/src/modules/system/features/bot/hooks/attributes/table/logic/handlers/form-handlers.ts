@@ -17,7 +17,7 @@ import type { BotAttribute } from 'api-generate';
 import { useCallback } from 'react';
 
 /**
- * Bot属性表格表单处理Hook
+ * Bot attribute table form handler Hook
  */
 export const useBotAttributesTableFormHandlers = ({
   modalType,
@@ -36,15 +36,15 @@ export const useBotAttributesTableFormHandlers = ({
   handleCloseModal: () => void;
 }) => {
   /**
-   * 处理表单提交
-   * 注意：刷新表格逻辑由调用方处理，此处只返回成功状态
+   * Handle form submission
+   * Note: Table refresh logic is handled by caller, only return success status here
    */
   const handleFormSubmit = useCallback(
     async (values: BotAttributeFormData) => {
       let success = false;
 
       if (modalType === 'create' && values.value) {
-        // 处理多选和单选的情况
+        // Handle multi-select and single-select cases
         const valuesArray = Array.isArray(values.value)
           ? values.value
           : [values.value];
@@ -56,7 +56,7 @@ export const useBotAttributesTableFormHandlers = ({
         modalType === 'edit' &&
         editingAttribute?._id &&
         values.value &&
-        typeof values.value === 'string' // 编辑时只支持单个值
+        typeof values.value === 'string' // Edit mode only supports single value
       ) {
         success = await updateAttribute({
           id: editingAttribute._id,

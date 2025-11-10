@@ -29,12 +29,12 @@ export const useLogout = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const BROADCAST_KEY = 'volcaiops_logout_broadcast';
 
-  // 监听其他标签页的登出广播，保持多标签一致性
+  // Listen for logout broadcasts from other tabs to maintain multi-tab consistency
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
       if (e.key === BROADCAST_KEY && e.newValue) {
-        // 收到其他标签页的登出广播
-        // 修复：清除 localStorage 中的认证信息，而不是 sessionStorage
+        // Received logout broadcast from other tab
+        // Fix: Clear authentication info from localStorage, not sessionStorage
         localStorage.removeItem(authConfig.storageKeys.token);
         localStorage.removeItem(authConfig.storageKeys.username);
         localStorage.removeItem(authConfig.storageKeys.isSupervisor);
@@ -60,44 +60,44 @@ export const useLogout = () => {
     try {
       setIsLoggingOut(true);
 
-      // 执行退出前的回调
+      // Execute before logout callback
       if (onBeforeLogout) {
         await onBeforeLogout();
       }
 
-      // 清除认证状态
+      // Clear authentication state
       authLogout();
 
-      // 清除其他可能的会话存储数据
-      // localStorage 清除操作已移除，统一使用 sessionStorage
+      // Clear other possible session storage data
+      // localStorage clear operation removed, unified use of sessionStorage
 
-      // 清除会话存储
+      // Clear session storage
       sessionStorage.clear();
 
-      // 向其他标签页广播退出（localStorage 才能触发 storage 事件）
+      // Broadcast logout to other tabs (only localStorage can trigger storage event)
       try {
         localStorage.setItem(BROADCAST_KEY, String(Date.now()));
       } catch {}
 
-      // 显示退出成功消息
+      // Show logout success message
       if (showMessage) {
         Message.success('已安全退出登录');
       }
 
-      // 执行退出后的回调
+      // Execute after logout callback
       if (onAfterLogout) {
         await onAfterLogout();
       }
 
-      // 跳转到登录页面
+      // Redirect to login page
       if (redirectToLogin) {
-        // 使用 replace 而不是 push，防止用户通过后退按钮回到已登出的页面
+        // Use replace instead of push to prevent users from going back to logged-out page via back button
         window.location.href = authConfig.loginPath;
       }
 
       return { success: true };
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       if (process.env.NODE_ENV === 'development') {
@@ -110,7 +110,7 @@ export const useLogout = () => {
     }
   };
 
-  // 快速退出（不显示确认对话框）
+  // Quick logout (no confirmation dialog)
   const quickLogout = () => {
     logout({
       showConfirm: false,
@@ -119,7 +119,7 @@ export const useLogout = () => {
     });
   };
 
-  // 静默退出（不显示任何消息）
+  // Silent logout (no messages displayed)
   const silentLogout = () => {
     logout({
       showConfirm: false,
@@ -128,7 +128,7 @@ export const useLogout = () => {
     });
   };
 
-  // 强制退出（用于token过期等情况）
+  // Force logout (for token expiration, etc.)
   const forceLogout = (reason?: string) => {
     const message = reason ? `${reason}，请重新登录` : '登录已过期，请重新登录';
 

@@ -18,6 +18,6 @@ export {
   type UseCardTemplateManagementLogicReturn,
 } from './use-card-template';
 
-// useCardTemplateActionConfig 从 ./use-card-template.tsx 导出（包含 JSX）
+// useCardTemplateActionConfig exported from ./use-card-template.tsx (contains JSX)
 export { useCardTemplatePage } from './use-card-template-page';
 export type { UseCardTemplatePageReturn } from './use-card-template-page';

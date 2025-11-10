@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出主组件
+// Export main component
 export { AccountModal } from './modal';
 
-// 导出类型和验证规则
+// Export types and validation rules
 export type { AccountModalProps, FormFieldType, ValidationRule } from './lib';
 export {
   emailRules,
@@ -26,7 +26,7 @@ export {
   usernameRules,
 } from './lib';
 
-// 导出子组件
+// Export sub-components
 export {
   AccountInfo,
   AdminWarningCard,

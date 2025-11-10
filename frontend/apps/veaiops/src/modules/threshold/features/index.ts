@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 注意：history 模块中的 PushHistoryManager 已从 shared 导出，避免在此处重新导出导致重复
+// Note: PushHistoryManager in history module has been exported from shared, avoid re-exporting here to prevent duplication (translated from Chinese comment)
+// export * from './history';
 export * from './metric-template';
+export * from './rules';
 export * from './task-config';
+export * from './template';

@@ -25,28 +25,28 @@ import type { Event, EventShowStatus } from 'api-generate';
 import { useMemo, useState } from 'react';
 
 /**
- * 历史事件过滤器类型
- * 使用下划线命名，对应前端 UI 层
- * 与 filter.tsx 中定义的筛选器一一对应
+ * History event filter type
+ * Uses underscore naming, corresponds to frontend UI layer
+ * One-to-one correspondence with filters defined in filter.tsx
  */
 export interface HistoryFilters {
-  /** 智能体类型 */
+  /** Agent type */
   agent_type?: string[];
-  /** 事件级别 */
+  /** Event level */
   event_level?: string;
-  /** 状态（中文） */
+  /** Status (Chinese) */
   show_status?: EventShowStatus[];
-  /** 事件状态（枚举值） */
+  /** Event status (enum value) */
   status?: number[];
-  /** 开始时间 */
+  /** Start time */
   start_time?: string;
-  /** 结束时间 */
+  /** End time */
   end_time?: string;
 }
 
 /**
- * 历史事件管理逻辑Hook
- * 提供历史事件的状态管理和业务逻辑
+ * History event management logic Hook
+ * Provides state management and business logic for history events
  */
 export const useHistoryManagementLogic = () => {
   const [filters, setFilters] = useState<HistoryFilters>({});
@@ -78,20 +78,20 @@ export const useHistoryManagementLogic = () => {
 };
 
 /**
- * 历史事件表格配置Hook
- * 提供CustomTable所需的数据源配置
+ * History event table configuration Hook
+ * Provides data source configuration required by CustomTable
  *
- * ✅ 已使用工具函数：
- * - createTableRequestWithResponseHandler: 自动处理分页参数和响应
- * - createServerPaginationDataSource: 创建服务器端分页数据源
- * - createStandardTableProps: 创建标准表格属性
+ * ✅ Already using utility functions:
+ * - createTableRequestWithResponseHandler: Automatically handles pagination parameters and responses
+ * - createServerPaginationDataSource: Creates server-side pagination data source
+ * - createStandardTableProps: Creates standard table properties
  */
 export const useHistoryTableConfig = ({
   filters,
 }: {
   filters: HistoryFilters;
 }) => {
-  // 🎯 请求函数 - 使用工具函数
+  // 🎯 Request function - use utility function
   const request = useMemo(
     () =>
       createTableRequestWithResponseHandler({
@@ -103,28 +103,28 @@ export const useHistoryTableConfig = ({
             limit: limit ?? 10,
           };
 
-          // 处理代理类型（API 支持数组）
+          // Handle agent type (API supports array)
           if (filters.agent_type && filters.agent_type.length > 0) {
             apiParams.agentType = filters.agent_type as any;
           }
 
-          // 处理事件级别
+          // Handle event level
           if (filters.event_level && filters.event_level !== '') {
             apiParams.eventLevel = filters.event_level as any;
           }
 
-          // 处理状态（中文）
+          // Handle status (Chinese)
           if (filters.show_status && filters.show_status.length > 0) {
             apiParams.showStatus = filters.show_status;
           }
 
-          // 处理事件状态（使用 status 参数，对应后端的 event_status）
-          // 注意：API 参数中没有 status 字段，可能在后端还没有实现，暂时移除
+          // Handle event status (use status parameter, corresponds to backend's event_status)
+          // Note: API parameters don't have status field, may not be implemented in backend yet, temporarily removed
           // if (filters.status && filters.status.length > 0) {
           //   apiParams.status = filters.status;
           // }
 
-          // 处理时间范围
+          // Handle time range
           if (filters.start_time) {
             apiParams.startTime = filters.start_time;
           }
@@ -134,21 +134,21 @@ export const useHistoryTableConfig = ({
 
           const response =
             await apiClient.event.getApisV1ManagerEventCenterEvent(apiParams);
-          // PaginatedAPIResponseEventList 与 StandardApiResponse<Event[]> 兼容
+          // PaginatedAPIResponseEventList is compatible with StandardApiResponse<Event[]>
           return response as unknown as StandardApiResponse<Event[]>;
         },
         options: {
-          errorMessagePrefix: '获取历史事件失败',
+          errorMessagePrefix: 'Failed to fetch history events',
           defaultLimit: 10,
           onError: (error) => {
             const errorMessage =
               error instanceof Error
                 ? error.message
-                : '获取历史事件失败，请重试';
+                : 'Failed to fetch history events, please try again';
             Message.error(errorMessage);
           },
           transformData: <T = Event>(data: unknown): T[] => {
-            // 转换数据格式，添加 key 字段
+            // Transform data format, add key field
             if (Array.isArray(data)) {
               return data.map((item: Event) => ({
                 ...item,
@@ -162,13 +162,13 @@ export const useHistoryTableConfig = ({
     [filters],
   );
 
-  // 🎯 使用工具函数创建数据源
+  // 🎯 Use utility function to create data source
   const dataSource = useMemo(
     () => createServerPaginationDataSource({ request }),
     [request],
   );
 
-  // 🎯 使用工具函数创建表格属性
+  // 🎯 Use utility function to create table properties
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
@@ -186,8 +186,8 @@ export const useHistoryTableConfig = ({
 };
 
 /**
- * 历史事件操作按钮配置Hook
- * 提供表格工具栏操作按钮配置
+ * History event action button configuration Hook
+ * Provides table toolbar action button configuration
  */
 export const useHistoryActionConfig = (
   onRefresh: () => void,
@@ -200,7 +200,7 @@ export const useHistoryActionConfig = (
       icon={<IconRefresh />}
       onClick={onRefresh}
     >
-      刷新
+      Refresh
     </Button>,
   ];
 

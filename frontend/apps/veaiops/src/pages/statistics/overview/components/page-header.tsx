@@ -18,13 +18,13 @@ import type React from 'react';
 const { Title } = Typography;
 
 /**
- * 页面头部组件
- * @description 展示页面标题和大模型用量提示
+ * Page header component
+ * @description Display page title and large model usage prompt
  */
 export const PageHeader: React.FC = () => {
   return (
     <>
-      {/* 页面标题 */}
+      {/* Page title */}
       <div className="page-header" style={{ marginBottom: '24px' }}>
         <Title heading={4}>概览数据</Title>
         <Typography.Text type="secondary">

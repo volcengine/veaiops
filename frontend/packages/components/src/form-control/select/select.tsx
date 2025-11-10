@@ -39,7 +39,7 @@ const commonSelectProps = {
   showSearch: true,
 };
 
-// 简单的Select组件，用于基础场景
+// Simple Select component for basic scenarios
 const SimpleSelectBlock: FC<SelectComponentsProps> = (props) => {
   const { options = [], ...rest } = props;
 
@@ -68,7 +68,7 @@ const SelectComponents: SelectComponentsType = {
   Simple: SimpleSelectBlock,
 };
 
-// 导出类型
+// Export types
 export type {
   VeArchSelectBlockProps,
   SelectDataSourceProps,
@@ -79,7 +79,7 @@ export type {
   SearchKeyConfig,
 } from './block/interface';
 
-// 导出包装组件和原始组件
+// Export wrapped components and original components
 export {
   WrappedSelectBlock,
   WrappedSelectBlock as SelectBlock,

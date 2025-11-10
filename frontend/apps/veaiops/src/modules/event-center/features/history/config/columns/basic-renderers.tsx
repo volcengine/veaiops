@@ -17,12 +17,12 @@ import { EVENT_LEVEL_MAP } from '@ec/subscription';
 import { CellRender } from '@veaiops/components';
 import { EMPTY_CONTENT_TEXT } from '@veaiops/constants';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender components to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 /**
- * 渲染事件ID - 使用CopyableText组件显示，方便复制
- * 当没有事件ID时，直接显示"-"，不显示复制按钮
+ * Render event ID - Use CopyableText component for display, convenient for copying
+ * When there is no event ID, directly display "-", do not show copy button
  */
 export const renderEventId = (value: string) => {
   if (!value) {
@@ -32,7 +32,7 @@ export const renderEventId = (value: string) => {
 };
 
 /**
- * 渲染事件级别 - 使用颜色标签显示
+ * Render event level - Use color tag for display
  */
 export const renderEventLevel = (value: string) => {
   return (
@@ -43,7 +43,7 @@ export const renderEventLevel = (value: string) => {
 };
 
 /**
- * 渲染功能模块 - 使用标签显示
+ * Render feature module - Use tag for display
  */
 export const renderAgentType = (value: string) => {
   return value ? (
@@ -54,8 +54,8 @@ export const renderAgentType = (value: string) => {
 };
 
 /**
- * 项目数据类型定义
- * 支持字符串或包含项目信息的对象
+ * Project data type definition
+ * Supports string or object containing project information
  */
 interface ProjectItem {
   name?: string;
@@ -63,7 +63,7 @@ interface ProjectItem {
 }
 
 /**
- * 渲染项目列表 - 使用TagEllipsis组件
+ * Render project list - Use TagEllipsis component
  */
 export const renderProjectList = (projects: unknown) => {
   if (!Array.isArray(projects) || !projects.length) {
@@ -96,7 +96,7 @@ export const renderProjectList = (projects: unknown) => {
 };
 
 /**
- * 渲染区域列表 - 使用TagEllipsis组件
+ * Render region list - Use TagEllipsis component
  */
 export const renderRegionList = (value: string[]) => (
   <CellRender.TagEllipsis
@@ -110,7 +110,7 @@ export const renderRegionList = (value: string[]) => (
 );
 
 /**
- * 渲染时间戳 - 使用StampTime组件
+ * Render timestamp - Use StampTime component
  */
 export const renderTimestamp = (value: string) => (
   <CellRender.StampTime time={value} template="YYYY-MM-DD HH:mm:ss" />

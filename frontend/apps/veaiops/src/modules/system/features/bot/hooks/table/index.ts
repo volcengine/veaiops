@@ -20,33 +20,33 @@ import { useRefreshBotTable } from './refresh';
 import { useBotState } from './state';
 
 /**
- * Bot管理相关Hooks统一导出
+ * Bot management related Hooks unified export
  */
 export { useBotTableConfig } from './config';
 export { useBotActionConfig } from './action-config';
 
-// CRUD 相关类型导出
+// CRUD related type exports
 export type { UpdateBotParams } from './crud';
 
 /**
- * Bot管理逻辑Hook
- * 提供Bot管理页面的所有业务逻辑
+ * Bot management logic Hook
+ * Provides all business logic for Bot management page
  *
- * @param tableRef - BotTable 的 ref，用于刷新表格
+ * @param tableRef - BotTable ref, used to refresh table
  */
 export const useBot = (tableRef?: RefObject<BotTableRef>) => {
-  // 刷新表格函数
+  // Refresh table function
   const refreshTable = useRefreshBotTable(tableRef);
 
-  // 状态管理
+  // State management
   const state = useBotState();
 
-  // CRUD操作
+  // CRUD operations
   const createBotFn = useCreateBot();
   const updateBotFn = useUpdateBot();
   const deleteBotFn = useDeleteBot();
 
-  // 事件处理器
+  // Event handlers
   const handlers = useBotHandlers({
     state,
     createBot: createBotFn,
@@ -56,21 +56,21 @@ export const useBot = (tableRef?: RefObject<BotTableRef>) => {
   });
 
   return {
-    // 状态
+    // State
     modalVisible: state.modalVisible,
     editingBot: state.editingBot,
     form: state.form,
     loading: state.loading,
 
-    // 属性管理状态
+    // Attribute management state
     selectedBot: state.selectedBot,
     attributesDrawerVisible: state.attributesDrawerVisible,
 
-    // 群管理状态
+    // Chat management state
     chatManagementDrawerVisible: state.chatManagementDrawerVisible,
     selectedBotForChat: state.selectedBotForChat,
 
-    // 事件处理器
+    // Event handlers
     ...handlers,
   };
 };

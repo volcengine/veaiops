@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 历史事件表格操作配置
+ * History event table action configuration
  *
- * 将工具栏操作配置单独抽象出来，提高代码可维护性
+ * Abstract toolbar action configuration separately to improve code maintainability
  */
 
 import { Button } from '@arco-design/web-react';
@@ -23,13 +23,13 @@ import { IconRefresh } from '@arco-design/web-react/icon';
 import { useCallback } from 'react';
 
 export interface HistoryTableActionsConfig {
-  /** 刷新处理器 */
+  /** Refresh handler */
   onRefresh?: () => void;
 }
 
 /**
- * 历史事件表格操作配置 Hook
- * 负责定义工具栏操作按钮
+ * History event table action configuration Hook
+ * Responsible for defining toolbar action buttons
  */
 export const useHistoryTableActions = ({
   onRefresh,

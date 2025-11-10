@@ -13,45 +13,45 @@
 // limitations under the License.
 
 /**
- * GlobalGuide 工具函数统一导出
+ * GlobalGuide utility functions unified export
  *
- * 架构说明（符合 .cursorrules Feature-Based 架构）：
- * - types.ts - 类型定义（Window 接口扩展、StepIssue 等）
- * - issues.ts - 步骤问题检查
- * - progress.ts - 步骤进度获取
- * - diagnostics.ts - 诊断功能（localStorage 和 DOM 检查）
- * - debug.ts - 调试命令（步骤点击、URL 状态等）
- * - commands.ts - 控制台命令注册（入口函数）
- * - wait.ts - 元素等待工具（原 element-wait.ts）
- * - log-collector.ts - 日志收集器（原 global-guide-log-collector.ts）
+ * Architecture notes (conforms to .cursorrules Feature-Based architecture):
+ * - types.ts - Type definitions (Window interface extensions, StepIssue, etc.)
+ * - issues.ts - Step issue checking
+ * - progress.ts - Step progress retrieval
+ * - diagnostics.ts - Diagnostic functionality (localStorage and DOM checking)
+ * - debug.ts - Debug commands (step click, URL state, etc.)
+ * - commands.ts - Console command registration (entry function)
+ * - wait.ts - Element wait utility (original element-wait.ts)
+ * - log-collector.ts - Log collector (original global-guide-log-collector.ts)
  */
 
-// 导出类型定义
+// Export type definitions
 export type { GlobalGuideStore, StepIssue } from './types';
 
-// 导出步骤相关功能
+// Export step-related functionality
 export { getCurrentStepIssues } from './issues';
 export { getCurrentProgressStep } from './progress';
 
-// 导出诊断功能
+// Export diagnostic functionality
 export {
   analyzeGlobalGuide,
   exportAllGlobalGuideLogs,
   quickDiagnoseGlobalGuide,
 } from './diagnostics';
 
-// 导出调试命令
+// Export debug commands
 export {
   createDebugStepClickCommand,
   debugUrlState,
 } from './debug';
 export type { DebugStepClickParams } from './debug';
 
-// 导出控制台命令注册（主入口函数）
+// Export console command registration (main entry function)
 export { registerConsoleCommands } from './commands';
 
-// 导出元素等待工具
+// Export element wait utility
 export * from './wait';
 
-// 导出日志收集器
+// Export log collector
 export * from './log-collector';

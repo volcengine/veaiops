@@ -21,8 +21,8 @@ import {
 } from './hooks';
 
 /**
- * 账号管理逻辑Hook
- * 提供账号管理页面的所有业务逻辑
+ * Account management logic Hook
+ * Provides all business logic for account management page
  */
 export const useAccount = (refreshTable?: () => Promise<boolean>) => {
   const { createUser, updateUser, deleteUser } = useCrudOperations();
@@ -49,12 +49,12 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
   });
 
   return {
-    // 状态
+    // State
     modalVisible,
     editingUser,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,
@@ -64,14 +64,14 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
 };
 
 /**
- * 账号表格配置Hook
- * 提供数据源配置等（列配置已移至组件中处理）
+ * Account table configuration Hook
+ * Provides data source configuration, etc. (column configuration has been moved to component handling)
  */
 export { useAccountTableConfig } from './hooks';
 
 /**
- * 账号操作按钮配置Hook
- * 提供表格工具栏操作按钮配置
+ * Account action button configuration Hook
+ * Provides table toolbar action button configuration
  */
 export { useAccountActionConfig } from './hooks';
 

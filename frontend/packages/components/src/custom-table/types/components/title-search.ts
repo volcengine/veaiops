@@ -13,19 +13,19 @@
 // limitations under the License.
 
 /**
- * Title Search 组件类型定义
- * 从 components/title-search/typing.d.ts 迁移而来
+ * Title Search component type definitions
+ * Migrated from components/title-search/typing.d.ts
  */
 
 import type { SelectProps } from '@arco-design/web-react';
 
 /**
- * 简单选项类型
+ * Simple options type
  */
 export type SimpleOptions = string[] | number[];
 
 /**
- * 带底部操作的选择器属性
+ * Selector properties with footer actions
  */
 export interface SelectCustomWithFooterProps
   extends Omit<SelectProps, 'options' | 'onChange' | 'value'> {

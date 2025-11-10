@@ -13,10 +13,9 @@
 // limitations under the License.
 
 /**
- * CustomTable 选择操作 Hook
- * 负责处理行选择相关的所有操作
+ * CustomTable selection operations Hook
+ * Responsible for handling all row selection-related operations
  *
-
  * @date 2025-12-19
  */
 import type {
@@ -26,30 +25,30 @@ import type {
 } from '@/custom-table/types';
 
 /**
- * @name 选择操作相关的实例方法
+ * @name Selection operation related instance methods
  */
 export interface SelectionActionMethods<RecordType extends BaseRecord> {
-  /** @name 设置选择状态 */
+  /** @name Set selection state */
   setSelection: (keys: string[]) => void;
-  /** @name 清除选择状态 */
+  /** @name Clear selection state */
   clearSelection: () => void;
-  /** @name 获取选择状态 */
+  /** @name Get selection state */
   getSelection: () => (string | number)[];
-  /** @name 获取选中的行键 */
+  /** @name Get selected row keys */
   getSelectedRowKeys: () => (string | number)[];
-  /** @name 设置选中的行 */
+  /** @name Set selected rows */
   setSelectedRows: (keys: (string | number)[]) => void;
-  /** @name 获取选中的行数据 */
+  /** @name Get selected row data */
   getSelectedRows: () => RecordType[];
-  /** @name 全选 */
+  /** @name Select all */
   selectAll: () => void;
-  /** @name 反选 */
+  /** @name Invert selection */
   invertSelection: () => void;
 }
 
 /**
- * @name 创建选择操作方法
- * @description 基于 pro-components 和 Arco Design 选择设计模式
+ * @name Create selection operation methods
+ * @description Based on pro-components and Arco Design selection design pattern
  */
 export const createSelectionActions = <
   RecordType extends BaseRecord = BaseRecord,
@@ -58,39 +57,39 @@ export const createSelectionActions = <
   context: PluginContext<RecordType, QueryType>,
   formattedTableData: RecordType[],
 ): SelectionActionMethods<RecordType> => ({
-  /** @name 设置选择状态 */
+  /** @name Set selection state */
   setSelection: (keys: string[]) => {
-    // 基于 pro-components 的设计模式实现选中项设置
-    // 通过上下文的 helpers 设置选中的行键
+    // Implement selected items setting based on pro-components design pattern
+    // Set selected row keys through context helpers
     if (context.helpers.setSelectedRowKeys) {
       context.helpers.setSelectedRowKeys(keys);
     }
   },
 
-  /** @name 清除选择状态 */
+  /** @name Clear selection state */
   clearSelection: () => {
-    // 清除所有选中项
+    // Clear all selected items
     if (context.helpers.setSelectedRowKeys) {
       context.helpers.setSelectedRowKeys([]);
     }
   },
 
-  /** @name 获取选择状态 */
+  /** @name Get selection state */
   getSelection: () =>
-    // 获取当前选中的行键
+    // Get currently selected row keys
     context.state.selectedRowKeys || [],
 
-  /** @name 获取选中的行键 */
+  /** @name Get selected row keys */
   getSelectedRowKeys: () => context.state.selectedRowKeys || [],
 
-  /** @name 设置选中的行 */
+  /** @name Set selected rows */
   setSelectedRows: (keys: (string | number)[]) => {
     if (context.helpers.setSelectedRowKeys) {
       context.helpers.setSelectedRowKeys(keys);
     }
   },
 
-  /** @name 获取选中的行数据 */
+  /** @name Get selected row data */
   getSelectedRows: () => {
     const { selectedRowKeys } = context.state;
     if (!selectedRowKeys || selectedRowKeys.length === 0) {
@@ -105,7 +104,7 @@ export const createSelectionActions = <
     });
   },
 
-  /** @name 全选 */
+  /** @name Select all */
   selectAll: () => {
     const allKeys = formattedTableData.map((record) =>
       typeof context.props.rowKey === 'function'
@@ -117,7 +116,7 @@ export const createSelectionActions = <
     }
   },
 
-  /** @name 反选 */
+  /** @name Invert selection */
   invertSelection: () => {
     const { selectedRowKeys = [] } = context.state;
     const allKeys = formattedTableData.map((record) =>

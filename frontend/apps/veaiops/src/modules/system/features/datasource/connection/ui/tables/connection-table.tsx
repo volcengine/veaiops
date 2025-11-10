@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 数据源连接表格组件
+ * Data source connection table component
  */
 
 import { Empty } from '@arco-design/web-react';
@@ -30,7 +30,7 @@ import { getTableColumns } from './table-columns';
 import { getTableFilters } from './table-filters';
 
 /**
- * 数据源连接表格组件
+ * Data source connection table component
  */
 export const ConnectionTable: React.FC<DataSourceConnectionTableProps> = ({
   type,
@@ -44,7 +44,7 @@ export const ConnectionTable: React.FC<DataSourceConnectionTableProps> = ({
   onTest,
   onCreateMonitor,
 }) => {
-  // 创建 handleColumns 函数，传递操作回调给列配置
+  // Create handleColumns function, pass operation callbacks to column configuration
   const handleColumns = (_props: Record<string, unknown>) => {
     return getTableColumns({
       type,
@@ -55,22 +55,22 @@ export const ConnectionTable: React.FC<DataSourceConnectionTableProps> = ({
     });
   };
 
-  // 创建 handleFilters 函数
+  // Create handleFilters function
   const handleFilters = () => {
     return getTableFilters({
       type,
-      onFilter: () => {}, // 提供默认的 onFilter 函数
+      onFilter: () => {}, // Provide default onFilter function
     });
   };
 
-  // 创建空状态组件
+  // Create empty state component
   const emptyElement = (
     <div className="text-center py-10">
       <Empty />
     </div>
   );
 
-  // 使用 createLocalDataSource 创建本地数据源
+  // Use createLocalDataSource to create local data source
   const dataSource = useMemo(
     () => createLocalDataSource({ dataList: connects }),
     [connects],

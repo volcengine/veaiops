@@ -13,10 +13,9 @@
 // limitations under the License.
 
 /**
- * CustomTable 状态操作 Hook
- * 负责处理加载状态、错误状态等管理操作
+ * CustomTable state operations Hook
+ * Responsible for handling loading state, error state and other management operations
  *
-
  * @date 2025-12-19
  */
 import type {
@@ -26,24 +25,24 @@ import type {
 } from '@/custom-table/types';
 
 /**
- * @name 状态操作相关的实例方法
+ * @name State operation related instance methods
  */
 export interface StateActionMethods {
-  /** @name 设置加载状态 */
+  /** @name Set loading state */
   setLoading: (newLoading: boolean) => void;
-  /** @name 设置错误状态 */
+  /** @name Set error state */
   setError: (error: Error | null) => void;
-  /** @name 获取完整状态 */
+  /** @name Get complete state */
   getState: () => Record<string, unknown>;
-  /** @name 获取加载状态 */
+  /** @name Get loading state */
   getLoading: () => boolean;
-  /** @name 获取错误状态 */
+  /** @name Get error state */
   getError: () => Error | null;
 }
 
 /**
- * @name 创建状态操作方法
- * @description 基于 pro-components 状态管理设计模式
+ * @name Create state operation methods
+ * @description Based on pro-components state management design pattern
  */
 export const createStateActions = <
   RecordType extends BaseRecord = BaseRecord,
@@ -51,24 +50,24 @@ export const createStateActions = <
 >(
   context: PluginContext<RecordType, QueryType>,
 ): StateActionMethods => ({
-  /** @name 设置加载状态 */
+  /** @name Set loading state */
   setLoading: (newLoading: boolean) => {
-    // 通过上下文的 helpers 设置加载状态
+    // Set loading state through context helpers
     context.helpers.setLoading(newLoading);
   },
 
-  /** @name 设置错误状态 */
+  /** @name Set error state */
   setError: (error: Error | null) => {
-    // 通过上下文的 helpers 设置错误状态
+    // Set error state through context helpers
     context.helpers.setError(error);
   },
 
-  /** @name 获取完整状态 */
+  /** @name Get complete state */
   getState: () => context.state as unknown as Record<string, unknown>,
 
-  /** @name 获取加载状态 */
+  /** @name Get loading state */
   getLoading: () => context.state.loading,
 
-  /** @name 获取错误状态 */
+  /** @name Get error state */
   getError: () => context.state.error || null,
 });

@@ -35,15 +35,15 @@ import type {
 } from '../types';
 
 /**
- * 统计数据管理 Hook
- * @description 管理统计数据的获取、处理和状态
+ * Statistics data management Hook
+ * @description Manages statistics data fetching, processing, and state
  */
 export const useStatisticsData = () => {
   const [statistics, setStatistics] = useState<SystemStatistics | null>(null);
   const [loading, setLoading] = useState(false);
 
   /**
-   * 获取统计数据
+   * Fetch statistics data
    */
   const fetchStatistics = async () => {
     try {
@@ -57,7 +57,7 @@ export const useStatisticsData = () => {
         throw new Error(result.message || '获取统计数据失败');
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: expose actual error information
       const errorMessage =
         error instanceof Error ? error.message : '获取统计数据失败';
 
@@ -68,7 +68,7 @@ export const useStatisticsData = () => {
   };
 
   /**
-   * 获取智能阈值趋势数据
+   * Get intelligent threshold trend data
    */
   const getThresholdTrendData = (): ThresholdTrendData[] => [
     {
@@ -89,7 +89,7 @@ export const useStatisticsData = () => {
   ];
 
   /**
-   * 获取事件趋势数据
+   * Get event trend data
    */
   const getEventTrendData = (): EventTrendData[] => [
     { period: '近24小时', count: statistics?.latest_24h_events || 0 },
@@ -99,7 +99,7 @@ export const useStatisticsData = () => {
   ];
 
   /**
-   * 获取消息趋势数据
+   * Get message trend data
    */
   const getMessageTrendData = (): MessageTrendData[] => [
     { period: '近24小时', count: statistics?.latest_24h_messages || 0 },
@@ -109,7 +109,7 @@ export const useStatisticsData = () => {
   ];
 
   /**
-   * 获取系统资源概览数据
+   * Get system resource overview data
    */
   const getSystemOverviewData = (): SystemOverviewData[] => [
     {
@@ -155,7 +155,7 @@ export const useStatisticsData = () => {
   ];
 
   /**
-   * 检查数据状态
+   * Check data status
    */
   const getDataCheck = (): StatisticsDataCheck => {
     const hasData = statistics !== null;

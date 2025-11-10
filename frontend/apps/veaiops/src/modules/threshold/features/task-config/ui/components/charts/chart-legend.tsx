@@ -20,8 +20,8 @@ interface ChartLegendProps {
 }
 
 /**
- * 虚线样式组件
- * 注意：Tailwind 不支持虚线背景，使用 repeating-linear-gradient 实现
+ * Dashed line style component
+ * Note: Tailwind does not support dashed backgrounds, use repeating-linear-gradient to implement
  */
 const DashedLine: React.FC<{ color: string; className?: string }> = ({
   color,
@@ -41,9 +41,9 @@ export const ChartLegend: React.FC<ChartLegendProps> = ({ metric }) => {
 
   return (
     <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-      {/* 整合：图例 + 指标信息 */}
+      {/* Integration: legend + metric information */}
       <div className="flex items-start justify-between gap-4 mb-2">
-        {/* 左侧：图例 */}
+        {/* Left: legend */}
         <div className="flex items-center gap-4 flex-1">
           <div className="flex items-center gap-1.5">
             <div className="w-6 h-0.5 bg-blue-500 rounded" />
@@ -59,7 +59,7 @@ export const ChartLegend: React.FC<ChartLegendProps> = ({ metric }) => {
           </div>
         </div>
 
-        {/* 右侧：指标信息 */}
+        {/* Right: metric information */}
         <div className="flex items-center gap-2 text-xs">
           <span className="text-gray-500">指标:</span>
           <span className="font-medium text-gray-900">{metric.name}</span>
@@ -71,17 +71,17 @@ export const ChartLegend: React.FC<ChartLegendProps> = ({ metric }) => {
         </div>
       </div>
 
-      {/* 分段阈值 - 表格形式 */}
+      {/* Segmented thresholds - table format */}
       {hasMultipleSegments ? (
         <div className="bg-white rounded border border-gray-200">
-          {/* 表格头 */}
+          {/* Table header */}
           <div className="grid grid-cols-4 gap-2 px-2 py-1.5 bg-gray-100 border-b border-gray-200 text-xs font-medium text-gray-700">
             <div>时段</div>
             <div className="text-right">上限</div>
             <div className="text-right">下限</div>
-            <div className="text-right">窗口</div>
+            <div className="text-right">Window</div>
           </div>
-          {/* 表格内容 - 最多显示4行，超出滚动 */}
+          {/* Table content - display at most 4 rows, scroll if exceeds */}
           <div className="max-h-20 overflow-y-auto">
             {thresholds.map((threshold, index) => (
               <div
@@ -105,7 +105,7 @@ export const ChartLegend: React.FC<ChartLegendProps> = ({ metric }) => {
           </div>
         </div>
       ) : (
-        /* 单段阈值 - 简洁展示 */
+        /* Single segment threshold - concise display */
         <div className="px-2 py-1.5 bg-white rounded border border-gray-200 text-xs">
           <div className="flex items-center gap-4">
             <span className="text-gray-600">

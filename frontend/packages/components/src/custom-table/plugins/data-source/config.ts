@@ -14,7 +14,7 @@
 
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 /**
- * 数据源插件默认配置
+ * Default configuration for Data Source plugin
  */
 import type { DataSourceConfig } from '@/custom-table/types/plugins/data-source';
 

@@ -17,7 +17,7 @@ import { logger } from '@veaiops/utils';
 import type { Event } from 'api-generate';
 
 /**
- * 复制文本到剪贴板
+ * Copy text to clipboard
  */
 export const copyToClipboard = async (
   text: string,
@@ -28,7 +28,7 @@ export const copyToClipboard = async (
     Message.success(`${label} 已复制到剪贴板`);
     return true;
   } catch (error: unknown) {
-    // ✅ 正确：透出实际错误信息
+    // ✅ Correct: Expose actual error information
     const errorObj = error instanceof Error ? error : new Error(String(error));
     const errorMessage = errorObj.message || '复制失败，请重试';
     logger.error({
@@ -48,7 +48,7 @@ export const copyToClipboard = async (
 };
 
 /**
- * 下载原始数据为JSON文件
+ * Download raw data as JSON file
  */
 export const downloadRawData = (selectedRecord: Event): void => {
   if (!selectedRecord.raw_data) {
@@ -69,7 +69,7 @@ export const downloadRawData = (selectedRecord: Event): void => {
     URL.revokeObjectURL(url);
     Message.success('文件下载已开始');
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Expose actual error information
     const errorObj = error instanceof Error ? error : new Error(String(error));
     const errorMessage = errorObj.message || '下载失败，请重试';
     logger.error({
@@ -89,7 +89,7 @@ export const downloadRawData = (selectedRecord: Event): void => {
 };
 
 /**
- * 切换章节展开状态
+ * Toggle section expand state
  */
 export const toggleSection = (
   expandedSections: Set<string>,
@@ -106,14 +106,14 @@ export const toggleSection = (
 };
 
 /**
- * 格式化时间显示
+ * Format time display
  */
 export const formatTimeDisplay = (timeString?: string): Date | null => {
   return timeString ? new Date(timeString) : null;
 };
 
 /**
- * 获取事件类型配置
+ * Get event type configuration
  */
 export const getEventTypeConfig = (
   agentType: string,
@@ -131,7 +131,7 @@ export const getEventTypeConfig = (
 };
 
 /**
- * 获取事件级别配置
+ * Get event level configuration
  */
 export const getEventLevelConfig = (
   eventLevel: string,

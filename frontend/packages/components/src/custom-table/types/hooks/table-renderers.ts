@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格渲染器 Hook 相关类型定义
+ * Table renderer Hook related type definitions
  */
 import type { PaginationProps } from '@arco-design/web-react/es/Pagination/pagination';
 import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
@@ -21,47 +21,47 @@ import type React from 'react';
 import type { BaseQuery, BaseRecord } from '../core';
 
 /**
- * 表格渲染器配置
+ * Table renderer configuration
  */
 export interface TableRenderers {
-  /** @name 无数据元素渲染器 */
+  /** @name Empty data element renderer */
   noDataElement?: React.ComponentType<{
     error?: Error;
     loading?: boolean;
     dataSource?: Record<string, unknown>[];
   }>;
 
-  /** @name 加载元素渲染器 */
+  /** @name Loading element renderer */
   loadingElement?: React.ComponentType<{
     loading?: boolean;
     tip?: string;
   }>;
 
-  /** @name 错误元素渲染器 */
+  /** @name Error element renderer */
   errorElement?: React.ComponentType<{
     error?: Error;
     retry?: () => void;
   }>;
 
-  /** @name 工具栏渲染器 */
+  /** @name Toolbar renderer */
   toolbarRenderer?: React.ComponentType<{
     selectedRowKeys?: (string | number)[];
     actions?: Record<string, (...args: unknown[]) => void>;
   }>;
 
-  /** @name 表格标题渲染器 */
+  /** @name Table title renderer */
   titleRenderer?: React.ComponentType<{
     title?: React.ReactNode;
     actions?: React.ReactNode[];
   }>;
 
-  /** @name 表格页脚渲染器 */
+  /** @name Table footer renderer */
   footerRenderer?: React.ComponentType<{
     dataSource?: Record<string, unknown>[];
     pagination?: PaginationProps | boolean;
   }>;
 
-  /** @name 表格警告渲染器 */
+  /** @name Table alert renderer */
   alertRenderer?: React.ComponentType<{
     message?: React.ReactNode;
     type?: 'info' | 'success' | 'warning' | 'error';
@@ -72,41 +72,41 @@ export interface TableRenderers {
 }
 
 /**
- * 渲染器上下文
+ * Renderer context
  */
 export interface RenderContext<RecordType extends BaseRecord = BaseRecord> {
-  /** 表格数据 */
+  /** Table data */
   dataSource: RecordType[];
-  /** 加载状态 */
+  /** Loading state */
   loading: boolean;
-  /** 错误信息 */
+  /** Error information */
   error: Error | null;
-  /** 选中的行键 */
+  /** Selected row keys */
   selectedRowKeys: (string | number)[];
-  /** 展开的行键 */
+  /** Expanded row keys */
   expandedRowKeys: (string | number)[];
-  /** 分页信息 */
+  /** Pagination information */
   pagination: PaginationProps | boolean;
-  /** 筛选器 */
+  /** Filters */
   filters: Record<string, (string | number)[]>;
-  /** 排序器 */
+  /** Sorter */
   sorter: SorterInfo;
-  /** 查询参数 */
+  /** Query parameters */
   query: BaseQuery;
-  /** 表格操作 */
+  /** Table actions */
   actions: Record<string, (...args: unknown[]) => void>;
 }
 
 /**
- * 自定义渲染器
+ * Custom renderer
  */
 export interface CustomRenderer<T = Record<string, unknown>> {
-  /** 渲染函数 */
+  /** Render function */
   render: (context: RenderContext & T) => React.ReactNode;
-  /** 渲染条件 */
+  /** Render condition */
   condition?: (context: RenderContext & T) => boolean;
-  /** 优先级 */
+  /** Priority */
   priority?: number;
-  /** 是否缓存 */
+  /** Whether to cache */
   cache?: boolean;
 }

@@ -26,41 +26,41 @@ import {
 import { useCallback, useState } from 'react';
 
 /**
- * 项目管理业务逻辑Hook
- * 🎯 Hook 聚合模式 + 自动刷新机制
+ * Project management business logic Hook
+ * 🎯 Hook aggregation pattern + auto-refresh mechanism
  *
- * @description 提供项目管理的完整业务逻辑，包括：
- * - 表单状态管理
- * - CRUD操作处理
- * - 权限控制
- * - 错误处理
- * - 用户交互反馈
+ * @description Provides complete business logic for project management, including:
+ * - Form state management
+ * - CRUD operation handling
+ * - Permission control
+ * - Error handling
+ * - User interaction feedback
  *
- * 与 useBusinessTable 的 operationWrapper 结合使用，实现自动刷新
+ * Used with useBusinessTable's operationWrapper to implement auto-refresh
  */
 export const useProjectManagement = () => {
-  // 表单实例
+  // Form instance
   const [form] = Form.useForm<ProjectFormData>();
 
-  // 状态管理
+  // State management
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // 导入相关逻辑
+  // Import-related logic
   const importLogic = useProjectImportLogic();
 
-  // 新建项目相关逻辑
+  // Create project-related logic
   const createLogic = useProjectCreateLogic();
 
   /**
-   * 处理表单提交
-   * 支持新增和编辑两种模式
+   * Handle form submission
+   * Supports both create and edit modes
    */
   const handleSubmit = useCallback(
     async (values: ProjectFormData): Promise<boolean> => {
       try {
-        // 表单验证
+        // Form validation
         const validationErrors = validateProjectFormData(values);
         if (validationErrors.length > 0) {
           Message.error(validationErrors[0]);
@@ -72,11 +72,11 @@ export const useProjectManagement = () => {
         let success = false;
 
         if (editingProject) {
-          // 编辑模式 - 暂时只支持创建，编辑功能待后端API支持
-          Message.warning('编辑功能暂未开放，请联系管理员');
+          // Edit mode - Currently only supports create, edit functionality pending backend API support
+          Message.warning('Edit feature is not yet available, please contact administrator');
           return false;
         } else {
-          // 新增模式
+          // Create mode
           const createSuccess = await createProject(values);
           success = createSuccess;
         }
@@ -86,15 +86,17 @@ export const useProjectManagement = () => {
           setEditingProject(null);
           form.resetFields();
 
-          // ✅ 创建成功 - 由 operationWrapper 自动刷新表格
+          // ✅ Create success - Table will be auto-refreshed by operationWrapper
           return true;
         }
 
         return false;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
-          error instanceof Error ? error.message : '操作失败，请重试';
+          error instanceof Error
+            ? error.message
+            : 'Operation failed, please try again';
         Message.error(errorMessage);
         return false;
       } finally {
@@ -105,7 +107,7 @@ export const useProjectManagement = () => {
   );
 
   /**
-   * 关闭弹窗
+   * Close modal
    */
   const handleCancel = useCallback(() => {
     setModalVisible(false);
@@ -115,24 +117,26 @@ export const useProjectManagement = () => {
   }, [form]);
 
   /**
-   * 删除项目
-   * 包含权限检查和用户确认
-   * ✅ 删除成功后由 operationWrapper 自动刷新表格
+   * Delete project
+   * Includes permission check and user confirmation
+   * ✅ Table will be auto-refreshed by operationWrapper after successful deletion
    */
   const handleDelete = useCallback(
     async (projectId: string): Promise<boolean> => {
       try {
-        // 注意：这里需要项目完整信息来进行权限检查
-        // 在实际实现中，可能需要先获取项目详情
-        // 暂时跳过权限检查，直接删除
+        // Note: Full project information is needed here for permission check
+        // In actual implementation, may need to fetch project details first
+        // Temporarily skip permission check and delete directly
 
         const result = await deleteProject(projectId);
-        // ✅ 删除成功 - 由 operationWrapper 自动刷新表格
+        // ✅ Delete success - Table will be auto-refreshed by operationWrapper
         return result;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
-          error instanceof Error ? error.message : '删除项目失败，请重试';
+          error instanceof Error
+            ? error.message
+            : 'Failed to delete project, please try again';
         Message.error(errorMessage);
         return false;
       }
@@ -141,7 +145,7 @@ export const useProjectManagement = () => {
   );
 
   /**
-   * 检查项目删除权限
+   * Check project delete permission
    */
   const checkDeletePermission = useCallback((project: Project): boolean => {
     const canDelete = canDeleteProject(project);
@@ -157,38 +161,38 @@ export const useProjectManagement = () => {
   }, []);
 
   return {
-    // 状态
+    // State
     modalVisible,
     editingProject,
     submitting,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleCancel,
     handleSubmit,
     handleDelete,
     checkDeletePermission,
 
-    // 导入相关
+    // Import-related
     ...importLogic,
 
-    // 新建项目相关
+    // Create project-related
     ...createLogic,
   };
 };
 
 /**
- * 新建项目管理Hook
- * 🎯 Hook 聚合模式 - 与 operationWrapper 结合使用
- * 提供新建项目相关的状态和逻辑
+ * Create project management Hook
+ * 🎯 Hook aggregation pattern - Used with operationWrapper
+ * Provides state and logic related to creating projects
  */
 export const useProjectCreateLogic = () => {
   const [createDrawerVisible, setCreateDrawerVisible] = useState(false);
   const [creating, setCreating] = useState(false);
 
   /**
-   * 处理新建项目
-   * ✅ 创建成功后由 operationWrapper 自动刷新表格
+   * Handle project creation
+   * ✅ Table will be auto-refreshed by operationWrapper after successful creation
    */
   const handleCreate = async (values: {
     project_id: string;
@@ -199,18 +203,18 @@ export const useProjectCreateLogic = () => {
       const success = await createProject(values);
 
       if (success) {
-        Message.success('项目创建成功');
+        Message.success('Project created successfully');
         setCreateDrawerVisible(false);
-        // ✅ 创建成功 - 由 operationWrapper 自动刷新表格
+        // ✅ Create success - Table will be auto-refreshed by operationWrapper
         return true;
       } else {
-        Message.error('项目创建失败');
+        Message.error('Failed to create project');
         return false;
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Extract actual error information
       const errorMessage =
-        error instanceof Error ? error.message : '项目创建失败，请重试';
+        error instanceof Error ? error.message : 'Failed to create project, please try again';
       Message.error(errorMessage);
       return false;
     } finally {
@@ -219,25 +223,25 @@ export const useProjectCreateLogic = () => {
   };
 
   /**
-   * 打开新建抽屉
+   * Open create drawer
    */
   const handleOpenCreateDrawer = () => {
     setCreateDrawerVisible(true);
   };
 
   /**
-   * 关闭新建抽屉
+   * Close create drawer
    */
   const handleCloseCreateDrawer = () => {
     setCreateDrawerVisible(false);
   };
 
   return {
-    // 状态
+    // State
     createDrawerVisible,
     creating,
 
-    // 事件处理器
+    // Event handlers
     handleCreate,
     handleOpenCreateDrawer,
     handleCloseCreateDrawer,
@@ -245,17 +249,17 @@ export const useProjectCreateLogic = () => {
 };
 
 /**
- * 项目导入管理Hook
- * 🎯 Hook 聚合模式 - 与 operationWrapper 结合使用
- * 提供项目导入相关的状态和逻辑
+ * Project import management Hook
+ * 🎯 Hook aggregation pattern - Used with operationWrapper
+ * Provides state and logic related to importing projects
  */
 export const useProjectImportLogic = () => {
   const [importDrawerVisible, setImportDrawerVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   /**
-   * 处理项目导入
-   * ✅ 导入成功后由 operationWrapper 自动刷新表格
+   * Handle project import
+   * ✅ Table will be auto-refreshed by operationWrapper after successful import
    */
   const handleImport = async (file: File): Promise<boolean> => {
     try {
@@ -263,18 +267,18 @@ export const useProjectImportLogic = () => {
       const success = await importProjects(file);
 
       if (success) {
-        Message.success('项目导入成功');
+        Message.success('Projects imported successfully');
         setImportDrawerVisible(false);
-        // ✅ 导入成功 - 由 operationWrapper 自动刷新表格
+        // ✅ Import success - Table will be auto-refreshed by operationWrapper
         return true;
       } else {
-        Message.error('项目导入失败');
+        Message.error('Failed to import projects');
         return false;
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Extract actual error information
       const errorMessage =
-        error instanceof Error ? error.message : '项目导入失败，请重试';
+        error instanceof Error ? error.message : 'Failed to import projects, please try again';
       Message.error(errorMessage);
       return false;
     } finally {
@@ -283,25 +287,25 @@ export const useProjectImportLogic = () => {
   };
 
   /**
-   * 打开导入抽屉
+   * Open import drawer
    */
   const handleOpenImportDrawer = () => {
     setImportDrawerVisible(true);
   };
 
   /**
-   * 关闭导入抽屉
+   * Close import drawer
    */
   const handleCloseImportDrawer = () => {
     setImportDrawerVisible(false);
   };
 
   return {
-    // 状态
+    // State
     importDrawerVisible,
     uploading,
 
-    // 事件处理器
+    // Event handlers
     handleImport,
     handleOpenImportDrawer,
     handleCloseImportDrawer,

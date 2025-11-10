@@ -19,22 +19,22 @@ import type {
 import type { TaskTableActions } from '@task-config/lib';
 
 /**
- * 表格列配置函数的参数类型
+ * Table column configuration function parameter type
  */
 export type TableColumnProps = Record<string, unknown>;
 
 /**
- * 筛选器配置函数的参数类型
+ * Filter configuration function parameter type
  */
 export type FilterProps = Record<string, unknown>;
 
 /**
- * 操作按钮配置函数的参数类型
+ * Action button configuration function parameter type
  */
 export type ActionProps = Record<string, unknown>;
 
 /**
- * 任务配置表格配置选项
+ * Task configuration table configuration options
  */
 export interface UseTaskTableConfigOptions {
   onCreate?: () => Promise<boolean>;
@@ -56,7 +56,7 @@ export interface UseTaskTableConfigOptions {
 }
 
 /**
- * 任务配置表格配置返回值
+ * Task configuration table configuration return value
  */
 export interface UseTaskTableConfigReturn {
   dataSource: Record<string, unknown>;

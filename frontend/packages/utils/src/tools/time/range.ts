@@ -17,19 +17,19 @@ import type { TimeRange } from './constants';
 import { convertMillisecondsToSeconds } from './utils';
 
 /**
- * Get the timestamp range for a past period
- * @param {TimeRange} timeRange Object containing the time value and unit
- * @returns {number[]} Array of [startTime, endTime]
+ * Get timestamp range for specified past time period
+ * @param {TimeRange} timeRange Object containing time value and unit
+ * @returns {number[]} Returns array of start time and end time
  */
 export const getPastTimeRange = (
   { time, unit }: TimeRange,
   isSecond = false,
 ): number[] => {
   const now = dayjs(); // Get current time
-  const startTime = now.subtract(time, unit).valueOf(); // Compute the start time
-  const endTime = now.valueOf(); // Use current time as end time
+  const startTime = now.subtract(time, unit).valueOf(); // Calculate start time
+  const endTime = now.valueOf(); // Get current time as end time
 
-  // Return [startTime, endTime] array
+  // Return array of start time and end time
   return isSecond
     ? convertMillisecondsToSeconds([startTime, endTime])
     : [startTime, endTime];

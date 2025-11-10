@@ -15,19 +15,19 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type AgentCfgPayload = {
   /**
-   * LLM名称
+   * LLM name
    */
   name: string;
   /**
-   * LLM嵌入模型名称
+   * LLM embedding model name
    */
   embedding_name: string;
   /**
-   * LLM API基础URL
+   * LLM API base URL
    */
   api_base: string;
   /**
-   * LLM API密钥
+   * LLM API key
    */
   api_key: string;
 };

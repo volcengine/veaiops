@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 火山引擎指标选择组件
- * @description 专门处理火山引擎数据源的指标选择
+ * Volcengine metric selection component
+ * @description Specifically handles metric selection for Volcengine data sources
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -40,7 +40,7 @@ export const VolcengineMetricSelection: React.FC<
   onSearchChange,
   actions,
 }) => {
-  // 使用自定义 hook 处理业务逻辑
+  // Use custom hook to handle business logic
   const { handleMetricSelect } = useVolcengineMetricSelection(actions);
 
   if (loading) {
@@ -55,10 +55,10 @@ export const VolcengineMetricSelection: React.FC<
     <div className={styles.stepContent}>
       <StepHeader />
 
-      {/* 搜索框 */}
+      {/* Search box */}
       <MetricSearch searchText={searchText} onSearchChange={onSearchChange} />
 
-      {/* 指标列表 */}
+      {/* Metric list */}
       <VolcengineMetricList
         metrics={metrics}
         selectedMetric={selectedMetric}

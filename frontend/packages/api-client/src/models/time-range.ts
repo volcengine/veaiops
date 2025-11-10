@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type TimeRange = {
   /**
-   * 开始时间
+   * Start time
    */
   start_time: string;
   /**
-   * 结束时间
+   * End time
    */
   end_time: string;
 };

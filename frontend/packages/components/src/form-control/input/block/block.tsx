@@ -20,14 +20,14 @@ import type { InputProps } from '@arco-design/web-react/es/Input/interface';
 import { type FC, useEffect, useState } from 'react';
 
 /**
- * InputBlock 组件包装器
- * 提供表单项包装功能，支持垂直布局等特性
+ * InputBlock component wrapper
+ * Provides form item wrapper functionality, supports vertical layout and other features
  */
 const InputBlock: FC<FormItemControlProps<InputProps>> = (props) => {
   const { controlProps, ...wrapperProps } = props;
   const [inputType, setInputType] = useState<string>('text');
 
-  // 根据输入类型设置不同的autocomplete值和初始type
+  // Set different autocomplete values and initial type based on input type
   const getAutoCompleteValue = () => {
     if (controlProps?.type === 'password') {
       return 'new-password';
@@ -35,10 +35,10 @@ const InputBlock: FC<FormItemControlProps<InputProps>> = (props) => {
     return 'off';
   };
 
-  // 处理密码字段的动态type切换
+  // Handle dynamic type switching for password fields
   useEffect(() => {
     if (controlProps?.type === 'password') {
-      // 初始设置为text类型，防止浏览器识别为密码字段
+      // Initially set to text type to prevent browser from recognizing it as a password field
       setInputType('text');
     } else {
       setInputType(controlProps?.type || 'text');
@@ -47,14 +47,14 @@ const InputBlock: FC<FormItemControlProps<InputProps>> = (props) => {
 
   const handleFocus = () => {
     if (controlProps?.type === 'password' && inputType === 'text') {
-      // 聚焦时切换为password类型
+      // Switch to password type when focused
       setInputType('password');
     }
   };
 
   const handleBlur = () => {
     if (controlProps?.type === 'password' && inputType === 'password') {
-      // 失焦时切换回text类型，防止浏览器保存密码
+      // Switch back to text type when blurred to prevent browser from saving password
       setInputType('text');
     }
   };

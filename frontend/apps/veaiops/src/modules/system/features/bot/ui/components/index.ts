@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * Bot UI 组件统一导出
- * 按照 Feature-Based 架构组织
+ * Bot UI components unified export
+ * Organized according to Feature-Based architecture
  */
 
-// Bot 相关子组件
+// Bot-related sub-components
 export { BotAttributeFormModal } from './bot/attribute-form-modal';
 export { BotAttributesDrawer } from './bot/attributes-drawer';
 export { BotCompleteModal } from './bot/complete-modal';
@@ -30,12 +30,12 @@ export { CallbacksCollapse } from './bot/callbacks-collapse';
 export { EventsCollapse } from './bot/events-collapse';
 export { PermissionsCollapse } from './bot/permissions-collapse';
 
-// 群管理相关子组件
+// Chat management related sub-components
 export { ChatConfigModal } from './chat/chat-config-modal';
 export { ChatTable } from './chat/chat-table';
 export { ChatManagementDrawer } from './chat/management-drawer';
 
-// 属性相关子组件
+// Attributes related sub-components
 export {
   BotAttributesTable as AttributesTable,
   default as BotAttributesTable,

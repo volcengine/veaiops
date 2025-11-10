@@ -19,41 +19,40 @@ import type {
   RequestManager,
 } from '@/custom-table/types';
 /**
- * CustomTable 数据操作 Hook
- * 负责处理数据的加载、刷新、取消等操作
+ * CustomTable data operations Hook
+ * Responsible for handling data loading, refresh, cancellation and other operations
  *
-
  * @date 2025-12-19
  */
 import { logger } from '@veaiops/utils';
 
 /**
- * @name 数据操作相关的实例方法
+ * @name Data operation related instance methods
  */
 export interface DataActionMethods<RecordType extends BaseRecord> {
-  /** @name 重新加载数据 */
+  /** @name Reload data */
   reload: (resetPageIndex?: boolean) => Promise<void>;
-  /** @name 刷新数据（重置页码并清空选择） */
+  /** @name Refresh data (reset page index and clear selection) */
   refresh: () => Promise<void>;
-  /** @name 取消当前进行中的请求 */
+  /** @name Cancel current ongoing request */
   cancel: () => void;
-  /** @name 获取当前表格数据 */
+  /** @name Get current table data */
   getData: () => RecordType[];
-  /** @name 获取数据源 */
+  /** @name Get data source */
   getDataSource: () => RecordType[];
-  /** @name 获取格式化后的表格数据 */
+  /** @name Get formatted table data */
   getFormattedData: () => RecordType[];
-  /** @name 设置表格数据 */
+  /** @name Set table data */
   setData: (data: RecordType[]) => void;
-  /** @name 获取筛选后的数据 */
+  /** @name Get filtered data */
   getFilteredData: () => RecordType[];
-  /** @name 获取选中的数据 */
+  /** @name Get selected data */
   getSelectedData: () => RecordType[];
 }
 
 /**
- * @name 创建数据操作方法
- * @description 基于 pro-components ActionRef 数据操作设计模式
+ * @name Create data operation methods
+ * @description Based on pro-components ActionRef data operation design pattern
  */
 export const createDataActions = <
   RecordType extends BaseRecord = BaseRecord,
@@ -63,26 +62,26 @@ export const createDataActions = <
   formattedTableData: RecordType[],
   getRequestManager: () => RequestManager,
 ): DataActionMethods<RecordType> => ({
-  /** @name 重新加载数据 */
+  /** @name Reload data */
   reload: async (resetPageIndex?: boolean) => {
-    // 取消当前进行中的请求
+    // Cancel current ongoing request
     getRequestManager().abort();
 
-    // 如果需要重置页码到第一页
+    // If need to reset page index to first page
     if (resetPageIndex && context.helpers.setCurrent) {
       context.helpers.setCurrent(1);
     }
 
-    // 触发数据重新加载
+    // Trigger data reload
     if (context.helpers.run) {
       context.helpers.run();
     }
   },
 
-  /** @name 刷新数据（重置页码并清空选择） */
+  /** @name Refresh data (reset page index and clear selection) */
   refresh: async () => {
     logger.info({
-      message: '[CustomTable.refresh] 🔄 refresh 方法被调用',
+      message: '[CustomTable.refresh] 🔄 refresh method called',
       data: {
         hasRun: Boolean(context.helpers.run),
         hasSetCurrent: Boolean(context.helpers.setCurrent),
@@ -92,13 +91,13 @@ export const createDataActions = <
       component: 'DataActions.refresh',
     });
 
-    // 取消当前请求
+    // Cancel current request
     getRequestManager().abort();
 
-    // 清空选择状态
+    // Clear selection state
     if (context.helpers.setSelectedRowKeys) {
       logger.info({
-        message: '[CustomTable.refresh] 清空选择状态',
+        message: '[CustomTable.refresh] Clear selection state',
         data: {},
         source: 'CustomTable',
         component: 'DataActions.refresh',
@@ -106,10 +105,10 @@ export const createDataActions = <
       context.helpers.setSelectedRowKeys([]);
     }
 
-    // 重置到第一页
+    // Reset to first page
     if (context.helpers.setCurrent) {
       logger.info({
-        message: '[CustomTable.refresh] 重置到第一页',
+        message: '[CustomTable.refresh] Reset to first page',
         data: {},
         source: 'CustomTable',
         component: 'DataActions.refresh',
@@ -117,25 +116,26 @@ export const createDataActions = <
       context.helpers.setCurrent(1);
     }
 
-    // 重新加载数据
+    // Reload data
     if (context.helpers.run) {
       logger.info({
         message:
-          '[CustomTable.refresh] 🚀 调用 context.helpers.run() 重新加载数据',
+          '[CustomTable.refresh] 🚀 Call context.helpers.run() to reload data',
         data: {},
         source: 'CustomTable',
         component: 'DataActions.refresh',
       });
       context.helpers.run();
       logger.info({
-        message: '[CustomTable.refresh] ✅ context.helpers.run() 调用完成',
+        message:
+          '[CustomTable.refresh] ✅ context.helpers.run() call completed',
         data: {},
         source: 'CustomTable',
         component: 'DataActions.refresh',
       });
     } else {
       logger.warn({
-        message: '[CustomTable.refresh] ⚠️ context.helpers.run 不存在',
+        message: '[CustomTable.refresh] ⚠️ context.helpers.run does not exist',
         data: {
           helpersKeys: Object.keys(context.helpers || {}),
         },
@@ -145,7 +145,7 @@ export const createDataActions = <
     }
   },
 
-  /** @name 取消当前进行中的请求 */
+  /** @name Cancel current ongoing request */
   cancel: () => {
     const requestManager = getRequestManager();
     if (!requestManager.isAborted()) {
@@ -153,34 +153,34 @@ export const createDataActions = <
     }
   },
 
-  /** @name 获取当前表格数据 */
+  /** @name Get current table data */
   getData: () => formattedTableData,
 
-  /** @name 获取数据源 */
+  /** @name Get data source */
   getDataSource: () => formattedTableData,
 
-  /** @name 获取格式化后的表格数据 */
+  /** @name Get formatted table data */
   getFormattedData: () => formattedTableData,
 
-  /** @name 设置表格数据 */
+  /** @name Set table data */
   setData: (_data: RecordType[]) => {
-    // 基于 pro-components 的设计，通过重置数据源实现
-    // 注意：这里应该配合数据源插件来实现实际的数据更新
+    // Based on pro-components design, implement by resetting data source
+    // Note: This should work with data source plugin to implement actual data update
     if (context.helpers.reset) {
       context.helpers.reset();
     }
   },
 
-  /** @name 获取筛选后的数据 */
+  /** @name Get filtered data */
   getFilteredData: () => formattedTableData,
 
-  /** @name 获取选中的数据 */
+  /** @name Get selected data */
   getSelectedData: () => {
     const { selectedRowKeys } = context.state;
     if (!selectedRowKeys || selectedRowKeys.length === 0) {
       return [];
     }
-    // 根据选中的键从数据源中筛选出对应的数据
+    // Filter corresponding data from data source based on selected keys
     return formattedTableData.filter((record) => {
       const key =
         typeof context.props.rowKey === 'function'

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Custom Filter Setting 插件 Hooks 导出
+ * Custom Filter Setting plugin Hooks export
  */
 export { useFilterSetting } from './use-filter-setting';
 export type {

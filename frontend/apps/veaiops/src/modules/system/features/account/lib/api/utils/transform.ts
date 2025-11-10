@@ -16,7 +16,7 @@ import type { User, UserRole, UserStatus } from '@account';
 import type { User as ApiUser } from 'api-generate';
 
 /**
- * 转换 API 用户数据为本地用户数据
+ * Transform API user data to local user data
  */
 export const transformApiUserToUser = (
   apiUser: ApiUser,

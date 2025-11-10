@@ -17,9 +17,9 @@ import { AgentType, EventStatus, EventLevel } from "api-generate";
 import apiClient from "@/utils/api-client";
 
 /**
- * 历史事件服务
+ * History event service
  *
- * 封装历史事件相关的API调用，提供统一的API接口
+ * Encapsulates history event-related API calls, provides unified API interface
  *
  * @example
  * ```typescript
@@ -29,7 +29,7 @@ import apiClient from "@/utils/api-client";
  */
 export class HistoryService {
   /**
-   * 获取历史事件列表
+   * Get history event list
    */
   async getHistoryEvents(params?: HistoryQueryParams | {
     skip?: number;
@@ -47,16 +47,16 @@ export class HistoryService {
     const response = await apiClient.event.getApisV1ManagerEventCenterEvent({
       skip: params?.skip || 0,
       limit: params?.limit || 10,
-      // 类型转换：EventQueryParams 中的 agentType 可能是 AgentType | AgentType[] 或 string[]
-      // API 期望 Array<'CHATOPS_INTEREST' | ...>，但 AgentType 枚举值是 'chatops_interest_agent' 等
-      // 需要映射枚举值到 API 期望的字符串字面量
-      // TODO: 检查后端实际接受的 agentType 格式，修复 OpenAPI 规范以匹配实际类型
+      // Type conversion: agentType in EventQueryParams may be AgentType | AgentType[] or string[]
+      // API expects Array<'CHATOPS_INTEREST' | ...>, but AgentType enum values are 'chatops_interest_agent' etc.
+      // Need to map enum values to string literals expected by API
+      // TODO: Check backend's actual accepted agentType format, fix OpenAPI spec to match actual types
       agentType: params?.agentType
         ? ((Array.isArray(params.agentType)
             ? params.agentType
             : [params.agentType]
           ).map((type) => {
-            // 如果是 AgentType 枚举值，映射到 API 期望的格式
+            // If it's an AgentType enum value, map to API expected format
             if (typeof type === 'string' && type in AgentType) {
               const typeMap: Record<AgentType, string> = {
                 [AgentType.CHATOPS_INTEREST_AGENT]: 'CHATOPS_INTEREST',
@@ -68,7 +68,7 @@ export class HistoryService {
               };
               return typeMap[type as AgentType] || type;
             }
-            // 如果已经是 API 期望的格式，直接返回
+            // If already in API expected format, return directly
             return type;
           }) as unknown) as Array<
             | 'CHATOPS_INTEREST'
@@ -78,16 +78,16 @@ export class HistoryService {
             | 'ONCALL'
           > as unknown as AgentType[]
         : undefined,
-      // ✅ 类型安全：从 Python 源码分析，eventLevel 应该是 EventLevel 枚举数组（P0, P1, P2）
-      // Python: event_level: Optional[List[EventLevel]] = None (EventLevel 枚举: P0, P1, P2)
+      // ✅ Type safe: Based on Python source code analysis, eventLevel should be EventLevel enum array (P0, P1, P2)
+      // Python: event_level: Optional[List[EventLevel]] = None (EventLevel enum: P0, P1, P2)
       // OpenAPI: Array<EventLevel> (P0, P1, P2)
-      // 使用类型守卫验证值是否为有效的 EventLevel 数组
+      // Use type guard to verify if value is valid EventLevel array
       eventLevel: (() => {
         if (!params?.eventLevel) {
           return undefined;
         }
         if (Array.isArray(params.eventLevel)) {
-          // 过滤有效的 EventLevel 值
+          // Filter valid EventLevel values
           const validLevels = params.eventLevel.filter(
             (level): level is EventLevel =>
               level === EventLevel.P0 ||
@@ -96,7 +96,7 @@ export class HistoryService {
           );
           return validLevels.length > 0 ? validLevels : undefined;
         }
-        // 单个值：转换为数组
+        // Single value: convert to array
         if (
           params.eventLevel === EventLevel.P0 ||
           params.eventLevel === EventLevel.P1 ||
@@ -112,15 +112,15 @@ export class HistoryService {
       customers: params?.customers,
       startTime: params?.startTime,
       endTime: params?.endTime,
-      // 注意：API 不支持 status 参数，只支持 showStatus
-      // showStatus 在后端会映射到 event_status，如果需要过滤 event_status，应该使用 showStatus
+      // Note: API doesn't support status parameter, only supports showStatus
+      // showStatus will be mapped to event_status in backend, if need to filter event_status, should use showStatus
     });
 
     return response;
   }
 
   /**
-   * 获取单个历史事件详情
+   * Get single history event details
    */
   async getHistoryEvent(eventId: string) {
     const response = await apiClient.event.getApisV1ManagerEventCenterEvent1({
@@ -131,5 +131,5 @@ export class HistoryService {
   }
 }
 
-// 创建单例实例
+// Create singleton instance
 export const historyService = new HistoryService();

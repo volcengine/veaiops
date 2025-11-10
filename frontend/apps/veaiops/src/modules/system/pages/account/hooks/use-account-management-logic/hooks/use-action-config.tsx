@@ -17,8 +17,8 @@ import { IconPlus } from '@arco-design/web-react/icon';
 import React from 'react';
 
 /**
- * 账号操作按钮配置Hook
- * 提供表格工具栏操作按钮配置
+ * Account action button configuration Hook
+ * Provides table toolbar action button configuration
  */
 export const useAccountActionConfig = (
   onAdd: () => void,

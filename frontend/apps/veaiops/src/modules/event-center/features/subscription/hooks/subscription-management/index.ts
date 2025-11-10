@@ -26,13 +26,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== Hooks 导出 ====================
+// ==================== Hooks Exports ====================
 export { useSubscriptionManagementLogic } from './use-subscription-management-logic';
 export { useSubscriptionTableConfig } from './use-subscription-table-config';
 export { useSubscriptionActionConfig } from './use-subscription-action-config';
 
-// ==================== 工具函数导出 ====================
+// ==================== Utility Functions Exports ====================
 export { transformSubscriptionToTableData } from './utils';
 
-// ==================== 类型导出 ====================
+// ==================== Type Exports ====================
 export type { SubscriptionTableData } from './lib/types';

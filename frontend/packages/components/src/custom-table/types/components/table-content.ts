@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * TableContent 组件类型定义
- * 基于 pro-components 设计模式优化
+ * TableContent component type definitions
+ * Optimized based on pro-components design patterns
  *
 
  * @date 2025-12-19
@@ -23,68 +23,68 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 /**
- * @name 表格标题相关配置
+ * @name Table header related configuration
  */
 export interface TableHeaderConfig {
-  /** @name 表格标题 */
+  /** @name Table title */
   title?: string;
-  /** @name 标题右侧操作按钮组 */
+  /** @name Action button group on the right side of title */
   actions?: ReactNode[];
-  /** @name 标题容器样式类名 */
+  /** @name Title container style class name */
   className?: string;
-  /** @name 标题容器内联样式 */
+  /** @name Title container inline style */
   style?: CSSProperties;
 }
 
 /**
- * @name 表格内容加载状态配置
+ * @name Table content loading state configuration
  */
 export interface TableContentLoadingConfig {
-  /** @name 是否使用自定义加载组件 */
+  /** @name Whether to use custom loading component */
   useCustomLoading?: boolean;
-  /** @name 表格加载状态 */
+  /** @name Table loading state */
   loading?: boolean;
-  /** @name 自定义加载状态 */
+  /** @name Custom loading state */
   customLoading?: boolean;
-  /** @name 加载提示文本 */
+  /** @name Loading tip text */
   tip?: string;
 }
 
 /**
- * @name 渲染器函数集合
+ * @name Renderer function collection
  */
 export interface TableRenderers {
-  /** @name 表格内容渲染器 */
+  /** @name Table content renderer */
   tableRender: (tableComponent: ReactNode) => ReactNode;
-  /** @name 底部内容渲染器 */
+  /** @name Footer content renderer */
   footerRender: () => ReactNode;
 }
 
 /**
- * @name 表格主内容组件属性
+ * @name Table main content component props
  */
 export interface TableContentProps {
-  /** @name 表格标题配置 */
+  /** @name Table header configuration */
   header?: TableHeaderConfig;
 
-  /** @name 警告/提示组件 */
+  /** @name Alert/prompt component */
   alertDom?: ReactNode;
 
-  /** @name 筛选器组件 */
+  /** @name Filter component */
   filterDom?: ReactNode;
 
-  /** @name 加载状态配置 */
+  /** @name Loading state configuration */
   loadingConfig?: TableContentLoadingConfig;
 
-  /** @name 渲染器函数集合 */
+  /** @name Renderer function collection */
   renderers: TableRenderers;
 
-  /** @name 表格主体组件 */
+  /** @name Table main component */
   tableDom: ReactNode;
 
-  /** @name 容器样式类名 */
+  /** @name Container style class name */
   className?: string;
 
-  /** @name 容器内联样式 */
+  /** @name Container inline style */
   style?: CSSProperties;
 }

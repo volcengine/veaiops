@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 验证相关功能统一导出
- * @description 数据源特定的验证逻辑（边界检查、特定平台的验证器等）
- * @note 步骤验证逻辑已移至 steps/validators.ts
+ * Validation-related functionality unified export
+ * @description Data source-specific validation logic (boundary checks, platform-specific validators, etc.)
+ * @note Step validation logic has been moved to steps/validators.ts
  */
 
 export * from './aliyun-validators';

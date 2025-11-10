@@ -15,7 +15,7 @@
 import type { Interest } from 'api-generate';
 
 /**
- * 详情查看组件属性
+ * Detail view component props
  */
 export interface DetailViewProps {
   rule: Interest;

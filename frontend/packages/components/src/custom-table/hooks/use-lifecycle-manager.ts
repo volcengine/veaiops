@@ -28,15 +28,15 @@ import {
   mergeLifecycleConfigs,
 } from '@/custom-table/utils';
 /**
- * 生命周期管理器 Hook
- * 提供插件生命周期管理能力
+ * Lifecycle manager Hook
+ * Provides plugin lifecycle management capability
  */
 import { useCallback, useEffect, useRef } from 'react';
 
-// 类型已迁移到 ../types/hooks/lifecycle.ts
+// Types have been migrated to ../types/hooks/lifecycle.ts
 
 /**
- * 使用生命周期管理器
+ * Use lifecycle manager
  */
 export const useLifecycleManager = ({
   lifecycleConfig,
@@ -47,12 +47,12 @@ export const useLifecycleManager = ({
   const managerRef = useRef<LifecycleManager | null>(null);
   const configRef = useRef<CustomTableLifecycleConfig | undefined>(undefined);
 
-  // 初始化管理器
+  // Initialize manager
   if (!managerRef.current) {
     managerRef.current = createLifecycleManager(managerConfig);
   }
 
-  // 合并配置
+  // Merge configuration
   const mergedConfig = mergeLifecycleConfigs(
     lifecycleConfig,
     globalCallbacks
@@ -66,7 +66,7 @@ export const useLifecycleManager = ({
 
   configRef.current = mergedConfig;
 
-  // 执行生命周期
+  // Execute lifecycle
   const executeLifecycle = useCallback(
     async (
       phase: LifecyclePhase,
@@ -91,28 +91,28 @@ export const useLifecycleManager = ({
     [onLifecycleError],
   );
 
-  // 添加监听器
+  // Add listener
   const addListener = useCallback((listener: LifecycleListener) => {
     managerRef.current?.addListener(listener);
   }, []);
 
-  // 移除监听器
+  // Remove listener
   const removeListener = useCallback((listener: LifecycleListener) => {
     managerRef.current?.removeListener(listener);
   }, []);
 
-  // 获取性能指标
+  // Get performance metrics
   const getPerformanceMetrics = useCallback(
     () => managerRef.current?.getPerformanceMetrics() || new Map(),
     [],
   );
 
-  // 清除性能指标
+  // Clear performance metrics
   const clearPerformanceMetrics = useCallback(() => {
     managerRef.current?.clearPerformanceMetrics();
   }, []);
 
-  // 清理
+  // Cleanup
   useEffect(
     () => () => {
       managerRef.current?.destroy();
@@ -130,7 +130,7 @@ export const useLifecycleManager = ({
 };
 
 /**
- * 创建生命周期上下文 Hook
+ * Create lifecycle context Hook
  */
 export const useLifecycleContext = () => {
   const executeLifecycleRef = useRef<

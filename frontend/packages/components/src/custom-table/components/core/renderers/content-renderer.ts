@@ -14,12 +14,12 @@
 
 import { PluginNames, RendererNames } from '@/custom-table/constants';
 /**
- * CustomTable 内容渲染函数
+ * CustomTable content renderer functions
  */
 import React from 'react';
 
 /**
- * 创建表格内容渲染器
+ * Create table content renderer
  */
 export const createTableContentRenderer = (
   props: {
@@ -33,12 +33,12 @@ export const createTableContentRenderer = (
   },
   tableComponent: React.ReactNode,
 ) => {
-  // 应用自定义表格渲染
+  // Apply custom table rendering
   if (props.customRender?.table) {
     return props.customRender.table(tableComponent);
   }
 
-  // 应用传统自定义组件渲染
+  // Apply traditional custom component rendering
   if (props.customComponentRender) {
     return props.customComponentRender({ table: tableComponent });
   }
@@ -47,7 +47,7 @@ export const createTableContentRenderer = (
 };
 
 /**
- * 创建底部内容渲染器
+ * Create footer content renderer
  */
 export const createFooterContentRenderer = (
   props: {
@@ -80,7 +80,7 @@ export const createFooterContentRenderer = (
 ) => {
   const { customRender, customFooter, dataSource } = props;
 
-  // 自定义底部渲染
+  // Custom footer rendering
   if (customRender?.footer) {
     return React.createElement(
       'div',
@@ -93,7 +93,7 @@ export const createFooterContentRenderer = (
     );
   }
 
-  // 传统自定义底部
+  // Traditional custom footer
   if (customFooter) {
     return React.createElement(
       'div',
@@ -108,7 +108,7 @@ export const createFooterContentRenderer = (
     );
   }
 
-  // 默认加载更多按钮
+  // Default load more button
   if (dataSource?.scrollFetchData && dataSource?.hasMoreData) {
     return React.createElement(
       'div',

@@ -16,7 +16,7 @@ import type { SelectProps } from '@arco-design/web-react';
 import type React from 'react';
 import type { ReactNode } from 'react';
 
-// 定义多搜索字段配置类型
+// Define multi-search field configuration type
 export type SearchKeyConfig =
   | {
       key: string;
@@ -46,7 +46,7 @@ export interface StandardEnum {
 }
 
 /**
- * optionfy入参类型
+ * Optionfy input parameter type
  */
 export type OptionfyProps<T> = {
   dataSet: Array<T>;
@@ -60,7 +60,7 @@ export type OptionfyProps<T> = {
   valueRender?: ({ record, value }: { record: T; value: any }) => any;
   disabledList?: Array<string | number>;
   disabledCheckFunc?: (value: any) => boolean;
-  filters?: Partial<T>; // 根据某个key进行条件过滤
+  filters?: Partial<T>; // Conditional filtering based on a key
 };
 
 export type SelectOption = {
@@ -96,7 +96,7 @@ export interface EnumOptionConfigs {
 }
 
 /**
- * @title 数据源配置
+ * @title Data source configuration
  */
 export type DataSourceSetter = {
   serviceInstance: any;
@@ -109,34 +109,34 @@ export type DataSourceSetter = {
 };
 
 /**
- * @title API 选择框
+ * @title API Select component
  */
 export type FinalSelectBlockProps = {
   /**
-   * @zh 是否可见
+   * Whether visible
    */
   visible?: boolean;
   /**
-   * @zh 异步函数
+   * Async function
    * @defaultValue () => []
    */
   dataSource?:
     | ((props: SelectDataSourceProps) => Promise<any> | any)
     | DataSourceSetter;
   /**
-   * 缓存key
+   * Cache key
    */
   cacheKey?: string;
   /**
-   * 数据源共享
+   * Data source sharing
    */
   dataSourceShare?: boolean;
   /**
-   * 是否作为数据源的生产者
+   * Whether to act as data source producer
    */
   isFirstHint?: boolean;
   /**
-   * 滚动分页模式
+   * Scroll pagination mode
    */
   isScrollFetching?: boolean;
   /**
@@ -144,78 +144,77 @@ export type FinalSelectBlockProps = {
    */
   isDebouncedFetch?: boolean;
   /**
-   * 虚拟滚动请求分页
+   * Virtual scroll request pagination
    */
   pageReq: any;
   /**
-   * 依赖参数
+   * Dependency parameters
    */
   dependency?: unknown;
   /**
-   * 填充默认值，默认选择option第一个
+   * Fill default value, default to select first option
    */
   defaultActiveFirstOption?: boolean;
   /**
-   * options变更的回调
-   * @param Options
+   * Options change callback
+   * @param Options - Updated options array
    */
   onOptionsChange?: (Options: Array<SelectOption>) => void;
   /**
-   * 是否在分页场景下支持根据value查询option
+   * Whether to support querying options by value in pagination scenario
    */
   isCascadeRemoteSearch?: boolean;
   /**
-   * 分页场景下支持根据value查询option的key
+   * Key for querying options by value in pagination scenario
    */
   remoteSearchKey?: string;
   /**
-   * 查询search key
+   * Search key for query
    */
   searchKey?: string;
   /**
-   * 多字段搜索配置，支持同时搜索多个字段
-   * 例如: [{ key: 'fatalId', valueType: 'number' }, { key: 'title', valueType: 'string' }]
-   * 或简写为: ['fatalId', 'title']
+   * Multi-field search configuration, supports searching multiple fields simultaneously
+   * @example [{ key: 'fatalId', valueType: 'number' }, { key: 'title', valueType: 'string' }]
+   * @example Or shorthand: ['fatalId', 'title']
    */
   multiSearchKeys?: SearchKeyConfig[];
   /**
-   * remoteSearchKey format函数
+   * remoteSearchKey format function
    */
   formatRemoteSearchKey?: (v: string) => any;
   /**
-   * 是否再value为空的时候触发options获取
+   * Whether to trigger options fetching when value is empty
    */
   isValueEmptyTriggerOptions?: boolean;
   /**
-   * 前端枚举值配置
+   * Frontend enum value configuration
    */
   enumOptionConfig: EnumOptionConfigs;
   /**
-   * 是否满足请求条件
+   * Whether request conditions are met
    */
   canFetch?: boolean;
   /**
-   * options处理方法
+   * Options processing method
    * @param props
    */
   handleOptions?: (props: { options: Option[]; value: any }) => Option[];
   /**
-   * payload处理方法
+   * Payload processing method
    * @param props
    */
   handleParams?: (params: any) => any;
   /**
-   * 自定义搜索方法
+   * Custom search method
    * @param props
    */
   _onSearch?: (props: { search: string | null }) => void;
   /**
-   * 自定义inlineDom
+   * Custom inline DOM
    */
   inlineSuffixDom?: ReactNode;
   /**
-   * @zh 包裹层样式
-   * @en Wrapper style
+   * Wrapper style
    */
   wrapperStyle?: React.CSSProperties;
 };

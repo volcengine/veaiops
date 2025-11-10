@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 行内编辑插件组件导出
+ * Inline edit plugin component exports
  */
 
 export { EditableCell } from './editable-cell';
-// export type { default as EditableCellType } from './editable-cell'; // 注意：default 导出不存在
+// export type { default as EditableCellType } from './editable-cell'; // Note: default export does not exist

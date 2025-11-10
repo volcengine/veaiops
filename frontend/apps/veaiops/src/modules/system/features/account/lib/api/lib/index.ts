@@ -26,14 +26,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== 类型导出 ====================
+// ==================== Type Exports ====================
 export type {
   UserListParams,
   UserListResponse,
   UpdateUserParams,
 } from './types';
 
-// ==================== CRUD 操作 ====================
+// ==================== CRUD Operations ====================
 export {
   createUser,
   deleteUser,
@@ -41,18 +41,18 @@ export {
   updateUser,
 } from './crud';
 
-// ==================== 用户管理操作 ====================
+// ==================== User Management Operations ====================
 export {
   lockUser,
   resetUserPassword,
   unlockUser,
 } from './user-management';
 
-// ==================== 批量操作 ====================
+// ==================== Batch Operations ====================
 export { batchDeleteUsers } from './batch-operations';
 
-// ==================== 导出操作 ====================
+// ==================== Export Operations ====================
 export { exportUsers } from './export';
 
-// ==================== 工具函数 ====================
+// ==================== Utility Functions ====================
 export { createUserTableRequestWrapper } from './utils';

@@ -24,8 +24,8 @@ interface SystemOverviewProps {
 }
 
 /**
- * 系统资源概览组件
- * @description 展示系统各模块的资源概览信息
+ * System resource overview component
+ * @description Display resource overview information for each module of the system
  */
 export const SystemOverview: React.FC<SystemOverviewProps> = ({
   getSystemOverviewData,

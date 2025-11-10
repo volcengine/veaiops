@@ -16,54 +16,54 @@
 import type { IntelligentThresholdTaskVersion } from './intelligent-threshold-task-version';
 export type IntelligentThresholdTaskDetail = {
   /**
-   * 任务ID
+   * Task ID
    */
   _id?: string;
   /**
-   * 任务名称
+   * Task name
    */
   task_name: string;
   /**
-   * 关联的模板ID
+   * Associated template ID
    */
   template_id: string;
   /**
-   * 数据源ID
+   * Data source ID
    */
   datasource_id: string;
   /**
-   * 数据源类型
+   * Data source type
    */
   datasource_type: IntelligentThresholdTaskDetail.datasource_type;
   /**
-   * 自动更新开关
+   * Auto update switch
    */
   auto_update?: boolean;
   /**
-   * 项目名称列表
+   * List of project names
    */
   projects?: Array<string>;
   /**
-   * 产品名称列表
+   * List of product names
    */
   products?: Array<string>;
   /**
-   * 客户名称列表
+   * List of customer names
    */
   customers?: Array<string>;
   /**
-   * 创建时间
+   * Creation time
    */
   created_at?: string;
   /**
-   * 更新时间
+   * Update time
    */
   updated_at?: string;
   latest_version?: IntelligentThresholdTaskVersion;
 };
 export namespace IntelligentThresholdTaskDetail {
   /**
-   * 数据源类型
+   * Data source type
    */
   export enum datasource_type {
     ZABBIX = 'Zabbix',

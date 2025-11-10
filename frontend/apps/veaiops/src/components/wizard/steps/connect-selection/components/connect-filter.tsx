@@ -13,18 +13,15 @@
 // limitations under the License.
 
 /**
- * 连接过滤器组件
- * @description 处理连接的过滤和搜索逻辑
+ * Connect filter component
+ * @description Handles connect filtering and search logic
  * @author AI Assistant
  * @date 2025-01-17
  */
 
-import {
-  DataSourceType as ApiDataSourceType,
-  DataSource,
-} from '@veaiops/api-client';
 import type { Connect } from 'api-generate';
-import type { DataSourceType } from '../../../types';
+import { DataSourceType as ApiDataSourceType } from 'api-generate';
+import { DataSourceType } from '../../../types';
 
 export const useConnectFilter = (
   connects: Connect[],
@@ -32,28 +29,28 @@ export const useConnectFilter = (
   searchText = '',
 ) => {
   const filteredConnects = connects.filter((connect) => {
-    // 根据数据源类型过滤 - 转换API类型到本地类型
+    // Filter by data source type - convert API type to local type
     let typeMatch = !dataSourceType || dataSourceType === 'all';
     if (!typeMatch) {
       if (
         connect.type === ApiDataSourceType.ZABBIX &&
-        dataSourceType === DataSource.type.ZABBIX
+        dataSourceType === DataSourceType.ZABBIX
       ) {
         typeMatch = true;
       } else if (
         connect.type === ApiDataSourceType.ALIYUN &&
-        dataSourceType === DataSource.type.ALIYUN
+        dataSourceType === DataSourceType.ALIYUN
       ) {
         typeMatch = true;
       } else if (
         connect.type === ApiDataSourceType.VOLCENGINE &&
-        dataSourceType === DataSource.type.VOLCENGINE
+        dataSourceType === DataSourceType.VOLCENGINE
       ) {
         typeMatch = true;
       }
     }
 
-    // 根据搜索文本过滤
+    // Filter by search text
     const searchMatch =
       !searchText ||
       connect.name?.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -67,12 +64,12 @@ export const useConnectFilter = (
 
 export const getDataSourceTypeLabel = (type: DataSourceType) => {
   switch (type) {
-    case DataSource.type.ZABBIX:
+    case DataSourceType.ZABBIX:
       return 'Zabbix';
-    case DataSource.type.ALIYUN:
-      return '阿里云';
-    case DataSource.type.VOLCENGINE:
-      return '火山引擎';
+    case DataSourceType.ALIYUN:
+      return 'Alibaba Cloud';
+    case DataSourceType.VOLCENGINE:
+      return 'Volcano Engine';
     default:
       return type;
   }
@@ -83,5 +80,5 @@ export const getConnectStatusColor = (isActive?: boolean) => {
 };
 
 export const getConnectStatusText = (isActive?: boolean) => {
-  return isActive ? '已激活' : '未激活';
+  return isActive ? 'Active' : 'Inactive';
 };

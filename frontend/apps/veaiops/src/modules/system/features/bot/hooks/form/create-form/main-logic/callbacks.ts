@@ -22,7 +22,7 @@ import {
 } from '../utils';
 
 /**
- * Bot创建表单的回调函数
+ * Bot create form callback functions
  */
 export const useBotCreateFormCallbacks = ({
   form,
@@ -42,12 +42,12 @@ export const useBotCreateFormCallbacks = ({
     }>
   >;
 }) => {
-  // 添加知识库集合
+  // Add knowledge base collection
   const addKbCollection = useCallback(() => {
     addKbCollectionUtil(kbCollections, setKbCollections);
   }, [kbCollections, setKbCollections]);
 
-  // 删除知识库集合
+  // Remove knowledge base collection
   const removeKbCollection = useCallback(
     (index: number) => {
       removeKbCollectionUtil({
@@ -60,7 +60,7 @@ export const useBotCreateFormCallbacks = ({
     [kbCollections, form, setKbCollections],
   );
 
-  // 更新知识库集合
+  // Update knowledge base collection
   const updateKbCollection = useCallback(
     ({ index, value }: { index: number; value: string }) => {
       updateKbCollectionUtil({
@@ -74,7 +74,7 @@ export const useBotCreateFormCallbacks = ({
     [kbCollections, form, setKbCollections],
   );
 
-  // 切换密码状态
+  // Toggle password visibility
   const toggleSecretVisibility = useCallback(
     (field: 'secret' | 'ak' | 'sk' | 'api_key') => {
       setShowSecrets((prev) => ({
@@ -86,9 +86,9 @@ export const useBotCreateFormCallbacks = ({
   );
 
   /**
-   * 检查 App ID 是否重复
-   * @param appId - 待检查的 App ID
-   * @returns 如果重复返回错误消息，否则返回 undefined
+   * Check if App ID is duplicate
+   * @param appId - App ID to check
+   * @returns Error message if duplicate, otherwise undefined
    */
   const checkAppIdDuplicateHandler = useCallback(
     async (appId: string): Promise<string | undefined> => {

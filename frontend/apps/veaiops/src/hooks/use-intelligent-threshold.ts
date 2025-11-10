@@ -15,7 +15,7 @@
 import { useCallback, useState } from 'react';
 
 /**
- * 任务抽屉状态管理 Hook
+ * Task drawer state management Hook
  */
 export const useTaskDrawer = () => {
   const [visible, setVisible] = useState(false);
@@ -48,7 +48,7 @@ export const useTaskDrawer = () => {
 };
 
 /**
- * 告警抽屉状态管理 Hook
+ * Alarm drawer state management Hook
  */
 export const useAlarmDrawer = () => {
   const [visible, setVisible] = useState(false);

@@ -35,7 +35,7 @@ const { StampTime } = CellRender;
 const { CustomOutlineTag } = CellRender;
 
 /**
- * 基本信息卡片组件属性
+ * Basic info card component props
  */
 export interface BasicInfoProps {
   rule: Interest;
@@ -43,7 +43,7 @@ export interface BasicInfoProps {
 }
 
 /**
- * 基本信息卡片组件
+ * Basic info card component
  */
 export const BasicInfo: React.FC<BasicInfoProps> = ({ rule, copyHook }) => {
   const { copiedText, handleCopy } = copyHook;

@@ -15,9 +15,9 @@
 import React from 'react';
 
 /**
- * 从 React 子元素中提取字符串内容
- * @param children React 子元素
- * @returns 提取的字符串内容
+ * Extract string content from React children
+ * @param children React children
+ * @returns Extracted string content
  */
 export const getChildrenString = (children: React.ReactNode): string => {
   if (typeof children === 'string') {

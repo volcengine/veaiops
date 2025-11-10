@@ -16,7 +16,7 @@ import type { ColumnProps } from '@arco-design/web-react/es/Table';
 import type { Bot } from '@bot/types';
 
 /**
- * 基础列定义（App ID、名称、Open ID）
+ * Base column definitions (App ID, Name, Open ID)
  */
 export const getBaseColumns = (): ColumnProps<Bot>[] => [
   {

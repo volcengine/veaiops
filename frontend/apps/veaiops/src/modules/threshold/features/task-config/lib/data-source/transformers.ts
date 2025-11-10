@@ -16,7 +16,7 @@ import type { IntelligentThresholdTask } from "api-generate";
 import type { TaskQueryParams } from "./types";
 
 /**
- * getApisV1IntelligentThresholdTask API 方法的参数类型
+ * Parameter type for getApisV1IntelligentThresholdTask API method
  */
 interface GetIntelligentThresholdTaskParams {
   projects?: Array<string>;
@@ -32,7 +32,7 @@ interface GetIntelligentThresholdTaskParams {
 }
 
 /**
- * 转换查询参数为 API 请求格式
+ * Transform query parameters to API request format
  */
 export const transformQueryToApiRequest = (
   query: TaskQueryParams
@@ -41,11 +41,11 @@ export const transformQueryToApiRequest = (
     datasourceType: query.datasource_type,
     skip: query.page_req.skip,
     limit: query.page_req.limit,
-    // sort 属性不在 API 类型定义中，暂时移除
+    // sort property not in API type definition, temporarily removed
     // sort: query.sort,
   };
 
-  // 添加过滤条件
+  // Add filter conditions
   if (query.projects && query.projects.length > 0) {
     request.projects = query.projects;
   }
@@ -77,7 +77,7 @@ export const transformQueryToApiRequest = (
 };
 
 /**
- * 转换 API 响应数据为表格数据 - 只处理 IntelligentThresholdTask
+ * Transform API response data to table data - only handles IntelligentThresholdTask
  */
 export const transformApiResponseToTableData = (
   apiData: IntelligentThresholdTask

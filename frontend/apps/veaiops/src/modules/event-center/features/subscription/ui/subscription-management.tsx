@@ -35,21 +35,21 @@ interface SubscriptionManagementProps {
 }
 
 /**
- * 订阅管理页面
- * 提供订阅关系的增删改查功能 - 与 origin/feat/web-v2 保持一致
+ * Subscription management page
+ * Provides CRUD functionality for subscription relations - consistent with origin/feat/web-v2
  *
- * 架构特点：
- * - 使用 useSubscribeRelation Hook 管理数据
- * - 使用 SubscribeRelationForm 抽屉组件
- * - 使用 SubscribeRelationTable 表格组件
- * - CRUD 操作与 origin/feat/web-v2 完全一致
+ * Architecture features:
+ * - Uses useSubscribeRelation Hook for data management
+ * - Uses SubscribeRelationForm drawer component
+ * - Uses SubscribeRelationTable table component
+ * - CRUD operations are completely consistent with origin/feat/web-v2
  */
 const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({
   moduleType,
 }) => {
   const location = useLocation();
 
-  // 根据路由自动判断模块类型
+  // Automatically determine module type based on route
   const detectedModuleType = useMemo(() => {
     if (moduleType) {
       return moduleType;
@@ -58,13 +58,13 @@ const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({
     return detectModuleTypeFromPath(location.pathname);
   }, [moduleType, location.pathname]);
 
-  // 根据模块类型设置页面标题
+  // Set page title based on module type
   const pageTitle = useMemo(() => {
     const config = getModuleConfig(detectedModuleType);
     return config.pageTitle;
   }, [detectedModuleType]);
 
-  // 使用订阅关系管理hook
+  // Use subscription relation management hook
   const {
     loading,
     fetchSubscribeRelations,
@@ -73,13 +73,13 @@ const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({
     deleteSubscribeRelation,
   } = useSubscribeRelation(detectedModuleType);
 
-  // 表单抽屉状态
+  // Form drawer state
   const [formVisible, setFormVisible] = useState(false);
   const [editingData, setEditingData] =
     useState<SubscribeRelationWithAttributes | null>(null);
 
   /**
-   * 编辑订阅关系
+   * Edit subscription relation
    */
   const handleEdit = (record: SubscribeRelationWithAttributes) => {
     setEditingData(record);
@@ -87,14 +87,14 @@ const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({
   };
 
   /**
-   * 删除订阅关系
+   * Delete subscription relation
    */
   const handleDelete = async (id: string) => {
     await deleteSubscribeRelation(id);
   };
 
   /**
-   * 创建新的订阅关系
+   * Create new subscription relation
    */
   const handleCreate = () => {
     setEditingData(null);
@@ -102,22 +102,22 @@ const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({
   };
 
   /**
-   * 处理表单提交
+   * Handle form submission
    */
   const handleFormSubmit = async (
     data: SubscribeRelationCreate | SubscribeRelationUpdate,
   ) => {
     try {
       if (editingData?._id) {
-        // 编辑模式
+        // Edit mode
         return await updateSubscribeRelation({ id: editingData._id, data });
       } else {
-        // 创建模式
+        // Create mode
         return await createSubscribeRelation(data);
       }
     } catch (error: unknown) {
-      // ✅ 注意：错误已在 Hook 中处理，此处静默处理是预期的行为
-      // 使用 logger 记录调试信息（logger 内部会处理开发环境判断）
+      // ✅ Note: Error has been handled in Hook, silent handling here is expected behavior
+      // Use logger to record debug information (logger internally handles development environment check)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.debug({
@@ -135,14 +135,14 @@ const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({
   };
 
   /**
-   * 关闭表单抽屉
+   * Close form drawer
    */
   const handleFormClose = () => {
     setFormVisible(false);
     setEditingData(null);
   };
 
-  // 页面加载时获取订阅关系数据
+  // Fetch subscription relation data when page loads
   useEffect(() => {
     fetchSubscribeRelations();
   }, [fetchSubscribeRelations]);
@@ -160,7 +160,7 @@ const SubscriptionManagement: React.FC<SubscriptionManagementProps> = ({
         loading={loading}
       />
 
-      {/* 订阅关系表单抽屉 */}
+      {/* Subscription relation form drawer */}
       <SubscribeRelationForm
         visible={formVisible}
         onClose={handleFormClose}

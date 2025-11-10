@@ -20,12 +20,12 @@ import { CellRender } from '@veaiops/components';
 import { AGENT_TYPE_MAP } from '@veaiops/constants';
 import type { SubscribeRelationWithAttributes } from 'api-generate';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender components to avoid repeated calls
 const { CustomOutlineTag, StampTime } = CellRender;
 
 /**
- * 列配置属性接口
- * 继承 HandleFilterProps，并扩展操作回调函数
+ * Column configuration props interface
+ * Extends HandleFilterProps and adds operation callback functions
  */
 interface SubscriptionColumnsProps extends HandleFilterProps<BaseQuery> {
   onEdit?: (record: SubscribeRelationWithAttributes) => void;
@@ -34,11 +34,11 @@ interface SubscriptionColumnsProps extends HandleFilterProps<BaseQuery> {
 }
 
 /**
- * 订阅关系列配置函数
- * 按照 CustomTable 最佳实践，提供完整的列配置
- * 🎯 与 origin/feat/web-v2 保持一致
+ * Subscription relation column configuration function
+ * Follows CustomTable best practices, provides complete column configuration
+ * 🎯 Consistent with origin/feat/web-v2
  *
- * @param props - 列配置属性，包含 query、handleChange 以及操作回调函数（onEdit, onDelete, onView）
+ * @param props - Column configuration props, includes query, handleChange, and operation callback functions (onEdit, onDelete, onView)
  */
 export const getSubscriptionColumns = (props: SubscriptionColumnsProps) => {
   const { onEdit, onDelete, onView } = props;

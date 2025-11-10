@@ -13,30 +13,30 @@
 // limitations under the License.
 
 /**
- * CustomTable 类型定义统一导出
- * 重构后的类型系统，按功能分类组织
+ * CustomTable type definitions unified export
+ * Refactored type system, organized by functionality
  *
- * ⚠️ 重要导出顺序说明（遵循 Modern.js 最佳实践）：
- * 1. 先显式导出关键类型（确保构建工具优先识别）
- * 2. 然后使用 export * from 导出所有子模块（保持类型系统的完整性）
+ * ⚠️ Important export order notes (following Modern.js best practices):
+ * 1. First explicitly export key types (ensure build tools prioritize recognition)
+ * 2. Then use export * from to export all sub-modules (maintain type system integrity)
  *
- * 为什么需要显式导出：
- * - Modern.js/Rollup DTS 插件在处理多层 export * from 时无法正确追踪导出
- * - 路径别名 @/custom-table/types 解析时需要明确的导出声明
- * - Rollup DTS 插件无法展开所有嵌套的 export * from 语句
- * - bundle 模式下构建工具在解析时如果先看到 export * from，可能会认为模块没有导出
+ * Why explicit exports are needed:
+ * - Modern.js/Rollup DTS plugin cannot correctly track exports when processing multi-level export * from
+ * - Path alias @/custom-table/types requires explicit export declarations when parsing
+ * - Rollup DTS plugin cannot expand all nested export * from statements
+ * - In bundle mode, build tools may think the module has no exports if export * from is seen first during parsing
  */
 
-// ==================== 关键类型显式导出（必须在 export * from 之前）====================
-// ⚠️ 重要：这些类型必须显式导出，因为 Rollup DTS 插件无法正确追踪多层 export * from 链
+// ==================== Key Types Explicit Export (must be before export * from) ====================
+// ⚠️ Important: These types must be explicitly exported because Rollup DTS plugin cannot correctly track multi-level export * from chains
 //
-// 导出策略说明：
-// 1. 枚举值（enum）使用 export { } 导出（值导出，用于运行时）
-// 2. 类型别名使用 export type { } 导出（类型导出，isolatedModules 要求）
-// 3. 函数使用 export { } 导出（值导出，用于运行时）
-// 4. 接口/类型使用 export type { } 导出（类型导出）
+// Export strategy notes:
+// 1. Enum values use export { } (value export, for runtime)
+// 2. Type aliases use export type { } (type export, isolatedModules requirement)
+// 3. Functions use export { } (value export, for runtime)
+// 4. Interfaces/types use export type { } (type export)
 
-// 1. 枚举值（enum）- 值导出，用于运行时
+// 1. Enum values (enum) - value export, for runtime
 export {
   AlertTypeEnum,
   ColumnFixedEnum,
@@ -51,60 +51,60 @@ export {
   TableSizeEnum,
 } from './core/enums';
 
-// 2. 类型别名 - 类型导出
+// 2. Type aliases - type export
 export type {
   PluginPriority,
   PriorityMap,
 } from './core/enums';
 
-// 3. 基础类型 - 类型导出（从 core/common.ts）
+// 3. Base types - type export (from core/common.ts)
 export type {
   BaseQuery,
   BaseRecord,
   ServiceRequestType,
 } from './core/common';
 
-// 4. 组件类型 - 类型导出（从 components/props.ts）
+// 4. Component types - type export (from components/props.ts)
 export type { CustomTableProps } from './components/props';
 
-// 5. 插件核心类型 - 类型导出（从 plugins/core/context.ts）
+// 5. Plugin core types - type export (from plugins/core/context.ts)
 export type {
   CustomTablePluginProps,
   PluginContext,
 } from './plugins/core/context';
 
-// 6. 列类型 - 类型导出（从 plugins/table-columns.ts）
+// 6. Column types - type export (from plugins/table-columns.ts)
 export type { ColumnItem } from './plugins/table-columns';
 
-// 7. 工具函数 - 值导出，用于运行时
+// 7. Utility functions - value export, for runtime
 export { createPaginationStateManager } from './utils/state-managers';
 
-// ==================== 核心类型（使用 export * from，保持类型系统完整性）====================
+// ==================== Core Types (use export * from, maintain type system integrity) ====================
 export * from './core';
 
-// ==================== 组件类型 ====================
+// ==================== Component Types ====================
 export * from './components';
 
-// ==================== 插件类型 ====================
+// ==================== Plugin Types ====================
 export * from './plugins';
 
-// ==================== 工具类型 ====================
+// ==================== Utility Types ====================
 export * from './utils';
 
-// ==================== 常量类型 ====================
+// ==================== Constant Types ====================
 export * from './constants';
 
-// ==================== Hooks 类型 ====================
+// ==================== Hooks Types ====================
 export * from './hooks';
 
-// ==================== 表格 Ref 类型 ====================
+// ==================== Table Ref Types ====================
 export * from './table-ref';
 
-// ==================== Schema Table 预设类型 ====================
-// 注意：类型定义已在 schema-table/types.ts 中使用 Schema 前缀命名
-// （如 SchemaFilterConfig、SchemaPaginationConfig 等），避免与 components 中的类型冲突
+// ==================== Schema Table Preset Types ====================
+// Note: Type definitions in schema-table/types.ts use Schema prefix naming
+// (e.g., SchemaFilterConfig, SchemaPaginationConfig, etc.) to avoid conflicts with types in components
 export * from './schema-table';
 
-// ==================== API 类型 ====================
-// 从 api 目录统一导出（避免跨层级导出，在顶层统一导出）
+// ==================== API Types ====================
+// Unified export from api directory (avoid cross-level exports, unified export at top level)
 export * from './api';

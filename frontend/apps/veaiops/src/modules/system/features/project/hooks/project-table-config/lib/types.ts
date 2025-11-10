@@ -16,7 +16,7 @@ import type { Project } from 'api-generate';
 import type { ModernTableColumnProps } from '@veaiops/components';
 
 /**
- * 获取项目表格列配置的参数接口
+ * Parameters interface for getting project table column configuration
  */
 export interface GetProjectTableColumnsParams {
   onEdit?: (record: Project) => Promise<boolean>;

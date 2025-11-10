@@ -25,7 +25,7 @@ interface CallbackConfigStepProps {
 }
 
 /**
- * 回调配置步骤组件
+ * Callback configuration step component
  */
 export const CallbackConfigStep: React.FC<CallbackConfigStepProps> = ({
   callbackUrl,

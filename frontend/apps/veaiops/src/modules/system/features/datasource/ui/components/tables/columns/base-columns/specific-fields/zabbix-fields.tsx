@@ -20,7 +20,7 @@ import { renderTargets } from '../../../../renderers/core/target-renderer';
 import { getConfigData } from '../utils';
 
 /**
- * 创建 Zabbix 特定字段列
+ * Create Zabbix-specific field columns
  */
 export const createZabbixFields = (
   dataSourceType: DataSourceType,

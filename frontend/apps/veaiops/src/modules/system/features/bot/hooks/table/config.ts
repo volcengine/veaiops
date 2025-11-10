@@ -25,13 +25,13 @@ import type { ChannelType } from 'api-generate';
 import { useMemo } from 'react';
 
 /**
- * Bot表格配置Hook
- * 提供数据源配置等（列配置已移至组件中处理）
+ * Bot table configuration Hook
+ * Provides data source configuration, etc. (column configuration has been moved to component handling)
  *
- * ✅ 已使用工具函数：
- * - createTableRequestWithResponseHandler: 自动处理分页参数和响应
- * - createServerPaginationDataSource: 创建服务器端分页数据源
- * - createStandardTableProps: 创建标准表格属性
+ * ✅ Utility functions used:
+ * - createTableRequestWithResponseHandler: Automatically handles pagination parameters and responses
+ * - createServerPaginationDataSource: Creates server-side pagination data source
+ * - createStandardTableProps: Creates standard table properties
  */
 export const useBotTableConfig = ({
   handleDelete: _handleDelete,
@@ -39,8 +39,8 @@ export const useBotTableConfig = ({
   handleDelete: (botId: string) => Promise<boolean>;
 }) => {
   /**
-   * CustomTable的request函数
-   * 使用工具函数自动处理分页参数、响应和错误
+   * CustomTable request function
+   * Uses utility functions to automatically handle pagination parameters, responses, and errors
    */
   const request = useMemo(
     () =>
@@ -53,14 +53,14 @@ export const useBotTableConfig = ({
               name: name as string | undefined,
               channel: channel as ChannelType | undefined,
             });
-          // 类型转换：APIResponseBotList 与 StandardApiResponse<Bot[]> 结构兼容
+          // Type conversion: APIResponseBotList is compatible with StandardApiResponse<Bot[]> structure
           return response as unknown as StandardApiResponse<Bot[]>;
         },
         options: {
           errorMessagePrefix: '获取机器人列表失败',
           defaultLimit: 10,
           onError: (error) => {
-            // ✅ 正确：通过 onError 回调处理 UI 错误提示
+            // ✅ Correct: Handle UI error prompts through onError callback
             const errorMessage =
               error instanceof Error
                 ? error.message
@@ -72,13 +72,13 @@ export const useBotTableConfig = ({
     [],
   );
 
-  // ✅ 使用工具函数创建数据源 - 使用 useMemo 稳定化引用
+  // ✅ Use utility function to create data source - use useMemo to stabilize reference
   const dataSource = useMemo(
     () => createServerPaginationDataSource({ request }),
     [request],
   );
 
-  // ✅ 使用工具函数创建表格属性 - 使用 useMemo 稳定化引用
+  // ✅ Use utility function to create table properties - use useMemo to stabilize reference
   const tableProps = useMemo(
     () =>
       createStandardTableProps({

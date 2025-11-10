@@ -16,7 +16,7 @@ import type { Chat } from 'api-generate';
 import { useState } from 'react';
 
 /**
- * 群管理业务逻辑状态管理
+ * Chat management business logic state management
  */
 export const useChatManagementLogicState = () => {
   const [configModalVisible, setConfigModalVisible] = useState(false);

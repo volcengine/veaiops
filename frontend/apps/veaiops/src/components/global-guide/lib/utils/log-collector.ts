@@ -62,7 +62,7 @@ class GlobalGuideLogCollector {
     this.isCollecting = true;
 
     logger.info({
-      message: '[GlobalGuideLogCollector] Start collecting GlobalGuide logs',
+      message: '[GlobalGuideLogCollector] 开始收集 GlobalGuide 日志',
       data: {
         sessionId,
         featureId,
@@ -81,17 +81,14 @@ class GlobalGuideLogCollector {
    * Stop collection and export logs
    */
   exportLogs(filename?: string): string | null {
-    // If there is a session, allow export even if isCollecting is false (may have stopped before but session still exists)
-    if (!this.currentSession) {
+    if (!this.currentSession || !this.isCollecting) {
       console.warn('⚠️ No active log collection session');
       return null;
     }
 
-    // If currently collecting, stop collection first
-    if (this.isCollecting) {
-      stopLogCollection();
-      this.isCollecting = false;
-    }
+    // Stop collection
+    stopLogCollection();
+    this.isCollecting = false;
 
     // Update session status
     this.currentSession.endTime = Date.now();
@@ -101,45 +98,28 @@ class GlobalGuideLogCollector {
     const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
     const finalFilename = filename || `global-guide-logs-${timestamp}.log`;
 
-    try {
-      // Export logs from last 10 minutes (covers entire GlobalGuide flow)
-      const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
-      exportLogsInTimeRange(tenMinutesAgo, undefined, finalFilename);
+    // Export logs from the last 10 minutes (covers entire GlobalGuide flow)
+    const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
+    exportLogsInTimeRange(tenMinutesAgo, undefined, finalFilename);
 
-      logger.info({
-        message: '[GlobalGuideLogCollector] GlobalGuide logs exported',
-        data: {
-          sessionId: this.currentSession.sessionId,
-          filename: finalFilename,
-          duration: this.currentSession.endTime - this.currentSession.startTime,
-          featureId: this.currentSession.featureId,
-          stepNumber: this.currentSession.stepNumber,
-          endTime: new Date().toISOString(),
-        },
-        source: 'GlobalGuideLogCollector',
-        component: 'exportLogs',
-      });
+    logger.info({
+      message: '[GlobalGuideLogCollector] GlobalGuide 日志已导出',
+      data: {
+        sessionId: this.currentSession.sessionId,
+        filename: finalFilename,
+        duration: this.currentSession.endTime - this.currentSession.startTime,
+        featureId: this.currentSession.featureId,
+        stepNumber: this.currentSession.stepNumber,
+        endTime: new Date().toISOString(),
+      },
+      source: 'GlobalGuideLogCollector',
+      component: 'exportLogs',
+    });
 
-      // Clean up current session
-      const exportedFilename = finalFilename;
-      this.currentSession = null;
+    // Clear current session
+    this.currentSession = null;
 
-      return exportedFilename;
-    } catch (error) {
-      logger.error({
-        message: '[GlobalGuideLogCollector] Error occurred while exporting logs',
-        data: {
-          error: error instanceof Error ? error.message : String(error),
-          sessionId: this.currentSession.sessionId,
-          filename: finalFilename,
-        },
-        source: 'GlobalGuideLogCollector',
-        component: 'exportLogs',
-      });
-      // Even if export fails, clean up session
-      this.currentSession = null;
-      return null;
-    }
+    return finalFilename;
   }
 
   /**
@@ -178,7 +158,7 @@ class GlobalGuideLogCollector {
     const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
     const filename = `global-guide-quick-export-${timestamp}.log`;
 
-    // Export logs from last 5 minutes
+    // Export logs from the last 5 minutes
     const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
     exportLogsInTimeRange(fiveMinutesAgo, undefined, filename);
 

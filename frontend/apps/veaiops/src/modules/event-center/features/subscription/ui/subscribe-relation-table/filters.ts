@@ -15,7 +15,7 @@
 import type { FieldItem, HandleFilterProps } from '@veaiops/components';
 
 /**
- * 订阅关系过滤器配置
+ * Subscription relation filter configuration
  */
 export const getSubscribeRelationFilters = ({
   query,
@@ -41,13 +41,13 @@ export const getSubscribeRelationFilters = ({
   // {
   //   type: 'Select',
   //   componentProps: {
-  //     addBefore: '状态',
+  //     addBefore: 'Status',
   //     value: query?.isActive,
   //     mode: 'multiple',
   //     maxTagCount: 3,
   //     options: [
-  //       { label: '启用', value: true },
-  //       { label: '禁用', value: false },
+  //       { label: 'Enabled', value: true },
+  //       { label: 'Disabled', value: false },
   //     ],
   //     onChange: (v: boolean[]) => {
   //       handleChange('isActive', v);

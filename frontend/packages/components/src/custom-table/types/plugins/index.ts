@@ -13,68 +13,68 @@
 // limitations under the License.
 
 /**
- * 插件类型统一导出
+ * Plugin types unified export
  */
 
-// ==================== 行选择插件 ====================
+// ==================== Row selection plugin ====================
 export * from './row-selection';
 
-// ==================== 拖拽排序插件 ====================
+// ==================== Drag and drop sort plugin ====================
 export * from './drag-sort';
 
-// ==================== 列冻结插件 ====================
+// ==================== Column freeze plugin ====================
 export * from './column-freeze';
 
-// ==================== 表格展开插件 ====================
+// ==================== Table expand plugin ====================
 export * from './table-expand';
 
-// ==================== 虚拟滚动插件 ====================
+// ==================== Virtual scroll plugin ====================
 export * from './virtual-scroll';
 
-// ==================== 表格工具栏插件 ====================
+// ==================== Table toolbar plugin ====================
 export * from './table-toolbar';
 
-// ==================== 智能单元格插件 ====================
+// ==================== Smart cell plugin ====================
 export * from './smart-cell';
 
-// ==================== 表格列插件 ====================
+// ==================== Table columns plugin ====================
 export * from './table-columns';
 
-// ==================== 行内编辑插件类型 ====================
+// ==================== Inline edit plugin types ====================
 export * from './inline-edit';
 
-// ==================== 数据源插件 ====================
-// 注意：DataSourceConfig 和 DataSourceState 需要重命名以避免与其他模块冲突
+// ==================== Data source plugin ====================
+// Note: DataSourceConfig and DataSourceState need to be renamed to avoid conflicts with other modules
 export type {
   DataSourceMethods,
   DataSourceConfig as PluginDataSourceConfig,
   DataSourceState as PluginDataSourceState,
 } from './data-source';
 
-// ==================== 表格警告插件 ====================
+// ==================== Table alert plugin ====================
 export * from './table-alert';
 
-// ==================== 表格筛选插件 ====================
+// ==================== Table filter plugin ====================
 export * from './table-filter';
 
-// ==================== 表格分页插件 ====================
+// ==================== Table pagination plugin ====================
 export * from './table-pagination';
 
-// ==================== 表格排序插件 ====================
+// ==================== Table sorting plugin ====================
 export * from './table-sorting';
 
-// ==================== 列宽持久化插件 ====================
+// ==================== Column width persistence plugin ====================
 export * from './column-width-persistence';
 
-// ==================== 查询同步插件 ====================
+// ==================== Query sync plugin ====================
 export * from './query-sync';
 
-// ==================== 自定义筛选设置插件 ====================
+// ==================== Custom filter setting plugin ====================
 export type {
   CustomFilterSettingProps,
   CustomFilterSettingConfig,
   CustomFilterSettingState,
 } from '../../plugins/custom-filter-setting';
 
-// ==================== 核心插件系统类型 ====================
+// ==================== Core plugin system types ====================
 export * from './core';

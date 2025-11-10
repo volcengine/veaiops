@@ -16,46 +16,46 @@
 import type { MetricTemplateValue } from './metric-template-value';
 export type IntelligentThresholdTaskCreateRequest = {
   /**
-   * 任务名称
+   * Task name
    */
   task_name: string;
   /**
-   * 数据源ID
+   * Data source ID
    */
   datasource_id: string;
   /**
-   * 数据源类型
+   * Data source type
    */
   datasource_type: IntelligentThresholdTaskCreateRequest.datasource_type;
   /**
-   * 自动更新开关
+   * Auto update switch
    */
   auto_update?: boolean;
   /**
-   * 项目名称列表
+   * List of project names
    */
   projects?: Array<string>;
   /**
-   * 产品名称列表
+   * List of product names
    */
   products?: Array<string>;
   /**
-   * 客户名称列表
+   * List of customer names
    */
   customers?: Array<string>;
   /**
-   * 阈值计算方向
+   * Threshold calculation direction
    */
   direction: IntelligentThresholdTaskCreateRequest.direction;
   metric_template_value: MetricTemplateValue;
   /**
-   * N计数
+   * N count
    */
   n_count: number;
 };
 export namespace IntelligentThresholdTaskCreateRequest {
   /**
-   * 数据源类型
+   * Data source type
    */
   export enum datasource_type {
     ZABBIX = 'Zabbix',
@@ -63,7 +63,7 @@ export namespace IntelligentThresholdTaskCreateRequest {
     VOLCENGINE = 'Volcengine',
   }
   /**
-   * 阈值计算方向
+   * Threshold calculation direction
    */
   export enum direction {
     UP = 'up',

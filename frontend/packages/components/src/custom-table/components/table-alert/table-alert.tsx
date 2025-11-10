@@ -16,7 +16,7 @@ import type { TableAlertProps } from '@/custom-table/types';
 import { devLog } from '@/custom-table/utils/log-utils';
 import { Alert } from '@arco-design/web-react';
 /**
- * 表格提示信息组件
+ * Table alert information component
  */
 import type React from 'react';
 
@@ -28,7 +28,7 @@ const TableAlert: React.FC<TableAlertProps> = ({
   if (process.env.NODE_ENV === 'development') {
     devLog.log({
       component: 'TableAlert',
-      message: '组件渲染:',
+      message: 'Component rendered:',
       data: {
         show,
         type,

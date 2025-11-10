@@ -21,7 +21,7 @@ import type {
 } from '@/custom-table/types/legacy-interface';
 import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
 import { getParamsObject } from '@veaiops/utils';
-// 模拟 SortColumn 类型，避免依赖外部模块
+// Simulate SortColumn type to avoid dependency on external modules
 interface SortColumn {
   field: string;
   direction: 'asc' | 'desc';
@@ -51,7 +51,7 @@ const CustomTableUtil = {
     >;
     querySearchParamsFormat?: QuerySearchParamsFormat;
   }) => {
-    // 在浏览器环境中使用 URLSearchParams
+    // Use URLSearchParams in browser environment
     const preUrlSearchParams = new URLSearchParams(window.location.search);
     const queryInSearchParams = getParamsObject({
       searchParams: preUrlSearchParams,
@@ -82,7 +82,7 @@ const CustomTableUtil = {
             ...pick(queryInSearchParams, ACTIVE_TAB_KEYS),
           }
         : { ...queryInSearchParams, ...queryWithoutActiveTabs };
-      // 优化query映射
+      // Optimize query mapping
       const formatQuery = querySearchParamsFormat
         ? Object.entries(querySearchParamsFormat)?.reduce<
             Record<string, unknown>
@@ -121,7 +121,7 @@ const CustomTableUtil = {
     setSearchParams(paramsToSet as Record<string, string>);
   },
   /**
-   * 生成排序列参数接口
+   * Generate sort column parameters interface
    */
   generateSortColumn: ({
     sorter,
@@ -135,7 +135,7 @@ const CustomTableUtil = {
     desc: sorter.direction === 'descend',
   }),
   /**
-   * 生成排序请求
+   * Generate sort request
    * @param sorters
    * @param sorter
    * @param sortFieldMap
@@ -159,7 +159,7 @@ const CustomTableUtil = {
           ],
         };
       }
-      // 多列排序
+      // Multi-column sorting
       const sortColumns: SortColumn[] = sorters.map((sorter) => ({
         field:
           'field' in sorter && typeof sorter.field === 'string'
@@ -170,7 +170,7 @@ const CustomTableUtil = {
 
       return { sortColumns };
     } else if (sorter && !isEmpty(sorter)) {
-      // 单列排序
+      // Single-column sorting
       return {
         sortColumn: CustomTableUtil.generateSortColumn({
           sorter,
@@ -178,7 +178,7 @@ const CustomTableUtil = {
         }),
       };
     } else {
-      return {}; // 如果 sorters 为空且 sorter 也为空，则返回空对象
+      return {}; // If sorters is empty and sorter is also empty, return empty object
     }
   },
 };

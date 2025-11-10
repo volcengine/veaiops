@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Custom Fields 插件导出
+ * Custom Fields plugin exports
  */
 export type {
   CustomFieldsConfig,

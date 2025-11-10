@@ -18,11 +18,11 @@ import { CellRender } from "@veaiops/components";
 
 import type { IntelligentThresholdTaskVersion } from 'api-generate';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 /**
- * 状态标签渲染
+ * Status tag render
  */
 export const renderStatus = (status: string) => {
   const statusConfig = {
@@ -40,7 +40,7 @@ export const renderStatus = (status: string) => {
 };
 
 /**
- * 数据源类型标签渲染
+ * Datasource type tag render
  */
 export const renderDatasourceType = (type: string) => {
   const typeConfig = {
@@ -58,7 +58,7 @@ export const renderDatasourceType = (type: string) => {
 };
 
 /**
- * 自动更新状态渲染
+ * Auto-update status render
  */
 export const renderAutoUpdate = (autoUpdate: boolean) => {
   return autoUpdate ? (
@@ -69,7 +69,7 @@ export const renderAutoUpdate = (autoUpdate: boolean) => {
 };
 
 /**
- * 最新版本渲染
+ * Latest version render
  */
 export const renderLatestVersion = (
   version: IntelligentThresholdTaskVersion | undefined,

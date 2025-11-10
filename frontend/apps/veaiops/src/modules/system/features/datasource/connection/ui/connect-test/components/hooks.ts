@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接测试弹窗相关hooks
+ * Connection test modal related hooks
  */
 
 import { useConnectionTest } from '@/hooks/use-connection-test';
@@ -36,14 +36,14 @@ export const useConnectTestModal = ({
   const { testConnection, testing, testResult, clearResult } =
     useConnectionTest();
 
-  // 当弹窗打开时清除之前的结果（不再自动开始测试）
+  // Clear previous results when modal opens (no longer auto-start test)
   useEffect(() => {
     if (visible && !externalTestResult) {
       clearResult();
     }
   }, [visible, clearResult, externalTestResult]);
 
-  // 重新测试
+  // Retry test
   const handleRetry = (customParams?: any) => {
     if (connectId) {
       clearResult();
@@ -51,7 +51,7 @@ export const useConnectTestModal = ({
     }
   };
 
-  // 获取当前状态
+  // Get current status
   const getCurrentStatus = (): TestStatus => {
     const currentTesting = externalTesting || testing;
     const currentTestResult = externalTestResult || testResult;

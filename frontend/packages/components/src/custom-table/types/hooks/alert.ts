@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格警告 Hook 相关类型定义
+ * Table alert Hook related type definitions
  */
 import type React from 'react';
 
@@ -35,7 +35,7 @@ export interface UseAlertProps {
 }
 
 /**
- * 警告状态
+ * Alert state
  */
 export interface AlertState {
   visible: boolean;
@@ -48,7 +48,7 @@ export interface AlertState {
 }
 
 /**
- * 警告操作
+ * Alert actions
  */
 export interface AlertActions {
   show: (config: Partial<AlertState>) => void;
@@ -58,7 +58,7 @@ export interface AlertActions {
 }
 
 /**
- * useAlert Hook 返回值
+ * useAlert Hook return value
  */
 export interface UseAlertResult {
   alertState: AlertState;

@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 重新导出账号管理页面组件
+// Re-export account management page component
 export { AccountPage as default } from '@/modules/system';

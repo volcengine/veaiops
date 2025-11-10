@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 路由配置层统一导出
+ * Route configuration layer unified export
  *
- * 包含：
- * - lazy: 懒加载组件配置
- * - pages-path.config: 页面路径配置
+ * Includes:
+ * - lazy: Lazy-loaded component configuration
+ * - pages-path.config: Page path configuration
  */
 
 export * from './lazy';

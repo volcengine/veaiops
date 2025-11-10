@@ -25,7 +25,7 @@ import {
 } from './columns';
 
 /**
- * 获取基础表格列配置
+ * Get base table column configuration
  */
 export const getBaseColumns = (
   dataSourceType: DataSourceType,

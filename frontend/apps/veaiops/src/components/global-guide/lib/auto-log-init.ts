@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 自动日志收集初始化
- * 在应用启动时自动开始收集新建连接功能的调试日志
+ * Auto log collection initialization
+ * Automatically starts collecting debug logs for new connection feature when application starts
  */
 
 import { logger } from '@veaiops/utils';
@@ -22,8 +22,8 @@ import { logger } from '@veaiops/utils';
 import { initAutoLogCollection } from './debug-collector';
 
 /**
- * 初始化自动日志收集
- * 这个函数会在模块加载时自动执行
+ * Initialize auto log collection
+ * This function will automatically execute when module loads
  */
 const initializeAutoLogCollection = () => {
   if (typeof window === 'undefined') {
@@ -42,10 +42,10 @@ const initializeAutoLogCollection = () => {
       component: 'initialize',
     });
 
-    // 启动自动日志收集
+    // Start auto log collection
     const cleanup = initAutoLogCollection();
 
-    // 将清理函数存储到全局对象，方便手动停止
+    // Store cleanup function to global object for manual stopping
     if (typeof window !== 'undefined') {
       (window as any).__autoLogCleanup = cleanup;
     }
@@ -73,8 +73,8 @@ const initializeAutoLogCollection = () => {
   }
 };
 
-// 立即执行初始化
+// Execute initialization immediately
 initializeAutoLogCollection();
 
-// 导出初始化函数，供其他地方手动调用
+// Export initialization function for manual invocation elsewhere
 export { initializeAutoLogCollection };

@@ -28,7 +28,7 @@ interface BatchRerunModalProps {
 }
 
 /**
- * 批量自动更新确认弹窗
+ * Batch auto-update confirmation modal
  */
 export const BatchRerunModal: React.FC<BatchRerunModalProps> = ({
   visible,
@@ -53,7 +53,7 @@ export const BatchRerunModal: React.FC<BatchRerunModalProps> = ({
     try {
       setLoading(true);
 
-      // 批量开启/关闭自动更新
+      // Batch enable/disable auto-update
       const response =
         await apiClient.intelligentThresholdTask.postApisV1IntelligentThresholdTaskAutoRefreshSwitch(
           {
@@ -67,14 +67,14 @@ export const BatchRerunModal: React.FC<BatchRerunModalProps> = ({
       if (response.code === API_RESPONSE_CODE.SUCCESS) {
         Message.success(`批量${actionText}任务成功`);
       } else {
-        Message.error(`批量${actionText}任务失败`);
+        Message.error(`批量${actionText}任务失败`); // Reverted to Chinese (code string)
       }
 
-      // 关闭弹窗并刷新
+      // Close modal and refresh
       onClose();
       onSuccess();
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({

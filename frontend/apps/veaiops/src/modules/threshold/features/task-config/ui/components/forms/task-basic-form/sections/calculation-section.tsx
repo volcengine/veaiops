@@ -17,21 +17,21 @@ import { Input, Select } from '@veaiops/components';
 import type React from 'react';
 
 /**
- * 计算参数区块组件参数
+ * Calculation section component parameters
  */
 interface CalculationSectionProps {
   loading: boolean;
 }
 
 /**
- * 计算参数配置区块
+ * Calculation parameters configuration section
  */
 export const CalculationSection: React.FC<CalculationSectionProps> = ({
   loading,
 }) => {
   return (
     <>
-      {/* 自动更新阈值 */}
+      {/* Auto-update threshold */}
       <Select.Block
         isControl
         inline
@@ -51,7 +51,7 @@ export const CalculationSection: React.FC<CalculationSectionProps> = ({
         }}
       />
 
-      {/* 阈值方向 */}
+      {/* Threshold direction */}
       <Select.Block
         isControl
         inline
@@ -74,7 +74,7 @@ export const CalculationSection: React.FC<CalculationSectionProps> = ({
         }}
       />
 
-      {/* 滑动窗口 */}
+      {/* Sliding window */}
       <Input.Number
         isControl
         required
@@ -92,7 +92,7 @@ export const CalculationSection: React.FC<CalculationSectionProps> = ({
         }}
       />
 
-      {/* 敏感度 */}
+      {/* Sensitivity */}
       <Form.Item
         label="敏感度"
         field="sensitivity"

@@ -17,7 +17,7 @@ import type { Bot } from '@bot/lib';
 import { useState } from 'react';
 
 /**
- * Bot管理相关的状态管理
+ * Bot management related state management
  */
 export const useBotState = () => {
   const [form] = Form.useForm();
@@ -25,11 +25,11 @@ export const useBotState = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 属性管理相关状态
+  // Attribute management related state
   const [selectedBot, setSelectedBot] = useState<Bot | null>(null);
   const [attributesDrawerVisible, setAttributesDrawerVisible] = useState(false);
 
-  // 群管理状态
+  // Chat management state
   const [chatManagementDrawerVisible, setChatManagementDrawerVisible] =
     useState(false);
   const [selectedBotForChat, setSelectedBotForChat] = useState<Bot | null>(
@@ -56,6 +56,6 @@ export const useBotState = () => {
 };
 
 /**
- * UseBotStateReturn 类型导出
+ * UseBotStateReturn type export
  */
 export type UseBotStateReturn = ReturnType<typeof useBotState>;

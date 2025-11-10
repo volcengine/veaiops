@@ -13,39 +13,39 @@
 // limitations under the License.
 
 /**
- * Filter 相关类型定义
- * 用于统一所有筛选器配置场景
+ * Filter related type definitions
+ * Used to unify all filter configuration scenarios
  */
 
 import type { ModuleType } from './module';
 import type { FilterValue } from './query';
 
 /**
- * Filter 查询状态
+ * Filter query state
  */
 export interface FilterQuery {
-  /** 智能体类型 */
+  /** Agent type */
   agentType?: string | string[];
-  /** 事件级别 */
+  /** Event level */
   eventLevel?: string | string[];
-  /** 其他动态字段 */
+  /** Other dynamic fields */
   [key: string]: FilterValue;
 }
 
 /**
- * Filter 处理器属性
+ * Filter handler properties
  */
 export interface FilterHandlerProps {
-  /** 模块类型 */
+  /** Module type */
   moduleType?: ModuleType;
-  /** 是否显示模块类型列 */
+  /** Whether to show module type column */
   showModuleTypeColumn?: boolean;
-  /** 其他动态属性 */
+  /** Other dynamic properties */
   [key: string]: unknown;
 }
 
 /**
- * 处理单个字段变更的参数
+ * Parameters for handling single field change
  */
 export interface HandleChangeSingleParams {
   key: string;
@@ -53,22 +53,22 @@ export interface HandleChangeSingleParams {
 }
 
 /**
- * 处理对象批量更新的参数
+ * Parameters for handling object batch update
  */
 export interface HandleChangeObjectParams {
   updates: Record<string, FilterValue>;
 }
 
 /**
- * Filter 配置函数参数
+ * Filter configuration function parameters
  */
 export interface FilterConfigParams {
-  /** 当前查询状态 */
+  /** Current query state */
   query: FilterQuery;
-  /** 处理查询变更 */
+  /** Handle query change */
   handleChange: (
     params: HandleChangeSingleParams | HandleChangeObjectParams,
   ) => void;
-  /** 额外的处理器属性 */
+  /** Additional handler properties */
   handleFiltersProps?: FilterHandlerProps;
 }

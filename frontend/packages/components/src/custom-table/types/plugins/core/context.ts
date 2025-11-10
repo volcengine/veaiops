@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 插件上下文和Props类型定义
+ * Plugin context and Props type definitions
  */
 
 import type { PaginationProps } from '@arco-design/web-react/es/Pagination/pagination';
@@ -24,7 +24,7 @@ import type { ArcoScrollConfig } from './base';
 import type { CustomTableHelpers, CustomTableState } from './state';
 
 /**
- * 插件props类型
+ * Plugin props type
  */
 export interface CustomTablePluginProps<
   RecordType extends BaseRecord = BaseRecord,
@@ -33,7 +33,7 @@ export interface CustomTablePluginProps<
   finalQuery: QueryType;
   baseColumns: ColumnProps<RecordType>[];
   configs: Record<string, unknown>;
-  // 基础表格属性
+  // Base table properties
   rowKey?: string | ((record: RecordType) => string);
   dataSource?: RecordType[];
   loading?: boolean;
@@ -43,29 +43,29 @@ export interface CustomTablePluginProps<
   border?: boolean;
   children?: ReactNode;
 
-  // 标题相关配置
+  // Title-related configuration
   title?: ReactNode;
   titleClassName?: string;
   titleStyle?: React.CSSProperties;
   actions?: ReactNode;
 
-  // 表格核心配置
+  // Table core configuration
   tableProps?: Partial<Omit<any, 'columns' | 'data'>>;
   tableClassName?: string;
 
-  // 加载状态相关配置
+  // Loading state related configuration
   useCustomLoading?: boolean;
   loadingTip?: string;
   customLoading?: boolean;
 
-  // 过滤器和Alert相关配置
+  // Filter and Alert related configuration
   showReset?: boolean;
   isAlertShow?: boolean;
   alertType?: 'info' | 'success' | 'warning' | 'error';
   alertContent?: ReactNode;
   customAlertNode?: ReactNode;
 
-  // 自定义渲染配置
+  // Custom render configuration
   customRender?: {
     table?: (table: ReactNode) => ReactNode;
     footer?: (props: {
@@ -78,10 +78,10 @@ export interface CustomTablePluginProps<
 }
 
 /**
- * 插件上下文类型（支持 Props 泛型，从源头提升类型精度）
+ * Plugin context type (supports Props generic, improves type precision from source)
  *
- * 第三个泛型 PProps 默认采用 CustomTablePluginProps<RecordType, QueryType>，
- * 这样现有插件无需改动；需要自定义扩展 Props 的插件可在使用处传入专用类型。
+ * The third generic PProps defaults to CustomTablePluginProps<RecordType, QueryType>,
+ * so existing plugins don't need to change; plugins that need custom extended Props can pass a dedicated type at usage.
  */
 export interface PluginContext<
   RecordType extends BaseRecord = BaseRecord,

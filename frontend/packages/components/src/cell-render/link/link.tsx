@@ -42,7 +42,7 @@ const LinkRender = ({
   link,
   text,
   requireField,
-  noLinkText = '暂无链接',
+  noLinkText = 'No link',
   isTextRequire = false,
   linkProps = {},
   ellipsisProps = {},
@@ -58,7 +58,7 @@ const LinkRender = ({
       return <EllipsisRender text={text} />;
     }
   }
-  const linkText = isString(text) ? text?.trim() : text || '链接';
+  const linkText = isString(text) ? text?.trim() : text || 'Link';
 
   const ellipsisText = (
     <EllipsisRender

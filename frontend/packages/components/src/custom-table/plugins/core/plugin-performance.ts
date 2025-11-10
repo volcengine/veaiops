@@ -14,23 +14,22 @@
 
 import type { PluginPerformanceMetrics } from '@/custom-table/types';
 /**
- * 插件性能监控模块
- * 负责插件性能指标的收集和分析
+ * Plugin performance monitoring module
+ * Responsible for collecting and analyzing plugin performance metrics
  *
-
  * @date 2025-12-19
  */
 import { PluginStatusEnum } from '@/custom-table/types/core/enums';
 import type { PluginRegistry } from './plugin-registry';
 
 /**
- * @name 插件性能监控器
+ * @name Plugin performance monitor
  */
 export class PluginPerformanceMonitor {
   constructor(private registry: PluginRegistry) {}
 
   /**
-   * @name 获取性能指标
+   * @name Get performance metrics
    */
   getPerformanceMetrics(): PluginPerformanceMetrics {
     const plugins = this.registry.getPlugins();
@@ -85,7 +84,7 @@ export class PluginPerformanceMonitor {
       }
     });
 
-    // 计算平均值
+    // Calculate averages
     if (plugins.length > 0) {
       metrics.averageInstallTime = metrics.totalInstallTime / plugins.length;
       metrics.averageSetupTime = metrics.totalSetupTime / plugins.length;
@@ -96,26 +95,26 @@ export class PluginPerformanceMonitor {
   }
 
   /**
-   * @name 获取性能报告
+   * @name Get performance report
    */
   getPerformanceReport(): string {
     const metrics = this.getPerformanceMetrics();
 
     const report = [
-      '=== 插件性能报告 ===',
-      `总插件数: ${metrics.totalPlugins}`,
-      `已启用: ${metrics.enabledPlugins}`,
-      `已禁用: ${metrics.disabledPlugins}`,
+      '=== Plugin Performance Report ===',
+      `Total Plugins: ${metrics.totalPlugins}`,
+      `Enabled: ${metrics.enabledPlugins}`,
+      `Disabled: ${metrics.disabledPlugins}`,
       '',
-      '=== 性能指标 ===',
-      `总安装时间: ${metrics.totalInstallTime.toFixed(2)}ms`,
-      `总设置时间: ${metrics.totalSetupTime.toFixed(2)}ms`,
-      `总渲染时间: ${metrics.totalRenderTime.toFixed(2)}ms`,
-      `平均安装时间: ${metrics.averageInstallTime.toFixed(2)}ms`,
-      `平均设置时间: ${metrics.averageSetupTime.toFixed(2)}ms`,
-      `平均渲染时间: ${metrics.averageRenderTime.toFixed(2)}ms`,
+      '=== Performance Metrics ===',
+      `Total Install Time: ${metrics.totalInstallTime.toFixed(2)}ms`,
+      `Total Setup Time: ${metrics.totalSetupTime.toFixed(2)}ms`,
+      `Total Render Time: ${metrics.totalRenderTime.toFixed(2)}ms`,
+      `Average Install Time: ${metrics.averageInstallTime.toFixed(2)}ms`,
+      `Average Setup Time: ${metrics.averageSetupTime.toFixed(2)}ms`,
+      `Average Render Time: ${metrics.averageRenderTime.toFixed(2)}ms`,
       '',
-      '=== 插件详情 ===',
+      '=== Plugin Details ===',
     ];
 
     Object.entries(metrics.pluginDetails).forEach(([name, details]) => {
@@ -128,14 +127,14 @@ export class PluginPerformanceMonitor {
         status: string;
       };
       report.push(`${name}:`);
-      report.push(`  状态: ${pluginDetails.status}`);
-      report.push(`  安装时间: ${pluginDetails.installTime.toFixed(2)}ms`);
-      report.push(`  设置时间: ${pluginDetails.setupTime.toFixed(2)}ms`);
-      report.push(`  渲染时间: ${pluginDetails.renderTime.toFixed(2)}ms`);
+      report.push(`  Status: ${pluginDetails.status}`);
+      report.push(`  Install Time: ${pluginDetails.installTime.toFixed(2)}ms`);
+      report.push(`  Setup Time: ${pluginDetails.setupTime.toFixed(2)}ms`);
+      report.push(`  Render Time: ${pluginDetails.renderTime.toFixed(2)}ms`);
       if (pluginDetails.errorCount > 0) {
-        report.push(`  错误次数: ${pluginDetails.errorCount}`);
+        report.push(`  Error Count: ${pluginDetails.errorCount}`);
         if (pluginDetails.lastError) {
-          report.push(`  最后错误: ${pluginDetails.lastError.message}`);
+          report.push(`  Last Error: ${pluginDetails.lastError.message}`);
         }
       }
       report.push('');
@@ -145,13 +144,13 @@ export class PluginPerformanceMonitor {
   }
 
   /**
-   * @name 检查性能问题
+   * @name Check performance issues
    */
   checkPerformanceIssues(): string[] {
     const metrics = this.getPerformanceMetrics();
     const issues: string[] = [];
 
-    // 检查安装时间过长的插件
+    // Check plugins with excessive installation time
     Object.entries(metrics.pluginDetails).forEach(([name, details]) => {
       const pluginDetails = details as {
         installTime: number;
@@ -162,7 +161,7 @@ export class PluginPerformanceMonitor {
       };
       if (pluginDetails.installTime > 100) {
         issues.push(
-          `插件 "${name}" 安装时间过长 (${pluginDetails.installTime.toFixed(
+          `Plugin "${name}" installation time too long (${pluginDetails.installTime.toFixed(
             2,
           )}ms)`,
         );
@@ -170,7 +169,7 @@ export class PluginPerformanceMonitor {
 
       if (pluginDetails.setupTime > 50) {
         issues.push(
-          `插件 "${name}" 设置时间过长 (${pluginDetails.setupTime.toFixed(
+          `Plugin "${name}" setup time too long (${pluginDetails.setupTime.toFixed(
             2,
           )}ms)`,
         );
@@ -179,7 +178,7 @@ export class PluginPerformanceMonitor {
       if (pluginDetails.renderTime > 16) {
         // 16ms = 60fps
         issues.push(
-          `插件 "${name}" 渲染时间过长 (${pluginDetails.renderTime.toFixed(
+          `Plugin "${name}" render time too long (${pluginDetails.renderTime.toFixed(
             2,
           )}ms)`,
         );
@@ -187,8 +186,8 @@ export class PluginPerformanceMonitor {
 
       if (pluginDetails.errorCount > 0) {
         issues.push(
-          `插件 "${name}" 存在错误: ${
-            pluginDetails.lastError?.message || '未知错误'
+          `Plugin "${name}" has errors: ${
+            pluginDetails.lastError?.message || 'Unknown error'
           }`,
         );
       }
@@ -198,7 +197,7 @@ export class PluginPerformanceMonitor {
   }
 
   /**
-   * @name 重置性能数据
+   * @name Reset performance data
    */
   resetPerformanceData(): void {
     const plugins = this.registry.getPlugins();

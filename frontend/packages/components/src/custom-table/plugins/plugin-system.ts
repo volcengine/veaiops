@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * CustomTable 插件系统实现 - 模块化重构版本
- * 基于模块化架构提供高性能、可扩展的插件管理系统
+ * CustomTable Plugin System Implementation - Modular Refactored Version
  *
-
+ * Provides a high-performance, extensible plugin management system based on modular architecture
+ *
  * @date 2025-12-19
  */
 import type {
@@ -35,10 +35,10 @@ import {
 } from './core';
 
 /**
- * @name 创建插件管理器
+ * Create plugin manager
  */
 export function createPluginManager(): PluginManager {
-  // 创建核心模块
+  // Create core modules
   const registry = new PluginRegistry();
   const lifecycleManager = new PluginLifecycleManager(registry);
   const executor = new PluginExecutor(registry);
@@ -46,7 +46,7 @@ export function createPluginManager(): PluginManager {
   const eventSystem = new PluginEventSystem();
 
   return {
-    // 插件注册管理
+    // Plugin registration management
     register: async <Config = Record<string, unknown>>(
       plugin: Plugin<Config>,
     ): Promise<void> => {
@@ -64,14 +64,14 @@ export function createPluginManager(): PluginManager {
       registry.unregister(pluginName);
     },
 
-    // 插件查询
+    // Plugin query
     getPlugin: (pluginName: string) => registry.getPlugin(pluginName),
     getPlugins: () => registry.getPlugins(),
     getAllPlugins: () => registry.getPlugins(),
     getEnabledPlugins: () => registry.getEnabledPlugins(),
     isEnabled: (pluginName: string) => registry.isEnabled(pluginName),
 
-    // 插件生命周期管理
+    // Plugin lifecycle management
     enable: async (pluginName: string): Promise<void> => {
       const result = await lifecycleManager.enablePlugin(pluginName);
       if (!result.success && result.error) {
@@ -97,7 +97,7 @@ export function createPluginManager(): PluginManager {
       }
     },
 
-    // 插件执行
+    // Plugin execution
     use: <T>({
       pluginName,
       method,
@@ -111,23 +111,23 @@ export function createPluginManager(): PluginManager {
     }: { pluginName: string; renderer: string; args?: unknown[] }) =>
       executor.render({ pluginName, renderer, args }),
 
-    // 性能监控
+    // Performance monitoring
     getMetrics: () => performanceMonitor.getPerformanceMetrics(),
 
-    // 事件系统
+    // Event system
     emit: (event: string, ...args: unknown[]) =>
       eventSystem.emit(event, ...args),
     on: (event: string, listener: (...args: unknown[]) => void) =>
       eventSystem.on({ event, listener }),
 
-    // 上下文管理
+    // Context management
     setPluginContext: ({
       pluginName,
       context,
     }: { pluginName: string; context: PluginContext }) =>
       registry.setPluginContext({ pluginName, context }),
 
-    // 添加缺失的属性和方法
+    // Add missing properties and methods
     plugins: new Map(),
     metrics: performanceMonitor.getPerformanceMetrics(),
     isPluginEnabled: (pluginName: string) => registry.isEnabled(pluginName),
@@ -135,12 +135,12 @@ export function createPluginManager(): PluginManager {
       Boolean(registry.getPlugin(pluginName)),
     getActivePlugins: () => registry.getEnabledPlugins(),
     setup: async (_context: PluginContext) => {
-      // 初始化设置
+      // Initialization setup
     },
   };
 }
 
-// 重新导出工具函数，保持向后兼容
+// Re-export utility functions for backward compatibility
 export {
   cleanupPlugins,
   enhanceProps,

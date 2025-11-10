@@ -21,7 +21,7 @@ interface VolcSettingsProps {
 }
 
 /**
- * 火山引擎设置配置区块组件
+ * Volcengine settings configuration block component
  */
 export const VolcSettings: React.FC<VolcSettingsProps> = ({
   showAdvancedConfig,

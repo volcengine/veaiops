@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 订阅关系表单验证规则
+ * Subscription relation form validation rules
  */
 
 /**
- * 订阅名称验证规则
+ * Subscription name validation rules
  */
 export const subscribeNameRules = [
   { required: true, message: '请输入订阅名称' },
@@ -33,7 +33,7 @@ export const subscribeNameRules = [
 ];
 
 /**
- * Webhook URL 验证规则
+ * Webhook URL validation rules
  */
 export const webhookUrlRules = [
   {
@@ -52,7 +52,7 @@ export const webhookUrlRules = [
 ];
 
 /**
- * Webhook 请求头 JSON 验证规则
+ * Webhook request headers JSON validation rules
  */
 export const webhookHeadersRules = [
   {
@@ -65,7 +65,7 @@ export const webhookHeadersRules = [
         JSON.parse(value);
         callback();
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage =

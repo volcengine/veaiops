@@ -19,8 +19,8 @@ import { InputTagComponent } from './tag';
 import { TextArea } from './text-area';
 
 /**
- * Input 组件集合
- * 提供各种输入组件的统一访问接口
+ * Input component collection
+ * Provides unified access interface for various input components
  */
 export const Input = {
   Block: InputBlock,

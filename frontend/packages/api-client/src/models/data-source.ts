@@ -19,57 +19,57 @@ import type { VolcengineDataSourceConfig } from './volcengine-data-source-config
 import type { ZabbixDataSourceConfig } from './zabbix-data-source-config';
 export type DataSource = {
   /**
-   * 数据源ID
+   * Data source ID
    */
   _id?: string;
   /**
-   * 数据源名称
+   * Data source name
    */
   name: string;
   /**
-   * 数据源类型
+   * Data source type
    */
   type: DataSource.type;
   /**
-   * 数据源连接配置
+   * Data source connection configuration
    */
   connect: Connect;
   /**
-   * 数据源配置
+   * Data source configuration
    */
   config?: Record<string, any>;
   /**
-   * Zabbix数据源配置
+   * Zabbix data source configuration
    */
   zabbix_config?: ZabbixDataSourceConfig;
   /**
-   * 阿里云数据源配置
+   * Alibaba Cloud data source configuration
    */
   aliyun_config?: AliyunDataSourceConfig;
   /**
-   * 火山引擎数据源配置
+   * Volcano Engine data source configuration
    */
   volcengine_config?: VolcengineDataSourceConfig;
   /**
-   * 数据源描述
+   * Data source description
    */
   description?: string;
   /**
-   * 是否激活
+   * Whether active
    */
   is_active?: boolean;
   /**
-   * 创建时间
+   * Creation time
    */
   created_at?: string;
   /**
-   * 更新时间
+   * Update time
    */
   updated_at?: string;
 };
 export namespace DataSource {
   /**
-   * 数据源类型
+   * Data source type
    */
   export enum type {
     ZABBIX = 'zabbix',

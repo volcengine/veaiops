@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 模板选择步骤组件导出
+ * Template selection step component export
  */
 
 export { TemplateSelectionStep } from './components/template-selection-step';

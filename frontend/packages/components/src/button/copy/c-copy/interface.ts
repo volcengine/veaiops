@@ -15,7 +15,7 @@
 import type { PopoverProps } from '@arco-design/web-react';
 import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
-// 复制的 copy-to-clipboard 的定义，它自身没有做导出
+// Definition of copy-to-clipboard, it does not export itself
 interface CopyOptions {
   debug?: boolean;
   message?: string;
@@ -27,42 +27,42 @@ interface CopyOptions {
  * @title CCopyProps
  */
 export interface CCopyProps {
-  /** 子元素 */
+  /** Child elements */
   children?: ReactNode;
-  /** 被复制的文案内容 */
+  /** Text content to be copied */
   text?: string;
-  /** 复制完成的回调 */
+  /** Callback when copy is complete */
   onCopy?: (text: string, result: boolean) => void;
-  /** 自定义复制触发Icon，会默认带上统一 c-m-icon 样式 */
+  /** Custom copy trigger icon, will default to unified c-m-icon style */
   triggerIcon?: ReactElement;
-  /** 自定义复制触发元素 */
+  /** Custom copy trigger element */
   triggerEle?: ReactNode;
   /**
-   * @zh 触发节点(默认是IconCopy)的可见性
+   * @zh Visibility of trigger node (default is IconCopy)
    * @default default
    */
   showCopy?: 'default' | 'hover';
   /**
-   * @zh 复制成功后的提示内容
-   * @default 复制成功
+   * @zh Message content after copy success
+   * @default Copy success
    */
   successMessage?: ReactNode;
   /**
-   * @zh 复制失败后的提示内容
-   * @default 复制失败
+   * @zh Message content after copy failure
+   * @default Copy failure
    */
   failMessage?: ReactNode;
-  /** 复制按钮 hover 时的提示内容 */
+  /** Tooltip content when hovering over copy button */
   tooltip?: ReactNode;
-  /** 复制按钮禁用 */
+  /** Copy button disabled */
   disabled?: boolean;
-  /** 透传给 arco popover 组件的 props */
+  /** Props passed through to arco popover component */
   arcoPopoverProps?: PopoverProps;
-  /** 透传给 copy-to-clipboard 的 options */
+  /** Options passed through to copy-to-clipboard */
   options?: CopyOptions;
-  /** 透传给组件根节点的内联样式 */
+  /** Inline styles passed through to component root node */
   style?: CSSProperties;
-  /** 挂到组件根节点的样式名 */
+  /** Style class name attached to component root node */
   className?: string | string[];
 }
 
@@ -74,6 +74,6 @@ export interface CCopyHooksProps
     CCopyProps,
     'text' | 'triggerIcon' | 'triggerEle' | 'triggerVisible'
   > {
-  /** 被复制的文案内容 */
+  /** Text content to be copied */
   text: string;
 }

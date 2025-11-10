@@ -13,22 +13,22 @@
 // limitations under the License.
 
 /**
- * 表格数据获取 Hook 相关类型定义
+ * Table data fetching Hook related type definitions
  */
 import type { BaseQuery, BaseRecord } from '../core';
 
 /**
- * 表格数据获取配置
+ * Table data fetching configuration
  */
 export interface TableFetchOptions<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 请求服务 */
+  /** Request service */
   service?: (...args: unknown[]) => Promise<unknown>;
-  /** 查询参数 */
+  /** Query parameters */
   params?: QueryType;
-  /** 请求配置 */
+  /** Request configuration */
   options?: {
     manual?: boolean;
     ready?: boolean;
@@ -48,49 +48,49 @@ export interface TableFetchOptions<
     onError?: (error: Error, params: QueryType) => void;
     onFinally?: (params: QueryType, data?: RecordType[], error?: Error) => void;
   };
-  /** 是否启用分页 */
+  /** Whether to enable pagination */
   pagination?: boolean;
-  /** 数据格式化 */
+  /** Data formatting */
   formatResult?: <TResponse = unknown>(
     response: TResponse,
   ) => { data: RecordType[]; total: number };
 }
 
 /**
- * 表格数据获取操作
+ * Table data fetching actions
  */
 export interface TableFetchActions {
-  // 请求控制
+  // Request control
   run: (...args: unknown[]) => Promise<unknown>;
   runAsync: (...args: unknown[]) => Promise<unknown>;
   refresh: () => void;
   cancel: () => void;
   mutate: <TData = unknown>(data: TData) => void;
 
-  // 分页控制
+  // Pagination control
   reload: (resetCurrent?: boolean) => void;
   loadMore: () => void;
 
-  // 缓存控制
+  // Cache control
   clearCache: () => void;
   refreshCache: () => void;
 
-  // 轮询控制
+  // Polling control
   startPolling: () => void;
   stopPolling: () => void;
 }
 
 /**
- * 数据源配置
+ * Data source configuration
  */
 export interface DataSourceConfig {
-  /** 服务实例 */
+  /** Service instance */
   serviceInstance?: Record<string, unknown>;
-  /** 服务方法名 */
+  /** Service method name */
   serviceMethod?: string;
-  /** 请求函数 */
+  /** Request function */
   request?: (...args: unknown[]) => Promise<unknown>;
-  /** 响应数据格式化 */
+  /** Response data formatting */
   formatPayload?: <TData = unknown, TResult = unknown>(data: TData) => TResult;
 }
 
@@ -101,30 +101,30 @@ export interface UseTableFetchProps<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > extends TableFetchOptions<RecordType, QueryType> {
-  /** 静态数据源 */
+  /** Static data source */
   dataSource?: RecordType[] | DataSourceConfig;
-  /** 手动触发 */
+  /** Manual trigger */
   manual?: boolean;
-  /** 是否准备就绪 */
+  /** Whether ready */
   ready?: boolean;
-  /** 轮询间隔 */
+  /** Polling interval */
   pollingInterval?: number;
-  /** 防抖时间 */
+  /** Debounce time */
   debounceTime?: number;
-  /** 成功回调 */
+  /** Success callback */
   onSuccess?: (data: RecordType[], params: QueryType) => void;
-  /** 错误回调 */
+  /** Error callback */
   onError?: (error: Error, params: QueryType) => void;
-  /** 完成回调 */
+  /** Finally callback */
   onFinally?: (params: QueryType, data?: RecordType[], error?: Error) => void;
-  /** 依赖项 */
+  /** Dependencies */
   effects?: unknown[];
-  /** 表格状态 */
+  /** Table state */
   tableState?: Record<string, unknown>;
 }
 
 /**
- * useTableFetch Hook 返回值
+ * useTableFetch Hook return value
  */
 export interface UseTableFetchReturn<TData = unknown, TParams = unknown> {
   actions: TableFetchActions;

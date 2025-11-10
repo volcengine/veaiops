@@ -16,22 +16,22 @@ import type { Project } from '@project/types';
 import { formatDateTime } from './formatters';
 
 /**
- * 生成项目ID
+ * Generate project ID
  */
 export const generateProjectId = (): string => {
   return `project_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 };
 
 /**
- * 检查项目是否可以删除
+ * Check if project can be deleted
  */
 export const canDeleteProject = (project: Project): boolean => {
-  // 非活跃状态的项目可以删除
+  // Projects in inactive state can be deleted
   return project.is_active === false;
 };
 
 /**
- * 获取项目删除限制原因
+ * Get project deletion restriction reason
  */
 export const getDeleteRestrictionReason = (
   project: Project,
@@ -43,7 +43,7 @@ export const getDeleteRestrictionReason = (
 };
 
 /**
- * 过滤项目列表
+ * Filter project list
  */
 export const filterProjects = (
   projects: Project[],
@@ -53,7 +53,7 @@ export const filterProjects = (
   },
 ): Project[] => {
   return projects.filter((project) => {
-    // 名称过滤
+    // Name filter
     if (
       filters.name &&
       !project.name.toLowerCase().includes(filters.name.toLowerCase())
@@ -61,7 +61,7 @@ export const filterProjects = (
       return false;
     }
 
-    // 状态过滤（基于is_active）
+    // Status filter (based on is_active)
     if (
       filters.is_active !== undefined &&
       project.is_active !== filters.is_active
@@ -74,7 +74,7 @@ export const filterProjects = (
 };
 
 /**
- * 排序项目列表
+ * Sort project list
  */
 export const sortProjects = (
   projects: Project[],
@@ -108,7 +108,7 @@ export const sortProjects = (
 };
 
 /**
- * 获取项目统计信息
+ * Get project statistics
  */
 export const getProjectStats = (projects: Project[]) => {
   const stats = {
@@ -118,7 +118,7 @@ export const getProjectStats = (projects: Project[]) => {
   };
 
   projects.forEach((project) => {
-    // 状态统计（基于is_active）
+    // Status statistics (based on is_active)
     if (project.is_active) {
       stats.active++;
     } else {
@@ -130,7 +130,7 @@ export const getProjectStats = (projects: Project[]) => {
 };
 
 /**
- * 导出项目数据为CSV
+ * Export project data as CSV
  */
 export const exportProjectsToCSV = (projects: Project[]): void => {
   const headers = [

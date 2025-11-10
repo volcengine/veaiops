@@ -15,7 +15,7 @@
 import type { Project, ProjectFormData } from '@project/types';
 
 /**
- * 转换表单数据为项目数据
+ * Transform form data to project data
  */
 export const transformFormDataToProject = (
   formData: ProjectFormData,
@@ -34,7 +34,7 @@ export const transformFormDataToProject = (
 };
 
 /**
- * 转换项目数据为表单数据
+ * Transform project data to form data
  */
 export const transformProjectToFormData = (
   project: Project,

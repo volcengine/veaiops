@@ -14,24 +14,13 @@
 
 import type { FormInstance } from '@arco-design/web-react';
 import { Message } from '@arco-design/web-react';
-import {
-  convertLocalTimeRangeToUtc,
-  convertUtcTimeRangeToLocal,
-  ensureArray,
-  logger,
-} from '@veaiops/utils';
+import { ensureArray, logger } from '@veaiops/utils';
 import type {
   SubscribeRelationCreate,
   SubscribeRelationUpdate,
   SubscribeRelationWithAttributes,
 } from 'api-generate';
 import { useCallback, useState } from 'react';
-
-/**
- * Year offset for default time range end time
- * Used to set the default end time for subscription relations (current time + 100 years)
- */
-const DEFAULT_END_TIME_YEARS_OFFSET = 100;
 
 /**
  * Form logic Hook parameters
@@ -67,23 +56,7 @@ export const useFormLogic = ({
       const values = await form.validate();
       setLoading(true);
 
-      // Convert time range from local timezone to UTC ISO 8601 format
-      let start_time: string | undefined;
-      let end_time: string | undefined;
-      if (
-        values.timeRange &&
-        Array.isArray(values.timeRange) &&
-        values.timeRange.length === 2
-      ) {
-        const utcRange = convertLocalTimeRangeToUtc(values.timeRange);
-        if (utcRange) {
-          [start_time, end_time] = utcRange;
-        } else {
-          Message.error('时间范围转换失败，请重新选择');
-          setLoading(false);
-          return;
-        }
-      }
+      const [start_time, end_time] = values.timeRange || [];
       let webhookHeaders = {};
       if (values.enable_webhook && values.webhook_headers) {
         try {
@@ -185,33 +158,12 @@ export const useFormInitializer = ({
         interest_projects: editData.interest_projects || [],
         interest_customers: editData.interest_customers || [],
         event_level: editData.event_level,
-        // Convert UTC time range to local timezone for display
-        timeRange:
-          editData.start_time && editData.end_time
-            ? (() => {
-                const localRange = convertUtcTimeRangeToLocal([
-                  editData.start_time,
-                  editData.end_time,
-                ]);
-                return localRange
-                  ? [localRange[0].toDate(), localRange[1].toDate()]
-                  : (() => {
-                      const startDate = new Date();
-                      const endDate = new Date();
-                      endDate.setFullYear(
-                        startDate.getFullYear() + DEFAULT_END_TIME_YEARS_OFFSET,
-                      );
-                      return [startDate, endDate];
-                    })();
-              })()
-            : (() => {
-                const startDate = new Date();
-                const endDate = new Date();
-                endDate.setFullYear(
-                  startDate.getFullYear() + DEFAULT_END_TIME_YEARS_OFFSET,
-                );
-                return [startDate, endDate];
-              })(),
+        timeRange: [
+          editData.start_time ? new Date(editData.start_time) : new Date(),
+          editData.end_time
+            ? new Date(editData.end_time)
+            : new Date(new Date().setFullYear(new Date().getFullYear() + 100)),
+        ],
         inform_strategy_ids: normalizedStrategyIds,
         enable_webhook: editData.enable_webhook,
         webhook_endpoint: editData.webhook_endpoint,

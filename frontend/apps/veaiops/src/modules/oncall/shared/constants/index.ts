@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * Oncall 模块常量定义
+ * Oncall module constant definitions
  */
 
 /**
- * 告警等级选项
+ * Alert level options
  */
 export const ALERT_LEVEL_OPTIONS = [
   { label: 'P0', value: 'P0', color: 'red' },
@@ -26,7 +26,7 @@ export const ALERT_LEVEL_OPTIONS = [
 ] as const;
 
 /**
- * 行为类别选项
+ * Action category options
  */
 export const ACTION_CATEGORY_OPTIONS = [
   {
@@ -44,7 +44,7 @@ export const ACTION_CATEGORY_OPTIONS = [
 ] as const;
 
 /**
- * 检查类别选项
+ * Inspect category options
  */
 export const INSPECT_CATEGORY_OPTIONS = [
   {
@@ -62,7 +62,7 @@ export const INSPECT_CATEGORY_OPTIONS = [
 ] as const;
 
 /**
- * 值班计划类型选项
+ * Schedule type options
  */
 export const SCHEDULE_TYPE_OPTIONS = [
   { label: '每日', value: 'daily' },
@@ -72,7 +72,7 @@ export const SCHEDULE_TYPE_OPTIONS = [
 ] as const;
 
 /**
- * 行为类别标签映射
+ * Action category label mapping
  */
 export const ACTION_CATEGORY_LABELS = ACTION_CATEGORY_OPTIONS.reduce(
   (acc, option) => {
@@ -83,7 +83,7 @@ export const ACTION_CATEGORY_LABELS = ACTION_CATEGORY_OPTIONS.reduce(
 );
 
 /**
- * 检查类别标签映射
+ * Inspect category label mapping
  */
 export const INSPECT_CATEGORY_LABELS = INSPECT_CATEGORY_OPTIONS.reduce(
   (acc, option) => {
@@ -94,11 +94,11 @@ export const INSPECT_CATEGORY_LABELS = INSPECT_CATEGORY_OPTIONS.reduce(
 );
 
 /**
- * 行为类别选项（驼峰命名）
+ * Action category options (camelCase naming)
  */
 export const actionCategoryOptions = ACTION_CATEGORY_OPTIONS;
 
 /**
- * 检查类别选项（驼峰命名）
+ * Inspect category options (camelCase naming)
  */
 export const inspectCategoryOptions = INSPECT_CATEGORY_OPTIONS;

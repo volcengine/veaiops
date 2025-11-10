@@ -18,5 +18,5 @@ export { DetailView } from './detail-view';
 export type { DetailViewProps } from './detail-view';
 export { EditForm } from './edit-form';
 export type { EditFormProps } from './edit-form';
-// 列渲染组件导出
+// Column render components export
 export * from './columns';

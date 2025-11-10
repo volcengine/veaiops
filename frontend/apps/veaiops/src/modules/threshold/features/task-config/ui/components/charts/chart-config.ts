@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导出所有图表相关功能
+// Export all chart-related functionality
 export { getChartConfig } from './config';
 export { COLOR_MAP, SERIES_ALIAS_MAP } from './constants';
-// formatDateTime 已统一到 @veaiops/utils 包中
+// formatDateTime has been unified to @veaiops/utils package
 export type { AxisDensityOptions } from './types';

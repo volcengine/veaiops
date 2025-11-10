@@ -29,7 +29,7 @@ interface UseFormInitializerParams {
 }
 
 /**
- * 表单初始化 Hook
+ * Form initialization Hook
  */
 export const useFormInitializer = ({
   form,
@@ -37,18 +37,18 @@ export const useFormInitializer = ({
   datasourceType,
   setDatasourceType,
 }: UseFormInitializerParams) => {
-  // 从 Zustand store 获取当前编辑的任务和筛选器数据源类型
+  // Get currently editing task and filter datasource type from Zustand store
   const { taskDrawer, filterDatasourceType } = useTaskConfigStore();
   const editingTask:
     | IntelligentThresholdTask
     | IntelligentThresholdTaskDetail
     | undefined = taskDrawer.record;
 
-  // 当打开抽屉且有编辑任务时，初始化表单数据
+  // Initialize form data when drawer is opened and there is an editing task
   useEffect(() => {
     if (taskDrawer.visible && operationType === 'copy' && editingTask) {
-      // 复制任务时，填充表单数据
-      // ✅ 现在使用详情数据（IntelligentThresholdTaskDetail），包含 latest_version
+      // When copying task, populate form data
+      // ✅ Now using detail data (IntelligentThresholdTaskDetail), includes latest_version
       const taskDetail = editingTask as IntelligentThresholdTaskDetail;
       const newDatasourceType = taskDetail.datasource_type || 'Volcengine';
 
@@ -74,15 +74,15 @@ export const useFormInitializer = ({
           : '新任务_副本',
         datasourceType: newDatasourceType,
         datasourceId: taskDetail.datasource_id,
-        // ✅ 关键：设置 template_id（指标模版）
+        // ✅ Key: Set template_id (metric template)
         template: taskDetail.template_id,
         projects: taskDetail.projects || [],
         products: taskDetail.products || [],
         customers: taskDetail.customers || [],
-        // ✅ 使用 latest_version 的数据
+        // ✅ Use latest_version data
         direction: taskDetail.latest_version?.direction || 'both',
         nCount: taskDetail.latest_version?.n_count || 3,
-        // ✅ 关键：设置 metric_template_value（阈值上下界）
+        // ✅ Key: Set metric_template_value (threshold upper and lower bounds)
         metric_template_value: taskDetail.latest_version?.metric_template_value,
       });
       setDatasourceType(newDatasourceType);
@@ -91,7 +91,7 @@ export const useFormInitializer = ({
       operationType === 'create' &&
       !editingTask
     ) {
-      // 新建任务时，从筛选器联动数据源类型，如果筛选器未选择则默认为 Volcengine
+      // When creating new task, link datasource type from filter, default to Volcengine if filter not selected
       const defaultDatasourceType = filterDatasourceType || 'Volcengine';
       form.setFieldsValue({ nCount: 3, datasourceType: defaultDatasourceType });
       setDatasourceType(defaultDatasourceType);

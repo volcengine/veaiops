@@ -19,31 +19,31 @@ import { Select } from '../form-control';
 const { RangePicker } = DatePicker;
 
 /**
- * 订阅关系表单 - 其他字段组件属性
+ * Subscription relation form - Other fields component properties
  */
 export interface SubscriptionOtherFieldsProps {
-  /** 事件级别选项 */
+  /** Event level options */
   eventLevelOptions: Array<{ label: string; value: string }>;
 
-  /** 是否显示策略更新提示 */
+  /** Whether to show strategy update tooltip */
   showStrategyTooltip?: boolean;
 
-  /** 隐藏策略更新提示的回调 */
+  /** Callback to hide strategy update tooltip */
   hideStrategyTooltip?: () => void;
 
-  /** 事件级别是否必填 */
+  /** Whether event level is required */
   eventLevelRequired?: boolean;
 
-  /** 事件级别 placeholder */
+  /** Event level placeholder */
   eventLevelPlaceholder?: string;
 
-  /** 消息卡片通知策略是否必填 */
+  /** Whether message card notification strategy is required */
   informStrategyRequired?: boolean;
 
-  /** 消息卡片通知策略 placeholder */
+  /** Message card notification strategy placeholder */
   informStrategyPlaceholder?: string;
 
-  /** 策略更新提示组件（可选，用于显示更新提示） */
+  /** Strategy update tooltip component (optional, used to display update tooltip) */
   UpdateTooltipComponent?: React.ComponentType<{
     show?: boolean;
     message?: string;
@@ -51,7 +51,7 @@ export interface SubscriptionOtherFieldsProps {
     children: React.ReactNode;
   }>;
 
-  /** API 客户端实例（用于获取通知策略） */
+  /** API client instance (used to fetch notification strategies) */
   apiClient?: {
     informStrategy?: {
       getApisV1ManagerEventCenterInformStrategy?: (params: {
@@ -63,12 +63,12 @@ export interface SubscriptionOtherFieldsProps {
 }
 
 /**
- * 订阅关系表单 - 其他字段组件
+ * Subscription relation form - Other fields component
  *
- * @description 用于订阅关系表单的通用字段组件，包含：
- * - 事件级别选择
- * - 配置生效时间范围
- * - 消息卡片通知策略选择
+ * @description Common field component for subscription relation form, includes:
+ * - Event level selection
+ * - Configuration effective time range
+ * - Message card notification strategy selection
  *
  * @example
  * ```tsx
@@ -96,17 +96,17 @@ export const SubscriptionOtherFields: React.FC<
   UpdateTooltipComponent,
   apiClient,
 }) => {
-  // 构建事件级别的 rules
+  // Build event level rules
   const eventLevelRules = eventLevelRequired
     ? [{ required: true, message: '请选择事件级别' }]
     : undefined;
 
-  // 构建消息卡片通知策略的 rules
+  // Build message card notification strategy rules
   const informStrategyRules = informStrategyRequired
     ? [{ required: true, message: '请选择消息卡片通知策略' }]
     : undefined;
 
-  // 消息卡片通知策略选择器
+  // Message card notification strategy selector
   const strategySelector = (
     <Select.Block
       isControl

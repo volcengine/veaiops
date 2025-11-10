@@ -22,15 +22,15 @@ import {
 import styles from './index.module.less';
 
 /**
- * 自定义Outline Tag组件属性接口
+ * Custom Outline Tag component property interface
  */
 export interface CustomOutlineTagProps extends Omit<TagProps, 'color'> {
   /**
-   * 标签文本内容
+   * Tag text content
    */
   children: React.ReactNode;
   /**
-   * 颜色主题，支持预定义的数据颜色
+   * Color theme, supports predefined data colors
    */
   colorTheme?:
     | 'data-1'
@@ -54,24 +54,24 @@ export interface CustomOutlineTagProps extends Omit<TagProps, 'color'> {
     | 'data-19'
     | 'data-20';
   /**
-   * 是否启用椭圆省略
+   * Whether to enable ellipsis
    */
   ellipsis?: boolean;
   /**
-   * 最大宽度
+   * Maximum width
    */
   maxWidth?: string | number;
 }
 
 /**
- * 自定义Outline Tag组件
- * 支持outline样式和椭圆省略功能
+ * Custom Outline Tag component
+ * Supports outline style and ellipsis functionality
  */
 export const CustomOutlineTag: React.FC<CustomOutlineTagProps> = ({
   children,
   colorTheme,
-  ellipsis = false, // 默认不启用省略号，避免重要信息被截断
-  maxWidth = 'auto', // 默认自动宽度，让内容完整显示
+  ellipsis = false, // Default to not enable ellipsis to avoid important information being truncated
+  maxWidth = 'auto', // Default to automatic width to allow content to display completely
   className = '',
   style = {},
   ...restProps
@@ -120,11 +120,11 @@ export const CustomOutlineTag: React.FC<CustomOutlineTagProps> = ({
 };
 
 /**
- * 多标签渲染组件属性接口
+ * Multi-tag rendering component property interface
  */
 export interface CustomOutlineTagListProps {
   /**
-   * 标签数据列表
+   * Tag data list
    */
   dataList: Array<{
     name: string;
@@ -132,19 +132,19 @@ export interface CustomOutlineTagListProps {
     colorTheme?: CustomOutlineTagProps['colorTheme'];
   }>;
   /**
-   * 最大显示数量
+   * Maximum display count
    */
   maxCount?: number;
   /**
-   * 标签属性
+   * Tag properties
    */
   tagProps?: Partial<CustomOutlineTagProps>;
   /**
-   * 是否使用省略模式
+   * Whether to use ellipsis mode
    */
   useEllipsis?: boolean;
   /**
-   * ellipsis 模式下的额外配置
+   * Additional configuration in ellipsis mode
    */
   ellipsisConfig?: {
     ellipsisOption?: any;
@@ -154,10 +154,10 @@ export interface CustomOutlineTagListProps {
 }
 
 /**
- * 多标签渲染组件
- * 支持最大数量限制和省略显示
+ * Multi-tag rendering component
+ * Supports maximum count limit and ellipsis display
  */
-// 为了向后兼容，创建别名
+// Create alias for backward compatibility
 export const CustomOutlineTagRender = CustomOutlineTag;
 
 export const CustomOutlineTagList: React.FC<CustomOutlineTagListProps> = ({
@@ -173,12 +173,12 @@ export const CustomOutlineTagList: React.FC<CustomOutlineTagListProps> = ({
     );
   }
 
-  // 如果使用省略模式，则调用 TagEllipsis 组件
+  // If using ellipsis mode, call TagEllipsis component
   if (useEllipsis) {
-    // 转换数据格式为 TagEllipsis 期望的格式
+    // Convert data format to TagEllipsis expected format
     const tagEllipsisData: TagEllipsisData[] = dataList.map((item) => ({
       name: item.name,
-      // 可以根据需要添加其他字段
+      // Can add other fields as needed
     }));
 
     return (
@@ -191,7 +191,7 @@ export const CustomOutlineTagList: React.FC<CustomOutlineTagListProps> = ({
     );
   }
 
-  // 原有的简单实现
+  // Original simple implementation
   const displayList = dataList.slice(0, maxCount);
   const remainingCount = dataList.length - maxCount;
 

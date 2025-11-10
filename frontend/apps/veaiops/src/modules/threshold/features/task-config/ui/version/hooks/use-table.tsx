@@ -33,8 +33,8 @@ export interface TaskVersionTableRendererProps {
 }
 
 /**
- * 任务版本表格渲染器 hook
- * 封装表格的核心渲染逻辑和配置
+ * Task version table renderer hook
+ * Encapsulates core table rendering logic and configuration
  */
 export const useTaskVersionTableRenderer = ({
   dataSource,

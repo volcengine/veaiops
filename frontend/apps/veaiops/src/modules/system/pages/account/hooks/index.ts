@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 账号管理 Hooks 统一导出
+ * Account management Hooks unified export
  */
 
 export {

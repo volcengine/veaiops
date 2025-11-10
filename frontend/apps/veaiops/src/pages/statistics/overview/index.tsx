@@ -24,8 +24,8 @@ import {
 import { useStatisticsData } from './hooks/use-statistics-data';
 
 /**
- * 统计概览页面
- * @description 展示系统各模块的统计数据，包括活跃数量、事件数量、消息数量等
+ * Statistics overview page
+ * @description Display statistics data for each module of the system, including active count, event count, message count, etc.
  */
 
 const StatisticsOverview: React.FC = () => {
@@ -58,13 +58,13 @@ const StatisticsOverview: React.FC = () => {
 
   return (
     <div className="statistics-overview">
-      {/* 页面头部 */}
+      {/* Page header */}
       <PageHeader />
 
-      {/* 核心指标卡片 */}
+      {/* Core metrics cards */}
       <CoreMetricsCards statistics={statistics} />
 
-      {/* 事件和消息趋势图表 */}
+      {/* Event and message trend charts */}
       <TrendCharts
         loading={loading}
         dataCheck={dataCheck}
@@ -72,7 +72,7 @@ const StatisticsOverview: React.FC = () => {
         getMessageTrendData={getMessageTrendData}
       />
 
-      {/* 智能阈值任务统计 */}
+      {/* Intelligent threshold task statistics */}
       <ThresholdStatistics
         statistics={statistics}
         loading={loading}
@@ -80,7 +80,7 @@ const StatisticsOverview: React.FC = () => {
         getThresholdTrendData={getThresholdTrendData}
       />
 
-      {/* 智能阈值详细统计和系统资源概览 */}
+      {/* Intelligent threshold detailed statistics and system resource overview */}
       <BottomSection
         statistics={statistics}
         getSystemOverviewData={getSystemOverviewData}

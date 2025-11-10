@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Project 模块类型定义导出
- * 统一从types.ts导出所有类型
+ * Project module type definitions export
+ * Unified export of all types from types.ts
  */
 
 export type * from '../types';

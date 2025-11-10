@@ -16,7 +16,7 @@ import { CellRender } from '@veaiops/components';
 import type React from 'react';
 
 /**
- * 正则表达式列渲染组件
+ * Regex column render component
  */
 export const RegexColumn: React.FC<{ regex: string }> = ({ regex }) => (
   <CellRender.Ellipsis text={regex} />

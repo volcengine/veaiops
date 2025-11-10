@@ -23,7 +23,6 @@ import {
   Tooltip,
 } from '@arco-design/web-react';
 import { EMPTY_CONTENT_TEXT } from '@veaiops/constants';
-import { formatDateTime } from '@veaiops/utils';
 import type React from 'react';
 
 import type {
@@ -47,6 +46,7 @@ export const renderTextCell = (
   if (column.copyable) {
     return (
       <Tooltip content="Click to copy">
+        {' '}
         <span
           style={{ cursor: 'pointer' }}
           onClick={() => {
@@ -85,26 +85,28 @@ export const renderNumberCell = (
 
 /**
  * Render date type cell
- *
- * Uses formatDateTime to handle timezone conversion uniformly
- * Assumes input is UTC time, automatically converts to user's selected timezone
  */
 export const renderDateCell = (value: unknown): React.ReactNode => {
-  return formatDateTime(value as string | number | Date | null | undefined);
+  const dateValue =
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    value instanceof Date
+      ? new Date(value)
+      : null;
+  return dateValue ? dateValue.toLocaleDateString() : '-';
 };
 
 /**
- * Render date-time type cell
- *
- * Uses formatDateTime to handle timezone conversion uniformly
- * Assumes input is UTC time, automatically converts to user's selected timezone
+ * Render date time type cell
  */
 export const renderDateTimeCell = (value: unknown): React.ReactNode => {
-  // Second parameter true means show seconds
-  return formatDateTime(
-    value as string | number | Date | null | undefined,
-    true,
-  );
+  const dateValue =
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    value instanceof Date
+      ? new Date(value)
+      : null;
+  return dateValue ? dateValue.toLocaleString() : '-';
 };
 
 /**

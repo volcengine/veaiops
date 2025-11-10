@@ -19,7 +19,7 @@ import type { UseBotStateReturn } from '../state';
 import { useCreateHandler, useDeleteHandler, useUpdateHandler } from './crud';
 
 /**
- * CRUD操作处理器参数
+ * CRUD operation handler parameters
  */
 interface CrudHandlersParams {
   state: UseBotStateReturn;
@@ -30,13 +30,13 @@ interface CrudHandlersParams {
 }
 
 /**
- * CRUD操作处理器
+ * CRUD operation handlers
  *
- * 拆分说明：
- * - crud/create-handler.ts: 创建Bot处理器
- * - crud/update-handler.ts: 更新Bot处理器
- * - crud/delete-handler.ts: 删除Bot处理器
- * - crud-handlers.ts: 主入口，负责组装和导出
+ * Split explanation:
+ * - crud/create-handler.ts: Create bot handler
+ * - crud/update-handler.ts: Update bot handler
+ * - crud/delete-handler.ts: Delete bot handler
+ * - crud-handlers.ts: Main entry, responsible for assembly and export
  */
 export const useCrudHandlers = ({
   state,
@@ -48,7 +48,7 @@ export const useCrudHandlers = ({
   const { form, editingBot, setEditingBot, setModalVisible, setLoading } =
     state;
 
-  // 创建处理器
+  // Create handler
   const { handleCreate } = useCreateHandler({
     createBot,
     form,
@@ -57,7 +57,7 @@ export const useCrudHandlers = ({
     setLoading,
   });
 
-  // 更新处理器
+  // Update handler
   const { handleUpdate } = useUpdateHandler({
     editingBot,
     updateBot,
@@ -68,15 +68,15 @@ export const useCrudHandlers = ({
     setLoading,
   });
 
-  // 删除处理器
+  // Delete handler
   const { handleDelete } = useDeleteHandler({
     deleteBot,
   });
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = useCallback(
     async (values: BotCreateRequest | BotUpdateRequest): Promise<boolean> => {
-      // 表单校验成功后，开始 loading
+      // After form validation succeeds, start loading
       setLoading(true);
       try {
         if (editingBot) {
@@ -85,7 +85,7 @@ export const useCrudHandlers = ({
           return await handleCreate(values as BotCreateRequest);
         }
       } finally {
-        // 请求完成后停止 loading
+        // Stop loading after request completes
         setLoading(false);
       }
     },

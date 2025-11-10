@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * FooterActions - 向导底部操作区（拆分组件）
- * @description 统一渲染“上一步 / 下一步”按钮及左右扩展区，提升复用与可读性
+ * FooterActions - Wizard footer actions area (split component)
+ * @description Unified rendering of "Previous / Next" buttons and left/right extension areas, improving reusability and readability
  */
 
 import { Button, Space, Typography } from '@arco-design/web-react';
@@ -24,29 +24,29 @@ import type React from 'react';
 const { Text } = Typography;
 
 export interface FooterActionsProps {
-  // 左侧“上一步”按钮控制
+  // Left "Previous" button control
   showPrev: boolean;
   prevText: string;
   onPrev: () => void;
 
-  // 右侧“下一步”按钮控制
+  // Right "Next" button control
   canProceed: boolean;
   nextText: string;
   onNext: () => void;
 
-  // 右侧步骤进度显示（可选）
+  // Right step progress display (optional)
   stepProgressText?: string;
 
-  // 扩展插槽
+  // Extension slots
   leftExtras?: React.ReactNode;
   rightExtras?: React.ReactNode;
 
-  // 样式类名
+  // Style className
   className?: string;
 }
 
 /**
- * 统一底部操作区域
+ * Unified bottom action area
  */
 export const FooterActions: React.FC<FooterActionsProps> = ({
   showPrev,
@@ -69,7 +69,7 @@ export const FooterActions: React.FC<FooterActionsProps> = ({
           justifyContent: 'space-between',
         }}
       >
-        {/* 左侧区域 */}
+        {/* Left area */}
         <div>
           {showPrev && (
             <Button onClick={onPrev} icon={<IconLeft />}>
@@ -79,7 +79,7 @@ export const FooterActions: React.FC<FooterActionsProps> = ({
           {leftExtras}
         </div>
 
-        {/* 右侧区域 */}
+        {/* Right area */}
         <div>
           <Space>
             {stepProgressText ? (
@@ -90,7 +90,11 @@ export const FooterActions: React.FC<FooterActionsProps> = ({
               type="primary"
               disabled={!canProceed}
               onClick={onNext}
-              title={!canProceed ? '请完成当前步骤的必填项' : ''}
+              title={
+                !canProceed
+                  ? 'Please complete the required fields in the current step'
+                  : ''
+              }
             >
               {nextText}
               <IconRight style={{ marginLeft: 4 }} />

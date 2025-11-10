@@ -18,7 +18,7 @@ import type {
 } from 'api-generate';
 
 /**
- * useTimeseriesData Hook 的参数接口
+ * useTimeseriesData Hook parameters interface
  */
 export interface UseTimeseriesDataOptions {
   metric?: MetricThresholdResult;
@@ -27,7 +27,7 @@ export interface UseTimeseriesDataOptions {
 }
 
 /**
- * 验证输入参数的参数接口
+ * Validate input parameters parameters interface
  */
 export interface ValidateInputsParams {
   metric?: MetricThresholdResult;
@@ -35,14 +35,14 @@ export interface ValidateInputsParams {
 }
 
 /**
- * 验证时间范围的参数接口
+ * Validate time range parameters interface
  */
 export interface ValidateTimeRangeParams {
   timeRange: [Date, Date];
 }
 
 /**
- * 验证时间范围的返回结果
+ * Validate time range return result
  */
 export interface TimeRangeValidationResult {
   startTime: number;
@@ -50,14 +50,14 @@ export interface TimeRangeValidationResult {
 }
 
 /**
- * 处理 metric labels 的参数接口
+ * Process metric labels parameters interface
  */
 export interface ProcessMetricLabelsParams {
   metric?: MetricThresholdResult;
 }
 
 /**
- * 准备请求参数的结果
+ * Prepare request parameters result
  */
 export interface RequestParams {
   startTime: number;

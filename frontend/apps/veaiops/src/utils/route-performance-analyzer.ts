@@ -13,51 +13,51 @@
 // limitations under the License.
 
 /**
- * 路由性能分析器
- * 用于监控和分析路由加载性能，提供优化建议
+ * Route performance analyzer
+ * Used to monitor and analyze route loading performance, providing optimization suggestions
  */
 
 interface RoutePerformanceMetrics {
-  /** 路由路径 */
+  /** Route path */
   path: string;
-  /** 组件名称 */
+  /** Component name */
   componentName: string;
-  /** 加载开始时间 */
+  /** Load start time */
   loadStartTime: number;
-  /** 加载结束时间 */
+  /** Load end time */
   loadEndTime: number;
-  /** 总加载时间 */
+  /** Total load duration */
   loadDuration: number;
-  /** 组件大小（字节） */
+  /** Component size (bytes) */
   bundleSize?: number;
-  /** 是否使用了预加载 */
+  /** Whether preloading is used */
   preloaded: boolean;
-  /** 错误信息 */
+  /** Error message */
   error?: string;
 }
 
 interface PerformanceThresholds {
-  /** 加载时间警告阈值（毫秒） */
+  /** Load time warning threshold (milliseconds) */
   loadTimeWarning: number;
-  /** 加载时间错误阈值（毫秒） */
+  /** Load time error threshold (milliseconds) */
   loadTimeError: number;
-  /** 包大小警告阈值（字节） */
+  /** Bundle size warning threshold (bytes) */
   bundleSizeWarning: number;
-  /** 包大小错误阈值（字节） */
+  /** Bundle size error threshold (bytes) */
   bundleSizeError: number;
 }
 
 class RoutePerformanceAnalyzer {
   private metrics: Map<string, RoutePerformanceMetrics[]> = new Map();
   private thresholds: PerformanceThresholds = {
-    loadTimeWarning: 1000, // 1秒
-    loadTimeError: 3000, // 3秒
+    loadTimeWarning: 1000, // 1 second
+    loadTimeError: 3000, // 3 seconds
     bundleSizeWarning: 500 * 1024, // 500KB
     bundleSizeError: 1024 * 1024, // 1MB
   };
 
   /**
-   * 开始监控路由加载
+   * Start monitoring route loading
    */
   startRouteLoad({
     path,
@@ -71,7 +71,7 @@ class RoutePerformanceAnalyzer {
       .substr(2, 9)}`;
     const startTime = performance.now();
 
-    // 存储开始时间
+    // Store start time
     if (!this.metrics.has(path)) {
       this.metrics.set(path, []);
     }
@@ -91,7 +91,7 @@ class RoutePerformanceAnalyzer {
   }
 
   /**
-   * 结束路由加载监控
+   * End route loading monitoring
    */
   endRouteLoad({
     path,
@@ -118,55 +118,55 @@ class RoutePerformanceAnalyzer {
     latestMetric.preloaded = options?.preloaded || false;
     latestMetric.error = options?.error;
 
-    // 分析性能并输出建议
+    // Analyze performance and output suggestions
     this.analyzePerformance(latestMetric);
   }
 
   /**
-   * 分析单个路由性能
+   * Analyze single route performance
    */
   private analyzePerformance(metric: RoutePerformanceMetrics): void {
     const issues: string[] = [];
     const suggestions: string[] = [];
 
-    // 检查加载时间
+    // Check load time
     if (metric.loadDuration > this.thresholds.loadTimeError) {
-      issues.push(`加载时间过长: ${metric.loadDuration.toFixed(2)}ms`);
-      suggestions.push('考虑进一步拆分组件或使用预加载');
+      issues.push(`Load time too long: ${metric.loadDuration.toFixed(2)}ms`);
+      suggestions.push('Consider further component splitting or using preloading');
     } else if (metric.loadDuration > this.thresholds.loadTimeWarning) {
-      issues.push(`加载时间较长: ${metric.loadDuration.toFixed(2)}ms`);
-      suggestions.push('考虑使用预加载或优化组件大小');
+      issues.push(`Load time is long: ${metric.loadDuration.toFixed(2)}ms`);
+      suggestions.push('Consider using preloading or optimizing component size');
     }
 
-    // 检查包大小
+    // Check bundle size
     if (metric.bundleSize) {
       if (metric.bundleSize > this.thresholds.bundleSizeError) {
-        issues.push(`包大小过大: ${(metric.bundleSize / 1024).toFixed(2)}KB`);
-        suggestions.push('考虑代码分割或移除不必要的依赖');
+        issues.push(`Bundle size too large: ${(metric.bundleSize / 1024).toFixed(2)}KB`);
+        suggestions.push('Consider code splitting or removing unnecessary dependencies');
       } else if (metric.bundleSize > this.thresholds.bundleSizeWarning) {
-        issues.push(`包大小较大: ${(metric.bundleSize / 1024).toFixed(2)}KB`);
-        suggestions.push('考虑优化依赖或使用动态导入');
+        issues.push(`Bundle size is large: ${(metric.bundleSize / 1024).toFixed(2)}KB`);
+        suggestions.push('Consider optimizing dependencies or using dynamic imports');
       }
     }
 
-    // 检查错误
+    // Check errors
     if (metric.error) {
-      issues.push(`加载错误: ${metric.error}`);
-      suggestions.push('检查组件代码和依赖是否正确');
+      issues.push(`Load error: ${metric.error}`);
+      suggestions.push('Check if component code and dependencies are correct');
     }
 
-    // 输出分析结果
+    // Output analysis results
     if (issues.length > 0) {
-      console.group(`🔍 [RoutePerformance] ${metric.path} 性能分析`);
+      console.group(`🔍 [RoutePerformance] ${metric.path} Performance Analysis`);
 
       console.groupEnd();
     } else if (metric.loadDuration > 100) {
-      // 加载时间超过100ms但没有性能问题，可以在这里添加警告日志
+      // Load time exceeds 100ms but no performance issues, can add warning log here
     }
   }
 
   /**
-   * 获取路由性能统计
+   * Get route performance statistics
    */
   getRouteStats(path: string): {
     averageLoadTime: number;
@@ -196,7 +196,7 @@ class RoutePerformanceAnalyzer {
   }
 
   /**
-   * 获取所有路由的性能报告
+   * Get performance report for all routes
    */
   getPerformanceReport(): {
     totalRoutes: number;
@@ -239,16 +239,16 @@ class RoutePerformanceAnalyzer {
     const recommendations: string[] = [];
 
     if (averageLoadTime > this.thresholds.loadTimeWarning) {
-      recommendations.push('整体加载时间偏高，考虑启用更多预加载');
+      recommendations.push('Overall load time is high, consider enabling more preloading');
     }
 
     if (slowestRoutes.length > 0) {
-      recommendations.push(`优先优化最慢的路由: ${slowestRoutes[0].path}`);
+      recommendations.push(`Prioritize optimizing slowest route: ${slowestRoutes[0].path}`);
     }
 
     if (mostErrorProneRoutes.length > 0) {
       recommendations.push(
-        `修复错误率最高的路由: ${mostErrorProneRoutes[0].path}`,
+        `Fix route with highest error rate: ${mostErrorProneRoutes[0].path}`,
       );
     }
 
@@ -262,7 +262,7 @@ class RoutePerformanceAnalyzer {
   }
 
   /**
-   * 清除性能数据
+   * Clear performance data
    */
   clearMetrics(path?: string): void {
     if (path) {
@@ -273,14 +273,14 @@ class RoutePerformanceAnalyzer {
   }
 
   /**
-   * 设置性能阈值
+   * Set performance thresholds
    */
   setThresholds(thresholds: Partial<PerformanceThresholds>): void {
     this.thresholds = { ...this.thresholds, ...thresholds };
   }
 
   /**
-   * 导出性能数据
+   * Export performance data
    */
   exportMetrics(): string {
     const data = {
@@ -300,15 +300,15 @@ class RoutePerformanceAnalyzer {
   }
 }
 
-// 创建全局实例
+// Create global instance
 export const routePerformanceAnalyzer = new RoutePerformanceAnalyzer();
 
-// 开发环境下的性能监控助手
+// Performance monitoring helper in development environment
 if (process.env.NODE_ENV === 'development') {
-  // 添加到全局对象，方便调试
+  // Add to global object for easy debugging
   (window as any).__routePerformanceAnalyzer = routePerformanceAnalyzer;
 
-  // 定期输出性能报告
+  // Periodically output performance report
   setInterval(() => {
     const report = routePerformanceAnalyzer.getPerformanceReport();
     if (report.totalRoutes > 0) {
@@ -319,10 +319,10 @@ if (process.env.NODE_ENV === 'development') {
         最慢路由: report.slowestRoutes[0]?.path || 'N/A',
         错误最多路由: report.mostErrorProneRoutes[0]?.path || 'N/A',
       });
-      // TODO: 处理性能建议 - if (report.recommendations.length > 0) { ... }
+      // TODO: Handle performance recommendations - if (report.recommendations.length > 0) { ... }
       console.groupEnd();
     }
-  }, 30000); // 每30秒输出一次
+  }, 30000); // Output every 30 seconds
 }
 
 export default RoutePerformanceAnalyzer;

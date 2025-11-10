@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * CustomTable 渲染器统一导出
+ * CustomTable renderer unified exports
  */
 
-// 表格渲染器
+// Table renderer
 export { createTableRenderer } from './table-renderer';
 
-// 内容渲染器
+// Content renderer
 export {
   createTableContentRenderer,
   createFooterContentRenderer,

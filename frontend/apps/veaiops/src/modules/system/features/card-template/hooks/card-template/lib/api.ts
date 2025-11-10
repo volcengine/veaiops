@@ -21,7 +21,7 @@ import type {
 } from 'api-generate';
 
 /**
- * 更新模板参数接口
+ * Update template parameter interface
  */
 export interface UpdateTemplateParams {
   templateId: string;
@@ -29,7 +29,7 @@ export interface UpdateTemplateParams {
 }
 
 /**
- * 创建模板
+ * Create template
  */
 export const createTemplate = async (
   templateData: AgentTemplateCreateRequest,
@@ -49,7 +49,7 @@ export const createTemplate = async (
       throw new Error(response.message || '创建模板失败');
     }
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Expose actual error information
     const errorMessage =
       error instanceof Error ? error.message : '创建模板失败';
     Message.error(errorMessage);
@@ -58,7 +58,7 @@ export const createTemplate = async (
 };
 
 /**
- * 更新模板
+ * Update template
  */
 export const updateTemplate = async ({
   templateId,
@@ -80,7 +80,7 @@ export const updateTemplate = async ({
 
     throw new Error(response.message || '更新模板失败');
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Expose actual error information
     const errorMessage =
       error instanceof Error ? error.message : '更新模板失败';
     Message.error(errorMessage);
@@ -89,7 +89,7 @@ export const updateTemplate = async ({
 };
 
 /**
- * 删除模板
+ * Delete template
  */
 export const deleteTemplate = async (templateId: string): Promise<boolean> => {
   try {
@@ -107,7 +107,7 @@ export const deleteTemplate = async (templateId: string): Promise<boolean> => {
 
     throw new Error(response.message || '删除模板失败');
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Expose actual error information
     const errorMessage =
       error instanceof Error ? error.message : '删除模板失败';
     Message.error(errorMessage);

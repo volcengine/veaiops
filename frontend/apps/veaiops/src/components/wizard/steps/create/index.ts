@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 创建步骤组件导出
+ * Create step component export
  */
 
 export * from './components';

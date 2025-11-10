@@ -13,17 +13,17 @@
 // limitations under the License.
 
 /**
- * 任务配置表格筛选配置
+ * Task configuration table filter configuration
  *
- * 将筛选配置逻辑单独抽象出来，提高代码可维护性
+ * Abstract the filter configuration logic separately to improve code maintainability
  */
 
 import type { FieldItem, HandleFilterProps } from '@veaiops/components';
 import { useCallback } from 'react';
 
 /**
- * 任务配置表格筛选配置 Hook
- * 负责定义所有筛选条件和表单
+ * Task configuration table filter configuration Hook
+ * Responsible for defining all filter conditions and forms
  */
 export const useTaskTableFilters = () => {
   return useCallback(

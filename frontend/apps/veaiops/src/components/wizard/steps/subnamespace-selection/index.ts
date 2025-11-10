@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 子命名空间选择步骤组件导出
+ * Subnamespace selection step component export
  */
 
 export {

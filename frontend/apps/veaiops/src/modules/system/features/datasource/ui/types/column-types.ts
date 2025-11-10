@@ -13,34 +13,34 @@
 // limitations under the License.
 
 /**
- * 表格列相关类型定义
+ * Table column related type definitions
  */
 
 import type { DataSource } from 'api-generate';
 
 /**
- * 删除处理函数类型
+ * Delete handler function type
  *
- * ✅ 符合异步方法错误处理规范：
- * - 支持返回 { success: boolean; error?: Error } 格式的结果对象
- * - 同时也支持 void/Promise<void> 格式（向后兼容）
+ * ✅ Complies with async method error handling specification:
+ * - Supports returning result object in { success: boolean; error?: Error } format
+ * - Also supports void/Promise<void> format (backward compatible)
  */
 export type DeleteHandler = (
   id: string,
 ) => void | Promise<void> | Promise<{ success: boolean; error?: Error }>;
 
 /**
- * 查看处理函数类型
+ * View handler function type
  */
 export type ViewHandler = (item: DataSource) => void;
 
 /**
- * 编辑处理函数类型
+ * Edit handler function type
  */
 export type EditHandler = (item: DataSource) => void;
 
 /**
- * 配置项类型
+ * Configuration item type
  */
 export interface ConfigItem {
   configKey: string;

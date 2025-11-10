@@ -13,56 +13,54 @@
 // limitations under the License.
 
 /**
- * 列宽持久化插件默认配置
- *
-
- *
+ * Column width persistence plugin default configuration
  */
 
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 import type { ColumnWidthPersistenceConfig } from './types';
 
 /**
- * 列宽持久化插件默认配置
- * 基于实际业务场景优化的配置，适合大部分表格使用
+ * Column width persistence plugin default configuration
+ * Optimized configuration based on actual business scenarios, suitable for most table usage
  */
 export const DEFAULT_COLUMN_WIDTH_PERSISTENCE_CONFIG: Required<ColumnWidthPersistenceConfig> =
   {
-    /** 基础插件配置 */
+    /** Base plugin configuration */
     priority: PluginPriorityEnum.MEDIUM,
     enabled: true,
     autoInstall: true,
     dependencies: [],
     conflicts: [],
 
-    /** 列宽持久化特有配置 - 基于work-flow实际使用优化 */
-    enableAutoDetection: true, // 自动检测列宽变化
-    detectionDelay: 300, // 300ms防抖延迟，平衡响应性和性能
+    /** Column width persistence specific configuration - optimized based on work-flow actual usage */
+    enableAutoDetection: true, // Auto-detect column width changes
+    detectionDelay: 300, // 300ms debounce delay, balance responsiveness and performance
     storageKeyPrefix: 'custom-table-column-width',
-    enableLocalStorage: true, // 启用本地存储持久化
-    minColumnWidth: 60, // 最小列宽60px，确保内容可读性
-    maxColumnWidth: 600, // 最大列宽600px，适合大部分业务场景
+    enableLocalStorage: true, // Enable local storage persistence
+    minColumnWidth: 60, // Minimum column width 60px, ensure content readability
+    maxColumnWidth: 600, // Maximum column width 600px, suitable for most business scenarios
   };
 
 /**
- * 插件常量
+ * Plugin constants
  */
 export const PLUGIN_CONSTANTS = {
-  /** 插件名称 */
+  /** Plugin name */
   PLUGIN_NAME: 'column-width-persistence' as const,
 
-  /** 插件版本 */
+  /** Plugin version */
   VERSION: '1.0.0' as const,
 
-  /** 插件描述 */
-  DESCRIPTION: '表格列宽持久化插件，支持翻页时保持列宽固定' as const,
+  /** Plugin description */
+  DESCRIPTION:
+    'Table column width persistence plugin, supports keeping column width fixed when paginating' as const,
 
-  /** 存储键分隔符 */
+  /** Storage key separator */
   STORAGE_KEY_SEPARATOR: ':' as const,
 
-  /** 列宽检测选择器 */
+  /** Column width detection selector */
   COLUMN_SELECTOR: 'th[data-index]' as const,
 
-  /** 表格容器选择器 */
+  /** Table container selector */
   TABLE_CONTAINER_SELECTOR: '.arco-table' as const,
 } as const;

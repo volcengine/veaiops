@@ -28,12 +28,12 @@ interface ModelConfigProps {
 }
 
 /**
- * 大模型配置区块组件
+ * Large model configuration block component
  *
- * 拆分说明：
- * - model-config/model-fields.tsx: 模型配置字段（模型名称、Embedding模型名称、API Base URL）
- * - model-config/api-key-field.tsx: API Key 输入字段（包含密码显示切换）
- * - model-config.tsx: 主入口组件，负责组装和渲染
+ * Split description:
+ * - model-config/model-fields.tsx: Model configuration fields (model name, Embedding model name, API Base URL)
+ * - model-config/api-key-field.tsx: API Key input field (includes password visibility toggle)
+ * - model-config.tsx: Main entry component, responsible for assembly and rendering
  */
 export const ModelConfig: React.FC<ModelConfigProps> = ({
   showAdvancedConfig,

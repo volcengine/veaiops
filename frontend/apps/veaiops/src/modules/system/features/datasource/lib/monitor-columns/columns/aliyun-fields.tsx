@@ -21,7 +21,7 @@ import type React from 'react';
 import { getConfigData } from '../../config-data-utils';
 
 /**
- * 创建阿里云特定字段列
+ * Create Aliyun specific field columns
  */
 export const createAliyunSpecificFields = (
   dataSourceType: DataSourceType,
@@ -79,7 +79,7 @@ export const createAliyunSpecificFields = (
       render: (_: unknown, record: DataSource) => {
         const configData = getConfigData({ record, dsType: dataSourceType });
         const dimensions = (configData as Record<string, unknown>)?.dimensions;
-        // 简化渲染，如果有维度列表则显示数量
+        // Simplified rendering, show count if dimension list exists
         if (Array.isArray(dimensions) && dimensions.length > 0) {
           return <Ellipsis text={`${dimensions.length} 个实例`} />;
         }

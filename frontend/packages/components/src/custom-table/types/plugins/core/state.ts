@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 状态和辅助方法类型定义
+ * State and helper method type definition
  */
 
 import type {
@@ -25,7 +25,7 @@ import type { ReactNode } from 'react';
 import type { PluginLifecycle } from './base';
 
 /**
- * CustomTable 状态类型
+ * CustomTable state type
  */
 export interface CustomTableState<
   RecordType extends BaseRecord = BaseRecord,
@@ -44,26 +44,26 @@ export interface CustomTableState<
   selectedRowKeys?: (string | number)[];
   expandedRowKeys?: (string | number)[];
 
-  // Alert 相关状态
+  // Alert related state
   isAlertShow?: boolean;
   alertType?: 'info' | 'success' | 'warning' | 'error';
   alertContent?: ReactNode;
   customAlertNode?: ReactNode;
 
-  // 插件相关状态
+  // Plugin related state
   enableCustomFields?: boolean;
   customFieldsProps?: Record<string, unknown>;
   baseColumns?: ColumnProps<RecordType>[];
   enableFilterSetting?: boolean;
   filterSettingProps?: Record<string, unknown>;
-  // 行选择插件状态
+  // Row selection plugin state
   rowSelection?: unknown;
-  // 智能单元格插件状态
+  // Smart cell plugin state
   smartCell?: Record<string, unknown>;
 }
 
 /**
- * CustomTable 辅助方法类型
+ * CustomTable helper method types
  */
 export interface CustomTableHelpers<
   RecordType extends BaseRecord = BaseRecord,
@@ -84,18 +84,18 @@ export interface CustomTableHelpers<
     (object: Record<string, unknown>): void;
   };
   loadMoreData?: () => void;
-  // 行选择相关方法
+  // Row selection related methods
   setSelectedRowKeys?: (keys: (string | number)[]) => void;
-  // 行展开相关方法
+  // Row expand related methods
   setExpandedRowKeys?: (keys: (string | number)[]) => void;
-  // 数据请求相关方法
+  // Data request related methods
   run?: () => void;
   reload?: () => void;
-  // 查询同步相关方法
+  // Query sync related methods
   querySync?: unknown;
   manualSyncQuery?: () => void;
   resetQuery?: (resetEmptyData?: boolean) => void;
-  // 生命周期相关方法
+  // Lifecycle related methods
   lifecycle?: {
     trigger: ({
       phase,
@@ -112,26 +112,26 @@ export interface CustomTableHelpers<
     ) => void;
     getMetrics?: () => Record<string, unknown>;
   };
-  // 排序相关方法
+  // Sorting related methods
   getSorterParam?: () => Record<string, unknown>;
   resetSorter?: () => void;
   setSorter?: (sorter: SorterInfo) => void;
-  // 过滤相关方法
+  // Filter related methods
   resetFilterValues?: () => void;
 
-  // 刷新集成相关方法（业务语义化）
-  /** 创建操作后刷新 */
+  // Refresh integration related methods (business semantic)
+  /** Refresh after create operation */
   afterCreate?: () => Promise<boolean>;
-  /** 更新操作后刷新 */
+  /** Refresh after update operation */
   afterUpdate?: () => Promise<boolean>;
-  /** 删除操作后刷新 */
+  /** Refresh after delete operation */
   afterDelete?: () => Promise<boolean>;
-  /** 导入操作后刷新 */
+  /** Refresh after import operation */
   afterImport?: () => Promise<boolean>;
-  /** 批量操作后刷新 */
+  /** Refresh after batch operation */
   afterBatchOperation?: () => Promise<boolean>;
-  /** 带反馈的刷新 */
+  /** Refresh with feedback */
   refreshWithFeedback?: () => Promise<boolean>;
-  /** 静默刷新 */
+  /** Silent refresh */
   refreshSilently?: () => Promise<boolean>;
 }

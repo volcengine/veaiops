@@ -32,8 +32,8 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 /**
- * ClassValue 类型定义（兼容 clsx 的类型）
- * clsx 2.x 版本不导出 ClassValue 类型，需要自己定义
+ * ClassValue type definition (compatible with clsx type)
+ * clsx 2.x version does not export ClassValue type, need to define it ourselves
  */
 export type ClassValue =
   | string

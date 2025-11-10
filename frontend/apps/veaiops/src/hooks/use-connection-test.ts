@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接测试Hook
+ * Connection test Hook
  */
 
 import apiClient from '@/utils/api-client';
@@ -22,7 +22,7 @@ import type { ConnectCreateRequest } from 'api-generate';
 import { useCallback, useState } from 'react';
 
 /**
- * 连接测试结果类型
+ * Connection test result type
  */
 interface TestResult {
   success: boolean;
@@ -46,7 +46,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
   const [testResult, setTestResult] = useState<TestResult | null>(null);
 
   /**
-   * 为 Zabbix 类型构建连接参数
+   * Build connection parameters for Zabbix type
    */
   const buildZabbixParams = useCallback(
     (connect: any, customParams?: Partial<ConnectCreateRequest>) => ({
@@ -60,7 +60,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
   );
 
   /**
-   * 为 Aliyun 类型构建连接参数
+   * Build connection parameters for Aliyun type
    */
   const buildAliyunParams = useCallback(
     (connect: any, customParams?: Partial<ConnectCreateRequest>) => ({
@@ -74,7 +74,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
   );
 
   /**
-   * 为 Volcengine 类型构建连接参数
+   * Build connection parameters for Volcengine type
    */
   const buildVolcengineParams = useCallback(
     (connect: any, customParams?: Partial<ConnectCreateRequest>) => ({
@@ -89,7 +89,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
   );
 
   /**
-   * 根据数据源类型构建连接请求
+   * Build connection request based on data source type
    */
   const buildConnectRequest = useCallback(
     (
@@ -125,7 +125,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
   );
 
   /**
-   * 处理API错误响应
+   * Handle API error response
    */
   const handleApiError = useCallback((error: any): string => {
     let errorMessage = '连接测试失败';
@@ -155,7 +155,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
         setTesting(true);
         setTestResult(null);
 
-        // 先获取连接配置
+        // First get connection configuration
         const connectResponse =
           await apiClient.dataSourceConnect.getApisV1DatasourceConnect1({
             connectId,
@@ -171,7 +171,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
         const connect = connectResponse.data;
         const connectCreateRequest = buildConnectRequest(connect, customParams);
 
-        // 直接调用/dail接口进行测试
+        // Directly call /dail endpoint for testing
         const response =
           await apiClient.dataSourceConnect.postApisV1DatasourceConnectDail({
             requestBody: connectCreateRequest,
@@ -188,7 +188,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
         setTestResult(result);
         return result;
       } catch (error) {
-        // 处理API错误响应
+        // Handle API error response
         let errorMessage = '连接测试失败';
         if (error && typeof error === 'object' && 'body' in error) {
           const apiError = error as any;
@@ -213,7 +213,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
         setTestResult(result);
         return result;
       } finally {
-        // 操作完成
+        // Operation completed
         setTesting(false);
       }
     },
@@ -243,7 +243,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
         setTestResult(result);
         return result;
       } catch (error) {
-        // 处理API错误响应
+        // Handle API error response
         let errorMessage = '连接测试失败';
         if (error && typeof error === 'object' && 'body' in error) {
           const apiError = error as any;
@@ -268,7 +268,7 @@ export const useConnectionTest = (): UseConnectionTestReturn => {
         setTestResult(result);
         return result;
       } finally {
-        // 操作完成
+        // Operation completed
         setTesting(false);
       }
     },

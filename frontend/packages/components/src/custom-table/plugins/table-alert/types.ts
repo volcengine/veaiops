@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 表格提示信息插件类型定义
- * 类型已迁移到 ../../types/plugins/table-alert.ts
- * 此文件保留以兼容现有引用，实际类型请从types目录导入
+ * Table alert plugin type definitions
+ * Types have been migrated to ../../types/plugins/table-alert.ts
+ * This file is kept for backward compatibility with existing references, actual types should be imported from types directory
  */
 export type {
   TableAlertConfig,

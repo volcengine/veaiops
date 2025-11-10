@@ -15,11 +15,11 @@
 import type { PluginContext } from '@/custom-table/types';
 
 /**
- * 创建表格事件处理器
+ * Create table event handlers
  */
 export function createTableEvents() {
   return {
-    // 分页变化时应用持久化列宽
+    // Apply persistent column widths when pagination changes
     onPageChange: (context: PluginContext, ..._args: unknown[]) => {
       setTimeout(() => {
         const persistentWidths =
@@ -37,10 +37,10 @@ export function createTableEvents() {
             }
           ).setBatchPersistentColumnWidths?.(persistentWidths);
         }
-      }, 50); // 延迟应用，确保新页面数据已渲染
+      }, 50); // Delay application to ensure new page data is rendered
     },
 
-    // 数据变化时保持列宽
+    // Maintain column widths when data changes
     onDataChange: (context: PluginContext, ..._args: unknown[]) => {
       setTimeout(() => {
         const persistentWidths =

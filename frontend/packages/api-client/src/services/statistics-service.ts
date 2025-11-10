@@ -19,9 +19,9 @@ import type { BaseHttpRequest } from '../core/base-http-request';
 export class StatisticsService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
   /**
-   * 获取系统统计信息
-   * 获取系统各模块的统计数据，包括活跃数量、事件数量、消息数量等
-   * @returns APIResponseSystemStatistics 成功获取统计信息
+   * Get System Statistics
+   * Get statistics data for all system modules, including active counts, event counts, message counts, etc.
+   * @returns APIResponseSystemStatistics Successfully retrieved statistics
    * @throws ApiError
    */
   public getStatisticsSummary(): CancelablePromise<APIResponseSystemStatistics> {
@@ -29,8 +29,8 @@ export class StatisticsService {
       method: 'GET',
       url: '/apis/v1/manager/statistics/summary/',
       errors: {
-        400: `请求参数错误`,
-        500: `服务器内部错误`,
+        400: `Invalid request parameters`,
+        500: `Internal server error`,
       },
     });
   }

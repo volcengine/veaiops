@@ -35,29 +35,29 @@ import type {
   UseMonitorTableConfigReturn,
 } from '../lib/monitor-table-types';
 
-// 导出类型定义（向后兼容）
+// Export type definitions (backward compatibility)
 export type {
   UseMonitorTableConfigOptions,
   UseMonitorTableConfigReturn,
 } from '../lib/monitor-table-types';
 
 /**
- * 监控配置表格配置聚合 Hook
+ * Monitor configuration table configuration aggregation Hook
  *
- * 🎯 Hook 聚合模式 + 自动刷新机制
- * - 使用 useBusinessTable 统一管理表格逻辑
- * - 通过 operationWrapper 实现自动刷新
- * - 替换原有的 useManagementRefresh 模式
+ * 🎯 Hook aggregation pattern + auto refresh mechanism
+ * - Use useBusinessTable to uniformly manage table logic
+ * - Achieve auto refresh through operationWrapper
+ * - Replace original useManagementRefresh pattern
  *
- * 架构优化：
- * - 数据请求逻辑提取到 `lib/monitor-table-request.ts`
- * - 表格配置常量提取到 `lib/monitor-table-config.ts`
- * - 列配置逻辑提取到 `lib/monitor-columns.tsx`
- * - 筛选配置提取到 `lib/monitor-filters.ts`
- * - 辅助函数提取到 `lib/config-data-utils.ts`
+ * Architecture optimization:
+ * - Data request logic extracted to `lib/monitor-table-request.ts`
+ * - Table configuration constants extracted to `lib/monitor-table-config.ts`
+ * - Column configuration logic extracted to `lib/monitor-columns.tsx`
+ * - Filter configuration extracted to `lib/monitor-filters.ts`
+ * - Helper functions extracted to `lib/config-data-utils.ts`
  *
- * @param options - Hook 配置选项
- * @returns 表格配置和处理器
+ * @param options - Hook configuration options
+ * @returns Table configuration and handlers
  */
 export const useMonitorTableConfig = ({
   onEdit: _onEdit,
@@ -67,19 +67,19 @@ export const useMonitorTableConfig = ({
 }: UseMonitorTableConfigOptions & {
   ref?: React.Ref<CustomTableActionType>;
 }): UseMonitorTableConfigReturn => {
-  // 🎯 数据请求逻辑
+  // 🎯 Data request logic
   const request = useMemo(
     () => createMonitorTableRequest(dataSourceType),
     [dataSourceType],
   );
 
-  // 🎯 数据源配置 - 使用工具函数
+  // 🎯 Data source configuration - use utility function
   const dataSource = useMemo(
     () => createServerPaginationDataSource({ request }),
     [request],
   );
 
-  // 🎯 表格配置 - 使用工具函数，保留 border 配置
+  // 🎯 Table configuration - use utility function, preserve border configuration
   const tableProps = useMemo(
     () => ({
       ...createStandardTableProps({
@@ -95,7 +95,7 @@ export const useMonitorTableConfig = ({
     [],
   );
 
-  // 🎯 业务操作包装 - 自动刷新
+  // 🎯 Business operation wrapping - auto refresh
   const { customTableProps, customOperations, operations, wrappedHandlers } =
     useBusinessTable({
       dataSource,
@@ -115,7 +115,7 @@ export const useMonitorTableConfig = ({
       ref,
     });
 
-  // 🎯 列配置 - 使用提取的列配置函数
+  // 🎯 Column configuration - use extracted column configuration function
   const handleColumns = useCallback(
     (_props: Record<string, unknown>) => {
       return createMonitorTableColumns(dataSourceType);
@@ -123,7 +123,7 @@ export const useMonitorTableConfig = ({
     [dataSourceType],
   );
 
-  // 🎯 筛选配置 - 使用提取的筛选配置函数
+  // 🎯 Filter configuration - use extracted filter configuration function
   const handleFilters = useCallback(
     (props: HandleFilterProps<BaseQuery>): FieldItem[] => {
       return createMonitorTableFilters(props);

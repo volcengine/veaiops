@@ -16,32 +16,34 @@ import type { SelectOption } from '../../../types/interface';
 import type { DataFetcherPlugin, PluginContext } from '../../../types/plugin';
 
 /**
- * 粘贴数据获取器
+ * Paste data fetcher
  */
 export class PasteDataFetcher {
   constructor(private context: PluginContext) {}
 
   /**
-   * 粘贴后触发数据获取，确保新粘贴的值能被搜索到
+   * Trigger data fetch after paste, ensure newly pasted values can be searched
    */
   async triggerDataFetchForPastedValues(
     pastedValues: (string | number)[],
   ): Promise<void> {
-    // 🔧 防御性检查：确保context存在
+    // 🔧 Defensive check: ensure context exists
     if (!this.context) {
-      console.warn('[PasteDataFetcher] context已被销毁，跳过数据获取');
+      console.warn(
+        '[PasteDataFetcher] Context has been destroyed, skipping data fetch',
+      );
       return;
     }
 
     const { props } = this.context;
 
-    // 检查是否有数据源配置
+    // Check if data source configuration exists
     if (!props.dataSource || typeof props.dataSource !== 'object') {
       return;
     }
 
     try {
-      // 获取数据获取器插件
+      // Get data fetcher plugin
       const dataFetcher = this.context.getPlugin?.(
         'data-fetcher',
       ) as DataFetcherPlugin;
@@ -49,12 +51,12 @@ export class PasteDataFetcher {
         return;
       }
 
-      // 构造搜索参数：将粘贴的值作为搜索条件
+      // Construct search parameters: use pasted values as search conditions
       const searchParams: Record<string, any> = {
-        // 优先使用pasteValueKey，其次使用searchKey或remoteSearchKey
+        // Prefer pasteValueKey, then use searchKey or remoteSearchKey
         ...(props.pasteValueKey && { [props.pasteValueKey]: pastedValues }),
 
-        // 如果没有pasteValueKey，则使用传统的搜索字段
+        // If no pasteValueKey, use traditional search fields
         ...(!props.pasteValueKey &&
           props.searchKey && { [props.searchKey]: pastedValues.join(',') }),
         ...(!props.pasteValueKey &&
@@ -62,7 +64,7 @@ export class PasteDataFetcher {
             [props.remoteSearchKey]: pastedValues.join(','),
           }),
 
-        // 构造正确的分页参数
+        // Construct correct pagination parameters
         pageReq: {
           skip: 0,
           limit: Math.max(50, pastedValues.length * 2),
@@ -74,33 +76,33 @@ export class PasteDataFetcher {
         searchParams,
       );
 
-      // 更新状态中的选项
+      // Update options in state
       if (fetchedOptions && fetchedOptions.length > 0) {
-        // 获取当前状态中的选项
+        // Get current options in state
         const currentOptions = this.context.state?.fetchOptions || [];
 
-        // 合并新获取的选项，去重
+        // Merge newly fetched options, deduplicate
         const mergedOptions = this.mergeAndDeduplicateOptions(
           currentOptions,
           fetchedOptions,
         );
 
-        // 🔧 批量更新状态，包含stateVersion强制重新渲染
+        // 🔧 Batch update state, including stateVersion to force re-render
         const currentState = this.context.state;
         this.context.setState({
           fetchOptions: mergedOptions,
-          // 🔧 强制重新渲染：更新stateVersion确保React立即响应状态变化
+          // 🔧 Force re-render: update stateVersion to ensure React immediately responds to state changes
           stateVersion: (currentState?.stateVersion || 0) + 1,
         });
       }
     } catch (error) {
-      console.warn('[PasteDataFetcher] 粘贴后数据获取失败:', error);
-      // 不显示错误消息，因为这是后台操作
+      console.warn('[PasteDataFetcher] Data fetch failed after paste:', error);
+      // Don't show error message, as this is a background operation
     }
   }
 
   /**
-   * 合并并去重选项
+   * Merge and deduplicate options
    */
   private mergeAndDeduplicateOptions(
     currentOptions: SelectOption[],
@@ -108,12 +110,12 @@ export class PasteDataFetcher {
   ): SelectOption[] {
     const optionMap = new Map<string | number, SelectOption>();
 
-    // 先添加当前选项
+    // Add current options first
     currentOptions.forEach((option) => {
       optionMap.set(option.value, option);
     });
 
-    // 再添加新选项（会覆盖重复的）
+    // Then add new options (will overwrite duplicates)
     newOptions.forEach((option) => {
       optionMap.set(option.value, option);
     });

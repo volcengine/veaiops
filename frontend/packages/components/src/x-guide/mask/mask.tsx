@@ -18,7 +18,7 @@ import { createPortal } from 'react-dom';
 import { PREFIX_CLS } from '../constant/const';
 import { getDocument, getMaskStyle } from '../utils';
 
-// 使用对象包装回调函数，避免导出可变绑定
+// Use object to wrap callback functions, avoid exporting mutable bindings
 const scrollCallbacks = {
   onScrollStart: () => undefined,
   onScrollEnd: () => undefined,

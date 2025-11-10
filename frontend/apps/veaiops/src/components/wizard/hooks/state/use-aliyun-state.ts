@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 阿里云状态管理Hook
- * @description 管理阿里云相关的状态更新逻辑
+ * Aliyun state management Hook
+ * @description Manages Aliyun-related state update logic
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -30,7 +30,7 @@ import type {
 export const useAliyunState = (
   setState: React.Dispatch<React.SetStateAction<WizardState>>,
 ) => {
-  // 更新项目列表
+  // Update project list
   const updateProjects = useCallback(
     (projects: AliyunProject[], hasAttemptedFetch = true) => {
       setState((prev) => ({
@@ -41,7 +41,7 @@ export const useAliyunState = (
     [setState],
   );
 
-  // 设置选中的命名空间（重命名：setSelectedProject -> setSelectNamespace）
+  // Set selected namespace (renamed: setSelectedProject -> setSelectNamespace)
   const setSelectNamespace = useCallback(
     (namespace: AliyunProject | null) => {
       setState((prev) => ({
@@ -49,7 +49,7 @@ export const useAliyunState = (
         aliyun: {
           ...prev.aliyun,
           selectNamespace: namespace,
-          // 切换命名空间时清除所有后续依赖数据
+          // Clear all dependent data when switching namespace
           metrics: [],
           selectedMetric: null,
           instances: [],
@@ -61,7 +61,7 @@ export const useAliyunState = (
     [setState],
   );
 
-  // 更新指标列表
+  // Update metrics list
   const updateMetrics = useCallback(
     (metrics: AliyunMetric[]) => {
       setState((prev) => ({
@@ -72,7 +72,7 @@ export const useAliyunState = (
     [setState],
   );
 
-  // 设置选中的指标
+  // Set selected metric
   const setSelectedMetric = useCallback(
     (metric: AliyunMetric | null) => {
       setState((prev) => ({
@@ -80,7 +80,7 @@ export const useAliyunState = (
         aliyun: {
           ...prev.aliyun,
           selectedMetric: metric,
-          // 切换监控项时清除实例和分组，防止数据不一致
+          // Clear instances and groups when switching metrics to prevent data inconsistency
           instances: [],
           selectedInstances: [],
           selectedGroupBy: [],
@@ -90,7 +90,7 @@ export const useAliyunState = (
     [setState],
   );
 
-  // 更新实例列表
+  // Update instances list
   const updateInstances = useCallback(
     (instances: AliyunInstance[]) => {
       setState((prev) => ({
@@ -101,7 +101,7 @@ export const useAliyunState = (
     [setState],
   );
 
-  // 设置选中的实例
+  // Set selected instances
   const setSelectedInstances = useCallback(
     (instances: AliyunInstance[]) => {
       setState((prev) => ({
@@ -112,7 +112,7 @@ export const useAliyunState = (
     [setState],
   );
 
-  // 设置选中的分组维度
+  // Set selected groupBy dimensions
   const setSelectedGroupBy = useCallback(
     (groupBy: string[]) => {
       setState((prev) => ({
@@ -123,34 +123,34 @@ export const useAliyunState = (
     [setState],
   );
 
-  // 设置Region（更新到 aliyun.region 独立字段）
+  // Set Region (update to independent aliyun.region field)
   const setRegion = useCallback(
     (region: string) => {
       setState((prev) => ({
         ...prev,
         aliyun: {
           ...prev.aliyun,
-          region, // 更新独立的 region 字段
+          region, // Update independent region field
         },
       }));
     },
     [setState],
   );
 
-  // 清空项目相关数据
+  // Clear project-related data
   const clearProjectData = useCallback(() => {
     setState((prev) => ({
       ...prev,
       aliyun: {
         ...prev.aliyun,
         projects: [],
-        selectNamespace: null, // 重命名：selectedProject -> selectNamespace
+        selectNamespace: null, // Renamed: selectedProject -> selectNamespace
         hasAttemptedFetch: true,
       },
     }));
   }, [setState]);
 
-  // 清空指标相关数据
+  // Clear metric-related data
   const clearMetricData = useCallback(() => {
     setState((prev) => ({
       ...prev,
@@ -162,7 +162,7 @@ export const useAliyunState = (
     }));
   }, [setState]);
 
-  // 清空实例相关数据
+  // Clear instance-related data
   const clearInstanceData = useCallback(() => {
     setState((prev) => ({
       ...prev,
@@ -176,13 +176,13 @@ export const useAliyunState = (
 
   return {
     updateProjects,
-    setSelectNamespace, // 重命名：setSelectedProject -> setSelectNamespace
+    setSelectNamespace, // Renamed: setSelectedProject -> setSelectNamespace
     updateMetrics,
     setSelectedMetric,
     updateInstances,
     setSelectedInstances,
     setSelectedGroupBy,
-    setRegion, // 更新独立的 aliyun.region 字段
+    setRegion, // Update independent aliyun.region field
     clearProjectData,
     clearMetricData,
     clearInstanceData,

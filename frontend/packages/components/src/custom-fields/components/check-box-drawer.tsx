@@ -25,29 +25,29 @@ import {
 } from 'react';
 
 export interface CheckBoxDrawerProps<T = any> {
-  /** 禁止选择的字段 */
+  /** Fields that cannot be selected */
   disabledFields: Map<string, string | undefined>;
-  /** 基础的列 */
+  /** Base columns */
   columns: ModernTableColumnProps<T>[];
-  /** 显/隐 */
+  /** Show/hide */
   visible: boolean;
-  /** 关闭 */
+  /** Close */
   close: () => void;
-  /** 确认 */
+  /** Confirm */
   confirm: (value: string[]) => void;
-  /** 当前值 */
+  /** Current value */
   value: string[] | undefined;
-  /** 标题 */
+  /** Title */
   title: string;
-  /** 初始值 */
+  /** Initial value */
   initialValue?: string[];
 }
 
 const size = 'small';
 
 /**
- * 自定义字段选择抽屉组件
- * 支持字段选择、排序、搜索等功能
+ * Custom field selection drawer component
+ * Supports field selection, sorting, search and other functions
  */
 export const CheckBoxDrawer: FC<CheckBoxDrawerProps> = ({
   disabledFields,
@@ -61,7 +61,7 @@ export const CheckBoxDrawer: FC<CheckBoxDrawerProps> = ({
   const [dataSource, setDataSource] = useState<TransferItem[]>([]);
   const [currentValue, setCurrentValue] = useState<string[]>(value);
 
-  // 转换数据源
+  // Transform data source
   const transformDataSource = useCallback(
     (
       columns: ModernTableColumnProps[],
@@ -78,7 +78,7 @@ export const CheckBoxDrawer: FC<CheckBoxDrawerProps> = ({
     [],
   );
 
-  // 排序拖拽项
+  // Sort drag items
   const sortDropItem = useCallback(
     <T extends TransferItem | string>(
       arr: Array<T>,
@@ -87,9 +87,9 @@ export const CheckBoxDrawer: FC<CheckBoxDrawerProps> = ({
     ): Array<T> => {
       const cloneArr = [...arr];
       const isDesc = dropIndex > dragIndex;
-      // 插入
+      // Insert
       cloneArr.splice(isDesc ? dropIndex + 1 : dropIndex, 0, arr[dragIndex]);
-      // 删除
+      // Delete
       const delIndex = isDesc
         ? cloneArr.indexOf(arr[dragIndex])
         : cloneArr.lastIndexOf(arr[dragIndex]);
@@ -99,21 +99,21 @@ export const CheckBoxDrawer: FC<CheckBoxDrawerProps> = ({
     [],
   );
 
-  // 搜索过滤
+  // Search filter
   const onSearch = useCallback(
     (inputValue: string, item: TransferItem) =>
       item?.key?.includes(inputValue) || item?.value?.includes(inputValue),
     [],
   );
 
-  // 获取所有字段
+  // Get all field keys
   const getAllFieldKeys = useCallback(
     (columns: ModernTableColumnProps[]): string[] =>
       columns.map((col) => col?.dataIndex as string).filter(Boolean),
     [],
   );
 
-  // 获取非禁用的字段
+  // Get enabled field keys
   const getEnabledFieldKeys = useCallback(
     (
       columns: ModernTableColumnProps[],
@@ -166,14 +166,14 @@ export const CheckBoxDrawer: FC<CheckBoxDrawerProps> = ({
     [dataSource, currentValue, sortDropItem],
   );
 
-  // 初始化数据源
+  // Initialize data source
   useEffect(() => {
     const newDataSource = transformDataSource(columns, value, disabledFields);
     setDataSource(newDataSource);
     setCurrentValue(value);
   }, [columns, value, disabledFields, transformDataSource]);
 
-  // 更新当前值
+  // Update current value
   useEffect(() => {
     if (value !== currentValue) {
       setCurrentValue(value || []);
@@ -206,8 +206,8 @@ export const CheckBoxDrawer: FC<CheckBoxDrawerProps> = ({
         disabled,
       }}
       cancelButtonProps={{ size }}
-      cancelText="取消"
-      okText="应用"
+      cancelText="Cancel"
+      okText="Apply"
       unmountOnExit
     >
       <Transfer
@@ -216,20 +216,20 @@ export const CheckBoxDrawer: FC<CheckBoxDrawerProps> = ({
         filterOption={onSearch}
         draggable
         listStyle={{ width: 300, overflow: 'scroll' }}
-        searchPlaceholder="搜索字段"
+        searchPlaceholder="Search fields"
         showFooter={[
           <Button key="select_all" size="mini" type="text" onClick={setAll}>
-            全选
+            Select All
           </Button>,
           false,
         ]}
         targetKeys={currentValue}
         dataSource={dataSource}
         titleTexts={[
-          ({ countTotal }) => <span>待选择 {countTotal} 项</span>,
+          ({ countTotal }) => <span>To Select {countTotal} items</span>,
           ({ countTotal, clear }) => (
             <div className="flex-1 flex items-center justify-between">
-              <span>已选择 {countTotal} 项</span>
+              <span>Selected {countTotal} items</span>
               <Button type="text" icon={<span>🗑️</span>} onClick={clear} />
             </div>
           ),

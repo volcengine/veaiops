@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接创建/编辑表单组件
+ * Connection create/edit form component
  */
 
 import { getDataSourceDisplayName } from '@/utils/data-source-utils';
@@ -28,7 +28,7 @@ import {
 import { IconClose, IconSave } from '@arco-design/web-react/icon';
 import { DataSourceType } from 'api-generate';
 import type React from 'react';
-// 使用从lib/types导入的ConnectFormProps类型
+// Use ConnectFormProps type imported from lib/types
 import type { ConnectFormProps } from '../../../connection/lib';
 import { useConnectionTestLogic } from '../../hooks/use-connection-test-logic';
 import { useFormSubmission } from '../../hooks/use-form-submission';
@@ -59,7 +59,7 @@ export const ConnectForm: React.FC<ConnectFormProps> = ({
     onSubmit,
   });
 
-  // 渲染认证字段
+  // Render credential fields
   const renderCredentialFields = () => {
     switch (type) {
       case DataSourceType.ZABBIX:
@@ -83,7 +83,7 @@ export const ConnectForm: React.FC<ConnectFormProps> = ({
           ...initialValues,
         }}
       >
-        {/* 基础信息 */}
+        {/* Basic information */}
         <Form.Item
           label="连接名称"
           field="name"
@@ -100,15 +100,15 @@ export const ConnectForm: React.FC<ConnectFormProps> = ({
           />
         </Form.Item>
 
-        {/* 启用状态字段 - 隐藏但保留数据 */}
+        {/* Active status field - Hidden but preserve data */}
         <Form.Item field="is_active" style={{ display: 'none' }}>
           <Switch checkedText="启用" uncheckedText="禁用" />
         </Form.Item>
 
-        {/* 认证信息 */}
+        {/* Authentication information */}
         {renderCredentialFields()}
 
-        {/* 连接测试结果 */}
+        {/* Connection test result */}
         {testResult && (
           <Alert
             type={testResult.success ? 'success' : 'error'}
@@ -117,7 +117,7 @@ export const ConnectForm: React.FC<ConnectFormProps> = ({
           />
         )}
 
-        {/* 操作按钮 */}
+        {/* Action buttons */}
         <div className="flex justify-between mt-6">
           <Button
             onClick={() => handleTestConnection(form.getFieldsValue())}
@@ -141,7 +141,7 @@ export const ConnectForm: React.FC<ConnectFormProps> = ({
         </div>
       </Form>
 
-      {/* 连接测试弹窗 */}
+      {/* Connection test modal */}
       <ConnectTestModal
         visible={testModalVisible}
         connect={testConnectionData}

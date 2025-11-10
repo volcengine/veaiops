@@ -15,15 +15,15 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ChatUpdateRequest = {
   /**
-   * 群名称
+   * Chat name
    */
   name?: string;
   /**
-   * 群描述
+   * Chat description
    */
   description?: string;
   /**
-   * 是否激活
+   * Whether the chat is active
    */
   is_active?: boolean;
 };

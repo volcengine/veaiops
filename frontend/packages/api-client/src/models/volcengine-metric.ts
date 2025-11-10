@@ -15,23 +15,23 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type VolcengineMetric = {
   /**
-   * 指标名称
+   * Metric name
    */
   metric_name: string;
   /**
-   * 命名空间
+   * Namespace
    */
   namespace: string;
   /**
-   * 子命名空间
+   * Sub namespace
    */
   sub_namespace?: string;
   /**
-   * 指标描述
+   * Metric description
    */
   description?: string;
   /**
-   * 指标单位
+   * Metric unit
    */
   unit?: string;
 };

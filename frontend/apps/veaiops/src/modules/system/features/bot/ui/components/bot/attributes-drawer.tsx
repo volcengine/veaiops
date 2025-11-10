@@ -25,21 +25,23 @@ interface BotAttributesDrawerProps {
 }
 
 /**
- * Bot特别关注抽屉组件
- * 显示Bot的特别关注信息（对应v2分支的实现）
+ * Bot special attention drawer component
+ * Displays Bot's special attention information (corresponds to v2 branch implementation)
  *
- * 重构说明（对齐 origin/feat/web-v2 分支）：
- * - 使用 BotDrawerTitle 组件显示标题和Bot信息（App ID、名称）
- * - 抽屉宽度设置为 1000（v2分支为1000，当前分支原为800）
- * - 移除 footer（footer={null}）
- * - 添加 focusLock={false}
- * - 移除 onOk 属性（v2分支使用 footer={null}，不需要onOk）
- * - 使用 ui/bot-attributes-table 作为表格组件（与v2分支路径一致）
+ * Refactoring notes (aligned with origin/feat/web-v2 branch):
+ * - Use BotDrawerTitle component to display title and Bot information (App ID, name)
+ * - Set drawer width to 1000 (v2 branch is 1000, current branch originally was 800)
+ * - Remove footer (footer={null})
+ * - Add focusLock={false}
+ * - Remove onOk property (v2 branch uses footer={null}, no need for onOk)
+ * - Use ui/bot-attributes-table as table component (consistent with v2 branch path)
  *
- * 命名说明：
- * - 技术实现层面：使用"Bot属性"（BotAttribute）作为数据模型名称
- * - 用户界面层面：使用"特别关注"（Special Attention）作为显示名称
- * - 与origin/feat/web-v2分支保持一致的用户体验
+ * Naming notes:
+ * - Technical implementation level: Use BotAttribute as data model name
+ *   (Chinese term: "Bot属性")
+ * - User interface level: Use "特别关注" (Special Attention) as display name
+ *   (Note: "特别关注" is the Chinese UI text, should remain in Chinese)
+ * - Maintain consistent user experience with origin/feat/web-v2 branch
  */
 export const BotAttributesDrawer: React.FC<BotAttributesDrawerProps> = ({
   visible,
@@ -50,8 +52,8 @@ export const BotAttributesDrawer: React.FC<BotAttributesDrawerProps> = ({
     return null;
   }
 
-  // 从Bot对象中获取渠道类型
-  // Bot.channel 和 ChannelType 枚举值相同，通过字符串值进行转换
+  // Get channel type from Bot object
+  // Bot.channel and ChannelType enum values are the same, convert through string value
   const channelType =
     (bot.channel as string as ChannelType) || ChannelType.LARK;
 

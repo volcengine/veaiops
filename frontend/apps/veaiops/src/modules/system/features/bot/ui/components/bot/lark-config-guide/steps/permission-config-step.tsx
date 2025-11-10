@@ -33,7 +33,7 @@ interface PermissionConfigStepProps {
 }
 
 /**
- * 权限配置步骤组件
+ * Permission configuration step component
  */
 export const PermissionConfigStep: React.FC<PermissionConfigStepProps> = ({
   currentBotId,

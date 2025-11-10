@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 密码输入表单组件
+ * Password input form component
  */
 
 import { Form } from '@arco-design/web-react';
@@ -38,15 +38,15 @@ export const PasswordForm = forwardRef<PasswordFormRef, PasswordFormProps>(
   ) => {
     const [form] = Form.useForm();
 
-    // 根据连接类型确定需要禁用的字段（除了密码/Secret字段）
+    // Determine fields to disable based on connection type (except password/Secret fields)
     const getDisabledFields = (type: DataSourceType): string[] => {
       switch (type) {
         case 'Zabbix':
-          return ['zabbix_api_url', 'zabbix_api_user']; // 禁用URL和用户名，保留密码可编辑
+          return ['zabbix_api_url', 'zabbix_api_user']; // Disable URL and username, keep password editable
         case 'Aliyun':
-          return ['aliyun_access_key_id']; // 禁用Access Key ID，保留Secret可编辑
+          return ['aliyun_access_key_id']; // Disable Access Key ID, keep Secret editable
         case 'Volcengine':
-          return ['volcengine_access_key_id']; // 禁用Access Key ID，保留Secret可编辑
+          return ['volcengine_access_key_id']; // Disable Access Key ID, keep Secret editable
         default:
           return [];
       }
@@ -59,7 +59,7 @@ export const PasswordForm = forwardRef<PasswordFormRef, PasswordFormProps>(
         const values = await form.validate();
         onSubmit(values);
       } catch (error: unknown) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+        // ✅ Correct: Use logger to record error and expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         logger.error({

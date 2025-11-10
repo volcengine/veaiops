@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 卡片模版管理页面入口
- * @description 页面入口，实际实现位于 modules/system/features/card-template
+ * Card template management page entry
+ * @description Page entry, actual implementation located at modules/system/features/card-template
  */
 
-// ✅ 修复循环依赖：index.tsx 已重命名为 page.tsx
+// ✅ Fix circular dependency: index.tsx has been renamed to page.tsx
 export { default } from './page';
-// 配置导出
+// Configuration exports
 export * from './config';
-// Hooks导出
+// Hooks exports
 export * from './hooks';
-// 子组件导出
+// Sub-component exports
 export * from './components';

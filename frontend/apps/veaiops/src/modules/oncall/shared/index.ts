@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Oncall 模块共享资源导出
+// Oncall module shared resources exports
 
-// 常量导出
+// Constants exports
 export * from './constants';
 
-// 类型导出
+// Types exports
 export * from './types';

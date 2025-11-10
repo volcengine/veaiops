@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格分页插件默认配置
+ * Table pagination plugin default configuration
  */
 import type { TablePaginationConfig } from '@/custom-table/types';
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
@@ -21,12 +21,12 @@ import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 export const DEFAULT_TABLE_PAGINATION_CONFIG: TablePaginationConfig = {
   enabled: true,
   priority: PluginPriorityEnum.MEDIUM,
-  // defaultPageSize: 10, // 移除不存在的属性
-  // defaultCurrent: 1, // 移除不存在的属性
+  // defaultPageSize: 10, // Removed non-existent property
+  // defaultCurrent: 1, // Removed non-existent property
   pageSizeOptions: [10, 20, 50, 100],
   showTotal: true,
-  // showJumper: true, // 移除不存在的属性
-  // showPageSize: true, // 移除不存在的属性
+  // showJumper: true, // Removed non-existent property
+  // showPageSize: true, // Removed non-existent property
   position: 'bottomCenter',
-  // autoReset: true, // 移除不存在的属性
+  // autoReset: true, // Removed non-existent property
 };

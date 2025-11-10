@@ -13,26 +13,26 @@
 // limitations under the License.
 
 /**
- * CustomTable 常量统一导出
+ * CustomTable constants unified exports
 
  *
  */
 
-// 列相关常量
+// Column-related constants
 export * from './column';
 
-// 重新导出类型常量中的枚举
+// Re-export enums from type constants
 export {
   PluginMethods,
   PluginNames,
   RendererNames,
 } from '@/custom-table/types/constants/enum';
 
-// 导出所有常量
+// Export all constants
 export * from './features';
 export * from './plugins';
-// export * from './table'; // 暂时注释掉不存在的模块
-// export * from './performance'; // 暂时注释掉不存在的模块
+// export * from './table'; // Temporarily commented out non-existent module
+// export * from './performance'; // Temporarily commented out non-existent module
 
 export interface FeatureFlags {
   [key: string]: boolean;

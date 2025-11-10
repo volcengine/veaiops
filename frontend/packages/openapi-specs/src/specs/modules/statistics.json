@@ -3,12 +3,12 @@
     "/apis/v1/manager/statistics/summary/": {
       "get": {
         "tags": ["Statistics"],
-        "summary": "获取系统统计信息",
-        "description": "获取系统各模块的统计数据，包括活跃数量、事件数量、消息数量等",
+        "summary": "Get System Statistics",
+        "description": "Get statistics data for all system modules, including active counts, event counts, message counts, etc.",
         "operationId": "getStatisticsSummary",
         "responses": {
           "200": {
-            "description": "成功获取统计信息",
+            "description": "Successfully retrieved statistics",
             "content": {
               "application/json": {
                 "schema": {
@@ -18,7 +18,7 @@
             }
           },
           "400": {
-            "description": "请求参数错误",
+            "description": "Invalid request parameters",
             "content": {
               "application/json": {
                 "schema": {
@@ -28,7 +28,7 @@
             }
           },
           "500": {
-            "description": "服务器内部错误",
+            "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
@@ -48,99 +48,99 @@
         "properties": {
           "active_bots": {
             "type": "integer",
-            "description": "活跃机器人数量"
+            "description": "Number of active bots"
           },
           "active_chats": {
             "type": "integer",
-            "description": "活跃群数量"
+            "description": "Number of active chats"
           },
           "active_inform_strategies": {
             "type": "integer",
-            "description": "活跃消息卡片通知策略数量"
+            "description": "Number of active inform strategies"
           },
           "active_subscribes": {
             "type": "integer",
-            "description": "活跃订阅数量"
+            "description": "Number of active subscriptions"
           },
           "active_users": {
             "type": "integer",
-            "description": "活跃用户数量"
+            "description": "Number of active users"
           },
           "active_products": {
             "type": "integer",
-            "description": "活跃产品数量"
+            "description": "Number of active products"
           },
           "active_projects": {
             "type": "integer",
-            "description": "活跃项目数量"
+            "description": "Number of active projects"
           },
           "active_customers": {
             "type": "integer",
-            "description": "活跃客户数量"
+            "description": "Number of active customers"
           },
           "active_intelligent_threshold_tasks": {
             "type": "integer",
-            "description": "活跃智能阈值任务数量"
+            "description": "Number of active intelligent threshold tasks"
           },
           "active_intelligent_threshold_autoupdate_tasks": {
             "type": "integer",
-            "description": "活跃智能阈值自动更新任务数量"
+            "description": "Number of active intelligent threshold auto-update tasks"
           },
           "latest_1d_intelligent_threshold_success_num": {
             "type": "integer",
-            "description": "最近1天智能阈值成功数量"
+            "description": "Number of successful intelligent threshold tasks in the last 1 day"
           },
           "latest_1d_intelligent_threshold_failed_num": {
             "type": "integer",
-            "description": "最近1天智能阈值失败数量"
+            "description": "Number of failed intelligent threshold tasks in the last 1 day"
           },
           "latest_7d_intelligent_threshold_success_num": {
             "type": "integer",
-            "description": "最近7天智能阈值成功数量"
+            "description": "Number of successful intelligent threshold tasks in the last 7 days"
           },
           "latest_7d_intelligent_threshold_failed_num": {
             "type": "integer",
-            "description": "最近7天智能阈值失败数量"
+            "description": "Number of failed intelligent threshold tasks in the last 7 days"
           },
           "latest_30d_intelligent_threshold_success_num": {
             "type": "integer",
-            "description": "最近30天智能阈值成功数量"
+            "description": "Number of successful intelligent threshold tasks in the last 30 days"
           },
           "latest_30d_intelligent_threshold_failed_num": {
             "type": "integer",
-            "description": "最近30天智能阈值失败数量"
+            "description": "Number of failed intelligent threshold tasks in the last 30 days"
           },
           "latest_24h_events": {
             "type": "integer",
-            "description": "最近24小时事件数量"
+            "description": "Number of events in the last 24 hours"
           },
           "last_1d_events": {
             "type": "integer",
-            "description": "最近1天事件数量"
+            "description": "Number of events in the last 1 day"
           },
           "last_7d_events": {
             "type": "integer",
-            "description": "最近7天事件数量"
+            "description": "Number of events in the last 7 days"
           },
           "last_30d_events": {
             "type": "integer",
-            "description": "最近30天事件数量"
+            "description": "Number of events in the last 30 days"
           },
           "latest_24h_messages": {
             "type": "integer",
-            "description": "最近24小时消息数量"
+            "description": "Number of messages in the last 24 hours"
           },
           "last_1d_messages": {
             "type": "integer",
-            "description": "最近1天消息数量"
+            "description": "Number of messages in the last 1 day"
           },
           "last_7d_messages": {
             "type": "integer",
-            "description": "最近7天消息数量"
+            "description": "Number of messages in the last 7 days"
           },
           "last_30d_messages": {
             "type": "integer",
-            "description": "最近30天消息数量"
+            "description": "Number of messages in the last 30 days"
           }
         },
         "required": [

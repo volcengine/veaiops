@@ -25,7 +25,7 @@ import {
 } from './utils';
 
 /**
- * 类型守卫：确保 tableId 是 string 类型
+ * Type guard: ensure tableId is string type
  */
 function assertTableId(tableId: string | undefined): asserts tableId is string {
   if (!tableId) {
@@ -34,7 +34,7 @@ function assertTableId(tableId: string | undefined): asserts tableId is string {
 }
 
 /**
- * 创建列宽持久化插件的辅助方法的参数接口
+ * CreateColumnWidthHelpers parameter interface
  */
 export interface CreateColumnWidthHelpersParams {
   context: PluginContext;
@@ -44,7 +44,7 @@ export interface CreateColumnWidthHelpersParams {
 }
 
 /**
- * 设置持久化列宽的参数接口
+ * SetPersistentColumnWidth parameter interface
  */
 export interface SetPersistentColumnWidthParams {
   dataIndex: string;
@@ -52,7 +52,7 @@ export interface SetPersistentColumnWidthParams {
 }
 
 /**
- * 创建列宽持久化插件的辅助方法
+ * Create column width persistence plugin helper methods
  */
 export function createColumnWidthHelpers({
   context,
@@ -61,7 +61,7 @@ export function createColumnWidthHelpers({
   baseColumns,
 }: CreateColumnWidthHelpersParams) {
   return {
-    // 设置单个列的持久化宽度
+    // Set persistent width for a single column
     setPersistentColumnWidth: ({
       dataIndex,
       width,
@@ -82,12 +82,12 @@ export function createColumnWidthHelpers({
       if (!resolvedTableId) {
         return;
       }
-      // 类型收缩后，resolvedTableId 肯定不为空
-      // 使用明确的类型声明确保 TypeScript 识别正确的类型
+      // After type narrowing, resolvedTableId is definitely not empty
+      // Use explicit type declaration to ensure TypeScript recognizes the correct type
       const currentTableId: string = resolvedTableId;
       const currentPersistentWidths = persistenceState?.persistentWidths || {};
 
-      // 更新持久化状态
+      // Update persistence state
       Object.assign(context.state, {
         columnWidthPersistence: {
           ...persistenceState,
@@ -98,7 +98,7 @@ export function createColumnWidthHelpers({
         },
       });
 
-      // 更新列配置
+      // Update column configuration
       const currentColumns =
         (context.state as { columns?: Record<string, unknown>[] }).columns ||
         [];
@@ -108,15 +108,15 @@ export function createColumnWidthHelpers({
       );
       Object.assign(context.state, { columns: updatedColumns });
 
-      // 保存到本地存储
+      // Save to local storage
       if (
         config.enableLocalStorage &&
         localStorageUtils.isAvailable() &&
         resolvedTableId
       ) {
-        // 使用类型守卫确保类型收缩
+        // Use type guard to ensure type narrowing
         assertTableId(resolvedTableId);
-        // 类型守卫后，resolvedTableId 已经被收缩为 string 类型
+        // After type guard, resolvedTableId has been narrowed to string type
         const storageKey = generateStorageKey({
           prefix: config.storageKeyPrefix,
           tableId: resolvedTableId,
@@ -134,7 +134,7 @@ export function createColumnWidthHelpers({
       });
     },
 
-    // 批量设置持久化列宽度
+    // Batch set persistent column widths
     setBatchPersistentColumnWidths: (widthsMap: Record<string, number>) => {
       const persistenceState = (
         context.state as {
@@ -148,13 +148,13 @@ export function createColumnWidthHelpers({
       if (!resolvedTableId) {
         return;
       }
-      // 类型收缩后，resolvedTableId 肯定不为空
-      // 使用明确的类型声明确保 TypeScript 识别正确的类型
+      // After type narrowing, resolvedTableId is definitely not empty
+      // Use explicit type declaration to ensure TypeScript recognizes the correct type
       const currentTableId: string = resolvedTableId;
       const currentPersistentWidths = persistenceState?.persistentWidths || {};
       const validatedWidths: Record<string, number> = {};
 
-      // 验证所有宽度值
+      // Validate all width values
       Object.entries(widthsMap).forEach(([dataIndex, width]) => {
         validatedWidths[dataIndex] = validateColumnWidth({
           width,
@@ -162,7 +162,7 @@ export function createColumnWidthHelpers({
         });
       });
 
-      // 更新持久化状态
+      // Update persistence state
       Object.assign(context.state, {
         columnWidthPersistence: {
           ...persistenceState,
@@ -173,7 +173,7 @@ export function createColumnWidthHelpers({
         },
       });
 
-      // 更新列配置
+      // Update column configuration
       const currentColumns =
         (context.state as { columns?: Record<string, unknown>[] }).columns ||
         [];
@@ -192,15 +192,15 @@ export function createColumnWidthHelpers({
       );
       Object.assign(context.state, { columns: updatedColumns });
 
-      // 保存到本地存储
+      // Save to local storage
       if (
         config.enableLocalStorage &&
         localStorageUtils.isAvailable() &&
         resolvedTableId
       ) {
-        // 使用类型守卫确保类型收缩
+        // Use type guard to ensure type narrowing
         assertTableId(resolvedTableId);
-        // 类型守卫后，resolvedTableId 已经被收缩为 string 类型
+        // After type guard, resolvedTableId has been narrowed to string type
         const storageKey = generateStorageKey({
           prefix: config.storageKeyPrefix,
           tableId: resolvedTableId,
@@ -219,7 +219,7 @@ export function createColumnWidthHelpers({
       });
     },
 
-    // 获取持久化列宽度
+    // Get persistent column width
     getPersistentColumnWidth: (dataIndex: string): number | undefined => {
       const persistenceState = (
         context.state as {
@@ -231,7 +231,7 @@ export function createColumnWidthHelpers({
       return persistenceState?.persistentWidths?.[dataIndex];
     },
 
-    // 获取所有持久化列宽度
+    // Get all persistent column widths
     getAllPersistentColumnWidths: (): Record<string, number> => {
       const persistenceState = (
         context.state as {
@@ -243,7 +243,7 @@ export function createColumnWidthHelpers({
       return persistenceState?.persistentWidths || {};
     },
 
-    // 清除持久化列宽度
+    // Clear persistent column widths
     clearPersistentColumnWidths: () => {
       const persistenceState = (
         context.state as {
@@ -257,8 +257,8 @@ export function createColumnWidthHelpers({
       if (!resolvedTableId) {
         return;
       }
-      // 类型收缩后，resolvedTableId 肯定不为空
-      // 使用明确的类型声明确保 TypeScript 识别正确的类型
+      // After type narrowing, resolvedTableId is definitely not empty
+      // Use explicit type declaration to ensure TypeScript recognizes the correct type
       const currentTableId: string = resolvedTableId;
 
       Object.assign(context.state, {
@@ -268,9 +268,9 @@ export function createColumnWidthHelpers({
         },
       });
 
-      // 清除本地存储
+      // Clear local storage
       if (config.enableLocalStorage && localStorageUtils.isAvailable()) {
-        // resolvedTableId 在 if (!resolvedTableId) return 后保证非空
+        // resolvedTableId is guaranteed to be non-empty after if (!resolvedTableId) return
         if (!resolvedTableId) {
           return;
         }
@@ -287,7 +287,7 @@ export function createColumnWidthHelpers({
       });
     },
 
-    // 检测并保存当前列宽度
+    // Detect and save current column widths
     detectAndSaveColumnWidths: (tableContainer: HTMLElement) => {
       if (!tableContainer) {
         return;

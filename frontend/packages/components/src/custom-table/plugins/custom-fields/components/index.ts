@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * Custom Fields 插件组件导出
+ * Custom Fields plugin component exports
  */
 export { CheckBoxDrawer } from './check-box-drawer';
 export { CustomFieldsWithCount } from './custom-fields-with-count';
-// export type { CheckBoxDrawerProps } from './check-box-drawer'; // 注意：CheckBoxDrawerProps 类型不存在
-// export type { CustomFieldsWithCountProps } from './custom-fields-with-count'; // 注意：CustomFieldsWithCountProps 类型不存在
+// export type { CheckBoxDrawerProps } from './check-box-drawer'; // Note: CheckBoxDrawerProps type does not exist
+// export type { CustomFieldsWithCountProps } from './custom-fields-with-count'; // Note: CustomFieldsWithCountProps type does not exist

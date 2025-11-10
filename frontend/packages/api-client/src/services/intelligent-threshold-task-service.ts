@@ -48,8 +48,8 @@ export class IntelligentThresholdTaskService {
   }
   /**
    * List Tasks
-   * 获取任务列表
-   * @returns PaginatedAPIResponseIntelligentThresholdTask 获取任务列表成功
+   * Get task list
+   * @returns PaginatedAPIResponseIntelligentThresholdTask Get task list successfully
    * @throws ApiError
    */
   public getApisV1IntelligentThresholdTask({
@@ -65,43 +65,43 @@ export class IntelligentThresholdTaskService {
     limit = 100,
   }: {
     /**
-     * 项目名称列表
+     * List of project names
      */
     projects?: Array<string>,
     /**
-     * 任务名称过滤
+     * Task name filter
      */
     taskName?: string,
     /**
-     * 数据源类型
+     * Data source type
      */
     datasourceType?: 'Zabbix' | 'Aliyun' | 'Volcengine',
     /**
-     * 自动更新开关
+     * Auto update switch
      */
     autoUpdate?: boolean,
     /**
-     * 创建时间范围开始
+     * Creation time range start
      */
     createdAtStart?: string,
     /**
-     * 创建时间范围结束
+     * Creation time range end
      */
     createdAtEnd?: string,
     /**
-     * 更新时间范围开始
+     * Update time range start
      */
     updatedAtStart?: string,
     /**
-     * 更新时间范围结束
+     * Update time range end
      */
     updatedAtEnd?: string,
     /**
-     * 跳过的记录数
+     * Number of records to skip
      */
     skip?: number,
     /**
-     * 每页大小
+     * Page size
      */
     limit?: number,
   }): CancelablePromise<PaginatedAPIResponseIntelligentThresholdTask> {
@@ -144,14 +144,14 @@ export class IntelligentThresholdTaskService {
   /**
    * Delete Task
    * Delete an intelligent threshold task and all its associated versions
-   * @returns APIResponse 删除任务成功
+   * @returns APIResponse Delete task successfully
    * @throws ApiError
    */
   public deleteApisV1IntelligentThresholdTask({
     taskId,
   }: {
     /**
-     * 任务ID
+     * Task ID
      */
     taskId: string,
   }): CancelablePromise<APIResponse> {
@@ -165,8 +165,8 @@ export class IntelligentThresholdTaskService {
   }
   /**
    * Rerun Task
-   * 重新运行智能阈值任务
-   * @returns APIResponseIntelligentThresholdTaskVersion 任务重新运行成功
+   * Rerun intelligent threshold task
+   * @returns APIResponseIntelligentThresholdTaskVersion Task rerun successfully
    * @throws ApiError
    */
   public postApisV1IntelligentThresholdTaskRerun({
@@ -183,8 +183,8 @@ export class IntelligentThresholdTaskService {
   }
   /**
    * List Task Versions
-   * 获取任务版本列表
-   * @returns PaginatedAPIResponseIntelligentThresholdTaskVersion 获取版本列表成功
+   * Get task version list
+   * @returns PaginatedAPIResponseIntelligentThresholdTaskVersion Get version list successfully
    * @throws ApiError
    */
   public getApisV1IntelligentThresholdTaskVersions({
@@ -198,35 +198,35 @@ export class IntelligentThresholdTaskService {
     limit = 100,
   }: {
     /**
-     * 任务ID
+     * Task ID
      */
     taskId: string,
     /**
-     * 按任务状态过滤
+     * Filter by task status
      */
     status?: IntelligentThresholdTaskStatus,
     /**
-     * 创建时间范围开始
+     * Creation time range start
      */
     createdAtStart?: string,
     /**
-     * 创建时间范围结束
+     * Creation time range end
      */
     createdAtEnd?: string,
     /**
-     * 更新时间范围开始
+     * Update time range start
      */
     updatedAtStart?: string,
     /**
-     * 更新时间范围结束
+     * Update time range end
      */
     updatedAtEnd?: string,
     /**
-     * 跳过的项目数量
+     * Number of items to skip
      */
     skip?: number,
     /**
-     * 返回的最大项目数量
+     * Maximum number of items to return
      */
     limit?: number,
   }): CancelablePromise<PaginatedAPIResponseIntelligentThresholdTaskVersion> {
@@ -247,8 +247,8 @@ export class IntelligentThresholdTaskService {
   }
   /**
    * Update Task Result Endpoint
-   * 更新任务结果
-   * @returns APIResponse 更新任务结果成功
+   * Update task result
+   * @returns APIResponse Update task result successfully
    * @throws ApiError
    */
   public postApisV1IntelligentThresholdTaskUpdateResult({

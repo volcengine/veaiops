@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 卡片模版管理页面配置
+// Card template management page configuration
 export const CARD_TEMPLATE_PAGE_CONFIG = {
   title: '卡片模版管理',
   path: '/system/card-template',

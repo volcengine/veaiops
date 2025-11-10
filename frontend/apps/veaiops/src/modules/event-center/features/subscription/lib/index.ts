@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 订阅管理 Lib 统一导出
+ * Subscription management Lib unified export
  */
 
 export {

@@ -15,32 +15,32 @@
 // ==================== React ====================
 import type React from 'react';
 
-// ==================== 项目内部包 ====================
+// ==================== Internal packages ====================
 import type apiClient from '@/utils/api-client';
 import { CustomTable } from '@veaiops/components';
 
-// ✅ 修复：直接使用 api-generate 中的 AgentTemplate 类型（单一数据源原则）
+// ✅ Fix: Directly use AgentTemplate type from api-generate (single source of truth principle)
 import type { AgentTemplate } from 'api-generate';
-// ==================== 相对路径 ====================
+// ==================== Relative paths ====================
 import { CardTemplateDrawer, CardTemplateGuide } from './components';
 import { useCardTemplatePage } from './hooks';
 
 /**
- * 事件中心 - 卡片模版管理页面
- * @description 提供消息卡片模版的创建、管理和配置功能
+ * Event center - card template management page
+ * @description Provides card template creation, management, and configuration functionality
  */
 export const CardTemplatePage: React.FC = () => {
-  // ✅ 使用内聚的页面级别 Hook，封装所有业务逻辑
+  // ✅ Use cohesive page-level Hook, encapsulates all business logic
   const {
-    // 表格引用
+    // Table reference
     tableRef,
 
-    // 引导相关状态
+    // Guide-related state
     shouldShowGuide,
     guideVisible,
     setGuideVisible,
 
-    // 管理逻辑
+    // Management logic
     managementLogic: {
       modalVisible,
       editingTemplate,
@@ -49,18 +49,18 @@ export const CardTemplatePage: React.FC = () => {
       handleSubmit,
     },
 
-    // 表格配置
+    // Table configuration
     dataSource,
     tableProps,
     handleColumns,
     handleFilters,
     queryFormat,
 
-    // 操作按钮配置
+    // Action button configuration
     actions,
   } = useCardTemplatePage();
 
-  // 如果是初始状态且列表为空，显示引导页面
+  // If in initial state and list is empty, show guide page
   if (shouldShowGuide) {
     return (
       <div className="page-container">
@@ -69,7 +69,7 @@ export const CardTemplatePage: React.FC = () => {
           onClose={() => setGuideVisible(false)}
           onComplete={() => {
             setGuideVisible(false);
-            // 刷新页面数据
+            // Refresh page data
             // window.location.reload();
           }}
         />

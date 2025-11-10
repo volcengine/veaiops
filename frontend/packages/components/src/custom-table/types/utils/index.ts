@@ -13,23 +13,23 @@
 // limitations under the License.
 
 /**
- * CustomTable 工具类型统一导出
+ * CustomTable utility types unified export
  */
 
-// ==================== 错误相关类型 ====================
+// ==================== Error Related Types ====================
 export * from './error';
 
-// ==================== 类型安全工具 ====================
+// ==================== Type Safety Utilities ====================
 export * from './type-safe-utils';
 
-// ==================== 状态管理器 ====================
-// 显式导出关键函数，确保构建工具能够正确识别（避免星号导出解析问题）
+// ==================== State Managers ====================
+// Explicitly export key functions to ensure build tools can correctly identify them (avoid star export parsing issues)
 export {
   createPaginationStateManager,
   createSorterStateManager,
   createSafeStateCleaner,
 } from './state-managers';
-// 导出类型定义
+// Export type definitions
 export type {
   PaginationStateManager,
   SorterStateManager,

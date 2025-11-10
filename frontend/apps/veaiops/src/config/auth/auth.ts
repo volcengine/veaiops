@@ -14,7 +14,7 @@
 
 import { useEffect, useState } from 'react';
 
-// 认证状态接口
+// Authentication state interface
 export interface AuthState {
   isAuthenticated: boolean | null;
   isLoading: boolean;
@@ -26,24 +26,24 @@ export interface AuthState {
   } | null;
 }
 
-// 认证配置
+// Authentication configuration
 export const authConfig = {
-  // 存储键名
+  // Storage key names
   storageKeys: {
     token: 'access_token',
     username: 'username',
     isSupervisor: 'is_supervisor',
     userData: 'id',
   },
-  // 默认重定向路径 - 跳转到第一个顶导的第一个菜单
+  // Default redirect path - redirect to the first menu of the first top navigation
   defaultRedirectPath: '/statistics/overview',
   loginPath: '/login',
-  // Token过期时间（毫秒）
-  tokenExpireTime: 7 * 24 * 60 * 60 * 1000, // 7天
-  // 开发模式配置 - 设置为 true 可绕过登录验证
+  // Token expiration time (milliseconds)
+  tokenExpireTime: 7 * 24 * 60 * 60 * 1000, // 7 days
+  // Development mode configuration - set to true to bypass login verification
   devMode: {
-    enabled: process.env.NODE_ENV === 'development', // 仅在开发环境启用
-    bypassAuth: false, // 设置为 false 使用真实认证，true 绕过认证
+    enabled: process.env.NODE_ENV === 'development', // Only enabled in development environment
+    bypassAuth: false, // Set to false to use real authentication, true to bypass authentication
     mockUser: {
       username: 'dev-user',
       token: `dev-mock-token-${Date.now()}`,
@@ -51,7 +51,7 @@ export const authConfig = {
   },
 } as const;
 
-// 认证Hook
+// Authentication Hook
 export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: null,
@@ -59,7 +59,7 @@ export const useAuth = () => {
     user: null,
   });
 
-  // 初始化认证状态
+  // Initialize authentication state
   useEffect(() => {
     const token = sessionStorage.getItem(authConfig.storageKeys.token);
     const username = sessionStorage.getItem(authConfig.storageKeys.username);
@@ -79,13 +79,13 @@ export const useAuth = () => {
     }
   }, []);
 
-  // 登录参数接口
+  // Login parameters interface
   interface LoginParams {
     username: string;
     token: string;
   }
 
-  // 登录
+  // Login
   const login = ({ username, token }: LoginParams) => {
     sessionStorage.setItem(authConfig.storageKeys.token, token);
     sessionStorage.setItem(authConfig.storageKeys.username, username);
@@ -97,7 +97,7 @@ export const useAuth = () => {
     });
   };
 
-  // 登出
+  // Logout
   const logout = () => {
     sessionStorage.removeItem(authConfig.storageKeys.token);
     sessionStorage.removeItem(authConfig.storageKeys.username);
@@ -111,12 +111,12 @@ export const useAuth = () => {
     });
   };
 
-  // 检查是否已认证
+  // Check if authenticated
   const isAuthenticated = () => {
     return authState.isAuthenticated === true;
   };
 
-  // 检查是否正在加载
+  // Check if loading
   const isLoading = () => {
     return authState.isLoading;
   };

@@ -13,29 +13,29 @@
 // limitations under the License.
 
 /**
- * 数据源连接表格过滤器配置
+ * Data source connection table filter configuration
  */
 
-// 注意：TableFiltersProps 类型已移除，使用本地定义
+// Note: TableFiltersProps type has been removed, using local definition
 interface TableFiltersProps {
   type: string;
   onFilter: (filters: Record<string, unknown>) => void;
 }
 
 /**
- * 获取表格过滤器配置
+ * Get table filter configuration
  */
 export const getTableFilters = ({
   type: _type,
   onFilter: _onFilter,
 }: TableFiltersProps) => {
-  // 暂时返回空数组，后续可以根据需要添加过滤器
-  // 可以添加状态过滤、时间范围过滤等
+  // Temporarily return empty array, can add filters as needed later
+  // Can add status filter, time range filter, etc.
   return [];
 };
 
 /**
- * 状态过滤器选项
+ * Status filter options
  */
 export const STATUS_FILTER_OPTIONS = [
   { label: '全部', value: '' },
@@ -44,7 +44,7 @@ export const STATUS_FILTER_OPTIONS = [
 ];
 
 /**
- * 时间范围过滤器选项
+ * Time range filter options
  */
 export const TIME_RANGE_FILTER_OPTIONS = [
   { label: '全部', value: '' },

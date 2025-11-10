@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 火山引擎数据源创建函数
+ * Volcengine data source creation function
  */
 
 import type { WizardState } from '@/components/wizard/types';
@@ -29,18 +29,18 @@ export const createVolcengineDataSource = async (
   const config: VolcengineDataSourceConfig = {
     name: state.dataSourceName,
     connect_name: state.selectedConnect!.name,
-    region: state.volcengine.region ?? undefined, // 已通过前置校验确保必填
+    region: state.volcengine.region ?? undefined, // Required, validated in previous step
     namespace: state.volcengine.selectedProduct!.namespace,
     sub_namespace: state.volcengine.selectedSubNamespace ?? undefined,
     metric_name: state.volcengine.selectedMetric!.metricName,
-    // 添加实例列表
+    // Add instance list
     instances:
       state.volcengine.selectedInstances.length > 0
         ? state.volcengine.selectedInstances.map(
             (instance) => instance.dimensions,
           )
         : undefined,
-    // 添加分组维度
+    // Add grouping dimensions
     group_by:
       state.volcengine.selectedGroupBy &&
       state.volcengine.selectedGroupBy.length > 0

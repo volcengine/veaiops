@@ -24,11 +24,9 @@ import {
   Tooltip,
 } from "@arco-design/web-react";
 import { IconCopy, IconDelete, IconEdit } from "@arco-design/web-react/icon";
-import { CellRender } from "@veaiops/components";
+import { CustomOutlineTag } from "@veaiops/components";
 import { AGENT_TYPE_MAP, CHANNEL_OPTIONS, EMPTY_CONTENT_TEXT } from "@veaiops/constants";
 import type { AgentTemplate } from "api-generate";
-
-const { CustomOutlineTag, StampTime } = CellRender;
 
 interface ColumnProps {
   onEdit?: (record: AgentTemplate) => Promise<boolean>;
@@ -94,7 +92,7 @@ export const getCardTemplateColumns = (props: ColumnProps = {}) => {
                       document.execCommand("copy");
                       Message.success("复制成功");
                     } catch (error) {
-                      // ✅ Correct: expose actual error message
+                      // ✅ Correct: Expose actual error information
                       const errorMessage =
                         error instanceof Error ? error.message : '复制失败';
                       Message.error(errorMessage);
@@ -147,14 +145,24 @@ export const getCardTemplateColumns = (props: ColumnProps = {}) => {
       dataIndex: "created_at",
       key: "created_at",
       width: 180,
-      render: (text: string) => <StampTime time={text} />,
+      render: (text: string) => {
+        if (!text) {
+          return EMPTY_CONTENT_TEXT;
+        }
+        return new Date(text).toLocaleString("zh-CN");
+      },
     },
     {
       title: "更新时间",
       dataIndex: "updated_at",
       key: "updated_at",
       width: 180,
-      render: (text: string) => <StampTime time={text} />,
+      render: (text: string) => {
+        if (!text) {
+          return EMPTY_CONTENT_TEXT;
+        }
+        return new Date(text).toLocaleString("zh-CN");
+      },
     },
     {
       title: "操作",

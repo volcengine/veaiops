@@ -13,166 +13,166 @@
 // limitations under the License.
 
 /**
- * 指标类型枚举
+ * Metric type enumeration
  */
 export enum MetricType {
-  /** 自定义 */
+  /** Custom defined */
   SelfDefined = 'SelfDefined',
-  /** 成功率 (0-1) */
+  /** Success rate (0-1) */
   SuccessRate = 'SuccessRate',
-  /** 成功率 (0-100) */
+  /** Success rate (0-100) */
   SuccessRate100 = 'SuccessRate100',
-  /** 错误率 (0-1) */
+  /** Error rate (0-1) */
   ErrorRate = 'ErrorRate',
-  /** 错误率 (0-100) */
+  /** Error rate (0-100) */
   ErrorRate100 = 'ErrorRate100',
-  /** Counter类型指标的rate计算结果 */
+  /** Rate calculation result for Counter type metrics */
   CounterRate = 'CounterRate',
-  /** 计数值 */
+  /** Count value */
   Count = 'Count',
-  /** 错误计数 */
+  /** Error count */
   ErrorCount = 'ErrorCount',
-  /** 致命错误计数 */
+  /** Fatal error count */
   FatalErrorCount = 'FatalErrorCount',
-  /** 延迟 (毫秒) */
+  /** Latency (in milliseconds) */
   Latency = 'Latency',
-  /** 延迟 (秒) */
+  /** Latency (in seconds) */
   LatencySecond = 'LatencySecond',
-  /** 延迟 (微秒) */
+  /** Latency (in microseconds) */
   LatencyMicrosecond = 'LatencyMicrosecond',
-  /** 资源利用率 (0-1) */
+  /** Resource utilization rate (0-1) */
   ResourceUtilizationRate = 'ResourceUtilizationRate',
-  /** 资源利用率 (0-100) */
+  /** Resource utilization rate (0-100) */
   ResourceUtilizationRate100 = 'ResourceUtilizationRate100',
-  /** CPU使用核数 */
+  /** CPU cores used */
   CPUUsedCore = 'CPUUsedCore',
-  /** 内存使用字节数 */
+  /** Memory used (in bytes) */
   MemoryUsedBytes = 'MemoryUsedBytes',
-  /** 吞吐量 */
+  /** Throughput */
   Throughput = 'Throughput',
 }
 
 /**
- * 指标模板接口
+ * Metric template interface
  */
 export interface MetricTemplate {
-  /** 模板ID */
+  /** Template ID */
   id?: string;
-  /** 模板名称 */
+  /** Template name */
   name: string;
-  /** 指标类型 */
+  /** Metric type */
   metric_type: MetricType;
-  /** 最小步长 */
+  /** Minimum step size */
   min_step: number;
-  /** 最大值 */
+  /** Maximum value */
   max_value: number;
-  /** 最小值 */
+  /** Minimum value */
   min_value: number;
-  /** 最小违规值 */
+  /** Minimum violation value */
   min_violation: number;
-  /** 最小违规比例 */
+  /** Minimum violation ratio */
   min_violation_ratio: number;
-  /** 正常范围开始值 */
+  /** Normal range start value */
   normal_range_start: number;
-  /** 正常范围结束值 */
+  /** Normal range end value */
   normal_range_end: number;
-  /** 缺失值填充 */
+  /** Missing value fill */
   missing_value?: string;
-  /** 单次异常消除周期 */
+  /** Single anomaly elimination period */
   failure_interval_expectation: number;
-  /** 显示单位 */
+  /** Display unit */
   display_unit: string;
-  /** 显示系数 */
+  /** Display coefficient */
   linear_scale: number;
-  /** 最大无数据时间间隔 */
+  /** Maximum time gap without data */
   max_time_gap: number;
-  /** 最小时序长度 */
+  /** Minimum time series length */
   min_ts_length: number;
-  /** 创建时间 */
+  /** Creation timestamp */
   created_at?: string;
-  /** 更新时间 */
+  /** Last update timestamp */
   updated_at?: string;
-  /** 删除时间 */
+  /** Deletion timestamp */
   deleted_at?: string;
 }
 
 /**
- * 创建模板请求
+ * Create template request
  */
 export interface CreateTemplateRequest {
-  /** 模板名称 */
+  /** Template name */
   name: string;
-  /** 指标类型 */
+  /** Metric type */
   metric_type: MetricType;
-  /** 最小步长 */
+  /** Minimum step size */
   min_step: number;
-  /** 最大值 */
+  /** Maximum value */
   max_value: number;
-  /** 最小值 */
+  /** Minimum value */
   min_value: number;
-  /** 最小违规值 */
+  /** Minimum violation value */
   min_violation: number;
-  /** 最小违规比例 */
+  /** Minimum violation ratio */
   min_violation_ratio: number;
-  /** 正常范围开始值 */
+  /** Normal range start value */
   normal_range_start: number;
-  /** 正常范围结束值 */
+  /** Normal range end value */
   normal_range_end: number;
-  /** 缺失值填充 */
+  /** Missing value fill */
   missing_value?: string;
-  /** 单次异常消除周期 */
+  /** Single anomaly elimination period */
   failure_interval_expectation: number;
-  /** 显示单位 */
+  /** Display unit */
   display_unit: string;
-  /** 显示系数 */
+  /** Display coefficient */
   linear_scale: number;
-  /** 最大无数据时间间隔 */
+  /** Maximum time gap without data */
   max_time_gap: number;
-  /** 最小时序长度 */
+  /** Minimum time series length */
   min_ts_length: number;
 }
 
 /**
- * 更新模板请求
+ * Update template request
  */
 export type UpdateTemplateRequest = Partial<CreateTemplateRequest>;
 
 /**
- * 模板查询参数
+ * Template query parameters
  */
 export interface TemplateQueryParams {
-  /** 页码 */
+  /** Page number */
   page?: number;
-  /** 每页大小 */
+  /** Page size */
   size?: number;
-  /** 模板名称搜索 */
+  /** Template name search */
   name?: string;
-  /** 指标类型筛选 */
+  /** Metric type filter */
   metric_type?: MetricType;
 }
 
 /**
- * 模板列表响应
+ * Template list response
  */
 export interface TemplateListResponse {
-  /** 模板列表 */
+  /** Template list */
   items: MetricTemplate[];
-  /** 总数 */
+  /** Total count */
   total: number;
-  /** 当前页 */
+  /** Current page */
   page: number;
-  /** 每页大小 */
+  /** Page size */
   size: number;
 }
 
 /**
- * API响应包装
+ * API response wrapper
  */
 export interface APIResponse<T = unknown> {
-  /** 状态码 */
+  /** Status code */
   code: number;
-  /** 响应消息 */
+  /** Response message */
   message: string;
-  /** 响应数据 */
+  /** Response data */
   data?: T;
 }

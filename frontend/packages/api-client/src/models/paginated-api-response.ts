@@ -18,11 +18,11 @@ export type PaginatedAPIResponse = {
   message?: string;
   data?: Array<{
     /**
-     * 阿里云服务命名空间
+     * Aliyun service namespace
      */
     Namespace?: string;
     /**
-     * 服务描述
+     * Service description
      */
     Description?: string;
   }>;

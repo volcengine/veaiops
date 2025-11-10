@@ -22,7 +22,7 @@ import { useBotAttributesTableConfig } from './config';
 import { useBotAttributesTableLogic } from './logic';
 
 /**
- * Bot 属性表格 Hook 参数
+ * Bot attributes table Hook parameters
  */
 export interface UseBotAttributesTableParams {
   botId?: string;
@@ -30,13 +30,13 @@ export interface UseBotAttributesTableParams {
 }
 
 /**
- * Bot 属性表格 Hook 返回值
+ * Bot attributes table Hook return value
  */
 export interface UseBotAttributesTableReturn {
-  // 业务逻辑
+  // Business logic
   logic: ReturnType<typeof useBotAttributesTableLogic>;
 
-  // 表格配置
+  // Table configuration
   tableRef: React.RefObject<
     CustomTableActionType<BotAttribute, BotAttributeFiltersQuery>
   >;
@@ -54,61 +54,61 @@ export interface UseBotAttributesTableReturn {
   };
   tableProps: ReturnType<typeof useBotAttributesTableConfig>['tableProps'];
 
-  // 包装后的事件处理（自动传递 tableRef）
+  // Wrapped event handlers (automatically pass tableRef)
   handleDelete: (attribute: BotAttribute) => Promise<boolean>;
   handleFormSubmit: (values: BotAttributeFormData) => Promise<boolean>;
 }
 
 /**
- * Bot 属性表格聚合 Hook
- * 整合业务逻辑、表格配置和 tableRef，提供统一的表格相关功能
+ * Bot attributes table aggregation Hook
+ * Integrates business logic, table configuration, and tableRef to provide unified table-related functionality
  */
 export const useBotAttributesTable = ({
   botId,
   channel,
 }: UseBotAttributesTableParams): UseBotAttributesTableReturn => {
-  // 🎯 业务逻辑和状态管理
+  // 🎯 Business logic and state management
   const logic = useBotAttributesTableLogic({ botId, channel });
 
-  // 🎯 创建 tableRef 用于刷新操作
+  // 🎯 Create tableRef for refresh operations
   const tableRef =
     useRef<CustomTableActionType<BotAttribute, BotAttributeFiltersQuery>>(null);
 
-  // ✅ 修复死循环：使用 ref 来稳定 logic 中的方法引用，避免依赖整个 logic 对象
-  // 根据规范：避免依赖整个对象，只提取必要的配置字段
-  // 使用 ref 模式：在 useCallback 回调中使用 ref 存储最新值，创建稳定的包装函数
+  // ✅ Fix infinite loop: use ref to stabilize method references in logic, avoid depending on entire logic object
+  // According to spec: avoid depending on entire object, only extract necessary configuration fields
+  // Use ref pattern: use ref in useCallback callback to store latest value, create stable wrapper function
   const logicRef = useRef(logic);
   logicRef.current = logic;
 
-  // 🎯 创建包装的删除处理函数，自动传递 tableRef
+  // 🎯 Create wrapped delete handler function, automatically pass tableRef
   const handleDelete = useCallback(
     async (attribute: BotAttribute): Promise<boolean> => {
       try {
         await logicRef.current.handleDelete(attribute, tableRef);
         return true;
       } catch (error) {
-        // 错误已在 Hook 中处理
+        // Error already handled in Hook
         return false;
       }
     },
-    [], // ✅ 空依赖数组，确保函数引用稳定
+    [], // ✅ Empty dependency array to ensure function reference stability
   );
 
-  // 🎯 创建包装的表单提交函数，成功后刷新表格
+  // 🎯 Create wrapped form submit function, refresh table after success
   const handleFormSubmit = useCallback(
     async (values: BotAttributeFormData): Promise<boolean> => {
       const success = await logicRef.current.handleFormSubmit(values);
-      // 如果成功，刷新表格
+      // If successful, refresh table
       if (success) {
         const refreshSuccess = await logicRef.current.refreshTable(tableRef);
         return refreshSuccess;
       }
       return false;
     },
-    [], // ✅ 空依赖数组，确保函数引用稳定
+    [], // ✅ Empty dependency array to ensure function reference stability
   );
 
-  // 🎯 表格配置（使用包装后的 handleDelete）
+  // 🎯 Table configuration (using wrapped handleDelete)
   const config = useBotAttributesTableConfig({
     botId,
     channel,

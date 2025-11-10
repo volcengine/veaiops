@@ -17,8 +17,8 @@ import type { SubscribeRelationWithAttributes } from 'api-generate';
 import { useCallback, useState } from 'react';
 
 /**
- * 模态框状态Hook
- * 管理表单和编辑状态
+ * Modal state Hook
+ * Manages form and edit state
  */
 export const useModalState = () => {
   const [form] = Form.useForm();
@@ -26,7 +26,7 @@ export const useModalState = () => {
     useState<SubscribeRelationWithAttributes | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 打开编辑弹窗
+  // Open edit modal
   const handleEdit = useCallback(
     (subscription: SubscribeRelationWithAttributes) => {
       setEditingSubscription(subscription);
@@ -38,14 +38,14 @@ export const useModalState = () => {
     [form],
   );
 
-  // 打开新增弹窗
+  // Open add modal
   const handleAdd = useCallback(() => {
     setEditingSubscription(null);
     form.resetFields();
     setModalVisible(true);
   }, [form]);
 
-  // 关闭弹窗
+  // Close modal
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     setEditingSubscription(null);

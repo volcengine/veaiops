@@ -15,11 +15,11 @@
 import type { PerformNativeUrlUpdateParams } from './types';
 
 /**
- * URL 操作辅助函数
+ * URL operation helper functions
  */
 
 /**
- * 执行原生URL更新
+ * Perform native URL update
  */
 export function performNativeUrlUpdate({
   newUrl,
@@ -30,7 +30,7 @@ export function performNativeUrlUpdate({
     window.history.pushState(window.history.state, '', newUrl);
     window.history.replaceState(window.history.state, '', newUrl);
 
-    // 使用setTimeout确保URL更新完成
+    // Use setTimeout to ensure URL update completes
     setTimeout(() => {
       const { search: afterUpdateSearch } = window.location;
       const updateSuccess = afterUpdateSearch === expectedSearch;
@@ -40,25 +40,25 @@ export function performNativeUrlUpdate({
       }
     }, 50);
   } catch (_historyError) {
-    // 静默处理错误
+    // Silently handle errors
   }
 }
 
 /**
- * 直接修改location.search
+ * Directly modify location.search
  */
 export function performLocationSearchUpdate(expectedSearch: string): void {
   try {
-    // 尝试多种方法强制更新URL
+    // Try multiple methods to force URL update
     const { href: currentUrl } = window.location;
     const baseUrl = currentUrl.split('?')[0].split('#')[0];
     const { hash } = window.location;
     const newFullUrl = `${baseUrl}${expectedSearch}${hash}`;
 
-    // 方法1: 直接修改location.search
+    // Method 1: Directly modify location.search
     window.location.search = expectedSearch.replace('?', '');
 
-    // 方法2: 使用location.href
+    // Method 2: Use location.href
     setTimeout(() => {
       const { search } = window.location;
       if (search !== expectedSearch) {
@@ -66,7 +66,7 @@ export function performLocationSearchUpdate(expectedSearch: string): void {
       }
     }, 10);
 
-    // 方法3: 使用location.replace (不会在历史记录中留下记录)
+    // Method 3: Use location.replace (does not leave a record in history)
     setTimeout(() => {
       const { search } = window.location;
       if (search !== expectedSearch) {
@@ -74,6 +74,6 @@ export function performLocationSearchUpdate(expectedSearch: string): void {
       }
     }, 20);
   } catch (_locationError) {
-    // 静默处理错误
+    // Silently handle errors
   }
 }

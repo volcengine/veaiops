@@ -13,10 +13,7 @@
 // limitations under the License.
 
 /**
- * 列宽持久化核心Hook
- *
-
- *
+ * Column Width Persistence Core Hook
  */
 
 import type {
@@ -37,38 +34,38 @@ import {
 } from '../utils';
 
 /**
- * 列宽持久化Hook参数
+ * Column Width Persistence Hook Parameters
  */
 export interface UseColumnWidthPersistenceProps {
-  /** 插件配置 */
+  /** Plugin configuration */
   config?: ColumnWidthPersistenceConfig;
-  /** 表格ID，用于区分不同表格的存储 */
+  /** Table ID, used to distinguish storage for different tables */
   tableId?: string;
-  /** 当前列配置 */
+  /** Current column configuration */
   columns?: Array<{ dataIndex: string; width?: number | string }>;
-  /** 表格容器引用 */
+  /** Table container reference */
   tableContainerRef?: React.RefObject<HTMLElement>;
-  /** 列宽变化回调 */
+  /** Column width change callback */
   onColumnWidthChange?: (dataIndex: string, width: number) => void;
-  /** 批量列宽变化回调 */
+  /** Batch column width change callback */
   onBatchColumnWidthChange?: (widthsMap: Record<string, number>) => void;
 }
 
 /**
- * 列宽持久化Hook返回值
+ * Column Width Persistence Hook Return Value
  */
 export interface UseColumnWidthPersistenceResult
   extends ColumnWidthPersistenceMethods {
-  /** 插件状态 */
+  /** Plugin state */
   state: ColumnWidthPersistenceState;
-  /** 当前持久化的列宽映射 */
+  /** Currently persisted column width mapping */
   persistentWidths: Record<string, number>;
-  /** 是否正在检测中 */
+  /** Whether detection is in progress */
   isDetecting: boolean;
 }
 
 /**
- * 列宽持久化核心Hook
+ * Column Width Persistence Core Hook
  */
 export const useColumnWidthPersistence = ({
   config = {},
@@ -78,10 +75,10 @@ export const useColumnWidthPersistence = ({
   onColumnWidthChange,
   onBatchColumnWidthChange,
 }: UseColumnWidthPersistenceProps): UseColumnWidthPersistenceResult => {
-  // 合并配置
+  // Merge configuration
   const finalConfig = { ...DEFAULT_COLUMN_WIDTH_PERSISTENCE_CONFIG, ...config };
 
-  // 基础状态
+  // Base state
   const [state, setState] = useState<ColumnWidthPersistenceState>({
     persistentWidths: {},
     isDetecting: false,
@@ -89,7 +86,7 @@ export const useColumnWidthPersistence = ({
     widthHistory: [],
   });
 
-  // 引用
+  // Refs
   const detectionTimerRef = useRef<NodeJS.Timeout>();
   const lastWidthsRef = useRef<Record<string, number>>({});
   const storageKeyRef = useRef<string>(
@@ -99,11 +96,11 @@ export const useColumnWidthPersistence = ({
     }),
   );
 
-  // 获取当前列的dataIndex列表
+  // Get current column dataIndex list
   const dataIndexList = columns.map((col) => col.dataIndex).filter(Boolean);
 
   /**
-   * 设置单个列的持久化宽度（内部实现）
+   * Set persistent width for a single column (internal implementation)
    */
   const setPersistentColumnWidthImpl = useCallback(
     ({ dataIndex, width }: { dataIndex: string; width: number }) => {
@@ -120,10 +117,10 @@ export const useColumnWidthPersistence = ({
         },
       }));
 
-      // 触发回调
+      // Trigger callback
       onColumnWidthChange?.(dataIndex, validatedWidth);
 
-      // 保存到本地存储
+      // Save to local storage
       if (finalConfig.enableLocalStorage && localStorageUtils.isAvailable()) {
         const currentWidths = {
           ...state.persistentWidths,
@@ -136,7 +133,7 @@ export const useColumnWidthPersistence = ({
   );
 
   /**
-   * 批量设置持久化列宽度
+   * Batch set persistent column widths
    */
   const setBatchPersistentColumnWidths = useCallback(
     (widthsMap: Record<string, number>) => {
@@ -153,10 +150,10 @@ export const useColumnWidthPersistence = ({
         },
       }));
 
-      // 触发回调
+      // Trigger callback
       onBatchColumnWidthChange?.(validatedWidths);
 
-      // 保存到本地存储
+      // Save to local storage
       if (finalConfig.enableLocalStorage && localStorageUtils.isAvailable()) {
         const currentWidths = {
           ...state.persistentWidths,
@@ -169,7 +166,7 @@ export const useColumnWidthPersistence = ({
   );
 
   /**
-   * 获取持久化列宽度
+   * Get persistent column width
    */
   const getPersistentColumnWidth = useCallback(
     (dataIndex: string): number | undefined =>
@@ -178,7 +175,7 @@ export const useColumnWidthPersistence = ({
   );
 
   /**
-   * 获取所有持久化列宽度
+   * Get all persistent column widths
    */
   const getAllPersistentColumnWidths = useCallback(
     (): Record<string, number> => ({ ...state.persistentWidths }),
@@ -186,7 +183,7 @@ export const useColumnWidthPersistence = ({
   );
 
   /**
-   * 清除特定列的持久化宽度
+   * Clear persistent width for a specific column
    */
   const clearPersistentColumnWidth = useCallback(
     (dataIndex: string) => {
@@ -198,7 +195,7 @@ export const useColumnWidthPersistence = ({
         };
       });
 
-      // 更新本地存储
+      // Update local storage
       if (finalConfig.enableLocalStorage && localStorageUtils.isAvailable()) {
         const { [dataIndex]: _, ...rest } = state.persistentWidths;
         localStorageUtils.save(storageKeyRef.current, rest);
@@ -208,7 +205,7 @@ export const useColumnWidthPersistence = ({
   );
 
   /**
-   * 清除所有持久化列宽度
+   * Clear all persistent column widths
    */
   const clearAllPersistentColumnWidths = useCallback(() => {
     setState((prev: ColumnWidthPersistenceState) => ({
@@ -216,14 +213,14 @@ export const useColumnWidthPersistence = ({
       persistentWidths: {},
     }));
 
-    // 清除本地存储
+    // Clear local storage
     if (finalConfig.enableLocalStorage && localStorageUtils.isAvailable()) {
       localStorageUtils.remove(storageKeyRef.current);
     }
   }, [finalConfig.enableLocalStorage]);
 
   /**
-   * 从DOM检测当前列宽度
+   * Detect current column widths from DOM
    */
   const detectCurrentColumnWidths = useCallback(async (): Promise<
     Record<string, number>
@@ -251,7 +248,7 @@ export const useColumnWidthPersistence = ({
 
       return detectedWidths;
     } catch (error) {
-      // 检测列宽失败，重置状态并返回空对象
+      // Column width detection failed, reset state and return empty object
       setState((prev: ColumnWidthPersistenceState) => ({
         ...prev,
         isDetecting: false,
@@ -261,7 +258,7 @@ export const useColumnWidthPersistence = ({
   }, [tableContainerRef, dataIndexList]);
 
   /**
-   * 保存当前列宽度到持久化存储
+   * Save current column widths to persistent storage
    */
   const saveCurrentColumnWidths = useCallback(async () => {
     const currentWidths = await detectCurrentColumnWidths();
@@ -271,7 +268,7 @@ export const useColumnWidthPersistence = ({
   }, [detectCurrentColumnWidths, setBatchPersistentColumnWidths]);
 
   /**
-   * 从持久化存储恢复列宽度
+   * Restore column widths from persistent storage
    */
   const restoreColumnWidths = useCallback(async () => {
     if (!finalConfig.enableLocalStorage || !localStorageUtils.isAvailable()) {
@@ -290,7 +287,7 @@ export const useColumnWidthPersistence = ({
   }, [finalConfig.enableLocalStorage]);
 
   /**
-   * 应用列宽度到表格
+   * Apply column widths to table
    */
   const applyColumnWidths = useCallback(
     (widthsMap: Record<string, number>) => {
@@ -299,7 +296,7 @@ export const useColumnWidthPersistence = ({
     [setBatchPersistentColumnWidths],
   );
 
-  // 创建防抖的自动检测函数
+  // Create debounced auto-detection function
   const debouncedDetection = useCallback(
     createDebouncedWidthDetector({
       detectFunction: async () => {
@@ -309,7 +306,7 @@ export const useColumnWidthPersistence = ({
 
         const currentWidths = await detectCurrentColumnWidths();
 
-        // 只有当宽度发生变化时才更新
+        // Only update when width changes
         if (
           !compareColumnWidths({
             widths1: currentWidths,
@@ -331,7 +328,7 @@ export const useColumnWidthPersistence = ({
     ],
   );
 
-  // 监听表格容器的变化，触发自动检测
+  // Listen to table container changes, trigger auto-detection
   useEffect(() => {
     if (!finalConfig.enableAutoDetection || !tableContainerRef?.current) {
       return undefined;
@@ -349,12 +346,12 @@ export const useColumnWidthPersistence = ({
     };
   }, [finalConfig.enableAutoDetection, tableContainerRef, debouncedDetection]);
 
-  // 初始化时恢复列宽度
+  // Restore column widths on initialization
   useEffect(() => {
     restoreColumnWidths();
   }, [restoreColumnWidths]);
 
-  // 清理定时器
+  // Cleanup timer
   useEffect(
     () => () => {
       if (detectionTimerRef.current) {
@@ -364,7 +361,7 @@ export const useColumnWidthPersistence = ({
     [],
   );
 
-  // 包装 setPersistentColumnWidth 以匹配接口签名
+  // Wrap setPersistentColumnWidth to match interface signature
   const wrappedSetPersistentColumnWidth: ColumnWidthPersistenceMethods['setPersistentColumnWidth'] =
     useCallback(
       (params: { dataIndex: string; width: number }) => {
@@ -374,12 +371,12 @@ export const useColumnWidthPersistence = ({
     );
 
   return {
-    // 状态
+    // State
     state,
     persistentWidths: state.persistentWidths,
     isDetecting: state.isDetecting || false,
 
-    // 方法（实现 ColumnWidthPersistenceMethods 接口）
+    // Methods (implement ColumnWidthPersistenceMethods interface)
     setPersistentColumnWidth: wrappedSetPersistentColumnWidth,
     setBatchPersistentColumnWidths,
     getPersistentColumnWidth,

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源向导状态管理Hook
- * @description 管理向导的基础状态和通用操作
+ * Data source wizard state management Hook
+ * @description Manages wizard's basic state and common operations
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -23,7 +23,7 @@ import type { Connect } from 'api-generate';
 import { useCallback, useState } from 'react';
 import { type DataSourceType, type WizardState, WizardStep } from '../../types';
 
-// 初始状态
+// Initial state
 const initialState: WizardState = {
   currentStep: WizardStep.TYPE_SELECTION,
   dataSourceType: null,
@@ -45,14 +45,14 @@ const initialState: WizardState = {
 
   aliyun: {
     projects: [],
-    selectNamespace: null, // 重命名：selectedProject -> selectNamespace
+    selectNamespace: null, // Renamed: selectedProject -> selectNamespace
     metrics: [],
     selectedMetric: null,
     instances: [],
     selectedInstances: [],
     selectedGroupBy: [],
     hasAttemptedFetch: false,
-    region: null, // Region ID（用户在连接选择步骤输入）
+    region: null, // Region ID (entered by user in connection selection step)
     searchText: '',
   },
 
@@ -66,7 +66,7 @@ const initialState: WizardState = {
     instances: [],
     selectedInstances: [],
     selectedGroupBy: [],
-    region: null, // 默认为空，由用户输入
+    region: null, // Default empty, entered by user
     searchText: '',
   },
 
@@ -87,7 +87,7 @@ const initialState: WizardState = {
 export const useWizardState = () => {
   const [state, setState] = useState<WizardState>(initialState);
 
-  // 通用操作
+  // Common operations
   const setCurrentStep = useCallback(
     (step: number) => {
       setState((prev) => ({ ...prev, currentStep: step }));
@@ -107,7 +107,7 @@ export const useWizardState = () => {
       setState((prev) => ({
         ...prev,
         selectedConnect: connect,
-        // 切换连接时清除所有相关状态
+        // Clear all related state when switching connections
         zabbix: {
           ...prev.zabbix,
           templates: [],
@@ -122,7 +122,7 @@ export const useWizardState = () => {
         aliyun: {
           ...prev.aliyun,
           projects: [],
-          selectNamespace: null, // 重命名：selectedProject -> selectNamespace
+          selectNamespace: null, // Renamed: selectedProject -> selectNamespace
           metrics: [],
           selectedMetric: null,
           instances: [],
@@ -141,7 +141,7 @@ export const useWizardState = () => {
           instances: [],
           selectedInstances: [],
           selectedGroupBy: [],
-          region: '', // 切换连接时清空，由用户重新输入
+          region: '', // Clear when switching connections, user re-enters
           searchText: '',
         },
       }));

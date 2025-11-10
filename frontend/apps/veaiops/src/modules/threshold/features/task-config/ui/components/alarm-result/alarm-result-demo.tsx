@@ -19,13 +19,13 @@ import { useState } from 'react';
 import { AlarmResultModal } from './alarm-result-modal';
 
 /**
- * 告警结果弹窗演示组件
- * 用于展示新的视觉设计效果
+ * Alarm result modal demo component
+ * Used to showcase new visual design effects
  */
 export const AlarmResultDemo: React.FC = () => {
   const [visible, setVisible] = useState(false);
 
-  // 模拟数据
+  // Mock data
   const mockData: SyncAlarmRulesResponse = {
     total: 4,
     created: 1,

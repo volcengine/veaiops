@@ -28,10 +28,10 @@ interface UseTableHandlersParams {
 }
 
 /**
- * 表格处理器配置 Hook
+ * Table handler configuration Hook
  */
 export const useTableHandlers = ({ tableActions }: UseTableHandlersParams) => {
-  // 🎯 列配置
+  // 🎯 Column configuration
   const handleColumns = useCallback(
     (
       _props: TableColumnProps,
@@ -40,7 +40,7 @@ export const useTableHandlers = ({ tableActions }: UseTableHandlersParams) => {
     [tableActions],
   );
 
-  // 🎯 筛选配置
+  // 🎯 Filter configuration
   const handleFilters = useCallback(
     (_filters: FilterProps): FieldItem[] => [
       {
@@ -60,11 +60,11 @@ export const useTableHandlers = ({ tableActions }: UseTableHandlersParams) => {
     [],
   );
 
-  // 🎯 操作配置
+  // 🎯 Action configuration
   const renderActions = useCallback(
     (_props: ActionProps) =>
       [
-        // 暂时不支持新建功能，后续可根据需求添加
+        // Create functionality not supported for now, can be added later based on requirements
       ].filter(Boolean),
     [],
   );

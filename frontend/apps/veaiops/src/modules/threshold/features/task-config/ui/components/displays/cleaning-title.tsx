@@ -21,34 +21,34 @@ import {
 import { CellRender } from '@veaiops/components';
 import type React from 'react';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 const { Title, Text } = Typography;
 
 /**
- * 清洗结果抽屉标题组件属性接口
+ * Cleaning result drawer title component props interface
  */
 interface CleaningResultDrawerTitleProps {
-  /** 任务名称 */
+  /** Task name */
   taskName: string;
-  /** 版本号 */
+  /** Version number */
   version: string | number;
 }
 
 /**
- * 清洗结果抽屉标题组件
- * 展示清洗结果的任务名称和版本信息，采用美观的图标和布局设计
+ * Cleaning result drawer title component
+ * Displays task name and version information for cleaning results, uses beautiful icons and layout design
  *
- * @param taskName - 任务名称
- * @param version - 版本号
+ * @param taskName - Task name
+ * @param version - Version number
  */
 export const CleaningResultDrawerTitle: React.FC<
   CleaningResultDrawerTitleProps
 > = ({ taskName, version }) => {
   return (
     <div className="py-1 flex items-center justify-center gap-5">
-      {/* 主标题区域 */}
+      {/* Main title area */}
       <div className="flex items-center gap-1">
         <IconBrush style={{ fontSize: 18, color: '#165DFF' }} />
         <Title
@@ -60,7 +60,7 @@ export const CleaningResultDrawerTitle: React.FC<
         </Title>
       </div>
 
-      {/* 任务信息区域 - inline 布局 */}
+      {/* Task information area - inline layout */}
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-2">
           <IconFile style={{ fontSize: 14, color: '#86909C' }} />

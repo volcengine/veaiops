@@ -15,7 +15,7 @@
 import type { DataSourceType } from 'api-generate';
 import type { FormFieldConfig } from './types';
 
-// 表单字段配置常量
+// Form field configuration constants
 export const FORM_FIELD_CONFIGS: Record<DataSourceType, FormFieldConfig[]> = {
   Zabbix: [
     {

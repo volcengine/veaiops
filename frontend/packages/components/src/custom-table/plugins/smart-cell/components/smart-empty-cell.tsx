@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import type { UserRole } from '@veaiops/types'; // UserRole 类型暂时未定义
+// import type { UserRole } from '@veaiops/types'; // UserRole type temporarily undefined
 /**
- * 智能空值单元格组件
- * 基于 EPS 平台的 SmartEmptyCell 实现
+ * Smart empty value cell component
+ * Based on EPS platform's SmartEmptyCell implementation
  */
 import { CellRender } from '@/cell-render';
 import type {
@@ -32,33 +32,33 @@ import type React from 'react';
 import { type ReactNode, useMemo, useState } from 'react';
 import styles from './smart-empty-cell.module.less';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 export interface SmartEmptyCellProps<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 单元格值 */
+  /** Cell value */
   value: unknown;
-  /** 行数据 */
+  /** Row data */
   record: RecordType;
-  /** 字段名 */
+  /** Field name */
   field: string;
-  /** 空值配置 */
+  /** Empty value configuration */
   emptyConfig: EmptyValueConfig;
-  /** 用户角色 */
+  /** User role */
   userRole: UserRole;
-  /** 上下文信息 */
+  /** Context information */
   context: EmptyValueContext;
-  /** 显示权限提示 */
+  /** Show permission hints */
   showPermissionHints: boolean;
-  /** 启用上下文显示 */
+  /** Enable contextual display */
   enableContextualDisplay: boolean;
-  /** 点击空值回调 */
+  /** Empty value click callback */
   onEmptyValueClick?: (params: CellRenderParams<RecordType>) => void;
-  /** 样式类名 */
+  /** Style class name */
   className?: string;
-  /** 子元素 */
+  /** Children elements */
   children?: ReactNode;
 }
 
@@ -77,7 +77,7 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
 }: SmartEmptyCellProps<RecordType>): React.ReactElement => {
   const [hover, setHover] = useState(false);
 
-  // 判断是否为空值
+  // Check if value is empty
   const isEmpty = useMemo(() => {
     if (value === null || value === undefined) {
       return true;
@@ -94,7 +94,7 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
     return false;
   }, [value]);
 
-  // 检查权限
+  // Check permission
   const hasPermission = useMemo(() => {
     const roles = emptyConfig.permission?.allowedRoles;
     if (!roles) {
@@ -103,7 +103,7 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
     return roles.includes(userRole);
   }, [emptyConfig.permission?.allowedRoles, userRole]);
 
-  // 处理点击事件
+  // Handle click event
   const handleClick = () => {
     if (!hasPermission || !emptyConfig.allowEdit) {
       return;
@@ -131,11 +131,11 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
     });
   };
 
-  // 渲染空值内容
+  // Render empty value content
   const renderEmptyContent = () => {
     const { strategy, text, icon, component: CustomComponent } = emptyConfig;
 
-    // 自定义组件
+    // Custom component
     if (CustomComponent) {
       return (
         <CustomComponent
@@ -148,7 +148,7 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
       );
     }
 
-    // 根据策略渲染
+    // Render based on strategy
     switch (strategy) {
       case 'text':
         return <span className={styles.emptyText}>{text || '--'}</span>;
@@ -156,7 +156,9 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
       case 'placeholder':
         return (
           <span className={styles.placeholder}>
-            {hasPermission && emptyConfig.allowEdit ? '点击添加' : text || '--'}
+            {hasPermission && emptyConfig.allowEdit
+              ? 'Click to add'
+              : text || '--'}
           </span>
         );
 
@@ -172,7 +174,7 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
             onClick={handleClick}
             className={styles.addButton}
           >
-            {text || '添加'}
+            {text || 'Add'}
           </Button>
         );
 
@@ -198,32 +200,33 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
     }
   };
 
-  // 渲染上下文相关内容
+  // Render contextual related content
   const renderContextualContent = () => {
     const { dataSize, hasRelatedData, isRequired } = context;
 
     if (isRequired) {
-      return <CustomOutlineTag>必填</CustomOutlineTag>;
+      return <CustomOutlineTag>Required</CustomOutlineTag>;
     }
 
     if (hasRelatedData) {
-      return <span className={styles.contextualHint}>数据关联中...</span>;
+      return <span className={styles.contextualHint}>Data linking...</span>;
     }
 
     if (dataSize === 'large') {
-      return <span className={styles.placeholder}>加载中...</span>;
+      return <span className={styles.placeholder}>Loading...</span>;
     }
 
     return <span className={styles.emptyText}>--</span>;
   };
 
-  // 渲染权限提示
+  // Render permission hint
   const renderPermissionHint = () => {
     if (!showPermissionHints || hasPermission || !isEmpty) {
       return null;
     }
 
-    const permissionText = emptyConfig.permission?.hint || '无权限操作';
+    const permissionText =
+      emptyConfig.permission?.hint || 'No permission to operate';
 
     return (
       <Tooltip content={permissionText}>
@@ -234,7 +237,7 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
     );
   };
 
-  // 渲染编辑提示
+  // Render edit hint
   const renderEditHint = () => {
     if (!hasPermission || !emptyConfig.allowEdit || !hover || !isEmpty) {
       return null;
@@ -247,12 +250,12 @@ export const SmartEmptyCell = <RecordType extends BaseRecord = BaseRecord>({
     );
   };
 
-  // 如果有值，直接渲染原内容
+  // If has value, render original content directly
   if (!isEmpty) {
     return <div className={className}>{children || String(value)}</div>;
   }
 
-  // 渲染空值单元格
+  // Render empty value cell
   const canClick = hasPermission && emptyConfig.allowEdit;
 
   return (

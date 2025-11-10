@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 使用概述统计相关类型定义
+ * Usage overview statistics related type definitions
  */
 
 export interface UsageStatistics {

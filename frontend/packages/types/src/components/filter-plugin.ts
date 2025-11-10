@@ -16,106 +16,104 @@ import type { ReactNode } from 'react';
 import type { EventHandler, FormInstance, GlobalConfig } from './base';
 
 /**
- * 过滤器插件类型定义
- * @description 提供过滤器插件相关的类型定义
-
- *
+ * Filter plugin type definitions
+ * @description Provides type definitions related to filter plugins
  */
 
-// ===== 过滤器插件类型 =====
+// ===== Filter Plugin Types =====
 
-/** 插件配置类型 */
+/** Plugin configuration type */
 export type PluginConfig = Record<string, unknown>;
 
-/** 字段项接口 */
+/** Field item interface */
 export interface FieldItem {
   field?: string;
   label?: string;
-  /** 组件类型 */
+  /** Component type */
   type?: string;
-  /** 子组件类型 */
+  /** Child component type */
   childrenType?: string;
   col?: number;
-  /** 作用在Field上的属性 */
+  /** Properties applied to Field */
   fieldProps?: Record<string, unknown>;
-  /** type对应的组件上的属性 */
+  /** Properties on the component corresponding to type */
   componentProps?: Record<string, unknown>;
-  /** FormItem初始值 */
+  /** FormItem initial value */
   initialValue?: unknown;
-  /** 展示的值 */
+  /** Display value */
   textInfo?: unknown;
   display?: unknown;
   format?: unknown;
-  /** 是否可见 */
+  /** Whether visible */
   visible?: boolean;
 }
 
-/** 插件上下文 */
+/** Plugin context */
 export interface FilterPluginContext {
-  /** 表单实例 */
+  /** Form instance */
   form?: FormInstance;
-  /** 全局配置 */
+  /** Global configuration */
   globalConfig?: GlobalConfig;
-  /** 事件总线 */
+  /** Event bus */
   eventBus?: FilterEventBus;
 }
 
-/** 事件总线接口 */
+/** Event bus interface */
 export interface FilterEventBus {
   emit: (event: string, ...args: unknown[]) => void;
   on: (params: { event: string; handler: EventHandler }) => void;
   off: (params: { event: string; handler: EventHandler }) => void;
 }
 
-/** 插件渲染属性 */
+/** Plugin render properties */
 export interface FilterPluginRenderProps {
-  /** 字段配置 */
+  /** Field configuration */
   field: FieldItem;
-  /** 原始组件属性 */
+  /** Original component properties */
   componentProps: Record<string, unknown>;
-  /** 劫持后的组件属性 */
+  /** Hijacked component properties */
   hijackedProps: Record<string, unknown>;
-  /** 插件上下文 */
+  /** Plugin context */
   context?: FilterPluginContext;
 }
 
-/** 插件钩子 */
+/** Plugin hooks */
 export interface FilterPluginHooks {
-  /** 组件渲染前 */
+  /** Before component render */
   beforeRender?: (props: FilterPluginRenderProps) => FilterPluginRenderProps;
-  /** 组件渲染后 */
+  /** After component render */
   afterRender?: (
     element: ReactNode,
     props: FilterPluginRenderProps,
   ) => ReactNode;
-  /** 配置验证 */
+  /** Configuration validation */
   validateConfig?: (config: PluginConfig) => boolean | string;
 }
 
-/** 插件注册选项 */
+/** Plugin registration options */
 export interface PluginRegistryOptions {
-  /** 是否覆盖已存在的插件 */
+  /** Whether to override existing plugins */
   override?: boolean;
-  /** 插件优先级 */
+  /** Plugin priority */
   priority?: number;
 }
 
-/** 插件基础接口 */
+/** Plugin base interface */
 export interface FilterPlugin {
-  /** 插件唯一标识 */
+  /** Plugin unique identifier */
   type: string;
-  /** 插件名称 */
+  /** Plugin name */
   name: string;
-  /** 插件描述 */
+  /** Plugin description */
   description?: string;
-  /** 插件版本 */
+  /** Plugin version */
   version?: string;
-  /** 渲染组件 */
+  /** Render component */
   render: (props: FilterPluginRenderProps) => ReactNode;
-  /** 插件配置验证 */
+  /** Plugin configuration validation */
   validateConfig?: (config: PluginConfig) => boolean;
-  /** 插件默认配置 */
+  /** Plugin default configuration */
   defaultConfig?: PluginConfig;
-  /** 依赖的其他插件 */
+  /** Dependencies on other plugins */
   dependencies?: string[];
 }

@@ -15,7 +15,7 @@
 /**
  * VolcAIOpsKit API Hooks
  *
- * 此文件提供 React Hooks 来使用生成的 API 客户端
+ * This file provides React Hooks to use the generated API client
  */
 
 import { useEffect, useState } from 'react';
@@ -45,13 +45,13 @@ export interface FetchUsersParams {
 
 export interface UpdateUserParams {
   id: string;
-  // 注意：使用 updates 对象允许批量更新多个字段
+  // Note: Using updates object allows batch updating multiple fields
   updates?: {
     username?: string;
     is_active?: boolean;
     is_supervisor?: boolean;
   };
-  // 为了向后兼容，也支持直接传递字段
+  // For backward compatibility, direct field passing is also supported
   username?: string;
   is_active?: boolean;
   is_supervisor?: boolean;
@@ -66,11 +66,11 @@ interface ApiError {
 }
 
 // ============================================================================
-// 认证相关 Hooks
+// Authentication related Hooks
 // ============================================================================
 
 /**
- * 用户登录 Hook
+ * User login Hook
  */
 export function useLogin() {
   const [loading, setLoading] = useState(false);
@@ -85,10 +85,10 @@ export function useLogin() {
         params: { username, password },
       });
 
-      // Token 会自动存储在 localStorage 中
+      // Token will be automatically stored in localStorage
       return (response as ApiResponse).data;
     } catch (err: unknown) {
-      const errorMessage = (err as ApiError)?.message || '登录失败';
+      const errorMessage = (err as ApiError)?.message || 'Login failed';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -104,7 +104,7 @@ export function useLogin() {
 }
 
 /**
- * 认证状态 Hook
+ * Authentication status Hook
  */
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -126,11 +126,11 @@ export function useAuth() {
 }
 
 // ============================================================================
-// 用户管理 Hooks
+// User management Hooks
 // ============================================================================
 
 /**
- * 用户列表 Hook
+ * User list Hook
  */
 export function useUsers() {
   const [users, setUsers] = useState<unknown[]>([]);
@@ -152,7 +152,8 @@ export function useUsers() {
       setUsers((response as ApiResponseArray).data || []);
       return (response as ApiResponseArray).data;
     } catch (err: unknown) {
-      const errorMessage = (err as ApiError)?.message || '获取用户列表失败';
+      const errorMessage =
+        (err as ApiError)?.message || 'Failed to fetch user list';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -169,7 +170,7 @@ export function useUsers() {
 }
 
 /**
- * 单个用户 Hook
+ * Single user Hook
  */
 export function useUser(userId?: string) {
   const [user, setUser] = useState<unknown | null>(null);
@@ -185,7 +186,8 @@ export function useUser(userId?: string) {
       setUser((response as ApiResponse).data);
       return (response as ApiResponse).data;
     } catch (err: unknown) {
-      const errorMessage = (err as ApiError)?.message || '获取用户信息失败';
+      const errorMessage =
+        (err as ApiError)?.message || 'Failed to fetch user information';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -202,7 +204,7 @@ export function useUser(userId?: string) {
     setError(null);
 
     try {
-      // 合并 updates 对象和直接传递的字段
+      // Merge updates object and directly passed fields
       const updateData = {
         ...updates,
         ...(directFields.username !== undefined && {
@@ -222,7 +224,8 @@ export function useUser(userId?: string) {
       setUser((response as ApiResponse).data);
       return (response as ApiResponse).data;
     } catch (err: unknown) {
-      const errorMessage = (err as ApiError)?.message || '更新用户信息失败';
+      const errorMessage =
+        (err as ApiError)?.message || 'Failed to update user information';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -238,7 +241,8 @@ export function useUser(userId?: string) {
       await getApiClient().delete_user({ user_id: id });
       setUser(null);
     } catch (err: unknown) {
-      const errorMessage = (err as ApiError)?.message || '删除用户失败';
+      const errorMessage =
+        (err as ApiError)?.message || 'Failed to delete user';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -263,11 +267,11 @@ export function useUser(userId?: string) {
 }
 
 // ============================================================================
-// 系统配置 Hooks
+// System configuration Hooks
 // ============================================================================
 
 /**
- * 全局配置 Hook
+ * Global configuration Hook
  */
 export function useGlobalConfig() {
   const [config, setConfig] = useState<unknown | null>(null);
@@ -283,7 +287,8 @@ export function useGlobalConfig() {
       setConfig((response as ApiResponse).data);
       return (response as ApiResponse).data;
     } catch (err: unknown) {
-      const errorMessage = (err as ApiError)?.message || '获取全局配置失败';
+      const errorMessage =
+        (err as ApiError)?.message || 'Failed to fetch global configuration';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -300,11 +305,11 @@ export function useGlobalConfig() {
 }
 
 // ============================================================================
-// 工具函数
+// Utility functions
 // ============================================================================
 
 /**
- * API 错误处理工具
+ * API error handling utility
  */
 export function handleApiError(error: unknown) {
   const apiError = error as ApiError;
@@ -312,7 +317,7 @@ export function handleApiError(error: unknown) {
 
   switch (status) {
     case 401:
-      // Token 过期，清除本地存储并跳转到登录页
+      // Token expired, clear local storage and redirect to login page
       localStorage.removeItem('authToken');
       window.location.href = '/login';
       break;
@@ -331,7 +336,7 @@ export function handleApiError(error: unknown) {
 }
 
 /**
- * 重试机制 Hook
+ * Retry mechanism Hook
  */
 export interface UseRetryParams<T> {
   apiCall: () => Promise<T>;
@@ -367,7 +372,7 @@ export function useRetry<T>({
       }
     }
 
-    setError((lastError as ApiError)?.message || '请求失败');
+    setError((lastError as ApiError)?.message || 'Request failed');
     setLoading(false);
     throw lastError;
   };

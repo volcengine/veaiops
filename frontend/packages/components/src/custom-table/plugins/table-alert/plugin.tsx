@@ -22,7 +22,7 @@ import type {
 import type { TableAlertProps } from '@/custom-table/types/components/table-alert';
 import { devLog } from '@/custom-table/utils/log-utils';
 /**
- * 表格提示信息插件
+ * Table alert message plugin
  */
 import type React from 'react';
 import { DEFAULT_TABLE_ALERT_CONFIG } from './config';
@@ -51,7 +51,7 @@ export const TableAlertPlugin: PluginFactory<TableAlertConfig> = (
   return {
     name: PluginNames.TABLE_ALERT,
     version: '1.0.0',
-    description: '表格提示信息插件',
+    description: 'Table alert message plugin',
     priority: finalConfig.priority || 'medium',
     enabled: finalConfig.enabled !== false,
     config: finalConfig,
@@ -59,11 +59,11 @@ export const TableAlertPlugin: PluginFactory<TableAlertConfig> = (
     conflicts: [],
 
     install(_context: PluginContext): void {
-      // 安装时的操作
+      // Operations during installation
     },
 
     setup(context: PluginContext): void {
-      // 初始化提示信息处理
+      // Initialize alert message processing
       const extContext = context as ExtendedPluginContext;
       const { props } = extContext;
       const {
@@ -73,12 +73,12 @@ export const TableAlertPlugin: PluginFactory<TableAlertConfig> = (
         alertContent,
       } = props;
 
-      // 🐛 Table Alert Plugin设置调试日志
+      // 🐛 Table Alert Plugin setup debug log
       devLog.log({
         component: 'TableAlertPlugin',
-        message: 'Setup阶段调试',
+        message: 'Setup phase debug',
         data: {
-          // 1. 从props接收到的值
+          // 1. Values received from props
           receivedProps: {
             isAlertShow,
             customAlertNode,
@@ -86,9 +86,9 @@ export const TableAlertPlugin: PluginFactory<TableAlertConfig> = (
             alertContent,
             hasAlertContent: Boolean(alertContent),
           },
-          // 2. 完整的props对象
+          // 2. Complete props object
           fullProps: props,
-          // 3. Alert相关的关键props
+          // 3. Alert-related key props
           alertRelatedProps: {
             isAlertShow: props.isAlertShow,
             alertType: props.alertType,
@@ -98,9 +98,9 @@ export const TableAlertPlugin: PluginFactory<TableAlertConfig> = (
         },
       });
 
-      // 插件设置逻辑 - 不调用 Hook，只进行配置
-      // Hook 调用已移到组件层面
-      // 直接使用 props 中的值设置状态
+      // Plugin setup logic - do not call Hooks, only configure
+      // Hook calls have been moved to component level
+      // Directly use values from props to set state
       Object.assign(context.state, {
         isAlertShow,
         alertType,
@@ -108,10 +108,10 @@ export const TableAlertPlugin: PluginFactory<TableAlertConfig> = (
         customAlertNode,
       });
 
-      // 🐛 状态设置后的调试日志
+      // 🐛 Debug log after state setup
       devLog.log({
         component: 'TableAlertPlugin',
-        message: '状态设置完成',
+        message: 'State setup completed',
         data: {
           contextState: context.state,
           alertState: {
@@ -123,13 +123,13 @@ export const TableAlertPlugin: PluginFactory<TableAlertConfig> = (
         },
       });
 
-      // 添加提示信息相关方法到上下文
+      // Add alert-related methods to context
       Object.assign(context.helpers, {
         showAlert: (
           content: React.ReactNode,
           type: 'info' | 'warning' | 'error' = 'info',
         ) => {
-          // 基于 Arco Design 的 Message 组件实现警告显示
+          // Implementation based on Arco Design Message component for alert display
           Object.assign(context.state, {
             isAlertShow: true,
             alertContent: content,
@@ -145,60 +145,60 @@ export const TableAlertPlugin: PluginFactory<TableAlertConfig> = (
       });
     },
 
-    // 渲染器 - 🐛 使用TableAlert组件，修复props传递问题
+    // Renderer - 🐛 Use TableAlert component, fix props passing issue
     render: {
       alert: (...args: unknown[]): React.ReactNode => {
         const context = args[0] as PluginContext;
         const extContext = context as ExtendedPluginContext;
         const { state, props } = extContext;
 
-        // 🐛 修复：从两个地方获取Alert数据，优先使用props
+        // 🐛 Fix: Get alert data from two places, prioritize props
         const isAlertShow = props.isAlertShow ?? state.isAlertShow;
         const alertType = props.alertType ?? state.alertType;
         const alertContent = props.alertContent ?? state.alertContent;
         const customAlertNode = props.customAlertNode ?? state.customAlertNode;
 
-        // 详细调试日志，检查数据来源
+        // Detailed debug log, check data sources
         devLog.log({
           component: 'TableAlertPlugin',
-          message: 'Alert渲染详细调试',
+          message: 'Alert render detailed debug',
           data: {
-            // 1. 从props获取的数据
+            // 1. Data from props
             propsData: {
               isAlertShow: props.isAlertShow,
               alertType: props.alertType,
               alertContent: props.alertContent,
               customAlertNode: props.customAlertNode,
             },
-            // 2. 从state获取的数据
+            // 2. Data from state
             stateData: {
               isAlertShow: state.isAlertShow,
               alertType: state.alertType,
               alertContent: state.alertContent,
               customAlertNode: state.customAlertNode,
             },
-            // 3. 最终使用的数据
+            // 3. Final data used
             finalData: {
               isAlertShow,
               alertType,
               alertContent: Boolean(alertContent),
               customAlertNode: Boolean(customAlertNode),
             },
-            // 4. 渲染决策
+            // 4. Render decision
             willRender: Boolean(isAlertShow) && Boolean(alertContent),
           },
         });
 
-        // 优先渲染自定义节点
+        // Prioritize rendering custom node
         if (customAlertNode) {
           devLog.log({
             component: 'TableAlertPlugin',
-            message: '返回自定义Alert节点',
+            message: 'Returning custom alert node',
           });
           return customAlertNode;
         }
 
-        // 如果没有要显示的内容，直接返回null
+        // If there's no content to display, return null directly
         if (!isAlertShow || !alertContent) {
           return null;
         }
@@ -211,40 +211,40 @@ export const TableAlertPlugin: PluginFactory<TableAlertConfig> = (
 
         devLog.log({
           component: 'TableAlertPlugin',
-          message: '🚨 创建TableAlert组件:',
+          message: '🚨 Creating TableAlert component:',
           data: {
             alertProps,
           },
         });
 
-        // ✅ 直接使用TableAlert组件，移除了ConfigProvider包装
+        // ✅ Directly use TableAlert component, removed ConfigProvider wrapper
         return <TableAlert {...alertProps} />;
       },
     },
 
-    // 生命周期方法
+    // Lifecycle methods
     beforeMount(_context: PluginContext): void {
-      // 组件挂载前的处理
+      // Handle before component mount
     },
 
     afterMount(_context: PluginContext): void {
-      // 组件挂载后的处理
+      // Handle after component mount
     },
 
     beforeUpdate(_context: PluginContext): void {
-      // 组件更新前的处理
+      // Handle before component update
     },
 
     afterUpdate(_context: PluginContext): void {
-      // 组件更新后的处理
+      // Handle after component update
     },
 
     beforeUnmount(_context: PluginContext): void {
-      // 组件卸载前的处理
+      // Handle before component unmount
     },
 
     uninstall(_context: PluginContext): void {
-      // 卸载插件时的清理工作
+      // Cleanup operations during plugin uninstallation
     },
   } as ReturnType<PluginFactory<TableAlertConfig>>;
 };

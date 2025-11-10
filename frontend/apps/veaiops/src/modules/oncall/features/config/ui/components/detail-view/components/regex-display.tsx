@@ -20,7 +20,7 @@ import type React from 'react';
 import type { UseCopyReturn } from '../hooks';
 
 /**
- * 正则表达式展示组件属性
+ * Regex display component props
  */
 export interface RegexDisplayProps {
   regularExpression: string;
@@ -28,7 +28,7 @@ export interface RegexDisplayProps {
 }
 
 /**
- * 正则表达式展示组件
+ * Regex display component
  */
 export const RegexDisplay: React.FC<RegexDisplayProps> = ({
   regularExpression,

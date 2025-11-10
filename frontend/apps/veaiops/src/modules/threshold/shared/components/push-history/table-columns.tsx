@@ -19,16 +19,17 @@ import { IconEye, IconRedo } from '@arco-design/web-react/icon';
 import { CellRender } from '@veaiops/components';
 import { AGENT_TYPE_MAP, EMPTY_CONTENT } from '@veaiops/constants';
 import { ModuleType } from '@veaiops/types';
+import { formatDateTime } from '@veaiops/utils';
 import type { Event } from 'api-generate';
 import { useMemo } from 'react';
 import type { TableColumnsProps } from './types';
 import { truncateText } from './utils';
 
-// 解构CellRender组件，避免重复调用
-const { CustomOutlineTag, StampTime } = CellRender;
+// Destructure CellRender component to avoid repeated calls
+const { CustomOutlineTag } = CellRender;
 
 /**
- * 获取历史事件表格列配置
+ * Get historical event table column configuration
  */
 export const useTableColumns = ({
   customActions,
@@ -81,36 +82,36 @@ export const useTableColumns = ({
         },
       },
       // {
-      //   title: '区域',
+      //   title: 'Region',
       //   dataIndex: 'region',
       //   key: 'region',
       //   width: 150,
       //   render: (value: string[]) =>
-      //     value?.length > 0 ? value.join(', ') : '全部',
+      //     value?.length > 0 ? value.join(', ') : 'All',
       // },
       // {
-      //   title: '关注项目',
+      //   title: 'Followed Projects',
       //   dataIndex: 'project',
       //   key: 'project',
       //   width: 150,
       //   render: (value: string[]) =>
-      //     value?.length > 0 ? value.join(', ') : '全部',
+      //     value?.length > 0 ? value.join(', ') : 'All',
       // },
       // {
-      //   title: '关注产品',
+      //   title: 'Followed Products',
       //   dataIndex: 'product',
       //   key: 'product',
       //   width: 150,
       //   render: (value: string[]) =>
-      //     value?.length > 0 ? value.join(', ') : '全部',
+      //     value?.length > 0 ? value.join(', ') : 'All',
       // },
       // {
-      //   title: '关注客户',
+      //   title: 'Followed Customers',
       //   dataIndex: 'customer',
       //   key: 'customer',
       //   width: 150,
       //   render: (value: string[]) =>
-      //     value?.length > 0 ? value.join(', ') : '全部',
+      //     value?.length > 0 ? value.join(', ') : 'All',
       // },
       {
         title: '创建时间',
@@ -118,19 +119,19 @@ export const useTableColumns = ({
         key: 'created_at',
         width: 180,
         sorter: true,
-        // 设置默认降序排序（最新的记录在前）
+        // Set default descending sort (latest records first)
         defaultSortOrder: 'descend',
-        render: (value: string) => <StampTime time={value} />,
+        render: (value: string) => formatDateTime(value, true),
       },
       {
         title: '更新时间',
         dataIndex: 'updated_at',
         key: 'updated_at',
         width: 180,
-        render: (value: string) => <StampTime time={value} />,
+        render: (value: string) => formatDateTime(value, true),
       },
     ];
-    // 添加操作列
+    // Add action column
     baseColumns.push({
       title: '操作',
       key: 'actions',
@@ -148,7 +149,7 @@ export const useTableColumns = ({
         return (
           <Space>
             {isOncallOrIntelligentThreshold ? (
-              // Oncall和智能阈值模块：显示查看详情按钮
+              // Oncall and intelligent threshold modules: Show view detail button
               <Button
                 type="text"
                 size="small"
@@ -158,7 +159,7 @@ export const useTableColumns = ({
                 查看详情
               </Button>
             ) : (
-              // 其他模块：显示重试按钮
+              // Other modules: Show retry button
               <Button
                 type="text"
                 size="small"

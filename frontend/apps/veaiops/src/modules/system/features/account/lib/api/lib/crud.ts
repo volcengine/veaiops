@@ -19,13 +19,13 @@ import apiClient from '@/utils/api-client';
 import type { UpdateUserParams, UserListParams, UserListResponse } from './types';
 
 /**
- * 获取用户列表
+ * Get user list
  */
 export const getUserList = async (
   params: UserListParams = {},
 ): Promise<UserListResponse> => {
   try {
-    // 使用真实API调用
+    // Use real API call
     const response = await apiClient.users.getApisV1ManagerUsers({
       skip: params.skip,
       limit: params.limit,
@@ -37,12 +37,12 @@ export const getUserList = async (
         id: user._id || `user-${Date.now()}-${Math.random()}`,
         username: user.username || '',
         email: user.email || '',
-        role: (user.is_supervisor ? 'admin' : 'user') as UserRole, // 根据is_supervisor映射role
-        status: (user.is_active ? 'active' : 'inactive') as UserStatus, // 根据is_active映射status
-        last_login: user.updated_at, // 使用updated_at作为last_login的替代
+        role: (user.is_supervisor ? 'admin' : 'user') as UserRole, // Map role based on is_supervisor
+        status: (user.is_active ? 'active' : 'inactive') as UserStatus, // Map status based on is_active
+        last_login: user.updated_at, // Use updated_at as replacement for last_login
         created_at: user.created_at || new Date().toISOString(),
         updated_at: user.updated_at || new Date().toISOString(),
-        is_system_admin: user.is_supervisor || false, // 使用is_supervisor映射is_system_admin
+        is_system_admin: user.is_supervisor || false, // Map is_system_admin using is_supervisor
       }));
 
       return {
@@ -52,7 +52,7 @@ export const getUserList = async (
         limit: response.limit || 10,
       };
     } else {
-      // 如果API调用失败，使用模拟数据作为后备
+      // If API call fails, use mock data as fallback
       const mockUsers: User[] = [
         {
           id: '1',
@@ -85,24 +85,24 @@ export const getUserList = async (
         limit: 10,
       };
     }
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : '获取用户列表失败';
-    throw new Error(errorMessage);
-  }
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'Failed to fetch user list';
+        throw new Error(errorMessage);
+      }
 };
 
 /**
- * 创建用户
+ * Create user
  */
 export const createUser = async (userData: UserFormData): Promise<User> => {
   try {
-    // 使用真实API调用
+    // Use real API call
     const response = await apiClient.users.postApisV1ManagerUsers({
       requestBody: {
         username: userData.username,
         email: userData.email,
-        password: userData.password || 'TempPass123!', // 临时密码
+        password: userData.password || 'TempPass123!', // Temporary password
       },
     });
 
@@ -112,7 +112,7 @@ export const createUser = async (userData: UserFormData): Promise<User> => {
         id: apiUser._id || Date.now().toString(),
         username: apiUser.username,
         email: apiUser.email,
-        role: userData.is_supervisor ? 'admin' : 'user', // 从is_supervisor推断role
+        role: userData.is_supervisor ? 'admin' : 'user', // Infer role from is_supervisor
         status: (apiUser.is_active ? 'active' : 'inactive') as UserStatus,
         created_at: apiUser.created_at || new Date().toISOString(),
         updated_at: apiUser.updated_at || new Date().toISOString(),
@@ -131,14 +131,14 @@ export const createUser = async (userData: UserFormData): Promise<User> => {
 };
 
 /**
- * 更新用户
+ * Update user
  */
 export const updateUser = async ({
   id,
   userData,
 }: UpdateUserParams): Promise<User> => {
   try {
-    // 使用真实API调用
+    // Use real API call
     const response = await apiClient.users.putApisV1ManagerUsers({
       userId: id,
       requestBody: {
@@ -148,7 +148,7 @@ export const updateUser = async ({
     });
 
     if (response.code === API_RESPONSE_CODE.SUCCESS) {
-      // 由于更新接口返回的是APIResponse而不是用户数据，我们需要重新获取用户信息
+      // Since update endpoint returns APIResponse instead of user data, we need to re-fetch user information
       const userResponse = await apiClient.users.getApisV1ManagerUsers1({
         userId: id,
       });
@@ -168,7 +168,7 @@ export const updateUser = async ({
         };
         return result;
       } else {
-        throw new Error(userResponse.message || '获取更新后的用户信息失败');
+        throw new Error(userResponse.message || 'Failed to fetch updated user information');
       }
     } else {
       throw new Error(response.message || '更新用户失败');
@@ -181,15 +181,15 @@ export const updateUser = async ({
 };
 
 /**
- * 删除用户
+ * Delete user
  *
- * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+ * @returns Returns result object in format { success: boolean; error?: Error }
  */
 export const deleteUser = async (
   id: string,
 ): Promise<{ success: boolean; error?: Error }> => {
   try {
-    // 使用真实API调用
+    // Use real API call
     const response = await apiClient.users.deleteApisV1ManagerUsers({
       userId: id,
     });

@@ -13,43 +13,43 @@
 // limitations under the License.
 
 /**
- * CustomTable 组件类型统一导出
- * 按照类型导出优化规范，使用 export * from 统一导出
+ * CustomTable component types unified export
+ * Following type export optimization standards, use export * from for unified export
  */
 
-// ==================== 组件属性类型 ====================
+// ==================== Component property types ====================
 export * from './props';
-// 显式导出常用组件类型，确保 DTS 生成时正确识别
+// Explicitly export commonly used component types to ensure correct recognition during DTS generation
 export type { FilterConfigItem } from './props';
 
-// ==================== 自定义加载组件类型 ====================
+// ==================== Custom loading component types ====================
 export * from './custom-loading';
 
-// ==================== 重试处理器组件类型 ====================
+// ==================== Retry handler component types ====================
 export * from './retry-handler';
 
-// ==================== 默认底部组件类型 ====================
+// ==================== Default footer component types ====================
 export * from './default-footer';
 
-// ==================== 流式重试按钮组件类型 ====================
+// ==================== Stream retry button component types ====================
 export * from './stream-retry-button';
 
-// ==================== 表格提示组件类型 ====================
+// ==================== Table alert component types ====================
 export * from './table-alert';
 
-// ==================== 表格内容组件类型 ====================
+// ==================== Table content component types ====================
 export * from './table-content';
 
-// ==================== 表格标题组件类型 ====================
+// ==================== Table title component types ====================
 export * from './table-title';
 
-// ==================== 标题复选框组件类型 ====================
+// ==================== Title checkbox component types ====================
 export * from './title-checkbox';
 
-// ==================== 标题搜索组件类型 ====================
+// ==================== Title search component types ====================
 export * from './title-search';
 
-// ==================== 缺失类型补充 ====================
-// 注意：missing-types.ts 中包含一些类型定义的补充和兼容性导出
-// 如果出现重复导出错误，需要检查并从源头解决重复定义
+// ==================== Missing type supplements ====================
+// Note: missing-types.ts contains some type definition supplements and compatibility exports
+// If duplicate export errors occur, check and resolve duplicate definitions from the source
 export * from './missing-types';

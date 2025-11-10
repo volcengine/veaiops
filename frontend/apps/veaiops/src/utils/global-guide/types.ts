@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 分析问题类型
+ * Analysis issue type
  */
 export interface AnalysisIssue {
   type: string;
@@ -26,7 +26,7 @@ export interface AnalysisIssue {
 }
 
 /**
- * localStorage 分析结果
+ * localStorage analysis result
  */
 export interface LocalStorageAnalysis {
   globalGuideStore: unknown;
@@ -34,7 +34,7 @@ export interface LocalStorageAnalysis {
 }
 
 /**
- * DOM 分析结果
+ * DOM analysis result
  */
 export interface DOMAnalysis {
   guideElements: unknown[];
@@ -43,7 +43,7 @@ export interface DOMAnalysis {
 }
 
 /**
- * 性能分析结果
+ * Performance analysis result
  */
 export interface PerformanceAnalysis {
   timing: Record<string, unknown>;
@@ -52,7 +52,7 @@ export interface PerformanceAnalysis {
 }
 
 /**
- * 分析报告
+ * Analysis report
  */
 export interface AnalysisReport {
   analysisTime: string;

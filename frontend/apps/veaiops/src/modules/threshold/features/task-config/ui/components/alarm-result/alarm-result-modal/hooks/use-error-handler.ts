@@ -17,19 +17,19 @@ import { safeCopyToClipboard } from '@veaiops/utils';
 import { useCallback } from 'react';
 
 /**
- * 错误处理 Hook
+ * Error handler Hook
  */
 export const useErrorHandler = () => {
-  // 复制错误信息到剪贴板
+  // Copy error message to clipboard
   const handleCopyError = useCallback(async (error: string) => {
-    // ✅ 正确：检查 safeCopyToClipboard 的返回值
+    // ✅ Correct: Check safeCopyToClipboard return value
     const result = await safeCopyToClipboard(error);
 
     if (result.success) {
-      Message.success('错误信息已复制到剪贴板');
+      Message.success('错误信息已复制到剪贴板'); // Reverted to Chinese (code string)
     } else {
-      // ✅ 正确：透出实际的错误信息
-      const errorMessage = result.error?.message || '复制失败，请手动复制';
+      // ✅ Correct: Expose actual error information
+      const errorMessage = result.error?.message || '复制失败，请手动复制'; // Reverted to Chinese (code string)
       Message.error(errorMessage);
     }
   }, []);

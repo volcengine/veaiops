@@ -35,7 +35,7 @@ interface AgentConfigSectionProps {
 }
 
 /**
- * Agent功能配置区块组件
+ * Agent feature configuration section component
  */
 export const AgentConfigSection: React.FC<AgentConfigSectionProps> = ({
   form,

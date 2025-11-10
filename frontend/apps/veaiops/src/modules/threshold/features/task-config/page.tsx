@@ -16,8 +16,8 @@ import type React from 'react';
 import { TaskManagement } from './ui';
 
 /**
- * 智能阈值任务配置页面
- * @description 管理智能阈值任务的创建、执行、监控和告警规则配置
+ * Intelligent threshold task configuration page
+ * @description Manages creation, execution, monitoring, and alarm rule configuration of intelligent threshold tasks
  */
 export const TaskConfigPage: React.FC = () => {
   return <TaskManagement />;

@@ -16,10 +16,10 @@ import dayjs from 'dayjs';
 import { isUndefined } from 'lodash-es';
 
 /**
- * Calculate a timestamp based on time difference and unit
- * @param diff Time difference; how many units to go back from now
- * @param unit Time unit; one of 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second'
- * @param outputInSeconds Whether to output seconds; default false (outputs milliseconds)
+ * Calculate timestamp based on time difference and time unit
+ * @param diff Time difference, represents how many units back from current moment
+ * @param unit Time unit, optional values: 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second'
+ * @param outputInSeconds Whether to output timestamp in seconds, defaults to false (output milliseconds)
  * @returns Calculated timestamp
  */
 export const calculateTimestamp = (
@@ -29,13 +29,13 @@ export const calculateTimestamp = (
 ): number => {
   const now: dayjs.Dayjs = dayjs(); // Get current time
 
-  // Adjust time by the unit parameter
+  // Adjust time based on unit parameter
   const adjustedTime: dayjs.Dayjs = now.subtract(diff, unit);
 
   // Get adjusted timestamp
   let timestamp: number = adjustedTime.valueOf();
 
-  // Whether to output seconds
+  // Determine if timestamp should be output in seconds
   if (outputInSeconds) {
     timestamp = Math.floor(timestamp / 1000);
   }
@@ -44,10 +44,10 @@ export const calculateTimestamp = (
 };
 
 /**
- * Calculate a timestamp range based on time difference and unit
- * @param diff 时间差，表示当前时刻倒退了多少unit
- * @param unit 时间单位，可选值为 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second'
- * @param outputInSeconds 是否输出时间戳为秒，默认为 false（输出毫秒）
+ * Calculate timestamp range based on time difference and time unit
+ * @param diff Time difference, represents how many units back from current moment
+ * @param unit Time unit, optional values: 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second'
+ * @param outputInSeconds Whether to output timestamp in seconds, defaults to false (output milliseconds)
  * @returns Calculated timestamp range array
  */
 export const calculateTimestampRange = (
@@ -60,32 +60,32 @@ export const calculateTimestampRange = (
   }
   const now: dayjs.Dayjs = dayjs(); // Get current time
 
-  // Compute start and end times based on unit
+  // Calculate start time and end time based on unit parameter
   const endTime: dayjs.Dayjs = now;
   const startTime: dayjs.Dayjs = endTime.subtract(diff, unit);
-  // Get timestamps for start and end times
+  // Get timestamps of start time and end time
   let startTimestamp: number = startTime.valueOf();
   let endTimestamp: number = endTime.valueOf();
 
-  // Whether to output seconds
+  // Determine if timestamp should be output in seconds
   if (outputInSeconds) {
     startTimestamp = Math.floor(startTimestamp / 1000);
     endTimestamp = Math.floor(endTimestamp / 1000);
   }
 
-  // Generate the timestamp range array
+  // Generate timestamp range array
   const timestampRange: number[] = [startTimestamp, endTimestamp];
   return timestampRange;
 };
 
 /**
- * Generate time difference relative to a given timestamp
- * @param {number} timestamp The given timestamp
- * @param {string} unit Time unit; one of 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second'
- * @param {number} diff Difference relative to now
- * @param {boolean} isFuture Whether to compute forward from now; default true
- * @param {boolean} inputInSeconds Whether to return the difference in seconds; default false (returns milliseconds)
- * @returns {number} Computed time difference
+ * Generate time difference relative to specified time
+ * @param {number} timestamp Timestamp of specified time
+ * @param {string} unit Time unit, optional values: 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second'
+ * @param {number} diff Difference relative to current time
+ * @param {boolean} isFuture Whether to calculate time forward, defaults to true
+ * @param {boolean} inputInSeconds Whether to return time difference in seconds, defaults to false (returns milliseconds)
+ * @returns {number} Calculated time difference
  */
 export const calculateTimestampByDiffFromNow = ({
   unit,
@@ -98,20 +98,20 @@ export const calculateTimestampByDiffFromNow = ({
 }): number => {
   const now = dayjs(); // Get current time
 
-  // Determine calculation direction based on isFuture
+  // Calculate time based on isFuture parameter
   const calculatedDate = isFuture
     ? now.add(diff, unit)
     : now.subtract(diff, unit);
 
-  // Convert to seconds or milliseconds
+  // Return as timestamp (milliseconds)
   return calculatedDate.valueOf();
 };
 
 /**
- * Compute time by startTime, offset, and operation.
- * @param startTime Start time in "YYYY-MM-DD HH:mm:ss".
- * @param offset Offset in format "1h" 或 "1m"。
- * @param operation Operation: "add" (default), "subtract", "multiply" or "divide".
+ * Calculate time based on start time, offset, and operation.
+ * @param startTime Start time, format is "YYYY-MM-DD HH:mm:ss".
+ * @param offset Offset time, format is "1h" or "1m".
+ * @param operation Calculation operation: "add" (default), "subtract", "multiply", or "divide".
  * @returns Calculated time in ISO 8601 format.
  */
 export const calculateTimeByOffset = (
@@ -119,14 +119,14 @@ export const calculateTimeByOffset = (
   offset: string,
   operation = 'add',
 ): string => {
-  // Convert startTime to a Date object
+  // Convert startTime to Date object
   const startDate = new Date(startTime);
 
-  // Extract amount and unit from offset
+  // Extract value and unit from offset
   const amount = Number(offset.slice(0, -1));
   const unit = offset.slice(-1);
 
-  // Compute new date based on operation
+  // Calculate new date based on operation
   let newDate: Date;
   if (operation === 'add') {
     newDate = new Date(startDate.getTime());
@@ -157,16 +157,16 @@ export const calculateTimeByOffset = (
       newDate.setMinutes(Math.floor(startDate.getMinutes() / amount));
     }
   } else {
-    return '无效的操作';
+    return 'Invalid operation';
   }
 
   return newDate.toISOString();
 };
 
 /**
- * Check whether the given startTime, endTime, and offset fall within the allowed range.
+ * Check if given startTime, endTime, and offset are within specified range.
  * @param params Object containing startTime, endTime, and offset
- * @returns true if endTime - startTime is within the offset range; otherwise false
+ * @returns Returns true if endTime - startTime is within offset range, otherwise returns false
  */
 export const checkOffsetRange = ({
   startTime,
@@ -181,11 +181,11 @@ export const checkOffsetRange = ({
   const startDate = new Date(startTime);
   const endDate = new Date(endTime);
 
-  // Extract amount and unit from offset
+  // Extract value and unit from offset
   const amount = Number(offset.slice(0, -1));
   const unit = offset.slice(-1);
 
-  // Calculate the time difference
+  // Calculate time difference
   let timeDiff: number;
   if (unit === 'h') {
     timeDiff =
@@ -196,6 +196,6 @@ export const checkOffsetRange = ({
     return false; // Unsupported unit
   }
 
-  // Check whether the difference is within the offset range
+  // Check if time difference is within offset range
   return timeDiff <= amount;
 };

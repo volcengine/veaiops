@@ -13,28 +13,28 @@
 // limitations under the License.
 
 /**
- * SelectBlock Hooks 模块导出
+ * SelectBlock Hooks module exports
  *
- * 主要导出：
- * - useSelectBlock: 主Hook，整合所有功能
+ * Main exports:
+ * - useSelectBlock: Main Hook, integrates all functionality
  *
- * 子Hook导出（可用于独立使用或测试）：
- * - useBaseConfig: 基础配置处理
- * - useDebugLogging: 调试日志系统
- * - usePluginManager: 插件管理器
- * - useStateSubscription: 状态订阅
- * - useOptionsProcessing: 选项处理
- * - useEventHandlers: 事件处理器
- * - useFetchEffects: 数据获取副作用
- * - useDebugEffects: 调试副作用
- * - useDefaultValueEffects: 默认值副作用
- * - useReturnValue: 返回值构造
+ * Sub-hook exports (can be used independently or for testing):
+ * - useBaseConfig: Base configuration processing
+ * - useDebugLogging: Debug logging system
+ * - usePluginManager: Plugin manager
+ * - useStateSubscription: State subscription
+ * - useOptionsProcessing: Options processing
+ * - useEventHandlers: Event handlers
+ * - useFetchEffects: Data fetching side effects
+ * - useDebugEffects: Debug side effects
+ * - useDefaultValueEffects: Default value side effects
+ * - useReturnValue: Return value construction
  */
 
-// 主Hook导出
+// Main Hook export
 export { useSelectBlock } from './use-select-block';
 
-// 子Hook导出（供高级用法和测试使用）
+// Sub-hook exports (for advanced usage and testing)
 export { useBaseConfig } from './use-base-config';
 export { useDebugLogging } from './use-debug-logging';
 export { usePluginManager } from './use-plugin-manager';
@@ -46,7 +46,7 @@ export { useDebugEffects } from './use-debug-effects';
 export { useDefaultValueEffects } from './use-default-value-effects';
 export { useReturnValue } from './use-return-value';
 
-// 类型导出
+// Type exports
 export type { veArchSelectBlockProps, SelectOption } from '../types/interface';
 
 export type { SelectBlockState } from '../types/plugin';

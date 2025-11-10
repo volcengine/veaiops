@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 火山引擎实例选择组件
- * @description 专门处理火山引擎数据源的实例选择
+ * Volcengine instance selection component
+ * @description Handles instance selection specifically for Volcengine data sources
  * @author AI Assistant
  * @date 2025-01-16
  */

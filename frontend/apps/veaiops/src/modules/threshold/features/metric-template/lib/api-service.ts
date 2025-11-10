@@ -20,7 +20,7 @@ import type {
 import apiClient from "@/utils/api-client";
 
 /**
- * 指标模板相关的API封装
+ * Metric template related API wrapper
  */
 interface UpdateParams {
   uid: string;
@@ -34,16 +34,16 @@ interface ToggleParams {
 
 export const metricTemplateApi = {
   /**
-   * 获取指标模板列表
-   * @param params 查询参数
+   * Get metric template list
+   * @param params Query parameters
    */
   list: (params?: { skip?: number; limit?: number }) => {
     return apiClient.metricTemplate.getApisV1DatasourceTemplate(params || {});
   },
 
   /**
-   * 创建指标模板
-   * @param data 创建参数
+   * Create metric template
+   * @param data Create parameters
    */
   create: (data: MetricTemplateCreateRequest) => {
     return apiClient.metricTemplate.postApisV1DatasourceTemplate({
@@ -52,8 +52,8 @@ export const metricTemplateApi = {
   },
 
   /**
-   * 获取单个指标模板
-   * @param uid 模板唯一标识符
+   * Get single metric template
+   * @param uid Template unique identifier
    */
   get: (uid: string) => {
     return apiClient.metricTemplate.getApisV1DatasourceTemplate1({
@@ -62,7 +62,7 @@ export const metricTemplateApi = {
   },
 
   /**
-   * 更新指标模板
+   * Update metric template
    */
   update: ({ uid, data }: UpdateParams) => {
     return apiClient.metricTemplate.putApisV1DatasourceTemplate({
@@ -72,8 +72,8 @@ export const metricTemplateApi = {
   },
 
   /**
-   * 删除指标模板
-   * @param uid 模板唯一标识符
+   * Delete metric template
+   * @param uid Template unique identifier
    */
   delete: (uid: string) => {
     return apiClient.metricTemplate.deleteApisV1DatasourceTemplate({
@@ -82,7 +82,7 @@ export const metricTemplateApi = {
   },
 
   /**
-   * 切换指标模板激活状态
+   * Toggle metric template active status
    */
   toggle: ({ uid, data }: ToggleParams) => {
     return apiClient.metricTemplate.putApisV1DatasourceTemplateToggle({

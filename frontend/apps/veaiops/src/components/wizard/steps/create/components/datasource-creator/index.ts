@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * 数据源创建器统一导出
+ * Data source creator unified export
  */
 
-// 类型定义
+// Type definitions
 export type { CreateResult } from './types';
 
-// 验证器
+// Validators
 export { validateConfiguration } from './validators';
 
-// 创建函数
+// Create functions
 export {
   createAliyunDataSource,
   createDataSource,
@@ -30,7 +30,7 @@ export {
   createZabbixDataSource,
 } from './creators';
 
-// 更新函数
+// Update functions
 export {
   updateAliyunDataSource,
   updateDataSource,
@@ -38,5 +38,5 @@ export {
   updateZabbixDataSource,
 } from './updaters';
 
-// 工具函数
+// Utility functions
 export { processApiError } from './utils';

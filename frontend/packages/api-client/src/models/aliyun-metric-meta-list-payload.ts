@@ -15,7 +15,7 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type AliyunMetricMetaListPayload = {
   /**
-   * 命名空间
+   * Namespace
    */
   namespace?: string;
 };

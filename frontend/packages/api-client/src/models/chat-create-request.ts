@@ -16,33 +16,33 @@
 import type { ChannelType } from './channel-type';
 export type ChatCreateRequest = {
   /**
-   * 群标识
+   * Chat identifier
    */
   chat_id: string;
   /**
-   * 群名称
+   * Chat name
    */
   name: string;
   /**
-   * 群类型
+   * Chat type
    */
   chat_type: ChatCreateRequest.chat_type;
   /**
-   * 企业协同工具
+   * Enterprise collaboration tool
    */
   channel: ChannelType;
   /**
-   * 关联的机器人ID
+   * Associated bot ID
    */
   bot_id?: string;
   /**
-   * 群描述
+   * Chat description
    */
   description?: string;
 };
 export namespace ChatCreateRequest {
   /**
-   * 群类型
+   * Chat type
    */
   export enum chat_type {
     GROUP = 'group',

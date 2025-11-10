@@ -15,9 +15,9 @@
 import type { EventShowStatus, EventStatus } from 'api-generate';
 
 /**
- * API 请求参数类型
- * 基于生成的 EventService.getApisV1ManagerEventCenterEvent 方法
- * 使用驼峰命名，对应后端 API 接口
+ * API request parameter types
+ * Based on generated EventService.getApisV1ManagerEventCenterEvent method
+ * Uses camelCase naming, corresponds to backend API interface
  */
 export type EventApiParams = {
   agentType?: Array<
@@ -38,21 +38,21 @@ export type EventApiParams = {
 };
 
 /**
- * 历史事件过滤器类型
- * 使用下划线命名，对应前端 UI 层
- * 与 filter.tsx 中定义的筛选器一一对应
+ * History event filter types
+ * Uses snake_case naming, corresponds to frontend UI layer
+ * One-to-one correspondence with filters defined in filter.tsx
  */
 export interface HistoryFilters {
-  /** 智能体类型 */
+  /** Agent type */
   agent_type?: string[];
-  /** 事件级别 */
+  /** Event level */
   event_level?: string;
-  /** 状态（中文） */
+  /** Status (Chinese) */
   show_status?: EventShowStatus[];
-  /** 事件状态（枚举值） */
+  /** Event status (enum value) */
   status?: number[];
-  /** 开始时间 */
+  /** Start time */
   start_time?: string;
-  /** 结束时间 */
+  /** End time */
   end_time?: string;
 }

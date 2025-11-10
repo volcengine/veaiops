@@ -18,7 +18,7 @@ import type { Bot } from 'api-generate';
 import { useCallback } from 'react';
 
 /**
- * 获取机器人选项Hook
+ * Fetch bot options Hook
  */
 export const useFetchBotOptions = ({
   setBotOptions,
@@ -39,7 +39,7 @@ export const useFetchBotOptions = ({
         setBotOptions(options);
       }
     } catch (error) {
-      // 静默处理：机器人列表加载失败不影响其他功能
+      // Silent handling: Bot list loading failure does not affect other functionality
     }
   }, [setBotOptions]);
 

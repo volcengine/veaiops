@@ -31,7 +31,6 @@ import {
   IconLock,
   IconUser,
 } from '@arco-design/web-react/icon';
-import { formatDateTime } from '@veaiops/utils';
 import type { User } from 'api-generate';
 import type React from 'react';
 import { useMemo, useState } from 'react';
@@ -102,10 +101,7 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
 
   if (!password) {
     return (
-      <div
-        className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200"
-        style={{ marginBottom: 16 }}
-      >
+      <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
         <div className="text-xs text-gray-500 mb-2 font-medium">密码要求：</div>
         <PasswordRequirementItem met={false} text="至少 6 个字符（基本要求）" />
         <PasswordRequirementItem met={false} text="建议 8 个字符以上" />
@@ -178,7 +174,7 @@ const PasswordStrengthIndicator: React.FC<PasswordStrengthIndicatorProps> = ({
 
       <Divider className="my-2" />
 
-      {/* Password requirements check list */}
+      {/* Password requirement check list */}
       <div className="space-y-0.5">
         <PasswordRequirementItem
           met={requirements.length}
@@ -325,7 +321,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
               <IconInfoCircleFill className="text-blue-500 text-sm mt-0.5 flex-shrink-0" />
               <div className="text-xs text-blue-700">
                 <div className="font-medium mb-1">身份验证说明</div>
-                <div>为了保护您的账号安全，修改密码前需要验证当前登录密码</div>
+                <div>为了保护您的账户安全，修改密码前请先验证当前登录密码</div>
               </div>
             </div>
           </div>
@@ -386,7 +382,6 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         label="角色"
         field="role"
         rules={roleRules}
-        className="mt-3"
         extra={
           !editingUser
             ? '管理员可管理系统配置和其他账号，请谨慎选择'
@@ -436,7 +431,7 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ editingUser }) => {
           <Input
             value={
               editingUser.created_at
-                ? formatDateTime(editingUser.created_at, true)
+                ? new Date(editingUser.created_at).toLocaleString()
                 : '未知'
             }
             disabled
@@ -448,7 +443,7 @@ export const AccountInfo: React.FC<AccountInfoProps> = ({ editingUser }) => {
           <Input
             value={
               editingUser.updated_at
-                ? formatDateTime(editingUser.updated_at, true)
+                ? new Date(editingUser.updated_at).toLocaleString()
                 : '从未登录'
             }
             disabled

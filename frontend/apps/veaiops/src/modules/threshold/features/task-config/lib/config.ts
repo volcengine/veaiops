@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * 智能阈值任务配置管理配置
+ * Intelligent threshold task configuration management configuration
  */
-// 从constants包导入数据源类型
+// Import datasource types from constants package
 import { DATASOURCE_TYPES } from "@veaiops/constants";
 
 export const TASK_CONFIG_MANAGEMENT_CONFIG = {
   title: "智能阈值任务配置",
   description: "管理智能阈值任务的创建、执行、监控和告警规则配置",
 
-  // 表格配置
+  // Table configuration
   table: {
     rowKey: "_id",
     size: "default" as const,
@@ -30,7 +30,7 @@ export const TASK_CONFIG_MANAGEMENT_CONFIG = {
     stripe: true,
     showHeader: true,
 
-    // 分页配置
+    // Pagination configuration
     pagination: {
       defaultPageSize: 20,
       pageSizeOptions: [10, 20, 50, 100],
@@ -39,13 +39,13 @@ export const TASK_CONFIG_MANAGEMENT_CONFIG = {
       showSizeChanger: true,
     },
 
-    // 滚动配置
+    // Scroll configuration
     scroll: {
       x: "max-content",
     },
   },
 
-  // 操作按钮配置
+  // Action button configuration
   actions: {
     create: {
       text: "创建任务",
@@ -64,14 +64,14 @@ export const TASK_CONFIG_MANAGEMENT_CONFIG = {
     },
   },
 
-  // 筛选器配置
+  // Filter configuration
   filters: {
     showReset: true,
     showSearch: true,
     collapsed: false,
   },
 
-  // 状态配置
+  // Status configuration
   status: {
     Unknown: { color: "gray", text: "未知" },
     Launching: { color: "blue", text: "启动中" },
@@ -81,14 +81,14 @@ export const TASK_CONFIG_MANAGEMENT_CONFIG = {
     Failed: { color: "red", text: "失败" },
   },
 
-  // 数据源类型配置
+  // Datasource type configuration
   datasourceTypes: {
     Volcengine: { color: "blue", text: "火山引擎" },
     Aliyun: { color: "orange", text: "阿里云" },
     Zabbix: { color: "purple", text: "Zabbix" },
   },
 
-  // API 配置
+  // API configuration
   api: {
     baseUrl: "/apis/v1/intelligent_threshold",
     endpoints: {
@@ -102,21 +102,21 @@ export const TASK_CONFIG_MANAGEMENT_CONFIG = {
     },
   },
 
-  // 表单配置
+  // Form configuration
   form: {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
     layout: "horizontal" as const,
   },
 
-  // 抽屉配置
+  // Drawer configuration
   drawer: {
     width: 800,
     placement: "right" as const,
     maskClosable: false,
   },
 
-  // 模态框配置
+  // Modal configuration
   modal: {
     width: 600,
     maskClosable: false,
@@ -124,7 +124,7 @@ export const TASK_CONFIG_MANAGEMENT_CONFIG = {
 } as const;
 
 /**
- * 默认查询参数
+ * Default query parameters
  */
 export const DEFAULT_QUERY = {
   page: 1,
@@ -133,7 +133,7 @@ export const DEFAULT_QUERY = {
 } as const;
 
 /**
- * 表格列宽配置
+ * Table column width configuration
  */
 export const COLUMN_WIDTHS = {
   taskName: 200,
@@ -150,7 +150,7 @@ export const COLUMN_WIDTHS = {
 } as const;
 
 /**
- * 操作类型枚举
+ * Operation type enumeration
  */
 export const OPERATION_TYPES = {
   CREATE: "create",
@@ -161,7 +161,7 @@ export const OPERATION_TYPES = {
 } as const;
 
 /**
- * 任务状态枚举
+ * Task status enumeration
  */
 export const TASK_STATUS = {
   UNKNOWN: "Unknown",
@@ -172,5 +172,5 @@ export const TASK_STATUS = {
   FAILED: "Failed",
 } as const;
 
-// 重新导出数据源类型
+// Re-export datasource types
 export { DATASOURCE_TYPES };

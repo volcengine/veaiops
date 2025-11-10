@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格提示信息插件默认配置
+ * Table alert plugin default configuration
  */
 import type { TableAlertConfig } from '@/custom-table/types';
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
@@ -21,7 +21,7 @@ import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 export const DEFAULT_TABLE_ALERT_CONFIG: TableAlertConfig = {
   enabled: true,
   priority: PluginPriorityEnum.MEDIUM,
-  // showAlert: false, // 移除不存在的属性
+  // showAlert: false, // Removed non-existent property
   type: 'info',
   message: '',
   closable: true,

@@ -17,8 +17,8 @@ import type { DataSource } from '@datasource/lib';
 import { useState } from 'react';
 
 /**
- * 监控数据源状态管理Hook
- * 管理监控数据源页面的所有状态
+ * Monitor data source state management Hook
+ * Manages all state for monitor data source page
  */
 export const useMonitorState = () => {
   const [form] = Form.useForm();

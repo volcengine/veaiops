@@ -18,32 +18,32 @@ import { StatisticsCharts } from './statistics-charts';
 import { StatisticsOverview } from './statistics-overview';
 
 /**
- * 统计管理页面
- * 提供事件中心的统计数据展示功能
+ * Statistics management page
+ * Provides event center statistics data display functionality
  *
- * 架构特点：
- * - 使用自定义Hook封装业务逻辑
- * - 组件职责单一，易于维护
- * - 状态管理与UI渲染分离
- * - 支持配置化和扩展
- * - 提供丰富的图表和统计信息
+ * Architecture features:
+ * - Uses custom Hook to encapsulate business logic
+ * - Single responsibility components, easy to maintain
+ * - State management separated from UI rendering
+ * - Supports configuration and extension
+ * - Provides rich charts and statistical information
  */
 const StatisticsManagement: React.FC = () => {
-  // 使用自定义Hook获取所有业务逻辑
+  // Use custom Hook to get all business logic
   const {
-    // 状态
+    // State
     loading,
     statisticsData,
     timeRange,
 
-    // 事件处理器
+    // Event handlers
     handleTimeRangeChange,
     handleRefresh,
   } = useStatisticsLogic();
 
   return (
     <div className="statistics-management">
-      {/* 统计概览组件 */}
+      {/* Statistics overview component */}
       <StatisticsOverview
         loading={loading}
         statisticsData={statisticsData}
@@ -52,7 +52,7 @@ const StatisticsManagement: React.FC = () => {
         onRefresh={handleRefresh}
       />
 
-      {/* 统计图表组件 */}
+      {/* Statistics charts component */}
       <StatisticsCharts loading={loading} statisticsData={statisticsData} />
     </div>
   );

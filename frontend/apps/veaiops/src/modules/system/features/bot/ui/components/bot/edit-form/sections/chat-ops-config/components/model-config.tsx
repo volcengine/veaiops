@@ -32,7 +32,7 @@ import type { UrlValidator, UseSecretViewerReturn } from '../hooks';
 const CollapseItem = Collapse.Item;
 
 /**
- * 大模型配置组件的 Props
+ * Model configuration component Props
  */
 interface ModelConfigProps {
   form: FormInstance;
@@ -47,7 +47,7 @@ interface ModelConfigProps {
 }
 
 /**
- * 大模型配置组件
+ * Model configuration component
  */
 export const ModelConfig: React.FC<ModelConfigProps> = ({
   form,

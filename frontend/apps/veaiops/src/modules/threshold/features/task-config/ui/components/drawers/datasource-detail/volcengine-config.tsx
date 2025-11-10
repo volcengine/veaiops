@@ -21,9 +21,9 @@ import type { ConfigSectionProps } from './types';
 const { Text } = Typography;
 
 /**
- * 火山引擎配置卡片
+ * Volcengine configuration card
  *
- * 显示火山引擎数据源的配置信息和实例列表
+ * Displays Volcengine datasource configuration information and instance list
  */
 export const VolcengineConfig: React.FC<ConfigSectionProps> = ({
   datasource,
@@ -89,7 +89,7 @@ export const VolcengineConfig: React.FC<ConfigSectionProps> = ({
         />
       </CardWithTitle>
 
-      {/* 实例列表 */}
+      {/* Instance list */}
       {config.instances &&
         Array.isArray(config.instances) &&
         config.instances.length > 0 && (

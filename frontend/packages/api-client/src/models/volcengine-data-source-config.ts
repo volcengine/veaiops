@@ -15,35 +15,35 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type VolcengineDataSourceConfig = {
   /**
-   * 数据源名称
+   * Data source name
    */
   name?: string;
   /**
-   * 连接名称
+   * Connection name
    */
   connect_name: string;
   /**
-   * 火山引擎地域
+   * Volcano Engine region
    */
   region?: string;
   /**
-   * 命名空间
+   * Namespace
    */
   namespace?: string;
   /**
-   * 子命名空间
+   * Sub namespace
    */
   sub_namespace?: string;
   /**
-   * 指标名称
+   * Metric name
    */
   metric_name?: string;
   /**
-   * 实例列表
+   * Instance list
    */
   instances?: Array<Record<string, string>>;
   /**
-   * 分组维度
+   * Grouping dimensions
    */
   group_by?: Array<string>;
 };

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== 格式化工具 ====================
+// ==================== Formatting utilities ====================
 export {
   formatProjectStatus,
   formatProjectPriority,
@@ -22,27 +22,27 @@ export {
   formatProgress,
 } from './formatters';
 
-// ==================== 验证工具 ====================
+// ==================== Validation utilities ====================
 export {
   validateDate,
   validateDateRange,
   validateProjectFormData,
 } from './validators';
 
-// ==================== 转换工具 ====================
+// ==================== Transformation utilities ====================
 export {
   transformFormDataToProject,
   transformProjectToFormData,
 } from './transformers';
 
-// ==================== 项目操作工具 ====================
+// ==================== Project operation utilities ====================
 export {
   generateProjectId,
   canDeleteProject,
   getDeleteRestrictionReason,
 } from './operations';
 
-// ==================== 数据处理工具 ====================
+// ==================== Data processing utilities ====================
 export {
   filterProjects,
   sortProjects,

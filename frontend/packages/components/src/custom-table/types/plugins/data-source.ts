@@ -13,80 +13,80 @@
 // limitations under the License.
 
 /**
- * 数据源插件类型定义
+ * Data source plugin type definition
  */
 
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
 import type { PluginBaseConfig } from './core';
 
 /**
- * 数据源配置
+ * Data source configuration
  */
 export interface DataSourceConfig extends PluginBaseConfig {
-  /** API 端点 */
+  /** API endpoint */
   apiUrl?: string;
-  /** 请求方法 */
+  /** Request method */
   method?: 'GET' | 'POST';
-  /** 请求头 */
+  /** Request headers */
   headers?: Record<string, string>;
-  /** 请求参数转换 */
+  /** Request parameter transformation */
   transformRequest?: <TRequest = Record<string, unknown>>(
     query: BaseQuery,
   ) => TRequest;
-  /** 响应数据转换 */
+  /** Response data transformation */
   transformResponse?: <TResponse = unknown>(
     response: TResponse,
   ) => { data: BaseRecord[]; total: number };
-  /** 缓存配置 */
+  /** Cache configuration */
   cache?: {
     enabled: boolean;
-    ttl: number; // 毫秒
+    ttl: number; // milliseconds
     key?: string;
   };
-  /** 默认分页大小 */
+  /** Default page size */
   defaultPageSize?: number;
-  /** 默认当前页 */
+  /** Default current page */
   defaultCurrent?: number;
-  /** 是否自动重置 */
+  /** Whether to auto reset */
   autoReset?: boolean;
-  /** 是否启用客户端排序 */
+  /** Whether to enable client-side sorting */
   enableClientSorting?: boolean;
-  /** 是否启用客户端筛选 */
+  /** Whether to enable client-side filtering */
   enableClientFiltering?: boolean;
 }
 
 /**
- * 数据源状态
+ * Data source state
  */
 export interface DataSourceState {
-  /** 原始数据 */
+  /** Raw data */
   rawData: BaseRecord[];
-  /** 过滤后的数据 */
+  /** Filtered data */
   filteredData: BaseRecord[];
-  /** 加载状态 */
+  /** Loading state */
   loading: boolean;
-  /** 错误信息 */
+  /** Error information */
   error: Error | null;
-  /** 总条数 */
+  /** Total count */
   total: number;
-  /** 最后更新时间 */
+  /** Last update time */
   lastUpdated: number;
 }
 
 /**
- * 数据源方法
+ * Data source methods
  */
 export interface DataSourceMethods {
-  /** 加载数据 */
+  /** Load data */
   loadData: (query?: BaseQuery) => Promise<void>;
-  /** 刷新数据 */
+  /** Refresh data */
   refreshData: () => Promise<void>;
-  /** 清空数据 */
+  /** Clear data */
   clearData: () => void;
-  /** 设置数据 */
+  /** Set data */
   setData: (data: BaseRecord[]) => void;
-  /** 更新单条数据 */
+  /** Update single record */
   updateRecord: (record: BaseRecord) => void;
-  /** 删除单条数据 */
+  /** Delete single record */
   deleteRecord: (id: string | number) => void;
 }

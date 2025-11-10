@@ -73,3 +73,4 @@ export const setupErrorHandlers = (getLogger: () => Logger | null): void => {
     }
   });
 };
+

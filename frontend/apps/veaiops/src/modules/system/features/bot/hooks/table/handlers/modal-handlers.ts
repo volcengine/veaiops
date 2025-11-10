@@ -17,7 +17,7 @@ import type { Bot } from '@bot/lib';
 import { useCallback } from 'react';
 
 /**
- * 弹窗操作处理器参数
+ * Modal operation handler parameters
  */
 interface ModalHandlersParams {
   form: FormInstance;
@@ -28,7 +28,7 @@ interface ModalHandlersParams {
 }
 
 /**
- * 弹窗操作处理器
+ * Modal operation handlers
  */
 export const useModalHandlers = ({
   form,
@@ -36,7 +36,7 @@ export const useModalHandlers = ({
   setEditingBot,
   setModalVisible,
 }: ModalHandlersParams) => {
-  // 打开编辑弹窗
+  // Open edit modal
   const handleEdit = useCallback(
     (bot: Bot) => {
       setEditingBot(bot);
@@ -50,14 +50,14 @@ export const useModalHandlers = ({
     [form, setEditingBot, setModalVisible],
   );
 
-  // 打开新增弹窗
+  // Open add modal
   const handleAdd = useCallback(() => {
     setEditingBot(null);
     form.resetFields();
     setModalVisible(true);
   }, [form, setEditingBot, setModalVisible]);
 
-  // 关闭弹窗
+  // Close modal
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     setEditingBot(null);

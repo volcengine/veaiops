@@ -19,7 +19,7 @@ import type { FlattenedVersion } from './types';
 const { RowSpan, StampTime } = CellRender;
 
 /**
- * 创建时间列配置
+ * Created time column configuration
  */
 export const getCreatedAtColumn = (): ColumnProps<FlattenedVersion> => ({
   title: '创建时间',
@@ -34,7 +34,7 @@ export const getCreatedAtColumn = (): ColumnProps<FlattenedVersion> => ({
 });
 
 /**
- * 更新时间列配置
+ * Updated time column configuration
  */
 export const getUpdatedAtColumn = (): ColumnProps<FlattenedVersion> => ({
   title: '更新时间',

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 订阅关系表格完整逻辑 Hook
+ * Subscription relation table complete logic Hook
  *
- * 将所有状态管理、事件处理、表格配置内聚到一个 Hook 中
+ * Aggregates all state management, event handling, and table configuration into one Hook
  */
 
 import type { ModuleType } from '@/types/module';
@@ -52,7 +52,7 @@ export interface UseSubscriptionTableOptions {
 }
 
 export interface UseSubscriptionTableReturn {
-  // 表格配置
+  // Table configuration
   customTableProps: Record<string, unknown>;
   handleColumns: (
     props: Record<string, unknown>,
@@ -60,19 +60,19 @@ export interface UseSubscriptionTableReturn {
   handleFilters: (props: HandleFilterProps<BaseQuery>) => FieldItem[];
   renderActions: RenderActionsType;
 
-  // 操作处理函数
+  // Operation handler functions
   handleEdit: (subscription: SubscribeRelationWithAttributes) => void;
   handleAdd: () => void;
   handleDelete: (subscriptionId: string) => Promise<boolean>;
 
-  // 加载状态
+  // Loading state
   loading: boolean;
 }
 
 /**
- * 订阅关系表格完整逻辑 Hook
+ * Subscription relation table complete logic Hook
  *
- * 将所有状态管理和业务逻辑内聚到一个 Hook 中，使组件更加简洁
+ * Aggregates all state management and business logic into one Hook, making components more concise
  */
 export const useSubscriptionTable = ({
   moduleType,
@@ -84,7 +84,7 @@ export const useSubscriptionTable = ({
 }: UseSubscriptionTableOptions): UseSubscriptionTableReturn => {
   const tableRef = useRef<CustomTableActionType<BaseRecord, BaseQuery>>(null);
 
-  // 创建 refresh 函数
+  // Create refresh function
   const refreshTable = useCallback(async () => {
     if (tableRef.current?.refresh) {
       const result = await tableRef.current.refresh();
@@ -103,7 +103,7 @@ export const useSubscriptionTable = ({
     }
   }, []);
 
-  // 通过 forwardRef 暴露 tableRef
+  // Expose tableRef via forwardRef
   const refCallback = useCallback(
     (node: CustomTableActionType<BaseRecord, BaseQuery> | null) => {
       tableRef.current = node;
@@ -111,23 +111,23 @@ export const useSubscriptionTable = ({
     [],
   );
 
-  // 当 tableRef 准备好后，通知父组件
+  // Notify parent component when tableRef is ready
   useEffect(() => {
     if (onTableRefReady) {
       onTableRefReady(refreshTable);
     }
   }, []);
 
-  // 表格配置
+  // Table configuration
   const { dataSource, tableProps } = useSubscriptionTableConfig({
     handleEdit: onEdit,
     handleDelete: onDelete,
   });
 
-  // 操作按钮配置
+  // Action button configuration
   const { actions } = useSubscriptionActionConfig(onAdd);
 
-  // 创建 handleColumns 函数，传递操作回调给列配置
+  // Create handleColumns function, pass operation callbacks to column configuration
   const handleColumns = useCallback(
     (props: Record<string, unknown>) => {
       return getSubscriptionColumns({
@@ -140,7 +140,7 @@ export const useSubscriptionTable = ({
     [onEdit, onDelete, onView],
   );
 
-  // 创建 handleFilters 函数
+  // Create handleFilters function
   const handleFilters = useCallback(
     (props: HandleFilterProps<BaseQuery>) => {
       return getSubscriptionFilters({
@@ -152,14 +152,14 @@ export const useSubscriptionTable = ({
     [moduleType],
   );
 
-  // 包装 renderActions
+  // Wrap renderActions
   const renderActions = useCallback(
     (_props: Record<string, unknown>) => actions,
     [actions],
   );
 
   return {
-    // 表格配置
+    // Table configuration
     customTableProps: {
       ref: refCallback,
       dataSource,
@@ -169,12 +169,12 @@ export const useSubscriptionTable = ({
     handleFilters,
     renderActions,
 
-    // 操作处理函数
+    // Operation handler functions
     handleEdit: onEdit,
     handleAdd: onAdd,
     handleDelete: onDelete,
 
-    // 加载状态（可以后续扩展）
+    // Loading state (can be extended later)
     loading: false,
   };
 };

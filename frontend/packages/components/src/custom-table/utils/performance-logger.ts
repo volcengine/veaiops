@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * CustomTable 性能日志收集器
- * @description 收集并分析CustomTable的渲染性能和重渲染情况
- * ✅ 优化：统一使用 @veaiops/utils logger
+ * CustomTable performance log collector
+ * @description Collects and analyzes CustomTable rendering performance and re-render situations
+ * ✅ Optimization: Unified use of @veaiops/utils logger
 
  *
  */
@@ -50,7 +50,7 @@ class CustomTablePerformanceLogger {
   private startTime: number = Date.now();
 
   /**
-   * 启用性能日志收集
+   * Enable performance log collection
    */
   enable(): void {
     this.enabled = true;
@@ -64,7 +64,7 @@ class CustomTablePerformanceLogger {
   }
 
   /**
-   * 禁用性能日志收集
+   * Disable performance log collection
    */
   disable(): void {
     this.enabled = false;
@@ -74,7 +74,7 @@ class CustomTablePerformanceLogger {
   }
 
   /**
-   * 记录日志
+   * Log entry
    */
   log({
     level,
@@ -101,7 +101,7 @@ class CustomTablePerformanceLogger {
 
     this.logs.push(entry);
 
-    // ✅ 统一使用 @veaiops/utils logger（logger 内部已处理 console 输出）
+    // ✅ Unified use of @veaiops/utils logger (logger internally handles console output)
     const logData = data ? { data } : undefined;
     switch (level) {
       case 'error':
@@ -140,7 +140,7 @@ class CustomTablePerformanceLogger {
   }
 
   /**
-   * 记录组件渲染
+   * Log component render
    */
   logRender({
     component,
@@ -150,10 +150,10 @@ class CustomTablePerformanceLogger {
       return;
     }
 
-    // 更新渲染计数
+    // Update render count
     this.renderCounts[component] = (this.renderCounts[component] || 0) + 1;
 
-    // 记录渲染时间
+    // Record render time
     if (duration !== undefined) {
       if (!this.renderTimes[component]) {
         this.renderTimes[component] = [];
@@ -164,7 +164,7 @@ class CustomTablePerformanceLogger {
     this.log({
       level: 'debug',
       component,
-      message: '组件渲染',
+      message: 'Component render',
       data: {
         renderCount: this.renderCounts[component],
         duration,
@@ -173,14 +173,14 @@ class CustomTablePerformanceLogger {
   }
 
   /**
-   * 开始计时
+   * Start timer
    */
   startTimer(): number {
     return performance.now();
   }
 
   /**
-   * 结束计时并记录
+   * End timer and record
    */
   endTimer({
     component,
@@ -192,7 +192,7 @@ class CustomTablePerformanceLogger {
   }
 
   /**
-   * 生成性能报告
+   * Generate performance report
    */
   generateReport(): PerformanceMetrics & { logs: LogEntry[] } {
     const totalDuration = Date.now() - this.startTime;
@@ -201,7 +201,7 @@ class CustomTablePerformanceLogger {
       0,
     );
 
-    // 计算平均渲染时间
+    // Calculate average render time
     const allRenderTimes = Object.values(this.renderTimes).flat();
     const averageRenderTime =
       allRenderTimes.length > 0
@@ -214,7 +214,7 @@ class CustomTablePerformanceLogger {
     const minRenderTime =
       allRenderTimes.length > 0 ? Math.min(...allRenderTimes) : 0;
 
-    // 渲染频率 (每秒渲染次数)
+    // Render frequency (renders per second)
     const renderFrequency = totalRenders / (totalDuration / 1000);
 
     return {
@@ -229,7 +229,7 @@ class CustomTablePerformanceLogger {
   }
 
   /**
-   * 导出日志到文件
+   * Export logs to file
    */
   exportLogs(): void {
     const report = this.generateReport();
@@ -253,7 +253,7 @@ class CustomTablePerformanceLogger {
       logs: report.logs,
     };
 
-    // 创建下载链接
+    // Create download link
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
       type: 'application/json',
     });
@@ -270,19 +270,19 @@ class CustomTablePerformanceLogger {
   }
 
   /**
-   * 打印性能摘要
+   * Print performance summary
    */
   private printSummary(report: PerformanceMetrics): void {
-    console.group('[CustomTable Performance] 📊 性能摘要');
+    console.group('[CustomTable Performance] 📊 Performance Summary');
 
     Object.entries(report.componentBreakdown).forEach(([component, count]) => {
-      console.log(`  ${component}: ${count} 次渲染`);
+      console.log(`  ${component}: ${count} renders`);
     });
     console.groupEnd();
   }
 
   /**
-   * 清空日志
+   * Clear logs
    */
   clear(): void {
     this.logs = [];
@@ -292,7 +292,7 @@ class CustomTablePerformanceLogger {
   }
 
   /**
-   * 获取当前统计信息
+   * Get current statistics
    */
   getStats(): PerformanceMetrics {
     const report = this.generateReport();
@@ -307,10 +307,10 @@ class CustomTablePerformanceLogger {
   }
 }
 
-// 创建全局实例
+// Create global instance
 export const performanceLogger = new CustomTablePerformanceLogger();
 
-// 开发环境下自动暴露到全局
+// Automatically expose to global in development environment
 if (process.env.NODE_ENV === 'development') {
   (window as unknown as Record<string, unknown>).customTablePerformance = {
     enable: () => performanceLogger.enable(),
@@ -321,13 +321,13 @@ if (process.env.NODE_ENV === 'development') {
     report: () => performanceLogger.generateReport(),
   };
 
-  // 暴露日志获取接口给统一日志导出系统
+  // Expose log retrieval interface to unified log export system
   (window as any).getCustomTableLogs = () => {
     return performanceLogger.generateReport().logs;
   };
 }
 
-// 性能监控装饰器
+// Performance monitoring decorator
 
 export interface WithPerformanceLoggingParams<
   T extends React.ComponentType<any>,
@@ -344,10 +344,10 @@ export function withPerformanceLogging<T extends React.ComponentType<any>>({
     (props, ref) => {
       const startTime = React.useRef<number>();
 
-      // 渲染开始
+      // Render start
       startTime.current = performanceLogger.startTimer();
 
-      // 渲染结束
+      // Render end
       React.useEffect(() => {
         if (startTime.current !== undefined) {
           performanceLogger.endTimer({

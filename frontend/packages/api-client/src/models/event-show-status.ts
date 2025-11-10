@@ -14,7 +14,7 @@
 
 /* generated using openapi-typescript-codegen -- do not edit */
 /**
- * Event show status with Chinese display names. 对应 Python EventShowStatus(str, Enum): PENDING="等待发送", SUCCESS="发送成功", NOT_SUBSCRIBED="未订阅", NOT_MATCHED="未命中规则", FILTERED="命中过滤规则", RESTRAINED="告警抑制". 等待发送=PENDING (status 0,1,2), 发送成功=SUCCESS (status 3), 未订阅=NOT_SUBSCRIBED (status 4), 未命中规则=NOT_MATCHED (status 11), 命中过滤规则=FILTERED (status 12), 告警抑制=RESTRAINED (status 13)
+ * Event show status with display names. Corresponds to Python EventShowStatus(str, Enum): PENDING="Pending", SUCCESS="Success", NOT_SUBSCRIBED="Not Subscribed", NOT_MATCHED="Not Matched", FILTERED="Filtered", RESTRAINED="Restrained". PENDING="Pending" (status 0,1,2), SUCCESS="Success" (status 3), NOT_SUBSCRIBED="Not Subscribed" (status 4), NOT_MATCHED="Not Matched" (status 11), FILTERED="Filtered" (status 12), RESTRAINED="Restrained" (status 13)
  */
 export enum EventShowStatus {
   PENDING = '等待发送',

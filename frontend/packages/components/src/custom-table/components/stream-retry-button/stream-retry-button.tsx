@@ -33,8 +33,8 @@ import type { StreamRetryButtonProps } from '@/custom-table/types';
 const { Text } = Typography;
 
 /**
- * 流式加载重试按钮组件
- * 专门为处理Argos流式加载中的限流错误设计
+ * Stream loading retry button component
+ * Specifically designed for handling rate limit errors in Argos stream loading
  */
 const StreamRetryButton: React.FC<StreamRetryButtonProps> = ({
   isRetrying,
@@ -53,7 +53,7 @@ const StreamRetryButton: React.FC<StreamRetryButtonProps> = ({
   );
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 清理定时器
+  // Clear timer
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -61,14 +61,14 @@ const StreamRetryButton: React.FC<StreamRetryButtonProps> = ({
     }
   }, []);
 
-  // 执行重试
+  // Execute retry
   const handleRetry = useCallback(() => {
     clearTimer();
     setIsAutoRetrying(false);
     onRetry?.();
   }, [onRetry, clearTimer]);
 
-  // 自动重试逻辑
+  // Auto retry logic
   useEffect(() => {
     if (hasError && isAutoRetrying && countdown > 0) {
       timerRef.current = setTimeout(() => {
@@ -81,7 +81,7 @@ const StreamRetryButton: React.FC<StreamRetryButtonProps> = ({
     return () => clearTimer();
   }, [hasError, isAutoRetrying, countdown, handleRetry, clearTimer]);
 
-  // 重置状态
+  // Reset state
   useEffect(() => {
     if (hasError) {
       setCountdown(autoRetryDelay);
@@ -91,27 +91,27 @@ const StreamRetryButton: React.FC<StreamRetryButtonProps> = ({
     }
   }, [hasError, autoRetryDelay]);
 
-  // 不同错误类型的文案
+  // Error text for different error types
   const getErrorText = () => {
     switch (errorType) {
       case 'rate_limit':
-        return '请求频率超限，正在自动重试...';
+        return 'Request rate limit exceeded, auto-retrying...';
       case 'concurrency_limit':
-        return '并发请求超限，正在自动重试...';
+        return 'Concurrency limit exceeded, auto-retrying...';
       case 'timeout':
-        return '请求超时，请点击重试';
+        return 'Request timeout, please click to retry';
       default:
-        return '加载失败，请点击重试';
+        return 'Loading failed, please click to retry';
     }
   };
 
-  // 进度条计算
+  // Progress bar calculation
   const progressPercent = Math.round(
     ((autoRetryDelay - countdown) / autoRetryDelay) * 100,
   );
 
   if (!hasError && !isRetrying) {
-    // 正常状态，显示加载更多按钮
+    // Normal state, show load more button
     const handleClick = onLoadMore || onRetry;
 
     if (!hasMoreData) {
@@ -121,22 +121,24 @@ const StreamRetryButton: React.FC<StreamRetryButtonProps> = ({
     return (
       <div className={`stream-retry-button ${className}`} onClick={handleClick}>
         <IconSearch />
-        <span>{needContinue ? '继续搜索更多数据' : '加载更多'}</span>
+        <span>
+          {needContinue ? 'Continue searching for more data' : 'Load more'}
+        </span>
       </div>
     );
   }
 
   if (isRetrying) {
-    // 加载中状态
+    // Loading state
     return (
       <div className={`stream-retry-button loading ${className}`}>
         <IconLoading />
-        <span>加载中...</span>
+        <span>Loading...</span>
       </div>
     );
   }
 
-  // 错误状态，显示重试按钮
+  // Error state, show retry button
   return (
     <div className={`stream-retry-button error ${className}`}>
       {isAutoRetrying ? (
@@ -149,7 +151,7 @@ const StreamRetryButton: React.FC<StreamRetryButtonProps> = ({
               status="warning"
               size="small"
             />
-            <Text className="countdown-text">{countdown}秒后重试</Text>
+            <Text className="countdown-text">Retry in {countdown} seconds</Text>
           </div>
           <Space>
             <Button
@@ -158,19 +160,19 @@ const StreamRetryButton: React.FC<StreamRetryButtonProps> = ({
               icon={<IconRefresh />}
               onClick={handleRetry}
             >
-              立即重试
+              Retry Now
             </Button>
             <Button size="small" onClick={() => setIsAutoRetrying(false)}>
-              取消自动重试
+              Cancel Auto Retry
             </Button>
           </Space>
         </div>
       ) : (
         <Space>
           <Text type="warning">{getErrorText()}</Text>
-          <Tooltip content="点击重试">
+          <Tooltip content="Click to retry">
             <Button type="primary" icon={<IconRefresh />} onClick={handleRetry}>
-              重试
+              Retry
             </Button>
           </Tooltip>
         </Space>

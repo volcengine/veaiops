@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 主Hook导出
+// Main Hook exports
 export { useDrawerManagement } from './use-drawer-management';
 export { default } from './use-drawer-management';
 
-// 子Hook导出
+// Sub-Hook exports
 export { useProjectImport } from './use-project-import';
 export { useStrategyCreate } from './use-strategy-create';
 
-// 类型导出
+// Type exports
 export type {
   UseDrawerManagementReturn,
   UseDrawerManagementConfig,

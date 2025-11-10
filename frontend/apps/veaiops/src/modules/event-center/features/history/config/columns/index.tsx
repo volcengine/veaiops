@@ -25,8 +25,8 @@ import {
 import { renderEventShowStatus } from './status-renderer';
 
 /**
- * 历史事件列配置函数
- * 按照 CustomTable 最佳实践，提供完整的列配置
+ * History event column configuration function
+ * Follow CustomTable best practices to provide complete column configuration
  */
 export const getHistoryColumns = (props: HistoryColumnsProps) => [
   {
@@ -81,7 +81,7 @@ export const getHistoryColumns = (props: HistoryColumnsProps) => [
     key: 'created_at',
     width: 160,
     sorter: true,
-    // 设置默认降序排序（最新的记录在前）
+    // Set default descending sort (latest records first)
     defaultSortOrder: 'descend' as const,
     render: renderTimestamp,
   },
@@ -101,7 +101,7 @@ export const getHistoryColumns = (props: HistoryColumnsProps) => [
   },
 ];
 
-// 导出类型和渲染函数，供其他模块使用
+// Export types and render functions for use by other modules
 export { renderActions } from './action-renderer';
 export type { HistoryColumnsProps } from './action-renderer';
 export {

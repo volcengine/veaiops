@@ -24,35 +24,35 @@ import { useMonitorHandlers } from './use-monitor-handlers';
 import { useMonitorState } from './use-monitor-state';
 
 /**
- * 监控数据源管理逻辑Hook
- * 提供监控数据源管理页面的所有业务逻辑
+ * Monitor data source management logic Hook
+ * Provides all business logic for monitor data source management page
  *
- * 使用拆分后的模块：
- * - useMonitorState: 状态管理
- * - useMonitorCrud: CRUD操作
- * - useMonitorHandlers: 事件处理器
+ * Uses split modules:
+ * - useMonitorState: State management
+ * - useMonitorCrud: CRUD operations
+ * - useMonitorHandlers: Event handlers
  */
 export const useMonitorAccessLogic = (props: MonitorAccessProps) => {
-  // 检测模块类型
+  // Detect module type
   const detectedModuleType = props.moduleType || detectModuleType();
   const supportedModuleType = getSupportedModuleType(detectedModuleType);
   const pageTitle = '监控数据源管理';
 
-  // 状态管理
+  // State management
   const state = useMonitorState();
 
-  // CRUD操作
+  // CRUD operations
   const { createMonitor, updateMonitor, deleteMonitor } = useMonitorCrud();
 
   /**
-   * 删除参数接口
+   * Delete parameters interface
    */
   interface HandleDeleteParams {
     id: string;
     datasourceType: DataSourceType;
   }
 
-  // 删除监控配置
+  // Delete monitor configuration
   const handleDelete = async ({
     id,
     datasourceType,
@@ -63,7 +63,7 @@ export const useMonitorAccessLogic = (props: MonitorAccessProps) => {
         datasourceType || (supportedModuleType as DataSourceType),
       );
       if (success) {
-        // CustomTable会自动刷新数据
+        // CustomTable will automatically refresh data
         return { success: true };
       }
       return { success: false };
@@ -76,7 +76,7 @@ export const useMonitorAccessLogic = (props: MonitorAccessProps) => {
     }
   };
 
-  // 创建监控配置
+  // Create monitor configuration
   const handleCreate = async (
     values: Partial<DataSource>,
   ): Promise<boolean> => {
@@ -96,21 +96,21 @@ export const useMonitorAccessLogic = (props: MonitorAccessProps) => {
     }
   };
 
-  // 更新监控配置
+  // Update monitor configuration
   const handleUpdate = async (
     values: Partial<DataSource>,
   ): Promise<boolean> => {
-    // 统一获取监控配置ID的辅助函数
-    // 因为 editingMonitor 可能来自不同来源，字段名可能不一致（id vs _id）
+    // Helper function to uniformly get monitor configuration ID
+    // Because editingMonitor may come from different sources, field names may be inconsistent (id vs _id)
     const getMonitorId = (monitor: DataSource | null): string | null => {
       if (!monitor) {
         return null;
       }
-      // 优先使用 id 字段（前端统一格式）
+      // Prefer id field (frontend unified format)
       if ('id' in monitor && monitor.id && typeof monitor.id === 'string') {
         return monitor.id;
       }
-      // 如果 id 不存在，尝试使用 _id（api-generate 格式）
+      // If id doesn't exist, try using _id (api-generate format)
       if ('_id' in monitor && monitor._id && typeof monitor._id === 'string') {
         return monitor._id;
       }
@@ -145,7 +145,7 @@ export const useMonitorAccessLogic = (props: MonitorAccessProps) => {
     }
   };
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = async (
     values: Partial<DataSource>,
   ): Promise<boolean> => {
@@ -156,7 +156,7 @@ export const useMonitorAccessLogic = (props: MonitorAccessProps) => {
     }
   };
 
-  // 事件处理器
+  // Event handlers
   const handlers = useMonitorHandlers({
     setEditingMonitor: state.setEditingMonitor,
     setModalVisible: state.setModalVisible,
@@ -168,14 +168,14 @@ export const useMonitorAccessLogic = (props: MonitorAccessProps) => {
   });
 
   return {
-    // 状态
+    // State
     modalVisible: state.modalVisible,
     editingMonitor: state.editingMonitor,
     form: state.form,
     pageTitle,
     supportedModuleType,
 
-    // 事件处理器
+    // Event handlers
     handleEdit: handlers.handleEdit,
     handleAdd: handlers.handleAdd,
     handleCancel: handlers.handleModalCancel,

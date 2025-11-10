@@ -13,10 +13,9 @@
 // limitations under the License.
 
 /**
- * CustomTable 实例 API Hook
- * 基于 pro-components 优秀设计模式重构 - 模块化架构
+ * CustomTable instance API Hook
+ * Refactored based on pro-components excellent design pattern - modular architecture
  *
-
  * @date 2025-12-19
  */
 import type {
@@ -42,8 +41,8 @@ import {
 } from './imperative';
 
 /**
- * @name 创建实例 API 处理 Hook
- * @description 基于 pro-components ActionRef 设计模式，提供完整的表格操作 API
+ * @name Create instance API handling Hook
+ * @description Based on pro-components ActionRef design pattern, provides complete table operation API
  */
 const useCustomTableImperativeHandle = <
   RecordType extends BaseRecord = BaseRecord,
@@ -64,13 +63,13 @@ const useCustomTableImperativeHandle = <
   const { formattedTableData, filters, sorter, current, pageSize, tableTotal } =
     state;
 
-  /** @name 请求管理器，用于取消进行中的请求 */
+  /** @name Request manager, used to cancel ongoing requests */
   const requestManagerRef = useRef<RequestManager>(createRequestManager());
 
-  /** @name 获取当前请求管理器 */
+  /** @name Get current request manager */
   const getRequestManager = useCallback(() => requestManagerRef.current, []);
 
-  // 创建各功能模块的操作方法
+  // Create operation methods for each functional module
   const dataActions = createDataActions(
     context,
     formattedTableData,
@@ -95,34 +94,34 @@ const useCustomTableImperativeHandle = <
   useImperativeHandle(
     ref,
     () => ({
-      // 数据操作模块
+      // Data operations module
       ...dataActions,
 
-      // 分页操作模块
+      // Pagination operations module
       ...paginationActions,
 
-      // 选择操作模块
+      // Selection operations module
       ...selectionActions,
 
-      // 筛选和查询操作模块
+      // Filter and query operations module
       ...filterActions,
 
-      // 状态操作模块
+      // State operations module
       ...stateActions,
 
-      // 展开操作模块
+      // Expand operations module
       ...expandActions,
 
-      // 工具操作模块
+      // Utility operations module
       ...utilityActions,
 
-      // 插件操作
+      // Plugin operations
       executePlugin: ({
         pluginName,
         methodName,
         args = [],
       }: { pluginName: string; methodName: string; args?: unknown[] }) => {
-        // 通过插件管理器执行插件方法
+        // Execute plugin method through plugin manager
         const pluginManager = context?.plugins;
         if (
           pluginManager &&
@@ -146,7 +145,7 @@ const useCustomTableImperativeHandle = <
         renderer,
         args = [],
       }: { pluginName: string; renderer: string; args?: unknown[] }) => {
-        // 通过插件管理器渲染插件内容
+        // Render plugin content through plugin manager
         const pluginManager = context?.plugins;
         if (
           pluginManager &&
@@ -166,14 +165,14 @@ const useCustomTableImperativeHandle = <
         return null;
       },
 
-      // 状态访问
+      // State access
       state: context.state,
       helpers: context.helpers as unknown as CustomTableHelpers<
         RecordType,
         QueryType
       >,
 
-      // 数据快照访问
+      // Data snapshot access
       formattedTableData,
       loading: context.state.loading,
       current,
@@ -182,18 +181,18 @@ const useCustomTableImperativeHandle = <
       filters,
       sorter,
 
-      // 缺失的方法
+      // Missing methods
       setExpandedRowKeys: (keys: (string | number)[]) =>
         context.helpers.setExpandedRowKeys?.(keys),
       selectAll: () => {
-        // 全选所有行
+        // Select all rows
         const allRowKeys = formattedTableData.map((_, index) =>
           index.toString(),
         );
         context.helpers.setSelectedRowKeys?.(allRowKeys);
       },
       invertSelection: () => {
-        // 反选当前选中行
+        // Invert current selection
         const currentSelected = context.state.selectedRowKeys || [];
         const allRowKeys = formattedTableData.map((_, index) =>
           index.toString(),
@@ -205,7 +204,7 @@ const useCustomTableImperativeHandle = <
       },
       clearFilters: () => context.helpers.setFilters({}),
       applyFilters: () => {
-        // 应用当前过滤器
+        // Apply current filters
         context.helpers.setFilters?.(context.state.filters || {});
       },
       clearSorter: () => context.helpers.resetSorter?.(),
@@ -220,13 +219,13 @@ const useCustomTableImperativeHandle = <
         })),
       getSelectedData: () => selectionActions.getSelectedRows(),
 
-      // 数据源操作
+      // Data source operations
       setDataSource: (_dataSource: RecordType[]) => {
-        // 设置数据源的实现
-        // 临时实现，直接设置数据
+        // Set data source implementation
+        // Temporary implementation, directly set data
       },
 
-      // 日志导出功能
+      // Log export functionality
       exportResetLogs: () => {
         resetLogCollector.exportResetLogs();
       },

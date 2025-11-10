@@ -26,7 +26,7 @@ export const getFinallyOptions = ({
   const _value = value || [];
   const _stateValue = stateValue || [];
   const _options = options || [];
-  // UI优化：当前选中的未在options中的才放到上面
+  // UI optimization: only put currently selected items not in options at the top
   const valueArray = Array.isArray(_value) ? _value : [_value].filter(Boolean);
   const stateValueArray = Array.isArray(_stateValue)
     ? _stateValue

@@ -13,22 +13,22 @@
 // limitations under the License.
 
 /**
- * 引导提示组件测试函数
- * 仅在开发环境中使用
+ * Guide tip component test functions
+ * Only used in development environment
  */
 
 import { showGuideTip } from './guide-tip';
 
 /**
- * 测试箭头指向功能
- * 在控制台中调用此函数来测试不同位置的箭头
+ * Test arrow pointing functionality
+ * Call this function in console to test arrows at different positions
  */
 export const testArrowPointing = () => {
   if (typeof window === 'undefined') {
     return;
   }
 
-  // 测试不同位置的箭头
+  // Test arrows at different positions
   const testCases = [
     {
       content: '这是顶部箭头测试',
@@ -75,15 +75,15 @@ export const testArrowPointing = () => {
 };
 
 /**
- * 测试箭头显示功能
- * 在控制台中调用此函数来测试箭头是否正常显示
+ * Test arrow display functionality
+ * Call this function in console to test if arrow displays correctly
  */
 export const testArrowDisplay = () => {
   if (typeof window === 'undefined') {
     return;
   }
 
-  // 测试箭头显示
+  // Test arrow display
   showGuideTip({
     content: '这是一个测试箭头显示的提示',
     selector: '[data-testid="new-connection-btn"]',
@@ -97,15 +97,15 @@ export const testArrowDisplay = () => {
 };
 
 /**
- * 测试删除按钮箭头指向
- * 在控制台中调用此函数来测试删除按钮的箭头是否指向正确
+ * Test delete button arrow pointing
+ * Call this function in console to test if delete button arrow points correctly
  */
 export const testDeleteButtonArrow = () => {
   if (typeof window === 'undefined') {
     return;
   }
 
-  // 测试删除按钮箭头指向
+  // Test delete button arrow pointing
   showGuideTip({
     content: '请先在列表中选择一条连接记录，然后点击此处的删除按钮🌟',
     selector: '[data-testid="delete-connection-btn"]',
@@ -119,15 +119,15 @@ export const testDeleteButtonArrow = () => {
 };
 
 /**
- * 测试箭头和tip同步消失效果
- * 在控制台中调用此函数来测试箭头和tip是否同时消失
+ * Test arrow and tip synchronized disappearance effect
+ * Call this function in console to test if arrow and tip disappear simultaneously
  */
 export const testArrowTipSync = () => {
   if (typeof window === 'undefined') {
     return;
   }
 
-  // 测试箭头和tip同步消失
+  // Test arrow and tip synchronized disappearance
   showGuideTip({
     content: '测试箭头和tip同步消失效果 - 点击"知道了"按钮或点击外部区域',
     selector: '[data-testid="new-connection-btn"]',
@@ -140,7 +140,7 @@ export const testArrowTipSync = () => {
   });
 };
 
-// 将测试函数挂载到全局对象（与原分支一致）
+// Mount test functions to global object (consistent with original branch)
 if (typeof window !== 'undefined') {
   (window as any).testArrowDisplay = testArrowDisplay;
   (window as any).testDeleteButtonArrow = testDeleteButtonArrow;

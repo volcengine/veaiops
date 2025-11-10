@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * Modals - 统一导出入口
- * 职责：导出所有模态框和抽屉组件
+ * Modals - Unified export entry
+ * Responsibility: Export all modal and drawer components
  */
 
-// 导出数据源抽屉
+// Export data source drawer
 export { DataSourceDrawer } from './data-source-drawer';
 
-// 导出详情模态框
+// Export detail modal
 export { DetailModal } from './detail-modal';

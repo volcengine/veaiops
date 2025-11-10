@@ -3,7 +3,7 @@
   "info": {
     "title": "VolcAIOpsKit - Data Source API",
     "version": "1.0.0",
-    "description": "监控数据源管理相关接口"
+    "description": "Monitoring data source management related APIs"
   },
   "paths": {
     "/apis/v1/datasource/zabbix/": {
@@ -1274,7 +1274,7 @@
     "/apis/v1/datasource/zabbix/datasource/{datasource_id}/mediatypes": {
       "get": {
         "summary": "Get Zabbix Mediatypes",
-        "description": "获取Zabbix数据源的告警通知方式列表",
+        "description": "Get list of alert notification methods for Zabbix data source",
         "tags": ["Data Sources"],
         "parameters": [
           {
@@ -1284,12 +1284,12 @@
             "schema": {
               "type": "string"
             },
-            "description": "数据源ID"
+            "description": "Data source ID"
           }
         ],
         "responses": {
           "200": {
-            "description": "成功获取告警通知方式列表",
+            "description": "Successfully retrieved alert notification methods list",
             "content": {
               "application/json": {
                 "schema": {
@@ -1304,7 +1304,7 @@
     "/apis/v1/datasource/zabbix/datasource/{datasource_id}/usergroups": {
       "get": {
         "summary": "Get Zabbix Usergroups",
-        "description": "获取Zabbix数据源的告警组列表",
+        "description": "Get list of alert groups for Zabbix data source",
         "tags": ["Data Sources"],
         "parameters": [
           {
@@ -1314,12 +1314,12 @@
             "schema": {
               "type": "string"
             },
-            "description": "数据源ID"
+            "description": "Data source ID"
           }
         ],
         "responses": {
           "200": {
-            "description": "成功获取告警组列表",
+            "description": "Successfully retrieved alert groups list",
             "content": {
               "application/json": {
                 "schema": {
@@ -1689,7 +1689,7 @@
     "/apis/v1/datasource/fetch": {
       "post": {
         "summary": "Fetch Data Api",
-        "description": "从数据源获取数据",
+        "description": "Fetch data from data source",
         "tags": ["Data Sources"],
         "requestBody": {
           "required": true,
@@ -1700,11 +1700,11 @@
                 "properties": {
                   "datasource_id": {
                     "type": "string",
-                    "description": "数据源ID"
+                    "description": "Data source ID"
                   },
                   "query": {
                     "type": "object",
-                    "description": "查询参数"
+                    "description": "Query parameters"
                   }
                 },
                 "required": ["datasource_id", "query"]
@@ -1714,7 +1714,7 @@
         },
         "responses": {
           "200": {
-            "description": "数据获取成功",
+            "description": "Data fetched successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -1732,29 +1732,29 @@
       "DataSourceType": {
         "type": "string",
         "enum": ["Zabbix", "Aliyun", "Volcengine"],
-        "description": "数据源类型"
+        "description": "Data source type"
       },
       "Connect": {
         "type": "object",
         "properties": {
           "_id": {
             "type": "string",
-            "description": "连接ID"
+            "description": "Connection ID"
           },
           "id": {
             "type": "string",
-            "description": "连接ID (别名)"
+            "description": "Connection ID (alias)"
           },
           "name": {
             "type": "string",
-            "description": "连接名称"
+            "description": "Connection name"
           },
           "type": {
             "$ref": "#/components/schemas/DataSourceType"
           },
           "description": {
             "type": "string",
-            "description": "连接描述"
+            "description": "Connection description"
           },
           "zabbix_api_url": {
             "type": "string",
@@ -1762,30 +1762,30 @@
           },
           "zabbix_api_user": {
             "type": "string",
-            "description": "Zabbix API 用户名"
+            "description": "Zabbix API username"
           },
           "aliyun_access_key_id": {
             "type": "string",
-            "description": "阿里云 Access Key ID"
+            "description": "Alibaba Cloud Access Key ID"
           },
           "volcengine_access_key_id": {
             "type": "string",
-            "description": "火山引擎 Access Key ID"
+            "description": "Volcano Engine Access Key ID"
           },
           "is_active": {
             "type": "boolean",
             "default": true,
-            "description": "是否激活"
+            "description": "Whether active"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Update time"
           }
         },
         "required": ["name", "type"]
@@ -1795,7 +1795,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "连接名称"
+            "description": "Connection name"
           },
           "type": {
             "$ref": "#/components/schemas/DataSourceType"
@@ -1806,27 +1806,27 @@
           },
           "zabbix_api_user": {
             "type": "string",
-            "description": "Zabbix API 用户名"
+            "description": "Zabbix API username"
           },
           "zabbix_api_password": {
             "type": "string",
-            "description": "Zabbix API 密码"
+            "description": "Zabbix API password"
           },
           "aliyun_access_key_id": {
             "type": "string",
-            "description": "阿里云 Access Key ID"
+            "description": "Alibaba Cloud Access Key ID"
           },
           "aliyun_access_key_secret": {
             "type": "string",
-            "description": "阿里云 Access Key Secret"
+            "description": "Alibaba Cloud Access Key Secret"
           },
           "volcengine_access_key_id": {
             "type": "string",
-            "description": "火山引擎 Access Key ID"
+            "description": "Volcano Engine Access Key ID"
           },
           "volcengine_access_key_secret": {
             "type": "string",
-            "description": "火山引擎 Access Key Secret"
+            "description": "Volcano Engine Access Key Secret"
           }
         },
         "required": ["name", "type"]
@@ -1836,11 +1836,11 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "连接名称"
+            "description": "Connection name"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否激活"
+            "description": "Whether active"
           },
           "zabbix_api_url": {
             "type": "string",
@@ -1848,27 +1848,27 @@
           },
           "zabbix_api_user": {
             "type": "string",
-            "description": "Zabbix API 用户名"
+            "description": "Zabbix API username"
           },
           "zabbix_api_password": {
             "type": "string",
-            "description": "Zabbix API 密码"
+            "description": "Zabbix API password"
           },
           "aliyun_access_key_id": {
             "type": "string",
-            "description": "阿里云 Access Key ID"
+            "description": "Alibaba Cloud Access Key ID"
           },
           "aliyun_access_key_secret": {
             "type": "string",
-            "description": "阿里云 Access Key Secret"
+            "description": "Alibaba Cloud Access Key Secret"
           },
           "volcengine_access_key_id": {
             "type": "string",
-            "description": "火山引擎 Access Key ID"
+            "description": "Volcano Engine Access Key ID"
           },
           "volcengine_access_key_secret": {
             "type": "string",
-            "description": "火山引擎 Access Key Secret"
+            "description": "Volcano Engine Access Key Secret"
           }
         }
       },
@@ -1917,30 +1917,30 @@
         "properties": {
           "templateid": {
             "type": "string",
-            "description": "Zabbix 模板 ID"
+            "description": "Zabbix template ID"
           },
           "name": {
             "type": "string",
-            "description": "Zabbix 模板名称"
+            "description": "Zabbix template name"
           }
         },
         "required": ["templateid", "name"]
       },
       "ZabbixTemplateMetric": {
         "type": "object",
-        "description": "Zabbix模板指标模型",
+        "description": "Zabbix template metric model",
         "properties": {
           "history": {
             "type": "string",
-            "description": "历史类型 (0: float, 3: int)"
+            "description": "History type (0: float, 3: int)"
           },
           "name": {
             "type": "string",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "metric_name": {
             "type": "string",
-            "description": "指标键值 (对应Zabbix的key_字段)"
+            "description": "Metric key (corresponds to Zabbix key_ field)"
           }
         },
         "required": ["history", "name", "metric_name"]
@@ -1950,11 +1950,11 @@
         "properties": {
           "host": {
             "type": "string",
-            "description": "Zabbix 主机"
+            "description": "Zabbix host"
           },
           "name": {
             "type": "string",
-            "description": "Zabbix 主机名称"
+            "description": "Zabbix host name"
           }
         },
         "required": ["host", "name"]
@@ -1964,11 +1964,11 @@
         "properties": {
           "hostname": {
             "type": "string",
-            "description": "主机名"
+            "description": "Hostname"
           },
           "itemid": {
             "type": "string",
-            "description": "Zabbix 项目 ID"
+            "description": "Zabbix item ID"
           }
         },
         "required": ["hostname", "itemid"]
@@ -1978,11 +1978,11 @@
         "properties": {
           "itemid": {
             "type": "string",
-            "description": "Zabbix 项目 ID"
+            "description": "Zabbix item ID"
           },
           "hostname": {
             "type": "string",
-            "description": "主机名"
+            "description": "Hostname"
           }
         },
         "required": ["itemid", "hostname"]
@@ -1992,11 +1992,11 @@
         "properties": {
           "tag": {
             "type": "string",
-            "description": "标签键"
+            "description": "Tag key"
           },
           "value": {
             "type": "string",
-            "description": "标签值"
+            "description": "Tag value"
           }
         },
         "required": ["tag", "value"]
@@ -2006,11 +2006,11 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "数据源名称"
+            "description": "Data source name"
           },
           "connect_name": {
             "type": "string",
-            "description": "连接名称"
+            "description": "Connection name"
           },
           "targets": {
             "type": "array",
@@ -2018,17 +2018,17 @@
               "$ref": "#/components/schemas/ZabbixTarget"
             },
             "default": [],
-            "description": "Zabbix 目标列表"
+            "description": "Zabbix target list"
           },
           "metric_name": {
             "type": "string",
             "default": "",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "history_type": {
             "type": "integer",
             "default": 0,
-            "description": "历史类型"
+            "description": "History type"
           }
         },
         "required": ["connect_name"]
@@ -2106,16 +2106,16 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "数据源ID"
+            "description": "Data source ID"
           },
           "name": {
             "type": "string",
-            "description": "数据源名称"
+            "description": "Data source name"
           },
           "type": {
             "type": "string",
             "enum": ["zabbix", "aliyun", "volcengine"],
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           "connect": {
             "allOf": [
@@ -2123,11 +2123,11 @@
                 "$ref": "#/components/schemas/Connect"
               }
             ],
-            "description": "数据源连接配置"
+            "description": "Data source connection configuration"
           },
           "config": {
             "type": "object",
-            "description": "数据源配置"
+            "description": "Data source configuration"
           },
           "zabbix_config": {
             "allOf": [
@@ -2135,7 +2135,7 @@
                 "$ref": "#/components/schemas/ZabbixDataSourceConfig"
               }
             ],
-            "description": "Zabbix数据源配置"
+            "description": "Zabbix data source configuration"
           },
           "aliyun_config": {
             "allOf": [
@@ -2143,7 +2143,7 @@
                 "$ref": "#/components/schemas/AliyunDataSourceConfig"
               }
             ],
-            "description": "阿里云数据源配置"
+            "description": "Alibaba Cloud data source configuration"
           },
           "volcengine_config": {
             "allOf": [
@@ -2151,26 +2151,26 @@
                 "$ref": "#/components/schemas/VolcengineDataSourceConfig"
               }
             ],
-            "description": "火山引擎数据源配置"
+            "description": "Volcano Engine data source configuration"
           },
           "description": {
             "type": "string",
-            "description": "数据源描述"
+            "description": "Data source description"
           },
           "is_active": {
             "type": "boolean",
             "default": true,
-            "description": "是否激活"
+            "description": "Whether active"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Update time"
           }
         },
         "required": ["name", "type", "connect"]
@@ -2220,26 +2220,26 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "数据源名称"
+            "description": "Data source name"
           },
           "connect_name": {
             "type": "string",
-            "description": "连接名称"
+            "description": "Connection name"
           },
           "region": {
             "type": "string",
             "default": "",
-            "description": "阿里云地域"
+            "description": "Alibaba Cloud region"
           },
           "namespace": {
             "type": "string",
             "default": "",
-            "description": "命名空间"
+            "description": "Namespace"
           },
           "metric_name": {
             "type": "string",
             "default": "",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "dimensions": {
             "type": "array",
@@ -2249,14 +2249,14 @@
                 "type": "string"
               }
             },
-            "description": "维度信息"
+            "description": "Dimension information"
           },
           "group_by": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "分组维度"
+            "description": "Grouping dimensions"
           }
         },
         "required": ["connect_name"]
@@ -2266,31 +2266,31 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "数据源名称"
+            "description": "Data source name"
           },
           "connect_name": {
             "type": "string",
-            "description": "连接名称"
+            "description": "Connection name"
           },
           "region": {
             "type": "string",
             "default": "",
-            "description": "火山引擎地域"
+            "description": "Volcano Engine region"
           },
           "namespace": {
             "type": "string",
             "default": "",
-            "description": "命名空间"
+            "description": "Namespace"
           },
           "sub_namespace": {
             "type": "string",
             "default": "",
-            "description": "子命名空间"
+            "description": "Sub namespace"
           },
           "metric_name": {
             "type": "string",
             "default": "",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "instances": {
             "type": "array",
@@ -2300,14 +2300,14 @@
                 "type": "string"
               }
             },
-            "description": "实例列表"
+            "description": "Instance list"
           },
           "group_by": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "分组维度"
+            "description": "Grouping dimensions"
           }
         },
         "required": ["connect_name"]
@@ -2317,19 +2317,19 @@
         "properties": {
           "namespace": {
             "type": "string",
-            "description": "产品命名空间"
+            "description": "Product namespace"
           },
           "description": {
             "type": "string",
-            "description": "产品描述（作为产品名称显示）"
+            "description": "Product description (displayed as product name)"
           },
           "type": {
             "type": "string",
-            "description": "产品类型名称"
+            "description": "Product type name"
           },
           "type_id": {
             "type": "string",
-            "description": "产品类型ID"
+            "description": "Product type ID"
           }
         },
         "required": ["namespace", "description", "type", "type_id"]
@@ -2339,23 +2339,23 @@
         "properties": {
           "metric_name": {
             "type": "string",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "namespace": {
             "type": "string",
-            "description": "命名空间"
+            "description": "Namespace"
           },
           "sub_namespace": {
             "type": "string",
-            "description": "子命名空间"
+            "description": "Sub namespace"
           },
           "description": {
             "type": "string",
-            "description": "指标描述"
+            "description": "Metric description"
           },
           "unit": {
             "type": "string",
-            "description": "指标单位"
+            "description": "Metric unit"
           }
         },
         "required": ["metric_name", "namespace"]
@@ -2427,7 +2427,7 @@
         "properties": {
           "project": {
             "type": "string",
-            "description": "阿里云项目名称"
+            "description": "Alibaba Cloud project name"
           }
         }
       },
@@ -2436,7 +2436,7 @@
         "properties": {
           "namespace": {
             "type": "string",
-            "description": "命名空间"
+            "description": "Namespace"
           }
         }
       },
@@ -2454,31 +2454,31 @@
         "properties": {
           "MetricName": {
             "type": "string",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "Description": {
             "type": "string",
-            "description": "指标描述"
+            "description": "Metric description"
           },
           "Namespace": {
             "type": "string",
-            "description": "命名空间"
+            "description": "Namespace"
           },
           "Dimensions": {
             "type": "string",
-            "description": "维度（逗号分隔）"
+            "description": "Dimensions (comma-separated)"
           },
           "Unit": {
             "type": "string",
-            "description": "单位"
+            "description": "Unit"
           },
           "Periods": {
             "type": "string",
-            "description": "支持的周期（逗号分隔）"
+            "description": "Supported periods (comma-separated)"
           },
           "Statistics": {
             "type": "string",
-            "description": "支持的统计方式（逗号分隔）"
+            "description": "Supported statistics (comma-separated)"
           }
         }
       },
@@ -2539,19 +2539,19 @@
         "properties": {
           "connect_name": {
             "type": "string",
-            "description": "连接名称"
+            "description": "Connection name"
           },
           "region": {
             "type": "string",
-            "description": "阿里云地域"
+            "description": "Alibaba Cloud region"
           },
           "namespace": {
             "type": "string",
-            "description": "命名空间"
+            "description": "Namespace"
           },
           "metric_name": {
             "type": "string",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "dimensions": {
             "type": "array",
@@ -2561,14 +2561,14 @@
                 "type": "string"
               }
             },
-            "description": "维度信息"
+            "description": "Dimension information"
           },
           "group_by": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "分组维度"
+            "description": "Grouping dimensions"
           }
         },
         "required": ["connect_name", "region", "namespace", "metric_name"]
@@ -2578,23 +2578,23 @@
         "properties": {
           "connect_name": {
             "type": "string",
-            "description": "连接名称"
+            "description": "Connection name"
           },
           "region": {
             "type": "string",
-            "description": "火山引擎地域"
+            "description": "Volcano Engine region"
           },
           "namespace": {
             "type": "string",
-            "description": "命名空间"
+            "description": "Namespace"
           },
           "sub_namespace": {
             "type": "string",
-            "description": "子命名空间"
+            "description": "Sub namespace"
           },
           "metric_name": {
             "type": "string",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "dimensions": {
             "type": "array",
@@ -2604,14 +2604,14 @@
                 "type": "string"
               }
             },
-            "description": "维度信息"
+            "description": "Dimension information"
           },
           "group_by": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "分组维度"
+            "description": "Grouping dimensions"
           }
         },
         "required": [
@@ -2638,11 +2638,11 @@
               "properties": {
                 "Namespace": {
                   "type": "string",
-                  "description": "阿里云服务命名空间"
+                  "description": "Aliyun service namespace"
                 },
                 "Description": {
                   "type": "string",
-                  "description": "服务描述"
+                  "description": "Service description"
                 }
               }
             }

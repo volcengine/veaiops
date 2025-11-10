@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * CustomTable 枚举类型定义
- * 从 constants/enum.ts 迁移而来
+ * CustomTable enum type definitions
+ * Migrated from constants/enum.ts
  */
 
 /**
- * 插件名称枚举
+ * Plugin name enum
  */
 export enum PluginNames {
   DATA_SOURCE = 'data-source',
@@ -42,62 +42,62 @@ export enum PluginNames {
   SMART_CELL = 'smart-cell',
 }
 
-// PluginPriority 已在 core/enums.ts 中通过 export type 导出，此处移除避免重复
-// 如需使用，请从 '@/custom-table/types/core' 或 '@/custom-table/types' 导入
+// PluginPriority is already exported via export type in core/enums.ts, removed here to avoid duplication
+// If needed, import from '@/custom-table/types/core' or '@/custom-table/types'
 
 /**
- * 插件方法名称枚举
+ * Plugin method name enum
  */
 export enum PluginMethods {
-  // data-source 插件方法
+  // data-source plugin methods
   LOAD_DATA = 'loadData',
   RESET_DATA = 'resetData',
   LOAD_MORE = 'loadMore',
 
-  // table-filter 插件方法
+  // table-filter plugin methods
   RESET_FILTERS = 'resetFilters',
 
-  // table-columns 插件方法
+  // table-columns plugin methods
   GET_COLUMNS = 'getColumns',
   RESET_COLUMNS = 'resetColumns',
   FILTER_COLUMNS = 'filterColumns',
 
-  // table-pagination 插件方法
+  // table-pagination plugin methods
   GET_PAGINATION_INFO = 'getPaginationInfo',
   GET_PAGINATION_CONFIG = 'getPaginationConfig',
   RESET_PAGINATION = 'resetPagination',
 
-  // table-sorting 插件方法
+  // table-sorting plugin methods
   GET_SORTER_INFO = 'getSorterInfo',
   GET_SORTER_PARAM = 'getSorterParam',
   RESET_SORTER = 'resetSorter',
   ON_SORTER_CHANGE = 'onSorterChange',
 
-  // table-alert 插件方法
+  // table-alert plugin methods
   SHOW_ALERT = 'showAlert',
   HIDE_ALERT = 'hideAlert',
 
-  // custom-loading 插件方法
+  // custom-loading plugin methods
   SHOW_LOADING = 'showLoading',
   HIDE_LOADING = 'hideLoading',
   SET_LOADING_TIP = 'setLoadingTip',
 
-  // table-toolbar 插件方法
+  // table-toolbar plugin methods
   GET_TOOLBAR_CONFIG = 'getToolbarConfig',
   RENDER_TOOLBAR = 'renderToolbar',
 
-  // table-search 插件方法
+  // table-search plugin methods
   SET_SEARCH_VALUE = 'setSearchValue',
   CLEAR_SEARCH = 'clearSearch',
   HANDLE_SEARCH = 'handleSearch',
 
-  // row-selection 插件方法
+  // row-selection plugin methods
   SELECT_ROW = 'selectRow',
   SELECT_ALL = 'selectAll',
   CLEAR_SELECTION = 'clearSelection',
   GET_SELECTED_ROWS = 'getSelectedRows',
 
-  // column-width-persistence 插件方法
+  // column-width-persistence plugin methods
   GET_PERSISTENT_WIDTHS = 'getPersistentWidths',
   SET_PERSISTENT_WIDTH = 'setPersistentWidth',
   SET_BATCH_PERSISTENT_WIDTHS = 'setBatchPersistentWidths',
@@ -107,38 +107,38 @@ export enum PluginMethods {
 }
 
 /**
- * 渲染器名称枚举
+ * Renderer name enum
  */
 export enum RendererNames {
-  // data-source 渲染器
+  // data-source renderers
   EMPTY_STATE = 'emptyState',
   ERROR_STATE = 'errorState',
   LOAD_MORE_BUTTON = 'loadMoreButton',
 
-  // table-filter 渲染器
+  // table-filter renderers
   FILTER = 'filter',
 
-  // table-pagination 渲染器
+  // table-pagination renderers
   PAGINATION = 'pagination',
 
-  // table-alert 渲染器
+  // table-alert renderers
   ALERT = 'alert',
 
-  // custom-loading 渲染器
+  // custom-loading renderers
   LOADING = 'loading',
   LOADING_OVERLAY = 'loadingOverlay',
 
-  // table-toolbar 渲染器
+  // table-toolbar renderers
   TOOLBAR = 'toolbar',
   TOOLBAR_LEFT = 'toolbarLeft',
   TOOLBAR_RIGHT = 'toolbarRight',
 
-  // table-search 渲染器
+  // table-search renderers
   SEARCH = 'search',
   SEARCH_INPUT = 'searchInput',
   SEARCH_BUTTON = 'searchButton',
 
-  // row-selection 渲染器
+  // row-selection renderers
   SELECTION_CHECKBOX = 'selectionCheckbox',
   SELECTION_COLUMN = 'selectionColumn',
   BATCH_ACTIONS = 'batchActions',

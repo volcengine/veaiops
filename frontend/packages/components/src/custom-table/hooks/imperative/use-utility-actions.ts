@@ -13,10 +13,9 @@
 // limitations under the License.
 
 /**
- * CustomTable 工具操作 Hook
- * 负责处理导出、滚动、验证、重置等操作
+ * CustomTable utility operations Hook
+ * Responsible for handling export, scroll, validation, reset and other operations
  *
-
  * @date 2025-12-19
  */
 import type {
@@ -29,48 +28,48 @@ import type {
 } from '@/custom-table/types';
 
 /**
- * @name 重置选项接口
+ * Reset options interface
  */
 export interface ResetOptions {
-  /** @name 是否重置数据 */
+  /** Whether to reset data */
   resetData?: boolean;
-  /** @name 是否重置查询参数 */
+  /** Whether to reset query parameters */
   resetQuery?: boolean;
-  /** @name 是否重置筛选条件 */
+  /** Whether to reset filter conditions */
   resetFilters?: boolean;
-  /** @name 是否重置选择状态 */
+  /** Whether to reset selection state */
   resetSelection?: boolean;
-  /** @name 是否重置展开状态 */
+  /** Whether to reset expanded state */
   resetExpandedRows?: boolean;
 }
 
 /**
- * @name 工具操作相关的实例方法
+ * Utility operation related instance methods
  */
 export interface UtilityActionMethods<RecordType extends BaseRecord> {
-  /** @name 导出数据 */
+  /** Export data */
   exportData: (format?: 'excel' | 'csv' | 'json') => RecordType[];
-  /** @name 滚动到顶部 */
+  /** Scroll to top */
   scrollToTop: () => void;
-  /** @name 滚动到底部 */
+  /** Scroll to bottom */
   scrollToBottom: () => void;
-  /** @name 滚动到指定行 */
+  /** Scroll to specified row */
   scrollToRow: (index: number) => void;
-  /** @name 验证表格状态 */
+  /** Validate table state */
   validate: () => Promise<boolean>;
-  /** @name 重置表格状态 */
+  /** Reset table state */
   reset: (options?: ResetOptions) => void;
-  /** @name 获取表格实例 */
+  /** Get table instance */
   getTableInstance: () => unknown;
-  /** @name 获取插件管理器 */
+  /** Get plugin manager */
   getPluginManager: () => PluginManager;
-  /** @name 获取性能指标 */
+  /** Get performance metrics */
   getPerformanceMetrics: () => PluginPerformanceMetrics;
 }
 
 /**
- * @name 创建工具操作方法
- * @description 基于 pro-components 工具函数设计模式
+ * Create utility operation methods
+ * Based on pro-components utility function design pattern
  */
 export const createUtilityActions = <
   RecordType extends BaseRecord = BaseRecord,
@@ -81,12 +80,12 @@ export const createUtilityActions = <
   pluginManager: PluginManager,
   getRequestManager: () => RequestManager,
 ): UtilityActionMethods<RecordType> => ({
-  /** @name 导出数据 */
+  /** Export data */
   exportData: (format: 'excel' | 'csv' | 'json' = 'excel'): RecordType[] => {
     const dataToExport = formattedTableData;
 
     if (format === 'json') {
-      // JSON 格式导出
+      // JSON format export
       const jsonStr = JSON.stringify(dataToExport, null, 2);
       const blob = new Blob([jsonStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -98,7 +97,7 @@ export const createUtilityActions = <
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } else if (format === 'csv') {
-      // CSV 格式导出 - 简单实现
+      // CSV format export - simple implementation
       if (dataToExport.length > 0) {
         const headers = Object.keys(dataToExport[0] as Record<string, unknown>);
         const csvContent = [
@@ -125,9 +124,9 @@ export const createUtilityActions = <
         URL.revokeObjectURL(url);
       }
     } else {
-      // Excel 格式导出 - 使用 HTML table 方式实现基本导出
+      // Excel format export - basic export using HTML table method
       if (dataToExport.length === 0) {
-        // 数据为空，不进行导出
+        // Data is empty, skip export
 
         return dataToExport;
       }
@@ -176,7 +175,7 @@ export const createUtilityActions = <
     return dataToExport;
   },
 
-  /** @name 滚动到顶部 */
+  /** Scroll to top */
   scrollToTop: () => {
     const tableElement = document.querySelector('.arco-table-body');
     if (tableElement) {
@@ -184,7 +183,7 @@ export const createUtilityActions = <
     }
   },
 
-  /** @name 滚动到底部 */
+  /** Scroll to bottom */
   scrollToBottom: () => {
     const tableElement = document.querySelector('.arco-table-body');
     if (tableElement) {
@@ -192,7 +191,7 @@ export const createUtilityActions = <
     }
   },
 
-  /** @name 滚动到指定行 */
+  /** Scroll to specific row */
   scrollToRow: (index: number) => {
     const rowElement = document.querySelector(`[data-row-key="${index}"]`);
     if (rowElement) {
@@ -200,34 +199,34 @@ export const createUtilityActions = <
     }
   },
 
-  /** @name 验证表格状态 */
+  /** Validate table state */
   validate: async (): Promise<boolean> => {
-    // 基于 pro-components 验证设计
+    // Based on pro-components validation design
     try {
-      // 检查是否有进行中的请求
+      // Check if there are ongoing requests
       const requestManager = getRequestManager();
       if (requestManager.currentController && !requestManager.isAborted()) {
         return false;
       }
 
-      // 检查数据完整性
+      // Check data integrity
       if (!formattedTableData || formattedTableData.length === 0) {
         return false;
       }
 
-      // 检查插件状态
+      // Check plugin state
       if (!pluginManager || pluginManager.getAllPlugins().length === 0) {
         return false;
       }
 
       return true;
     } catch (error) {
-      // 检查插件状态失败，返回 false（静默处理）
+      // Plugin state check failed, return false (silent handling)
       return false;
     }
   },
 
-  /** @name 重置表格状态 */
+  /** Reset table state */
   reset: (options: ResetOptions = {}) => {
     const {
       resetData = true,
@@ -237,41 +236,41 @@ export const createUtilityActions = <
       resetExpandedRows = true,
     } = options;
 
-    // 取消进行中的请求
+    // Cancel ongoing requests
     getRequestManager().abort();
 
-    // 重置数据
+    // Reset data
     if (resetData && context.helpers.reset) {
       context.helpers.reset();
     }
 
-    // 重置查询参数
+    // Reset query parameters
     if (resetQuery && context.helpers.setQuery) {
       context.helpers.setQuery({} as QueryType);
     }
 
-    // 重置筛选条件
+    // Reset filter conditions
     if (resetFilters && context.helpers.setFilters) {
       context.helpers.setFilters({});
     }
 
-    // 重置选择状态
+    // Reset selection state
     if (resetSelection && context.helpers.setSelectedRowKeys) {
       context.helpers.setSelectedRowKeys([]);
     }
 
-    // 重置展开状态
+    // Reset expanded state
     if (resetExpandedRows && context.helpers.setExpandedRowKeys) {
       context.helpers.setExpandedRowKeys([]);
     }
   },
 
-  /** @name 获取表格实例 */
-  getTableInstance: () => null, // 返回实际的 Arco Table 实例
+  /** Get table instance */
+  getTableInstance: () => null, // Return actual Arco Table instance
 
-  /** @name 获取插件管理器 */
+  /** Get plugin manager */
   getPluginManager: () => pluginManager,
 
-  /** @name 获取性能指标 */
+  /** Get performance metrics */
   getPerformanceMetrics: () => pluginManager.getMetrics(),
 });

@@ -15,7 +15,7 @@
 import type { UserTableData } from '../../types';
 
 /**
- * 转换用户数据为表格数据
+ * Transform user data to table data
  */
 export const transformUserToTableData = (user: {
   id?: string;
@@ -30,11 +30,11 @@ export const transformUserToTableData = (user: {
     ...user,
     id: user.id || `temp-${Date.now()}-${Math.random()}`,
     key: user.id || `temp-${Date.now()}-${Math.random()}`,
-    // 将 API 字段映射到本地字段
+    // Map API fields to local fields
     role: user.is_supervisor ? 'admin' : 'user',
     status: user.is_active ? 'active' : 'inactive',
     is_system_admin: user.is_supervisor || false,
-    // 确保时间戳字段有默认值
+    // Ensure timestamp fields have default values
     created_at: user.created_at || now,
     updated_at: user.updated_at || now,
   } as UserTableData;

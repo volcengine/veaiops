@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 行内编辑插件类型定义
- * 基于 EPS 平台的可编辑表格能力和 Arco Table 类型系统
+ * Inline edit plugin type definitions
+ * Based on EPS platform's editable table capabilities and Arco Table type system
  */
 import type { CSSProperties, ComponentType, Key, ReactNode } from 'react';
 import type { BaseRecord } from '../core/common';
@@ -22,7 +22,7 @@ import type { PluginPriorityEnum } from '../core/enums';
 import type { PluginBaseConfig } from './core';
 
 /**
- * 编辑器类型
+ * Editor type
  */
 export type EditorType =
   | 'input'
@@ -35,41 +35,41 @@ export type EditorType =
   | 'custom';
 
 /**
- * 编辑触发方式
+ * Edit trigger method
  */
 export type EditTrigger = 'click' | 'doubleClick' | 'focus' | 'manual';
 
 /**
- * 编辑模式
+ * Edit mode
  */
 export type EditMode = 'cell' | 'row' | 'modal';
 
 /**
- * 自定义编辑器组件属性（基于Arco Table渲染模式）
+ * Custom editor component props (based on Arco Table rendering mode)
  */
 export interface CustomEditorProps<RecordType extends BaseRecord = BaseRecord> {
-  /** 当前值（来自record[dataIndex]） */
+  /** Current value (from record[dataIndex]) */
   value: unknown;
-  /** 值变化回调 */
+  /** Value change callback */
   onChange: (value: unknown) => void;
-  /** 完成编辑回调 */
+  /** Finish edit callback */
   onFinish: () => void;
-  /** 取消编辑回调 */
+  /** Cancel edit callback */
   onCancel: () => void;
-  /** 行数据 */
+  /** Row data */
   record: RecordType;
-  /** 字段名 */
+  /** Field name */
   fieldName: string;
-  /** 行索引 */
+  /** Row index */
   rowIndex: number;
-  /** 列索引 */
+  /** Column index */
   columnIndex: number;
-  /** 编辑器属性 */
+  /** Editor properties */
   editorProps?: Record<string, unknown>;
 }
 
 /**
- * 编辑器选项
+ * Editor options
  */
 export interface EditorOption {
   label: string;
@@ -79,7 +79,7 @@ export interface EditorOption {
 }
 
 /**
- * 编辑器验证规则
+ * Editor validation rules
  */
 export interface EditorValidationRule<
   RecordType extends BaseRecord = BaseRecord,
@@ -93,96 +93,96 @@ export interface EditorValidationRule<
 }
 
 /**
- * 编辑器配置
+ * Editor configuration
  */
 export interface EditorConfig<RecordType extends BaseRecord = BaseRecord> {
-  /** 编辑器类型 */
+  /** Editor type */
   type: EditorType;
-  /** 自定义编辑器组件 */
+  /** Custom editor component */
   component?: ComponentType<CustomEditorProps<RecordType>>;
-  /** 编辑器属性 */
+  /** Editor properties */
   props?: Record<string, unknown>;
-  /** 选项数据（用于 select 类型） */
+  /** Options data (for select type) */
   options?:
     | EditorOption[]
     | ((record: RecordType) => EditorOption[] | Promise<EditorOption[]>);
-  /** 验证规则 */
+  /** Validation rules */
   rules?: EditorValidationRule<RecordType>[];
 }
 
 /**
- * 字段编辑配置
+ * Field edit configuration
  */
 export interface FieldEditConfig<RecordType extends BaseRecord = BaseRecord> {
-  /** 字段名 */
+  /** Field name */
   fieldName: string;
-  /** 数据索引 */
+  /** Data index */
   dataIndex: string;
-  /** 是否可编辑 */
+  /** Whether editable */
   editable: boolean;
-  /** 是否禁用 */
+  /** Whether disabled */
   disabled?: boolean;
-  /** 是否只读 */
+  /** Whether read-only */
   readOnly?: boolean;
-  /** 编辑器配置 */
+  /** Editor configuration */
   editor: EditorConfig<RecordType>;
-  /** 是否必填 */
+  /** Whether required */
   required?: boolean;
-  /** 验证函数 */
+  /** Validation function */
   validate?: (
     value: unknown,
     record: RecordType,
   ) => Promise<string | null> | string | null;
-  /** 自定义渲染函数 */
+  /** Custom render function */
   render?: (
     value: unknown,
     record: RecordType,
     editing: boolean,
     rowIndex: number,
   ) => ReactNode;
-  /** 权限检查函数 */
+  /** Permission check function */
   canEdit?: (
     record: RecordType,
     fieldName: string,
   ) => boolean | Promise<boolean>;
-  /** 值格式化函数（显示时使用） */
+  /** Value format function (used when displaying) */
   formatValue?: (value: unknown, record: RecordType) => unknown;
-  /** 值解析函数（保存时使用） */
+  /** Value parse function (used when saving) */
   parseValue?: (value: unknown, record: RecordType) => unknown;
-  /** 编辑时的样式 */
+  /** Style when editing */
   editingStyle?: CSSProperties;
-  /** 编辑时的类名 */
+  /** Class name when editing */
   editingClassName?: string;
-  /** 是否显示编辑图标 */
+  /** Whether to show edit icon */
   showEditIcon?: boolean;
-  /** Tab键确认编辑 */
+  /** Confirm edit on Tab key */
   confirmOnTab?: boolean;
-  /** 失焦时退出编辑 */
+  /** Exit edit on blur */
   exitOnBlur?: boolean;
 }
 
 /**
- * 编辑事件回调
+ * Edit event callbacks
  */
 export interface EditEventCallbacks<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 开始编辑前 */
+  /** Before starting edit */
   beforeEdit?: (
     record: RecordType,
     fieldName: string,
     rowIndex: number,
   ) => boolean | Promise<boolean>;
-  /** 开始编辑后 */
+  /** After starting edit */
   afterEdit?: (record: RecordType, fieldName: string, rowIndex: number) => void;
-  /** 保存前验证 */
+  /** Validate before save */
   beforeSave?: (
     value: unknown,
     record: RecordType,
     fieldName: string,
     rowIndex: number,
   ) => boolean | Promise<boolean>;
-  /** 保存后 */
+  /** After save */
   afterSave?: (
     newValue: unknown,
     oldValue: unknown,
@@ -190,16 +190,16 @@ export interface EditEventCallbacks<
     fieldName: string,
     rowIndex: number,
   ) => void;
-  /** 取消编辑 */
+  /** Cancel edit */
   onCancel?: (record: RecordType, fieldName: string, rowIndex: number) => void;
-  /** 编辑出错 */
+  /** Edit error */
   onError?: (
     error: Error,
     record: RecordType,
     fieldName: string,
     rowIndex: number,
   ) => void;
-  /** 值变化时 */
+  /** When value changes */
   onChange?: (
     value: unknown,
     record: RecordType,
@@ -209,48 +209,48 @@ export interface EditEventCallbacks<
 }
 
 /**
- * 行内编辑配置
+ * Inline edit configuration
  */
 export interface InlineEditConfig<RecordType extends BaseRecord = BaseRecord>
   extends PluginBaseConfig {
-  /** 编辑模式 */
+  /** Edit mode */
   mode?: EditMode;
-  /** 编辑触发方式 */
+  /** Edit trigger method */
   trigger?: EditTrigger;
-  /** 字段编辑配置 */
+  /** Field edit configuration */
   fields?: FieldEditConfig<RecordType>[];
-  /** 是否支持批量编辑 */
+  /** Whether supports batch edit */
   batchEdit?: boolean;
-  /** 是否允许批量编辑 */
+  /** Whether allows batch edit */
   allowBatchEdit?: boolean;
-  /** 自动保存延迟（毫秒） */
+  /** Auto save delay (milliseconds) */
   autoSaveDelay?: number;
-  /** 是否自动保存 */
+  /** Whether auto save */
   autoSave?: boolean;
-  /** 是否在值变化时验证 */
+  /** Whether to validate on value change */
   validateOnChange?: boolean;
-  /** 编辑前回调 */
+  /** Before edit callback */
   onBeforeEdit?: (
     field: string,
     record: RecordType,
   ) => boolean | Promise<boolean>;
-  /** 编辑后回调 */
+  /** After edit callback */
   onAfterEdit?: (field: string, value: unknown, record: RecordType) => void;
-  /** 取消编辑回调 */
+  /** Cancel edit callback */
   onEditCancel?: (field: string, record: RecordType) => void;
-  /** 验证错误回调 */
+  /** Validation error callback */
   onValidationError?: (
     field: string,
     error: string,
     record: RecordType,
   ) => void;
-  /** 保存回调 */
+  /** Save callback */
   onSave?: (field: string, value: unknown, record: RecordType) => Promise<void>;
-  /** 编辑事件回调 */
+  /** Edit event callbacks */
   callbacks?: EditEventCallbacks<RecordType>;
-  /** 获取行的唯一键 */
+  /** Function to get row unique key */
   getRowKey?: (record: RecordType) => Key;
-  /** 样式配置 */
+  /** Style configuration */
   style?: {
     editingClassName?: string;
     editingStyle?: CSSProperties;
@@ -262,7 +262,7 @@ export interface InlineEditConfig<RecordType extends BaseRecord = BaseRecord>
 }
 
 /**
- * 编辑单元格信息
+ * Editing cell information
  */
 export interface EditingCellInfo<RecordType extends BaseRecord = BaseRecord> {
   rowKey: Key;
@@ -276,33 +276,33 @@ export interface EditingCellInfo<RecordType extends BaseRecord = BaseRecord> {
 }
 
 /**
- * 编辑状态
+ * Edit state
  */
 export interface EditState<RecordType extends BaseRecord = BaseRecord> {
-  /** 正在编辑的单元格 */
+  /** Currently editing cells */
   editingCells: Map<string, EditingCellInfo<RecordType>>;
-  /** 正在编辑的行 */
+  /** Currently editing rows */
   editingRows: Set<Key>;
-  /** 编辑值缓存 key: rowKey_fieldName */
+  /** Edit value cache key: rowKey_fieldName */
   editingValues: Map<string, unknown>;
-  /** 编辑错误信息 key: rowKey_fieldName */
+  /** Edit error information key: rowKey_fieldName */
   editingErrors: Map<string, string>;
-  /** 是否有未保存的更改 */
+  /** Whether has unsaved changes */
   hasUnsavedChanges: boolean;
-  /** 验证状态 */
+  /** Validation state */
   validationState: Map<string, boolean>;
-  /** 原始值缓存（用于回退） */
+  /** Original value cache (for rollback) */
   originalValues: Map<string, unknown>;
-  /** 验证错误信息 */
+  /** Validation error information */
   validationErrors: Map<string, string>;
-  /** 是否有更改 */
+  /** Whether has changes */
   hasChanges: boolean;
-  /** 是否有任何编辑中的状态 */
+  /** Whether has any editing state */
   isAnyEditing: boolean;
 }
 
 /**
- * 插件方法参数类型
+ * Plugin method parameter types
  */
 export interface StartEditParams {
   rowKey: Key;
@@ -331,39 +331,39 @@ export interface GetEditingErrorsParams {
 }
 
 /**
- * 插件方法
+ * Plugin methods
  */
 export interface InlineEditMethods<RecordType extends BaseRecord = BaseRecord> {
-  /** 开始编辑指定单元格 */
+  /** Start editing specified cell */
   startEdit: (params: StartEditParams) => Promise<void>;
-  /** 结束编辑指定单元格 */
+  /** Finish editing specified cell */
   finishEdit: (value: unknown) => Promise<void>;
-  /** 取消编辑指定单元格 */
+  /** Cancel editing specified cell */
   cancelEdit: () => void;
-  /** 开始编辑整行 */
+  /** Start editing entire row */
   startRowEdit: (rowKey: Key) => Promise<void>;
-  /** 结束编辑整行 */
+  /** Finish editing entire row */
   finishRowEdit: (rowKey: Key) => Promise<boolean>;
-  /** 取消编辑整行 */
+  /** Cancel editing entire row */
   cancelRowEdit: (rowKey: Key) => void;
-  /** 保存所有编辑 */
+  /** Save all edits */
   saveAll: () => Promise<boolean>;
-  /** 取消所有编辑 */
+  /** Cancel all edits */
   cancelAll: () => void;
-  /** 验证编辑内容 */
+  /** Validate edit content */
   validate: (params?: GetEditingErrorsParams) => Promise<boolean>;
-  /** 获取编辑值 */
+  /** Get editing value */
   getEditingValue: (params: GetEditingValueParams) => unknown;
-  /** 设置编辑值 */
+  /** Set editing value */
   setEditingValue: (params: SetEditingValueParams) => void;
-  /** 检查单元格是否正在编辑 */
+  /** Check if cell is editing */
   isEditing: (params: IsEditingParams) => boolean;
-  /** 获取所有编辑的数据 */
+  /** Get all editing data */
   getEditingData: () => Map<Key, Partial<RecordType>>;
-  /** 获取编辑错误信息 */
+  /** Get editing error information */
   getEditingErrors: (params?: GetEditingErrorsParams) => string[];
-  /** 开始批量编辑 */
+  /** Start batch edit */
   startBatchEdit: (rowKeys: Key[]) => Promise<void>;
-  /** 获取字段编辑配置 */
+  /** Get field edit configuration */
   getFieldEditConfig: (field: string) => FieldEditConfig<RecordType> | null;
 }

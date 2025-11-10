@@ -22,15 +22,15 @@ import {
 } from '../constants/strategy';
 import type { EventStrategy, StrategyFormData } from '../types/strategy';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender components to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 /**
- * 事件策略相关工具函数
+ * Event strategy related utility functions
  */
 
 /**
- * 渲染优先级标签
+ * Render priority tags
  */
 export const renderPriorityTags = (priorities: string[]) => {
   return (
@@ -48,7 +48,7 @@ export const renderPriorityTags = (priorities: string[]) => {
 };
 
 /**
- * 渲染通知Channel标签
+ * Render notification Channel tags
  */
 export const renderEventChannelTags = (channels: string[]) => {
   return (
@@ -68,7 +68,7 @@ export const renderEventChannelTags = (channels: string[]) => {
 };
 
 /**
- * 渲染事件类型标签
+ * Render event type tags
  */
 export const renderEventTypeTags = (eventTypes: string[]) => {
   return (
@@ -86,7 +86,7 @@ export const renderEventTypeTags = (eventTypes: string[]) => {
 };
 
 /**
- * 渲染状态徽章
+ * Render status badge
  */
 export const renderStatusBadge = (isActive: boolean) => {
   return (
@@ -98,7 +98,7 @@ export const renderStatusBadge = (isActive: boolean) => {
 };
 
 /**
- * 渲染升级规则摘要
+ * Render escalation rules summary
  */
 export const renderEscalationSummary = (
   escalationRules: Record<string, unknown>[],
@@ -121,7 +121,7 @@ export const renderEscalationSummary = (
 };
 
 /**
- * 渲染限流配置摘要
+ * Render throttling configuration summary
  */
 export const renderThrottlingSummary = (
   throttlingConfig: Record<string, unknown>,
@@ -143,7 +143,7 @@ export const renderThrottlingSummary = (
 };
 
 /**
- * 渲染调度配置摘要
+ * Render schedule configuration summary
  */
 export const renderScheduleSummary = (
   scheduleConfig?: Record<string, unknown>,
@@ -173,7 +173,7 @@ export const renderScheduleSummary = (
 };
 
 /**
- * 验证策略表单数据
+ * Validate strategy form data
  */
 export const validateStrategyForm = (values: StrategyFormData) => {
   const errors: Record<string, string> = {};
@@ -201,7 +201,7 @@ export const validateStrategyForm = (values: StrategyFormData) => {
     errors.escalation_rules = '请配置至少一个升级规则';
   }
 
-  // 验证升级规则
+  // Validate escalation rules
   if (values.escalation_rules) {
     values.escalation_rules.forEach((rule, index) => {
       if (!rule.channels || rule.channels.length === 0) {
@@ -224,7 +224,7 @@ export const validateStrategyForm = (values: StrategyFormData) => {
 };
 
 /**
- * 生成策略摘要文本
+ * Generate strategy summary text
  */
 export const generateStrategySummary = (strategy: EventStrategy) => {
   const chatCount = strategy.chat_ids?.length || 0;

@@ -13,6 +13,6 @@
 // limitations under the License.
 
 export * from './filters';
-// export * from './hooks'; // 暂时移除，等待实现
+// export * from './hooks'; // Temporarily removed, waiting for implementation
 export * from './subscribe-relation-table';
 export * from './table-columns';

@@ -16,7 +16,7 @@ import type { DataSourceType } from '@/modules/system/features/datasource/lib';
 import type { DataSource } from 'api-generate';
 
 /**
- * getConfigData 参数接口
+ * getConfigData parameter interface
  */
 export interface GetConfigDataParams {
   record: DataSource;

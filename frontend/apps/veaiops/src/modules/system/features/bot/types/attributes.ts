@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * Bot属性相关类型定义
+ * Bot attribute related type definitions
  */
 
 import type { AttributeKey, ChannelType } from 'api-generate';
 
-// BotAttribute 类型现在从 API 生成
+// BotAttribute type is now generated from API
 
 export interface BotAttributeFormData {
   name: AttributeKey;
-  value: string | string[]; // 支持单选和多选
+  value: string | string[]; // Supports single and multiple selection
   bot_id?: string;
   channel?: string;
 }
@@ -36,7 +36,7 @@ export interface BotAttributesTableProps {
 }
 
 /**
- * Bot特别关注管理 Hook 参数接口
+ * Bot special attention management Hook parameters interface
  */
 export interface UseBotAttributesParams {
   botId: string;
@@ -44,7 +44,7 @@ export interface UseBotAttributesParams {
 }
 
 /**
- * 更新特别关注参数接口
+ * Update special attention parameters interface
  */
 export interface UpdateAttributeParams {
   id: string;
@@ -52,7 +52,7 @@ export interface UpdateAttributeParams {
 }
 
 /**
- * 创建特别关注参数接口
+ * Create special attention parameters interface
  */
 export interface CreateAttributeParams {
   name: AttributeKey;
@@ -60,7 +60,7 @@ export interface CreateAttributeParams {
 }
 
 /**
- * 保存的请求参数接口
+ * Saved request parameters interface
  */
 export interface LastRequestParams {
   names?: string[];
@@ -68,19 +68,19 @@ export interface LastRequestParams {
 }
 
 /**
- * Bot属性类目选项
- * 目前仅支持项目，客户和产品功能待开发
+ * Bot attribute category options
+ * Currently only supports project, customer and product features are pending development
  */
 export const ATTRIBUTE_OPTIONS = [
   { label: '项目', value: 'project' as AttributeKey },
-  // { label: '客户', value: 'customer' as AttributeKey },
-  // { label: '产品', value: 'product' as AttributeKey },
+  // { label: 'Customer', value: 'customer' as AttributeKey },
+  // { label: 'Product', value: 'product' as AttributeKey },
 ];
 
 /**
- * 类目映射表
- * 将英文类目名称映射为中文显示名称
- * 对应 origin/feat/web-v2 分支的实现，确保显示一致
+ * Category mapping table
+ * Maps English category names to Chinese display names
+ * Corresponds to origin/feat/web-v2 branch implementation, ensuring consistent display
  */
 export const ATTRIBUTE_NAME_MAP: Record<AttributeKey, string> = {
   project: '项目',

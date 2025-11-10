@@ -17,37 +17,37 @@ import type { Event } from 'api-generate';
 import type React from 'react';
 
 /**
- * 历史事件记录类型
- * @description 直接使用 api-generate 中的 Event 类型，避免重复定义
+ * Historical event record type
+ * @description Directly use the Event type from api-generate to avoid duplicate definitions
  */
 export type PushHistoryRecord = Event;
 
 /**
- * 历史事件管理组件属性
+ * Historical event management component props
  */
 export interface PushHistoryManagerProps {
-  /** 模块类型，用于过滤历史事件 */
+  /** Module type, used to filter historical events */
   moduleType?: ModuleType;
-  /** 是否显示模块类型列 */
+  /** Whether to show module type column */
   showModuleTypeColumn?: boolean;
-  /** 自定义操作按钮 */
+  /** Custom action buttons */
   customActions?: (record: PushHistoryRecord) => React.ReactNode;
-  /** 查看详情回调 */
+  /** View detail callback */
   onViewDetail?: (record: PushHistoryRecord) => void;
-  /** 重试回调 */
+  /** Retry callback */
   onRetry?: (recordId: string) => void;
 }
 
 /**
- * 表格列配置属性
+ * Table column configuration props
  */
 export interface TableColumnsProps {
-  /** 自定义操作按钮 */
+  /** Custom action buttons */
   customActions?: (record: PushHistoryRecord) => React.ReactNode;
-  /** 重试回调 */
+  /** Retry callback */
   onRetry?: (recordId: string) => void;
-  /** 查看详情回调 */
+  /** View detail callback */
   onViewDetail?: (record: PushHistoryRecord) => void;
-  /** 是否显示模块类型列 */
+  /** Whether to show module type column */
   showModuleTypeColumn?: boolean;
 }

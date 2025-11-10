@@ -15,14 +15,14 @@
 import type { AgentTemplate } from 'api-generate';
 
 /**
- * 卡片模板表格数据类型
+ * Card template table data type
  */
 export interface CardTemplateTableData extends AgentTemplate {
   key: string;
 }
 
 /**
- * 转换模板数据为表格数据
+ * Transform template data to table data
  */
 export const transformAgentTemplateToTableData = (
   template: AgentTemplate,

@@ -14,14 +14,14 @@
 
 import type { TimeseriesDataPoint } from '../shared/types';
 
-/** 系列别名映射，统一用于折线颜色、图例与 Tooltip */
+/** Series alias mapping, unified for line color, legend and Tooltip */
 export const SERIES_ALIAS_MAP: Record<TimeseriesDataPoint['type'], string> = {
   实际值: '历史时序数据',
   上阈值: '上限阈值线 (虚线)',
   下阈值: '下限阈值线 (虚线)',
 };
 
-/** 固定颜色映射，统一用于折线颜色、图例与 Tooltip */
+/** Fixed color mapping, unified for line color, legend and Tooltip */
 export const COLOR_MAP: Record<TimeseriesDataPoint['type'] | string, string> = {
   实际值: '#165DFF',
   上阈值: '#F53F3F',

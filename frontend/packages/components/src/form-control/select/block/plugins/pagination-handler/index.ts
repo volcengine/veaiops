@@ -21,7 +21,7 @@ import type {
 } from '../../types/plugin';
 
 /**
- * 分页插件实现
+ * Pagination plugin implementation
  */
 export class PaginationPluginImpl implements PaginationPlugin {
   name = 'pagination';
@@ -41,14 +41,14 @@ export class PaginationPluginImpl implements PaginationPlugin {
   }
 
   /**
-   * 设置搜索处理插件引用
+   * Set search handler plugin reference
    */
   setSearchHandler(searchHandler: SearchHandlerPlugin): void {
     this.searchHandler = searchHandler;
   }
 
   /**
-   * 处理弹出框滚动事件
+   * Handle popup scroll event
    */
   async handlePopupScroll(element: HTMLElement): Promise<boolean> {
     if (!this.config.enabled) {
@@ -68,14 +68,14 @@ export class PaginationPluginImpl implements PaginationPlugin {
     const { scrollTop, scrollHeight, clientHeight } = element;
     const scrollBottom = scrollHeight - (scrollTop + clientHeight);
 
-    // 当滚动到底部附近时触发加载更多
+    // Trigger load more when scrolling near bottom
     if (scrollBottom < 10) {
       const { state } = this.context;
 
       if (!state.fetching && state.canTriggerLoadMore) {
         this.context.setState({ fetching: true });
 
-        // 获取搜索处理插件来执行搜索
+        // Get search handler plugin to execute search
         const searchHandler = this.getSearchHandlerPlugin();
         if (searchHandler) {
           const debouncedSearch = searchHandler.createDebouncedSearch();
@@ -91,7 +91,7 @@ export class PaginationPluginImpl implements PaginationPlugin {
   }
 
   /**
-   * 重置分页状态
+   * Reset pagination state
    */
   resetPagination(): void {
     if (!this.context) {
@@ -111,13 +111,13 @@ export class PaginationPluginImpl implements PaginationPlugin {
   }
 
   /**
-   * 处理可见性变化
+   * Handle visibility change
    */
   handleVisibleChange(visible: boolean): void {
     if (!visible) {
       this.resetPagination();
 
-      // 恢复到初始状态
+      // Restore to initial state
       if (!this.context) {
         logger.warn(
           'PaginationPlugin',
@@ -135,7 +135,7 @@ export class PaginationPluginImpl implements PaginationPlugin {
   }
 
   /**
-   * 获取当前跳过数量
+   * Get current skip count
    */
   getCurrentSkip(): number {
     if (!this.context) {
@@ -151,7 +151,7 @@ export class PaginationPluginImpl implements PaginationPlugin {
   }
 
   /**
-   * 设置跳过数量
+   * Set skip count
    */
   setSkip(skip: number): void {
     if (!this.context) {
@@ -167,7 +167,7 @@ export class PaginationPluginImpl implements PaginationPlugin {
   }
 
   /**
-   * 增加跳过数量到下一页
+   * Increase skip count to next page
    */
   nextSkip(): void {
     if (!this.context) {
@@ -186,7 +186,7 @@ export class PaginationPluginImpl implements PaginationPlugin {
   }
 
   /**
-   * 是否可以加载更多
+   * Whether can load more
    */
   canLoadMore(): boolean {
     if (!this.context) {
@@ -202,7 +202,7 @@ export class PaginationPluginImpl implements PaginationPlugin {
   }
 
   /**
-   * 设置是否可以加载更多
+   * Set whether can load more
    */
   setCanLoadMore(canLoad: boolean): void {
     if (!this.context) {
@@ -218,7 +218,7 @@ export class PaginationPluginImpl implements PaginationPlugin {
   }
 
   /**
-   * 获取搜索处理插件
+   * Get search handler plugin
    */
   private getSearchHandlerPlugin(): SearchHandlerPlugin | undefined {
     return this.searchHandler;

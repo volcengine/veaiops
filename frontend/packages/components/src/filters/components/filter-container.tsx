@@ -18,17 +18,17 @@ import type { FilterStyle } from '../core/types';
 import style from '../index.module.less';
 
 interface FilterContainerProps {
-  /** 自定义类名 */
+  /** Custom class name */
   className?: string;
-  /** 筛选器样式配置 */
+  /** Filter style configuration */
   filterStyle: FilterStyle;
-  /** 子组件 */
+  /** Child components */
   children: ReactNode;
 }
 
 /**
- * 筛选器容器组件
- * 负责提供筛选器的基础布局和样式
+ * Filter container component
+ * Responsible for providing basic layout and styles for filters
  */
 const FilterContainer: FC<FilterContainerProps> = ({
   className = '',

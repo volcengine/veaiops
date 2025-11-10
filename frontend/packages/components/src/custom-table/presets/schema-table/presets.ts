@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * Schema表格预设模板
- * @description 提供常用的表格配置模板
-
+ * Schema table preset templates
+ * @description Provides commonly used table configuration templates
+ *
  * @date 2025-12-19
  */
 
@@ -24,7 +24,7 @@ import type {
   TableSchema,
 } from '@/custom-table/types/schema-table';
 
-// 基础表格预设
+// Basic table preset
 const basicPreset: Partial<TableSchema> = {
   features: {
     pagination: {
@@ -40,7 +40,7 @@ const basicPreset: Partial<TableSchema> = {
   },
 };
 
-// 高级搜索表格预设
+// Advanced search table preset
 const advancedPreset: Partial<TableSchema> = {
   features: {
     pagination: {
@@ -54,8 +54,8 @@ const advancedPreset: Partial<TableSchema> = {
     search: {
       layout: 'horizontal',
       collapsed: true,
-      resetText: '重置',
-      searchText: '查询',
+      resetText: 'Reset',
+      searchText: 'Search',
     },
     toolbar: {
       settings: {
@@ -70,7 +70,7 @@ const advancedPreset: Partial<TableSchema> = {
   },
 };
 
-// 可编辑表格预设
+// Editable table preset
 const editablePreset: Partial<TableSchema> = {
   features: {
     pagination: {
@@ -89,7 +89,7 @@ const editablePreset: Partial<TableSchema> = {
   },
 };
 
-// 只读表格预设
+// Read-only table preset
 const readonlyPreset: Partial<TableSchema> = {
   features: {
     pagination: {
@@ -105,7 +105,7 @@ const readonlyPreset: Partial<TableSchema> = {
   },
 };
 
-// 移动端表格预设
+// Mobile table preset
 const mobilePreset: Partial<TableSchema> = {
   features: {
     pagination: {
@@ -122,7 +122,7 @@ const mobilePreset: Partial<TableSchema> = {
   },
 };
 
-// 仪表板表格预设
+// Dashboard table preset
 const dashboardPreset: Partial<TableSchema> = {
   features: {
     pagination: {
@@ -144,41 +144,44 @@ const dashboardPreset: Partial<TableSchema> = {
   },
 };
 
-// 默认预设模板
+// Default preset templates
 export const DEFAULT_PRESETS: Record<string, PresetTemplate> = {
   basic: {
-    name: '基础表格',
-    description: '包含基本的分页、排序功能的标准表格',
+    name: 'Basic Table',
+    description: 'Standard table with basic pagination and sorting features',
     schema: basicPreset,
   },
   advanced: {
-    name: '高级表格',
-    description: '包含搜索、工具栏、列设置等高级功能的表格',
+    name: 'Advanced Table',
+    description:
+      'Table with advanced features including search, toolbar, and column settings',
     schema: advancedPreset,
   },
   editable: {
-    name: '可编辑表格',
-    description: '支持行内编辑、行选择的交互式表格',
+    name: 'Editable Table',
+    description:
+      'Interactive table supporting inline editing and row selection',
     schema: editablePreset,
   },
   readonly: {
-    name: '只读表格',
-    description: '简洁的只读展示表格，适用于数据展示场景',
+    name: 'Read-only Table',
+    description:
+      'Simple read-only display table, suitable for data display scenarios',
     schema: readonlyPreset,
   },
   mobile: {
-    name: '移动端表格',
-    description: '适配移动端的紧凑型表格',
+    name: 'Mobile Table',
+    description: 'Compact table adapted for mobile devices',
     schema: mobilePreset,
   },
   dashboard: {
-    name: '仪表板表格',
-    description: '适用于仪表板的小型数据展示表格',
+    name: 'Dashboard Table',
+    description: 'Small data display table suitable for dashboards',
     schema: dashboardPreset,
   },
 };
 
-// 获取预设配置
+// Get preset configuration
 export const getPreset = (presetName: string): Partial<TableSchema> => {
   const preset = DEFAULT_PRESETS[presetName];
   if (!preset) {
@@ -187,7 +190,7 @@ export const getPreset = (presetName: string): Partial<TableSchema> => {
   return preset.schema;
 };
 
-// 合并预设配置
+// Merge preset configuration
 export const mergePreset = (
   baseSchema: Partial<TableSchema>,
   presetName: string,
@@ -208,7 +211,7 @@ export const mergePreset = (
   } as TableSchema;
 };
 
-// 列出所有可用预设
+// List all available presets
 export const listPresets = (): Array<{
   key: string;
   name: string;

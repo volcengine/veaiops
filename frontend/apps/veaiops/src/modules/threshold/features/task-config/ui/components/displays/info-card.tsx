@@ -24,7 +24,7 @@ interface TaskInfoCardProps {
 }
 
 /**
- * 任务信息展示卡片组件
+ * Task information display card component
  */
 export const TaskInfoCard: React.FC<TaskInfoCardProps> = ({ task }) => {
   const datasourceType = (task as any)?.datasource_type || '';

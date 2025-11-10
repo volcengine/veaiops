@@ -19,15 +19,15 @@ import { useCallback, useMemo, useState } from 'react';
  */
 
 export interface UseFilterSettingOptions {
-  /** 初始固定字段 */
+  /** Initially fixed fields */
   initialFixedFields?: string[];
-  /** 初始选中字段 */
+  /** Initially selected fields */
   initialSelectedFields?: string[];
-  /** 初始隐藏字段 */
+  /** Initially hidden fields */
   initialHiddenFields?: string[];
-  /** 所有可用字段 */
+  /** All available fields */
   allFields?: string[];
-  /** 字段变化回调 */
+  /** Field change callback */
   onFieldsChange?: (fields: {
     fixed_fields: string[];
     selected_fields: string[];
@@ -36,17 +36,17 @@ export interface UseFilterSettingOptions {
 }
 
 export interface UseFilterSettingReturn {
-  /** 当前状态 */
+  /** Current state */
   state: CustomFilterSettingState;
-  /** 设置固定字段 */
+  /** Set fixed fields */
   setFixedFields: (fields: string[]) => void;
-  /** 设置选中字段 */
+  /** Set selected fields */
   setSelectedFields: (fields: string[]) => void;
-  /** 设置隐藏字段 */
+  /** Set hidden fields */
   setHiddenFields: (fields: string[]) => void;
-  /** 重置到初始状态 */
+  /** Reset to initial state */
   reset: () => void;
-  /** 保存配置 */
+  /** Save configuration */
   saveConfiguration: (
     saveFun: (data: {
       fixed_fields: string[];
@@ -72,7 +72,7 @@ export const useFilterSetting = ({
     useState<string[]>(initialHiddenFields);
 
   /**
-   * 设置固定字段
+   * Set fixed fields
    */
   const setFixedFields = useCallback(
     (fields: string[]) => {
@@ -87,7 +87,7 @@ export const useFilterSetting = ({
   );
 
   /**
-   * 设置选中字段
+   * Set selected fields
    */
   const setSelectedFields = useCallback(
     (fields: string[]) => {
@@ -102,7 +102,7 @@ export const useFilterSetting = ({
   );
 
   /**
-   * 设置隐藏字段
+   * Set hidden fields
    */
   const setHiddenFields = useCallback(
     (fields: string[]) => {
@@ -117,7 +117,7 @@ export const useFilterSetting = ({
   );
 
   /**
-   * 重置到初始状态
+   * Reset to initial state
    */
   const reset = useCallback(() => {
     setFixedFields(initialFixedFields);
@@ -133,7 +133,7 @@ export const useFilterSetting = ({
   ]);
 
   /**
-   * 保存配置
+   * Save configuration
    */
   const saveConfiguration = useCallback(
     (
@@ -154,7 +154,7 @@ export const useFilterSetting = ({
   );
 
   /**
-   * 当前状态
+   * Current state
    */
   const state: CustomFilterSettingState = useMemo(
     () => ({

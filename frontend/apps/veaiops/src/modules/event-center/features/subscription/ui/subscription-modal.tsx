@@ -14,7 +14,7 @@
 
 import type { ModuleType } from '@/types/module';
 import { Button, Drawer, Form, Space } from '@arco-design/web-react';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge imports from same source
 import { useDrawerManagement } from '@ec/shared';
 import { useSubscriptionForm, useWebhookManagement } from '@ec/subscription';
 import { DrawerFormContent } from '@veaiops/utils';
@@ -34,7 +34,7 @@ import {
 } from './components';
 
 /**
- * 新增/编辑订阅弹窗组件属性接口
+ * Add/Edit subscription modal component props interface
  */
 interface SubscriptionModalProps {
   visible: boolean;
@@ -48,8 +48,8 @@ interface SubscriptionModalProps {
 }
 
 /**
- * 新增/编辑订阅弹窗组件
- * 重构后的版本，使用拆分的子组件和自定义Hook
+ * Add/Edit subscription modal component
+ * Refactored version, uses split sub-components and custom Hooks
  */
 export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   visible,
@@ -59,18 +59,18 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   title = '新增订阅',
   moduleType,
 }) => {
-  // 控制是否启用滚动到错误位置
+  // Control whether to enable scrolling to error position
   const [enableScrollToError, setEnableScrollToError] = useState(false);
 
-  // 使用表单管理Hook
+  // Use form management Hook
   const { form, loading, handleSubmit } = useSubscriptionForm({
     visible,
     initialData,
     moduleType,
   });
 
-  // 使用Webhook管理Hook
-  // ✅ 修复：传递 initialData 以正确初始化编辑态的 webhook_headers
+  // Use Webhook management Hook
+  // ✅ Fix: Pass initialData to correctly initialize webhook_headers in edit mode
   const {
     webhookHeaders,
     addWebhookHeader,
@@ -79,7 +79,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
     resetWebhookHeaders,
   } = useWebhookManagement({ initialData });
 
-  // 使用抽屉管理Hook
+  // Use drawer management Hook
   const {
     projectRefreshTrigger,
     strategyRefreshTrigger,
@@ -93,12 +93,12 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
     hideStrategyTooltip,
   } = useDrawerManagement();
 
-  // 监听Webhook开关状态
+  // Watch Webhook switch state
   const enableWebhook = Form.useWatch('enable_webhook', form);
 
-  // 处理表单提交
+  // Handle form submission
   const handleFormSubmit = async () => {
-    // 提交时启用滚动到错误位置
+    // Enable scrolling to error position on submission
     setEnableScrollToError(true);
 
     try {
@@ -112,7 +112,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
         enableWebhook,
       );
     } finally {
-      // 提交完成后禁用滚动到错误位置
+      // Disable scrolling to error position after submission completes
       setEnableScrollToError(false);
     }
   };
@@ -138,10 +138,10 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
           layout="vertical"
           scrollToFirstError={enableScrollToError}
         >
-          {/* 基本信息 */}
+          {/* Basic information */}
           <BasicInfoForm form={form} moduleType={moduleType} />
 
-          {/* 关注属性配置 */}
+          {/* Interest attributes configuration */}
           <InterestConfig
             projectRefreshTrigger={projectRefreshTrigger}
             onOpenProjectImport={openProjectImport}
@@ -149,10 +149,10 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
             hideProjectTooltip={hideProjectTooltip}
           />
 
-          {/* 事件级别配置 */}
+          {/* Event level configuration */}
           <EventLevelConfig />
 
-          {/* 消息卡片通知策略配置 */}
+          {/* Message card notification strategy configuration */}
           <NotificationConfig
             strategyRefreshTrigger={strategyRefreshTrigger}
             onOpenStrategyCreate={openStrategyCreate}
@@ -160,7 +160,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
             hideStrategyTooltip={hideStrategyTooltip}
           />
 
-          {/* Webhook配置 */}
+          {/* Webhook configuration */}
           <WebhookConfig
             form={form}
             webhookHeaders={webhookHeaders}
@@ -171,7 +171,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
         </Form>
       </DrawerFormContent>
 
-      {/* 渲染抽屉组件 */}
+      {/* Render drawer components */}
       {renderProjectImportDrawer()}
       {renderStrategyCreateDrawer()}
     </Drawer>

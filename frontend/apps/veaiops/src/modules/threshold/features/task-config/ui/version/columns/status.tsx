@@ -22,7 +22,7 @@ import { getStatusColor } from './utils';
 const { CustomOutlineTag, RowSpan } = CellRender;
 
 /**
- * 状态列配置
+ * Status column configuration
  */
 export const getStatusColumn = (): ColumnProps<FlattenedVersion> => ({
   title: '状态',
@@ -37,7 +37,7 @@ export const getStatusColumn = (): ColumnProps<FlattenedVersion> => ({
 
     const statusColor = getStatusColor(status);
 
-    // 所有状态都使用 Tag 组件，根据状态显示不同颜色
+    // All statuses use Tag component, display different colors based on status
     const statusElement = statusColor ? (
       <Tag color={statusColor}>{statusLabel}</Tag>
     ) : (

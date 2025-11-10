@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 智能单元格插件组件导出
+ * Smart cell plugin component export
  */
 
 export { SmartEmptyCell } from './smart-empty-cell';

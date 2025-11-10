@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 配置对象
+// Configuration object
 export const STRATEGY_MANAGEMENT_CONFIG = {
   title: '消息卡片通知策略',
 };

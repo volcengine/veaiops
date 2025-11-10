@@ -15,15 +15,15 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ZabbixMediatype = {
   /**
-   * Zabbix媒介类型ID
+   * Zabbix media type ID
    */
   media_type_id: string;
   /**
-   * 媒介类型名称
+   * Media type name
    */
   name: string;
   /**
-   * 媒介类型
+   * Media type
    */
   media_type: string;
 };

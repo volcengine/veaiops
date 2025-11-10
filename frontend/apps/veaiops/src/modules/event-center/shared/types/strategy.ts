@@ -13,21 +13,21 @@
 // limitations under the License.
 
 /**
- * 事件策略相关类型定义
+ * Event strategy related type definitions
  *
- * 优化说明：
- * - EventStrategy 基于 InformStrategy 扩展，添加前端展示和兼容性字段
- * - 如果后端 API 返回这些额外字段，应更新 OpenAPI Spec
+ * Optimization notes:
+ * - EventStrategy extends InformStrategy, adds frontend display and compatibility fields
+ * - If backend API returns these additional fields, should update OpenAPI Spec
  */
 
 import type { InformStrategy } from 'api-generate';
 
 /**
- * 事件策略扩展类型
- * 基于 InformStrategy，添加前端展示和兼容性字段
+ * Event strategy extended type
+ * Based on InformStrategy, adds frontend display and compatibility fields
  */
 export interface EventStrategy extends InformStrategy {
-  // 后端可能返回的时间戳字段（需验证是否应在 OpenAPI Spec 中）
+  // Timestamp fields that backend may return (need to verify if should be in OpenAPI Spec)
   is_active?: boolean;
   created_user?: string;
   updated_user?: string;
@@ -35,7 +35,7 @@ export interface EventStrategy extends InformStrategy {
   updated_at?: string;
   escalation_rules?: EscalationRule[];
 
-  // 前端扁平化字段（用于展示和兼容）
+  // Frontend flattened fields (for display and compatibility)
   bot_id?: string;
   bot_name?: string;
   chat_ids?: string[];

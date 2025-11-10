@@ -18,21 +18,21 @@ import type { CustomTableActionType } from '@veaiops/components';
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
 import type React from 'react';
 import { useCallback, useRef } from 'react';
-// 从 pages 目录导入组件（pages 目录是页面入口，features 目录是功能模块）
+// Import components from pages directory (pages directory is page entry, features directory is feature modules)
 import { AccountModal, AccountTable } from '../../../pages/account/ui';
-// // 注意：useAccount Hook 已移除，使用本地逻辑
-// import { useAccount } from '../hooks'; // 暂时移除，等待实现
+// // Note: useAccount Hook has been removed, using local logic
+// import { useAccount } from '../hooks'; // Temporarily removed, waiting for implementation
 
 /**
- * 账号管理页面
- * 提供账号的增删改查功能 - 使用 CustomTable 和 Zustand 状态管理
+ * Account management page
+ * Provides account CRUD functionality - uses CustomTable and Zustand state management
  */
 export const Account: React.FC = () => {
-  // CustomTable ref用于获取刷新函数
+  // CustomTable ref for getting refresh function
   const tableRef = useRef<CustomTableActionType<BaseRecord, BaseQuery>>(null);
 
-  // 使用自定义Hook获取所有业务逻辑，传递刷新函数
-  // 暂时使用空实现
+  // Use custom Hook to get all business logic, pass refresh function
+  // Temporarily using empty implementation
   const modalVisible = false;
   const editingUser: User | null = null;
   const form: FormInstance | null = null;
@@ -44,7 +44,7 @@ export const Account: React.FC = () => {
 
   return (
     <>
-      {/* 账号表格 */}
+      {/* Account table */}
       <AccountTable
         ref={tableRef}
         onEdit={handleEdit}
@@ -52,7 +52,7 @@ export const Account: React.FC = () => {
         onAdd={handleAdd}
       />
 
-      {/* 账号弹窗 */}
+      {/* Account modal */}
       <AccountModal
         visible={modalVisible}
         editingUser={editingUser}

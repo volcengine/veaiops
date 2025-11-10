@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 步骤卡片组件
- * @description 展示单个向导步骤的卡片，支持不同状态（未开始、进行中、已完成）
+ * Step card component
+ * @description Displays a card for a single wizard step, supporting different states (pending, active, completed)
  * @author AI Assistant
  * @date 2025-01-15
  */
@@ -24,26 +24,26 @@ import type React from 'react';
 import styles from './intro-card.module.less';
 
 export enum StepStatus {
-  PENDING = 'pending', // 未开始
-  ACTIVE = 'active', // 进行中
-  COMPLETED = 'completed', // 已完成
+  PENDING = 'pending', // Not started
+  ACTIVE = 'active', // In progress
+  COMPLETED = 'completed', // Completed
 }
 
 export interface IntroCardProps {
-  /** 步骤索引（从0开始） */
+  /** Step index (starting from 0) */
   index: number;
-  /** 步骤标题 */
+  /** Step title */
   title: string;
-  /** 步骤描述 */
+  /** Step description */
   description: string;
-  /** 步骤状态 */
+  /** Step status */
   status: StepStatus;
-  /** 是否显示连接线（最后一个步骤不显示） */
+  /** Whether to show connector (last step doesn't show) */
   showConnector?: boolean;
 }
 
 /**
- * 步骤卡片组件
+ * Step card component
  */
 export const IntroCard: React.FC<IntroCardProps> = ({
   index,
@@ -64,10 +64,10 @@ export const IntroCard: React.FC<IntroCardProps> = ({
         isPending ? styles.pending : ''
       }`}
     >
-      {/* 顶部装饰条 */}
+      {/* Top decorator bar */}
       <div className={styles.topDecorator} />
 
-      {/* 步骤图标区域 */}
+      {/* Step icon area */}
       <div className={styles.iconSection}>
         <div className={styles.iconCircle}>
           <div className={styles.iconInner}>
@@ -79,18 +79,18 @@ export const IntroCard: React.FC<IntroCardProps> = ({
           </div>
         </div>
 
-        {/* 脉动动画圈（仅在active状态显示） */}
+        {/* Pulse animation ring (only shown in active state) */}
         {isActive && <div className={styles.pulseRing} />}
       </div>
 
-      {/* 文字内容区域 */}
+      {/* Text content area */}
       <div className={styles.contentSection}>
         <div className={styles.stepLabel}>第{index + 1}步</div>
         <h3 className={styles.stepTitle}>{title}</h3>
         <p className={styles.stepDescription}>{description}</p>
       </div>
 
-      {/* 步骤连接线 */}
+      {/* Step connector line */}
       {showConnector && (
         <div className={styles.connectorWrapper}>
           <div

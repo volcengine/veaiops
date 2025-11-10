@@ -20,7 +20,7 @@ import React from "react";
 const { Text } = Typography;
 
 /**
- * 获取项目表格配置
+ * Get project table configuration
  */
 export const getProjectTableConfig = (): Partial<
   TableProps<Project>
@@ -38,7 +38,7 @@ export const getProjectTableConfig = (): Partial<
   size: "default",
   noDataElement: (
     <div className="text-center py-10">
-      <Text type="secondary">暂无项目数据</Text>
+      <Text type="secondary">No project data available</Text>
     </div>
   ),
 });

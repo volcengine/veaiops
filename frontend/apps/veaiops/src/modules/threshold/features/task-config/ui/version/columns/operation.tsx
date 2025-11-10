@@ -23,7 +23,7 @@ import type { FlattenedVersion } from './types';
 import { getTooltipByStatusAndAction } from './utils';
 
 /**
- * 操作列配置
+ * Operation column configuration
  */
 export const getOperationColumn = ({
   onCreateAlarm,
@@ -59,7 +59,7 @@ export const getOperationColumn = ({
                 record?.error_message,
               )
             : undefined,
-        // 为错误信息的 tooltip 设置更高的 zIndex，确保不被遮挡
+        // Set higher zIndex for error message tooltip to ensure it's not blocked
         tooltipProps:
           record?.status !== IntelligentThresholdTaskVersion.status.SUCCESS &&
           record?.error_message
@@ -67,7 +67,7 @@ export const getOperationColumn = ({
                 position: 'left',
               }
             : undefined,
-        // 在失败状态下，为按钮添加图标提示，告知用户可以 hover 查看错误信息
+        // In failed state, add icon hint to button, inform user can hover to view error message
         buttonProps:
           record?.status !== IntelligentThresholdTaskVersion.status.SUCCESS &&
           record?.error_message
@@ -85,8 +85,8 @@ export const getOperationColumn = ({
             : undefined,
         dataTestId: 'view-task-result-btn',
         onClick: () => {
-          // 即使按钮禁用，如果任务失败，也应该允许用户查看失败原因
-          // 但这里保持原有逻辑，只允许成功状态查看结果
+          // Even if button is disabled, if task failed, should allow user to view failure reason
+          // But here keep original logic, only allow success state to view results
           if (
             record?.status === IntelligentThresholdTaskVersion.status.SUCCESS
           ) {

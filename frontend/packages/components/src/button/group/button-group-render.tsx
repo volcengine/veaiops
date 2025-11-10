@@ -43,7 +43,7 @@ export type {
 };
 
 /**
- * 判断按钮配置数组是否包含 dropdown 配置
+ * Check if button configuration array contains dropdown configuration
  * @param buttonConfigurations
  */
 const isButtonConfigurationsWithDropdown = (
@@ -52,16 +52,16 @@ const isButtonConfigurationsWithDropdown = (
   (buttonConfigurations as ButtonConfigurationWithDropdown).isInDropdown;
 
 /**
- * 渲染按钮组件
- * @param buttonConfigurations 按钮配置数组
- * @returns 渲染后的按钮组件
+ * Render button component
+ * @param buttonConfigurations Button configuration array
+ * @returns Rendered button component
  */
 const ButtonGroupRender: FC<{
   buttonConfigurations: FinalButtonConfiguration;
   className?: string;
   style?: CSSProperties;
   wrapStyle?: CSSProperties;
-  gap?: string; // 新增gap参数，支持自定义间距
+  gap?: string; // New gap parameter, supports custom spacing
 }> = ({
   buttonConfigurations,
   className = '',
@@ -86,7 +86,7 @@ const ButtonGroupRender: FC<{
       return null;
     }
 
-    // 创建基础按钮内容
+    // Create base button content
     const createBaseButton = () => (
       <Button
         key={text}
@@ -100,19 +100,19 @@ const ButtonGroupRender: FC<{
       </Button>
     );
 
-    // 处理带有 tooltip 的按钮
+    // Handle button with tooltip
     const wrapWithTooltip = (button: React.ReactNode) => {
       if (tooltip && disabled) {
-        // 如果 tooltip 是 ReactNode（包含错误信息），设置更高的 zIndex
+        // If tooltip is ReactNode (contains error info), set higher zIndex
         const isErrorTooltip =
           typeof tooltip !== 'string' && React.isValidElement(tooltip);
 
-        // 合并用户自定义的 tooltipProps 和默认配置
+        // Merge user custom tooltipProps and default configuration
         const defaultTooltipProps: Partial<TooltipProps> = isErrorTooltip
           ? {
               triggerProps: {
                 popupStyle: {
-                  zIndex: 3000, // 提高 zIndex 到 3000，确保在全局按钮之上
+                  zIndex: 3000, // Increase zIndex to 3000 to ensure it's above global buttons
                 },
               },
               position: 'top',
@@ -121,7 +121,7 @@ const ButtonGroupRender: FC<{
               position: 'top',
             };
 
-        // 合并用户传入的 tooltipProps 和默认配置
+        // Merge user passed tooltipProps and default configuration
         const mergedTooltipProps = tooltipProps
           ? {
               ...defaultTooltipProps,
@@ -146,7 +146,7 @@ const ButtonGroupRender: FC<{
       return button;
     };
 
-    // 这种场景是当前按钮为dropDown组件，children是一个dropList
+    // This scenario is when current button is a dropDown component, children is a dropList
     if (buttonGroupProps) {
       return (
         <ButtonGroup>
@@ -201,7 +201,7 @@ const ButtonGroupRender: FC<{
       return null;
     }
 
-    // 合并disabled状态
+    // Merge disabled state
     const isDisabled = disabled || buttonProps?.disabled;
 
     if (buttonGroupProps) {
@@ -212,7 +212,7 @@ const ButtonGroupRender: FC<{
             focusLock
             position={'left'}
             disabled={isDisabled}
-            title={popConfirmTitle || '提示'}
+            title={popConfirmTitle || 'Tip'}
             content={popConfirmContent}
             onOk={onClick}
             {...popconfirmProps}
@@ -240,7 +240,7 @@ const ButtonGroupRender: FC<{
         focusLock
         position={'left'}
         disabled={isDisabled}
-        title={popConfirmTitle || '提示'}
+        title="Tip"
         content={popConfirmContent}
         onOk={onClick}
         {...popconfirmProps}
@@ -256,7 +256,7 @@ const ButtonGroupRender: FC<{
       </Popconfirm>
     );
 
-    // 如果按钮禁用且有tooltip，用Tooltip包装Popconfirm
+    // If button is disabled and has tooltip, wrap Popconfirm with Tooltip
     if (tooltip && isDisabled) {
       return (
         <Tooltip content={tooltip} {...tooltipProps}>
@@ -304,7 +304,7 @@ const ButtonGroupRender: FC<{
             key: cur.text,
             onClick: cur.onClick,
             buttonProps: cur.buttonProps,
-            // 确保disabled状态正确传递
+            // Ensure disabled state is correctly passed
             disabled: cur.disabled || cur.buttonProps?.disabled,
           },
         ];
@@ -322,7 +322,7 @@ const ButtonGroupRender: FC<{
             key: cur.text,
             onClick: cur?.onClick,
             buttonProps: cur.buttonProps,
-            // 确保tooltip和disabled状态正确传递
+            // Ensure tooltip and disabled state are correctly passed
             tooltip: cur.tooltip,
             disabled: cur.disabled || cur.buttonProps?.disabled,
           },
@@ -351,14 +351,14 @@ const ButtonGroupRender: FC<{
             return null;
           }
           if (supportPopConfirm) {
-            const buttonConfig = item; // ButtonConfiguration 已经包含了 PopconfirmButtonProps
+            const buttonConfig = item; // ButtonConfiguration already contains PopconfirmButtonProps
             return (
               <Popconfirm
                 key={key}
                 focusLock
                 position={'left'}
                 disabled={disabled || buttonProps?.disabled}
-                title="提示"
+                title="Tip"
                 content={buttonConfig.popConfirmContent}
                 onOk={onClick}
                 {...buttonConfig.popconfirmProps}
@@ -380,7 +380,7 @@ const ButtonGroupRender: FC<{
             );
           }
 
-          // 合并disabled状态，优先使用item level的disabled
+          // Merge disabled state, prioritize item level disabled
           const isDisabled = disabled || buttonProps?.disabled;
 
           const buttonNode = (
@@ -400,7 +400,7 @@ const ButtonGroupRender: FC<{
             </Button>
           );
 
-          // 修复tooltip逻辑：当按钮禁用且有tooltip时显示tooltip
+          // Fix tooltip logic: show tooltip when button is disabled and has tooltip
           return tooltip && isDisabled ? (
             <Tooltip key={`tooltip-${key}`} content={tooltip} position="top">
               {buttonNode}
@@ -412,15 +412,15 @@ const ButtonGroupRender: FC<{
       </div>
     );
 
-    // 默认的下拉按钮样式
+    // Default dropdown button style
     const defaultDropdownButtonStyle = {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      minWidth: '32px', // 设置最小宽度，确保dropdown按钮有合适的点击区域
+      minWidth: '32px', // Set minimum width to ensure dropdown button has appropriate click area
     };
 
-    // 合并用户自定义样式和默认样式
+    // Merge user custom style and default style
     const mergedDropdownButtonProps = {
       type: 'text' as const,
       ...dropDownButtonProps,

@@ -15,10 +15,10 @@
 /**
  * Table Columns Plugin Hooks
  *
- * 注意：原本的 useColumns Hook 已迁移到基础版本
- * 位置：@/custom-table/hooks/use-column-config.ts
- * 原因：统一列配置管理，避免功能重复
+ * Note: The original useColumns hook has been migrated to the base version
+ * Location: @/custom-table/hooks/use-column-config.ts
+ * Reason: Unified column configuration management, avoid functional duplication
  *
- * 如果需要列宽持久化功能，可以在基础版本中添加，或使用 column-width-persistence 插件
+ * If column width persistence is needed, it can be added to the base version, or use column-width-persistence plugin
  */
 export { useColumns as useColumnConfig } from '@/custom-table/hooks/use-column-config';

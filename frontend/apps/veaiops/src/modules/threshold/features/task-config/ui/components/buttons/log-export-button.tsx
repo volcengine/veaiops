@@ -18,13 +18,13 @@ import { IconDownload } from '@arco-design/web-react/icon';
 import type React from 'react';
 
 /**
- * 日志导出按钮组件
- * 用于导出时序图相关的调试日志
+ * Log export button component
+ * Used to export debug logs related to timeseries charts
  */
 export const LogExportButton: React.FC = () => {
   const handleExportLogs = () => {
     try {
-      // 使用logger的导出功能
+      // Use logger's export functionality
       // const logContent = logger.exportLogsAsText();
       // const blob = new Blob([logContent], { type: 'text/plain;charset=utf-8' });
       // const url = URL.createObjectURL(blob);
@@ -55,7 +55,7 @@ export const LogExportButton: React.FC = () => {
     }
   };
 
-  // 仅在开发环境显示
+  // Only show in development environment
   if (process.env.NODE_ENV !== 'development') {
     return null;
   }

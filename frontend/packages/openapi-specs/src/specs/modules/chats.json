@@ -3,7 +3,7 @@
   "info": {
     "title": "VolcAIOpsKit - Chats API",
     "version": "1.0.0",
-    "description": "群管理相关接口"
+    "description": "Chat management related API endpoints"
   },
   "paths": {
     "/apis/v1/config/chats/{uid}": {
@@ -171,57 +171,57 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "群ID"
+            "description": "Chat ID"
           },
           "chat_id": {
             "type": "string",
-            "description": "群标识"
+            "description": "Chat identifier"
           },
           "name": {
             "type": "string",
-            "description": "群名称"
+            "description": "Chat name"
           },
           "chat_type": {
             "type": "string",
             "enum": ["group", "private"],
-            "description": "群类型"
+            "description": "Chat type"
           },
           "channel": {
             "$ref": "#/components/schemas/ChannelType",
-            "description": "企业协同工具"
+            "description": "Enterprise collaboration tool"
           },
           "bot_id": {
             "type": "string",
-            "description": "关联的机器人ID"
+            "description": "Associated bot ID"
           },
           "description": {
             "type": "string",
-            "description": "群描述"
+            "description": "Chat description"
           },
           "is_active": {
             "type": "boolean",
             "default": true,
-            "description": "是否激活"
+            "description": "Whether the chat is active"
           },
           "enable_func_proactive_reply": {
             "type": "boolean",
             "default": false,
-            "description": "是否启用主动回复功能"
+            "description": "Whether to enable proactive reply function"
           },
           "enable_func_interest": {
             "type": "boolean",
             "default": false,
-            "description": "是否启用兴趣检测功能"
+            "description": "Whether to enable interest detection function"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation timestamp"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Last update timestamp"
           }
         },
         "required": ["chat_id", "name", "chat_type", "channel"]
@@ -231,28 +231,28 @@
         "properties": {
           "chat_id": {
             "type": "string",
-            "description": "群标识"
+            "description": "Chat identifier"
           },
           "name": {
             "type": "string",
-            "description": "群名称"
+            "description": "Chat name"
           },
           "chat_type": {
             "type": "string",
             "enum": ["group", "private"],
-            "description": "群类型"
+            "description": "Chat type"
           },
           "channel": {
             "$ref": "#/components/schemas/ChannelType",
-            "description": "企业协同工具"
+            "description": "Enterprise collaboration tool"
           },
           "bot_id": {
             "type": "string",
-            "description": "关联的机器人ID"
+            "description": "Associated bot ID"
           },
           "description": {
             "type": "string",
-            "description": "群描述"
+            "description": "Chat description"
           }
         },
         "required": ["chat_id", "name", "chat_type", "channel"]
@@ -262,15 +262,15 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "群名称"
+            "description": "Chat name"
           },
           "description": {
             "type": "string",
-            "description": "群描述"
+            "description": "Chat description"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否激活"
+            "description": "Whether the chat is active"
           }
         }
       },

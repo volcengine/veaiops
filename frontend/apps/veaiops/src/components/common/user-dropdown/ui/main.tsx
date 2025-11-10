@@ -30,12 +30,12 @@ import type { UserFormData } from '../lib';
 import { LogoutModal } from './logout-modal';
 
 /**
- * 用户下拉菜单组件
+ * User dropdown menu component
  *
- * 功能：
- * - 显示当前用户信息
- * - 修改密码（通过 AccountModal）
- * - 退出登录
+ * Functionality:
+ * - Display current user information
+ * - Change password (via AccountModal)
+ * - Logout
  */
 export const UserDropdown: React.FC = () => {
   const { user } = useAuth();
@@ -44,12 +44,12 @@ export const UserDropdown: React.FC = () => {
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
   const [form] = Form.useForm();
 
-  // 获取用户数据
+  // Get user data
   const { editingUser, isSupervisor } = useUserData({
     username: user?.username,
   });
 
-  // 密码更新逻辑
+  // Password update logic
   const { handleUpdate } = usePasswordUpdate({
     editingUser,
     onSuccess: () => {
@@ -58,7 +58,7 @@ export const UserDropdown: React.FC = () => {
     },
   });
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = useCallback(
     async (values: UserFormData) => {
       return await handleUpdate(values);
@@ -66,18 +66,18 @@ export const UserDropdown: React.FC = () => {
     [handleUpdate],
   );
 
-  // 处理取消修改密码
+  // Handle cancel password change
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     form.resetFields();
   }, [form]);
 
-  // 处理退出登录点击
+  // Handle logout click
   const handleLogout = useCallback(() => {
     setLogoutModalVisible(true);
   }, []);
 
-  // 确认退出登录
+  // Confirm logout
   const confirmLogout = useCallback(async () => {
     setLogoutModalVisible(false);
 
@@ -85,12 +85,12 @@ export const UserDropdown: React.FC = () => {
       showMessage: true,
       redirectToLogin: true,
       onBeforeLogout: () => {
-        // 空函数，用于满足 logout 接口要求
+        // Empty function to satisfy logout interface requirements
       },
     });
 
-    // 注意：logout 内部已经处理了错误消息和重定向
-    // 这里只记录日志，不显示额外的错误提示（避免重复提示）
+    // Note: logout internally handles error messages and redirects
+    // Here only log, do not show additional error prompts (avoid duplicate prompts)
     if (!logoutResult.success && logoutResult.error) {
       logger.warn({
         message: '退出登录失败',
@@ -105,12 +105,12 @@ export const UserDropdown: React.FC = () => {
     }
   }, [logout]);
 
-  // 取消退出登录
+  // Cancel logout
   const cancelLogout = useCallback(() => {
     setLogoutModalVisible(false);
   }, []);
 
-  // 下拉菜单内容
+  // Dropdown menu content
   const dropdownMenu = (
     <Menu>
       <Menu.Item
@@ -175,7 +175,7 @@ export const UserDropdown: React.FC = () => {
         </div>
       </Dropdown>
 
-      {/* 退出登录确认弹窗 */}
+      {/* Logout confirmation modal */}
       <LogoutModal
         visible={logoutModalVisible}
         loading={isLoggingOut}
@@ -183,7 +183,7 @@ export const UserDropdown: React.FC = () => {
         onCancel={cancelLogout}
       />
 
-      {/* 修改密码弹窗 */}
+      {/* Change password modal */}
       <AccountModal
         visible={modalVisible}
         editingUser={

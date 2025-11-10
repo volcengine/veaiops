@@ -15,6 +15,8 @@
 /**
  * Plugin system initialization logic
  * @description Responsible for plugin system initialization and configuration
+
+ *
  */
 
 import { corePlugins } from './core-plugins';
@@ -22,11 +24,10 @@ import {
   initializePluginExtensions,
   pluginExtensionManager,
 } from './extension/config';
-import { filterPluginRegistry } from './registry';
 
 /**
  * Initialize core plugins
- * Execute complete plugin system initialization flow
+ * Execute complete plugin system initialization process
  *
  * @returns Initialization result statistics
  */
@@ -38,6 +39,7 @@ export const initializeCorePlugins = () => {
   pluginExtensionManager.enhanceAndRegisterPlugins(corePlugins);
 
   // Get statistics
+  const { filterPluginRegistry } = require('./registry');
   const registryStats = filterPluginRegistry.getStats();
   const extensionStats = pluginExtensionManager.getStats();
 

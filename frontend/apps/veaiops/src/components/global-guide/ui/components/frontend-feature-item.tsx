@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 前端功能项组件
- * 用于显示和交互单个前端功能
+ * Frontend feature item component
+ * Used to display and interact with a single frontend feature
  */
 
 import { Button, Typography } from '@arco-design/web-react';
@@ -40,25 +40,25 @@ export interface OnFeatureClickParams {
 }
 
 export interface FrontendFeatureItemProps {
-  /** 前端功能配置 */
+  /** Frontend feature configuration */
   feature: FrontendFeature;
-  /** 当前步骤的路由 */
+  /** Current step's route */
   currentRoute: string;
-  /** 功能点击回调 */
+  /** Feature click callback */
   onFeatureClick: (params: OnFeatureClickParams) => void;
-  /** 前往配置点击回调 */
+  /** Go to config click callback */
   onGoToConfig?: (stepNumber: number) => void;
-  /** 是否高亮显示 */
+  /** Whether to highlight */
   highlighted?: boolean;
-  /** 是否禁用 */
+  /** Whether disabled */
   disabled?: boolean;
-  /** 当前步骤配置 */
+  /** Current step configuration */
   currentStepConfig?: any;
 }
 
 /**
- * 前端功能项组件
- * 渲染单个前端功能，包括按钮和描述
+ * Frontend feature item component
+ * Renders a single frontend feature, including button and description
  */
 export const FrontendFeatureItem: React.FC<FrontendFeatureItemProps> = ({
   feature,
@@ -89,7 +89,7 @@ export const FrontendFeatureItem: React.FC<FrontendFeatureItemProps> = ({
 
   const handleGoToConfig = () => {
     if (onGoToConfig && currentStepConfig?.number) {
-      // 在开发环境下，自动开始收集日志
+      // In development environment, automatically start log collection
       if (process.env.NODE_ENV === 'development') {
         logger.info({
           message: '[FrontendFeatureItem] 前往配置按钮被点击，开始收集日志',
@@ -105,7 +105,7 @@ export const FrontendFeatureItem: React.FC<FrontendFeatureItemProps> = ({
           component: 'handleGoToConfig',
         });
 
-        // 使用专用的 GlobalGuide 日志收集器
+        // Use dedicated GlobalGuide log collector
         const sessionId = startGlobalGuideLogCollection({
           featureId: feature.id,
           stepNumber: currentStepConfig.number,

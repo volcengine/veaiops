@@ -15,17 +15,16 @@
 import { PluginStatusEnum } from '@/custom-table/types/core/enums';
 import { devLog } from '@/custom-table/utils';
 /**
- * 插件执行器模块
- * 负责插件方法的调用和渲染
+ * Plugin executor module
+ * Responsible for plugin method invocation and rendering
  *
-
  * @date 2025-12-19
  */
 import type { ReactNode } from 'react';
 import type { PluginRegistry } from './plugin-registry';
 
 /**
- * @name 插件执行器
+ * @name Plugin executor
  */
 export interface PluginExecutorUseParams {
   pluginName: string;
@@ -53,7 +52,7 @@ export class PluginExecutor {
   constructor(private registry: PluginRegistry) {}
 
   /**
-   * @name 调用插件方法
+   * @name Invoke plugin method
    */
   use<T>({
     pluginName,
@@ -80,7 +79,7 @@ export class PluginExecutor {
       const result = hookFn(...args) as T | undefined;
       const endTime = performance.now();
 
-      // 更新性能指标
+      // Update performance metrics
       const instance = this.registry.getInstance(pluginName);
       if (instance) {
         instance.performance.lastExecutionTime = endTime - startTime;
@@ -98,10 +97,10 @@ export class PluginExecutor {
           status: PluginStatusEnum.ERROR,
         });
       }
-      // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
+      // ✅ Correct: Use devLog to record errors and expose actual error information
       devLog.error({
         component: 'PluginExecutor',
-        message: `插件方法调用失败`,
+        message: `Plugin method invocation failed`,
         data: {
           pluginName,
           method,
@@ -116,7 +115,7 @@ export class PluginExecutor {
   }
 
   /**
-   * @name 渲染插件组件
+   * @name Render plugin component
    */
   render({
     pluginName,
@@ -143,7 +142,7 @@ export class PluginExecutor {
       const result = (renderFn as any)(...args);
       const endTime = performance.now();
 
-      // 更新性能指标
+      // Update performance metrics
       const instance = this.registry.getInstance(pluginName);
       if (instance) {
         instance.performance.renderTime = endTime - startTime;
@@ -161,10 +160,10 @@ export class PluginExecutor {
           status: PluginStatusEnum.ERROR,
         });
       }
-      // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
+      // ✅ Correct: Use devLog to record errors and expose actual error information
       devLog.error({
         component: 'PluginExecutor',
-        message: `插件渲染失败`,
+        message: `Plugin rendering failed`,
         data: {
           pluginName,
           renderer,
@@ -179,7 +178,7 @@ export class PluginExecutor {
   }
 
   /**
-   * @name 批量调用插件方法
+   * @name Batch invoke plugin methods
    */
   useBatch<T>({ method, args = [] }: PluginExecutorUseBatchParams): T[] {
     const enabledPlugins = this.registry.getEnabledPlugins();
@@ -196,7 +195,7 @@ export class PluginExecutor {
   }
 
   /**
-   * @name 批量渲染插件组件
+   * @name Batch render plugin components
    */
   renderBatch({
     renderer,
@@ -216,7 +215,7 @@ export class PluginExecutor {
   }
 
   /**
-   * @name 检查插件是否支持指定方法
+   * @name Check if plugin supports specified method
    */
   hasMethod({
     pluginName,
@@ -230,7 +229,7 @@ export class PluginExecutor {
   }
 
   /**
-   * @name 检查插件是否支持指定渲染器
+   * @name Check if plugin supports specified renderer
    */
   hasRenderer({
     pluginName,

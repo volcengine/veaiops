@@ -13,17 +13,17 @@
 // limitations under the License.
 
 /**
- * CustomTable 组件库统一导出
- * @description 表格相关的所有子组件和工具
+ * CustomTable component library unified export
+ * @description All table-related sub-components and utilities
 
  *
  */
 
-// 核心组件
+// Core components
 export { CustomLoading } from './custom-loading/custom-loading';
 export { TableTitle } from './table-title/table-title';
 
-// 插件组件
+// Plugin components
 export {
   CustomPagination,
   type CustomPaginationProps,

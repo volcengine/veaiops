@@ -13,23 +13,21 @@
 // limitations under the License.
 
 /**
- * 系统模块共享工具函数
- * @description 系统模块通用的工具函数和辅助方法
-
- *
+ * System module shared utility functions
+ * @description Common utility functions and helper methods for system module
  */
 
 import type { User } from 'api-generate';
 import type { User as ExtendedUser } from '../features/account/types';
 
 /**
- * 将API用户数据转换为扩展用户数据
- * @param apiUser API返回的原始用户数据
- * @returns 扩展的用户数据，包含前端业务所需的额外字段
+ * Transform API user data to extended user data
+ * @param apiUser Original user data returned from API
+ * @returns Extended user data, including additional fields required by frontend business
  */
 export const transformApiUserToExtendedUser = (apiUser: User): ExtendedUser => {
   return {
-    id: apiUser._id || '', // 映射 _id 到 id
+    id: apiUser._id || '', // Map _id to id
     username: apiUser.username,
     email: apiUser.email,
     is_active: apiUser.is_active,

@@ -17,14 +17,14 @@ import type { User } from 'api-generate';
 import { useCallback, useState } from 'react';
 
 /**
- * 弹窗状态管理 Hook
+ * Modal state management Hook
  */
 export const useModalState = () => {
   const [form] = Form.useForm();
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 打开编辑弹窗
+  // Open edit modal
   const handleEdit = useCallback(
     (user: User) => {
       setEditingUser(user);
@@ -39,14 +39,14 @@ export const useModalState = () => {
     [form],
   );
 
-  // 打开新增弹窗
+  // Open create modal
   const handleAdd = useCallback(() => {
     setEditingUser(null);
     form.resetFields();
     setModalVisible(true);
   }, [form]);
 
-  // 关闭弹窗
+  // Close modal
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     setEditingUser(null);

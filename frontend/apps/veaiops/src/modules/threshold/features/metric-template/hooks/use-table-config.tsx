@@ -28,7 +28,7 @@ import { getMetricTemplateFilters } from '../lib/filters';
 import { createMetricTemplateTableRequestWrapper } from '../lib/metric-template-request';
 
 /**
- * 指标模板表格操作回调类型
+ * Metric template table operation callback types
  */
 export interface MetricTemplateTableActions {
   onEdit?: (record: MetricTemplate) => Promise<boolean>;
@@ -38,12 +38,12 @@ export interface MetricTemplateTableActions {
 }
 
 /**
- * 指标模板表格配置 Hook 的返回值类型
+ * Return type for metric template table configuration Hook
  *
- * 使用标准类型，避免自定义类型
+ * Uses standard types to avoid custom types
  */
 export interface UseMetricTemplateTableConfigReturn {
-  // 表格配置
+  // Table configuration
   customTableProps: ReturnType<typeof useBusinessTable>['customTableProps'];
   handleColumns: (
     props: Record<string, unknown>,
@@ -53,43 +53,43 @@ export interface UseMetricTemplateTableConfigReturn {
 }
 
 /**
- * 指标模板表格配置 Hook
+ * Metric template table configuration Hook
  *
- * 🎯 完全按照 CUSTOM_TABLE_REFACTOR_TASKS.md 规范实现：
- * - Hook 聚合模式：内聚所有表格相关逻辑
- * - 自动刷新机制：集成 useBusinessTable 实现操作后自动刷新
- * - Props 完全内聚：将所有表格 props 统一返回，减少组件代码行数
- * - 标准化类型：使用 @veaiops/components 和 api-generate 的标准类型
- * - 标准化架构：统一的配置结构和返回接口
+ * 🎯 Fully implemented according to CUSTOM_TABLE_REFACTOR_TASKS.md specifications:
+ * - Hook aggregation pattern: Cohesive all table-related logic
+ * - Auto-refresh mechanism: Integrated useBusinessTable to implement auto-refresh after operations
+ * - Props fully cohesive: Returns all table props uniformly, reducing component code lines
+ * - Standardized types: Uses standard types from @veaiops/components and api-generate
+ * - Standardized architecture: Unified configuration structure and return interface
  *
- * 🏗️ 内聚内容：
- * - 数据请求逻辑和数据源配置
- * - 表格配置（分页、样式等）
- * - 列配置和筛选配置
- * - 操作配置和业务操作包装
- * - 所有 UI props 的统一返回
+ * 🏗️ Cohesive content:
+ * - Data request logic and data source configuration
+ * - Table configuration (pagination, styles, etc.)
+ * - Column configuration and filter configuration
+ * - Operation configuration and business operation wrapping
+ * - Unified return of all UI props
  *
- * @param tableActions - 表格操作回调配置
- * @returns 表格配置和处理器
+ * @param tableActions - Table operation callback configuration
+ * @returns Table configuration and handlers
  */
 export const useMetricTemplateTableConfig = (
   tableActions: MetricTemplateTableActions,
 ): UseMetricTemplateTableConfigReturn => {
-  // 🎯 数据请求逻辑
+  // 🎯 Data request logic
   const request = useMemo(() => createMetricTemplateTableRequestWrapper(), []);
 
-  // 🎯 数据源配置 - 启用自动刷新
-  // 注意：metric-template 使用前端分页，但仍然使用服务器端分页模式以支持自动刷新
+  // 🎯 Data source configuration - Enable auto-refresh
+  // Note: metric-template uses frontend pagination, but still uses server-side pagination mode to support auto-refresh
   const dataSource = useMemo(
     () => ({
       request,
       ready: true,
-      isServerPagination: true, // ⚠️ 重要：启用自动刷新
+      isServerPagination: true, // ⚠️ Important: Enable auto-refresh
     }),
     [request],
   );
 
-  // 🎯 表格配置 - 使用工具函数
+  // 🎯 Table configuration - Use utility functions
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
@@ -100,7 +100,7 @@ export const useMetricTemplateTableConfig = (
     [],
   );
 
-  // 🎯 业务操作包装 - 自动刷新
+  // 🎯 Business operation wrapping - Auto-refresh
   const { customTableProps } = useBusinessTable({
     dataSource,
     tableProps,
@@ -120,7 +120,7 @@ export const useMetricTemplateTableConfig = (
     },
   });
 
-  // 🎯 列配置 - 使用标准类型
+  // 🎯 Column configuration - Use standard types
   const handleColumns = useMemo(
     () =>
       (
@@ -131,15 +131,15 @@ export const useMetricTemplateTableConfig = (
             tableActions.onEdit || (async (_template: MetricTemplate) => false),
           onDelete: tableActions.onDelete || (async () => false),
         }),
-    [tableActions.onEdit, tableActions.onDelete], // ✅ 只依赖具体函数
+    [tableActions.onEdit, tableActions.onDelete], // ✅ Only depend on specific functions
   );
 
-  // 🎯 筛选配置 - 使用 useMemo 稳定化返回的数组和 onChange 函数
-  // 由于 Filters 组件会深度比较 config，需要确保 onChange 函数引用稳定
+  // 🎯 Filter configuration - Use useMemo to stabilize returned array and onChange function
+  // Since Filters component does deep comparison of config, need to ensure onChange function reference is stable
   const handleFilters = useMemo(
     () =>
       (props: HandleFilterProps): FieldItem[] => {
-        // 直接调用原始函数，Filters 组件已优化为忽略 onChange 的引用比较
+        // Directly call original function, Filters component has been optimized to ignore onChange reference comparison
         return getMetricTemplateFilters({
           query: props.query,
           handleChange: props.handleChange,
@@ -148,7 +148,7 @@ export const useMetricTemplateTableConfig = (
     [],
   );
 
-  // 🎯 操作按钮配置 - 内聚操作按钮逻辑
+  // 🎯 Action button configuration - Cohesive action button logic
   const actionButtons = useMemo(() => {
     const buttons: JSX.Element[] = [];
     if (tableActions.onCreate) {

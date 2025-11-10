@@ -39,7 +39,7 @@ interface LogEntry {
 }
 
 /**
- * Intelligent guide logger class
+ * Global guide log recorder class
  */
 export class GuideLogger {
   private static instance: GuideLogger;
@@ -108,13 +108,13 @@ export class GuideLogger {
     this.log({
       level: 'info',
       category: 'FeatureTypeJudgment',
-      action: 'Judge feature type',
+      action: '判断功能类型',
       data: {
         featureId,
         actionType,
         selector,
         tooltipContent,
-        judgment: actionType === 'direct' ? 'Direct trigger type' : 'Navigation guide type',
+        judgment: actionType === 'direct' ? '直接触发型' : '导航引导型',
       },
     });
   }
@@ -131,7 +131,7 @@ export class GuideLogger {
     this.log({
       level: success ? 'info' : 'error',
       category: 'DirectAction',
-      action: 'Direct trigger feature',
+      action: '直接触发功能',
       data: {
         featureId,
         selector,
@@ -155,7 +155,7 @@ export class GuideLogger {
     this.log({
       level: success ? 'info' : 'error',
       category: 'NavigationJump',
-      action: 'Navigation jump',
+      action: '导航跳转',
       data: {
         featureId,
         fromRoute,
@@ -180,7 +180,7 @@ export class GuideLogger {
     this.log({
       level: success ? 'info' : 'warn',
       category: 'ElementWait',
-      action: 'Wait for element to load',
+      action: '等待元素加载',
       data: {
         featureId,
         selector,
@@ -205,7 +205,7 @@ export class GuideLogger {
     this.log({
       level: success ? 'info' : 'error',
       category: 'HighlightGuide',
-      action: 'Highlight guide display',
+      action: '高亮引导显示',
       data: {
         featureId,
         selector,
@@ -230,7 +230,7 @@ export class GuideLogger {
     this.log({
       level: success ? 'info' : 'warn',
       category: 'UserInteraction',
-      action: 'User interaction',
+      action: '用户交互',
       data: {
         featureId,
         actionType,
@@ -252,7 +252,7 @@ export class GuideLogger {
     this.log({
       level: 'info',
       category: 'Performance',
-      action: 'Performance metrics',
+      action: '性能指标',
       data: {
         featureId,
         actionType,
@@ -285,7 +285,7 @@ export class GuideLogger {
   }
 
   /**
-   * Get logs in specified time range
+   * Get logs within specified time range
    */
   getLogsInRange({
     startTime,
@@ -399,12 +399,12 @@ export class GuideLogger {
   exportAsText(): string {
     const stats = this.getLogStats();
     const header = [
-      'Intelligent Guide Feature Log Export',
-      `Session ID: ${this.sessionId}`,
-      `Export Time: ${new Date().toISOString()}`,
-      `Total Logs: ${stats.total}`,
-      `Action Type Stats: Direct Trigger (${stats.byActionType.direct}) | Navigation Guide (${stats.byActionType.navigation})`,
-      `Features Used: ${Object.keys(stats.byFeature).join(', ')}`,
+      '智能引导功能日志导出',
+      `会话ID: ${this.sessionId}`,
+      `导出时间: ${new Date().toISOString()}`,
+      `总日志数: ${stats.total}`,
+      `功能类型统计: 直接触发(${stats.byActionType.direct}) | 导航引导(${stats.byActionType.navigation})`,
+      `使用功能: ${Object.keys(stats.byFeature).join(', ')}`,
       '='.repeat(80),
       '',
     ].join('\n');
@@ -415,7 +415,7 @@ export class GuideLogger {
         log.category
       }]`;
       const dataStr = log.data
-        ? ` | Data: ${JSON.stringify(log.data, null, 2)}`
+        ? ` | 数据: ${JSON.stringify(log.data, null, 2)}`
         : '';
       return `${prefix} ${log.action}${dataStr}`;
     });

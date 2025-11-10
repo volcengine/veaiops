@@ -13,13 +13,13 @@
 // limitations under the License.
 
 import type { FormInstance } from '@arco-design/web-react';
-// 导入并重新导出API生成的Project类型
+// Import and re-export API-generated Project type
 import type { Project } from 'api-generate';
 
 export type { Project };
 
 /**
- * 项目状态枚举
+ * Project status enum
  */
 export type ProjectStatus =
   | 'planning'
@@ -29,40 +29,40 @@ export type ProjectStatus =
   | 'cancelled';
 
 /**
- * 项目优先级枚举
+ * Project priority enum
  */
 export type ProjectPriority = 'low' | 'medium' | 'high' | 'urgent';
 
 /**
- * 项目表单数据接口 - 用于创建项目时的表单数据
+ * Project form data interface - form data for creating projects
  */
 export interface ProjectFormData {
-  /** 项目ID */
+  /** Project ID */
   project_id: string;
-  /** 项目名称 */
+  /** Project name */
   name: string;
-  /** 负责人 */
+  /** Owner */
   owner?: string;
-  /** 项目描述 */
+  /** Project description */
   description?: string;
-  /** 项目状态 */
+  /** Project status */
   status?: string;
-  /** 优先级 */
+  /** Priority */
   priority?: string;
-  /** 项目进度 */
+  /** Project progress */
   progress?: number;
-  /** 开始时间 */
+  /** Start date */
   start_date?: string;
-  /** 结束时间 */
+  /** End date */
   end_date?: string;
-  /** 预算金额 */
+  /** Budget amount */
   budget?: number;
-  /** 是否激活 */
+  /** Whether active */
   is_active?: boolean;
 }
 
 /**
- * 项目表格组件属性接口
+ * Project table component props interface
  */
 export interface ProjectTableProps {
   onDelete: (projectId: string) => Promise<boolean>;
@@ -71,7 +71,7 @@ export interface ProjectTableProps {
 }
 
 /**
- * 项目列表表格组件属性接口
+ * Project list table component props interface
  */
 export interface ProjectListTableProps {
   data: Project[];
@@ -81,7 +81,7 @@ export interface ProjectListTableProps {
 }
 
 /**
- * 项目表格操作接口
+ * Project table actions interface
  */
 export interface ProjectTableActions {
   onView?: (project: Project) => void;
@@ -89,7 +89,7 @@ export interface ProjectTableActions {
 }
 
 /**
- * 项目弹窗组件属性接口
+ * Project modal component props interface
  */
 export interface ProjectModalProps {
   visible: boolean;

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 步骤头部组件
- * @description 显示Zabbix指标选择步骤的标题和描述信息
+ * Step header component
+ * @description Displays title and description information for Zabbix metric selection step
  */
 
 import type React from 'react';

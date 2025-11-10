@@ -27,8 +27,8 @@ interface BottomSectionProps {
 }
 
 /**
- * 底部区域组件
- * @description 将智能阈值任务详细统计和系统资源概览放在同一行
+ * Bottom section component
+ * @description Place intelligent threshold task detailed statistics and system resource overview in the same row
  */
 export const BottomSection: React.FC<BottomSectionProps> = ({
   statistics,
@@ -36,12 +36,12 @@ export const BottomSection: React.FC<BottomSectionProps> = ({
 }) => {
   return (
     <Row gutter={16}>
-      {/* 智能阈值任务详细统计 */}
+      {/* Intelligent threshold task detailed statistics */}
       <Col span={12}>
         <ThresholdDetailedStatistics statistics={statistics} />
       </Col>
 
-      {/* 系统资源概览 */}
+      {/* System resource overview */}
       <Col span={12}>
         <SystemResourceOverview getSystemOverviewData={getSystemOverviewData} />
       </Col>

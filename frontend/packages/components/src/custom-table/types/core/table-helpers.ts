@@ -13,61 +13,61 @@
 // limitations under the License.
 
 /**
- * TableHelpers 相关类型定义
- * 从 hooks/internal/use-table-helpers.ts 迁移而来
+ * TableHelpers related type definitions
+ * Migrated from hooks/internal/use-table-helpers.ts
  */
 
 import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
 import type { BaseQuery } from './common';
 
 /**
- * @name Helper 方法集合
+ * @name Helper method collection
  */
 export interface TableHelpers<QueryType extends BaseQuery> {
-  /** @name 处理查询和筛选变更 */
+  /** @name Handle query and filter changes */
   handleChange: {
     (key: string, value: unknown): void;
     (object: Record<string, unknown>): void;
   };
-  /** @name 重置表格状态 */
+  /** @name Reset table state */
   reset: (options?: { resetEmptyData?: boolean }) => void;
-  /** @name 设置当前页 */
+  /** @name Set current page */
   setCurrent: (page: number) => void;
-  /** @name 设置页面大小 */
+  /** @name Set page size */
   setPageSize: (size: number) => void;
-  /** @name 设置排序 */
+  /** @name Set sorter */
   setSorter: (sorter: SorterInfo) => void;
-  /** @name 设置查询参数 */
+  /** @name Set query parameters */
   setQuery: (query: QueryType | ((prev: QueryType) => QueryType)) => void;
-  /** @name 设置筛选条件 */
+  /** @name Set filter conditions */
   setFilters: (filters: Record<string, (string | number)[]>) => void;
-  /** @name 设置加载状态 */
+  /** @name Set loading state */
   setLoading: (loading: boolean) => void;
-  /** @name 设置错误状态 */
+  /** @name Set error state */
   setError: (error: Error | null) => void;
-  /** @name 设置重置空数据状态 */
+  /** @name Set reset empty data state */
   setResetEmptyData: (reset: boolean) => void;
-  /** @name 设置展开行键 */
+  /** @name Set expanded row keys */
   setExpandedRowKeys: (keys: (string | number)[]) => void;
-  /** @name 加载更多数据 */
+  /** @name Load more data */
   loadMoreData: () => void;
-  /** @name 运行查询 */
+  /** @name Run query */
   run?: () => void;
 }
 
 /**
- * @name Helper 配置接口
+ * @name Helper configuration interface
  */
 export interface TableHelpersConfig<QueryType extends BaseQuery> {
-  /** @name 初始查询参数 */
+  /** @name Initial query parameters */
   initQuery: Partial<QueryType>;
-  /** @name 筛选重置保留字段 */
+  /** @name Filter reset preserve fields */
   filterResetKeys?: string[];
-  /** @name 查询同步相关方法 */
+  /** @name Query sync related methods */
   querySync?: {
     resetQuery?: (resetEmptyData: boolean) => void;
   };
-  /** @name 数据源相关方法 */
+  /** @name Data source related methods */
   dataSourceMethods?: {
     setLoading?: (loading: boolean) => void;
     setError?: (error: Error | null) => void;
@@ -76,7 +76,7 @@ export interface TableHelpersConfig<QueryType extends BaseQuery> {
     loadMoreData?: () => void;
     run?: () => void;
   };
-  /** @name 分页相关方法 */
+  /** @name Pagination related methods */
   paginationMethods?: {
     setCurrent?: (page: number) => void;
     setPageSize?: (size: number) => void;
@@ -84,7 +84,7 @@ export interface TableHelpersConfig<QueryType extends BaseQuery> {
 }
 
 /**
- * Helper 工具函数类型
+ * Helper utility function type
  */
 export type CreateTypedQuery = <QueryType extends BaseQuery>(
   query: Partial<QueryType> | Record<string, unknown>,

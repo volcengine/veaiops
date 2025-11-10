@@ -17,65 +17,65 @@ import type { AgentCfgPayload } from './agent-cfg-payload';
 import type { VolcCfgPayload } from './volc-cfg-payload';
 export type Bot = {
   /**
-   * MongoDB文档ID
+   * MongoDB document ID
    */
   _id?: string | null;
   /**
-   * 创建用户
+   * Created user
    */
   created_user?: string | null;
   /**
-   * 创建时间
+   * Creation time
    */
   created_at?: string;
   /**
-   * 更新用户
+   * Updated user
    */
   updated_user?: string | null;
   /**
-   * 更新时间
+   * Update time
    */
   updated_at?: string;
   /**
-   * 是否激活
+   * Whether active
    */
   is_active?: boolean;
   /**
-   * 企业协同工具
+   * Enterprise collaboration tool
    */
   channel?: Bot.channel;
   /**
-   * 机器人ID
+   * Bot ID
    */
   bot_id?: string;
   /**
-   * OpenID，从bot_id自动生成
+   * OpenID, automatically generated from bot_id
    */
   open_id?: string | null;
   /**
-   * 机器人名称
+   * Bot name
    */
   name?: string | null;
   /**
-   * 机器人密钥
+   * Bot secret
    */
   secret?: string;
   /**
-   * Webhook URL列表
+   * Webhook URL list
    */
   webhook_urls?: Array<string>;
   /**
-   * 火山引擎配置
+   * Volcano Engine configuration
    */
   volc_cfg?: VolcCfgPayload;
   /**
-   * Agent配置
+   * Agent configuration
    */
   agent_cfg?: AgentCfgPayload;
 };
 export namespace Bot {
   /**
-   * 企业协同工具
+   * Enterprise collaboration tool
    */
   export enum channel {
     LARK = 'Lark',

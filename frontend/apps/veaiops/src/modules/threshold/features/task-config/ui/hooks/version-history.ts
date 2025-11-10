@@ -19,7 +19,7 @@ import { useEffect, useState } from 'react';
 import type { TaskVersionFiltersQuery } from '../version/filters';
 
 /**
- * 版本历史管理 Hook
+ * Version history management Hook
  */
 export const useVersionHistory = (
   taskId: string | undefined,
@@ -32,7 +32,7 @@ export const useVersionHistory = (
   const [loading, setLoading] = useState(false);
 
   /**
-   * 获取任务版本历史
+   * Fetch task version history
    */
   const fetchVersionHistory = async (
     id: string,
@@ -41,14 +41,14 @@ export const useVersionHistory = (
     try {
       setLoading(true);
 
-      // 构建API请求参数
+      // Build API request parameters
       const apiParams: Record<string, any> = {
         taskId: id,
         skip: 0,
         limit: 50,
       };
 
-      // 添加筛选参数
+      // Add filter parameters
       if (filterParams?.status) {
         apiParams.status = filterParams.status;
       }
@@ -67,7 +67,7 @@ export const useVersionHistory = (
 
       const response =
         await apiClient.intelligentThresholdTask.getApisV1IntelligentThresholdTaskVersions(
-          apiParams as any, // 类型转换以匹配API接口
+          apiParams as any, // Type conversion to match API interface
         );
 
       if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
@@ -76,7 +76,7 @@ export const useVersionHistory = (
         setVersions([]);
       }
     } catch (error) {
-      // 静默处理：获取版本历史失败时清空列表
+      // Silent handling: clear list when fetching version history fails
       setVersions([]);
     } finally {
       setLoading(false);

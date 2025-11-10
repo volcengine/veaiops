@@ -13,10 +13,9 @@
 // limitations under the License.
 
 /**
- * CustomTable 展开操作 Hook
- * 负责处理行展开/收起相关的所有操作
+ * CustomTable expand operations Hook
+ * Responsible for handling all row expand/collapse related operations
  *
-
  * @date 2025-12-19
  */
 import type {
@@ -26,22 +25,22 @@ import type {
 } from '@/custom-table/types';
 
 /**
- * @name 展开操作相关的实例方法
+ * @name Expand operation related instance methods
  */
 export interface ExpandActionMethods {
-  /** @name 设置展开的行 */
+  /** @name Set expanded rows */
   setExpandedRows: (keys: (string | number)[]) => void;
-  /** @name 获取展开的行键 */
+  /** @name Get expanded row keys */
   getExpandedRowKeys: () => (string | number)[];
-  /** @name 展开所有行 */
+  /** @name Expand all rows */
   expandAll: () => void;
-  /** @name 收起所有行 */
+  /** @name Collapse all rows */
   collapseAll: () => void;
 }
 
 /**
- * @name 创建展开操作方法
- * @description 基于 pro-components 和 Arco Design 展开设计模式
+ * @name Create expand operation methods
+ * @description Based on pro-components and Arco Design expand design pattern
  */
 export const createExpandActions = <
   RecordType extends BaseRecord = BaseRecord,
@@ -50,20 +49,20 @@ export const createExpandActions = <
   context: PluginContext<RecordType, QueryType>,
   formattedTableData: RecordType[],
 ): ExpandActionMethods => ({
-  /** @name 设置展开的行 */
+  /** @name Set expanded rows */
   setExpandedRows: (keys: (string | number)[]) => {
-    // 设置展开的行键
+    // Set expanded row keys
     if (context.helpers.setExpandedRowKeys) {
       context.helpers.setExpandedRowKeys(keys);
     }
   },
 
-  /** @name 获取展开的行键 */
+  /** @name Get expanded row keys */
   getExpandedRowKeys: () => context.state.expandedRowKeys || [],
 
-  /** @name 展开所有行 */
+  /** @name Expand all rows */
   expandAll: () => {
-    // 展开所有行 - 获取所有数据的 rowKey
+    // Expand all rows - get rowKey for all data
     const allKeys = formattedTableData.map((record) => {
       const { rowKey } = context.props;
       return typeof rowKey === 'function'
@@ -75,9 +74,9 @@ export const createExpandActions = <
     }
   },
 
-  /** @name 收起所有行 */
+  /** @name Collapse all rows */
   collapseAll: () => {
-    // 收起所有行 - 清空展开键数组
+    // Collapse all rows - clear expanded keys array
     if (context.helpers.setExpandedRowKeys) {
       context.helpers.setExpandedRowKeys([]);
     }

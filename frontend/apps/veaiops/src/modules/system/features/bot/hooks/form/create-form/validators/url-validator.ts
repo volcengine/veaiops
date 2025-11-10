@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * URL 验证器
+ * URL validator
  */
 export const urlValidator = (
   value: string,
@@ -25,13 +25,13 @@ export const urlValidator = (
   }
   try {
     /**
-     * 为什么使用 new URL()：
-     * - URL 构造函数是验证 URL 格式的标准方法，没有其他替代方案
-     * - 使用 try-catch 包装以确保类型安全
-     * - 虽然使用 new 操作符，但仅用于验证，没有实际副作用
+     * Why use new URL():
+     * - URL constructor is the standard method to validate URL format, no other alternatives
+     * - Use try-catch wrapper to ensure type safety
+     * - Although using new operator, only for validation, no actual side effects
      */
     const _url = new URL(value);
-    // 验证通过后调用成功回调
+    // Call success callback after validation passes
     callback();
   } catch {
     callback('请输入有效的URL');

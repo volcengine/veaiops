@@ -28,9 +28,9 @@ interface ChatTableColumnsProps {
 }
 
 /**
- * 获取群管理表格列定义
+ * Get chat management table column definitions
  *
- * 对应 origin/feat/web-v2 分支的实现，确保功能一致性
+ * Corresponds to origin/feat/web-v2 branch implementation, ensuring functional consistency
  */
 export const getChatTableColumns = ({
   onUpdateConfig,
@@ -155,14 +155,14 @@ export const getChatTableColumns = ({
 ];
 
 /**
- * 获取群管理表格列配置 - CustomTable方式
- * @param props - CustomTable传递的props对象，包含操作回调
- * @returns 表格列配置数组
+ * Get chat management table column configuration - CustomTable approach
+ * @param props - Props object passed by CustomTable, containing operation callbacks
+ * @returns Table column configuration array
  */
 export const getChatColumns = (
   props: Record<string, unknown>,
 ): ColumnProps<Chat>[] => {
-  // 从props中提取onUpdateConfig回调函数
+  // Extract onUpdateConfig callback function from props
   const { onUpdateConfig } = props as {
     onUpdateConfig: (params: {
       chatId: string;

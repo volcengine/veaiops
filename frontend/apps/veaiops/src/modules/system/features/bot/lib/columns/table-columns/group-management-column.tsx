@@ -18,7 +18,7 @@ import { IconUserGroup } from '@arco-design/web-react/icon';
 import type { Bot } from '@bot/types';
 
 /**
- * 群管理列定义
+ * Group management column definition
  */
 export const getGroupManagementColumn = ({
   onGroupManagement,
@@ -37,7 +37,7 @@ export const getGroupManagementColumn = ({
         if (onGroupManagement) {
           onGroupManagement(record);
         }
-        // 如果没有提供群管理回调，静默跳过（功能未实现）
+        // If group management callback is not provided, silently skip (feature not implemented)
       }}
       data-testid="group-management-btn"
     >

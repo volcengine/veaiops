@@ -20,7 +20,7 @@ import type {
 import type React from 'react';
 import type { CustomTableActionType } from '../api/action-type';
 /**
- * Table Actions Hook 相关类型定义
+ * Table actions Hook related type definitions
  */
 import type { BaseQuery, BaseRecord } from '../core';
 
@@ -37,7 +37,7 @@ export interface UseTableActionsProps<
 }
 
 /**
- * useTableActions Hook 返回值
+ * useTableActions Hook return value
  */
 export interface UseTableActionsReturn<
   RecordType extends BaseRecord = BaseRecord,

@@ -16,8 +16,8 @@ import { Link } from '@arco-design/web-react';
 import type React from 'react';
 
 /**
- * 火山引擎Region提示组件
- * 用于提示用户选择火山引擎监控项后必须填写Region
+ * Volcengine Region prompt component
+ * @description Used to prompt users that Region must be filled after selecting Volcengine metric
  */
 export const VolcengineRegionPrompt: React.FC = () => {
   return (

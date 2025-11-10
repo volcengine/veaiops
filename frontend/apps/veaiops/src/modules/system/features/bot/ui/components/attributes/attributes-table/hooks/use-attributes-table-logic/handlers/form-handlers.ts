@@ -17,7 +17,7 @@ import type { BotAttribute } from 'api-generate';
 import { useCallback } from 'react';
 
 /**
- * Bot属性表格表单处理Hook
+ * Bot attributes table form handling Hook
  */
 export const useAttributesTableFormHandlers = ({
   modalType,
@@ -38,16 +38,16 @@ export const useAttributesTableFormHandlers = ({
   refreshTable: () => Promise<void>;
 }) => {
   /**
-   * 处理表单提交
+   * Handle form submission
    *
-   * @returns Promise<boolean> - 返回操作是否成功，用于调用方判断是否需要刷新表格
+   * @returns Promise<boolean> - Returns whether the operation was successful, used by caller to determine if table refresh is needed
    */
   const handleFormSubmit = useCallback(
     async (values: BotAttributeFormData): Promise<boolean> => {
       let success = false;
 
       if (modalType === 'create' && values.value) {
-        // 处理多选和单选的情况
+        // Handle multiple selection and single selection cases
         const valuesArray = Array.isArray(values.value)
           ? values.value
           : [values.value];
@@ -55,7 +55,7 @@ export const useAttributesTableFormHandlers = ({
           name: values.name,
           values: valuesArray,
         });
-        // ✅ 创建成功后刷新表格
+        // ✅ Refresh table after successful creation
         if (success) {
           await refreshTable();
         }
@@ -63,13 +63,13 @@ export const useAttributesTableFormHandlers = ({
         modalType === 'edit' &&
         editingAttribute?._id &&
         values.value &&
-        typeof values.value === 'string' // 编辑时只支持单个值
+        typeof values.value === 'string' // Only support single value when editing
       ) {
         success = await updateAttribute({
           id: editingAttribute._id,
           value: values.value,
         });
-        // ✅ 更新成功后刷新表格
+        // ✅ Refresh table after successful update
         if (success) {
           await refreshTable();
         }

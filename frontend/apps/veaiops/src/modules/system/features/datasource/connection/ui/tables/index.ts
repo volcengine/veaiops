@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格相关组件导出
+ * Table related component exports
  */
 
 export {

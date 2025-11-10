@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 引导式数据源向导组件
- * @description 集成 x-guide 组件实现引导式数据源创建流程
+ * Guided data source wizard component
+ * @description Integrates x-guide component to implement guided data source creation flow
  * @author AI Assistant
  * @date 2025-01-15
  */
@@ -56,7 +56,7 @@ export const GuidedWizard: React.FC<GuidedWizardProps> = ({
   });
   const { state, actions } = useDataSourceWizard();
 
-  // 使用向导控制器
+  // Use wizard controller
   const {
     handleTypeSelect,
     handleNext,
@@ -75,7 +75,7 @@ export const GuidedWizard: React.FC<GuidedWizardProps> = ({
     onSuccess,
   });
 
-  // 创建引导步骤
+  // Create guide steps
   const guideSteps: IStep[] = useMemo(() => {
     const steps: IStep[] = [
       {
@@ -85,7 +85,7 @@ export const GuidedWizard: React.FC<GuidedWizardProps> = ({
           '首先选择您要创建的数据源类型。我们支持 Zabbix、阿里云和火山引擎三种数据源。',
         placement: 'bottom',
         beforeStepChange: () => {
-          // 确保在类型选择阶段
+          // Ensure in type selection phase
           if (selectedType) {
             setSelectedType(null);
             actions.resetWizard();
@@ -94,7 +94,7 @@ export const GuidedWizard: React.FC<GuidedWizardProps> = ({
       },
     ];
 
-    // 如果已选择数据源类型，添加对应的步骤
+    // If data source type is selected, add corresponding steps
     if (selectedType) {
       const config = DATA_SOURCE_CONFIGS.find((c) => c.type === selectedType);
       if (config) {
@@ -105,7 +105,7 @@ export const GuidedWizard: React.FC<GuidedWizardProps> = ({
             content: step.description,
             placement: 'right',
             beforeStepChange: () => {
-              // 确保在正确的步骤
+              // Ensure at correct step
               if (state.currentStep !== index) {
                 actions.setCurrentStep(index);
               }
@@ -118,7 +118,7 @@ export const GuidedWizard: React.FC<GuidedWizardProps> = ({
     return steps;
   }, [selectedType, state.currentStep, actions]);
 
-  // 引导配置
+  // Guide configuration
   const guideConfig: IGuide = {
     steps: guideSteps,
     type: 'card',
@@ -138,35 +138,35 @@ export const GuidedWizard: React.FC<GuidedWizardProps> = ({
       setGuideVisible(false);
     },
     afterStepChange: (stepIndex: number, step: IStep) => {
-      // 根据引导步骤同步向导状态
+      // Synchronize wizard state based on guide steps
       if (stepIndex === 0) {
-        // 回到类型选择
+        // Return to type selection
         setSelectedType(null);
         actions.resetWizard();
       } else if (selectedType && stepIndex > 0) {
-        // 同步到对应的配置步骤
+        // Synchronize to corresponding configuration step
         const configStepIndex = stepIndex - 1;
         actions.setCurrentStep(configStepIndex);
       }
     },
   };
 
-  // 处理类型选择（集成引导）
+  // Handle type selection (integrated with guide)
   const handleGuidedTypeSelect = (type: DataSourceType) => {
     handleTypeSelect(type);
-    // 引导到下一步
+    // Guide to next step
     setGuideVisible(true);
   };
 
   return (
     <>
       <div className={styles.guidedWizardContainer}>
-        {/* X-Guide 引导组件 */}
+        {/* X-Guide guide component */}
         <XGuide {...guideConfig} />
 
-        {/* 主要内容区域 */}
+        {/* Main content area */}
         <div className={styles.wizardContent}>
-          {/* 步骤内容 */}
+          {/* Step content */}
           <div style={{ flex: 1, overflow: 'auto' }}>
             {selectedType ? (
               <StepContent
@@ -184,7 +184,7 @@ export const GuidedWizard: React.FC<GuidedWizardProps> = ({
             )}
           </div>
 
-          {/* 底部操作按钮（使用统一组件提升可读性） */}
+          {/* Bottom action buttons (using unified component to improve readability) */}
           <FooterActions
             className={styles.wizardFooter}
             showPrev={shouldShowPrevButton()}
@@ -212,7 +212,7 @@ export const GuidedWizard: React.FC<GuidedWizardProps> = ({
         </div>
       </div>
 
-      {/* 创建确认弹窗 */}
+      {/* Creation confirmation modal */}
       {CreationConfirmModalComponent}
     </>
   );

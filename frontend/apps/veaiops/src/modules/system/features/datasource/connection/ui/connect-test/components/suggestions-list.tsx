@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 建议列表组件
+ * Suggestions list component
  */
 
 import { Typography } from '@arco-design/web-react';

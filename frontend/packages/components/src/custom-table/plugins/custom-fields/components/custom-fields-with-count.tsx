@@ -16,8 +16,8 @@ import type { CustomFieldsProps } from '@/custom-table/types';
 import { Button } from '@arco-design/web-react';
 import { IconSettings } from '@arco-design/web-react/icon';
 /**
- * 带计数显示的 CustomFields 组件
- * 基于 stability 项目的实现
+ * CustomFields Component with Count Display
+ * Based on stability project implementation
  */
 import type React from 'react';
 import { useCallback, useMemo, useState } from 'react';
@@ -33,7 +33,7 @@ const CustomFieldsWithCount = <T extends Record<string, unknown>>({
   const [visible, setVisible] = useState(false);
 
   /**
-   * 递归计算列数量
+   * Recursively calculate column count
    */
   const getColumnsCount = useCallback(
     <ColumnType extends { dataIndex?: string; children?: ColumnType[] }>(
@@ -41,11 +41,11 @@ const CustomFieldsWithCount = <T extends Record<string, unknown>>({
     ): number => {
       let count = 0;
       columns?.forEach((column) => {
-        // 如果当前列有 dataIndex，计数加1
+        // If current column has dataIndex, increment count
         if (column.dataIndex) {
           count += 1;
         }
-        // 如果有子列，递归计算子列数量
+        // If has children columns, recursively calculate children count
         if (column.children) {
           count += getColumnsCount(column.children);
         }
@@ -56,7 +56,7 @@ const CustomFieldsWithCount = <T extends Record<string, unknown>>({
   );
 
   /**
-   * 计算可用列数量
+   * Calculate available column count
    */
   const availableColumnsCount = useMemo(
     () => getColumnsCount(columns) - (value?.length || 0),
@@ -72,14 +72,14 @@ const CustomFieldsWithCount = <T extends Record<string, unknown>>({
         onClick={() => setVisible(true)}
       >
         <IconSettings />
-        <span>定制列</span>
+        <span>Custom Columns</span>
         {availableColumnsCount > 0 && (
           <span className={styles.activeCount}>{availableColumnsCount}+</span>
         )}
       </Button>
 
       <CheckBoxDrawer
-        title="定制列配置"
+        title="Custom Columns Configuration"
         disabledFields={disabledFields}
         columns={columns}
         visible={visible}

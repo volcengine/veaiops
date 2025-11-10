@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * Bot CRUD操作Hook统一导出
+ * Bot CRUD operation hooks unified export
  *
- * 拆分说明：
- * - create.ts: 创建机器人Hook（useCreateBot）
- * - update.ts: 更新机器人Hook（useUpdateBot）
- * - delete.ts: 删除机器人Hook（useDeleteBot）
- * - index.ts: 统一导出入口
+ * Split explanation:
+ * - create.ts: Create bot hook (useCreateBot)
+ * - update.ts: Update bot hook (useUpdateBot)
+ * - delete.ts: Delete bot hook (useDeleteBot)
+ * - index.ts: Unified export entry
  */
 
 export { useCreateBot } from './create';

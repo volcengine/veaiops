@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 历史事件 Lib 统一导出
+ * History event Lib unified export
  */
 
 export { historyService } from "./history-service";
 
-// 导出类型定义
+// Export type definitions
 export * from "./types";

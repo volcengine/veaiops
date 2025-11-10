@@ -14,19 +14,19 @@
 
 /* generated using openapi-typescript-codegen -- do not edit */
 /**
- * Zabbix模板指标模型
+ * Zabbix template metric model
  */
 export type ZabbixTemplateMetric = {
   /**
-   * 历史类型 (0: float, 3: int)
+   * History type (0: float, 3: int)
    */
   history: string;
   /**
-   * 指标名称
+   * Metric name
    */
   name: string;
   /**
-   * 指标键值 (对应Zabbix的key_字段)
+   * Metric key (corresponds to Zabbix key_ field)
    */
   metric_name: string;
 };

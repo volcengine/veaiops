@@ -16,8 +16,8 @@ import { MonitorAccessManagement } from '@/modules/system/features/datasource';
 import type React from 'react';
 
 /**
- * 监控接入页面
- * @description 复用通用监控接入组件
+ * Monitor access page
+ * @description Reuse common monitor access component
  */
 const Monitor: React.FC = () => {
   return <MonitorAccessManagement />;

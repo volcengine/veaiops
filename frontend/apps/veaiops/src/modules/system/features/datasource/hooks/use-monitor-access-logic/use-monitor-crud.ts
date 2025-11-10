@@ -19,13 +19,13 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import { useCallback } from 'react';
 
 /**
- * 监控数据源CRUD操作Hook
- * 提供数据源的创建、更新、删除操作
+ * Monitor data source CRUD operations Hook
+ * Provides create, update, and delete operations for data sources
  */
 export const useMonitorCrud = () => {
   /**
-   * 创建监控配置
-   * @returns Promise<boolean> - true表示成功，false表示失败
+   * Create monitor configuration
+   * @returns Promise<boolean> - true indicates success, false indicates failure
    */
   const createMonitor = useCallback(
     async (monitorData: Partial<DataSource>): Promise<boolean> => {
@@ -33,7 +33,7 @@ export const useMonitorCrud = () => {
         const dataSourceType = monitorData.type;
         let response;
 
-        // 生成连接名称（基于名称和时间戳）
+        // Generate connection name (based on name and timestamp)
         const connectName = `${monitorData.name || 'datasource'}_${Date.now()}`;
 
         switch (dataSourceType) {
@@ -89,17 +89,17 @@ export const useMonitorCrud = () => {
 
         throw new Error(response.message || '创建监控数据源失败');
       } catch (error: unknown) {
-        // ✅ 正确：优化错误消息处理，提取关键信息
+        // ✅ Correct: optimize error message handling, extract key information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         let errorMessage = errorObj.message || '创建监控数据源失败';
 
-        // ✅ 处理常见的 4xx 客户端错误
+        // ✅ Handle common 4xx client errors
         if (
           errorMessage.includes('duplicate key') ||
           errorMessage.includes('E11000')
         ) {
-          // 409 Conflict - 重复键错误
+          // 409 Conflict - duplicate key error
           const nameMatch = errorMessage.match(/name.*?:\s*"([^"]+)"/);
           if (nameMatch?.[1]) {
             errorMessage = `数据源名称 "${nameMatch[1]}" 已存在，请使用其他名称`;
@@ -107,19 +107,19 @@ export const useMonitorCrud = () => {
             errorMessage = '数据源名称已存在，请使用其他名称';
           }
         } else if (errorMessage.includes('Conflict')) {
-          // 409 Conflict - 通用冲突错误
+          // 409 Conflict - general conflict error
           errorMessage = '数据源已存在，请检查输入信息';
         } else if (errorMessage.includes('Bad Request')) {
-          // 400 Bad Request - 请求参数错误
+          // 400 Bad Request - request parameter error
           errorMessage = '请求参数错误，请检查输入信息';
         } else if (errorMessage.includes('Unauthorized')) {
-          // 401 Unauthorized - 未授权
+          // 401 Unauthorized - unauthorized
           errorMessage = '未授权，请重新登录';
         } else if (errorMessage.includes('Forbidden')) {
-          // 403 Forbidden - 权限不足
+          // 403 Forbidden - insufficient permissions
           errorMessage = '权限不足，无法执行此操作';
         } else if (errorMessage.includes('Not Found')) {
-          // 404 Not Found - 资源不存在
+          // 404 Not Found - resource does not exist
           errorMessage = '连接配置不存在，请先创建连接';
         } else if (errorMessage.includes('Method Not Allowed')) {
           // 405 Method Not Allowed
@@ -128,7 +128,7 @@ export const useMonitorCrud = () => {
           // 408 Request Timeout
           errorMessage = '请求超时，请重试';
         } else if (errorMessage.includes('Unprocessable Entity')) {
-          // 422 Unprocessable Entity - 实体无法处理
+          // 422 Unprocessable Entity - entity cannot be processed
           errorMessage = '数据格式错误，请检查输入信息';
         } else if (errorMessage.includes('Too Many Requests')) {
           // 429 Too Many Requests
@@ -143,8 +143,8 @@ export const useMonitorCrud = () => {
   );
 
   /**
-   * 更新监控配置
-   * @returns Promise<boolean> - true表示成功，false表示失败
+   * Update monitor configuration
+   * @returns Promise<boolean> - true indicates success, false indicates failure
    */
   const updateMonitor = useCallback(
     async (
@@ -155,8 +155,8 @@ export const useMonitorCrud = () => {
       try {
         let response;
 
-        // 注意：使用 as any 是因为 updateData 的结构与 API 生成的请求体类型不完全匹配
-        // TODO: 完善 API 类型定义或创建类型适配器函数
+        // Note: Using as any because updateData structure doesn't fully match API-generated request body type
+        // TODO: Improve API type definitions or create type adapter function
         switch (datasourceType) {
           case 'Zabbix':
             response = await apiClient.dataSources.putApisV1DatasourceZabbix({
@@ -190,12 +190,12 @@ export const useMonitorCrud = () => {
 
         throw new Error(response.message || '更新监控数据源失败');
       } catch (error: unknown) {
-        // ✅ 正确：优化错误消息处理
+        // ✅ Correct: optimize error message handling
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         let errorMessage = errorObj.message || '更新监控数据源失败';
 
-        // ✅ 处理常见的 4xx 客户端错误
+        // ✅ Handle common 4xx client errors
         if (errorMessage.includes('Not Found')) {
           errorMessage = '数据源不存在，无法更新';
         } else if (errorMessage.includes('Forbidden')) {
@@ -214,8 +214,8 @@ export const useMonitorCrud = () => {
   );
 
   /**
-   * 删除监控配置
-   * @returns Promise<boolean> - true表示成功，false表示失败
+   * Delete monitor configuration
+   * @returns Promise<boolean> - true indicates success, false indicates failure
    */
   const deleteMonitor = useCallback(
     async (
@@ -259,12 +259,12 @@ export const useMonitorCrud = () => {
 
         throw new Error(response.message || '删除监控数据源失败');
       } catch (error: unknown) {
-        // ✅ 正确：优化错误消息处理
+        // ✅ Correct: optimize error message handling
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         let errorMessage = errorObj.message || '删除监控数据源失败';
 
-        // ✅ 处理常见的 4xx 客户端错误
+        // ✅ Handle common 4xx client errors
         if (errorMessage.includes('Not Found')) {
           errorMessage = '数据源不存在，无法删除';
         } else if (errorMessage.includes('Forbidden')) {

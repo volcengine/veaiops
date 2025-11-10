@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 阿里云实例选择组件
- * @description 专门处理阿里云数据源的实例选择
+ * Aliyun instance selection component
+ * @description Handles instance selection specifically for Aliyun data sources
  * @author AI Assistant
  * @date 2025-01-16
  */

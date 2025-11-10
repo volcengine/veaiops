@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 表格过滤器插件类型定义
- * 类型已迁移到 ../../types/plugins/table-filter.ts
- * 此文件保留以兼容现有引用，实际类型请从types目录导入
+ * Table filter plugin type definitions
+ * Types have been migrated to ../../types/plugins/table-filter.ts
+ * This file is kept for backward compatibility, actual types should be imported from types directory
  */
 export type {
   TableFilterConfig,

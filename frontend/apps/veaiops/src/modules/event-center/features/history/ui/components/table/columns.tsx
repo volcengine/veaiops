@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 历史事件表格列配置
+ * History event table column configuration
  *
- * 将列配置逻辑单独抽象出来，提高代码可维护性
- * 业务方可以通过修改这个文件来定制列配置
+ * Abstract column configuration logic separately to improve code maintainability
+ * Business side can customize column configuration by modifying this file
  */
 
 import { Button } from '@arco-design/web-react';
@@ -25,29 +25,29 @@ import { CellRender } from '@veaiops/components';
 import type { Event } from 'api-generate';
 import { useCallback } from 'react';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender components to avoid repeated calls
 const { InfoWithCode, StampTime, CustomOutlineTag } = CellRender;
 
 /**
- * 查看详情参数接口
+ * View detail parameter interface
  */
 interface HandleViewDetailParams {
   record: Event;
 }
 
 /**
- * 历史事件表格列配置参数
+ * History event table column configuration parameters
  */
 export interface HistoryTableColumnsConfig {
-  /** 查看详情处理器 */
+  /** View detail handler */
   onViewDetail?: (params: HandleViewDetailParams) => void;
 }
 
 /**
- * 历史事件表格列配置 Hook
+ * History event table column configuration Hook
  *
- * @param config 列配置参数
- * @returns 列配置函数
+ * @param config Column configuration parameters
+ * @returns Column configuration function
  */
 export const useHistoryTableColumns = ({
   onViewDetail,

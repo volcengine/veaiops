@@ -31,13 +31,13 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       console.debug('AuthGuard: Checking authentication status');
     }
 
-    // 开发模式绕过认证
+    // Development mode bypass authentication
     if (authConfig.devMode.enabled && authConfig.devMode.bypassAuth) {
       if (process.env.NODE_ENV === 'development') {
         console.debug('AuthGuard: Development mode - bypassing authentication');
       }
 
-      // 自动设置模拟用户信息
+      // Automatically set mock user information
       sessionStorage.setItem(
         authConfig.storageKeys.token,
         authConfig.devMode.mockUser.token,
@@ -54,7 +54,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       return;
     }
 
-    // 正常认证流程
+    // Normal authentication flow
     const token = sessionStorage.getItem(authConfig.storageKeys.token);
     if (process.env.NODE_ENV === 'development') {
       console.debug('AuthGuard: Checking for existing token');

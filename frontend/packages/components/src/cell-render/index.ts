@@ -83,5 +83,6 @@ export const CellRender: CellRenderComponentProps = {
   TagEllipsis: TagEllipsisRender,
   CustomOutlineTag: CustomOutlineTagRender,
   CustomOutlineTagList,
+  // 🎯 Property type enumeration
   RenderPropertyType,
 };

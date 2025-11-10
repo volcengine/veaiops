@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * Schema驱动的表格组件
- * @description 通过配置化+Schema的方式快速搭建表格，支持筛选等功能
-
+ * Schema-driven table component
+ * @description Quickly build tables through configuration + Schema approach, supports filtering and other features
+ *
  * @date 2025-12-19
  */
 
@@ -36,5 +36,5 @@ export type {
   FilterType,
 } from '@/custom-table/types/schema-table';
 
-// TableSchemaBuilder 是类，需要单独导出（类型已通过 export * from '@/custom-table/types/schema-table' 导出）
+// TableSchemaBuilder is a class, needs to be exported separately (types are already exported via export * from '@/custom-table/types/schema-table')
 export { TableSchemaBuilder } from './utils';

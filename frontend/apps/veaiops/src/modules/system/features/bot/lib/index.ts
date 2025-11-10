@@ -13,43 +13,43 @@
 // limitations under the License.
 
 /**
- * Bot管理库统一导出
- * 注意：类型定义已迁移到 types/ 目录，此处不再导出
+ * Bot management library unified export
+ * Note: Type definitions have been migrated to types/ directory, no longer exported here
  */
 
-// 类型定义（从上级 types 目录导出，保持层层导出原则）
+// Type definitions (exported from parent types directory, maintaining layered export principle)
 export type { Bot, BotCreateRequest, BotFormData, BotTableRef, BotUpdateRequest } from "../types";
 
-// API服务
+// API service
 export * from "./api";
 
-// 表格列配置（从 columns/index.ts 导出，避免循环导入）
+// Table column configuration (exported from columns/index.ts to avoid circular imports)
 export * from "./chat-columns";
 export * from "./columns";
 
-// 属性相关配置（已简化命名：移除 bot- 前缀）
+// Attribute related configuration (simplified naming: removed bot- prefix)
 export { getBotAttributesColumns } from "./attributes-columns";
 export type { BotAttributesColumnsProps } from "./attributes-columns";
 export * from "./attributes-filters";
 
-// 工具函数
+// Utility functions
 export * from "./utils";
 
-// 配置
+// Configuration
 export * from "./config";
 
-// 从 types 重新导出的常量（供 UI 组件使用）
-// 注意：CHANNEL_TYPE_OPTIONS 已迁移到 @veaiops/constants，统一使用 CHANNEL_OPTIONS
+// Constants re-exported from types (for UI components)
+// Note: CHANNEL_TYPE_OPTIONS has been migrated to @veaiops/constants, use CHANNEL_OPTIONS uniformly
 export { NETWORK_TYPE_OPTIONS, TOS_REGION_OPTIONS } from "../types/bot";
 
-// 其他
+// Others
 export * from "./chat-filters";
 export * from "./chat-query-format";
 export * from "./chat-types";
 export * from "./filters";
 export * from "./translations";
 
-// 属性表格配置
+// Attribute table configuration
 export * from "./attributes-table-config";
 
-// 注意：Bot 属性 API 已合并到 api.ts，不再单独导出
+// Note: Bot attribute API has been merged into api.ts, no longer exported separately

@@ -82,3 +82,4 @@ export function getPageInfo(): PageInfo {
     title: document.title,
   };
 }
+

@@ -24,46 +24,46 @@ const { CopyableText, CustomOutlineTag, CustomOutlineTagList, StampTime } =
   CellRender;
 
 /**
- * 渲染事件ID
+ * Render event ID
  */
 export const renderEventId = (value: string) => {
   return <CopyableText text={value || ''} />;
 };
 
 /**
- * 渲染智能体类型
+ * Render agent type
  */
 export const renderAgentType = (value: AgentType) => {
   const agentTypeMap: Record<AgentType, string> = {
-    [AgentType.INTELLIGENT_THRESHOLD_AGENT]: '智能阈值Agent',
-    [AgentType.CHATOPS_INTEREST_AGENT]: '内容识别Agent',
-    [AgentType.CHATOPS_PROACTIVE_REPLY_AGENT]: '主动回复Agent',
-    [AgentType.CHATOPS_REACTIVE_REPLY_AGENT]: '被动回复Agent',
+    [AgentType.INTELLIGENT_THRESHOLD_AGENT]: 'Intelligent Threshold Agent',
+    [AgentType.CHATOPS_INTEREST_AGENT]: 'Content Recognition Agent',
+    [AgentType.CHATOPS_PROACTIVE_REPLY_AGENT]: 'Proactive Reply Agent',
+    [AgentType.CHATOPS_REACTIVE_REPLY_AGENT]: 'Reactive Reply Agent',
   };
 
   return <CustomOutlineTag>{agentTypeMap[value] || value}</CustomOutlineTag>;
 };
 
 /**
- * 渲染状态（EventStatus 数值转中文显示状态）
- * 使用 Badge 组件显示，参考 origin/feat/web-v2 实现
+ * Render status (EventStatus numeric value to Chinese display status)
+ * Uses Badge component for display, reference origin/feat/web-v2 implementation
  *
- * 状态映射关系（对应后端 EventStatus 枚举）：
- * - 0 (INITIAL): 初始状态 → 等待发送
- * - 1 (SUBSCRIBED): 订阅匹配完成 → 等待发送
- * - 2 (CARD_BUILT): 卡片已构造 → 等待发送
- * - 3 (DISPATCHED): 已发送 → 发送成功
- * - 4 (NONE_DISPATCH): 无订阅匹配 → 未订阅
- * - 11 (CHATOPS_NOT_MATCHED): ChatOps未匹配 → 未命中规则
- * - 12 (CHATOPS_RULE_FILTERED): ChatOps规则过滤 → 命中过滤规则
- * - 13 (CHATOPS_RULE_RESTRAINED): ChatOps规则限制 → 告警抑制
+ * Status mapping (corresponding to backend EventStatus enum):
+ * - 0 (INITIAL): Initial state → Waiting to send
+ * - 1 (SUBSCRIBED): Subscription matched → Waiting to send
+ * - 2 (CARD_BUILT): Card constructed → Waiting to send
+ * - 3 (DISPATCHED): Sent → Send success
+ * - 4 (NONE_DISPATCH): No subscription match → Not subscribed
+ * - 11 (CHATOPS_NOT_MATCHED): ChatOps not matched → Rule not matched
+ * - 12 (CHATOPS_RULE_FILTERED): ChatOps rule filtered → Filter rule matched
+ * - 13 (CHATOPS_RULE_RESTRAINED): ChatOps rule limited → Alert suppressed
  */
 export const renderStatus = (value?: number | null) => {
   if (value === undefined || value === null) {
     return <span style={{ color: '#86909C' }}>-</span>;
   }
 
-  // 状态配置映射
+  // Status configuration mapping
   const statusConfigMap: Record<
     number,
     {
@@ -71,25 +71,34 @@ export const renderStatus = (value?: number | null) => {
       status: 'success' | 'error' | 'processing' | 'warning' | 'default';
     }
   > = {
-    // 等待发送状态（0, 1, 2）
-    [EventStatus.INITIAL]: { text: '等待发送', status: 'processing' },
-    [EventStatus.SUBSCRIBED]: { text: '等待发送', status: 'processing' },
-    [EventStatus.CARD_BUILT]: { text: '等待发送', status: 'processing' },
-    // 发送成功（3）
-    [EventStatus.DISTRIBUTED]: { text: '发送成功', status: 'success' },
-    // 未订阅（4）
-    [EventStatus.NO_DISTRIBUTION]: { text: '未订阅', status: 'warning' },
-    // ChatOps 相关状态（11, 12, 13）
-    [EventStatus.CHATOPS_NO_MATCH]: { text: '未命中规则', status: 'warning' },
+    // Waiting to send status (0, 1, 2)
+    [EventStatus.INITIAL]: { text: 'Waiting to Send', status: 'processing' },
+    [EventStatus.SUBSCRIBED]: { text: 'Waiting to Send', status: 'processing' },
+    [EventStatus.CARD_BUILT]: { text: 'Waiting to Send', status: 'processing' },
+    // Send success (3)
+    [EventStatus.DISTRIBUTED]: { text: 'Send Success', status: 'success' },
+    // Not subscribed (4)
+    [EventStatus.NO_DISTRIBUTION]: {
+      text: 'Not Subscribed',
+      status: 'warning',
+    },
+    // ChatOps related status (11, 12, 13)
+    [EventStatus.CHATOPS_NO_MATCH]: {
+      text: 'Rule Not Matched',
+      status: 'warning',
+    },
     [EventStatus.CHATOPS_RULE_FILTERED]: {
-      text: '命中过滤规则',
+      text: 'Filter Rule Matched',
       status: 'error',
     },
-    [EventStatus.CHATOPS_RULE_LIMITED]: { text: '告警抑制', status: 'error' },
+    [EventStatus.CHATOPS_RULE_LIMITED]: {
+      text: 'Alert Suppressed',
+      status: 'error',
+    },
   };
 
   const config = statusConfigMap[value] || {
-    text: `未知状态(${value})`,
+    text: `Unknown Status(${value})`,
     status: 'default' as const,
   };
 
@@ -97,14 +106,14 @@ export const renderStatus = (value?: number | null) => {
 };
 
 /**
- * 渲染事件级别
+ * Render event level
  */
 export const renderEventLevel = (value: EventLevel) => {
-  return <CustomOutlineTag>{value || '未知'}</CustomOutlineTag>;
+  return <CustomOutlineTag>{value || 'Unknown'}</CustomOutlineTag>;
 };
 
 /**
- * 渲染项目列表
+ * Render project list
  */
 export const renderProjectList = (value: string[]) => {
   if (!value || value.length === 0) {
@@ -124,14 +133,14 @@ export const renderProjectList = (value: string[]) => {
 };
 
 /**
- * 渲染时间戳
+ * Render timestamp
  */
 export const renderTimestamp = (value: string) => {
   return <StampTime time={value} />;
 };
 
 /**
- * 渲染操作列
+ * Render action column
  */
 export const renderActions = ({
   record,
@@ -151,16 +160,16 @@ export const renderActions = ({
           icon={<IconEye />}
           onClick={() => onViewDetail(record)}
         >
-          查看详情
+          View Details
         </Button>
       )}
-      {customActions && customActions(record)}
+      {customActions?.(record)}
     </div>
   );
 };
 
 /**
- * 获取统一的历史事件列配置
+ * Get unified event history column configuration
  */
 export const getEventHistoryColumns = ({
   onViewDetail,
@@ -170,7 +179,7 @@ export const getEventHistoryColumns = ({
   customActions?: (record: Event) => React.ReactNode;
 }): ModernTableColumnProps<Event>[] => [
   {
-    title: '事件ID',
+    title: 'Event ID',
     dataIndex: '_id',
     key: 'event_id',
     width: 180,
@@ -179,28 +188,28 @@ export const getEventHistoryColumns = ({
     render: renderEventId,
   },
   {
-    title: '智能体',
+    title: 'Agent',
     dataIndex: 'agent_type',
     key: 'agent_type',
     width: 120,
     render: renderAgentType,
   },
   {
-    title: '状态',
+    title: 'Status',
     dataIndex: 'status',
     key: 'status',
     width: 120,
     render: renderStatus,
   },
   {
-    title: '事件级别',
+    title: 'Event Level',
     dataIndex: 'event_level',
     key: 'event_level',
     width: 80,
     render: renderEventLevel,
   },
   {
-    title: '项目',
+    title: 'Project',
     dataIndex: 'project',
     key: 'project',
     width: 140,
@@ -208,7 +217,7 @@ export const getEventHistoryColumns = ({
     render: renderProjectList,
   },
   {
-    title: '创建时间',
+    title: 'Created At',
     dataIndex: 'created_at',
     key: 'created_at',
     width: 160,
@@ -217,14 +226,14 @@ export const getEventHistoryColumns = ({
     render: renderTimestamp,
   },
   {
-    title: '更新时间',
+    title: 'Updated At',
     dataIndex: 'updated_at',
     key: 'updated_at',
     width: 160,
     render: renderTimestamp,
   },
   {
-    title: '操作',
+    title: 'Actions',
     key: 'actions',
     width: 120,
     fixed: 'right',

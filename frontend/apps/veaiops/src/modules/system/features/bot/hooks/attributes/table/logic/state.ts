@@ -17,7 +17,7 @@ import type { BotAttribute } from 'api-generate';
 import { useState } from 'react';
 
 /**
- * 状态管理Hook
+ * State management Hook
  */
 export const useBotAttributesTableState = () => {
   const [editingAttribute, setEditingAttribute] = useState<BotAttribute | null>(

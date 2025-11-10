@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Arco Design UI 库相关模块
+// Arco Design UI library related modules
 import { Typography } from '@arco-design/web-react';
 
-// 项目自身相关模块
+// Project related modules
 import type { TypographyEllipsisProps } from '@arco-design/web-react/es/Typography/interface';
 import type { CSSProperties, FC } from 'react';
 
@@ -28,7 +28,7 @@ export interface CopyTextEllipsisRenderProps {
   ellipsisProps?: TypographyEllipsisProps;
 }
 
-// 文本省略处理函数组件
+// Text ellipsis processing function component
 const CopyableTextRender: FC<CopyTextEllipsisRenderProps> = ({
   text = '',
   style = {},

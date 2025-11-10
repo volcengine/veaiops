@@ -14,10 +14,9 @@
 
 import type { Plugin, PluginContext, PluginStatus } from '@/custom-table/types';
 /**
- * 插件注册管理模块
- * 负责插件的注册、注销和查询
+ * Plugin registration management module
+ * Responsible for plugin registration, unregistration, and querying
  *
-
  * @date 2025-12-19
  */
 import {
@@ -27,7 +26,7 @@ import {
 import { devLog } from '@/custom-table/utils';
 
 /**
- * @name 插件实例信息
+ * @name Plugin instance information
  */
 export interface PluginInstance {
   plugin: Plugin;
@@ -43,20 +42,20 @@ export interface PluginInstance {
 }
 
 /**
- * @name 插件注册表管理器
+ * @name Plugin registry manager
  */
 export class PluginRegistry {
   private plugins: Plugin[] = [];
   private pluginInstances: Map<string, PluginInstance> = new Map();
 
   /**
-   * @name 注册插件
+   * @name Register plugin
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object with format { success: boolean; error?: Error }
    */
   async register(plugin: Plugin): Promise<{ success: boolean; error?: Error }> {
     try {
-      // 检查插件名称是否已存在
+      // Check if plugin name already exists
       if (this.plugins.some((p) => p.name === plugin.name)) {
         devLog.log({
           component: 'PluginRegistry',
@@ -64,11 +63,11 @@ export class PluginRegistry {
         });
         return {
           success: false,
-          error: new Error(`插件 "${plugin.name}" 已注册`),
+          error: new Error(`Plugin "${plugin.name}" is already registered`),
         };
       }
 
-      // 检查依赖
+      // Check dependencies
       if (plugin.dependencies?.length) {
         const missingDeps = plugin.dependencies.filter(
           (dep: string) => !this.plugins.some((p) => p.name === dep),
@@ -77,12 +76,12 @@ export class PluginRegistry {
         if (missingDeps.length) {
           return {
             success: false,
-            error: new Error(`缺少依赖: ${missingDeps.join(', ')}`),
+            error: new Error(`Missing dependencies: ${missingDeps.join(', ')}`),
           };
         }
       }
 
-      // 检查冲突
+      // Check conflicts
       if (plugin.conflicts?.length) {
         const conflicting = plugin.conflicts.filter((conf: string) =>
           this.plugins.some((p) => p.name === conf),
@@ -91,24 +90,26 @@ export class PluginRegistry {
         if (conflicting.length) {
           return {
             success: false,
-            error: new Error(`与插件冲突: ${conflicting.join(', ')}`),
+            error: new Error(
+              `Conflicts with plugins: ${conflicting.join(', ')}`,
+            ),
           };
         }
       }
 
-      // 记录安装时间
+      // Record installation time
       const installStartTime = performance.now();
 
-      // 添加到插件列表
+      // Add to plugin list
       this.plugins.push(plugin);
 
-      // 记录安装结束时间并创建实例
+      // Record installation end time and create instance
       const installEndTime = performance.now();
       const installTime = installEndTime - installStartTime;
 
       this.pluginInstances.set(plugin.name, {
         plugin,
-        context: {} as PluginContext, // 初始化为空，稍后设置
+        context: {} as PluginContext, // Initialize as empty, set later
         status: PluginStatusEnum.INSTALLED,
         performance: {
           installTime,
@@ -118,7 +119,7 @@ export class PluginRegistry {
         },
       });
 
-      // 按优先级排序
+      // Sort by priority
       const priorityMap = {
         [PluginPriorityEnum.CRITICAL]: -1,
         [PluginPriorityEnum.HIGH]: 0,
@@ -142,9 +143,9 @@ export class PluginRegistry {
   }
 
   /**
-   * @name 注销插件
+   * @name Unregister plugin
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object with format { success: boolean; error?: Error }
    */
   async unregister(
     pluginName: string,
@@ -153,7 +154,7 @@ export class PluginRegistry {
     if (!plugin) {
       return {
         success: false,
-        error: new Error(`插件 "${pluginName}" 不存在`),
+        error: new Error(`Plugin "${pluginName}" does not exist`),
       };
     }
 
@@ -166,10 +167,10 @@ export class PluginRegistry {
       } catch (error: unknown) {
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
+        // ✅ Correct: Use devLog to record errors and expose actual error information
         devLog.error({
           component: 'PluginRegistry',
-          message: `插件 "${pluginName}" 卸载失败`,
+          message: `Plugin "${pluginName}" uninstallation failed`,
           data: {
             pluginName,
             error: errorObj.message,
@@ -181,16 +182,16 @@ export class PluginRegistry {
       }
     }
 
-    // 从列表中移除
+    // Remove from list
     const index = this.plugins.findIndex((p) => p.name === pluginName);
     if (index > -1) {
       this.plugins.splice(index, 1);
     }
 
-    // 移除实例
+    // Remove instance
     this.pluginInstances.delete(pluginName);
 
-    // 如果卸载过程有错误，返回错误信息，但插件已成功从注册表中移除
+    // If uninstallation process has errors, return error info, but plugin has been successfully removed from registry
     if (uninstallError) {
       return { success: false, error: uninstallError };
     }
@@ -199,35 +200,35 @@ export class PluginRegistry {
   }
 
   /**
-   * @name 获取指定插件
+   * @name Get specified plugin
    */
   getPlugin(pluginName: string): Plugin | undefined {
     return this.plugins.find((p) => p.name === pluginName);
   }
 
   /**
-   * @name 获取所有插件
+   * @name Get all plugins
    */
   getPlugins(): Plugin[] {
     return [...this.plugins];
   }
 
   /**
-   * @name 获取已启用的插件
+   * @name Get enabled plugins
    */
   getEnabledPlugins(): Plugin[] {
     return this.plugins.filter((p) => p.enabled);
   }
 
   /**
-   * @name 获取插件实例
+   * @name Get plugin instance
    */
   getInstance(pluginName: string): PluginInstance | undefined {
     return this.pluginInstances.get(pluginName);
   }
 
   /**
-   * @name 检查插件是否已启用
+   * @name Check if plugin is enabled
    */
   isEnabled(pluginName: string): boolean {
     const plugin = this.getPlugin(pluginName);
@@ -235,7 +236,7 @@ export class PluginRegistry {
   }
 
   /**
-   * @name 设置插件上下文
+   * @name Set plugin context
    */
   setPluginContext({
     pluginName,
@@ -248,7 +249,7 @@ export class PluginRegistry {
   }
 
   /**
-   * @name 更新插件状态
+   * @name Update plugin status
    */
   updatePluginStatus({
     pluginName,
@@ -261,7 +262,7 @@ export class PluginRegistry {
   }
 
   /**
-   * @name 清空所有插件
+   * @name Clear all plugins
    */
   clear(): void {
     this.plugins = [];

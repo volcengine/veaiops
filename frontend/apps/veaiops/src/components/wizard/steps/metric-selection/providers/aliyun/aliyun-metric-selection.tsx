@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 阿里云指标选择组件
- * @description 专门处理阿里云数据源的指标选择
+ * Aliyun metric selection component
+ * @description Specifically handles metric selection for Aliyun data sources
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -38,7 +38,7 @@ export const AliyunMetricSelection: React.FC<AliyunMetricSelectionProps> = ({
   actions,
   state,
 }) => {
-  // 使用自定义 hook 处理业务逻辑
+  // Use custom hook to handle business logic
   const { handleMetricSelect } = useAliyunMetricSelection(actions);
 
   if (loading) {
@@ -53,10 +53,10 @@ export const AliyunMetricSelection: React.FC<AliyunMetricSelectionProps> = ({
     <div className={styles.stepContent}>
       <StepHeader />
 
-      {/* 搜索框 */}
+      {/* Search box */}
       <MetricSearch searchText={searchText} onSearchChange={onSearchChange} />
 
-      {/* 指标列表 */}
+      {/* Metric list */}
       <MetricList
         metrics={metrics}
         selectedMetric={selectedMetric}

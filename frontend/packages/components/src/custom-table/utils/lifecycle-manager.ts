@@ -24,14 +24,14 @@ import type {
   PluginSpecificLifecycleConfig,
 } from '@/custom-table/types/plugins/lifecycle';
 /**
- * 生命周期管理器
- * 负责处理插件生命周期回调的执行和管理
+ * Lifecycle manager
+ * Responsible for handling the execution and management of plugin lifecycle callbacks
  */
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
 import { devLog } from './log-utils';
 
 /**
- * 执行生命周期回调的参数接口
+ * Parameters interface for executing lifecycle callbacks
  */
 interface ExecuteLifecycleParams<
   RecordType extends BaseRecord = BaseRecord,
@@ -44,7 +44,7 @@ interface ExecuteLifecycleParams<
 }
 
 /**
- * 收集需要执行的回调的参数接口
+ * Parameters interface for collecting callbacks to execute
  */
 interface CollectCallbacksParams {
   phase: LifecyclePhase;
@@ -53,7 +53,7 @@ interface CollectCallbacksParams {
 }
 
 /**
- * 从配置中获取回调函数的参数接口
+ * Parameters interface for getting callback functions from configuration
  */
 interface GetCallbackFromConfigParams {
   config: PluginLifecycleConfig;
@@ -61,7 +61,7 @@ interface GetCallbackFromConfigParams {
 }
 
 /**
- * 获取插件特定配置的参数接口
+ * Parameters interface for getting plugin-specific configuration
  */
 interface GetPluginConfigParams {
   pluginsConfig: PluginSpecificLifecycleConfig;
@@ -69,7 +69,7 @@ interface GetPluginConfigParams {
 }
 
 /**
- * 执行回调列表的参数接口
+ * Parameters interface for executing callback list
  */
 interface ExecuteCallbacksParams<
   RecordType extends BaseRecord = BaseRecord,
@@ -80,7 +80,7 @@ interface ExecuteCallbacksParams<
 }
 
 /**
- * 带超时的回调执行的参数接口
+ * Parameters interface for executing callback with timeout
  */
 interface ExecuteWithTimeoutParams<
   RecordType extends BaseRecord = BaseRecord,
@@ -92,7 +92,7 @@ interface ExecuteWithTimeoutParams<
 }
 
 /**
- * 处理生命周期错误的参数接口
+ * Parameters interface for handling lifecycle errors
  */
 interface HandleLifecycleErrorParams {
   error: Error;
@@ -102,7 +102,7 @@ interface HandleLifecycleErrorParams {
 }
 
 /**
- * 生命周期管理器类
+ * Lifecycle manager class
  */
 export class LifecycleManager {
   private config: LifecycleManagerConfig;
@@ -112,7 +112,7 @@ export class LifecycleManager {
   constructor(config: LifecycleManagerConfig = {}) {
     this.config = {
       enablePerformanceMonitoring: false,
-      timeout: 5000, // 默认5秒超时
+      timeout: 5000, // Default 5 second timeout
       ...config,
     };
 
@@ -122,7 +122,7 @@ export class LifecycleManager {
   }
 
   /**
-   * 执行生命周期回调
+   * Execute lifecycle callbacks
    */
   async executeLifecycle<
     RecordType extends BaseRecord = BaseRecord,
@@ -143,13 +143,13 @@ export class LifecycleManager {
     };
 
     try {
-      // 触发监听器
+      // Trigger listeners
       this.listeners.forEach((listener) => {
         try {
           listener(executionContext);
         } catch (error: unknown) {
-          // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
-          // 记录错误但不中断其他监听器的执行
+          // ✅ Correct: Use devLog to record errors and show actual error information
+          // Record error but don't interrupt execution of other listeners
           const errorObj =
             error instanceof Error ? error : new Error(String(error));
           devLog.warn({
@@ -166,29 +166,29 @@ export class LifecycleManager {
         }
       });
 
-      // 收集要执行的回调
+      // Collect callbacks to execute
       const callbacks = this.collectCallbacks({
         phase,
         pluginName,
         userConfig,
       });
 
-      // 执行回调
+      // Execute callbacks
       await this.executeCallbacks<RecordType, QueryType>({
         callbacks,
         context,
       });
 
-      // 记录性能指标
+      // Record performance metrics
       if (this.config.enablePerformanceMonitoring) {
         const duration = Date.now() - startTime;
         const key = `${pluginName}-${phase}`;
         this.performanceMetrics.set(key, duration);
 
-        // 调试模式下可在此处添加额外的日志输出
+        // In debug mode, additional log output can be added here
       }
     } catch (error) {
-      // 注意：handleLifecycleError 期望对象参数，使用对象解构方式传递
+      // Note: handleLifecycleError expects object parameters, use object destructuring to pass
       this.handleLifecycleError({
         error: error as Error,
         phase,
@@ -199,7 +199,7 @@ export class LifecycleManager {
   }
 
   /**
-   * 收集需要执行的回调
+   * Collect callbacks to execute
    */
   private collectCallbacks({
     phase,
@@ -216,7 +216,7 @@ export class LifecycleManager {
       return callbacks;
     }
 
-    // 全局配置回调
+    // Global configuration callbacks
     if (userConfig.global) {
       const globalCallback = this.getCallbackFromConfig({
         config: userConfig.global,
@@ -227,7 +227,7 @@ export class LifecycleManager {
       }
     }
 
-    // 插件特定配置回调
+    // Plugin-specific configuration callbacks
     if (userConfig.plugins) {
       const pluginConfig = this.getPluginConfig({
         pluginsConfig: userConfig.plugins,
@@ -248,7 +248,7 @@ export class LifecycleManager {
   }
 
   /**
-   * 从配置中获取回调函数
+   * Get callback function from configuration
    */
   private getCallbackFromConfig({
     config,
@@ -276,7 +276,7 @@ export class LifecycleManager {
   }
 
   /**
-   * 获取插件特定配置
+   * Get plugin-specific configuration
    */
   private getPluginConfig({
     pluginsConfig,
@@ -285,13 +285,13 @@ export class LifecycleManager {
     pluginsConfig: PluginSpecificLifecycleConfig;
     pluginName: string;
   }): PluginLifecycleConfig | undefined {
-    // 将插件名映射到配置键
+    // Map plugin name to configuration key
     const configKey = this.mapPluginNameToConfigKey(pluginName);
     return configKey ? pluginsConfig[configKey] : undefined;
   }
 
   /**
-   * 将插件名映射到配置键
+   * Map plugin name to configuration key
    */
   private mapPluginNameToConfigKey(
     pluginName: string,
@@ -310,7 +310,7 @@ export class LifecycleManager {
   }
 
   /**
-   * 执行回调列表
+   * Execute callback list
    */
   private async executeCallbacks<
     RecordType extends BaseRecord = BaseRecord,
@@ -331,7 +331,7 @@ export class LifecycleManager {
   }
 
   /**
-   * 带超时的回调执行
+   * Execute callback with timeout
    */
   private async executeWithTimeout<
     RecordType extends BaseRecord = BaseRecord,
@@ -365,7 +365,7 @@ export class LifecycleManager {
   }
 
   /**
-   * 处理生命周期错误
+   * Handle lifecycle errors
    */
   private handleLifecycleError({
     error,
@@ -382,8 +382,8 @@ export class LifecycleManager {
 
     switch (errorHandling) {
       case 'ignore':
-        // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
-        // 静默忽略错误，但仍记录日志用于调试
+        // ✅ Correct: Use devLog to record error and pass through actual error info
+        // Silently ignore error but still log for debugging
         devLog.warn({
           component: 'LifecycleManager',
           message: `忽略生命周期错误 (${pluginName}/${phase}): ${error.message}`,
@@ -397,7 +397,7 @@ export class LifecycleManager {
         });
         break;
       case 'warn':
-        // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
+        // ✅ Correct: Use devLog to record error and pass through actual error info
         devLog.warn({
           component: 'LifecycleManager',
           message: `生命周期执行警告 (${pluginName}/${phase}): ${error.message}`,
@@ -413,8 +413,8 @@ export class LifecycleManager {
       case 'throw':
         throw error;
       default:
-        // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
-        // 默认行为：记录警告
+        // ✅ Correct: Use devLog to record error and pass through actual error info
+        // Default behavior: log warning
         devLog.warn({
           component: 'LifecycleManager',
           message: `生命周期执行警告 (${pluginName}/${phase}): ${error.message}`,
@@ -430,14 +430,14 @@ export class LifecycleManager {
   }
 
   /**
-   * 添加生命周期监听器
+   * Add lifecycle listener
    */
   addListener(listener: LifecycleListener): void {
     this.listeners.push(listener);
   }
 
   /**
-   * 移除生命周期监听器
+   * Remove lifecycle listener
    */
   removeListener(listener: LifecycleListener): void {
     const index = this.listeners.indexOf(listener);
@@ -447,21 +447,21 @@ export class LifecycleManager {
   }
 
   /**
-   * 获取性能指标
+   * Get performance metrics
    */
   getPerformanceMetrics(): Map<string, number> {
     return new Map(this.performanceMetrics);
   }
 
   /**
-   * 清除性能指标
+   * Clear performance metrics
    */
   clearPerformanceMetrics(): void {
     this.performanceMetrics.clear();
   }
 
   /**
-   * 销毁管理器
+   * Destroy manager
    */
   destroy(): void {
     this.listeners.length = 0;
@@ -470,7 +470,7 @@ export class LifecycleManager {
 }
 
 /**
- * 创建默认生命周期管理器实例
+ * Create default lifecycle manager instance
  */
 export function createLifecycleManager(
   config?: LifecycleManagerConfig,
@@ -479,7 +479,7 @@ export function createLifecycleManager(
 }
 
 /**
- * 合并生命周期配置
+ * Merge lifecycle configurations
  */
 export function mergeLifecycleConfigs(
   ...configs: (CustomTableLifecycleConfig | undefined)[]
@@ -496,17 +496,17 @@ export function mergeLifecycleConfigs(
       return;
     }
 
-    // 合并全局配置
+    // Merge global configuration
     if (config.global) {
       merged.global = { ...merged.global, ...config.global };
     }
 
-    // 合并插件配置
+    // Merge plugin configuration
     if (config.plugins) {
       merged.plugins = { ...merged.plugins, ...config.plugins };
     }
 
-    // 合并其他选项
+    // Merge other options
     if (config.debug !== undefined) {
       merged.debug = config.debug;
     }

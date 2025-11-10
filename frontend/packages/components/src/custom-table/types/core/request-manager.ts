@@ -13,34 +13,33 @@
 // limitations under the License.
 
 /**
- * 请求管理相关类型定义
- * 基于 pro-components 的请求取消机制
+ * Request management related type definitions
+ * Based on pro-components request cancellation mechanism
  *
-
  * @date 2025-12-19
  */
 
 /**
- * @name 请求管理器接口
- * @description 管理表格的 HTTP 请求生命周期
+ * @name Request manager interface
+ * @description Manages HTTP request lifecycle for tables
  */
 export interface RequestManager {
-  /** @name 当前活跃的 AbortController */
+  /** @name Currently active AbortController */
   currentController?: AbortController;
 
-  /** @name 取消当前进行中的请求 */
+  /** @name Abort current ongoing request */
   abort: () => void;
 
-  /** @name 创建新的请求控制器 */
+  /** @name Create new request controller */
   createController: () => AbortController;
 
-  /** @name 检查请求是否已被取消 */
+  /** @name Check if request has been aborted */
   isAborted: () => boolean;
 }
 
 /**
- * @name 创建请求管理器
- * @description 工厂函数，创建一个新的请求管理器实例
+ * @name Create request manager
+ * @description Factory function to create a new request manager instance
  */
 export function createRequestManager(): RequestManager {
   let currentController: AbortController | undefined;
@@ -57,10 +56,10 @@ export function createRequestManager(): RequestManager {
     },
 
     createController() {
-      // 取消之前的请求
+      // Cancel previous request
       this.abort();
 
-      // 创建新的控制器
+      // Create new controller
       currentController = new AbortController();
       return currentController;
     },

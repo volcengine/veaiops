@@ -19,22 +19,22 @@ import type {
 } from 'api-generate';
 
 /**
- * 表格列配置函数的参数类型
+ * Parameter type for table column configuration function
  */
 export type TableColumnProps = Record<string, unknown>;
 
 /**
- * 筛选器配置函数的参数类型
+ * Parameter type for filter configuration function
  */
 export type FilterProps = Record<string, unknown>;
 
 /**
- * 操作按钮配置函数的参数类型
+ * Parameter type for action button configuration function
  */
 export type ActionProps = Record<string, unknown>;
 
 /**
- * 任务配置表格配置选项
+ * Task configuration table configuration options
  */
 export interface UseTaskTableConfigOptions {
   onCreate?: () => Promise<boolean>;
@@ -56,7 +56,7 @@ export interface UseTaskTableConfigOptions {
 }
 
 /**
- * 任务配置表格配置返回值
+ * Task configuration table configuration return value
  */
 export interface UseTaskTableConfigReturn {
   dataSource: Record<string, unknown>;

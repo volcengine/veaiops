@@ -14,7 +14,7 @@
 
 import type { ChannelOption, ComparisonOperator } from '../types/rules';
 
-// 比较操作符选项
+// Comparison operator options
 export const COMPARISON_OPERATORS: ComparisonOperator[] = [
   { label: '大于 (>)', value: 'gt' },
   { label: '大于等于 (>=)', value: 'gte' },
@@ -24,7 +24,7 @@ export const COMPARISON_OPERATORS: ComparisonOperator[] = [
   { label: '不等于 (!=)', value: 'ne' },
 ];
 
-// 通知Channel选项
+// Notification Channel options
 export const CHANNEL_OPTIONS: ChannelOption[] = [
   { label: '飞书', value: 'lark' },
   { label: '钉钉', value: 'dingtalk' },
@@ -35,8 +35,8 @@ export const CHANNEL_OPTIONS: ChannelOption[] = [
 ];
 
 /**
- * 获取阈值规则的默认配置
- * 用于创建新规则时的初始值
+ * Get default configuration for threshold rules
+ * Used as initial values when creating new rules
  */
 export const DEFAULT_RULE_CONFIG = {
   threshold_config: {
@@ -67,7 +67,7 @@ export const DEFAULT_RULE_CONFIG = {
 };
 
 /**
- * 获取模板的默认配置
+ * Get default configuration for templates
  */
 export const DEFAULT_TEMPLATE_CONFIG = {
   name: '',
@@ -76,14 +76,14 @@ export const DEFAULT_TEMPLATE_CONFIG = {
 };
 
 /**
- * 注意：MOCK_TEMPLATES 和 MOCK_RULES 已被移除
- * 请使用以下Hook从真实API获取数据：
+ * Note: MOCK_TEMPLATES and MOCK_RULES have been removed
+ * Please use the following Hooks to fetch data from real API:
  *
- * 模板数据：
+ * Template data:
  * import { useMetricTemplates } from '@/hooks/use-api-data';
  * const { data: templates, loading, error, refetch } = useMetricTemplates();
  *
- * 规则数据（需要botId）：
+ * Rule data (requires botId):
  * import { useInterestRules } from '@/hooks/use-api-data';
  * const { data: rules, loading, error, refetch } = useInterestRules(botId);
  */

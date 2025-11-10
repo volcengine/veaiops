@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 卡片模板表格配置统一导出
+ * Card template table configuration unified export
  *
- * 目录结构：
- * - config.tsx  - 表格配置 Hook（460 lines，已拆分）
+ * Directory structure:
+ * - config.tsx  - Table configuration Hook (460 lines, already split)
  */
 
-// ✅ 简化文件名：use-card-template-table-config.tsx → table/config.tsx
+// ✅ Simplified file name: use-card-template-table-config.tsx → table/config.tsx
 export {
   useCardTemplateTableConfig,
   getCardTemplateTableColumns,

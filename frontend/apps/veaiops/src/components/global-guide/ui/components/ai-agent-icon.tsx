@@ -22,8 +22,8 @@ interface AIAgentIconProps {
 }
 
 /**
- * 统一的AI Agent图标组件
- * 使用语义化的机器人图标，替代emoji和base64图片
+ * Unified AI Agent icon component
+ * Uses semantic robot icon, replacing emoji and base64 images
  */
 export const AIAgentIcon: React.FC<AIAgentIconProps> = ({
   size = 28,

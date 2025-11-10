@@ -13,26 +13,26 @@
 // limitations under the License.
 
 /**
- * 插件系统核心类型定义 - 统一导出
+ * Plugin system core type definitions - unified export
  */
 
-// 基础类型和枚举
+// Base types and enums
 export * from './base';
 
-// 插件基础配置
+// Plugin base configuration
 export * from './config';
 
-// 状态和辅助类型
+// State and helper types
 export * from './state';
 
-// 插件Props和上下文
+// Plugin Props and context
 export * from './context';
 
-// 插件接口定义
+// Plugin interface definitions
 export * from './plugin';
 
-// 插件管理器类型
+// Plugin manager types
 export * from './manager';
 
-// 工具类型
+// Utility types
 export * from './utils';

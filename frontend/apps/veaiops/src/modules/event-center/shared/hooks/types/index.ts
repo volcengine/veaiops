@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 事件中心Hooks类型定义导出
+ * Event Center Hooks type definitions export
  */
 
 export * from './drawer-management';

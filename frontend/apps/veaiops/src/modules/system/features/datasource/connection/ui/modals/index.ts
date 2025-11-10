@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 弹窗相关组件导出
+ * Modal related component exports
  */
 
 export { CreateConnectionModal } from './create-connection-modal';

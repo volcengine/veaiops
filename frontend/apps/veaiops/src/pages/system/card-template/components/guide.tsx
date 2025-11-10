@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 卡片模版管理引导页面
+ * Card template management guide page
 
  */
 
@@ -28,7 +28,7 @@ interface CardTemplateGuideProps {
 }
 
 /**
- * 卡片模版管理引导组件
+ * Card template management guide component
  */
 export const CardTemplateGuide: React.FC<CardTemplateGuideProps> = ({
   visible,

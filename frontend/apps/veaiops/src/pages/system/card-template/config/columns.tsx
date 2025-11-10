@@ -14,6 +14,7 @@
 
 /**
  * Card template management table column configuration
+
  */
 
 import { AGENT_TYPE_MAP } from '@/pages/event-center/card-template/types';
@@ -25,12 +26,10 @@ import {
   Tooltip,
 } from '@arco-design/web-react';
 import { IconCopy, IconDelete, IconEdit } from '@arco-design/web-react/icon';
-import { CellRender } from '@veaiops/components';
+import { CustomOutlineTag } from '@veaiops/components';
 // ✅ Fix: Directly use AgentTemplate type from api-generate (single source of truth principle)
 import { CHANNEL_OPTIONS } from '@veaiops/constants';
 import type { AgentTemplate } from 'api-generate';
-
-const { CustomOutlineTag, StampTime } = CellRender;
 
 interface ColumnProps {
   onEdit?: (record: AgentTemplate) => Promise<boolean>;
@@ -142,14 +141,24 @@ export const getCardTemplateColumns = (props: ColumnProps) => {
       dataIndex: 'created_at',
       key: 'created_at',
       width: 180,
-      render: (text: string) => <StampTime time={text} />,
+      render: (text: string) => {
+        if (!text) {
+          return '-';
+        }
+        return new Date(text).toLocaleString('zh-CN');
+      },
     },
     {
       title: '更新时间',
       dataIndex: 'updated_at',
       key: 'updated_at',
       width: 180,
-      render: (text: string) => <StampTime time={text} />,
+      render: (text: string) => {
+        if (!text) {
+          return '-';
+        }
+        return new Date(text).toLocaleString('zh-CN');
+      },
     },
     {
       title: '操作',

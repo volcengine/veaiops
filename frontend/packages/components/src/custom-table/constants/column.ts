@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 表格列相关常量定义
+ * Table column-related constant definitions
 
  *
  */
 
 /**
- * 列常量
+ * Column constants
  */
 export const ColumnConstant = {
   SELECT_ALL: 'selectAll',
@@ -27,9 +27,9 @@ export const ColumnConstant = {
 } as const;
 
 /**
- * 空内容占位符
+ * Empty content placeholder
  */
 export const EMPTY_CONTENT = '--';
 
-// 注意：ColumnConstantType 未使用，已移除
+// Note: ColumnConstantType is unused and has been removed
 // export type ColumnConstantType = typeof ColumnConstant;

@@ -50,10 +50,10 @@ interface HandleFrontendFeatureClickParams {
 }
 
 /**
- * Frontend interaction related Hook
- * Handles frontend feature click and other interaction logic
+ * Hook for frontend interactions
+ * Handles frontend feature clicks and other interaction logic
  *
- * This Hook combines multiple sub-hooks:
+ * This Hook combines multiple sub-Hooks:
  * - useFeatureActions: Feature actions (highlight guide, direct trigger)
  * - usePrerequisiteSteps: Prerequisite steps handling
  */
@@ -95,7 +95,7 @@ export const useFrontendInteraction = () => {
         if (featureId === 'new-datasource') {
           // Only add dataSourceWizardShow=true for new datasource, and remove connectDrawerShow
           const params = new URLSearchParams(currentSearch);
-          params.delete('connectDrawerShow'); // Remove connection management drawer parameter
+          params.delete('connectDrawerShow'); // Remove connection drawer parameter
           params.set('dataSourceWizardShow', 'true');
           finalTargetRoute = `/system/datasource?${params.toString()}`;
         } else if (
@@ -114,7 +114,7 @@ export const useFrontendInteraction = () => {
           featureId === 'edit-datasource' ||
           featureId === 'toggle-datasource'
         ) {
-          // Delete, edit, enable/disable datasource don't add dataSourceWizardShow parameter
+          // Delete, edit, enable/disable datasource: do not add dataSourceWizardShow parameter
           finalTargetRoute = '/system/datasource';
         }
 
@@ -138,9 +138,9 @@ export const useFrontendInteraction = () => {
               success: true,
             });
 
-            // Intelligently wait for page to load before highlighting
+            // Intelligently wait for page to load before showing highlight
             waitForPageReady({ maxWaitTime: 1500 }).then(() => {
-              // Only show highlight and guide tooltip when tooltipContent exists
+              // Only show highlight and guide tip if tooltipContent exists
               if (tooltipContent) {
                 highlightAndGuide({
                   selector,
@@ -187,7 +187,7 @@ export const useFrontendInteraction = () => {
             success: true,
           });
 
-          // Only show highlight and guide tooltip when tooltipContent exists
+          // Only show highlight and guide tip if tooltipContent exists
           if (tooltipContent) {
             highlightAndGuide({
               selector,
@@ -244,7 +244,7 @@ export const useFrontendInteraction = () => {
               currentStepConfig,
             });
 
-            // After prerequisite steps complete, continue executing main feature
+            // After prerequisite steps complete, continue with main feature
             executeMainFeature({
               featureId,
               selector,

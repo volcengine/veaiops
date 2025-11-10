@@ -18,7 +18,7 @@ import { getFieldTranslation } from '../../utils/field-translation';
 const { Text } = Typography;
 
 /**
- * 配置键标签组件
+ * Configuration key label component
  */
 export const ConfigKeyLabel = ({ key: configKey }: { key: string }) => {
   const displayKey = getFieldTranslation(configKey) || configKey;

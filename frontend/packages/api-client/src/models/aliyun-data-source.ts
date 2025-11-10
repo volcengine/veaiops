@@ -17,19 +17,19 @@ import type { DataSource } from './data-source';
 export type AliyunDataSource = (DataSource & {
   config?: {
     /**
-     * 阿里云AccessKey ID
+     * Alibaba Cloud AccessKey ID
      */
     access_key_id?: string;
     /**
-     * 阿里云AccessKey Secret
+     * Alibaba Cloud AccessKey Secret
      */
     access_key_secret?: string;
     /**
-     * 阿里云地域
+     * Alibaba Cloud region
      */
     region: string;
     /**
-     * 服务端点
+     * Service endpoint
      */
     endpoint?: string;
   };

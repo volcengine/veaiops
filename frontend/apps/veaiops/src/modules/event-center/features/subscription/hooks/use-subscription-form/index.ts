@@ -21,7 +21,7 @@ import type {
   UseSubscriptionFormReturn,
 } from './types';
 
-// 导出类型
+// Export types
 export type {
   StrategyIdItem,
   UseSubscriptionFormConfig,
@@ -29,21 +29,21 @@ export type {
   WebhookHeader,
 } from './types';
 
-// 导出工具函数（供其他模块使用）
+// Export utility functions (for use by other modules)
 export { normalizeStrategyIds } from './strategy-id-normalizer';
 export { createDefaultTimeRange, parseTimeRange } from './time-range-utils';
 
 /**
- * 订阅表单管理Hook
+ * Subscription form management Hook
  *
- * 提供订阅表单的完整状态管理和交互逻辑，包括：
- * - 表单初始化（新建/编辑模式）
- * - 数据规范化处理
- * - 表单提交处理
- * - 加载状态管理
+ * Provides complete state management and interaction logic for subscription forms, including:
+ * - Form initialization (new/edit mode)
+ * - Data normalization
+ * - Form submission handling
+ * - Loading state management
  *
- * @param config - Hook配置参数
- * @returns Hook返回值
+ * @param config - Hook configuration parameters
+ * @returns Hook return value
  *
  * @example
  * ```tsx
@@ -62,24 +62,24 @@ export { createDefaultTimeRange, parseTimeRange } from './time-range-utils';
  *       enableWebhook
  *     );
  *
- *     // 可以根据返回值执行后续操作
+ *     // Can perform subsequent operations based on return value
  *     if (success) {
- *       // 提交成功，可以执行其他操作
+ *       // Submission successful, can perform other operations
  *     } else {
- *       // 提交失败
+ *       // Submission failed
  *     }
  *   };
  *
  *   return (
  *     <Drawer visible={visible}>
  *       <Form form={form}>
- *         // ... 表单字段
+ *         // ... form fields
  *       </Form>
  *       <Button
  *         loading={loading}
  *         onClick={handleFormSubmit}
  *       >
- *         提交
+ *         Submit
  *       </Button>
  *     </Drawer>
  *   );
@@ -87,33 +87,33 @@ export { createDefaultTimeRange, parseTimeRange } from './time-range-utils';
  * ```
  *
  * @remarks
- * 这个Hook会在以下情况下重新初始化表单：
- * - visible 状态变化
- * - initialData 变化
- * - moduleType 变化
+ * This Hook will reinitialize the form in the following cases:
+ * - visible state changes
+ * - initialData changes
+ * - moduleType changes
  *
- * @see {@link UseSubscriptionFormConfig} 配置参数详情
- * @see {@link UseSubscriptionFormReturn} 返回值详情
+ * @see {@link UseSubscriptionFormConfig} Configuration parameter details
+ * @see {@link UseSubscriptionFormReturn} Return value details
  */
 export const useSubscriptionForm = ({
   visible,
   initialData,
   moduleType,
 }: UseSubscriptionFormConfig): UseSubscriptionFormReturn => {
-  // 创建表单实例
+  // Create form instance
   const [form] = Form.useForm();
-  // 提交加载状态
+  // Submission loading state
   const [loading, setLoading] = useState(false);
 
-  // 表单初始化：当弹窗显示或数据变化时
-  // 🔧 注意：form 实例是稳定的（由 Form.useForm() 创建），在整个组件生命周期内引用不变
+  // Form initialization: when modal is shown or data changes
+  // 🔧 Note: form instance is stable (created by Form.useForm()), reference remains unchanged throughout component lifecycle
   useEffect(() => {
     if (visible) {
       initializeForm(form, initialData, moduleType);
     }
   }, [visible, initialData, moduleType]);
 
-  // 创建提交处理函数
+  // Create submission handler function
   const handleSubmit = createSubmitHandler(form, setLoading);
 
   return {

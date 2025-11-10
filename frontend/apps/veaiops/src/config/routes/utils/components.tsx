@@ -16,8 +16,8 @@ import { Spin } from '@arco-design/web-react';
 import React, { memo, useMemo } from 'react';
 
 /**
- * 路由加载状态组件
- * 使用 memo 优化性能，避免不必要的重新渲染
+ * Route loading state component
+ * Uses memo to optimize performance and avoid unnecessary re-renders
  */
 export const RouteLoadingFallback: React.FC = memo(() => {
   const containerStyle = useMemo(
@@ -47,8 +47,8 @@ export const RouteLoadingFallback: React.FC = memo(() => {
 RouteLoadingFallback.displayName = 'RouteLoadingFallback';
 
 /**
- * 路由错误边界组件
- * 提供更好的错误处理和用户体验
+ * Route error boundary component
+ * Provides better error handling and user experience
  */
 export class RouteErrorBoundary extends React.Component<
   {
@@ -75,12 +75,12 @@ export class RouteErrorBoundary extends React.Component<
   private readonly maxRetries: number = 3;
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // 发送错误报告到监控系统
+    // Send error report to monitoring system
     this.reportError(error, errorInfo);
   }
 
   private reportError = (error: Error, errorInfo: React.ErrorInfo) => {
-    // 这里可以集成错误监控服务，如 Sentry
+    // Can integrate error monitoring service here, such as Sentry
     if (typeof window !== 'undefined' && (window as any).reportError) {
       (window as any).reportError({
         type: 'RouteError',
@@ -219,7 +219,7 @@ export class RouteErrorBoundary extends React.Component<
 
   render(): React.ReactNode {
     if (this.state.hasError) {
-      // 如果提供了自定义错误组件，使用它
+      // If custom error component is provided, use it
       if (this.props.fallback) {
         const FallbackComponent = this.props.fallback;
         return React.createElement(FallbackComponent, {

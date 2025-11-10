@@ -13,18 +13,18 @@
 // limitations under the License.
 
 /**
- * 页面路径配置
+ * Page path configuration
  *
- * 统一管理所有路由页面的导入路径，实现配置化管理
- * 参考 Modern.js 源码的配置化方式，将路径抽取为配置
+ * Unified management of all route page import paths, implementing configuration-based management
+ * Reference Modern.js source code's configuration approach, extracting paths as configuration
  *
- * 使用规范：
- * - 所有页面路径必须在此配置文件中定义
- * - 使用路径别名（@/pages/*）替代相对路径
- * - 路径配置按模块分组，便于维护
+ * Usage guidelines:
+ * - All page paths must be defined in this configuration file
+ * - Use path aliases (@/pages/*) instead of relative paths
+ * - Path configurations grouped by module for easier maintenance
  */
 
-// 系统管理模块页面路径
+// System management module page paths
 export const SYSTEM_PAGES_PATH = {
   Monitor: '@/pages/system/datasource',
   Account: '@/pages/system/account',
@@ -33,7 +33,7 @@ export const SYSTEM_PAGES_PATH = {
   CardTemplate: '@/pages/system/card-template',
 } as const;
 
-// 智能阈值模块页面路径
+// Intelligent threshold module page paths
 export const THRESHOLD_PAGES_PATH = {
   Config: '@/pages/threshold/config',
   History: '@/pages/threshold/history',
@@ -41,7 +41,7 @@ export const THRESHOLD_PAGES_PATH = {
   Subscription: '@/pages/threshold/subscription',
 } as const;
 
-// 事件中心模块页面路径
+// Event center module page paths
 export const EVENT_CENTER_PAGES_PATH = {
   History: '@/pages/event-center/history',
   Statistics: '@/pages/event-center/statistics',
@@ -49,7 +49,7 @@ export const EVENT_CENTER_PAGES_PATH = {
   SubscribeRelation: '@/pages/event-center/subscribe-relation',
 } as const;
 
-// Oncall异动模块页面路径
+// Oncall alerts module page paths
 export const ONCALL_PAGES_PATH = {
   Config: '@/pages/oncall/config',
   History: '@/pages/oncall/history',
@@ -57,20 +57,20 @@ export const ONCALL_PAGES_PATH = {
   Statistics: '@/pages/oncall/statistics',
 } as const;
 
-// 统计模块页面路径
+// Statistics module page paths
 export const STATISTICS_PAGES_PATH = {
   Overview: '@/pages/statistics/overview',
 } as const;
 
-// 通用页面路径
+// Common page paths
 export const COMMON_PAGES_PATH = {
   Login: '@/pages/auth/login',
   NotFound: '@/pages/common/not-found',
 } as const;
 
 /**
- * 页面路径配置映射
- * 用于统一管理和访问所有页面路径
+ * Page path configuration mapping
+ * Used for unified management and access to all page paths
  */
 export const PAGES_PATH_CONFIG = {
   system: SYSTEM_PAGES_PATH,

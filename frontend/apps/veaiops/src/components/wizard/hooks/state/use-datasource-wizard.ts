@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源向导主Hook
- * @description 组合各个子Hook，提供统一的向导管理接口
+ * Data source wizard main Hook
+ * @description Combines various sub-Hooks to provide a unified wizard management interface
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -30,11 +30,11 @@ import { useAliyunState } from './use-aliyun-state';
 import { useWizardState } from './use-wizard-state';
 
 /**
- * 数据源向导主Hook
- * @description 整合所有子Hook，提供完整的向导功能
+ * Data source wizard main Hook
+ * @description Integrates all sub-Hooks to provide complete wizard functionality
  */
 export const useDataSourceWizard = () => {
-  // 基础状态管理
+  // Basic state management
   const {
     state,
     setState,
@@ -51,14 +51,14 @@ export const useDataSourceWizard = () => {
     setVolcengineSearchText,
   } = useWizardState();
 
-  // 连接管理
+  // Connection management
   const { fetchConnects } = useConnectOperations(
     state,
     setState,
     updateLoading,
   );
 
-  // Zabbix操作
+  // Zabbix operations
   const {
     fetchZabbixTemplates,
     setSelectedTemplate,
@@ -69,7 +69,7 @@ export const useDataSourceWizard = () => {
     fetchZabbixItems,
   } = useZabbixOperations(state, setState, updateLoading);
 
-  // 阿里云操作
+  // Aliyun operations
   const {
     fetchAliyunProjects,
     setSelectNamespace,
@@ -81,7 +81,7 @@ export const useDataSourceWizard = () => {
     setAliyunRegion,
   } = useAliyunOperations(state, setState, updateLoading);
 
-  // 火山引擎操作
+  // Volcengine operations
   const {
     fetchVolcengineProducts,
     setSelectedProduct,
@@ -96,13 +96,13 @@ export const useDataSourceWizard = () => {
     setVolcengineRegion,
   } = useVolcengineOperations(state, setState, updateLoading);
 
-  // 数据源创建
+  // Data source creation
   const { createDataSource } = useDataSourceCreation(state, updateLoading);
 
-  // 组合所有操作为统一的actions对象
+  // Combine all operations into a unified actions object
   const actions: WizardActions = useMemo(
     () => ({
-      // 基础操作
+      // Basic operations
       setCurrentStep,
       setDataSourceType,
       setSelectedConnect,
@@ -111,10 +111,10 @@ export const useDataSourceWizard = () => {
       setEditingDataSourceId,
       resetWizard,
 
-      // 连接操作
+      // Connection operations
       fetchConnects,
 
-      // Zabbix操作
+      // Zabbix operations
       fetchZabbixTemplates,
       setSelectedTemplate,
       fetchZabbixMetrics,
@@ -124,7 +124,7 @@ export const useDataSourceWizard = () => {
       fetchZabbixItems,
       setZabbixSearchText,
 
-      // 阿里云操作
+      // Aliyun operations
       fetchAliyunProjects,
       setSelectNamespace,
       fetchAliyunMetrics,
@@ -135,7 +135,7 @@ export const useDataSourceWizard = () => {
       setAliyunRegion,
       setAliyunSearchText,
 
-      // 火山引擎操作
+      // Volcengine operations
       fetchVolcengineProducts,
       setSelectedProduct,
       fetchVolcengineSubNamespaces,
@@ -149,11 +149,11 @@ export const useDataSourceWizard = () => {
       setVolcengineRegion,
       setVolcengineSearchText,
 
-      // 数据源创建
+      // Data source creation
       createDataSource,
     }),
     [
-      // 基础操作依赖
+      // Basic operation dependencies
       setCurrentStep,
       setDataSourceType,
       setSelectedConnect,
@@ -162,10 +162,10 @@ export const useDataSourceWizard = () => {
       setEditingDataSourceId,
       resetWizard,
 
-      // 连接操作依赖
+      // Connection operation dependencies
       fetchConnects,
 
-      // Zabbix操作依赖
+      // Zabbix operation dependencies
       fetchZabbixTemplates,
       setSelectedTemplate,
       fetchZabbixMetrics,
@@ -175,7 +175,7 @@ export const useDataSourceWizard = () => {
       fetchZabbixItems,
       setZabbixSearchText,
 
-      // 阿里云操作依赖
+      // Aliyun operation dependencies
       fetchAliyunProjects,
       setSelectNamespace,
       fetchAliyunMetrics,
@@ -186,7 +186,7 @@ export const useDataSourceWizard = () => {
       setAliyunRegion,
       setAliyunSearchText,
 
-      // 火山引擎操作依赖
+      // Volcengine operation dependencies
       fetchVolcengineProducts,
       setSelectedProduct,
       fetchVolcengineSubNamespaces,
@@ -200,7 +200,7 @@ export const useDataSourceWizard = () => {
       setVolcengineRegion,
       setVolcengineSearchText,
 
-      // 数据源创建依赖
+      // Data source creation dependency
       createDataSource,
     ],
   );

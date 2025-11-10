@@ -15,7 +15,7 @@
 import type { ListIntelligentThresholdTaskRequest } from "api-generate";
 
 /**
- * 前端分页请求类型 - 与 API 的 skip/limit 对应
+ * Frontend pagination request type - corresponds to API's skip/limit
  */
 export interface PageRequest {
   skip: number;
@@ -23,7 +23,7 @@ export interface PageRequest {
 }
 
 /**
- * 查询参数类型定义 - 前端内部使用
+ * Query parameters type definition - for internal frontend use
  */
 export interface TaskQueryParams {
   datasource_type?: ListIntelligentThresholdTaskRequest["datasource_type"];
@@ -38,7 +38,7 @@ export interface TaskQueryParams {
 }
 
 /**
- * 数据源配置载荷类型 - 前端内部使用
+ * Data source configuration payload type - for internal frontend use
  */
 export interface DataSourcePayload {
   projects?: string[];

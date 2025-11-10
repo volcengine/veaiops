@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 项目详情抽屉类型定义
+ * Project detail drawer type definitions
  */
 
-// 直接使用 api-generate 中的 Project 类型
+// Directly use Project type from api-generate
 export type { Project } from 'api-generate';

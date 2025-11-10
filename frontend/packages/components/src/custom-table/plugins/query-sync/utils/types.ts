@@ -15,7 +15,7 @@
 import type { QuerySyncConfig, QuerySyncContext } from '@/custom-table/types';
 
 /**
- * 执行原生URL更新的参数接口
+ * Parameter interface for performing native URL updates
  */
 export interface PerformNativeUrlUpdateParams {
   newUrl: string;
@@ -24,7 +24,7 @@ export interface PerformNativeUrlUpdateParams {
 }
 
 /**
- * 根据指定的键过滤空数据的参数接口
+ * Parameter interface for filtering empty data by specified keys
  */
 export interface FilterEmptyDataByKeysParams<
   T extends Record<string, unknown>,
@@ -34,7 +34,7 @@ export interface FilterEmptyDataByKeysParams<
 }
 
 /**
- * 创建查询参数同步工具实例的参数接口
+ * Parameter interface for creating query parameter synchronization utility instance
  */
 export interface CreateQuerySyncUtilsParams<
   QueryType extends Record<string, unknown> = Record<string, unknown>,

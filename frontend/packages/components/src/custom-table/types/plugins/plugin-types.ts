@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 插件系统精确类型定义
- * 替代 any 类型，提供更安全的类型约束
+ * Plugin system precise type definitions
+ * Replace any types, provide safer type constraints
  */
 
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
@@ -22,58 +22,58 @@ import type { ReactNode } from 'react';
 import type { PluginContext } from './core';
 
 /**
- * 插件配置基础接口
+ * Plugin configuration base interface
  */
 export interface PluginConfigBase {
-  /** 插件名称 */
+  /** Plugin name */
   name: string;
-  /** 插件版本 */
+  /** Plugin version */
   version: string;
-  /** 是否启用 */
+  /** Whether enabled */
   enabled?: boolean;
-  /** 插件优先级 */
+  /** Plugin priority */
   priority?: number;
-  /** 依赖插件列表 */
+  /** Dependency plugin list */
   dependencies?: string[];
 }
 
 /**
- * 插件注册信息
+ * Plugin registration information
  */
 export interface PluginRegistration<
   Config extends PluginConfigBase = PluginConfigBase,
 > {
-  /** 插件唯一标识 */
+  /** Plugin unique identifier */
   id: string;
-  /** 插件配置 */
+  /** Plugin configuration */
   config: Config;
-  /** 插件状态 */
+  /** Plugin status */
   status: 'registered' | 'installed' | 'active' | 'inactive' | 'error';
-  /** 错误信息 */
+  /** Error information */
   error?: Error;
 }
 
 /**
- * 插件验证结果
+ * Plugin validation result
  */
 export interface PluginValidationResult {
-  /** 是否有效 */
+  /** Whether valid */
   isValid: boolean;
-  /** 错误消息 */
+  /** Error messages */
   errors: string[];
-  /** 警告消息 */
+  /** Warning messages */
   warnings: string[];
 }
 
 /**
- * 排序后的插件集合
+ * Sorted plugin collection
  */
 export interface SortedPlugins<
   Config extends PluginConfigBase = PluginConfigBase,
 > {
-  /** 按优先级排序的插件列表 */
+  /** Plugin list sorted by priority */
   plugins: PluginRegistration<Config>[];
-  /** 排序元数据 */
+  /** Sort metadata */
   metadata: {
     totalCount: number;
     activeCount: number;
@@ -82,14 +82,14 @@ export interface SortedPlugins<
 }
 
 /**
- * 插件冲突检测结果
+ * Plugin conflict detection result
  */
 export interface PluginConflictResult<
   Config extends PluginConfigBase = PluginConfigBase,
 > {
-  /** 是否存在冲突 */
+  /** Whether conflicts exist */
   hasConflicts: boolean;
-  /** 冲突的插件对 */
+  /** Conflicting plugin pairs */
   conflicts: Array<{
     plugin1: PluginRegistration<Config>;
     plugin2: PluginRegistration<Config>;
@@ -98,42 +98,42 @@ export interface PluginConflictResult<
 }
 
 /**
- * 插件依赖检查结果
+ * Plugin dependency check result
  */
 export interface PluginDependencyResult<
   Config extends PluginConfigBase = PluginConfigBase,
 > {
-  /** 是否满足所有依赖 */
+  /** Whether all dependencies are met */
   allDependenciesMet: boolean;
-  /** 缺失的依赖 */
+  /** Missing dependencies */
   missingDependencies: Array<{
     plugin: PluginRegistration<Config>;
     missingDeps: string[];
   }>;
-  /** 依赖关系图 */
+  /** Dependency graph */
   dependencyGraph: Map<string, string[]>;
 }
 
 /**
- * 类型安全的插件工具函数接口
+ * Type-safe plugin utility function interface
  */
 export interface TypeSafePluginUtils {
   /**
-   * 验证插件配置
+   * Validate plugin configuration
    */
   validatePluginConfig: <Config extends PluginConfigBase>(
     plugin: PluginRegistration<Config>,
   ) => PluginValidationResult;
 
   /**
-   * 按优先级排序插件
+   * Sort plugins by priority
    */
   sortPluginsByPriority: <Config extends PluginConfigBase>(
     plugins: PluginRegistration<Config>[],
   ) => SortedPlugins<Config>;
 
   /**
-   * 检测插件冲突
+   * Detect plugin conflicts
    */
   detectPluginConflicts: <Config extends PluginConfigBase>(
     plugin: PluginRegistration<Config>,
@@ -141,7 +141,7 @@ export interface TypeSafePluginUtils {
   ) => PluginConflictResult<Config>;
 
   /**
-   * 检查插件依赖
+   * Check plugin dependencies
    */
   checkPluginDependencies: <Config extends PluginConfigBase>(
     plugin: PluginRegistration<Config>,
@@ -150,23 +150,23 @@ export interface TypeSafePluginUtils {
 }
 
 /**
- * 插件渲染器参数类型
+ * Plugin renderer parameter types
  */
 export interface PluginRenderParams<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
   ExtraProps extends Record<string, unknown> = Record<string, unknown>,
 > {
-  /** 插件上下文 */
+  /** Plugin context */
   context: PluginContext<RecordType, QueryType>;
-  /** 额外属性 */
+  /** Extra properties */
   extraProps?: ExtraProps;
-  /** 子节点 */
+  /** Children nodes */
   children?: ReactNode;
 }
 
 /**
- * 插件渲染函数类型
+ * Plugin render function type
  */
 export type PluginRenderFunction<
   RecordType extends BaseRecord = BaseRecord,
@@ -177,7 +177,7 @@ export type PluginRenderFunction<
 ) => ReactNode;
 
 /**
- * 插件回调函数类型
+ * Plugin callback function type
  */
 export type PluginCallback<
   Args extends unknown[] = unknown[],
@@ -185,28 +185,28 @@ export type PluginCallback<
 > = (...args: Args) => ReturnType;
 
 /**
- * 插件事件监听器类型
+ * Plugin event listener type
  */
 export interface PluginEventListener<EventData = unknown> {
-  /** 事件名称 */
+  /** Event name */
   eventName: string;
-  /** 监听器函数 */
+  /** Listener function */
   listener: (eventData: EventData) => void;
-  /** 是否只监听一次 */
+  /** Whether to listen only once */
   once?: boolean;
 }
 
 /**
- * 插件钩子配置
+ * Plugin hook configuration
  */
 export interface PluginHookConfig<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 钩子名称 */
+  /** Hook name */
   hookName: string;
-  /** 钩子函数 */
+  /** Hook function */
   hook: PluginCallback<[PluginContext<RecordType, QueryType>], void>;
-  /** 执行优先级 */
+  /** Execution priority */
   priority?: number;
 }

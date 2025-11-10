@@ -13,15 +13,14 @@
 // limitations under the License.
 
 /**
- * 卡片模版管理相关类型定义
-
+ * Card template management related type definitions
  */
 
-// 导入生成的API类型
+// Import generated API types
 import type { AgentTemplate, ChannelType } from 'api-generate';
 
 /**
- * Agent类型枚举 - 基于生成的API类型
+ * Agent type enumeration - based on generated API types
  */
 export type AgentType = 'CHATOPS' | 'INTELLIGENT_THRESHOLD' | 'ONCALL';
 
@@ -48,17 +47,17 @@ export const AGENT_TYPE_OPTIONS = [
   },
 ];
 
-// 原有的过滤选项（排除智能阈值Agent）- 用于某些场景
+// Original filter options (excluding intelligent threshold Agent) - used in certain scenarios
 export const AGENT_OPTIONS_FILTER = AGENT_TYPE_OPTIONS.filter(
   (item) => item.value !== 'intelligent_threshold_agent',
 );
 
-// 仅智能阈值Agent选项 - 用于智能阈值模块
+// Only intelligent threshold Agent options - used in intelligent threshold module
 export const AGENT_OPTIONS_THRESHOLD_FILTER = AGENT_TYPE_OPTIONS.filter(
   (item) => item.value === 'intelligent_threshold_agent',
 );
 
-// 事件中心订阅管理：仅 内容识别Agent 和 智能阈值Agent
+// Event center subscription management: only content recognition Agent and intelligent threshold Agent
 export const AGENT_OPTIONS_EVENT_CENTER_SUBSCRIPTION =
   AGENT_TYPE_OPTIONS.filter(
     (item) =>
@@ -66,17 +65,17 @@ export const AGENT_OPTIONS_EVENT_CENTER_SUBSCRIPTION =
       item.value === 'intelligent_threshold_agent',
   );
 
-// Oncall订阅管理：仅 内容识别Agent
+// Oncall subscription management: only content recognition Agent
 export const AGENT_OPTIONS_ONCALL_SUBSCRIPTION = AGENT_TYPE_OPTIONS.filter(
   (item) => item.value === 'chatops_interest_agent',
 );
 
-// Oncall历史事件：内容识别、被动回复、主动回复Agent（排除智能阈值）
+// Oncall history events: content recognition, passive reply, active reply Agents (excluding intelligent threshold)
 export const AGENT_OPTIONS_ONCALL_HISTORY = AGENT_TYPE_OPTIONS.filter(
   (item) => item.value !== 'intelligent_threshold_agent',
 );
 
-// 事件中心历史事件：所有Agent类型
+// Event center history events: all Agent types
 export const AGENT_OPTIONS_EVENT_CENTER_HISTORY = AGENT_TYPE_OPTIONS;
 
 export const AGENT_TYPE_MAP = AGENT_TYPE_OPTIONS.reduce(
@@ -88,47 +87,47 @@ export const AGENT_TYPE_MAP = AGENT_TYPE_OPTIONS.reduce(
 );
 
 /**
- * Agent模版记录接口 - 扩展生成的API类型
+ * Agent template record interface - extends generated API types
  */
 export interface AgentTemplateRecord extends AgentTemplate {
-  [key: string]: unknown; // 添加索引签名以满足BaseRecord约束
+  [key: string]: unknown; // Add index signature to satisfy BaseRecord constraint
 }
 
 /**
- * Agent模版查询参数
+ * Agent template query parameters
  */
 export interface AgentTemplateQuery {
-  /** Agent类型筛选 */
+  /** Agent type filter */
   agents?: string[];
-  /** 通道类型筛选 */
+  /** Channel type filter */
   channels?: ChannelType[];
-  /** 模版ID搜索 */
+  /** Template ID search */
   templateId?: string;
-  /** 模版名称搜索 */
+  /** Template name search */
   name?: string;
-  /** 是否启用 */
+  /** Whether enabled */
   is_active?: boolean;
-  /** 创建时间范围 */
+  /** Creation time range */
   createTimeRanges?: number[];
-  /** 分页参数 */
+  /** Pagination parameters */
   skip?: number;
-  /** 每页大小 */
+  /** Page size */
   limit?: number;
 }
 
 /**
- * 引导步骤类型
+ * Guide step type
  */
 export interface GuideStep {
-  /** 步骤标题 */
+  /** Step title */
   title: string;
-  /** 步骤描述 */
+  /** Step description */
   description: string;
-  /** 步骤图标 */
+  /** Step icon */
   icon?: React.ReactNode;
-  /** 是否完成 */
+  /** Whether completed */
   completed?: boolean;
-  /** 操作按钮 */
+  /** Action button */
   action?: {
     text: string;
     onClick: () => void;

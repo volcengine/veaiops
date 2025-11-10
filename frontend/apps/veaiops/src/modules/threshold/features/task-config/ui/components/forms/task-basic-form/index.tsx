@@ -16,14 +16,14 @@ import { Form } from '@arco-design/web-react';
 import type { FormInstance } from '@arco-design/web-react/es/Form';
 import { logger } from '@veaiops/utils';
 import type React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MetricTemplateForm } from '../../../shared-forms';
 import { useDataSources, useFormInitializer } from './hooks';
 import { BasicInfoFields } from './sections';
 import type { TaskBasicFormProps } from './types';
 
 /**
- * 任务基本信息表单组件
+ * Task basic information form component
  */
 export const TaskBasicForm: React.FC<TaskBasicFormProps> = ({
   form,
@@ -35,36 +35,16 @@ export const TaskBasicForm: React.FC<TaskBasicFormProps> = ({
     form.getFieldValue('datasourceType') || 'Volcengine',
   );
 
-  // 🔍 添加日志：追踪表单字段 datasourceType 的值变化
-  useEffect(() => {
-    const formDatasourceType = form.getFieldValue('datasourceType');
-    logger.info({
-      message: '[TaskBasicForm] 表单字段 datasourceType 值变化',
-      data: {
-        formFieldValue: formDatasourceType,
-        stateValue: datasourceType,
-        valuesMatch: formDatasourceType === datasourceType,
-        timestamp: Date.now(),
-      },
-      source: 'TaskBasicForm',
-      component: 'useEffect_formField',
-    });
-  }, [form, datasourceType]);
-
-  // 数据源配置
+  // Data source configuration
   const { datasourceDataSource, templateDataSource, projectsDataSource } =
     useDataSources(datasourceType);
 
-  // 🔍 添加调试日志：监控 datasourceType 和 datasourceDataSource 的变化
+  // 🔍 Add debug logging: monitor changes in datasourceType and datasourceDataSource
   useEffect(() => {
-    const formDatasourceType = form.getFieldValue('datasourceType');
     logger.info({
-      message:
-        '[TaskBasicForm] datasourceType 状态或 datasourceDataSource 变化',
+      message: '🔍 [TaskBasicForm] datasourceType 或 datasourceDataSource 变化',
       data: {
-        datasourceTypeState: datasourceType,
-        formFieldValue: formDatasourceType,
-        valuesMatch: formDatasourceType === datasourceType,
+        datasourceType,
         datasourceDataSource: datasourceDataSource
           ? {
               api: (datasourceDataSource as any).api,
@@ -80,9 +60,9 @@ export const TaskBasicForm: React.FC<TaskBasicFormProps> = ({
       source: 'TaskBasicForm',
       component: 'useEffect',
     });
-  }, [datasourceType, datasourceDataSource, form]);
+  }, [datasourceType, datasourceDataSource]);
 
-  // 表单初始化
+  // Form initialization
   useFormInitializer({
     form,
     operationType,
@@ -90,57 +70,8 @@ export const TaskBasicForm: React.FC<TaskBasicFormProps> = ({
     setDatasourceType,
   });
 
-  // 🔍 添加日志：追踪传递给 BasicInfoFields 的 props
-  useEffect(() => {
-    const formDatasourceType = form.getFieldValue('datasourceType');
-    logger.info({
-      message: '[TaskBasicForm] 传递给 BasicInfoFields 的 props',
-      data: {
-        datasourceTypeProp: datasourceType,
-        formFieldValue: formDatasourceType,
-        hasDatasourceDataSource: Boolean(datasourceDataSource),
-        datasourceDataSourceApi: datasourceDataSource
-          ? (datasourceDataSource as any).api
-          : undefined,
-        timestamp: Date.now(),
-      },
-      source: 'TaskBasicForm',
-      component: 'useEffect_props',
-    });
-  }, [datasourceType, datasourceDataSource, form]);
-
-  // 🔍 添加日志：表单提交前的值检查
-  const handleFormSubmit = useCallback(
-    async (values: Record<string, unknown>) => {
-      logger.info({
-        message: '[TaskBasicForm] 表单提交前 - 检查表单值',
-        data: {
-          operationType,
-          formValues: values,
-          formFieldDatasourceType: form.getFieldValue('datasourceType'),
-          stateDatasourceType: datasourceType,
-          valuesMatch:
-            form.getFieldValue('datasourceType') === values.datasourceType,
-          allFormValues: form.getFieldsValue(),
-          timestamp: new Date().toISOString(),
-        },
-        source: 'TaskBasicForm',
-        component: 'handleFormSubmit',
-      });
-
-      // 调用实际的 onSubmit
-      return await onSubmit(values);
-    },
-    [form, onSubmit, operationType, datasourceType],
-  );
-
   return (
-    <Form
-      form={form}
-      layout="inline"
-      onSubmit={handleFormSubmit}
-      disabled={loading}
-    >
+    <Form form={form} layout="inline" onSubmit={onSubmit} disabled={loading}>
       <BasicInfoFields
         form={form}
         loading={loading}
@@ -150,7 +81,7 @@ export const TaskBasicForm: React.FC<TaskBasicFormProps> = ({
         templateDataSource={templateDataSource}
         projectsDataSource={projectsDataSource}
       />
-      {/* MetricTemplateForm - 引入外部组件 */}
+      {/* MetricTemplateForm - Import external component */}
       <MetricTemplateForm
         disabled={loading}
         operateType={operationType}

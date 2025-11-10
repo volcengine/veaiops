@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 数据源连接表格配置 Hook
+ * Data source connection table configuration Hook
  *
- * 整合 useBusinessTable 和各个配置 hook
+ * Integrates useBusinessTable and various configuration hooks
  */
 
 import { type OperationWrappers, useBusinessTable } from '@veaiops/components';
@@ -30,8 +30,8 @@ import { useConnectionTableColumns } from '../ui/tables/components/connection-ta
 import { useConnectionTableFilters } from '../ui/tables/components/connection-table-filters';
 
 /**
- * 数据源连接表格配置 Hook
- * 提供完整的表格配置（已集成 useBusinessTable）
+ * Data source connection table configuration Hook
+ * Provides complete table configuration (integrated with useBusinessTable)
  */
 export const useConnectionTableConfig = ({
   type,
@@ -50,13 +50,13 @@ export const useConnectionTableConfig = ({
   onCreateMonitor?: (connection: Connect) => void;
   onRefresh?: () => void;
 }) => {
-  // 🎯 使用工具函数创建本地数据源
+  // 🎯 Use utility function to create local data source
   const dataSource = useMemo(
     () => createLocalDataSource({ dataList: connects, ready: true }),
     [connects],
   );
 
-  // 🎯 使用工具函数创建表格属性
+  // 🎯 Use utility function to create table properties
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
@@ -67,18 +67,18 @@ export const useConnectionTableConfig = ({
     [],
   );
 
-  // 🎯 使用 useBusinessTable 集成所有逻辑（本地数据模式）
+  // 🎯 Use useBusinessTable to integrate all logic (local data mode)
   const { customTableProps } = useBusinessTable({
     dataSource,
     tableProps,
     refreshConfig: {
-      enableRefreshFeedback: false, // 本地数据不需要刷新反馈
+      enableRefreshFeedback: false, // Local data does not need refresh feedback
     },
-    // 🎯 自定义操作包装逻辑，支持复杂场景（这里主要是查看和操作，不需要删除）
+    // 🎯 Custom operation wrapper logic, supports complex scenarios (here mainly viewing and operations, no deletion needed)
     operationWrapper: (_: OperationWrappers) => ({}),
   });
 
-  // 🎯 获取各个配置
+  // 🎯 Get various configurations
   const handleColumns = useConnectionTableColumns({
     type,
     onEdit,

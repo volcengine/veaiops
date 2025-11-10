@@ -18,8 +18,8 @@ import type { SelectBlockState } from '../types/plugin';
 import { defaultFilterOption } from '../util';
 
 /**
- * 返回值构造Hook
- * 负责构造useSelectBlock的最终返回值
+ * Return value construction Hook
+ * Responsible for constructing the final return value of useSelectBlock
  */
 export function useReturnValue({
   currentState,
@@ -58,24 +58,24 @@ export function useReturnValue({
   popupScrollHandler: (event: unknown) => void;
   isDebouncedFetch: boolean;
 }) {
-  // 构造最终返回值
+  // Construct final return value
   return useMemo(
     () => ({
-      // 状态统一从插件管理器获取
+      // State unified from plugin manager
       loading: currentState?.loading || false,
       fetching: currentState?.fetching || false,
       finalOptions,
       finalDefaultValue,
       finalValue,
 
-      // 处理函数
+      // Handler functions
       onSearch,
       handlePaste,
       handleVisibleChange,
       handleClear,
       popupScrollHandler,
 
-      // 过滤选项
+      // Filter options
       filterOption: isDebouncedFetch ? false : defaultFilterOption,
     }),
     [

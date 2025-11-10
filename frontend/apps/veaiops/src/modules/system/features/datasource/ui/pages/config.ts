@@ -17,7 +17,7 @@ import type { DataSourceType } from 'api-generate';
 import type { DataSourceConfig, TableRefMap } from './types';
 
 /**
- * 创建数据源配置列表
+ * Create data source configuration list
  */
 export const createDataSourceConfigs = (handlers: {
   handleDeleteVolcengine: (
@@ -54,7 +54,7 @@ export const createDataSourceConfigs = (handlers: {
 ];
 
 /**
- * 获取对应的 tableRef
+ * Get corresponding tableRef
  */
 export const getTableRef = (
   refKey: DataSourceConfig['tableRefKey'],

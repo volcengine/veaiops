@@ -15,8 +15,8 @@
 import type { MetricType } from "api-generate";
 
 /**
- * MetricType 枚举的中文翻译映射
- * 基于后端 Python 枚举定义
+ * MetricType enum Chinese translation mapping
+ * Based on backend Python enum definition
  */
 export const METRIC_TYPE_TRANSLATIONS: Record<MetricType, string> = {
   SelfDefined: "自定义",
@@ -39,14 +39,14 @@ export const METRIC_TYPE_TRANSLATIONS: Record<MetricType, string> = {
 };
 
 /**
- * 获取 MetricType 的中文翻译
+ * Get Chinese translation for MetricType
  */
 export const getMetricTypeTranslation = (metricType: MetricType): string => {
   return METRIC_TYPE_TRANSLATIONS[metricType] || metricType;
 };
 
 /**
- * 获取所有 MetricType 选项（用于筛选器）
+ * Get all MetricType options (for filters)
  */
 export const getMetricTypeOptions = () => {
   return Object.entries(METRIC_TYPE_TRANSLATIONS).map(([value, label]) => ({

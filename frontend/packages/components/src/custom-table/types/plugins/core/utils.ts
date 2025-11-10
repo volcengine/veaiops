@@ -13,33 +13,33 @@
 // limitations under the License.
 
 /**
- * 插件工具类型定义
+ * Plugin utility type definition
  */
 
 import type { ReactNode } from 'react';
-// 静态导入类型，禁止使用动态 import()
+// Static import types, forbidden to use dynamic import()
 import type { PluginPriority } from '../../core/enums';
 import type { PluginLifecycle } from './base';
 import type { PluginContext } from './context';
 import type { CorePlugin, Plugin } from './plugin';
 
 /**
- * 插件钩子类型
+ * Plugin hook type
  */
 export type PluginHook<T = unknown> = (...args: unknown[]) => T;
 
 /**
- * 插件渲染器类型
+ * Plugin renderer type
  */
 export type PluginRenderer = (...args: unknown[]) => ReactNode;
 
 /**
- * 插件事件监听器类型
+ * Plugin event listener type
  */
 export type PluginEventListener = (...args: unknown[]) => void;
 
 /**
- * 插件配置增强器类型
+ * Plugin props enhancer type
  */
 export type PluginPropsEnhancer = (
   props: Record<string, unknown>,
@@ -47,7 +47,7 @@ export type PluginPropsEnhancer = (
 ) => Record<string, unknown>;
 
 /**
- * 插件数据处理器类型
+ * Plugin data processor type
  */
 export type PluginDataProcessor = (
   data: unknown,
@@ -55,21 +55,21 @@ export type PluginDataProcessor = (
 ) => unknown;
 
 /**
- * 插件工厂函数类型
+ * Plugin factory function type
  */
 export type PluginFactory<Config = Record<string, unknown>> = (
   config?: Config,
 ) => Plugin<Config>;
 
 /**
- * 简化插件工厂函数类型（保持向后兼容）
+ * Simplified plugin factory function type (backward compatible)
  */
 export type CorePluginFactory<Config = Record<string, unknown>> = (
   config?: Partial<Config>,
 ) => CorePlugin<Config> & { config: Config };
 
 /**
- * 插件实例化配置
+ * Plugin instantiation configuration
  */
 export interface PluginInstallConfig {
   priority?: PluginPriority;
@@ -80,7 +80,7 @@ export interface PluginInstallConfig {
 }
 
 /**
- * 插件错误信息
+ * Plugin error information
  */
 export interface PluginError {
   plugin: string;
@@ -90,7 +90,7 @@ export interface PluginError {
 }
 
 /**
- * 插件依赖解析结果
+ * Plugin dependency resolution result
  */
 export interface PluginDependencyResolution {
   resolved: string[];

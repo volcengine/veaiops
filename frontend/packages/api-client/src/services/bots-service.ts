@@ -177,7 +177,7 @@ export class BotsService {
   }
   /**
    * Validate Bot Config
-   * 验证机器人配置与连通性（AppID/Secret、Webhook/Callback、Agent API Base）
+   * Validate bot configuration and connectivity (AppID/Secret, Webhook/Callback, Agent API Base)
    * @returns APIResponseValidateBotResult Validation result
    * @throws ApiError
    */

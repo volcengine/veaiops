@@ -24,7 +24,7 @@ import {
 } from './use-relation-table';
 
 /**
- * 订阅关系表格组件属性接口
+ * Subscription relation table component props interface
  */
 export interface SubscribeRelationTableProps {
   moduleType: ModuleType;
@@ -39,8 +39,8 @@ export interface SubscribeRelationTableProps {
 }
 
 /**
- * 订阅关系表格组件
- * 封装表格的渲染逻辑，提供清晰的接口
+ * Subscription relation table component
+ * Encapsulates table rendering logic, provides clear interface
  */
 export const SubscribeRelationTable: React.FC<SubscribeRelationTableProps> = ({
   moduleType,
@@ -53,19 +53,19 @@ export const SubscribeRelationTable: React.FC<SubscribeRelationTableProps> = ({
   onRefresh,
   loading = false,
 }) => {
-  // 表格配置
+  // Table configuration
   const { dataSource, tableProps } = useSubscribeRelationTableConfig({
     moduleType,
   });
 
-  // 操作按钮配置
+  // Action button configuration
   const { actions: actionButtons } = useSubscribeRelationActionConfig({
     onCreate,
     onRefresh,
     loading,
   });
 
-  // 获取表格列配置
+  // Get table column configuration
   const columns = useTableColumns({
     showModuleTypeColumn,
     customActions,
@@ -75,19 +75,19 @@ export const SubscribeRelationTable: React.FC<SubscribeRelationTableProps> = ({
 
   return (
     <CustomTable
-      // 表格标题
+      // Table title
       title={title}
-      // 数据源配置
+      // Data source configuration
       dataSource={dataSource}
-      // 基础列配置
+      // Base column configuration
       baseColumns={columns}
-      // 过滤器处理函数
+      // Filter handler function
       handleFilters={getSubscribeRelationFilters}
-      // 使用Hook返回的表格属性配置
+      // Use table props configuration returned by Hook
       tableProps={tableProps}
-      // 操作按钮
+      // Action buttons
       actions={actionButtons}
-      // 表格样式
+      // Table style
       tableClassName="subscribe-relation-table"
     />
   );

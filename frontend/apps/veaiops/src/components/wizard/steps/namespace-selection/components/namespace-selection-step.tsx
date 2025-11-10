@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 命名空间选择步骤组件
- * @description 用于选择阿里云命名空间
+ * Namespace selection step component
+ * @description Used for selecting Aliyun namespaces
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -33,7 +33,7 @@ const { Text } = Typography;
 export interface NamespaceSelectionStepProps {
   connect: Connect;
   projects: AliyunProject[];
-  selectNamespace: AliyunProject | null; // 重命名：selectedProject -> selectNamespace
+  selectNamespace: AliyunProject | null; // Renamed: selectedProject -> selectNamespace
   loading: boolean;
   hasAttemptedFetch: boolean;
   actions: WizardActions;
@@ -49,7 +49,7 @@ export const NamespaceSelectionStep: React.FC<NamespaceSelectionStepProps> = ({
 }) => {
   const [searchText, setSearchText] = React.useState('');
 
-  // 组件挂载时获取命名空间列表
+  // Fetch namespace list when component mounts
   useEffect(() => {
     if (
       (connect?.id || connect?._id) &&
@@ -57,7 +57,11 @@ export const NamespaceSelectionStep: React.FC<NamespaceSelectionStepProps> = ({
       !loading &&
       !hasAttemptedFetch
     ) {
-      actions.fetchAliyunProjects((connect.id || connect._id)!);
+      // ✅ Fixed: Remove unnecessary type assertion, use conditional check instead
+      const connectId = connect.id || connect._id;
+      if (connectId) {
+        actions.fetchAliyunProjects(connectId);
+      }
     }
   }, [
     connect?.name,
@@ -67,8 +71,8 @@ export const NamespaceSelectionStep: React.FC<NamespaceSelectionStepProps> = ({
     actions.fetchAliyunProjects,
   ]);
 
-  // 首次加载时，如果没有选中项且有可用命名空间，自动选中第一个
-  // 注意：只有在没有搜索文本时才自动选中，避免搜索时触发自动选中导致循环
+  // On first load, if no item selected and namespaces available, auto-select first one
+  // Note: Only auto-select when no search text, avoid triggering auto-select during search causing loop
   useEffect(() => {
     const hasNoSearch = !searchText.trim();
     if (!selectNamespace && projects.length > 0 && !loading && hasNoSearch) {
@@ -92,7 +96,7 @@ export const NamespaceSelectionStep: React.FC<NamespaceSelectionStepProps> = ({
     actions.setSelectNamespace,
   ]);
 
-  // 过滤命名空间（前端过滤）
+  // Filter namespaces (client-side filtering)
   const filteredProjects = useMemo(() => {
     const trimmedSearch = (searchText || '').trim();
     if (!trimmedSearch) {
@@ -108,14 +112,14 @@ export const NamespaceSelectionStep: React.FC<NamespaceSelectionStepProps> = ({
     );
   }, [projects, searchText]);
 
-  // 验证选中项的有效性：如果有搜索输入，且选中的项不在搜索结果中，清空选中状态
+  // Validate selected item validity: if search input exists and selected item not in search results, clear selection
   useEffect(() => {
     if (!selectNamespace || loading) {
       return;
     }
 
     const trimmedSearch = (searchText || '').trim();
-    // 只有在有搜索文本时才验证，避免无搜索时误清空
+    // Only validate when search text exists, avoid accidentally clearing when no search
     if (!trimmedSearch) {
       return;
     }
@@ -140,7 +144,7 @@ export const NamespaceSelectionStep: React.FC<NamespaceSelectionStepProps> = ({
         component: 'useEffect-validate-selection',
       });
 
-      // setSelectNamespace 支持 null，可以直接清空
+      // setSelectNamespace supports null, can directly clear
       actions.setSelectNamespace(null);
     }
   }, [
@@ -151,7 +155,7 @@ export const NamespaceSelectionStep: React.FC<NamespaceSelectionStepProps> = ({
     actions.setSelectNamespace,
   ]);
 
-  // 将已选中的项放到第一位，方便编辑时快速查看
+  // Put selected item first for quick viewing during editing
   const sortedProjects = [...filteredProjects].sort((a, b) => {
     const aSelected = selectNamespace?.project === a.project;
     const bSelected = selectNamespace?.project === b.project;
@@ -196,7 +200,7 @@ export const NamespaceSelectionStep: React.FC<NamespaceSelectionStepProps> = ({
         中选择一个阿里云命名空间，命名空间定义了监控数据的范围
       </div>
 
-      {/* 搜索框 */}
+      {/* Search box */}
       <div className={styles.searchContainer}>
         <Input
           prefix={<IconSearch />}

@@ -13,16 +13,15 @@
 // limitations under the License.
 
 /**
- * 插件生命周期相关类型定义
+ * Plugin lifecycle related type definitions
  *
-
  * @date 2025-12-19
  */
 
 import type { PluginContext } from './core';
 
 /**
- * 生命周期阶段类型
+ * Lifecycle phase type
  */
 export type LifecyclePhase =
   | 'beforeMount'
@@ -42,7 +41,7 @@ export type LifecyclePhase =
   | 'deactivate';
 
 /**
- * 生命周期执行上下文
+ * Lifecycle execution context
  */
 export interface LifecycleExecutionContext {
   phase: LifecyclePhase;
@@ -53,7 +52,7 @@ export interface LifecycleExecutionContext {
 }
 
 /**
- * 生命周期监听器类型
+ * Lifecycle listener type
  */
 export type LifecycleListener = (
   executionContext: LifecycleExecutionContext,
@@ -63,14 +62,14 @@ export type LifecycleListener = (
 ) => void | Promise<void>;
 
 /**
- * 生命周期回调类型
+ * Lifecycle callback type
  */
 export type LifecycleCallback = (
   context: PluginContext,
 ) => void | Promise<void>;
 
 /**
- * 插件生命周期配置
+ * Plugin lifecycle configuration
  */
 export interface PluginLifecycleConfig {
   beforeMount?: LifecycleCallback;
@@ -87,7 +86,7 @@ export interface PluginLifecycleConfig {
 }
 
 /**
- * 生命周期管理器配置
+ * Lifecycle manager configuration
  */
 export interface LifecycleManagerConfig {
   enableLogging?: boolean;
@@ -109,17 +108,17 @@ export interface LifecycleManagerConfig {
 }
 
 /**
- * CustomTable 生命周期配置
+ * CustomTable lifecycle configuration
  */
 export interface CustomTableLifecycleConfig extends LifecycleManagerConfig {
-  /** 全局生命周期回调 */
+  /** Global lifecycle callbacks */
   global?: PluginLifecycleConfig;
-  /** 插件特定配置 */
+  /** Plugin-specific configuration */
   plugins?: Record<string, PluginLifecycleConfig>;
 }
 
 /**
- * 插件特定生命周期配置
+ * Plugin-specific lifecycle configuration
  */
 export type PluginSpecificLifecycleConfig = Record<
   string,

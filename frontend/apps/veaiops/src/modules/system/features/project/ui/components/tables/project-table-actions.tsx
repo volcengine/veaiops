@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 项目表格操作配置
+ * Project table action configuration
  *
- * 将工具栏操作配置单独抽象出来，提高代码可维护性
+ * Abstract toolbar action configuration separately to improve code maintainability
  */
 
 import { Button } from '@arco-design/web-react';
@@ -23,15 +23,15 @@ import { IconPlus, IconUpload } from '@arco-design/web-react/icon';
 import { useCallback } from 'react';
 
 export interface ProjectTableActionsConfig {
-  /** 新建处理器 */
+  /** Create handler */
   onCreate?: () => void;
-  /** 导入处理器 */
+  /** Import handler */
   onImport?: () => void;
 }
 
 /**
- * 项目表格操作配置 Hook
- * 负责定义工具栏操作按钮
+ * Project table action configuration Hook
+ * Responsible for defining toolbar action buttons
  */
 export const useProjectTableActions = ({
   onCreate,
@@ -48,7 +48,7 @@ export const useProjectTableActions = ({
             onClick={onCreate}
             data-testid="new-project-btn"
           >
-            新建项目
+            Create Project
           </Button>
         ),
         onImport && (
@@ -58,7 +58,7 @@ export const useProjectTableActions = ({
             onClick={onImport}
             data-testid="import-project-btn"
           >
-            导入项目
+            Import Projects
           </Button>
         ),
       ].filter(Boolean),

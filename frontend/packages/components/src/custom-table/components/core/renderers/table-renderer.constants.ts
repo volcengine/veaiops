@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Table 渲染默认属性常量
+ * Table render default property constants
  */
 export const DEFAULT_TABLE_PROPS = {
   resizable: true as const,

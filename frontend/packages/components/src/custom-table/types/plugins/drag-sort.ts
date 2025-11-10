@@ -13,88 +13,88 @@
 // limitations under the License.
 
 /**
- * 拖拽排序插件类型定义
- * 基于 EPS 平台的 react-sortable-hoc 能力
+ * Drag and drop sort plugin type definition
+ * Based on EPS platform's react-sortable-hoc capability
  */
 import type { ReactNode } from 'react';
 import type { SortEndHandler } from 'react-sortable-hoc';
 import type { PluginPriorityEnum } from '../core/enums';
 
 /**
- * 拖拽类型
+ * Drag type
  */
 export type DragType = 'row' | 'column' | 'both';
 
 /**
- * 拖拽限制配置
+ * Drag constraints configuration
  */
 export interface DragConstraints {
-  /** 可拖拽的行范围 */
+  /** Draggable row range */
   rowRange?: [number, number];
-  /** 可拖拽的列范围 */
+  /** Draggable column range */
   columnRange?: [number, number];
-  /** 禁止拖拽的行索引 */
+  /** Disabled row indices */
   disabledRows?: number[];
-  /** 禁止拖拽的列索引 */
+  /** Disabled column indices */
   disabledColumns?: number[];
-  /** 自定义拖拽判断函数 */
+  /** Custom drag check function */
   canDrag?: (index: number, type: 'row' | 'column') => boolean;
 }
 
 /**
- * 拖拽样式配置
+ * Drag style configuration
  */
 export interface DragStyleConfig {
-  /** 拖拽时的样式类名 */
+  /** Style class name when dragging */
   draggingClassName?: string;
-  /** 拖拽手柄图标 */
+  /** Drag handle icon */
   handleIcon?: ReactNode;
-  /** 是否显示拖拽手柄 */
+  /** Whether to show drag handle */
   showHandle?: boolean;
-  /** 拖拽预览样式 */
+  /** Drag preview style */
   previewStyle?: React.CSSProperties;
 }
 
 /**
- * 拖拽排序配置
+ * Drag and drop sort configuration
  */
 export interface DragSortConfig {
-  /** 是否启用插件 */
+  /** Whether plugin is enabled */
   enabled?: boolean;
-  /** 插件优先级 */
+  /** Plugin priority level */
   priority?: PluginPriorityEnum;
-  /** 拖拽类型 */
+  /** Drag type */
   dragType?: DragType;
-  /** 拖拽限制 */
+  /** Drag constraints */
   constraints?: DragConstraints;
-  /** 拖拽样式配置 */
+  /** Drag style configuration */
   styleConfig?: DragStyleConfig;
-  /** 行拖拽完成回调 */
+  /** Row drag end callback */
   onRowSortEnd?: SortEndHandler;
-  /** 列拖拽完成回调 */
+  /** Column drag end callback */
   onColumnSortEnd?: SortEndHandler;
-  /** 拖拽开始回调 */
+  /** Drag start callback */
   onSortStart?: (sort: {
     node: Element;
     index: number;
     collection: string;
   }) => void;
-  /** 是否使用虚拟滚动 */
+  /** Whether to use virtual scroll */
   useVirtualScroll?: boolean;
 }
 
 /**
- * 插件状态
+ * Plugin state
  */
 export interface DragSortState {
-  /** 是否正在拖拽 */
+  /** Whether currently dragging */
   isDragging: boolean;
-  /** 当前拖拽的索引 */
+  /** Current dragging index */
   draggingIndex: number;
-  /** 拖拽类型 */
+  /** Drag type */
   draggingType: 'row' | 'column' | null;
-  /** 行排序状态 */
+  /** Row sort order */
   rowSortOrder: number[];
-  /** 列排序状态 */
+  /** Column sort order */
   columnSortOrder: number[];
 }

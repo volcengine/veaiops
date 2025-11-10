@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * CustomTable 数据源相关类型定义
+ * CustomTable data source related type definitions
  */
 import type {
   BaseQuery,
@@ -26,7 +26,7 @@ import type {
 } from './common';
 
 /**
- * 表格数据源配置
+ * Table data source configuration
  */
 export interface TableDataSource<
   ServiceType extends ServiceRequestType = ServiceRequestType,
@@ -34,53 +34,53 @@ export interface TableDataSource<
   QueryParams extends Record<string, unknown> = Record<string, unknown>,
   FormatRecordType extends BaseRecord = RecordType,
 > {
-  /** 服务实例 */
+  /** Service instance */
   serviceInstance?: ServiceType;
-  /** 服务方法名 */
+  /** Service method name */
   serviceMethod?: keyof ServiceType;
-  /** 请求函数 */
+  /** Request function */
   request?: (params: QueryParams) => Promise<unknown>;
-  /** 额外的请求参数 */
+  /** Additional request parameters */
   payload?: Record<string, unknown>;
-  /** 响应数据项的键名 */
+  /** Response data item key name */
   responseItemsKey?: string;
-  /** 是否为服务端分页 */
+  /** Whether server-side pagination */
   isServerPagination?: boolean;
-  /** 是否为空列过滤 */
+  /** Whether to filter empty columns */
   isEmptyColumnsFilter?: boolean;
-  /** 是否可以取消请求 */
+  /** Whether request can be cancelled */
   isCancel?: boolean;
-  /** 是否准备就绪 */
+  /** Whether ready */
   ready?: boolean;
-  /** 是否手动触发 */
+  /** Whether manual trigger */
   manual?: boolean;
-  /** 是否需要继续 */
+  /** Whether need to continue */
   needContinue?: boolean;
-  /** 是否有更多数据 */
+  /** Whether has more data */
   hasMoreData?: boolean;
-  /** 是否滚动获取数据 */
+  /** Whether scroll fetch data */
   scrollFetchData?: boolean;
-  /** 是否展平数据 */
+  /** Whether to flatten data */
   flattenData?: boolean;
-  /** 静态数据列表 */
+  /** Static data list */
   dataList?: RecordType[];
-  /** 数组字段 */
+  /** Array fields */
   arrayFields?: string[];
-  /** 查询搜索键 */
+  /** Query search key */
   querySearchKey?: string;
-  /** 查询搜索匹配键 */
+  /** Query search match keys */
   querySearchMatchKeys?: string[];
-  /** 添加行键函数 */
+  /** Add row key function */
   addRowKey?: (item: RecordType, index: number) => string | number;
-  /** 格式化数据配置 */
+  /** Format data configuration */
   formatDataConfig?: Record<string, (item: RecordType) => unknown>;
-  /** 分页转换函数 */
+  /** Pagination conversion function */
   paginationConvert?: (
     page_req: Record<string, unknown>,
   ) => Record<string, unknown>;
-  /** 格式化载荷函数 */
+  /** Format payload function */
   formatPayload?: (payload: Record<string, unknown>) => Record<string, unknown>;
-  /** 插件配置 */
+  /** Plugin configuration */
   pluginConfig?: {
     showNotice?: {
       stage: 'success' | 'fail' | 'all';
@@ -88,54 +88,54 @@ export interface TableDataSource<
     title?: string;
     content?: string;
   };
-  /** 成功回调 */
+  /** Success callback */
   onSuccess?: (
     response: OnSuccessResponse<FormatRecordType, BaseQuery>,
   ) => void;
-  /** 错误回调 */
+  /** Error callback */
   onError?: (error?: Error) => void;
-  /** 完成回调 */
+  /** Finally callback */
   onFinally?: () => void;
-  /** 处理回调 */
+  /** Process callback */
   onProcess?: (handler: OnProcessType) => void;
 }
 
 /**
- * 数据源状态
+ * Data source state
  */
 export interface DataSourceState<RecordType extends BaseRecord = BaseRecord> {
-  /** 加载状态 */
+  /** Loading state */
   loading: boolean;
-  /** 错误信息 */
+  /** Error information */
   error: Error | null;
-  /** 格式化后的数据 */
+  /** Formatted data */
   data: RecordType[];
-  /** 总数 */
+  /** Total count */
   total: number;
-  /** 表格总数 */
+  /** Table total count */
   tableTotal: number;
-  /** 是否有更多数据 */
+  /** Whether has more data */
   hasMoreData: boolean;
 }
 
 /**
- * 数据源操作方法
+ * Data source operation methods
  */
 export interface DataSourceActions {
-  /** 运行请求 */
+  /** Run request */
   run: () => Promise<void>;
-  /** 刷新数据 */
+  /** Refresh data */
   refresh: () => Promise<void>;
-  /** 取消请求 */
+  /** Cancel request */
   cancel: () => void;
-  /** 加载更多数据 */
+  /** Load more data */
   loadMoreData?: () => void;
-  /** 设置重置空数据 */
+  /** Set reset empty data */
   setResetEmptyData?: (reset: boolean) => void;
 }
 
 /**
- * 数据源钩子返回类型
+ * Data source hook return type
  */
 export interface DataSourceHookResult<
   RecordType extends BaseRecord = BaseRecord,
@@ -143,50 +143,50 @@ export interface DataSourceHookResult<
     DataSourceActions {}
 
 /**
- * 数据源配置选项
+ * Data source configuration options
  */
 export interface DataSourceConfig<
   ServiceType extends ServiceRequestType = ServiceRequestType,
   RecordType extends BaseRecord = BaseRecord,
   FormatRecordType extends BaseRecord = RecordType,
 > {
-  /** 防抖等待时间 */
+  /** Debounce wait time */
   debounceWait?: number;
-  /** 重试次数 */
+  /** Retry count */
   retryCount?: number;
-  /** 缓存键 */
+  /** Cache key */
   cacheKey?: string;
-  /** 是否启用缓存 */
+  /** Whether to enable cache */
   enableCache?: boolean;
-  /** 缓存时间 */
+  /** Cache time */
   cacheTime?: number;
-  /** 默认数据 */
+  /** Default data */
   defaultData?: RecordType[];
-  /** 错误重试间隔 */
+  /** Error retry interval */
   errorRetryInterval?: number;
-  /** 成功回调 */
+  /** Success callback */
   onSuccess?: (data: RecordType[], extra?: Record<string, unknown>) => void;
-  /** 错误回调 */
+  /** Error callback */
   onError?: (error: Error) => void;
 }
 
 /**
- * 数据处理工具类型
+ * Data processing utility types
  */
 export interface DataProcessor<
   RecordType extends BaseRecord = BaseRecord,
   FormatRecordType extends BaseRecord = RecordType,
 > {
-  /** 格式化表格数据 */
+  /** Format table data */
   formatTableData: (
     props: FormTableDataProps<RecordType>,
   ) => FormatRecordType[];
-  /** 过滤表格数据 */
+  /** Filter table data */
   filterTableData: (
     data: FormatRecordType[],
     filters: FiltersProps,
   ) => FormatRecordType[];
-  /** 过滤空数据 */
+  /** Filter empty data */
   filterEmptyDataByKeys: (
     data: Record<string, unknown>,
   ) => Record<string, unknown>;

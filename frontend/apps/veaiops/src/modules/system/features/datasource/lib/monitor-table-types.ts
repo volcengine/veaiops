@@ -36,7 +36,7 @@ import type {
 import type { DataSource, DataSourceType } from 'api-generate';
 
 /**
- * 监控配置表格配置 Hook 的选项类型
+ * Monitor configuration table configuration Hook options type
  */
 export interface UseMonitorTableConfigOptions {
   onEdit?: (monitor: DataSource) => void;
@@ -45,7 +45,7 @@ export interface UseMonitorTableConfigOptions {
 }
 
 /**
- * 监控配置表格配置 Hook 的返回值类型
+ * Monitor configuration table configuration Hook return value type
  */
 export interface UseMonitorTableConfigReturn {
   customTableProps: ReturnType<typeof useBusinessTable>['customTableProps'];

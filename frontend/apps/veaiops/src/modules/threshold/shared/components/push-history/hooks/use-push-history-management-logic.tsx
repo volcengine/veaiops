@@ -30,14 +30,14 @@ import { AgentType, EventShowStatus } from 'api-generate';
 import { useMemo } from 'react';
 
 /**
- * 历史事件管理逻辑Hook
- * 提供历史事件管理页面的所有业务逻辑
+ * Historical event management logic Hook
+ * Provides all business logic for the historical event management page
  */
 export const usePushHistoryManagementLogic = (
   moduleType: ModuleType,
   refreshTable?: () => Promise<boolean>,
 ) => {
-  // 使用管理刷新 Hook
+  // Use management refresh Hook
   useManagementRefresh(refreshTable);
 
   return {
@@ -46,22 +46,22 @@ export const usePushHistoryManagementLogic = (
 };
 
 /**
- * 表格请求参数类型
- * 包含分页、排序和筛选参数
+ * Table request parameter type
+ * Contains pagination, sorting, and filter parameters
  *
- * 注意：CustomTable 使用 sort_columns 格式（不是 sorter）
+ * Note: CustomTable uses sort_columns format (not sorter)
  * sort_columns: [{ column: "created_at", desc: false }]
- * 排序参数转换使用 convertTableSortToApi 工具函数
+ * Sort parameter conversion uses convertTableSortToApi utility function
  *
- * 字段命名规范：
- * - 使用 snake_case（agent_type, show_status, start_time, end_time）
- * - 与后端接口参数命名保持一致
+ * Field naming convention:
+ * - Use snake_case (agent_type, show_status, start_time, end_time)
+ * - Keep consistent with backend API parameter naming
  */
 interface PushHistoryRequestParams {
   skip?: number;
   limit?: number;
   agent_type?: string[];
-  sort_columns?: unknown; // 使用 convertTableSortToApi 处理
+  sort_columns?: unknown; // Use convertTableSortToApi to process
   show_status?: EventShowStatus[];
   start_time?: string;
   end_time?: string;
@@ -69,44 +69,45 @@ interface PushHistoryRequestParams {
 }
 
 /**
- * 类型守卫：检查值是否为有效的 AgentType
+ * Type guard: Check if value is a valid AgentType
  *
- * 参考 Modern.js 的类型守卫模式（packages/toolkit/utils/src/cli/is/type.ts）
- * 使用类型守卫替代类型断言，提供类型安全保障
+ * Reference Modern.js type guard pattern (packages/toolkit/utils/src/cli/is/type.ts)
+ * Use type guards instead of type assertions to provide type safety
  */
 function isAgentType(value: unknown): value is AgentType {
   if (typeof value !== 'string') {
     return false;
   }
-  // 使用 Object.values 获取所有枚举值，避免使用类型断言
+  // Use Object.values to get all enum values, avoid using type assertions
   const validAgentTypes: string[] = Object.values(AgentType);
   return validAgentTypes.includes(value);
 }
 
 /**
- * 类型守卫：检查值是否为有效的 AgentType 数组
+ * Type guard: Check if value is a valid AgentType array
  */
 function isAgentTypeArray(value: unknown): value is AgentType[] {
   return Array.isArray(value) && value.length > 0 && value.every(isAgentType);
 }
 
 /**
- * 类型守卫：检查值是否为有效的 EventShowStatus
+ * Type guard: Check if value is a valid EventShowStatus
  *
- * EventShowStatus 是字符串枚举，值为中文：
- * PENDING = '等待发送', SUCCESS = '发送成功', NOT_SUBSCRIBED = '未订阅' 等
+ * EventShowStatus is a string enum with Chinese values:
+ * PENDING = '等待发送' (Waiting to send), SUCCESS = '发送成功' (Send success), NOT_SUBSCRIBED = '未订阅' (Not subscribed), etc.
+ * Note: The enum values are Chinese UI text and should remain in Chinese (not translated)
  */
 function isEventShowStatus(value: unknown): value is EventShowStatus {
   if (typeof value !== 'string') {
     return false;
   }
-  // 使用 Object.values 获取所有枚举值，避免使用类型断言
+  // Use Object.values to get all enum values, avoid using type assertions
   const validStatuses: string[] = Object.values(EventShowStatus);
   return validStatuses.includes(value);
 }
 
 /**
- * 类型守卫：检查值是否为有效的 EventShowStatus 数组
+ * Type guard: Check if value is a valid EventShowStatus array
  */
 function isEventShowStatusArray(value: unknown): value is EventShowStatus[] {
   return (
@@ -115,7 +116,7 @@ function isEventShowStatusArray(value: unknown): value is EventShowStatus[] {
 }
 
 /**
- * 历史事件表格配置Hook
+ * Historical event table configuration Hook
  */
 export const usePushHistoryTableConfig = ({
   moduleType,
@@ -124,7 +125,7 @@ export const usePushHistoryTableConfig = ({
   moduleType: ModuleType;
   showModuleTypeColumn?: boolean;
 }) => {
-  // 🎯 请求函数 - 使用工具函数
+  // 🎯 Request function - Use utility functions
   const request = useMemo(
     () =>
       createTableRequestWithResponseHandler({
@@ -135,21 +136,21 @@ export const usePushHistoryTableConfig = ({
           sort_columns,
           ...otherParams
         }: ApiPaginationParams & PushHistoryRequestParams) => {
-          // 使用现有的获取规则接口
-          // 注意：agent_type 从筛选器或 URL 参数传入（snake_case）
-          // 使用类型守卫进行类型验证，替代类型断言（遵循 Modern.js 最佳实践）
+          // Use existing get rules API
+          // Note: agent_type is passed from filter or URL parameters (snake_case)
+          // Use type guards for type validation, replacing type assertions (following Modern.js best practices)
           let agentType: AgentType[] | undefined = isAgentTypeArray(
             paramAgentType,
           )
             ? paramAgentType
             : undefined;
 
-          // Oncall 模块：如果未选择智能体，默认使用所有 Oncall 相关的 Agent
+          // Oncall module: If no agent is selected, default to all Oncall-related Agents
           if (
             moduleType === ModuleType.ONCALL &&
             (!agentType || agentType.length === 0)
           ) {
-            // 使用类型守卫过滤有效的 AgentType，避免使用类型断言
+            // Use type guards to filter valid AgentTypes, avoid using type assertions
             const filteredAgentTypes = AGENT_OPTIONS_FILTER.map(
               (item) => item.value,
             ).filter(isAgentType);
@@ -157,7 +158,7 @@ export const usePushHistoryTableConfig = ({
               filteredAgentTypes.length > 0 ? filteredAgentTypes : undefined;
           }
 
-          // 智能阈值模块：如果未选择智能体，默认过滤智能阈值 Agent
+          // Intelligent threshold module: If no agent is selected, default to intelligent threshold Agent
           if (
             moduleType === ModuleType.INTELLIGENT_THRESHOLD &&
             (!agentType || agentType.length === 0)
@@ -165,37 +166,37 @@ export const usePushHistoryTableConfig = ({
             agentType = [AgentType.INTELLIGENT_THRESHOLD_AGENT];
           }
 
-          // 处理排序参数 - 使用统一的工具函数转换 sort_columns
-          // 只允许 created_at 字段排序
+          // Handle sort parameters - Use unified utility function to convert sort_columns
+          // Only allow sorting by created_at field
           const sortOrder = convertTableSortToApi({
             sortColumns: sort_columns,
             allowedFields: ['created_at'],
           });
 
-          // 处理筛选参数 - 边界case: 过滤无效值
-          // Python 接口只支持 show_status，不支持 status 参数
-          // status 是内部字段，通过 show_status 映射而来
-          // 使用类型守卫进行类型验证，替代类型断言（遵循 Modern.js 最佳实践）
+          // Handle filter parameters - Edge case: Filter invalid values
+          // Python API only supports show_status, not status parameter
+          // status is an internal field, mapped from show_status
+          // Use type guards for type validation, replacing type assertions (following Modern.js best practices)
           const showStatus: EventShowStatus[] | undefined =
             isEventShowStatusArray(otherParams.show_status)
               ? otherParams.show_status
               : undefined;
 
-          // 构建 API 参数 - 使用生成的 API 类型（已包含 sortOrder）
+          // Build API parameters - Use generated API types (already includes sortOrder)
           const apiParams: Parameters<
             typeof apiClient.event.getApisV1ManagerEventCenterEvent
           >[0] = {
             skip: skip ?? 0,
             limit: limit ?? 100,
-            // agentType 已通过类型守卫验证为 AgentType[] 类型
+            // agentType has been validated as AgentType[] type through type guard
             agentType:
               agentType && agentType.length > 0 ? agentType : undefined,
             showStatus,
-            // 添加排序参数（生成的 API 类型已包含 sortOrder）
+            // Add sort parameters (generated API types already include sortOrder)
             sortOrder,
           };
 
-          // 添加可选的时间范围参数
+          // Add optional time range parameters
           if (
             otherParams.start_time &&
             typeof otherParams.start_time === 'string'
@@ -214,25 +215,27 @@ export const usePushHistoryTableConfig = ({
           );
         },
         options: {
-          errorMessagePrefix: '获取历史事件失败',
+          errorMessagePrefix: 'Failed to fetch historical events',
           defaultLimit: 100,
           onError: (error: unknown) => {
-            // 边界case: 完善错误处理
+            // Edge case: Improve error handling
             const errorObj =
               error instanceof Error ? error : new Error(String(error));
-            const errorMessage = errorObj.message || '未知错误';
+            const errorMessage = errorObj.message || 'Unknown error';
 
-            // 只在非取消请求的情况下显示错误提示
+            // Only show error message for non-cancelled requests
             if (
               !errorMessage.includes('cancel') &&
               !errorMessage.includes('abort')
             ) {
-              Message.error(`获取历史事件失败：${errorMessage}`);
+              Message.error(
+                `Failed to fetch historical events: ${errorMessage}`,
+              );
             }
           },
           transformData<T = Event>(data: unknown): T[] {
-            // 转换数据格式，确保每条记录都有唯一 _id
-            // 使用类型安全转换：Event[] -> T[]（泛型约束确保类型安全）
+            // Transform data format, ensure each record has a unique _id
+            // Use type-safe conversion: Event[] -> T[] (generic constraint ensures type safety)
             if (Array.isArray(data)) {
               const transformed = data.map((item: Event) => ({
                 ...item,
@@ -240,7 +243,7 @@ export const usePushHistoryTableConfig = ({
                   item._id ??
                   `push_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
               }));
-              // 类型转换：Event[] 是 T[] 的具体实现，使用 as unknown as T[] 避免直接断言
+              // Type conversion: Event[] is a concrete implementation of T[], use as unknown as T[] to avoid direct assertion
               return transformed as unknown as T[];
             }
             return [] as unknown as T[];
@@ -250,13 +253,13 @@ export const usePushHistoryTableConfig = ({
     [moduleType],
   );
 
-  // 🎯 使用工具函数创建数据源
+  // 🎯 Use utility function to create data source
   const dataSource = useMemo(
     () => createServerPaginationDataSource({ request }),
     [request],
   );
 
-  // 🎯 使用工具函数创建表格属性，自定义 showTotal
+  // 🎯 Use utility function to create table props, customize showTotal
   const tableProps = useMemo(() => {
     const baseProps = createStandardTableProps({
       rowKey: '_id',
@@ -280,7 +283,7 @@ export const usePushHistoryTableConfig = ({
 };
 
 /**
- * 历史事件操作按钮配置Hook
+ * Historical event action button configuration Hook
  */
 export const usePushHistoryActionConfig = ({
   loading = false,
@@ -301,7 +304,7 @@ export const usePushHistoryActionConfig = ({
         }}
         loading={loading}
       >
-        刷新
+        Refresh
       </Button>,
     ],
     [loading, onRefresh],

@@ -40,7 +40,7 @@ interface DataSourceDrawerProps {
 }
 
 /**
- * 数据源表单抽屉组件
+ * Data source form drawer component
  */
 export const DataSourceDrawer: React.FC<DataSourceDrawerProps> = ({
   visible,
@@ -49,15 +49,15 @@ export const DataSourceDrawer: React.FC<DataSourceDrawerProps> = ({
   onCancel,
   onSubmit,
 }) => {
-  // 使用公共的抽屉表单提交 Hook
+  // Use shared drawer form submit Hook
   const { submitting, handleSubmit } = useDrawerFormSubmit({
     form,
     onSubmit,
     resetOnSuccess: true,
-    closeOnSuccess: false, // 不自动关闭，由父组件控制
+    closeOnSuccess: false, // Do not auto-close, controlled by parent component
   });
 
-  // 抽屉完全关闭后重置表单状态
+  // Reset form state after drawer is completely closed
   const handleAfterClose = () => {
     form.resetFields();
     form.clearFields();

@@ -25,7 +25,7 @@ import type {
   SetStateAction,
 } from 'react';
 import type { CustomTableColumnProps } from './components';
-// FiltersProps 类型已移动到 filters/core/types
+// FiltersProps type has been moved to filters/core/types
 // import type { FiltersProps } from '../../../filters/core/types';
 export interface FiltersProps {
   config?: unknown[];
@@ -38,11 +38,11 @@ export interface FiltersProps {
   actions?: ReactNode[];
   [key: string]: unknown;
 }
-// 临时注释掉，避免导入错误
+// Temporarily commented out to avoid import errors
 // import type { CustomFieldsProps } from '../../custom-fields';
-type CustomFieldsProps<T = Record<string, unknown>> = Record<string, unknown>; // 临时泛型类型
+type CustomFieldsProps<T = Record<string, unknown>> = Record<string, unknown>; // Temporary generic type
 // import { PluginConfig, ServiceRequestType } from '../../../../types';
-// 临时注释，这些类型可能在别的地方定义或者不再需要
+// Temporarily commented, these types may be defined elsewhere or no longer needed
 type PluginConfig = Record<string, unknown>;
 type ServiceRequestType = Record<string, unknown>;
 
@@ -104,12 +104,12 @@ export type TableDataSource<
   responseItemsKey?: string;
   payload?: Record<string, unknown>;
   isEmptyColumnsFilter?: boolean;
-  isServerPagination?: boolean; // 默认为false，前端分页
-  querySearchKey?: string; // 前端分页关键搜索key
-  querySearchMatchKeys?: Array<keyof FormatRecordType>; // 前端分页搜索匹配字段列表
-  ready?: boolean; // auto request
-  manual?: boolean; // 手动发起请求
-  isCancel?: boolean; // 手动取消
+  isServerPagination?: boolean; // Default is false, frontend pagination
+  querySearchKey?: string; // Frontend pagination key search key
+  querySearchMatchKeys?: Array<keyof FormatRecordType>; // Frontend pagination search match fields list
+  ready?: boolean; // Auto request
+  manual?: boolean; // Manually trigger request
+  isCancel?: boolean; // Manually cancel
   onProcess?: (props: OnProcessType<FormatRecordType, TParams>) => void;
   onSuccess?: (props: OnSuccessResponse<FormatRecordType>) => void;
   onError?: () => void;
@@ -129,15 +129,15 @@ export interface CustomTableProps<
   ServiceType extends ServiceRequestType,
   FormatRecordType extends { [key: string]: unknown } | undefined,
 > {
-  title?: string; // 标题
-  titleClassName?: string; // table标题wrap样式
-  titleStyle?: CSSProperties; // table标题wrap样式
+  title?: string; // Title
+  titleClassName?: string; // Table title wrap style
+  titleStyle?: CSSProperties; // Table title wrap style
   handleColumns: (
     props: Record<string, unknown>,
-  ) => CustomTableColumnProps<FormatRecordType>[]; // 列处理函数
+  ) => CustomTableColumnProps<FormatRecordType>[]; // Column handler function
   handleColumnsProps?: Record<string, unknown>;
   handleFiltersProps?: Record<string, unknown>;
-  syncQueryOnSearchParams?: boolean; // 同步query到searchParams
+  syncQueryOnSearchParams?: boolean; // Sync query to searchParams
   pagination?: PaginationProps;
   rowKey?: string | ((record: FormatRecordType) => Key);
   isAlertShow?: boolean;
@@ -158,14 +158,14 @@ export interface CustomTableProps<
     handleFiltersProps,
   }: HandleFilterProps<QueryType>) => Array<Record<string, unknown>>;
   filterStyleCfg?: {
-    isWithBackgroundAndBorder: boolean; // 是否选用默认背景色和border
-  }; // filter样式配置
+    isWithBackgroundAndBorder: boolean; // Whether to use default background color and border
+  }; // Filter style configuration
   filterResetKeys?: string[];
   tableClassName?: string;
-  actions?: ReactNode[]; // 筛选项操作
-  operations?: ReactNode[]; // filter中操作项
-  initQuery?: Partial<QueryType> | Record<string, unknown>; // 表单查询参数
-  initFilters?: Partial<QueryType> | Record<string, unknown>; // table筛选查询参数
+  actions?: ReactNode[]; // Filter action items
+  operations?: ReactNode[]; // Operation items in filter
+  initQuery?: Partial<QueryType> | Record<string, unknown>; // Form query parameters
+  initFilters?: Partial<QueryType> | Record<string, unknown>; // Table filter query parameters
   queryFormat?: QueryFormat;
   sortFieldMap?: Record<string, unknown>;
   dataSource: TableDataSource<
@@ -174,8 +174,8 @@ export interface CustomTableProps<
     QueryType[],
     FormatRecordType
   >;
-  customActions?: ReactNode[]; // 自定义操作
-  customActionsStyle?: CSSProperties; // 自定义操作样式
+  customActions?: ReactNode[]; // Custom actions
+  customActionsStyle?: CSSProperties; // Custom action styles
   customReset?: (props: {
     resetEmptyData: boolean;
     setQuery: Dispatch<SetStateAction<QueryType>>;
@@ -185,14 +185,14 @@ export interface CustomTableProps<
   showReset?: boolean;
   onLoadingChange?: (loading: boolean) => void;
   onQueryChange?: ({ query }: { query: QueryType }) => void;
-  isTableHeaderSticky?: boolean; // 表头吸顶
+  isTableHeaderSticky?: boolean; // Table header sticky
   tableHeaderStickyTopOffset?: number;
-  useActiveKeyHook?: boolean; // 使用useActiveKeyHook
+  useActiveKeyHook?: boolean; // Use useActiveKeyHook
   querySearchParamsFormat?: QuerySearchParamsFormat;
-  enableCustomFields?: boolean; // 启用自定义字段
+  enableCustomFields?: boolean; // Enable custom fields
   customFieldsProps?: Pick<
     CustomFieldsProps<FormatRecordType>,
     'disabledFields' | 'initialFields' | 'confirm' | 'value'
-  >; // 自定义字段配置
+  >; // Custom fields configuration
   supportSortColumns?: boolean;
 }

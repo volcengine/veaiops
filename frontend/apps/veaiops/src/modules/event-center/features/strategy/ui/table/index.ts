@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 策略表格组件统一导出
+ * Strategy table component unified export
  */
 
-// ✅ 简化文件名：table.tsx (182 lines)
+// ✅ Simplified filename: table.tsx (182 lines)
 export { StrategyTable, type StrategyTableRef } from './table';
 
-// ✅ 简化文件名：strategy-table-columns.tsx → columns.tsx (210 lines)
-// 注意：如果该文件超过 150 行，后续可能需要进一步拆分
+// ✅ Simplified filename: strategy-table-columns.tsx → columns.tsx (210 lines)
+// Note: If this file exceeds 150 lines, it may need further splitting later
 export * from './columns';
 
-// ✅ 简化文件名：strategy-table-filters.tsx → filters.tsx
+// ✅ Simplified filename: strategy-table-filters.tsx → filters.tsx
 export * from './filters';

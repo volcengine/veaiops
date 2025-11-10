@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type SortColumn = {
   /**
-   * 排序字段
+   * Sort field
    */
   column: string;
   /**
-   * 是否降序排序
+   * Whether descending sort
    */
   desc: boolean;
 };

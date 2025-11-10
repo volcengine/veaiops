@@ -13,10 +13,9 @@
 // limitations under the License.
 
 /**
- * 插件工具函数模块
- * 提供插件系统的实用工具函数
+ * Plugin utility functions module
+ * Provides utility functions for the plugin system
  *
-
  * @date 2025-12-19
  */
 import type {
@@ -30,22 +29,22 @@ import { devLog } from '@/custom-table/utils';
 import type React from 'react';
 
 /**
- * @name 初始化所有插件
+ * @name Initialize all plugins
  *
- * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+ * @returns Returns result object with format { success: boolean; error?: Error }
  */
 export async function initializePlugins(
   pluginManager: PluginManager,
   context: PluginContext,
 ): Promise<{ success: boolean; error?: Error }> {
   try {
-    // 设置所有插件的上下文
+    // Set context for all plugins
     const plugins = pluginManager.getAllPlugins();
     plugins.forEach((plugin: Plugin) => {
       pluginManager.setPluginContext?.({ pluginName: plugin.name, context });
     });
 
-    // 依次执行各插件的 install 与 setup，确保 helpers/state 已注入
+    // Execute install and setup for each plugin in sequence, ensuring helpers/state are injected
     type PluginWithInstallSetup = Plugin & {
       install?: (context: PluginContext) => Promise<void>;
       setup?: (context: PluginContext) => Promise<void>;
@@ -63,10 +62,10 @@ export async function initializePlugins(
           await pluginWithMethods.setup(context);
         }
       } catch (error: unknown) {
-        // ✅ 正确：单插件的初始化失败不阻塞其它插件，但记录错误信息
+        // ✅ Correct: Single plugin initialization failure should not block other plugins, but record error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        // 注意：这里只记录日志，不抛出错误，因为单个插件失败不应阻塞其他插件
+        // Note: Only log here, don't throw error, because single plugin failure should not block other plugins
         devLog.warn({
           component: 'PluginUtils',
           message: `Plugin "${plugin.name}" initialization failed: ${errorObj.message}`,
@@ -80,11 +79,11 @@ export async function initializePlugins(
       }
     }
 
-    // 执行初始化生命周期（兼容旧版 onMount 钩子）
-    // 注意：executeHook 可能返回结果对象或 void，这里兼容两种方式
+    // Execute initialization lifecycle (compatible with legacy onMount hook)
+    // Note: executeHook may return result object or void, here we handle both cases
     try {
-      // 注意：executeHook 的实际实现返回结果对象，但接口定义为 void
-      // 使用类型断言兼容两种方式，实际运行时返回的是结果对象
+      // Note: executeHook's actual implementation returns result object, but interface is defined as void
+      // Use type assertion to handle both cases, actual runtime returns result object
       const hookResult = await pluginManager.executeHook?.({
         lifecycle: 'onMount',
         context,
@@ -93,12 +92,12 @@ export async function initializePlugins(
         | { success: boolean; error?: Error }
         | void
         | undefined;
-      // 如果返回结果对象，检查是否成功
+      // If result object is returned, check if successful
       if (result && typeof result === 'object' && 'success' in result) {
         if (!result.success && result.error) {
           devLog.error({
             component: 'PluginUtils',
-            message: `执行 onMount 钩子失败: ${result.error.message}`,
+            message: `onMount hook execution failed: ${result.error.message}`,
             data: {
               error: result.error.message,
               stack: result.error.stack,
@@ -109,12 +108,12 @@ export async function initializePlugins(
         }
       }
     } catch (error: unknown) {
-      // ✅ 正确：兼容旧版本可能抛出错误的情况
+      // ✅ Correct: Handle legacy version that may throw errors
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       devLog.error({
         component: 'PluginUtils',
-        message: `执行 onMount 钩子失败: ${errorObj.message}`,
+        message: `onMount hook execution failed: ${errorObj.message}`,
         data: {
           error: errorObj.message,
           stack: errorObj.stack,
@@ -124,18 +123,18 @@ export async function initializePlugins(
       lastError = errorObj;
     }
 
-    // 如果有任何错误，返回失败结果，但不阻塞整个初始化流程
+    // If any errors occurred, return failure result, but don't block entire initialization flow
     if (lastError) {
       return { success: false, error: lastError };
     }
 
     return { success: true };
   } catch (error: unknown) {
-    // ✅ 正确：记录错误并返回失败结果
+    // ✅ Correct: Record error and return failure result
     const errorObj = error instanceof Error ? error : new Error(String(error));
     devLog.error({
       component: 'PluginUtils',
-      message: `初始化插件失败: ${errorObj.message}`,
+      message: `Plugin initialization failed: ${errorObj.message}`,
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -147,17 +146,17 @@ export async function initializePlugins(
 }
 
 /**
- * @name 清理所有插件
+ * @name Cleanup all plugins
  *
- * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+ * @returns Returns result object with format { success: boolean; error?: Error }
  */
 export async function cleanupPlugins(
   pluginManager: PluginManager,
   context: PluginContext,
 ): Promise<{ success: boolean; error?: Error }> {
   try {
-    // 注意：executeHook 的实际实现返回结果对象，但接口定义为 void
-    // 使用类型断言兼容两种方式，实际运行时返回的是结果对象
+    // Note: executeHook's actual implementation returns result object, but interface is defined as void
+    // Use type assertion to handle both cases, actual runtime returns result object
     const hookResult = await pluginManager.executeHook?.({
       lifecycle: 'onDestroy',
       context,
@@ -166,12 +165,12 @@ export async function cleanupPlugins(
       | { success: boolean; error?: Error }
       | void
       | undefined;
-    // 如果返回结果对象，直接返回；否则返回成功
+    // If result object is returned, return directly; otherwise return success
     if (result && typeof result === 'object' && 'success' in result) {
       if (!result.success && result.error) {
         devLog.error({
           component: 'PluginUtils',
-          message: `清理插件失败: ${result.error.message}`,
+          message: `Plugin cleanup failed: ${result.error.message}`,
           data: {
             error: result.error.message,
             stack: result.error.stack,
@@ -183,11 +182,11 @@ export async function cleanupPlugins(
     }
     return { success: true };
   } catch (error: unknown) {
-    // ✅ 正确：兼容旧版本可能抛出错误的情况
+    // ✅ Correct: Handle legacy version that may throw errors
     const errorObj = error instanceof Error ? error : new Error(String(error));
     devLog.error({
       component: 'PluginUtils',
-      message: `清理插件失败: ${errorObj.message}`,
+      message: `Plugin cleanup failed: ${errorObj.message}`,
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -199,7 +198,7 @@ export async function cleanupPlugins(
 }
 
 /**
- * @name 增强属性
+ * @name Enhance props
  */
 export function enhanceProps(
   pluginManager: PluginManager,
@@ -217,7 +216,7 @@ export function enhanceProps(
           enhancedProps = { ...enhancedProps, ...enhanced };
         }
       } catch (error: unknown) {
-        // ✅ 正确：记录错误但不中断属性增强流程
+        // ✅ Correct: Record error but don't interrupt props enhancement flow
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         devLog.warn({
@@ -237,10 +236,10 @@ export function enhanceProps(
 }
 
 /**
- * @name 包装组件与插件
+ * @name Wrap component with plugins
  */
 /**
- * wrapWithPlugins 参数接口
+ * wrapWithPlugins parameter interface
  */
 interface WrapWithPluginsParams<
   RecordType extends BaseRecord = BaseRecord,
@@ -299,7 +298,7 @@ export function wrapWithPlugins<
         );
       }
     } catch (error: unknown) {
-      // ✅ 正确：记录错误但不中断组件包装流程
+      // ✅ Correct: Record error but don't interrupt component wrapping flow
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       devLog.warn({
@@ -318,7 +317,7 @@ export function wrapWithPlugins<
 }
 
 /**
- * @name 验证插件配置
+ * @name Validate plugin configuration
  */
 export function validatePluginConfig(plugin: unknown): boolean {
   if (!plugin || typeof plugin !== 'object') {
@@ -359,7 +358,7 @@ export function validatePluginConfig(plugin: unknown): boolean {
 }
 
 /**
- * @name 排序插件
+ * @name Sort plugins
  */
 export function sortPluginsByPriority<T extends { priority?: string }>(
   plugins: T[],
@@ -376,7 +375,7 @@ export function sortPluginsByPriority<T extends { priority?: string }>(
 }
 
 /**
- * @name 检查插件依赖
+ * @name Check plugin dependencies
  */
 export function checkPluginDependencies(
   plugin: { dependencies?: string[] },
@@ -398,7 +397,7 @@ export function checkPluginDependencies(
 }
 
 /**
- * @name 检查插件冲突
+ * @name Check plugin conflicts
  */
 export function checkPluginConflicts(
   plugin: { conflicts?: string[] },

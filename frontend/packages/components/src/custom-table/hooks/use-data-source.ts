@@ -15,8 +15,8 @@
 import { useRequest } from 'ahooks';
 import { isEmpty, snakeCase } from 'lodash-es';
 /**
- * 数据源插件核心 Hook
- * 从 plugins/data-source/hooks/use-data-source.ts 迁移而来
+ * Data source plugin core Hook
+ * Migrated from plugins/data-source/hooks/use-data-source.ts
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -28,7 +28,7 @@ import {
   formatTableData,
   handleRequestError,
 } from '@/custom-table';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge imports from same source
 import { DEFAULT_DATA_SOURCE_CONFIG } from '@/custom-table/plugins/data-source/config';
 import type { DataSourceConfig, TableDataSource } from '@/custom-table/types';
 import { logger } from '@veaiops/utils';
@@ -36,11 +36,11 @@ import { logger } from '@veaiops/utils';
 /**
  * useDataSource Hook
  *
- * 为什么 props 使用 any：
- * - props 来自 CustomTable 组件，包含 dataSource、query、sorter、filters 等动态属性
- * - 不同表格的查询参数类型（QueryType）和记录类型（RecordType）都不同
- * - 使用泛型会导致调用处类型推导过于复杂
- * - props 在实际使用中通过解构获取具体字段，类型安全由具体字段的使用保证
+ * Why props uses any:
+ * - props comes from CustomTable component, contains dynamic properties like dataSource, query, sorter, filters, etc.
+ * - Different tables have different query parameter types (QueryType) and record types (RecordType)
+ * - Using generics would make type inference at call sites too complex
+ * - props is destructured to get specific fields in actual use, type safety is ensured by usage of specific fields
  */
 export interface UseDataSourceParams {
   props: Record<string, unknown>;
@@ -58,9 +58,9 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     isFilterEffective = true,
   } = props;
 
-  // 调试：记录 rawDataSource 的状态
+  // Debug: Record rawDataSource state
   logger.debug({
-    message: '[useDataSource] Props解构完成',
+    message: '[useDataSource] Props destructuring completed',
     data: {
       hasRawDataSource: Boolean(rawDataSource),
       rawDataSourceType: typeof rawDataSource,
@@ -72,7 +72,7 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     component: 'useDataSource',
   });
 
-  // 类型断言：props 中的字段类型不确定，需要断言为具体类型
+  // Type assertion: field types in props are uncertain, need to assert to specific types
   const dataSource = rawDataSource as TableDataSource;
   const query = rawQuery as Record<string, unknown>;
   const sorter = rawSorter as {
@@ -88,19 +88,19 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     ...config,
   };
 
-  // 状态
+  // State
   const [resetEmptyData, setResetEmptyData] = useState(false);
-  // 手动控制的状态
+  // Manually controlled state
   const [manualLoading, setManualLoading] = useState<boolean | null>(null);
   const [manualError, setManualError] = useState<Error | null>(null);
 
-  // 构建刷新依赖 - 排除 dataSource.request 函数引用，避免死循环
+  // Build refresh dependencies - exclude dataSource.request function reference to avoid infinite loop
   const refreshDeps = useMemo(() => {
-    // 创建一个不包含函数引用的 dataSource 副本
+    // Create a dataSource copy without function references
     const stableDataSource = dataSource
       ? {
           ...dataSource,
-          request: undefined, // 排除 request 函数引用
+          request: undefined, // Exclude request function reference
         }
       : dataSource;
 
@@ -127,15 +127,15 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     pageSize,
   ]);
 
-  // 生成请求ID用于日志追踪
+  // Generate request ID for log tracking
   const generateRequestId = useCallback(() => {
     return `req-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
   }, []);
 
-  // 🔍 调试：记录 dataSource 在 buildRequestParams 中的状态
+  // 🔍 Debug: Record dataSource state in buildRequestParams
   useEffect(() => {
     logger.debug({
-      message: '[useDataSource] dataSource 状态（buildRequestParams 前）',
+      message: '[useDataSource] dataSource state (before buildRequestParams)',
       data: {
         hasDataSource: Boolean(dataSource),
         dataSourceType: typeof dataSource,
@@ -151,9 +151,9 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     });
   }, [dataSource]);
 
-  // 构建请求参数的辅助函数
+  // Helper function to build request parameters
   const buildRequestParams = () => {
-    // 构建分页参数 - 使用 skip/limit 格式
+    // Build pagination parameters - use skip/limit format
     const pageReq = dataSource?.isServerPagination
       ? {
           page_req: {
@@ -170,8 +170,8 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
           | undefined
       )?.(pageReq) || pageReq;
 
-    // 构建排序参数 - 直接使用 sort_columns 格式
-    // 检查 sorter 是否有 field 属性，而不是检查对象是否为空
+    // Build sorting parameters - use sort_columns format directly
+    // Check if sorter has field property, not if object is empty
     const sortColumnsReq = sorter?.field
       ? {
           sort_columns: [
@@ -186,9 +186,9 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
         }
       : {};
 
-    // 记录排序参数日志
-    // 注意：将复杂对象参数提取为变量，避免 TypeScript 解析错误（TS1136）
-    const sortLoggerMessage = '构建排序参数';
+    // Record sorting parameters log
+    // Note: Extract complex object parameters as variables to avoid TypeScript parsing errors (TS1136)
+    const sortLoggerMessage = 'Building sort parameters';
     const sortLoggerData = {
       sorter,
       sortColumnsReq,
@@ -205,7 +205,7 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
       component: 'useDataSource/buildRequestParams',
     });
 
-    // 构建列筛选参数
+    // Build column filter parameters
     const emptyColumnReq = dataSource?.isEmptyColumnsFilter
       ? {
           emptyColumns:
@@ -219,7 +219,7 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
         }
       : {};
 
-    // 合并所有请求参数
+    // Merge all request parameters
     const payload = filterEmptyDataByKeys({
       ...query,
       ...filters,
@@ -235,9 +235,9 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
           | ((payload: Record<string, unknown>) => Record<string, unknown>)
           | undefined
       )?.(payload) || payload;
-    // 记录最终请求参数日志
+    // Record final request parameters log
     logger.info({
-      message: '最终请求参数',
+      message: 'Final request parameters',
       data: {
         payload,
         finalPayload,
@@ -254,17 +254,17 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     return finalPayload;
   };
 
-  // 发送API请求的辅助函数
+  // Helper function to send API request
   /**
-   * 为什么 requestParams 使用 any：
-   * - 请求参数类型由不同的 API 服务决定，无法预先确定
-   * - 参数会传递给 dataSource.request 函数，该函数的类型由服务实例定义
-   * - 使用 any 允许灵活的请求参数传递，类型安全由 API 服务层保证
+   * Why requestParams uses any:
+   * - Request parameter types are determined by different API services and cannot be predetermined
+   * - Parameters are passed to dataSource.request function, whose type is defined by the service instance
+   * - Using any allows flexible request parameter passing, type safety is ensured by the API service layer
    */
   const sendApiRequest = async (requestParams: Record<string, unknown>) => {
-    // 🔍 调试：详细记录 dataSource 状态（sendApiRequest 入口）
+    // 🔍 Debug: Record dataSource state in detail (sendApiRequest entry)
     logger.debug({
-      message: '[useDataSource] sendApiRequest 入口 - dataSource 状态',
+      message: '[useDataSource] sendApiRequest entry - dataSource state',
       data: {
         hasDataSource: Boolean(dataSource),
         dataSourceType: typeof dataSource,
@@ -282,14 +282,11 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
       component: 'sendApiRequest/entry',
     });
 
-    // 🔍 详细记录API请求参数
+    // Record API request parameters
     logger.info({
-      message: '[useDataSource] ========== 发送API请求 ==========',
+      message: 'Sending API request',
       data: {
         requestParams,
-        requestParamsKeys: Object.keys(requestParams),
-        requestParamsDatasourceType: requestParams.datasource_type,
-        requestParamsDatasourceTypeType: typeof requestParams.datasource_type,
         hasSortColumns: Boolean(requestParams.sort_columns),
         sort_columns: requestParams.sort_columns,
         sortColumnsDetail: Array.isArray(requestParams.sort_columns)
@@ -299,10 +296,6 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
             }))
           : undefined,
         page_req: requestParams.page_req,
-        windowLocationHref:
-          typeof window !== 'undefined' ? window.location.href : 'N/A',
-        windowLocationSearch:
-          typeof window !== 'undefined' ? window.location.search : 'N/A',
         dataSource: {
           hasRequest: Boolean(dataSource.request),
           requestType: typeof dataSource.request,
@@ -317,48 +310,15 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     });
 
     if (dataSource.request && typeof dataSource.request === 'function') {
-      // 🔍 记录调用 request 函数前的状态
-      logger.info({
-        message: '[useDataSource] 准备调用 dataSource.request',
-        data: {
-          requestParams,
-          requestParamsDatasourceType: requestParams.datasource_type,
-          requestParamsDatasourceTypeType: typeof requestParams.datasource_type,
-          requestParamsStringified: JSON.stringify(requestParams),
-          timestamp: new Date().toISOString(),
-        },
-        source: 'CustomTable',
-        component: 'sendApiRequest/beforeCall',
-      });
-
-      // 模式1: 直接使用request函数
-      const response = await dataSource.request(requestParams);
-
-      // 🔍 记录调用 request 函数后的响应
-      logger.info({
-        message: '[useDataSource] dataSource.request 调用完成',
-        data: {
-          requestParams,
-          requestParamsDatasourceType: requestParams.datasource_type,
-          responseDataLength:
-            (response as { data?: unknown[] })?.data?.length || 0,
-          responseTotal: (response as { total?: number })?.total || 0,
-          timestamp: new Date().toISOString(),
-        },
-        source: 'CustomTable',
-        component: 'sendApiRequest/afterCall',
-      });
-
-      return response;
+      // Mode 1: Use request function directly
+      return await dataSource.request(requestParams);
     }
 
     if (dataSource.serviceInstance && dataSource.serviceMethod) {
-      // 模式2: 使用serviceInstance[serviceMethod]
-      // 为什么使用类型断言：
-
-      // - serviceMethod 是动态的方法名，TypeScript 无法推断具体方法类型
-
-      // - 需要通过类型断言确保调用安全，类型安全由运行时服务实例保证
+      // Mode 2: Use serviceInstance[serviceMethod]
+      // Why use type assertion:
+      // - serviceMethod is a dynamic method name, TypeScript cannot infer specific method type
+      // - Need type assertion to ensure call safety, type safety is ensured by runtime service instance
 
       const serviceMethod = dataSource.serviceMethod as string;
 
@@ -377,78 +337,35 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
             showNotice: {
               stage: 'fail',
             },
-            title: '通知',
-            content: '列表数据请求',
+            title: 'Notification',
+            content: 'List data request',
           }),
         },
       });
     }
 
     throw new Error(
-      '数据源配置错误：必须提供 request 函数或 serviceInstance + serviceMethod',
+      'DataSource configuration error: must provide request function or serviceInstance + serviceMethod',
     );
   };
 
-  // 请求数据
+  // Request data
   const { data, loading, error, run, cancel } = useRequest(
     async () => {
       const requestId = generateRequestId();
 
-      // 🔍 记录请求开始日志
-      logger.info({
-        message: '[useDataSource] ========== useRequest 开始执行 ==========',
-        data: {
-          requestId,
-          query,
-          queryKeys: Object.keys(query || {}),
-          queryDatasourceType: query?.datasource_type,
-          queryDatasourceTypeType: typeof query?.datasource_type,
-          filters,
-          filtersKeys: Object.keys(filters || {}),
-          current,
-          pageSize,
-          windowLocationHref:
-            typeof window !== 'undefined' ? window.location.href : 'N/A',
-          windowLocationSearch:
-            typeof window !== 'undefined' ? window.location.search : 'N/A',
-          timestamp: new Date().toISOString(),
-        },
-        source: 'CustomTable',
-        component: 'useDataSource/useRequest',
-      });
+      // Record request start log
 
       try {
-        // 如果请求被取消，提前返回
+        // If request is cancelled, return early
         if (dataSource?.isCancel) {
-          logger.info({
-            message: '[useDataSource] 请求被取消',
-            data: { requestId },
-            source: 'CustomTable',
-            component: 'useDataSource/useRequest',
-          });
           return { list: [], total: 0 };
         }
 
         const requestParams = buildRequestParams();
-
-        // 🔍 记录 buildRequestParams 返回的参数
-        logger.info({
-          message: '[useDataSource] buildRequestParams 返回',
-          data: {
-            requestParams,
-            requestParamsKeys: Object.keys(requestParams),
-            requestParamsDatasourceType: requestParams.datasource_type,
-            requestParamsDatasourceTypeType:
-              typeof requestParams.datasource_type,
-            timestamp: new Date().toISOString(),
-          },
-          source: 'CustomTable',
-          component: 'useDataSource/useRequest',
-        });
-
         const response = await sendApiRequest(requestParams);
 
-        // 二次检查是否取消
+        // Double check if cancelled
         if (dataSource?.isCancel) {
           return { list: [], total: 0 };
         }
@@ -489,20 +406,20 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     },
     {
       debounceWait: 300,
-      retryCount: 0, // 禁用自动重试，避免404等错误时的死循环
+      retryCount: 0, // Disable auto retry to avoid infinite loop on 404 errors
       refreshDeps,
       ready: dataSource.ready,
       manual: dataSource.manual,
       onError: (_error) => {
-        // 记录useRequest层面的错误
+        // Record useRequest level errors
       },
       onSuccess: (_result) => {
-        // 记录请求成功日志
+        // Record request success log
       },
     },
   );
 
-  // 前端筛选表格数据
+  // Frontend filter table data
   const formattedTableData = (() => {
     if ((!data && !dataSource?.dataList) || resetEmptyData) {
       return [];
@@ -511,10 +428,10 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     let newFilterData = [];
 
     if (!isEmpty(dataSource?.dataList)) {
-      // 为什么使用类型断言和类型转换：
-      // - dataSource.dataList 可能是任意类型的数据数组
-      // - formatTableData 是泛型函数，需要明确的类型参数
-      // - 这些数据会在 formatTableData 内部进行类型安全转换
+      // Why use type assertion and type conversion:
+      // - dataSource.dataList may be an array of any type of data
+      // - formatTableData is a generic function that requires explicit type parameters
+      // - This data will be type-safely converted inside formatTableData
       const formatDataList = formatTableData<unknown, unknown>({
         sourceData: (dataSource?.dataList as unknown[]) || [],
         addRowKey: Boolean(dataSource?.addRowKey),
@@ -533,11 +450,11 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
       ? (query[querySearchKey] as string | undefined)
       : undefined;
 
-    // 客户端关键词搜索
+    // Client-side keyword search
     if (search && !isEmpty(dataSource?.querySearchMatchKeys)) {
       const keyword = String(search).toLowerCase();
 
-      // 使用 unknown 类型，因为数据项类型由 dataSource 配置决定
+      // Use unknown type because data item type is determined by dataSource configuration
       newFilterData = newFilterData.filter((item: unknown) => {
         const itemObj = item as Record<string, unknown>;
         return (
@@ -548,7 +465,7 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
       });
     }
 
-    // 客户端过滤
+    // Client-side filtering
     if (
       enableClientFiltering &&
       !isFilterEmpty &&
@@ -565,7 +482,7 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     return newFilterData;
   })();
 
-  // 计算表格总数
+  // Calculate table total
   const tableTotal = (() => {
     const result =
       data?.total && dataSource?.isServerPagination
@@ -587,15 +504,15 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     return result;
   })();
 
-  // 加载更多数据
+  // Load more data
   const loadMoreData = useCallback(() => {
     run();
   }, [run]);
 
-  // 监控排序状态变化
+  // Monitor sorting state changes
   useEffect(() => {
     logger.log({
-      message: '排序状态变化监听触发',
+      message: 'Sort state change listener triggered',
       data: {
         sorter,
         sorterKeys: Object.keys(sorter),
@@ -610,7 +527,7 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     });
   }, [sorter]);
 
-  // 设置处理函数
+  // Set handler functions
   useEffect(() => {
     dataSource?.onProcess?.({
       run: () => {
@@ -630,7 +547,7 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     });
   }, [dataSource, run, cancel, props.setQuery, props.setSearchParams]);
 
-  // 手动控制loading和error的方法
+  // Methods to manually control loading and error
   const setLoading = useCallback((loading: boolean) => {
     setManualLoading(loading);
   }, []);
@@ -639,7 +556,7 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     setManualError(error);
   }, []);
 
-  // 实际的loading和error状态：手动状态优先，否则使用请求状态
+  // Actual loading and error state: manual state takes priority, otherwise use request state
   const finalLoading = manualLoading !== null ? manualLoading : loading;
   const finalError = manualError !== null ? manualError : error;
 
@@ -651,7 +568,7 @@ export const useDataSource = ({ props, config = {} }: UseDataSourceParams) => {
     resetEmptyData,
     setResetEmptyData,
     loadMoreData,
-    // 新增手动控制方法
+    // New: Manual control methods
     setLoading,
     setError,
   };

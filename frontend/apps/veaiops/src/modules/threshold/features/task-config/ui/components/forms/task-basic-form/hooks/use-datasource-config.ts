@@ -16,11 +16,11 @@ import apiClient from '@/utils/api-client';
 import { useMemo } from 'react';
 
 /**
- * 数据源配置Hook
- * 提供数据源、模板、项目的配置信息
+ * Datasource configuration Hook
+ * Provides configuration information for datasource, template, and projects
  */
 export const useDatasourceConfig = (datasourceType: string | undefined) => {
-  // 数据源配置
+  // Datasource configuration
   const datasourceDataSource = useMemo(() => {
     if (!datasourceType) {
       return undefined;
@@ -38,7 +38,7 @@ export const useDatasourceConfig = (datasourceType: string | undefined) => {
     };
   }, [datasourceType]);
 
-  // 模板配置
+  // Template configuration
   const templateDataSource = useMemo(
     () => ({
       serviceInstance: apiClient.metricTemplate,
@@ -53,7 +53,7 @@ export const useDatasourceConfig = (datasourceType: string | undefined) => {
     [],
   );
 
-  // 项目配置
+  // Project configuration
   const projectsDataSource = useMemo(
     () => ({
       serviceInstance: apiClient.projects,

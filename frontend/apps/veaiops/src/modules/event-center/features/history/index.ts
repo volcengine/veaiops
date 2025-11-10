@@ -13,22 +13,22 @@
 // limitations under the License.
 
 /**
- * 历史事件功能模块统一导出
+ * History event feature module unified export
  *
- * ✅ 层层导出原则：通过功能模块 index.ts 统一导出所有子目录内容
- * - 从功能模块 index.ts 导入，路径最短（如 `@ec/history`）
- * - 每个子目录通过各自的 index.ts 统一导出
+ * ✅ Layered export principle: Export all subdirectory contents through feature module index.ts
+ * - Import from feature module index.ts, shortest path (e.g., `@ec/history`)
+ * - Each subdirectory exports through its own index.ts
  *
- * 注意：遵循单一数据源原则
- * - 类型定义应直接从 @veaiops/types 或 api-generate 导入
+ * Note: Follow single source of truth principle
+ * - Type definitions should be imported directly from @veaiops/types or api-generate
  */
 
-// ==================== UI 组件导出 ====================
+// ==================== UI Components Export ====================
 export { HistoryDetailDrawer } from './ui/components/table/history-detail-drawer';
 export { HistoryTable } from './ui/components/table/history-table';
 export { HistoryManagement } from './ui/pages/history-management';
 
-// ==================== Hooks 导出 ====================
+// ==================== Hooks Export ====================
 export {
   useHistoryActionConfig,
   useHistoryManagementLogic,
@@ -37,12 +37,12 @@ export {
   type HistoryFilters,
 } from './hooks';
 
-// ==================== Config 导出 ====================
+// ==================== Config Export ====================
 export {
   getHistoryColumns,
   getHistoryFilters,
   renderEventStatus,
 } from './config';
 
-// ==================== Lib 导出 ====================
+// ==================== Lib Export ====================
 export { historyService } from './lib';

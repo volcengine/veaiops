@@ -18,7 +18,7 @@ export type ValidationError = {
   code?: number;
   message?: string;
   /**
-   * 详细错误列表
+   * List of detailed errors
    */
   errors?: Array<ErrorDetail>;
 };

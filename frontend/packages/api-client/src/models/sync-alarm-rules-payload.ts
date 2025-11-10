@@ -15,53 +15,53 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type SyncAlarmRulesPayload = {
   /**
-   * 智能阈值任务ID
+   * Intelligent threshold task ID
    */
   task_id: string;
   /**
-   * 智能阈值任务版本ID
+   * Intelligent threshold task version ID
    */
   task_version_id: string;
   /**
-   * 联系组ID列表（Volcengine和Aliyun需要）
+   * List of contact group IDs (required for Volcengine and Aliyun)
    */
   contact_group_ids?: Array<string>;
   /**
-   * 告警通知方式（仅Volcengine有效）
+   * Alarm notification methods (only valid for Volcengine)
    */
   alert_methods?: Array<'Email' | 'Phone' | 'SMS'>;
   /**
-   * 媒介类型ID列表（仅Zabbix需要，对应Zabbix的告警通知方式）
+   * List of media type IDs (only required for Zabbix, corresponds to Zabbix alarm notification methods)
    */
   mediatype_ids?: Array<string>;
   /**
-   * 用户组ID列表（仅Zabbix需要，对应Zabbix的告警组）
+   * List of user group IDs (only required for Zabbix, corresponds to Zabbix alarm groups)
    */
   usergroup_ids?: Array<string>;
   /**
-   * Webhook URL（可选）
+   * Webhook URL (optional)
    */
   webhook?: string;
   /**
-   * 告警级别（对所有告警源都有效）
+   * Alarm level (valid for all alarm sources)
    */
   alarm_level: SyncAlarmRulesPayload.alarm_level;
   /**
-   * 最大并发工作线程数
+   * Maximum number of concurrent worker threads
    */
   max_workers?: number;
   /**
-   * 速率限制周期（秒）
+   * Rate limit period in seconds
    */
   rate_limit_period?: number;
   /**
-   * 每个周期最大请求数
+   * Maximum number of requests per period
    */
   rate_limit_count?: number;
 };
 export namespace SyncAlarmRulesPayload {
   /**
-   * 告警级别（对所有告警源都有效）
+   * Alarm level (valid for all alarm sources)
    */
   export enum alarm_level {
     P0 = 'P0',

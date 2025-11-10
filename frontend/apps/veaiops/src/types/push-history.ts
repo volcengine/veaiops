@@ -16,111 +16,111 @@ import type { AgentType } from 'api-generate';
 import type { ModuleType } from './module';
 
 /**
- * 推送状态枚举
+ * Push status enumeration
  */
 export enum PushStatus {
-  /** 成功 */
+  /** Success */
   SUCCESS = 'success',
-  /** 失败 */
+  /** Failed */
   FAILED = 'failed',
-  /** 处理中 */
+  /** Pending */
   PENDING = 'pending',
-  /** 重试中 */
+  /** Retrying */
   RETRYING = 'retrying',
 }
 
 /**
- * 推送类型枚举
+ * Push type enumeration
  */
 export enum PushType {
-  /** 告警推送 */
+  /** Alert push */
   ALERT = 'alert',
-  /** 恢复推送 */
+  /** Recovery push */
   RECOVERY = 'recovery',
-  /** 通知推送 */
+  /** Notification push */
   NOTIFICATION = 'notification',
-  /** 测试推送 */
+  /** Test push */
   TEST = 'test',
 }
 
 /**
- * 历史事件记录
+ * History event record
  */
 export interface PushHistoryRecord {
-  /** 记录ID */
+  /** Record ID */
   id: string;
-  /** 模块类型 */
+  /** Module type */
   module_type: ModuleType;
-  /** 推送类型 */
+  /** Push type */
   push_type: PushType;
-  /** 推送状态 */
+  /** Push status */
   status: PushStatus;
-  /** 目标接收者 */
+  /** Target receiver */
   receiver: string;
-  /** 推送内容 */
+  /** Push content */
   content: string;
-  /** 推送时间 */
+  /** Push time */
   push_time: string;
-  /** 响应时间（毫秒） */
+  /** Response time (milliseconds) */
   response_time?: number;
-  /** 错误信息 */
+  /** Error message */
   error_message?: string;
-  /** 重试次数 */
+  /** Retry count */
   retry_count?: number;
-  /** 创建时间 */
+  /** Creation time */
   created_at: string;
-  /** 更新时间 */
+  /** Update time */
   updated_at?: string;
 }
 
 /**
- * 历史事件查询参数
+ * History event query parameters
  */
 export interface PushHistoryQuery {
-  /** 模块类型 */
+  /** Module type */
   agentType?: AgentType;
-  /** 推送类型 */
+  /** Push type */
   push_type?: PushType;
-  /** 推送状态 */
+  /** Push status */
   status?: PushStatus;
-  /** 接收者 */
+  /** Receiver */
   receiver?: string;
-  /** 开始时间 */
+  /** Start time */
   start_time?: string;
-  /** 结束时间 */
+  /** End time */
   end_time?: string;
-  /** 页码 */
+  /** Page number */
   page?: number;
-  /** 每页大小 */
+  /** Page size */
   page_size?: number;
 }
 
 /**
- * 历史事件响应
+ * History event response
  */
 export interface PushHistoryResponse {
-  /** 历史记录列表 */
+  /** History record list */
   records: PushHistoryRecord[];
-  /** 总数 */
+  /** Total count */
   total: number;
-  /** 当前页 */
+  /** Current page */
   page: number;
-  /** 每页大小 */
+  /** Page size */
   page_size: number;
 }
 
 /**
- * 推送统计信息
+ * Push statistics information
  */
 export interface PushStatistics {
-  /** 总推送数 */
+  /** Total push count */
   total_count: number;
-  /** 成功数 */
+  /** Success count */
   success_count: number;
-  /** 失败数 */
+  /** Failed count */
   failed_count: number;
-  /** 成功率 */
+  /** Success rate */
   success_rate: number;
-  /** 平均响应时间 */
+  /** Average response time */
   avg_response_time: number;
 }

@@ -13,23 +13,23 @@
 // limitations under the License.
 
 /**
- * CustomTable 工具函数相关错误类型定义
+ * CustomTable utility function related error type definitions
  *
 
  * @date 2025-12-19
  */
 
 /**
- * @name 响应错误类型
- * @description 用于统一处理 API 响应错误
+ * @name Response error type
+ * @description Used for unified handling of API response errors
  */
 export interface ResponseErrorType {
-  /** @name 错误代码 */
+  /** @name Error code */
   code: number;
-  /** @name 错误信息 */
+  /** @name Error message */
   message: string;
-  /** @name 错误详情（可选） */
+  /** @name Error details (optional) */
   details?: string;
-  /** @name 错误堆栈（可选，开发环境使用） */
+  /** @name Error stack (optional, used in development environment) */
   stack?: string;
 }

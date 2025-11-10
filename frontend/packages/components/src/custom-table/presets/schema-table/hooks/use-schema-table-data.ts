@@ -48,7 +48,7 @@ interface UseSchemaTableDataReturn {
 }
 
 /**
- * Schema Table 数据管理 Hook
+ * Schema Table data management Hook
  */
 export const useSchemaTableData = ({
   schema,
@@ -67,7 +67,7 @@ export const useSchemaTableData = ({
       : {}),
   });
 
-  // 数据加载
+  // Data loading
   const loadData = useCallback(
     async (params?: Record<string, unknown>) => {
       if (!schema.request) {
@@ -88,7 +88,7 @@ export const useSchemaTableData = ({
         if (typeof schema.request === 'function') {
           result = await schema.request(requestParams);
         } else {
-          // 处理URL请求配置
+          // Handle URL request configuration
           const response = await fetch(schema.request.url || '', {
             method: schema.request.method || 'GET',
             headers: {
@@ -120,10 +120,10 @@ export const useSchemaTableData = ({
           );
         }
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Pass through actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '数据加载失败';
+        const errorMessage = errorObj.message || 'Data loading failed';
         Message.error(errorMessage);
         (schema.request as RequestConfig<BaseRecord>)?.onError?.(errorObj);
       } finally {
@@ -133,7 +133,7 @@ export const useSchemaTableData = ({
     [schema.request, pagination.current, pagination.pageSize, filters],
   );
 
-  // 初始化数据加载
+  // Initialize data loading
   useEffect(() => {
     if (schema.request && !schema.dataSource) {
       loadData();

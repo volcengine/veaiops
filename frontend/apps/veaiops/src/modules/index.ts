@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 模块统一导出
+// Unified module exports
 export * from './auth';
 export * from './event-center';
 export * from './oncall';

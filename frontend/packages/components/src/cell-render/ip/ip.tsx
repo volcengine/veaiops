@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// React 相关
-import type { FC } from 'react'; // 导入React的函数组件类型
+// React related
+import type { FC } from 'react'; // Import React function component type
 
-// 单元格渲染函数
+// Cell rendering function
 import {} from '@arco-design/web-react';
-import { CustomOutlineTagRender } from '../custom-outline-tag/custom-outline-tag'; // 直接导入组件，避免循环依赖
+import { CustomOutlineTagRender } from '../custom-outline-tag/custom-outline-tag'; // Directly import component to avoid circular dependency
 import { EllipsisRender } from '../ellipsis/ellipsis';
 
-// 样式相关
-import styles from './index.module.less'; // 导入省略号渲染函数
+// Style related
+import styles from './index.module.less'; // Import ellipsis rendering function
 
-// 使用直接导入的组件，避免循环依赖
-const CustomOutlineTag = CustomOutlineTagRender; // 导入样式
+// Use directly imported component to avoid circular dependency
+const CustomOutlineTag = CustomOutlineTagRender; // Import styles
 
 const commonProps = {
   style: { display: 'flex', maxWidth: 250, alignItems: 'center' },

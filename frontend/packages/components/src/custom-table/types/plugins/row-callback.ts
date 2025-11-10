@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 增强的行回调属性类型定义
- * 基于 Arco Design Table RowCallbackProps 扩展
+ * Enhanced row callback props type definition
+ * Extended based on Arco Design Table RowCallbackProps
  */
 
 import type { ReactNode } from 'react';
 import type { BaseRecord } from '../core/common';
 
 /**
- * 原始行回调属性（基于 Arco Design Table）
+ * Original row callback props (based on Arco Design Table)
  */
 export interface RowCallbackProps {
   onClick?: (event: React.MouseEvent) => void;
@@ -34,21 +34,21 @@ export interface RowCallbackProps {
 }
 
 /**
- * 增强的行回调属性
- * 提供更丰富的行交互能力
+ * Enhanced row callback props
+ * Provides richer row interaction capabilities
  */
 export interface EnhancedRowCallbackProps<
   RecordType extends BaseRecord = BaseRecord,
 > extends RowCallbackProps {
-  /** 行数据 */
+  /** Row data */
   record?: RecordType;
-  /** 行索引 */
+  /** Row index */
   index?: number;
-  /** 是否选中 */
+  /** Whether selected */
   selected?: boolean;
-  /** 是否展开 */
+  /** Whether expanded */
   expanded?: boolean;
-  /** 行状态 */
+  /** Row state */
   rowState?: {
     loading?: boolean;
     error?: boolean;
@@ -56,78 +56,78 @@ export interface EnhancedRowCallbackProps<
     highlighted?: boolean;
   };
 
-  // === 扩展事件回调 ===
-  /** 行聚焦回调 */
+  // === Extended event callbacks ===
+  /** Row focus callback */
   onFocus?: (
     event: React.FocusEvent,
     record: RecordType,
     index: number,
   ) => void;
-  /** 行失焦回调 */
+  /** Row blur callback */
   onBlur?: (event: React.FocusEvent, record: RecordType, index: number) => void;
-  /** 行键盘事件回调 */
+  /** Row keyboard event callback */
   onKeyDown?: (
     event: React.KeyboardEvent,
     record: RecordType,
     index: number,
   ) => void;
-  /** 行拖拽开始回调 */
+  /** Row drag start callback */
   onDragStart?: (
     event: React.DragEvent,
     record: RecordType,
     index: number,
   ) => void;
-  /** 行拖拽结束回调 */
+  /** Row drag end callback */
   onDragEnd?: (
     event: React.DragEvent,
     record: RecordType,
     index: number,
   ) => void;
-  /** 行放置回调 */
+  /** Row drop callback */
   onDrop?: (event: React.DragEvent, record: RecordType, index: number) => void;
 
-  // === 业务扩展回调 ===
-  /** 行编辑保存回调 */
+  // === Business extended callbacks ===
+  /** Row edit save callback */
   onSave?: (
     record: RecordType,
     changes: Partial<RecordType>,
   ) => Promise<boolean>;
-  /** 行编辑取消回调 */
+  /** Row edit cancel callback */
   onCancel?: (record: RecordType) => void;
-  /** 行删除回调 */
+  /** Row delete callback */
   onDelete?: (record: RecordType, index: number) => Promise<boolean>;
-  /** 行复制回调 */
+  /** Row copy callback */
   onCopy?: (record: RecordType, index: number) => void;
-  /** 行详情查看回调 */
+  /** Row details view callback */
   onViewDetails?: (record: RecordType, index: number) => void;
 
-  // === 样式和渲染相关 ===
-  /** 自定义行类名 */
+  // === Style and rendering related ===
+  /** Custom row class name */
   className?: string | ((record: RecordType, index: number) => string);
-  /** 自定义行样式 */
+  /** Custom row style */
   style?:
     | React.CSSProperties
     | ((record: RecordType, index: number) => React.CSSProperties);
-  /** 行提示信息 */
+  /** Row tooltip information */
   title?: string | ((record: RecordType, index: number) => string);
-  /** 行图标 */
+  /** Row icon */
   icon?: ReactNode | ((record: RecordType, index: number) => ReactNode);
 }
 
 /**
- * 行回调配置
+ * Row callback configuration
  */
 export interface RowCallbackConfig<RecordType extends BaseRecord = BaseRecord> {
-  /** 是否启用行回调增强 */
+  /** Whether to enable row callback enhancement */
   enabled?: boolean;
-  /** 默认行回调属性 */
+  /** Default row callback properties */
   defaultProps?: Partial<EnhancedRowCallbackProps<RecordType>>;
-  /** 行回调生成函数 */
+  /** Row callback generation function */
   getRowProps?: (
     record: RecordType,
     index: number,
   ) => EnhancedRowCallbackProps<RecordType>;
-  /** 全局行事件处理器 */
+  /** Global row event handlers */
   globalHandlers?: {
     onClick?: (record: RecordType, index: number) => void;
     onDoubleClick?: (record: RecordType, index: number) => void;
@@ -136,23 +136,23 @@ export interface RowCallbackConfig<RecordType extends BaseRecord = BaseRecord> {
 }
 
 /**
- * 行回调工具函数类型
+ * Row callback utility function types
  */
 export interface RowCallbackHelpers<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 合并行回调属性 */
+  /** Merge row callback properties */
   mergeRowProps: (
     defaultProps: Partial<EnhancedRowCallbackProps<RecordType>>,
     customProps: Partial<EnhancedRowCallbackProps<RecordType>>,
   ) => EnhancedRowCallbackProps<RecordType>;
 
-  /** 创建行事件处理器 */
+  /** Create row event handler */
   createRowHandler: <EventType extends React.SyntheticEvent>(
     handler: (event: EventType, record: RecordType, index: number) => void,
   ) => (event: EventType) => void;
 
-  /** 绑定行数据到事件 */
+  /** Bind row data to event */
   bindRowData: (
     record: RecordType,
     index: number,

@@ -23,7 +23,7 @@ const queryFormat = {
   metricType: queryNumberFormat,
 };
 /**
- * 指标模板表格组件属性接口
+ * Metric template table component props interface
  */
 interface MetricTemplateTableProps {
   onEdit: (template: MetricTemplate) => Promise<boolean>;
@@ -33,8 +33,8 @@ interface MetricTemplateTableProps {
 }
 
 /**
- * 指标模板表格组件
- * 封装表格的渲染逻辑，提供清晰的接口
+ * Metric template table component
+ * Encapsulates table rendering logic, provides clear interface
  */
 export const MetricTemplateTable: React.FC<MetricTemplateTableProps> = ({
   onEdit,
@@ -42,10 +42,10 @@ export const MetricTemplateTable: React.FC<MetricTemplateTableProps> = ({
   onCreate,
   onRefreshReady,
 }) => {
-  // CustomTable ref 用于调用 refresh 方法
+  // CustomTable ref used to call refresh method
   const tableRef = useRef<any>(null);
 
-  // 表格配置 - 内聚操作按钮配置
+  // Table configuration - cohesive action button configuration
   const { customTableProps, handleColumns, handleFilters, actionButtons } =
     useMetricTemplateTableConfig({
       onEdit,
@@ -53,10 +53,10 @@ export const MetricTemplateTable: React.FC<MetricTemplateTableProps> = ({
       onCreate,
     });
 
-  // 暴露刷新方法给父组件
+  // Expose refresh method to parent component
   useEffect(() => {
     if (onRefreshReady && tableRef.current?.refresh) {
-      // 包装 CustomTable 的 refresh 方法
+      // Wrap CustomTable's refresh method
       const wrappedRefresh = async () => {
         logger.debug({
           message: '刷新方法被调用',

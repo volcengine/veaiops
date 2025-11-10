@@ -14,11 +14,11 @@
 
 import { IntelligentThresholdTask } from "api-generate";
 import { ButtonConfiguration, ButtonGroupRender } from "@veaiops/components";
-import { IconCopy, IconDelete, IconEye, IconExclamationCircle, IconLink } from "@arco-design/web-react/icon";
+import { IconCopy, IconDelete, IconEye } from "@arco-design/web-react/icon";
 import type { TaskTableActions } from "./types";
 
 /**
- * Action column rendering
+ * Actions column render
  */
 export const renderActions = (
   record: IntelligentThresholdTask,
@@ -36,18 +36,6 @@ export const renderActions = (
       },
     },
     {
-      text: "查看数据源详情",
-      dataTestId: "view-datasource-details-btn",
-      buttonProps: {
-        icon: <IconLink />,
-      },
-      onClick: () => {
-        if (actions.onViewDatasource) {
-          actions.onViewDatasource(record);
-        }
-      },
-    },
-    {
       text: "复制任务",
       dataTestId: "copy-task-btn",
       buttonProps: {
@@ -62,24 +50,10 @@ export const renderActions = (
       dataTestId: "delete-task-btn",
       supportPopConfirm: true,
       popConfirmTitle: "确定要删除这个任务吗？",
-      popConfirmContent: (
-        <div style={{ lineHeight: '1.6' }}>
-          <div style={{ marginBottom: '8px' }}>
-            删除后将无法恢复，请谨慎操作。
-          </div>
-          <div style={{ marginBottom: '4px' }}>
-            • 该任务的所有版本记录将被删除
-          </div>
-          <div>
-            • 注入到第三方监控系统的告警规则同时会被删除
-          </div>
-        </div>
-      ),
+      popConfirmContent: "删除后将无法恢复，该任务的所有版本记录也将被删除。",
       popconfirmProps: {
-        okText: "确定删除",
+        okText: "确定",
         cancelText: "取消",
-        icon: <IconExclamationCircle style={{ color: '#ff7d00' }} />,
-        okButtonProps: { status: 'danger' },
       },
       buttonProps: {
         status: "danger",

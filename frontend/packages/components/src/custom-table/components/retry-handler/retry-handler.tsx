@@ -16,18 +16,18 @@ import type { RetryHandlerProps } from '@/custom-table/types';
 import { Button } from '@arco-design/web-react';
 import { IconRefresh } from '@arco-design/web-react/icon';
 /**
- * 重试处理组件
- * 用于处理表格数据加载失败时的重试逻辑
+ * Retry handler component
+ * Used for handling retry logic when table data loading fails
  */
 import type React from 'react';
 
 /**
- * 重试处理组件
+ * Retry handler component
  */
 const RetryHandler: React.FC<RetryHandlerProps> = ({
   context,
-  message = '加载失败，请重试',
-  buttonText = '重试',
+  message = 'Load failed, please retry',
+  buttonText = 'Retry',
 }) => {
   const handleRetry = () => {
     if (context.helpers.run && typeof context.helpers.run === 'function') {

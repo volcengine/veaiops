@@ -13,16 +13,15 @@
 // limitations under the License.
 
 /**
- * 文件下载工具函数
-
+ * File download utility functions
  */
 import { logger } from '@veaiops/utils';
 
 /**
- * 下载文件的通用方法
- * @param url 文件URL
- * @param filename 下载的文件名
- * @returns Promise<boolean> 下载是否成功
+ * Generic method to download files
+ * @param url File URL
+ * @param filename Downloaded filename
+ * @returns Promise<boolean> Whether download was successful
  */
 export const downloadFile = async (
   url: string,
@@ -40,10 +39,10 @@ export const downloadFile = async (
 
     return true;
   } catch (error: unknown) {
-    // ✅ 正确：记录错误并返回失败结果
+    // ✅ Correct: Record error and return failure result
     const errorObj = error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: `文件下载失败: ${errorObj.message}`,
+      message: `File download failed: ${errorObj.message}`,
       data: {
         url,
         filename,
@@ -59,8 +58,8 @@ export const downloadFile = async (
 };
 
 /**
- * 下载卡片模板文件
- * @returns Promise<boolean> 下载是否成功
+ * Download card template file
+ * @returns Promise<boolean> Whether download was successful
  */
 export const downloadCardTemplate = async (): Promise<boolean> => {
   const filename = 'VeAIOps.card';
@@ -71,11 +70,11 @@ export const downloadCardTemplate = async (): Promise<boolean> => {
 };
 
 /**
- * 下载文件并显示成功/失败提示
- * @param url 文件URL
- * @param filename 下载的文件名
- * @param onSuccess 成功回调
- * @param onError 失败回调
+ * Download file and show success/failure notification
+ * @param url File URL
+ * @param filename Downloaded filename
+ * @param onSuccess Success callback
+ * @param onError Error callback
  */
 export const downloadFileWithCallback = async (
   url: string,
@@ -88,15 +87,15 @@ export const downloadFileWithCallback = async (
   if (success) {
     onSuccess?.();
   } else {
-    onError?.(new Error('文件下载失败'));
+    onError?.(new Error('File download failed'));
   }
   return success;
 };
 
 /**
- * 下载卡片模板并显示提示
- * @param onSuccess 成功回调
- * @param onError 失败回调
+ * Download card template and show notification
+ * @param onSuccess Success callback
+ * @param onError Error callback
  */
 export const downloadCardTemplateWithCallback = async (
   onSuccess?: () => void,

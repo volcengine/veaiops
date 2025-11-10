@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * Bot特别关注表格相关 Hooks 模块
+ * Bot special attention table related Hooks module
  *
- * 此模块提供了Bot特别关注表格的配置、业务逻辑和聚合功能
+ * This module provides configuration, business logic and aggregation functionality for Bot special attention table
  */
 
-// 表格相关 Hooks（合并同源导入）
+// Table related Hooks (merge same-source imports)
 export {
   useBotAttributesTable,
   type UseBotAttributesTableParams,

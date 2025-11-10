@@ -13,24 +13,24 @@
 // limitations under the License.
 
 /**
- * 配置字段翻译映射
+ * Configuration field translation mapping
  */
 export const CONFIG_FIELD_TRANSLATIONS: Record<string, string> = {
-  // 阿里云字段翻译
+  // Aliyun field translations
   aliyun_connect_name: '连接',
   aliyun_metric_name: '监控项',
   aliyun_region: '地域',
   aliyun_namespace: '命名空间',
   aliyun_group_by: '维度',
   aliyun_dimensions: '实例列表',
-  // 火山引擎字段翻译
+  // Volcengine field translations
   volcengine_connect_name: '连接名称',
   volcengine_metric_name: '监控项',
   volcengine_region: '地域',
   volcengine_namespace: '命名空间',
   volcengine_sub_namespace: '子命名空间',
   volcengine_instances: '实例列表',
-  // Zabbix 字段翻译
+  // Zabbix field translations
   zabbix_connect_name: '连接',
   zabbix_metric_name: '监控项',
   zabbix_targets: '主机列表',

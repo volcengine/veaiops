@@ -15,22 +15,22 @@
 import type { Project } from '@project/types';
 
 /**
- * 生成项目ID
+ * Generate project ID
  */
 export const generateProjectId = (): string => {
   return `project_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 };
 
 /**
- * 检查项目是否可以删除
+ * Check if project can be deleted
  */
 export const canDeleteProject = (project: Project): boolean => {
-  // 非活跃状态的项目可以删除
+  // Projects in inactive state can be deleted
   return project.is_active === false;
 };
 
 /**
- * 获取项目删除限制原因
+ * Get project deletion restriction reason
  */
 export const getDeleteRestrictionReason = (project: Project): string | null => {
   if (project.is_active === true) {

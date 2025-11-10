@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * QuerySync 日志收集器
- * 从 use-query-sync.ts 提取，用于统一管理查询同步日志
- * ✅ 优化：统一使用 @veaiops/utils logger
+ * QuerySync log collector
+ * Extracted from use-query-sync.ts, used to centrally manage query synchronization logs
+ * ✅ Optimization: Unified use of @veaiops/utils logger
  */
 
 import { logger } from '@veaiops/utils';
@@ -54,7 +54,7 @@ export class QuerySyncLogger {
 
     this.logs.push(entry);
 
-    // ✅ 统一使用 @veaiops/utils logger（logger 内部已处理 console 输出）
+    // ✅ Unified use of @veaiops/utils logger (logger internally handles console output)
     const logData = data ? { data } : undefined;
     switch (level) {
       case 'error':
@@ -133,10 +133,10 @@ export class QuerySyncLogger {
   }
 }
 
-// 创建单例实例
+// Create singleton instance
 export const querySyncLogger = new QuerySyncLogger();
 
-// 暴露到全局供日志导出系统使用
+// Expose to global for log export system use
 if (typeof window !== 'undefined') {
   (window as any).getQuerySyncLogs = () => querySyncLogger.getLogs();
 }

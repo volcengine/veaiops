@@ -13,20 +13,20 @@
 // limitations under the License.
 
 /**
- * 策略管理 Hooks 统一导出
+ * Strategy management Hooks unified export
  *
- * 根据 .cursorrules 规范：
- * - 统一导出：每个目录都**必须**有 `index.ts` 文件进行统一导出
- * - 优先使用统一导出，而不是直接导入具体文件
+ * According to .cursorrules specification:
+ * - Unified export: Each directory **must** have an `index.ts` file for unified export
+ * - Prefer unified export over direct import of specific files
  */
 
-// ✅ 优化：统一导出，文件名已简化
+// ✅ Optimization: Unified export, file names simplified
 export { useStrategyActionConfig } from './use-actions';
 export { useStrategyForm as useStrategyManagementLogic } from './use-form';
-// ✅ 简化文件名：use-strategy-table-config.tsx → use-table.tsx
+// ✅ Simplified file name: use-strategy-table-config.tsx → use-table.tsx
 export { useStrategyTableConfig } from './use-table';
 
-// ✅ 优化：统一导出类型（从 use-table.tsx）
+// ✅ Optimization: Unified export types (from use-table.tsx)
 export type {
   StrategyFilters,
   StrategyQueryParams,
@@ -34,9 +34,9 @@ export type {
   UseStrategyTableConfigReturn,
 } from './use-table';
 
-// 数据获取 Hooks
+// Data fetching Hooks
 export { default as useBotsList } from './use-bots';
 export { default as useChartsList, default as useChatsList } from './use-chats';
 
-// ✅ 根据 .cursorrules 规范：直接使用 InformStrategy（api-generate），不导出 StrategyTableData
-// InformStrategy 已满足 BaseRecord 约束（有索引签名），可直接用于 CustomTable
+// ✅ According to .cursorrules specification: Directly use InformStrategy (api-generate), do not export StrategyTableData
+// InformStrategy already satisfies BaseRecord constraint (has index signature), can be directly used in CustomTable

@@ -36,7 +36,7 @@ import type {
 } from './types/interface';
 
 /**
- * 默认下拉框过滤
+ * Default dropdown filter
  * @param inputValue
  * @param option
  */
@@ -55,13 +55,13 @@ export const defaultFilterOption = (
 };
 
 /**
- * 确保输入值是一个数组。
- * 如果值是undefined，返回一个空数组。
- * 如果值不是数组，返回一个包含该值的数组。
- * 如果值已经是一个数组，直接返回该值。
+ * Ensure input value is an array.
+ * If value is undefined, return an empty array.
+ * If value is not an array, return an array containing that value.
+ * If value is already an array, return it directly.
  *
- * @param value - 需要确保为数组的输入值。
- * @returns 代表输入值的一个数组。
+ * @param value - Input value that needs to be ensured as an array.
+ * @returns An array representing the input value.
  */
 export const ensureArray = <T>(value: T | T[] | null | undefined): T[] => {
   if (value === undefined || value === null) {
@@ -80,35 +80,40 @@ export const getFrontEnumsByKey = ({
   if (!key) {
     return [];
   }
-  // 从 sessionStorage 中获取前端枚举数据
+  // Get frontend enum data from sessionStorage
   const frontEnums = sessionStore.get(enumCacheKey, {});
   if (!frontEnums) {
     return [];
   }
-  // 根据键获取枚举数据源
+  // Get enum data source by key
   return ensureArray<StandardEnum>(frontEnums?.[key]);
 };
 
-// 根据过滤条件对象对数组进行条件过滤，并返回过滤后的数组
+/**
+ * Filter array based on filter criteria object and return filtered array
+ * @param data - Array to be filtered
+ * @param filterCriteria - Filter criteria object
+ * @returns Filtered array
+ */
 export const filterArrayByObjectCriteria = <T>({
-  data, // 待过滤的数组
-  filterCriteria, // 过滤条件对象
+  data,
+  filterCriteria,
 }: {
   data: T[];
   filterCriteria: Partial<T>;
 }): T[] => {
-  // 遍历待过滤的数组，根据过滤条件进行匹配
+  // Iterate through array to be filtered, match based on filter criteria
   const filteredArray = data.filter((item) => {
-    // 判断当前数组元素与过滤条件是否匹配
+    // Check if current array element matches filter criteria
     for (const key in filterCriteria) {
       if (item[key] !== filterCriteria[key]) {
-        return false; // 如果有任何一个条件不匹配，则返回 false，不包含在过滤后的数组中
+        return false; // If any condition doesn't match, return false, exclude from filtered array
       }
     }
-    return true; // 当所有条件匹配时，返回 true，包含在过滤后的数组中
+    return true; // When all conditions match, return true, include in filtered array
   });
 
-  return filteredArray; // 返回过滤后的数组
+  return filteredArray; // Return filtered array
 };
 
 export const optionfy = <T>({
@@ -136,12 +141,12 @@ export const optionfy = <T>({
   }
   const _renderLabel = ({ record }: { record: T }) => {
     if (isJoin) {
-      return `${record?.[labelKey as keyof T]}（${record?.[valueKey as keyof T]}）`;
+      return `${record?.[labelKey as keyof T]} (${record?.[valueKey as keyof T]})`;
     }
     if (countKey) {
-      return `${record?.[labelKey as keyof T]}（存量${
+      return `${record?.[labelKey as keyof T]} (Stock: ${
         record?.[countKey as keyof T]
-      }${countKeyUnit}）`;
+      }${countKeyUnit})`;
     }
     return labelRender?.({ record, _label: record?.[labelKey as keyof T] });
   };
@@ -180,9 +185,9 @@ export const optionfy = <T>({
 };
 
 /**
- * 判断一个字符串是否可以被转换成数字
- * @param str 需要被检查的字符串
- * @return 如果字符串可以被转换成数字则返回true，否则返回false
+ * Check if a string can be converted to a number
+ * @param str String to be checked
+ * @return Returns true if string can be converted to number, otherwise false
  */
 export const canConvertToNumber = (str: string | number | unknown): boolean => {
   if (!str) {
@@ -193,7 +198,7 @@ export const canConvertToNumber = (str: string | number | unknown): boolean => {
 };
 
 /**
- * 转换枚举数据为选项对象数组
+ * Convert enum data to option object array
  * @param enumData
  * @param isValueToNumber
  * @param isValueToBoolean
@@ -224,16 +229,16 @@ const convertToOptionObject = (
 };
 
 /**
- * 获取前端枚举的选项列表
- * @param enumCacheKey 枚举缓存键
- * @param key 枚举的键
- * @param filterCode 过滤的代码（可选）
+ * Get frontend enum options list
+ * @param enumCacheKey Enum cache key
+ * @param key Enum key
+ * @param filterCode Filter code (optional)
  * @param isStringItem
  * @param labelRender
  * @param disabledList
  * @param isValueToNumber
  * @param isValueToBoolean
- * @returns 选项列表对象，包含选项数组
+ * @returns Options list object containing options array
  */
 export const getFrontEnumsOptions = ({
   enumCacheKey,
@@ -245,39 +250,39 @@ export const getFrontEnumsOptions = ({
   isValueToNumber = false,
   isValueToBoolean = false,
 }: EnumOptionConfigs): OptionsEntity => {
-  // 如果枚举键为空，则返回空的选项列表对象
+  // If enum key is empty, return empty options list object
   if (!key) {
     return {
       options: [],
     };
   }
 
-  // 从 sessionStorage 中获取前端枚举数据
+  // Get frontend enum data from sessionStorage
   const enumDataSource = getFrontEnumsByKey({
     enumCacheKey: enumCacheKey || 'front_enums',
     key: camelCase(key),
   });
 
-  // 如果无法获取前端枚举数据或指定键的枚举数据不存在，则返回空的选项列表对象
+  // If unable to get frontend enum data or enum data for specified key doesn't exist, return empty options list object
   if (isEmpty(enumDataSource)) {
     return {
       options: [],
     };
   }
 
-  // 将枚举数据转换为选项对象数组
+  // Convert enum data to option object array
   let _dataSet = enumDataSource.map((config: StandardEnum) =>
     convertToOptionObject(config, isValueToNumber, isValueToBoolean),
   );
 
-  // 如果指定了过滤代码，则根据过滤条件对枚举数据进行筛选
+  // If filter code is specified, filter enum data based on filter criteria
   if (filterCode) {
     _dataSet = _dataSet.filter((config) => config?.extend?.code === filterCode);
   }
 
   const _disabledList = disabledList;
   if (_dataSet) {
-    // 合并配置里面的disabled
+    // Merge disabled from config
     _disabledList.push(
       ..._dataSet
         .filter((item) => item.extend?.disabled)
@@ -285,7 +290,7 @@ export const getFrontEnumsOptions = ({
     );
   }
 
-  // 调用 optionfy 函数将选项对象数组转换为标准选项数组
+  // Call optionfy function to convert option object array to standard options array
   const options = optionfy({
     dataSet: _dataSet,
     labelKey: 'name',
@@ -295,21 +300,21 @@ export const getFrontEnumsOptions = ({
     disabledList,
   });
 
-  // 返回选项列表对象
+  // Return options list object
   return { options };
 };
 
 /**
- * 类型守卫函数，用于检查提供的 dataSource 是否属于 DataSourceSetter 类型。
- * @param dataSource 要检查的数据源。
- * @returns 一个布尔值，指示 dataSource 是否属于 DataSourceSetter 类型。
+ * Type guard function to check if provided dataSource belongs to DataSourceSetter type.
+ * @param dataSource Data source to check.
+ * @returns A boolean indicating whether dataSource belongs to DataSourceSetter type.
  */
 export const isDataSourceSetter: (
   dataSource: any,
 ) => dataSource is DataSourceSetter = (
   dataSource: any,
 ): dataSource is DataSourceSetter => {
-  // 基础类型检查
+  // Basic type check
   if (
     typeof dataSource !== 'object' ||
     !dataSource ||
@@ -320,7 +325,7 @@ export const isDataSourceSetter: (
   ) {
     logger.debug(
       'Util',
-      'isDataSourceSetter - 基础检查失败',
+      'isDataSourceSetter - basic check failed',
       {
         typeofDataSource: typeof dataSource,
         isNull: dataSource === null,
@@ -338,14 +343,14 @@ export const isDataSourceSetter: (
     return false;
   }
 
-  // 🔧 增强验证：检查关键属性的值是否有效
+  // 🔧 Enhanced validation: Check if key property values are valid
   const { serviceInstance, api, responseEntityKey, optionCfg } = dataSource;
 
-  // serviceInstance 必须是一个对象
+  // serviceInstance must be an object
   if (!serviceInstance || typeof serviceInstance !== 'object') {
     logger.warn(
       'Util',
-      'isDataSourceSetter - serviceInstance 无效',
+      'isDataSourceSetter - serviceInstance invalid',
       {
         hasServiceInstance: Boolean(serviceInstance),
         serviceInstanceType: typeof serviceInstance,
@@ -355,7 +360,7 @@ export const isDataSourceSetter: (
     return false;
   }
 
-  // api 必须是一个非空字符串，并且不能包含 undefined/null 字符串
+  // api must be a non-empty string and cannot contain undefined/null strings
   if (
     !api ||
     typeof api !== 'string' ||
@@ -365,7 +370,7 @@ export const isDataSourceSetter: (
   ) {
     logger.warn(
       'Util',
-      'isDataSourceSetter - api 无效',
+      'isDataSourceSetter - api invalid',
       {
         api,
         apiType: typeof api,
@@ -378,11 +383,11 @@ export const isDataSourceSetter: (
     return false;
   }
 
-  // api 方法必须存在于 serviceInstance 中
+  // API method must exist in serviceInstance
   if (typeof serviceInstance[api] !== 'function') {
     logger.warn(
       'Util',
-      'isDataSourceSetter - api 方法不存在',
+      'isDataSourceSetter - api method does not exist',
       {
         api,
         apiMethodType: typeof serviceInstance[api],
@@ -393,7 +398,7 @@ export const isDataSourceSetter: (
     return false;
   }
 
-  // responseEntityKey 必须是非空字符串
+  // responseEntityKey must be a non-empty string
   if (
     !responseEntityKey ||
     typeof responseEntityKey !== 'string' ||
@@ -401,7 +406,7 @@ export const isDataSourceSetter: (
   ) {
     logger.warn(
       'Util',
-      'isDataSourceSetter - responseEntityKey 无效',
+      'isDataSourceSetter - responseEntityKey invalid',
       {
         responseEntityKey,
         responseEntityKeyType: typeof responseEntityKey,
@@ -411,11 +416,11 @@ export const isDataSourceSetter: (
     return false;
   }
 
-  // optionCfg 必须是对象
+  // optionCfg must be an object
   if (!optionCfg || typeof optionCfg !== 'object') {
     logger.warn(
       'Util',
-      'isDataSourceSetter - optionCfg 无效',
+      'isDataSourceSetter - optionCfg invalid',
       {
         hasOptionCfg: Boolean(optionCfg),
         optionCfgType: typeof optionCfg,
@@ -427,7 +432,7 @@ export const isDataSourceSetter: (
 
   logger.debug(
     'Util',
-    'isDataSourceSetter - 验证通过',
+    'isDataSourceSetter - validation passed',
     {
       api,
       responseEntityKey,
@@ -440,38 +445,38 @@ export const isDataSourceSetter: (
 };
 
 /**
- * 移除对象中的 undefined 值
- * @param target 目标对象
- * @returns 移除 undefined 值后的新对象
+ * Remove undefined values from object
+ * @param target Target object
+ * @returns New object with undefined values removed
  */
 export const removeUndefinedValues = (target: any): any => {
-  // 判断是否为对象
+  // Check if it's an object
   if (!isObject(target)) {
     return target;
   }
 
-  // 移除 undefined 值并生成新对象
+  // Remove undefined values and generate new object
   const filteredObj = omitBy(target, isUndefined);
 
-  // 递归移除嵌套对象中的 undefined 值
+  // Recursively remove undefined values in nested objects
 
   return mapValues(filteredObj, (value) => {
     if (Array.isArray(value)) {
-      // 过滤数组中的 undefined 值
+      // Filter undefined values in array
       return value.filter(
         (item) => !isUndefined(item) && !isNull(item) && !lodashIsNaN(item),
       );
     }
-    // 递归调用移除Undefined值的函数
+    // Recursively call function to remove undefined values
     return removeUndefinedValues(value);
   });
 };
 
 /**
- * 根据分隔符切分粘贴的文本内容
- * @param text 粘贴的原始文本
- * @param separators 分隔符数组，默认包含换行符、逗号、分号、制表符
- * @returns 切分后的字符串数组
+ * Split pasted text content by separators
+ * @param text Original pasted text
+ * @param separators Separator array, defaults to newline, comma, semicolon, tab
+ * @returns Split string array
  */
 export const splitPastedText = (
   text: string,
@@ -481,7 +486,7 @@ export const splitPastedText = (
     return [];
   }
 
-  // 构建正则表达式，处理特殊字符的转义
+  // Build regex, handle special character escaping
   const escapedSeparators = separators.map((sep) => {
     switch (sep) {
       case '\n':
@@ -491,15 +496,15 @@ export const splitPastedText = (
       case '\r':
         return '\\r';
       default:
-        // 转义正则表达式特殊字符
+        // Escape regex special characters
         return sep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
   });
 
-  // 创建正则表达式来匹配任意分隔符
+  // Create regex to match any separator
   const separatorRegex = new RegExp(`[${escapedSeparators.join('')}]+`, 'g');
 
-  // 切分文本并处理
+  // Split text and process
   return text
     .split(separatorRegex)
     .map((val) => val.trim())

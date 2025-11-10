@@ -15,8 +15,8 @@
 import { EventLevel } from 'api-generate';
 
 /**
- * 事件级别选项配置
- * 用于筛选器和表单选择
+ * Event level options configuration
+ * Used for filters and form selection
  */
 export const EVENT_LEVEL_OPTIONS = [
   { label: 'P0', value: EventLevel.P0, extra: { color: 'red' } },
@@ -25,7 +25,7 @@ export const EVENT_LEVEL_OPTIONS = [
 ];
 
 /**
- * 事件级别映射
+ * Event level mapping
  */
 export const EVENT_LEVEL_MAP = EVENT_LEVEL_OPTIONS.reduce(
   (acc, cur) => {

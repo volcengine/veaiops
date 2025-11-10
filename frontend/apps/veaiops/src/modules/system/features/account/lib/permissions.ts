@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * 账号管理权限检查函数
- * @description 用户权限验证相关函数
+ * Account management permission check functions
+ * @description User permission validation related functions
  */
 
 import type { User, UserRole } from '@account';
 import { USER_PERMISSIONS } from './constants';
 
 /**
- * 检查用户权限
+ * Check user permissions
  */
 export const checkUserPermission = (
   currentUserRole: UserRole,
@@ -34,17 +34,17 @@ export const checkUserPermission = (
     return false;
   }
 
-  // 检查基础权限
+  // Check basic permissions
   if (!permissions[action]) {
     return false;
   }
 
-  // 系统管理员不能被其他用户操作（除了其他系统管理员）
+  // System administrators cannot be operated by other users (except other system administrators)
   if (targetUser.is_system_admin && currentUserRole !== 'admin') {
     return false;
   }
 
-  // 用户不能操作比自己权限高的用户
+  // Users cannot operate users with higher permissions than themselves
   const roleHierarchy = { viewer: 0, user: 1, admin: 2 };
   const currentLevel = roleHierarchy[currentUserRole];
   const targetLevel = roleHierarchy[targetUser.role];

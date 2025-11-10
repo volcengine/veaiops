@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源向导步骤数据获取器
- * @description 处理向导步骤切换时的数据获取逻辑，为每个步骤加载必要的数据
+ * Data source wizard step data fetcher
+ * @description Handles data fetching logic when wizard steps change, loading necessary data for each step
  * @author AI Assistant
  * @date 2025-01-19
  */
@@ -27,12 +27,12 @@ import { DataSourceType } from '../../types';
 import type { WizardActions, WizardState } from '../../types';
 
 /**
- * 处理步骤切换时的数据获取逻辑
- * @param selectedType 选中的数据源类型
- * @param state 向导状态
- * @param actions 向导操作方法
- * @param currentStepKey 当前步骤的key
- * @returns Promise，对于创建步骤会返回创建结果
+ * Handle data fetching logic when steps change
+ * @param selectedType Selected data source type
+ * @param state Wizard state
+ * @param actions Wizard action methods
+ * @param currentStepKey Current step key
+ * @returns Promise, returns creation result for create step
  */
 export const handleStepDataFetch = async (
   selectedType: DataSourceType,
@@ -40,7 +40,7 @@ export const handleStepDataFetch = async (
   actions: WizardActions,
   currentStepKey: string,
 ): Promise<any> => {
-  // 根据当前步骤执行相应的数据获取逻辑
+  // Execute corresponding data fetching logic based on current step
   switch (currentStepKey) {
     case 'connect':
       await handleConnectStep(selectedType, state, actions);
@@ -59,8 +59,8 @@ export const handleStepDataFetch = async (
       break;
 
     case 'product':
-      // 火山引擎产品选择后，子命名空间由 SubnamespaceSelectionStep 组件自动获取
-      // 不需要在这里调用 fetchVolcengineSubNamespaces，避免重复请求
+      // After Volcengine product selection, sub-namespaces are automatically fetched by SubnamespaceSelectionStep component
+      // No need to call fetchVolcengineSubNamespaces here to avoid duplicate requests
       break;
 
     case 'subnamespace':
@@ -68,7 +68,7 @@ export const handleStepDataFetch = async (
       break;
 
     case 'instance':
-      // 实例选择步骤 - 数据已在 metric 步骤获取，这里不需要额外操作
+      // Instance selection step - data already fetched in metric step, no additional operation needed here
       break;
 
     case 'host':
@@ -76,7 +76,7 @@ export const handleStepDataFetch = async (
       break;
 
     case 'create': {
-      // 创建或更新数据源
+      // Create or update data source
       const result = await handleCreateStep(selectedType, state);
       return result;
     }
@@ -89,14 +89,14 @@ export const handleStepDataFetch = async (
 };
 
 /**
- * 处理连接选择步骤
+ * Handle connection selection step
  */
 async function handleConnectStep(
   selectedType: DataSourceType,
   state: WizardState,
   actions: WizardActions,
 ): Promise<void> {
-  // 进入连接选择步骤时，首先获取连接列表
+  // When entering connection selection step, first fetch connection list
   if (!state.connects.length) {
     try {
       await actions.fetchConnects(selectedType);
@@ -104,11 +104,11 @@ async function handleConnectStep(
       const errorMessage =
         error instanceof Error ? error.message : String(error);
 
-      throw new Error(`获取${selectedType}连接列表失败: ${errorMessage}`);
+      throw new Error(`Failed to fetch ${selectedType} connection list: ${errorMessage}`);
     }
   }
 
-  // 连接选择后的逻辑 - 只有在成功获取连接列表后才执行
+  // Logic after connection selection - only execute after successfully fetching connection list
   if (state.connects.length > 0) {
     try {
       if (selectedType === DataSourceType.ZABBIX && state.selectedConnect) {
@@ -118,7 +118,7 @@ async function handleConnectStep(
         state.selectedConnect
       ) {
         if (!state.selectedConnect._id) {
-          throw new Error('阿里云连接缺少ID');
+          throw new Error('Aliyun connection missing ID');
         }
         await actions.fetchAliyunProjects(state.selectedConnect._id);
       } else if (selectedType === DataSourceType.VOLCENGINE) {
@@ -128,27 +128,27 @@ async function handleConnectStep(
       const errorMessage =
         error instanceof Error ? error.message : String(error);
 
-      throw new Error(`初始化${selectedType}数据失败: ${errorMessage}`);
+      throw new Error(`Failed to initialize ${selectedType} data: ${errorMessage}`);
     }
   }
 }
 
 /**
- * 处理模板选择步骤（Zabbix）
+ * Handle template selection step (Zabbix)
  */
 async function handleTemplateStep(
   selectedType: DataSourceType,
   state: WizardState,
   actions: WizardActions,
 ): Promise<void> {
-  // Zabbix 模板选择后获取监控项
+  // Fetch metrics after Zabbix template selection
   if (
     selectedType === DataSourceType.ZABBIX &&
     state.selectedConnect &&
     state.zabbix.selectedTemplate
   ) {
     if (!state.zabbix.selectedTemplate.templateid) {
-      throw new Error('Zabbix模板缺少templateid');
+      throw new Error('Zabbix template missing templateid');
     }
     try {
       await actions.fetchZabbixMetrics(
@@ -159,13 +159,13 @@ async function handleTemplateStep(
       const errorMessage =
         error instanceof Error ? error.message : String(error);
 
-      throw new Error(`获取Zabbix监控项失败: ${errorMessage}`);
+      throw new Error(`Failed to fetch Zabbix metrics: ${errorMessage}`);
     }
   }
 }
 
 /**
- * 处理监控项选择步骤
+ * Handle metric selection step
  */
 async function handleMetricStep(
   selectedType: DataSourceType,
@@ -173,7 +173,7 @@ async function handleMetricStep(
   actions: WizardActions,
 ): Promise<void> {
   try {
-    // Zabbix 监控项选择后获取主机列表
+    // Fetch host list after Zabbix metric selection
     if (
       selectedType === DataSourceType.ZABBIX &&
       state.selectedConnect &&
@@ -185,7 +185,7 @@ async function handleMetricStep(
         state.zabbix.selectedTemplate.templateid,
       );
     }
-    // 阿里云监控项选择后获取实例列表
+    // Fetch instance list after Aliyun metric selection
     else if (
       selectedType === DataSourceType.ALIYUN &&
       state.selectedConnect &&
@@ -195,7 +195,7 @@ async function handleMetricStep(
         !state.aliyun.selectedMetric.namespace ||
         !state.aliyun.selectedMetric.metricName
       ) {
-        throw new Error('阿里云监控项信息不完整');
+        throw new Error('Aliyun metric information incomplete');
       }
       await actions.fetchAliyunInstances(
         state.selectedConnect.name,
@@ -203,7 +203,7 @@ async function handleMetricStep(
         state.aliyun.selectedMetric.metricName,
       );
     }
-    // 火山引擎监控项选择后获取实例列表
+    // Fetch instance list after Volcengine metric selection
     else if (
       selectedType === DataSourceType.VOLCENGINE &&
       state.selectedConnect &&
@@ -212,10 +212,10 @@ async function handleMetricStep(
       state.volcengine.selectedSubNamespace
     ) {
       if (!state.volcengine.region) {
-        throw new Error('火山引擎地域未选择');
+        throw new Error('Volcengine region not selected');
       }
       if (!state.volcengine.selectedProduct.namespace) {
-        throw new Error('火山引擎产品命名空间未选择');
+        throw new Error('Volcengine product namespace not selected');
       }
       await actions.fetchVolcengineInstances(
         state.selectedConnect.name,
@@ -228,22 +228,22 @@ async function handleMetricStep(
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
 
-    throw new Error(`获取${selectedType}实例列表失败: ${errorMessage}`);
+    throw new Error(`Failed to fetch ${selectedType} instance list: ${errorMessage}`);
   }
 }
 
 /**
- * 处理项目选择步骤（阿里云）
+ * Handle project selection step (Aliyun)
  */
 async function handleProjectStep(
   selectedType: DataSourceType,
   state: WizardState,
   actions: WizardActions,
 ): Promise<void> {
-  // 阿里云项目选择后获取监控项
+  // Fetch metrics after Aliyun project selection
   if (selectedType === DataSourceType.ALIYUN && state.selectedConnect) {
     if (!state.selectedConnect._id) {
-      throw new Error('阿里云连接缺少ID');
+      throw new Error('Aliyun connection missing ID');
     }
     try {
       await actions.fetchAliyunMetrics(state.selectedConnect._id);
@@ -251,23 +251,23 @@ async function handleProjectStep(
       const errorMessage =
         error instanceof Error ? error.message : String(error);
 
-      throw new Error(`获取阿里云监控项失败: ${errorMessage}`);
+      throw new Error(`Failed to fetch Aliyun metrics: ${errorMessage}`);
     }
   }
 }
 
 /**
- * 处理子命名空间选择步骤（火山引擎）
+ * Handle sub-namespace selection step (Volcengine)
  */
 async function handleSubnamespaceStep(
   selectedType: DataSourceType,
   state: WizardState,
   actions: WizardActions,
 ): Promise<void> {
-  // 火山引擎子命名空间选择后获取监控项
+  // Fetch metrics after Volcengine sub-namespace selection
   if (selectedType === DataSourceType.VOLCENGINE) {
     if (!state.volcengine.selectedProduct?.namespace) {
-      throw new Error('火山引擎产品命名空间未选择');
+      throw new Error('Volcengine product namespace not selected');
     }
     try {
       await actions.fetchVolcengineMetrics(
@@ -278,32 +278,32 @@ async function handleSubnamespaceStep(
       const errorMessage =
         error instanceof Error ? error.message : String(error);
 
-      throw new Error(`获取火山引擎监控项失败: ${errorMessage}`);
+      throw new Error(`Failed to fetch Volcengine metrics: ${errorMessage}`);
     }
   }
 }
 
 /**
- * 处理主机选择步骤（Zabbix）
+ * Handle host selection step (Zabbix)
  */
 async function handleHostStep(
   selectedType: DataSourceType,
   state: WizardState,
   actions: WizardActions,
 ): Promise<void> {
-  // Zabbix 主机选择后获取监控项详情
+  // Fetch metric details after Zabbix host selection
   if (
     selectedType === DataSourceType.ZABBIX &&
     state.selectedConnect &&
     state.zabbix.selectedMetric &&
     state.zabbix.selectedHosts.length > 0
   ) {
-    // 验证主机数据完整性
+    // Validate host data integrity
     const invalidHosts = state.zabbix.selectedHosts.filter(
       (host) => !host.host,
     );
     if (invalidHosts.length > 0) {
-      throw new Error(`发现${invalidHosts.length}个无效主机（缺少host字段）`);
+      throw new Error(`Found ${invalidHosts.length} invalid hosts (missing host field)`);
     }
 
     try {
@@ -319,13 +319,13 @@ async function handleHostStep(
       const errorMessage =
         error instanceof Error ? error.message : String(error);
 
-      throw new Error(`获取Zabbix监控项详情失败: ${errorMessage}`);
+      throw new Error(`Failed to fetch Zabbix metric details: ${errorMessage}`);
     }
   }
 }
 
 /**
- * 处理创建步骤
+ * Handle create step
  */
 async function handleCreateStep(
   selectedType: DataSourceType,
@@ -339,7 +339,7 @@ async function handleCreateStep(
 
   if (!result.success) {
     throw new Error(
-      result.message || (isEditMode ? '更新数据源失败' : '创建数据源失败'),
+      result.message || (isEditMode ? 'Failed to update data source' : 'Failed to create data source'),
     );
   }
 

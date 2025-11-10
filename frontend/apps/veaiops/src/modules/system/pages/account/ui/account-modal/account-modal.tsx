@@ -28,8 +28,8 @@ import { AccountInfo, BasicInfoFields } from './form-fields';
 import type { AccountModalProps } from './types';
 
 /**
- * 账号弹窗组件
- * 提供账号的新增和编辑功能
+ * Account modal component
+ * Provides account creation and editing functionality
  */
 export const AccountModal: React.FC<AccountModalProps> = ({
   visible,
@@ -38,12 +38,12 @@ export const AccountModal: React.FC<AccountModalProps> = ({
   onSubmit,
   form,
 }) => {
-  // 使用公共的抽屉表单提交 Hook
+  // Use shared drawer form submit Hook
   const { submitting, handleSubmit } = useDrawerFormSubmit({
     form,
     onSubmit,
     resetOnSuccess: true,
-    closeOnSuccess: false, // 不自动关闭，由父组件控制
+    closeOnSuccess: false, // Do not auto close, controlled by parent component
   });
 
   return (
@@ -82,7 +82,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           autoComplete="off"
           disabled={Boolean(editingUser)}
         >
-          {/* 新增账号说明 */}
+          {/* Create account instructions */}
           {!editingUser && (
             <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl">
               <div className="flex items-start gap-3">
@@ -145,7 +145,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
             </div>
           )}
 
-          {/* 修改密码说明 - 普通用户 */}
+          {/* Change password instructions - Regular user */}
           {editingUser && !editingUser.is_supervisor && (
             <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-xl">
               <div className="flex items-start gap-3">
@@ -199,7 +199,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
             </div>
           )}
 
-          {/* 系统管理员警告 */}
+          {/* System administrator warning */}
           {editingUser?.is_supervisor && (
             <div className="mb-6 p-4 bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 rounded-xl shadow-sm">
               <div className="flex items-start gap-3">
@@ -276,12 +276,12 @@ export const AccountModal: React.FC<AccountModalProps> = ({
             </div>
           )}
 
-          {/* 基本信息 */}
+          {/* Basic information */}
           <CardWithTitle title="基本信息" className="mb-4">
             <BasicInfoFields editingUser={editingUser} />
           </CardWithTitle>
 
-          {/* 账号信息（仅编辑时显示） */}
+          {/* Account information (only shown when editing) */}
           {editingUser && (
             <CardWithTitle title="账号信息" className="mb-4">
               <AccountInfo editingUser={editingUser} />

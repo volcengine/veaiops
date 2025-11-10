@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 监控数据源管理逻辑Hook模块化导出
+ * Monitor data source management logic Hook modular export
  *
- * 🎯 拆分策略：
- * - use-monitor-crud.ts: CRUD操作
- * - use-monitor-state.ts: 状态管理
- * - use-monitor-handlers.ts: 事件处理器
- * - use-monitor-access-logic.ts: 整合主Hook
+ * 🎯 Split strategy:
+ * - use-monitor-crud.ts: CRUD operations
+ * - use-monitor-state.ts: State management
+ * - use-monitor-handlers.ts: Event handlers
+ * - use-monitor-access-logic.ts: Main Hook integration
  */
 
 export * from './use-monitor-crud';

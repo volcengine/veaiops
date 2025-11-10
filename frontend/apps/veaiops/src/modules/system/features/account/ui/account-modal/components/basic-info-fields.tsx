@@ -28,7 +28,7 @@ const { Row, Col } = Grid;
 const { Option } = Select;
 
 /**
- * 基本信息表单字段组件 Props
+ * Basic info form fields component Props
  */
 interface BasicInfoFieldsProps {
   editingUser: User | null;
@@ -41,7 +41,7 @@ interface BasicInfoFieldsProps {
 }
 
 /**
- * 基本信息表单字段组件
+ * Basic info form fields component
  */
 export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
   editingUser,
@@ -54,7 +54,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
 }) => {
   return (
     <>
-      {/* 用户名字段 */}
+      {/* Username field */}
       <Form.Item
         label={
           <Space size={4}>
@@ -92,7 +92,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         />
       </Form.Item>
 
-      {/* 邮箱字段 */}
+      {/* Email field */}
       <Form.Item
         label={
           <Space size={4}>
@@ -130,14 +130,14 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         />
       </Form.Item>
 
-      {/* 密码字段 */}
+      {/* Password field */}
       <PasswordFields
         isEditing={Boolean(editingUser)}
         passwordRules={passwordRules}
         newPasswordRules={newPasswordRules}
       />
 
-      {/* 角色字段 */}
+      {/* Role field */}
       <Form.Item
         label="角色"
         field="role"
@@ -154,7 +154,7 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
         </Select>
       </Form.Item>
 
-      {/* 状态字段（隐藏） */}
+      {/* Status field (hidden) */}
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item

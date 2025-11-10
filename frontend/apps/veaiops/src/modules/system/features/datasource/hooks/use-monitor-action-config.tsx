@@ -16,8 +16,8 @@ import { Button } from '@arco-design/web-react';
 import { IconPlus, IconSettings } from '@arco-design/web-react/icon';
 
 /**
- * 监控配置操作按钮配置Hook
- * 提供表格工具栏操作按钮配置
+ * Monitor configuration action button configuration Hook
+ * Provides table toolbar action button configuration
  */
 export const useMonitorActionConfig = (
   onAdd: () => void,
@@ -30,7 +30,7 @@ export const useMonitorActionConfig = (
     </Button>,
   ];
 
-  // 如果提供了连接管理回调，添加连接管理按钮
+  // If connection management callback is provided, add connection management button
   if (onConnectionManage && dataSourceType) {
     actions.push(
       <Button

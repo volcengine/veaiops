@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 事件中心订阅规则相关类型定义
+ * Event center subscription rule related type definitions
  *
- * 优化说明：
- * - 优先使用 api-generate 中的类型：SubscribeRelationWithAttributes, SubscribeRelationCreate, SubscribeRelationUpdate
- * - 以下类型仅保留用于兼容旧代码，新代码应使用 api-generate 中的类型
+ * Optimization notes:
+ * - Prioritize using types from api-generate: SubscribeRelationWithAttributes, SubscribeRelationCreate, SubscribeRelationUpdate
+ * - The following types are only kept for backward compatibility with old code, new code should use types from api-generate
  */
 
-// 优先使用 api-generate 中的类型
+// Prioritize using types from api-generate
 export type {
   SubscribeRelationWithAttributes,
   SubscribeRelationCreate,
@@ -28,12 +28,12 @@ export type {
 } from "api-generate";
 
 /**
- * @deprecated 已废弃，请使用 api-generate 中的 SubscribeRelationWithAttributes
+ * @deprecated Deprecated, please use SubscribeRelationWithAttributes from api-generate
  *
- * 如果需要自定义字段，请基于 SubscribeRelationWithAttributes 扩展：
+ * If custom fields are needed, extend based on SubscribeRelationWithAttributes:
  * ```typescript
  * interface CustomSubscriptionData extends SubscribeRelationWithAttributes {
- *   // 仅添加前端特有字段
+ *   // Only add frontend-specific fields
  *   customField?: string;
  * }
  * ```
@@ -75,13 +75,13 @@ export interface NotificationChannel {
 
 export interface ThrottleConfig {
   enabled: boolean;
-  interval: number; // 秒
+  interval: number; // seconds
   max_count: number;
 }
 
 /**
- * 订阅规则表格数据类型
- * @deprecated 建议直接使用 SubscribeRelationWithAttributes 类型（来自 api-generate）
+ * Subscription rule table data type
+ * @deprecated Recommend directly using SubscribeRelationWithAttributes type (from api-generate)
  */
 export type SubscriptionRuleTableData = SubscriptionRule;
 
@@ -96,7 +96,7 @@ export interface SubscriptionRuleCreateRequest {
 }
 
 /**
- * @deprecated 已废弃，请使用 api-generate 中的 SubscribeRelationUpdate
+ * @deprecated Deprecated, please use SubscribeRelationUpdate from api-generate
  */
 export interface SubscriptionRuleUpdateRequest {
   name?: string;
@@ -109,8 +109,8 @@ export interface SubscriptionRuleUpdateRequest {
 }
 
 /**
- * 订阅规则查询参数
- * 如果 api-generate 中有对应类型应替换
+ * Subscription rule query parameters
+ * Should be replaced if corresponding type exists in api-generate
  */
 export interface SubscriptionRuleQuery {
   name?: string;

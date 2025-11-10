@@ -41,14 +41,14 @@ interface BotCreateFormProps {
 }
 
 /**
- * Bot创建表单组件
- * @description 包含完整的机器人配置表单，支持所有必需字段
+ * Bot creation form component
+ * @description Contains complete bot configuration form, supports all required fields
  *
- * 拆分说明：
- * - sections/basic-config.tsx: 基础配置区块（企业协同工具、App ID、App Secret）
- * - sections/form-actions.tsx: 操作按钮区块（取消、创建机器人）
- * - chat-ops-config.tsx: 高级配置组件（已存在的独立组件）
- * - index.tsx: 主入口组件，负责组装和渲染
+ * Split explanation:
+ * - sections/basic-config.tsx: Basic configuration block (enterprise collaboration tool, App ID, App Secret)
+ * - sections/form-actions.tsx: Action buttons block (cancel, create bot)
+ * - chat-ops-config.tsx: Advanced configuration component (existing independent component)
+ * - index.tsx: Main entry component, responsible for assembly and rendering
  */
 export const BotCreateForm: React.FC<BotCreateFormProps> = ({
   onSubmit,
@@ -81,7 +81,7 @@ export const BotCreateForm: React.FC<BotCreateFormProps> = ({
         autoComplete="off"
         onSubmit={createSubmitHandler(onSubmit)}
       >
-        {/* 基础配置 */}
+        {/* Basic configuration */}
         <BasicConfig
           form={form}
           selectedChannel={selectedChannel}
@@ -92,7 +92,7 @@ export const BotCreateForm: React.FC<BotCreateFormProps> = ({
           toggleSecretVisibility={toggleSecretVisibility}
         />
 
-        {/* 高级配置（可选） */}
+        {/* Advanced configuration (optional) */}
         <ChatOpsConfig
           showAdvancedConfig={showAdvancedConfig}
           setShowAdvancedConfig={setShowAdvancedConfig}
@@ -105,7 +105,7 @@ export const BotCreateForm: React.FC<BotCreateFormProps> = ({
           urlValidator={urlValidator}
         />
 
-        {/* 操作按钮 */}
+        {/* Action buttons */}
         <FormActions onCancel={onCancel} loading={loading} />
       </Form>
     </div>

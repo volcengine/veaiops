@@ -15,7 +15,7 @@
 import { logger } from '../logger';
 import type { veArchSelectBlockProps } from '../types/interface';
 
-// 导入子Hook
+// Import sub-hooks
 import { useBaseConfig } from './use-base-config';
 import { useDebugEffects } from './use-debug-effects';
 import { useDebugLogging } from './use-debug-logging';
@@ -28,11 +28,11 @@ import { useReturnValue } from './use-return-value';
 import { useStateSubscription } from './use-state-subscription';
 
 /**
- * SelectBlock主Hook，整合所有插件功能
- * 高度模块化版本：每个功能模块都被拆分为专门的子Hook，提高可维护性和可读性
+ * SelectBlock main Hook, integrates all plugin functionality
+ * Highly modular version: Each functional module is split into specialized sub-hooks, improving maintainability and readability
  */
 export function useSelectBlock(props: veArchSelectBlockProps) {
-  // === 1. 基础配置处理 ===
+  // === 1. Base configuration processing ===
   const {
     hookTraceId,
     initialOptions,
@@ -48,14 +48,14 @@ export function useSelectBlock(props: veArchSelectBlockProps) {
     dependency,
   } = useBaseConfig(props);
 
-  // 从 props 中获取 remoteSearchKey
+  // Get remoteSearchKey from props
   const { remoteSearchKey } = props;
 
-  // === 2. 调试日志系统 ===
+  // === 2. Debug logging system ===
   const { debugLogs, consoleDebugLogs, addDebugLog } =
     useDebugLogging(hookTraceId);
 
-  // === 3. 插件管理器 ===
+  // === 3. Plugin manager ===
   const {
     pluginManagerRef,
     dataFetcher,
@@ -64,14 +64,14 @@ export function useSelectBlock(props: veArchSelectBlockProps) {
     pasteHandler,
   } = usePluginManager(props, initialOptions, limit, addDebugLog, hookTraceId);
 
-  // === 4. 状态订阅 ===
+  // === 4. State subscription ===
   const { currentState } = useStateSubscription(
     pluginManagerRef,
     initialOptions,
     hookTraceId,
   );
 
-  // === 5. 选项处理 ===
+  // === 5. Options processing ===
   const {
     finalOptions,
     finalDefaultValue,
@@ -81,7 +81,7 @@ export function useSelectBlock(props: veArchSelectBlockProps) {
     _canFetch,
   } = useOptionsProcessing(props, currentState, dataFetcher);
 
-  // === 6. 事件处理器 ===
+  // === 6. Event handlers ===
   addDebugLog('BEFORE_EVENT_HANDLERS', {
     _canFetch,
     _canFetchType: typeof _canFetch,
@@ -114,7 +114,7 @@ export function useSelectBlock(props: veArchSelectBlockProps) {
     _canFetchType: typeof _canFetch,
   });
 
-  // === 7. 调试副作用处理 ===
+  // === 7. Debug side effects processing ===
   useDebugEffects({
     currentState,
     renderCountRef,
@@ -125,7 +125,7 @@ export function useSelectBlock(props: veArchSelectBlockProps) {
     addDebugLog,
   });
 
-  // === 8. 数据获取副作用处理 ===
+  // === 8. Data fetching side effects processing ===
   useFetchEffects({
     shouldFetchOptionsWithDefaultValue,
     shouldFetchDueToValueEmpty,
@@ -145,11 +145,11 @@ export function useSelectBlock(props: veArchSelectBlockProps) {
     remoteSearchKey,
   });
 
-  // === 9. 默认值副作用处理 ===
-  // 🔧 全链路追踪标记点 3：调用 useDefaultValueEffects 前
+  // === 9. Default value side effects processing ===
+  // 🔧 Full-chain tracking point 3: Before calling useDefaultValueEffects
   logger.info(
     'UseSelectBlock',
-    '🟡 [全链路-3] 准备调用 useDefaultValueEffects',
+    '🟡 [Full Trace-3] Preparing to call useDefaultValueEffects',
     {
       defaultActiveFirstOption,
       finalDefaultValue,
@@ -172,11 +172,11 @@ export function useSelectBlock(props: veArchSelectBlockProps) {
     onChange: onChange as
       | ((value: unknown, option?: unknown) => void)
       | undefined,
-    value, // 🔧 传入当前value，防止覆盖已选择的值
-    mode: props.mode, // 🔧 传入mode，用于判断多选模式下的空值
+    value, // 🔧 Pass current value to prevent overwriting selected values
+    mode: props.mode, // 🔧 Pass mode to determine empty value in multiple selection mode
   });
 
-  // === 10. 返回最终结果 ===
+  // === 10. Return final result ===
   return useReturnValue({
     currentState,
     finalOptions,

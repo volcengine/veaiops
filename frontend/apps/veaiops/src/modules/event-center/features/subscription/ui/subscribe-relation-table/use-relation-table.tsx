@@ -26,7 +26,7 @@ import {
 import type { SubscribeRelationWithAttributes } from 'api-generate';
 
 /**
- * 表格配置 Hook
+ * Table configuration Hook
  */
 export const useSubscribeRelationTableConfig = ({
   moduleType,
@@ -34,8 +34,8 @@ export const useSubscribeRelationTableConfig = ({
   moduleType: string;
 }) => {
   /**
-   * CustomTable的request函数
-   * 使用工具函数自动处理分页参数、响应和错误
+   * CustomTable request function
+   * Use utility functions to automatically handle pagination parameters, response, and errors
    */
   const request = createTableRequestWithResponseHandler({
     apiCall: async ({
@@ -61,7 +61,7 @@ export const useSubscribeRelationTableConfig = ({
           enable_webhook: enableWebhook as boolean | undefined,
           projects: projects as string[] | undefined,
         });
-      // 类型转换：PaginatedAPIResponseSubscribeRelationList 与 StandardApiResponse<SubscribeRelationWithAttributes[]> 结构兼容
+      // Type conversion: PaginatedAPIResponseSubscribeRelationList is compatible with StandardApiResponse<SubscribeRelationWithAttributes[]> structure
       return response as unknown as StandardApiResponse<
         SubscribeRelationWithAttributes[]
       >;
@@ -79,10 +79,10 @@ export const useSubscribeRelationTableConfig = ({
     },
   });
 
-  // 🎯 使用工具函数创建数据源
+  // 🎯 Use utility function to create data source
   const dataSource = createServerPaginationDataSource({ request });
 
-  // 🎯 使用工具函数创建表格属性
+  // 🎯 Use utility function to create table properties
   const tableProps = createStandardTableProps({
     rowKey: '_id',
     pageSize: 10,
@@ -96,7 +96,7 @@ export const useSubscribeRelationTableConfig = ({
 };
 
 /**
- * 操作按钮配置 Hook
+ * Action button configuration Hook
  */
 export const useSubscribeRelationActionConfig = ({
   onCreate,

@@ -28,7 +28,7 @@ import { MetricDetailConfig, RerunFormConfig } from '../components/forms';
 import { useVersionHistory } from '../hooks';
 
 /**
- * 任务抽屉组件属性接口
+ * Task drawer component props interface
  */
 interface TaskDrawerProps {
   visible: boolean;
@@ -44,7 +44,7 @@ interface TaskDrawerProps {
   ) => void;
 }
 
-// 导出渲染详情配置函数，供其他组件使用
+// Export detail configuration render function for use by other components
 export const renderDetailConfig = ({
   form,
   readOnly = false,
@@ -53,13 +53,13 @@ export const renderDetailConfig = ({
   readOnly?: boolean;
 }) => <MetricDetailConfig form={form} readOnly={readOnly} />;
 
-// 导出重新执行表单渲染函数，供其他组件使用
+// Export rerun form render function for use by other components
 export const renderRerunForm = ({ form }: { form: FormInstance }) => (
   <RerunFormConfig form={form} />
 );
 
 /**
- * 任务操作抽屉组件
+ * Task operation drawer component
  */
 export const TaskDrawer: React.FC<TaskDrawerProps> = ({
   visible,
@@ -71,7 +71,7 @@ export const TaskDrawer: React.FC<TaskDrawerProps> = ({
   loading,
   onViewTimeSeries,
 }) => {
-  // 状态管理
+  // State management
   const [detailConfigVisible, setDetailConfigVisible] = useState(false);
   const [detailConfigData, setDetailConfigData] = useState({});
   const [detailConfigForm] = Form.useForm();
@@ -79,18 +79,18 @@ export const TaskDrawer: React.FC<TaskDrawerProps> = ({
   const [selectedVersion, setSelectedVersion] =
     useState<IntelligentThresholdTaskVersion | null>(null);
 
-  // 版本历史管理
+  // Version history management
   const { versions, loading: versionsLoading } = useVersionHistory(
     editingTask?._id,
     operationType === 'versions' && visible,
   );
 
-  // 同步详情配置数据
+  // Synchronize detail configuration data
   useEffect(() => {
     detailConfigForm.setFieldsValue(detailConfigData);
   }, [detailConfigData, detailConfigForm]);
 
-  // 处理清洗结果查看
+  // Handle cleaning result view
   const handleViewCleaningResult = (
     version: IntelligentThresholdTaskVersion,
   ) => {
@@ -98,7 +98,7 @@ export const TaskDrawer: React.FC<TaskDrawerProps> = ({
     setCleaningResultVisible(true);
   };
 
-  // 处理清洗结果抽屉关闭
+  // Handle cleaning result drawer close
   const handleCleaningResultClose = () => {
     setCleaningResultVisible(false);
     setSelectedVersion(null);
@@ -106,7 +106,7 @@ export const TaskDrawer: React.FC<TaskDrawerProps> = ({
 
   return (
     <>
-      {/* 主任务抽屉 */}
+      {/* Main task drawer */}
       <MainTaskDrawer
         visible={visible}
         operationType={operationType}
@@ -122,14 +122,14 @@ export const TaskDrawer: React.FC<TaskDrawerProps> = ({
         onViewCleaningResult={handleViewCleaningResult}
       />
 
-      {/* 指标模版配置抽屉 */}
+      {/* Metric template configuration drawer */}
       <MetricConfigDrawer
         visible={detailConfigVisible}
         form={detailConfigForm}
         onCancel={() => setDetailConfigVisible(false)}
       />
 
-      {/* 清洗结果抽屉 */}
+      {/* Cleaning result drawer */}
       <CleaningResultDrawer
         visible={cleaningResultVisible}
         taskRecord={editingTask}

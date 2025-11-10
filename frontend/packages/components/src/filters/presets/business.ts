@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 业务预设配置
- * 针对 AI-Ops 项目的常用筛选器组件预设
+ * Business preset configuration
+ * Common filter component presets for AI-Ops project
  */
 import type { PresetGenerator } from './types';
 
 /**
- * 账户选择器预设
- * 简化账户选择器的配置，复用 AccountSelect 组件的逻辑
+ * Account selector preset
+ * Simplifies account selector configuration, reuses AccountSelect component logic
  */
 export const accountSelectPreset: PresetGenerator = (params = {}) => ({
   type: 'Select.Account',
@@ -36,7 +36,7 @@ export const accountSelectPreset: PresetGenerator = (params = {}) => ({
 });
 
 /**
- * 产品选择器预设
+ * Product selector preset
  */
 export const productSelectPreset: PresetGenerator = (params = {}) => ({
   type: 'Select',
@@ -47,7 +47,7 @@ export const productSelectPreset: PresetGenerator = (params = {}) => ({
     maxTagCount: 2,
     placeholder: '请选择云产品',
     dataSource: {
-      serviceInstance: 'aiOpsService', // 这里会被插件系统解析
+      serviceInstance: 'aiOpsService', // This will be parsed by plugin system
       api: 'ListProduct',
       responseEntityKey: 'list',
       optionCfg: {
@@ -66,7 +66,7 @@ export const productSelectPreset: PresetGenerator = (params = {}) => ({
 });
 
 /**
- * 事件类型选择器预设
+ * Event type selector preset
  */
 export const eventTypeSelectPreset: PresetGenerator = (params = {}) => ({
   type: 'Select',
@@ -85,7 +85,7 @@ export const eventTypeSelectPreset: PresetGenerator = (params = {}) => ({
 });
 
 /**
- * 事件ID输入预设
+ * Event ID input preset
  */
 export const eventIdInputPreset: PresetGenerator = (params = {}) => ({
   type: 'InputTag',
@@ -96,7 +96,7 @@ export const eventIdInputPreset: PresetGenerator = (params = {}) => ({
     maxTagCount: 3,
     validate: (v: string) => {
       if (!v || Number.isNaN(Number(v))) {
-        // 这里需要引入 Message 组件
+        // Need to import Message component here
 
         return false;
       }
@@ -108,7 +108,7 @@ export const eventIdInputPreset: PresetGenerator = (params = {}) => ({
 });
 
 /**
- * 订阅名称输入预设
+ * Subscription name input preset
  */
 export const subscriptionNameInputPreset: PresetGenerator = (params = {}) => ({
   type: 'Input',
@@ -122,7 +122,7 @@ export const subscriptionNameInputPreset: PresetGenerator = (params = {}) => ({
 });
 
 /**
- * 业务场景级联选择器预设
+ * Business scene cascader preset
  */
 export const businessSceneCascaderPreset: PresetGenerator = (params = {}) => ({
   type: 'Cascader',
@@ -141,13 +141,13 @@ export const businessSceneCascaderPreset: PresetGenerator = (params = {}) => ({
       value: 'id',
     },
     allowClear: true,
-    // options 需要通过 handleFiltersProps 传入
+    // options need to be passed through handleFiltersProps
     ...params,
   },
 });
 
 /**
- * 数据源类型选择器预设
+ * Data source type selector preset
  */
 export const datasourceTypeSelectPreset: PresetGenerator = (params = {}) => ({
   type: 'Select',
@@ -165,7 +165,7 @@ export const datasourceTypeSelectPreset: PresetGenerator = (params = {}) => ({
 });
 
 /**
- * 任务状态选择器预设
+ * Task status selector preset
  */
 export const taskStatusSelectPreset: PresetGenerator = (params = {}) => ({
   type: 'Select',
@@ -185,7 +185,7 @@ export const taskStatusSelectPreset: PresetGenerator = (params = {}) => ({
 });
 
 /**
- * 任务ID选择器预设
+ * Task ID selector preset
  */
 export const taskIdSelectPreset: PresetGenerator = (params = {}) => ({
   type: 'Select',

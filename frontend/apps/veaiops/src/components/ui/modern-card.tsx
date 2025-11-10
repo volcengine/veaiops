@@ -16,38 +16,38 @@ import { Button } from '@arco-design/web-react';
 import type React from 'react';
 
 export interface ModernCardProps {
-  /** 卡片标题 */
+  /** Card title */
   title: string;
-  /** 卡片描述 */
+  /** Card description */
   description?: string;
-  /** 背景图片路径 */
+  /** Background image path */
   backgroundImage?: string;
-  /** 背景渐变颜色 */
+  /** Background gradient color */
   backgroundGradient?: string;
-  /** 卡片高度 */
+  /** Card height */
   height?: number;
-  /** 统计数据 */
+  /** Statistics data */
   statistics?: Array<{
     label: string;
     value: number | string;
     color?: string;
     icon?: React.ReactNode;
   }>;
-  /** 按钮文本 */
+  /** Button text */
   buttonText?: string;
-  /** 按钮点击事件 */
+  /** Button click handler */
   onButtonClick?: () => void;
-  /** 卡片点击事件 */
+  /** Card click handler */
   onClick?: () => void;
-  /** 自定义样式 */
+  /** Custom styles */
   style?: React.CSSProperties;
-  /** 自定义类名 */
+  /** Custom class name */
   className?: string;
 }
 
 /**
- * 现代化卡片组件
- * @description 提供统一的卡片样式，支持背景图片、渐变、统计数据和交互
+ * Modern card component
+ * @description Provides unified card styles, supports background images, gradients, statistics, and interactions
  */
 export const ModernCard: React.FC<ModernCardProps> = ({
   title,
@@ -100,7 +100,7 @@ export const ModernCard: React.FC<ModernCardProps> = ({
         }
       }}
     >
-      {/* 顶部背景区域 */}
+      {/* Top background area */}
       <div
         style={{
           height: '120px',
@@ -113,7 +113,7 @@ export const ModernCard: React.FC<ModernCardProps> = ({
             : backgroundGradient,
         }}
       >
-        {/* 背景图片遮罩 */}
+        {/* Background image overlay */}
         {backgroundImage && (
           <div
             style={{
@@ -127,7 +127,7 @@ export const ModernCard: React.FC<ModernCardProps> = ({
           />
         )}
 
-        {/* 装饰性圆点图案 */}
+        {/* Decorative dot pattern */}
         <div
           style={{
             position: 'absolute',
@@ -142,7 +142,7 @@ export const ModernCard: React.FC<ModernCardProps> = ({
           }}
         />
 
-        {/* 标题区域 */}
+        {/* Title area */}
         <div
           style={{
             color: 'white',
@@ -159,9 +159,9 @@ export const ModernCard: React.FC<ModernCardProps> = ({
         </div>
       </div>
 
-      {/* 内容区域 */}
+      {/* Content area */}
       <div style={{ padding: '24px' }}>
-        {/* 描述文字 */}
+        {/* Description text */}
         {description && (
           <div
             style={{
@@ -180,7 +180,7 @@ export const ModernCard: React.FC<ModernCardProps> = ({
           </div>
         )}
 
-        {/* 统计数字区域 */}
+        {/* Statistics area */}
         {statistics.length > 0 && (
           <div
             style={{
@@ -246,7 +246,7 @@ export const ModernCard: React.FC<ModernCardProps> = ({
           </div>
         )}
 
-        {/* 底部按钮 */}
+        {/* Bottom button */}
         {(buttonText || onButtonClick) && (
           <Button
             type="text"

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 表格刷新处理器 Hook
- * 提供开箱即用的刷新方法管理，消除业务侧手动配置 tableRef
+ * Table refresh handler Hook
+ * Provides out-of-the-box refresh method management, eliminating manual tableRef configuration on business side
  *
  * @example
  * ```tsx
@@ -23,7 +23,7 @@
  * return (
  *   <>
  *     <CustomTable onRefreshHandlers={onRefreshHandlers} />
- *     <Button onClick={() => handlers.afterDelete()}>删除</Button>
+ *     <Button onClick={() => handlers.afterDelete()}>Delete</Button>
  *   </>
  * );
  * ```
@@ -38,70 +38,70 @@ import {
 } from 'react';
 
 /**
- * 刷新处理器方法集合
+ * Refresh handler methods collection
  */
 export interface RefreshHandlers {
-  /** 创建操作后刷新 */
+  /** Refresh after create operation */
   afterCreate: () => Promise<void>;
-  /** 更新操作后刷新 */
+  /** Refresh after update operation */
   afterUpdate: () => Promise<void>;
-  /** 删除操作后刷新 */
+  /** Refresh after delete operation */
   afterDelete: () => Promise<void>;
-  /** 导入操作后刷新 */
+  /** Refresh after import operation */
   afterImport: () => Promise<void>;
-  /** 批量操作后刷新 */
+  /** Refresh after batch operation */
   afterBatchOperation: () => Promise<void>;
-  /** 带反馈的刷新 */
+  /** Refresh with feedback */
   refreshWithFeedback: () => Promise<void>;
-  /** 静默刷新 */
+  /** Silent refresh */
   refreshSilently: () => Promise<void>;
-  /** 基础刷新 */
+  /** Basic refresh */
   refresh: () => Promise<void>;
 }
 
 /**
- * Hook 配置选项
+ * Hook configuration options
  */
 export interface UseTableRefreshHandlersOptions {
-  /** 暴露给父组件的方法（可选） */
+  /** Methods exposed to parent component (optional) */
   exposeMethods?: {
-    /** 暴露刷新方法 */
+    /** Expose refresh method */
     refresh?: () => Promise<void>;
-    /** 暴露删除后刷新方法 */
+    /** Expose after delete refresh method */
     afterDelete?: () => Promise<void>;
   };
-  /** 父组件 ref（用于 useImperativeHandle） */
+  /** Parent component ref (for useImperativeHandle) */
   ref?: React.Ref<{ refresh: () => Promise<void> }>;
 }
 
 /**
- * Hook 返回值
+ * Hook return value
  */
 export interface UseTableRefreshHandlersReturn {
-  /** 刷新方法集合 */
+  /** Refresh methods collection */
   handlers: RefreshHandlers | null;
-  /** 传递给 CustomTable 的 onRefreshHandlers 回调 */
+  /** Callback passed to CustomTable's onRefreshHandlers */
   onRefreshHandlers: (handlers: RefreshHandlers) => void;
-  /** 是否有有效的刷新方法 */
+  /** Whether there are valid refresh methods */
   isReady: boolean;
 }
 
 /**
- * 使用表格刷新处理器 Hook
+ * Use table refresh handlers Hook
  *
- * @param options 配置选项
- * @returns 刷新处理器和回调函数
+ * @param options Configuration options
+ * @returns Refresh handlers and callback function
  */
 export const useTableRefreshHandlers = (
   options: UseTableRefreshHandlersOptions = {},
 ): UseTableRefreshHandlersReturn => {
   const { exposeMethods = {}, ref } = options;
 
-  // 🔧 使用 ref 存储最新的 handlers，避免因引用变化导致的无限重渲染
+  // 🔧 Use ref to store latest handlers, avoid infinite re-renders due to reference changes
   const handlersRef = useRef<RefreshHandlers | null>(null);
   const [isReady, setIsReady] = useState(false);
 
-  // 创建稳定的 handlers 代理对象，内部使用 ref 获取最新方法
+  // Create stable handlers proxy object, internally use ref to get latest methods
   const stableHandlers = useMemo<RefreshHandlers>(
     () => ({
       afterCreate: async () => await handlersRef.current?.afterCreate?.(),
@@ -119,7 +119,7 @@ export const useTableRefreshHandlers = (
     [],
   );
 
-  // 处理 CustomTable 注入的刷新方法
+  // Handle refresh methods injected by CustomTable
   const onRefreshHandlers = useCallback(
     (injectedHandlers: RefreshHandlers) => {
       handlersRef.current = injectedHandlers;
@@ -130,7 +130,7 @@ export const useTableRefreshHandlers = (
     [isReady],
   );
 
-  // 暴露方法给父组件（如果需要）
+  // Expose methods to parent component (if needed)
   useImperativeHandle(
     ref,
     () => ({
@@ -141,7 +141,7 @@ export const useTableRefreshHandlers = (
           await handlersRef.current?.refresh?.();
         }
       },
-      // 可以添加更多暴露的方法
+      // Can add more exposed methods
       ...(exposeMethods.afterDelete && {
         afterDelete: async () => {
           if (exposeMethods.afterDelete) {
@@ -163,8 +163,8 @@ export const useTableRefreshHandlers = (
 };
 
 /**
- * 简化的刷新处理器 Hook
- * 用于不需要 ref 的场景
+ * Simplified refresh handler Hook
+ * For scenarios that don't need ref
  */
 export const useSimpleTableRefresh = () => {
   const { handlers, onRefreshHandlers } = useTableRefreshHandlers();
@@ -172,17 +172,17 @@ export const useSimpleTableRefresh = () => {
 };
 
 /**
- * 一键使用的表格操作 Hook
- * 自动包装所有操作，无需手动刷新
+ * One-click table operations Hook
+ * Automatically wraps all operations, no manual refresh needed
  *
  * @example
  * ```tsx
  * const { handlers, wrapDelete, wrapUpdate } = useTableOperationsWithRefresh({ ref });
  *
- * // 包装删除操作（自动刷新）
+ * // Wrap delete operation (auto refresh)
  * const wrappedDelete = useMemo(() => wrapDelete((id) => onDelete(id)), []);
  *
- * // 包装更新操作（自动刷新）
+ * // Wrap update operation (auto refresh)
  * const handleToggle = useCallback(async () => {
  *   await wrapUpdate(async () => {})();
  * }, [wrapUpdate]);
@@ -199,7 +199,7 @@ export const useTableOperationsWithRefresh = (
     handlers,
     onRefreshHandlers,
     isReady: handlers !== null,
-    // 返回包装器以进一步简化
+    // Return wrappers for further simplification
     wrapDelete: (fn: (id: string) => Promise<boolean>) => {
       return async (id: string) => {
         const success = await fn(id);
@@ -215,14 +215,14 @@ export const useTableOperationsWithRefresh = (
         await handlers?.afterUpdate?.();
       };
     },
-    // 新增：自动包装并转换类型
+    // New: Automatically wrap and convert types
     wrapDeleteAsVoid: (fn: (id: string) => Promise<boolean>) => {
       return async (id: string) => {
         const success = await fn(id);
         if (success) {
           await handlers?.afterDelete?.();
         }
-        // 返回 void
+        // Return void
       };
     },
   };

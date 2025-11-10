@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 卡片模板过滤器配置
+ * Card template filter configuration
  */
 
 import { channelTypeOptions } from '@/modules/event-center/features/strategy/constants/options';
@@ -22,7 +22,7 @@ import type { FieldItem, HandleFilterProps } from '@veaiops/components';
 import { AgentTemplateQuery } from '@/pages/system/card-template/types';
 
 /**
- * 卡片模板过滤器配置
+ * Card template filter configuration
  */
 export const getCardTemplateFilters = ({
   query,
@@ -42,7 +42,7 @@ export const getCardTemplateFilters = ({
         onChange: (v: string) => handleChange({ key: 'templateId', value: v }),
       },
     },
-    // Agent类型筛选
+    // Agent type filter
     {
       field: 'agents',
       label: '智能体',
@@ -56,7 +56,7 @@ export const getCardTemplateFilters = ({
       },
     },
 
-    // 通道类型筛选（当前仅支持飞书）
+    // Channel type filter (currently only supports Lark)
     {
       field: 'channels',
       label: '企业协同工具',
@@ -69,11 +69,11 @@ export const getCardTemplateFilters = ({
         onChange: (v: string) => handleChange({ key: 'channels', value: v }),
       },
     },
-    // // 创建时间范围
+    // // Creation time range
     // {
     //   type: "RangePicker",
     //   componentProps: {
-    //     prefix: "创建时间",
+    //     prefix: "Creation Time",
     //     value: query?.createTimeRanges,
     //     showTime: true,
     //     onChange: (v: number[]) => {

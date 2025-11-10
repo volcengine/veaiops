@@ -15,7 +15,7 @@
 import { type TaskTableActions, taskDataSource } from '@task-config/lib';
 
 /**
- * 表格配置 Hook
+ * Table configuration Hook
  */
 export const useTaskTableConfig = (_actions: TaskTableActions) => {
   return {

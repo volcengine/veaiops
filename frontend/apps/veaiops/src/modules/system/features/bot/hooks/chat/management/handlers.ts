@@ -18,7 +18,7 @@ import type { Chat } from 'api-generate';
 import { useCallback } from 'react';
 
 /**
- * 群管理事件处理Hook
+ * Chat management event handler Hook
  */
 export const useChatManagementLogicHandlers = ({
   editingChat,
@@ -38,7 +38,7 @@ export const useChatManagementLogicHandlers = ({
     | Promise<boolean>
     | Promise<{ success: boolean; error?: Error }>;
 }) => {
-  // 处理配置编辑
+  // Handle config edit
   const handleConfigEdit = useCallback(
     (chat: Chat) => {
       setEditingChat(chat);
@@ -47,7 +47,7 @@ export const useChatManagementLogicHandlers = ({
     [setEditingChat, setConfigModalVisible],
   );
 
-  // 处理配置提交
+  // Handle config submit
   const handleConfigSubmit = useCallback(
     async (config: ChatConfigFormData): Promise<boolean> => {
       if (!editingChat?._id) {
@@ -64,10 +64,10 @@ export const useChatManagementLogicHandlers = ({
 
       if (success) {
         setConfigModalVisible(false);
-        // 配置更新成功后刷新表格
+        // Refresh table after successful config update
         if (afterUpdate) {
           const result = await afterUpdate();
-          // 检查返回结果（如果是结果对象）
+          // Check return result (if it's a result object)
           if (
             result &&
             typeof result === 'object' &&
@@ -75,9 +75,9 @@ export const useChatManagementLogicHandlers = ({
             !result.success &&
             result.error
           ) {
-            // ✅ 刷新失败时使用 logger.warn 记录，但不影响配置更新操作本身（对象解构参数）
+            // ✅ Use logger.warn when refresh fails, but does not affect the config update operation itself (object destructuring parameters)
             logger.warn({
-              message: '配置更新后刷新表格失败',
+              message: 'Failed to refresh table after config update',
               data: {
                 error: result.error.message,
                 stack: result.error.stack,
@@ -94,7 +94,7 @@ export const useChatManagementLogicHandlers = ({
     [editingChat, updateChatConfig, afterUpdate, setConfigModalVisible],
   );
 
-  // 处理配置取消
+  // Handle config cancel
   const handleConfigCancel = useCallback(() => {
     setConfigModalVisible(false);
     setEditingChat(null);

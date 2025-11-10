@@ -18,13 +18,13 @@ import { useAttributesTableFormHandlers } from './form-handlers';
 import { useAttributesTableModalHandlers } from './modal-handlers';
 
 /**
- * Bot属性表格事件处理Hook统一导出
+ * Bot attribute table event handler Hook unified export
  *
- * 拆分说明：
- * - modal-handlers.ts: 模态框相关处理（handleOpenCreateModal、handleCloseModal）
- * - form-handlers.ts: 表单提交处理（handleFormSubmit）
- * - action-handlers.ts: 操作处理（handleDelete、handleEdit）
- * - index.ts: 统一导出，组合所有处理函数
+ * Split explanation:
+ * - modal-handlers.ts: Modal-related handlers (handleOpenCreateModal, handleCloseModal)
+ * - form-handlers.ts: Form submission handlers (handleFormSubmit)
+ * - action-handlers.ts: Operation handlers (handleDelete, handleEdit)
+ * - index.ts: Unified export, combines all handler functions
  */
 export const useAttributesTableLogicHandlers = ({
   editingAttribute,
@@ -52,14 +52,14 @@ export const useAttributesTableLogicHandlers = ({
   deleteAttribute: (attribute: BotAttribute) => Promise<boolean>;
   refreshTable: () => Promise<void>;
 }) => {
-  // 模态框处理
+  // Modal handlers
   const modalHandlers = useAttributesTableModalHandlers({
     setEditingAttribute,
     setIsModalVisible,
     setModalType,
   });
 
-  // 表单处理
+  // Form handlers
   const formHandlers = useAttributesTableFormHandlers({
     modalType,
     editingAttribute,
@@ -69,7 +69,7 @@ export const useAttributesTableLogicHandlers = ({
     refreshTable,
   });
 
-  // 操作处理
+  // Operation handlers
   const actionHandlers = useAttributesTableActionHandlers({
     deleteAttribute,
     setEditingAttribute,

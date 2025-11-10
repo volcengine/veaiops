@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 指标选择相关类型定义
+ * Metric selection related type definitions
  */
 
 import type { ZabbixTemplateMetric } from 'api-generate';
@@ -71,7 +71,7 @@ export interface SelectionAlertProps {
   selectedMetric: AliyunMetric | null;
 }
 
-// 火山引擎指标选择组件接口
+// Volcengine metric selection component interface
 export interface VolcengineMetricSelectionProps {
   metrics: VolcengineMetric[];
   selectedMetric: VolcengineMetric | null;
@@ -94,7 +94,7 @@ export interface VolcengineMetricListProps {
   onMetricSelect: (metric: VolcengineMetric) => void;
 }
 
-// Zabbix指标选择组件接口
+// Zabbix metric selection component interface
 export interface ZabbixMetricSelectionProps {
   metrics: ZabbixTemplateMetric[];
   selectedMetric: ZabbixTemplateMetric | null;

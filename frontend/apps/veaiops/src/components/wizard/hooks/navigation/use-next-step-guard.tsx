@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 下一步操作前置校验（拆分模块）
- * @description 提供 GuidedWizard / DataSourceWizard 通用的"下一步"拦截校验，提升可读性与可复用性
- * - 包含阿里云和火山引擎在监控项(metric)步骤的 Region 校验
- * - 后续可以在此文件继续扩展其他数据源与步骤的前置校验
+ * Next step guard validation (modularized)
+ * @description Provides common "next step" guard validation for GuidedWizard / DataSourceWizard, improving readability and reusability
+ * - Includes Region validation for Aliyun and Volcengine at the metric step
+ * - Can be extended in this file for other data sources and step validations
  */
 
 import { Modal } from '@arco-design/web-react';
@@ -27,7 +27,7 @@ import type { WizardState } from '../../types';
 import { DataSourceType } from '../../types';
 
 /**
- * Region 校验参数
+ * Region guard parameters
  */
 export interface RegionGuardParams {
   selectedType: DataSourceType | null;
@@ -36,9 +36,9 @@ export interface RegionGuardParams {
 }
 
 /**
- * 阿里云 connect 步骤 Region 前置校验
- * @description Region 输入已移到连接选择步骤，在连接选择完成后验证
- * @returns boolean - true: 通过校验；false: 未通过（已弹窗提示）
+ * Aliyun connect step Region guard validation
+ * @description Region input has been moved to the connection selection step, validated after connection selection is complete
+ * @returns boolean - true: validation passed; false: validation failed (modal already shown)
  */
 export const guardAliyunConnectRegion = ({
   selectedType,
@@ -46,7 +46,7 @@ export const guardAliyunConnectRegion = ({
   state,
 }: RegionGuardParams): boolean => {
   if (selectedType === DataSourceType.ALIYUN && currentStepKey === 'connect') {
-    // 从 state.aliyun.region 读取（用户在连接选择步骤输入）
+    // Read from state.aliyun.region (entered by user in connection selection step)
     const region = (state.aliyun.region || '').trim();
     if (!region) {
       Modal.confirm({
@@ -63,9 +63,9 @@ export const guardAliyunConnectRegion = ({
 };
 
 /**
- * 火山引擎 connect 步骤 Region 前置校验
- * @description Region 输入已移到连接选择步骤，在连接选择完成后验证
- * @returns boolean - true: 通过校验；false: 未通过（已弹窗提示）
+ * Volcengine connect step Region guard validation
+ * @description Region input has been moved to the connection selection step, validated after connection selection is complete
+ * @returns boolean - true: validation passed; false: validation failed (modal already shown)
  */
 export const guardVolcengineConnectRegion = ({
   selectedType,

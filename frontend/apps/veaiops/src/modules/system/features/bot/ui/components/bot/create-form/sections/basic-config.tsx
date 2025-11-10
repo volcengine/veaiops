@@ -32,14 +32,14 @@ interface BasicConfigProps {
 }
 
 /**
- * 基础配置区块组件
- * @description 包含企业协同工具、App ID、App Secret 等基础配置字段
+ * Base configuration block component
+ * @description Contains basic configuration fields such as enterprise collaboration tool, App ID, App Secret
  *
- * 拆分说明：
- * - basic-config/channel-field.tsx: 企业协同工具选择字段
- * - basic-config/app-id-field.tsx: App ID 输入字段（包含重复检查）
- * - basic-config/app-secret-field.tsx: App Secret 输入字段（包含密码显示切换）
- * - basic-config.tsx: 主入口组件，负责组装和渲染
+ * Split explanation:
+ * - basic-config/channel-field.tsx: Enterprise collaboration tool selection field
+ * - basic-config/app-id-field.tsx: App ID input field (includes duplicate check)
+ * - basic-config/app-secret-field.tsx: App Secret input field (includes password visibility toggle)
+ * - basic-config.tsx: Main entry component, responsible for assembly and rendering
  */
 export const BasicConfig: React.FC<BasicConfigProps> = ({
   form,
@@ -64,7 +64,7 @@ export const BasicConfig: React.FC<BasicConfigProps> = ({
         toggleSecretVisibility={toggleSecretVisibility}
       />
 
-      {/* 飞书配置指引 */}
+      {/* Lark configuration guide */}
       <LarkConfigGuide currentBotId={currentBotId} />
     </CardWithTitle>
   );

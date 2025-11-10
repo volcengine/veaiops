@@ -18,39 +18,39 @@ import { commonClassName, fixFilterControlCls } from './constants';
 import type { FieldItem, FilterStyle } from './types';
 
 /**
- * 劫持组件属性，添加固定的CSS类名
- * @param componentProps 原始组件属性
- * @returns 劫持后的组件属性
+ * Hijack component props and add fixed CSS class names
+ * @param componentProps - Original component props
+ * @returns - Hijacked component props
  */
 export const hijackComponentProps = (
   componentProps?: Record<string, unknown>,
 ): Record<string, unknown> => {
-  // 处理空的 componentProps
+  // Handle empty componentProps
   if (!componentProps || typeof componentProps !== 'object') {
     return { ...fixFilterControlCls };
   }
 
-  // 过滤掉不应该传递到 DOM 元素的属性
+  // Filter out props that should not be passed to DOM elements
   const { subType, ...filteredProps } = componentProps;
   return { ...filteredProps, ...fixFilterControlCls };
 };
 
 /**
- * 劫持控制组件属性，将样式类名添加到controlProps中
- * @param componentProps 原始组件属性
- * @returns 劫持后的组件属性
+ * Hijack control component props and add style class names to controlProps
+ * @param componentProps - Original component props
+ * @returns - Hijacked component props
  */
 export const hijackControlComponentProps = (
   componentProps?: Record<string, unknown>,
 ): Record<string, unknown> => {
-  // 处理空的 componentProps
+  // Handle empty componentProps
   if (!componentProps || typeof componentProps !== 'object') {
     return {
       controlProps: fixFilterControlCls,
     };
   }
 
-  // 将应该放在 controlProps 中的属性提取出来
+  // Extract props that should be placed in controlProps
   const controlPropsKeys = [
     'addBefore',
     'maxTagCount',
@@ -94,17 +94,17 @@ export const hijackControlComponentProps = (
       'controlProps',
       'isControl',
       'formItemProps',
-      'subType', // 过滤掉 subType，防止传递到 DOM 元素
+      'subType', // Filter out subType to prevent passing to DOM elements
     ]),
   };
 };
 
 /**
- * 创建插件上下文
- * @param form 表单实例
- * @param finalStyle 最终样式配置
- * @param eventBus 事件总线
- * @returns 插件上下文
+ * Create plugin context
+ * @param form - Form instance
+ * @param finalStyle - Final style configuration
+ * @param eventBus - Event bus
+ * @returns - Plugin context
  */
 export const createPluginContext = (
   form: unknown,
@@ -120,19 +120,19 @@ export const createPluginContext = (
 });
 
 /**
- * 检查字段是否可见
- * @param field 字段配置
- * @returns 是否可见
+ * Check if field is visible
+ * @param field - Field configuration
+ * @returns - Whether field is visible
  */
 export const isFieldVisible = (field: FieldItem): boolean => {
   return field.visible === undefined || field.visible;
 };
 
 /**
- * 合并筛选器样式
- * @param defaultStyle 默认样式
- * @param customStyle 自定义样式
- * @returns 合并后的样式
+ * Merge filter styles
+ * @param defaultStyle - Default style
+ * @param customStyle - Custom style
+ * @returns - Merged style
  */
 export const mergeFilterStyle = (
   defaultStyle: FilterStyle,
@@ -153,10 +153,10 @@ export const mergeFilterStyle = (
 };
 
 /**
- * 生成CSS类名字符串
- * @param baseClassName 基础类名
- * @param additionalClasses 额外类名数组
- * @returns 完整的类名字符串
+ * Generate CSS class name string
+ * @param baseClassName - Base class name
+ * @param additionalClasses - Additional class name array
+ * @returns - Complete class name string
  */
 export const generateClassName = (
   baseClassName: string,
@@ -166,9 +166,9 @@ export const generateClassName = (
 };
 
 /**
- * 验证字段配置
- * @param field 字段配置
- * @returns 验证结果
+ * Validate field configuration
+ * @param field - Field configuration
+ * @returns - Validation result
  */
 export const validateFieldConfig = (
   field: FieldItem,
@@ -179,14 +179,14 @@ export const validateFieldConfig = (
   if (!field.type) {
     return {
       isValid: false,
-      error: '字段类型不能为空',
+      error: 'Field type cannot be empty',
     };
   }
 
   if (!field.componentProps || typeof field.componentProps !== 'object') {
     return {
       isValid: false,
-      error: '组件属性配置无效',
+      error: 'Component props configuration is invalid',
     };
   }
 
@@ -194,13 +194,13 @@ export const validateFieldConfig = (
 };
 
 /**
- * 生成字段的唯一键
- * @param field 字段配置
- * @param index 索引
- * @returns 唯一键
+ * Generate unique key for field
+ * @param field - Field configuration
+ * @param index - Index
+ * @returns - Unique key
  */
 /**
- * generateFieldKey 参数接口
+ * generateFieldKey parameters interface
  */
 export interface GenerateFieldKeyParams {
   field: FieldItem;
@@ -215,125 +215,125 @@ export const generateFieldKey = ({
 };
 
 /**
- * Label 转换配置类型
+ * Label conversion configuration type
  */
 export type LabelAsType = 'addBefore' | 'addAfter' | 'prefix' | 'suffix';
 
 /**
- * 组件类型到默认 label 属性的映射
- * 不同的 Arco Design 组件支持不同的前缀/后缀属性
+ * Component type to default label property mapping
+ * Different Arco Design components support different prefix/suffix properties
  */
 const COMPONENT_LABEL_MAPPING: Record<string, LabelAsType> = {
-  // Select 系列组件：使用 addBefore（显示在选择框左侧）
+  // Select series components: use addBefore (display on the left side of select box)
   Select: 'addBefore',
   Cascader: 'addBefore',
   TreeSelect: 'addBefore',
 
-  // Input 系列组件：使用 addBefore（显示在输入框左侧）
+  // Input series components: use addBefore (display on the left side of input box)
   Input: 'addBefore',
   InputNumber: 'addBefore',
   InputTag: 'addBefore',
 
-  // 日期时间组件：使用 addBefore
+  // Date time components: use addBefore
   DatePicker: 'addBefore',
   RangePicker: 'addBefore',
   TimePicker: 'addBefore',
 
-  // 其他组件：默认使用 addBefore
+  // Other components: default to addBefore
 };
 
 /**
- * 处理 label 字段，将其转换为 componentProps 中的 addBefore/prefix 等属性
+ * Process label field and convert it to componentProps properties like addBefore/prefix
  *
- * 功能说明：
- * 1. 支持在 label 字段中传递字符串，自动转换为对应组件的属性（addBefore/prefix/suffix/addAfter）
- * 2. 支持在 componentProps 中直接传递 addBefore/prefix 等属性（优先级更高）
- * 3. 支持通过 labelAs 参数自定义转换目标属性
+ * Functionality:
+ * 1. Support passing string in label field, automatically convert to corresponding component property (addBefore/prefix/suffix/addAfter)
+ * 2. Support directly passing addBefore/prefix properties in componentProps (higher priority)
+ * 3. Support customizing conversion target property through labelAs parameter
  *
- * 优先级：
- * componentProps.addBefore/prefix > labelAs 配置 > 组件类型默认映射 > label 字符串
+ * Priority:
+ * componentProps.addBefore/prefix > labelAs configuration > component type default mapping > label string
  *
- * @param field 字段配置
- * @returns 处理后的 componentProps
+ * @param field - Field configuration
+ * @returns - Processed componentProps
  *
  * @example
- * // 场景 1: label 自动转换为 addBefore（Select 组件）
+ * // Scenario 1: label automatically converted to addBefore (Select component)
  * {
  *   field: 'agent_type',
- *   label: '智能体',
+ *   label: 'Agent',
  *   type: 'Select',
  *   componentProps: { options: [...] }
  * }
- * // => componentProps: { addBefore: '智能体', options: [...] }
+ * // => componentProps: { addBefore: 'Agent', options: [...] }
  *
  * @example
- * // 场景 2: label 自动转换为 addBefore（Input 组件）
+ * // Scenario 2: label automatically converted to addBefore (Input component)
  * {
  *   field: 'name',
- *   label: '名称',
+ *   label: 'Name',
  *   type: 'Input',
- *   componentProps: { placeholder: '请输入' }
+ *   componentProps: { placeholder: 'Please enter' }
  * }
- * // => componentProps: { addBefore: '名称', placeholder: '请输入' }
+ * // => componentProps: { addBefore: 'Name', placeholder: 'Please enter' }
  *
  * @example
- * // 场景 3: componentProps 优先级更高
+ * // Scenario 3: componentProps has higher priority
  * {
  *   field: 'name',
- *   label: '名称',
+ *   label: 'Name',
  *   type: 'Select',
- *   componentProps: { addBefore: '自定义前缀', options: [...] }
+ *   componentProps: { addBefore: 'Custom prefix', options: [...] }
  * }
- * // => componentProps: { addBefore: '自定义前缀', options: [...] }
+ * // => componentProps: { addBefore: 'Custom prefix', options: [...] }
  *
  * @example
- * // 场景 4: 使用 labelAs 自定义转换属性
+ * // Scenario 4: Use labelAs to customize conversion property
  * {
  *   field: 'name',
- *   label: '名称',
+ *   label: 'Name',
  *   type: 'Select',
  *   labelAs: 'suffix',
  *   componentProps: { options: [...] }
  * }
- * // => componentProps: { suffix: '名称', options: [...] }
+ * // => componentProps: { suffix: 'Name', options: [...] }
  */
 export const processLabelAsComponentProp = (
   field: FieldItem,
 ): Record<string, unknown> => {
   const { label, type, componentProps = {}, labelAs } = field;
 
-  // 如果没有 label 或 label 不是字符串，直接返回原 componentProps
+  // If no label or label is not a string, return original componentProps
   if (!label || typeof label !== 'string') {
     return componentProps;
   }
 
-  // 解析组件类型（处理命名空间类型，如 Select.Account）
+  // Parse component type (handle namespaced types like Select.Account)
   const [mainType] = (type || '').split('.');
 
-  // 确定目标属性名
+  // Determine target property name
   let targetProp: LabelAsType;
 
   if (labelAs) {
-    // 优先使用显式指定的 labelAs 配置
+    // Priority: use explicitly specified labelAs configuration
     targetProp = labelAs as LabelAsType;
   } else {
-    // 使用组件类型默认映射，如果没有映射则使用 addBefore
+    // Use component type default mapping, if no mapping then use addBefore
     targetProp = COMPONENT_LABEL_MAPPING[mainType] || 'addBefore';
   }
 
-  // 检查 componentProps 中是否已经存在任何 label 相关属性
+  // Check if any label-related properties already exist in componentProps
   const hasLabelProp =
     componentProps.addBefore !== undefined ||
     componentProps.addAfter !== undefined ||
     componentProps.prefix !== undefined ||
     componentProps.suffix !== undefined;
 
-  // 如果 componentProps 中已经有 label 相关属性，优先使用 componentProps
+  // If componentProps already has label-related properties, prioritize componentProps
   if (hasLabelProp) {
     return componentProps;
   }
 
-  // 将 label 转换为目标属性
+  // Convert label to target property
   return {
     ...componentProps,
     [targetProp]: label,

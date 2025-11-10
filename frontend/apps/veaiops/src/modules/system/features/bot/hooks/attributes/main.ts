@@ -23,8 +23,8 @@ import {
 } from './helpers';
 
 /**
- * Bot特别关注管理 Hook
- * 提供Bot特别关注的CRUD操作和状态管理
+ * Bot special attention management Hook
+ * Provides CRUD operations and state management for Bot special attention
  */
 export const useBotAttributes = ({
   botId,
@@ -33,8 +33,8 @@ export const useBotAttributes = ({
   const [loading, setLoading] = useState(false);
   const [attributes, setAttributes] = useState<BotAttribute[]>([]);
 
-  // 保存最近一次请求的筛选参数，用于新增/删除后刷新时保持筛选状态
-  // 默认值为 [AttributeKey.PROJECT]，对应筛选器的默认值
+  // Save the most recent request filter parameters, used to maintain filter state when refreshing after create/delete
+  // Default value is [AttributeKey.PROJECT], corresponding to the filter's default value
   const lastRequestParamsRef = useRef<{
     names?: string[];
     value?: string;
@@ -42,7 +42,7 @@ export const useBotAttributes = ({
     names: [AttributeKey.PROJECT],
   });
 
-  // 使用各个功能 Hook
+  // Use various feature Hooks
   const fetchAttributes = useFetchAttributes({
     botId,
     channel,

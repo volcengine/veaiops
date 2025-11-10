@@ -25,14 +25,14 @@ import {
 } from './types';
 
 /**
- * 获取智能体类型选项
+ * Get agent type options
  */
 const getAgentTypeOptions = (moduleType: HistoryModuleType) => {
   const agentTypeMap: Record<AgentType, string> = {
-    [AgentType.INTELLIGENT_THRESHOLD_AGENT]: '智能阈值Agent',
-    [AgentType.CHATOPS_INTEREST_AGENT]: '内容识别Agent',
-    [AgentType.CHATOPS_PROACTIVE_REPLY_AGENT]: '主动回复Agent',
-    [AgentType.CHATOPS_REACTIVE_REPLY_AGENT]: '被动回复Agent',
+    [AgentType.INTELLIGENT_THRESHOLD_AGENT]: 'Intelligent Threshold Agent',
+    [AgentType.CHATOPS_INTEREST_AGENT]: 'Content Recognition Agent',
+    [AgentType.CHATOPS_PROACTIVE_REPLY_AGENT]: 'Proactive Reply Agent',
+    [AgentType.CHATOPS_REACTIVE_REPLY_AGENT]: 'Reactive Reply Agent',
   };
 
   const allowedTypes = getAllowedAgentTypes(moduleType);
@@ -44,22 +44,22 @@ const getAgentTypeOptions = (moduleType: HistoryModuleType) => {
 };
 
 /**
- * 获取智能体默认值
+ * Get default agent type
  */
 const getDefaultAgentType = (moduleType: HistoryModuleType): AgentType[] => {
   switch (moduleType) {
     case ModuleTypeEnum.INTELLIGENT_THRESHOLD:
-      // 智能阈值：默认选中智能阈值Agent
+      // Intelligent threshold: Default to intelligent threshold Agent
       return [AgentType.INTELLIGENT_THRESHOLD_AGENT];
     case ModuleTypeEnum.CHATOPS:
-      // ChatOps：默认全选（3个Agent都选中）
+      // ChatOps: Default to all selected (all 3 Agents selected)
       return [
         AgentType.CHATOPS_INTEREST_AGENT,
         AgentType.CHATOPS_PROACTIVE_REPLY_AGENT,
         AgentType.CHATOPS_REACTIVE_REPLY_AGENT,
       ];
     case ModuleTypeEnum.EVENT_CENTER:
-      // 事件中心：默认选中所有Agent
+      // Event center: Default to all Agents selected
       return Object.values(AgentType);
     default:
       return [];
@@ -67,7 +67,7 @@ const getDefaultAgentType = (moduleType: HistoryModuleType): AgentType[] => {
 };
 
 /**
- * 获取事件级别选项
+ * Get event level options
  */
 const getEventLevelOptions = () => [
   { label: 'P0', value: 'P0' },
@@ -76,44 +76,44 @@ const getEventLevelOptions = () => [
 ];
 
 /**
- * 获取显示状态选项
- * 使用后端 EventShowStatus 枚举（中文）
+ * Get show status options
+ * Uses backend EventShowStatus enum (Chinese)
  */
 const getShowStatusOptions = () => [
   {
-    label: '等待发送',
+    label: 'Waiting to Send',
     value: EventShowStatus.PENDING,
     extra: { color: 'blue' },
   },
   {
-    label: '发送成功',
+    label: 'Send Success',
     value: EventShowStatus.SUCCESS,
     extra: { color: 'green' },
   },
   {
-    label: '未订阅',
+    label: 'Not Subscribed',
     value: EventShowStatus.NOT_SUBSCRIBED,
     extra: { color: 'orange' },
   },
   {
-    label: '未命中规则',
+    label: 'Rule Not Matched',
     value: EventShowStatus.NOT_MATCHED,
     extra: { color: 'red' },
   },
   {
-    label: '命中过滤规则',
+    label: 'Filter Rule Matched',
     value: EventShowStatus.FILTERED,
     extra: { color: 'purple' },
   },
   {
-    label: '告警抑制',
+    label: 'Alert Suppressed',
     value: EventShowStatus.RESTRAINED,
     extra: { color: 'magenta' },
   },
 ];
 
 /**
- * 获取历史事件筛选器配置
+ * Get event history filter configuration
  */
 export const getEventHistoryFilters = ({
   moduleType,
@@ -127,11 +127,11 @@ export const getEventHistoryFilters = ({
   return [
     {
       field: 'agent_type',
-      label: '智能体',
+      label: 'Agent',
       type: 'Select',
       componentProps: {
         mode: 'multiple',
-        placeholder: '请选择智能体',
+        placeholder: 'Please select agent',
         maxTagCount: 1,
         value: query.agent_type || defaultAgentType,
         defaultActiveFirstOption: true,
@@ -144,11 +144,11 @@ export const getEventHistoryFilters = ({
     },
     {
       field: 'event_level',
-      label: '事件级别',
+      label: 'Event Level',
       type: 'Select',
       componentProps: {
         mode: 'multiple',
-        placeholder: '请选择事件级别',
+        placeholder: 'Please select event level',
         maxTagCount: 3,
         value: query.event_level,
         allowClear: true,
@@ -163,11 +163,11 @@ export const getEventHistoryFilters = ({
     },
     {
       field: 'show_status',
-      label: '状态',
+      label: 'Status',
       type: 'Select',
       componentProps: {
         mode: 'multiple',
-        placeholder: '请选择状态',
+        placeholder: 'Please select status',
         maxTagCount: 1,
         value: query.show_status,
         allowClear: true,
@@ -182,7 +182,7 @@ export const getEventHistoryFilters = ({
     },
     {
       field: 'time_range',
-      label: '时间范围',
+      label: 'Time Range',
       type: 'RangePicker',
       componentProps: {
         showTime: true,

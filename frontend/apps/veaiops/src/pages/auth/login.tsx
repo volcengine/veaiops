@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 重新导出登录页面组件
+// Re-export login page component
 export { LoginPage as default } from '@/modules/auth';

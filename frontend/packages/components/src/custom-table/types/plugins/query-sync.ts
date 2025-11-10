@@ -13,9 +13,8 @@
 // limitations under the License.
 
 /**
- * 查询同步插件相关类型定义
+ * Query sync plugin related type definitions
  *
-
  * @date 2025-12-19
  */
 
@@ -30,7 +29,7 @@ export type QueryFormatter = (params: {
 }) => unknown;
 
 /**
- * 查询同步配置
+ * Query sync configuration
  */
 export interface QuerySyncConfig<QueryType extends BaseQuery = BaseQuery> {
   enabled?: boolean;
@@ -40,20 +39,20 @@ export interface QuerySyncConfig<QueryType extends BaseQuery = BaseQuery> {
   queryFormat?: Record<string, QueryFormatter>;
   authQueryPrefixOnSearchParams?: Record<string, unknown>;
   syncQueryOnSearchParams?: boolean;
-  /** 初始查询参数，重置时恢复到此值 */
+  /** Initial query parameters, restore to this value when resetting */
   initQuery?: QueryType;
   customReset?: (options: {
     resetEmptyData: boolean;
     setQuery: (query: QueryType | ((prev: QueryType) => QueryType)) => void;
-    /** 初始查询参数，重置目标值 */
+    /** Initial query parameters, reset target value */
     initQuery?: QueryType;
-    /** 需要保留的字段（与 initQuery 合并） */
+    /** Fields to preserve (merged with initQuery) */
     preservedFields?: Record<string, unknown>;
   }) => void;
 }
 
 /**
- * 查询同步插件配置
+ * Query sync plugin configuration
  */
 export interface QuerySyncPluginConfig<QueryType extends BaseQuery = BaseQuery>
   extends QuerySyncConfig<QueryType> {
@@ -62,7 +61,7 @@ export interface QuerySyncPluginConfig<QueryType extends BaseQuery = BaseQuery>
 }
 
 /**
- * 查询同步上下文
+ * Query sync context
  */
 export interface QuerySyncContext<QueryType extends BaseQuery = BaseQuery> {
   query: QueryType;
@@ -74,48 +73,48 @@ export interface QuerySyncContext<QueryType extends BaseQuery = BaseQuery> {
   isMounted: boolean;
   resetRef: React.MutableRefObject<boolean>;
   activeKeyChangeRef: React.MutableRefObject<Record<string, unknown>>;
-  /** 是否重置时清空数据 */
+  /** Whether to clear data when resetting */
   resetEmptyData?: boolean;
 }
 
 /**
- * 查询同步工具类接口
+ * Query sync utility class interface
  */
 export interface QuerySyncUtils<QueryType extends BaseQuery = BaseQuery> {
   config: QuerySyncConfig<QueryType>;
   context: QuerySyncContext<QueryType>;
 
   /**
-   * 同步 URL 到查询参数
+   * Sync URL to query parameters
    */
   syncUrlToQuery: () => Record<string, unknown>;
 
   /**
-   * 同步查询参数到 URL
+   * Sync query parameters to URL
    */
   syncQueryToUrl: (query?: Record<string, unknown>) => void;
 
   /**
-   * 格式化查询参数（异步）
+   * Format query parameters (async)
    */
   formatQuery: (
     query: Record<string, unknown>,
   ) => Promise<Record<string, unknown>>;
 
   /**
-   * 格式化查询参数（同步）
+   * Format query parameters (sync)
    */
   formatQuerySync: (query: Record<string, unknown>) => Record<string, unknown>;
 
   /**
-   * 验证查询参数
+   * Validate query parameters
    */
   validateQuery: (query: QueryType) => boolean;
 
   /**
-   * 重置查询参数
-   * @param resetEmptyData - 是否清空数据
-   * @param preservedFields - 需要保留的字段（与 initQuery 合并）
+   * Reset query parameters
+   * @param resetEmptyData - Whether to clear data
+   * @param preservedFields - Fields to preserve (merged with initQuery)
    */
   resetQuery: (
     resetEmptyData?: boolean,
@@ -123,7 +122,7 @@ export interface QuerySyncUtils<QueryType extends BaseQuery = BaseQuery> {
   ) => void;
 
   /**
-   * 处理 activeKey 变化
+   * Handle activeKey change
    */
   handleActiveKeyChange?: () => void;
 }

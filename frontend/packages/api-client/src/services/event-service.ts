@@ -54,7 +54,7 @@ export class EventService {
      */
     eventLevel?: Array<'INFO' | 'WARNING' | 'ERROR' | 'CRITICAL'>,
     /**
-     * Filter events by show status (multiple selection allowed). 显示状态筛选，允许的值为：等待发送、发送成功、未订阅、未命中规则、命中过滤规则、告警抑制
+     * Filter events by show status (multiple selection allowed). Allowed values: Pending (PENDING), Success (SUCCESS), Not Subscribed (NOT_SUBSCRIBED), Not Matched (NOT_MATCHED), Filtered (FILTERED), Restrained (RESTRAINED)
      */
     showStatus?: Array<EventShowStatus>,
     /**

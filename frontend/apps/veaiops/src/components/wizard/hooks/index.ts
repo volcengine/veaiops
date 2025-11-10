@@ -13,26 +13,26 @@
 // limitations under the License.
 
 /**
- * 数据源向导 Hooks 统一导出
+ * Data source wizard Hooks unified export
  */
 
-// 状态管理
+// State management
 export { useDataSourceWizard } from './state/use-datasource-wizard';
 export { useWizardState } from './state/use-wizard-state';
 export { useAliyunState } from './state/use-aliyun-state';
 
-// 数据操作
+// Data operations
 export { useConnectOperations } from './operations/use-connect-operations';
 export { useZabbixOperations } from './operations/use-zabbix-operations';
 export { useAliyunOperations } from './operations/use-aliyun-operations';
 export { useVolcengineOperations } from './operations/use-volcengine-operations';
 
-// 导航
+// Navigation
 export { useWizardNavigation } from './navigation/use-wizard-navigation';
 export {
   guardAliyunConnectRegion,
   guardVolcengineConnectRegion,
 } from './navigation/use-next-step-guard';
 
-// 创建
+// Creation
 export { useDataSourceCreation } from './creation/use-datasource-creation';

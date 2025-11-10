@@ -24,14 +24,14 @@ import type { BaseQuery, BaseRecord, PluginContext } from '@veaiops/types';
 import { createContext } from 'react';
 
 /**
- * CustomTable的React Context
- * 用于在组件树中传递插件上下文
- * 使用协变的PluginContext类型，支持任意扩展的泛型参数
+ * CustomTable's React Context
+ * Used to pass plugin context through component tree
+ * Uses covariant PluginContext type, supports arbitrary generic parameter extensions
  */
-// 为了解决泛型协变问题，使用更宽泛的Context类型
-// 支持任意扩展的Record和Query类型
-// 🐛 修复React 18 Context.Consumer.Provider警告
-// 使用具体的默认值而不是null，避免Context类型推断问题
+// To solve generic covariance issues, use broader Context type
+// Supports arbitrary extensions of Record and Query types
+// 🐛 Fix React 18 Context.Consumer.Provider warning
+// Use concrete default values instead of null to avoid Context type inference issues
 const defaultContextValue: PluginContext<BaseRecord, BaseQuery> = {
   props: {
     finalQuery: {},
@@ -52,34 +52,34 @@ const defaultContextValue: PluginContext<BaseRecord, BaseQuery> = {
   },
   helpers: {
     setCurrent: (_current: number) => {
-      // 设置当前页码
+      // Set current page number
     },
     setPageSize: (_pageSize: number) => {
-      // 设置每页大小
+      // Set page size
     },
     setQuery: (_query: BaseQuery) => {
-      // 设置查询条件
+      // Set query conditions
     },
     setFilters: (_filters: Record<string, (string | number)[]>) => {
-      // 设置过滤条件
+      // Set filter conditions
     },
     setSorter: (_sorter: SorterInfo) => {
-      // 设置排序条件
+      // Set sort conditions
     },
     setLoading: (_loading: boolean) => {
-      // 设置加载状态
+      // Set loading state
     },
     setFormattedTableData: (_data: BaseRecord[]) => {
-      // 设置格式化后的表格数据
+      // Set formatted table data
     },
     setTableTotal: (_total: number) => {
-      // 设置表格总数
+      // Set table total
     },
     setTableColumns: (_columns: ColumnProps<BaseRecord>[]) => {
-      // 设置表格列
+      // Set table columns
     },
     setSelectedRowKeys: (_keys: (string | number)[]) => {
-      // 设置选中的行键
+      // Set selected row keys
     },
   },
 };

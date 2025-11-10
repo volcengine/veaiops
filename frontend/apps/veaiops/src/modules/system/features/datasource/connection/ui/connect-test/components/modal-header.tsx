@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接测试弹窗头部组件
+ * Connection test modal header component
  */
 
 import { IconExperiment } from '@arco-design/web-react/icon';

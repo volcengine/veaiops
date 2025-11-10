@@ -27,23 +27,23 @@ import { useEffect, useMemo } from 'react';
 const { Title } = Typography;
 
 interface SubscribeRelationManagerProps {
-  /** 模块类型，用于过滤订阅关系 */
+  /** Module type, used to filter subscription relations */
   moduleType?: ModuleType;
-  /** 页面标题 */
+  /** Page title */
   title?: string;
-  /** 是否显示模块类型列 */
+  /** Whether to show module type column */
   showModuleTypeColumn?: boolean;
-  /** 自定义操作按钮 */
+  /** Custom action buttons */
   customActions?: (record: SubscribeRelationWithAttributes) => React.ReactNode;
-  /** 创建订阅关系的回调 */
+  /** Callback for creating subscription relation */
   onCreateSubscription?: (moduleType: ModuleType) => void;
-  /** 编辑订阅关系的回调 */
+  /** Callback for editing subscription relation */
   onEditSubscription?: (record: SubscribeRelationWithAttributes) => void;
 }
 
 /**
- * 通用订阅关系管理组件
- * @description 提供事件订阅关系的管理功能，支持根据模块类型进行过滤
+ * Generic subscription relation management component
+ * @description Provides subscription relation management functionality, supports filtering by module type
  */
 export const SubscribeRelationManager: React.FC<
   SubscribeRelationManagerProps
@@ -51,14 +51,14 @@ export const SubscribeRelationManager: React.FC<
   moduleType,
   title,
   showModuleTypeColumn = true,
-  // 注意：这些属性已移除，使用默认行为
+  // Note: These properties have been removed, using default behavior
   // _customActions,
   // _onCreateSubscription,
   // _onEditSubscription,
 }) => {
   const location = useLocation();
 
-  // 根据路由自动判断模块类型
+  // Automatically determine module type based on route
   const detectedModuleType = useMemo(() => {
     if (moduleType) {
       return moduleType;
@@ -67,7 +67,7 @@ export const SubscribeRelationManager: React.FC<
     return detectModuleTypeFromPath(location.pathname);
   }, [moduleType, location.pathname]);
 
-  // 根据模块类型设置页面标题
+  // Set page title based on module type
   const pageTitle = useMemo(() => {
     if (title) {
       return title;
@@ -77,23 +77,23 @@ export const SubscribeRelationManager: React.FC<
     return config.pageTitle;
   }, [title, detectedModuleType]);
 
-  // 使用订阅关系管理hook
+  // Use subscription relation management hook
   const { subscribeRelations, loading, fetchSubscribeRelations } =
     useSubscribeRelation(detectedModuleType);
 
-  // 根据模块类型过滤订阅关系
+  // Filter subscription relations by module type
   const filteredSubscribeRelations = useMemo(() => {
     if (!subscribeRelations) {
       return [];
     }
 
     return subscribeRelations.filter((relation) => {
-      // 如果没有属性，默认显示在事件中心
+      // If no attributes, default to show in event center
       if (!relation.attributes || relation.attributes.length === 0) {
         return detectedModuleType === ModuleType.EVENT_CENTER;
       }
 
-      // 检查是否有模块类型属性
+      // Check if there is a module type attribute
       const moduleAttr = relation.attributes.find(
         (attr) => attr.key === 'module_type',
       );
@@ -102,21 +102,21 @@ export const SubscribeRelationManager: React.FC<
         return moduleAttr.value === detectedModuleType;
       }
 
-      // 如果没有模块类型属性，默认显示在事件中心
+      // If no module type attribute, default to show in event center
       return detectedModuleType === ModuleType.EVENT_CENTER;
     });
   }, [subscribeRelations, detectedModuleType]);
 
-  // 表格列配置
+  // Table column configuration
   const columns = useMemo(() => {
     const baseColumns: any[] = [
       // ... existing code ...
     ];
 
     return baseColumns;
-  }, []); // 移除不必要的依赖
+  }, []); // Remove unnecessary dependencies
 
-  // 页面加载时获取订阅关系数据
+  // Fetch subscription relation data when page loads
   useEffect(() => {
     fetchSubscribeRelations();
   }, [fetchSubscribeRelations, detectedModuleType]);

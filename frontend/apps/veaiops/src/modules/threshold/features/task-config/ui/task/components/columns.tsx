@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 任务配置表格列配置
+ * Task configuration table column configuration
  *
- * 将列配置逻辑单独抽象出来，提高代码可维护性
+ * Abstract column configuration logic separately to improve code maintainability
  */
 
 import { Button, Space } from '@arco-design/web-react';
@@ -29,30 +29,30 @@ import { CellRender } from '@veaiops/components';
 import type { IntelligentThresholdTask } from 'api-generate';
 import { useCallback } from 'react';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { InfoWithCode, StampTime, CustomOutlineTag } = CellRender;
 
 /**
- * 任务表格列配置参数
+ * Task table column configuration parameters
  */
 export interface TaskTableColumnsConfig {
-  /** 重跑处理器 */
+  /** Rerun handler */
   onRerun?: (task: IntelligentThresholdTask) => void;
-  /** 查看版本处理器 */
+  /** View versions handler */
   onViewVersions?: (task: IntelligentThresholdTask) => void;
-  /** 创建告警处理器 */
+  /** Create alarm handler */
   onCreateAlarm?: (task: IntelligentThresholdTask) => void;
-  /** 复制处理器 */
+  /** Copy handler */
   onCopy?: (task: IntelligentThresholdTask) => void;
-  /** 详情处理器 */
+  /** Detail handler */
   onTaskDetail?: (task: IntelligentThresholdTask) => void;
 }
 
 /**
- * 任务配置表格列配置 Hook
+ * Task configuration table column configuration Hook
  *
- * @param config 列配置参数
- * @returns 列配置函数
+ * @param config Column configuration parameters
+ * @returns Column configuration function
  */
 export const useTaskTableColumns = ({
   onRerun,

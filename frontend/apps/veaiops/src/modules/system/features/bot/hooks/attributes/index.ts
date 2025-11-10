@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * Bot特别关注管理 Hook 模块
+ * Bot special attention management Hook module
  *
- * 此模块提供了Bot特别关注的CRUD操作和状态管理功能
- * 包含核心业务逻辑和表格相关的 Hooks
+ * This module provides CRUD operations and state management for Bot special attention
+ * Contains core business logic and table-related Hooks
  */
 
-// 核心业务逻辑
+// Core business logic
 export { useBotAttributes } from './main';
 
-// 表格相关 Hooks（合并同源导入）
+// Table-related Hooks (merged same-source imports)
 export {
   useBotAttributesTable,
   useBotAttributesTableConfig,

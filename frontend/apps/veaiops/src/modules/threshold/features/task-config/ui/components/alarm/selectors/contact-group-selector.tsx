@@ -28,18 +28,18 @@ interface ContactGroupSelectorProps {
 }
 
 /**
- * 联系组选择器组件
+ * Contact group selector component
  *
- * 支持 Volcengine 和 Aliyun 两种数据源：
- * - Volcengine: 使用 DataSourceSetter 配置化方式
- * - Aliyun: 使用函数式数据源（需要先获取 connect_id）
+ * Supports Volcengine and Aliyun data sources:
+ * - Volcengine: Uses DataSourceSetter configuration approach
+ * - Aliyun: Uses functional data source (requires getting connect_id first)
  */
 export const ContactGroupSelector: React.FC<ContactGroupSelectorProps> = ({
   loading,
   datasourceType,
   datasourceId,
 }) => {
-  // 🔧 修复：使用useMemo缓存dataSource，避免每次渲染都创建新的函数引用导致Select组件重建
+  // 🔧 Fix: Use useMemo to cache dataSource, avoid creating new function reference on every render causing Select component rebuild
   const dataSource = useMemo(() => {
     if (datasourceType === 'Volcengine') {
       return getVolcengineContactGroupDataSource(datasourceId);
@@ -53,13 +53,13 @@ export const ContactGroupSelector: React.FC<ContactGroupSelectorProps> = ({
     return undefined;
   }, [datasourceType, datasourceId]);
 
-  // 🔧 修复：使用useMemo缓存dependency数组，避免每次渲染都创建新数组导致Select组件重建
+  // 🔧 Fix: Use useMemo to cache dependency array, avoid creating new array on every render causing Select component rebuild
   const dependency = useMemo(
     () => [datasourceId, datasourceType],
     [datasourceId, datasourceType],
   );
 
-  // 根据数据源类型生成友好的标签和提示信息
+  // Generate friendly label and hint text based on datasource type
   const labelText = datasourceType === 'Zabbix' ? '告警组' : '联系组';
   const placeholderText =
     datasourceType === 'Zabbix' ? '请选择告警组' : '请选择联系组';
@@ -67,9 +67,9 @@ export const ContactGroupSelector: React.FC<ContactGroupSelectorProps> = ({
     ? `选择${labelText}后，需同时配置告警通知方式才会发送通知`
     : '可选配置，不选择时仅通过Webhook投递';
 
-  // 根据数据源类型设置搜索字段
-  // Volcengine/Zabbix: name (小写)
-  // Aliyun: Name (大写N)
+  // Set search field based on datasource type
+  // Volcengine/Zabbix: name (lowercase)
+  // Aliyun: Name (uppercase N)
   const searchKey = datasourceType === 'Aliyun' ? 'Name' : 'name';
 
   return (

@@ -24,6 +24,7 @@ import type { Project } from 'api-generate';
 import type React from 'react';
 import { useCallback, useMemo } from 'react';
 import { getProjectTableColumns } from '../columns';
+import type { GetProjectTableColumnsParams } from '../types';
 
 interface UseTableHandlersParams {
   onEdit?: (record: Project) => Promise<boolean>;
@@ -56,17 +57,17 @@ export const useTableHandlers = ({
 
   // 🎯 Filter configuration
   // Note: Backend only supports name parameter filtering (veaiops/handler/routers/apis/v1/system_config/project.py)
-  // project_id and is_active parameters are not supported, so only name filter is kept
+  // Does not support project_id and is_active parameters, so only keep name filter
   const handleFilters = useCallback(
     (props: HandleFilterProps<BaseQuery>): FieldItem[] => {
       const { query, handleChange } = props;
       return [
         {
           field: 'name',
-          label: 'Project Name',
+          label: '项目名称',
           type: 'Input',
           componentProps: {
-            placeholder: 'Please enter project name',
+            placeholder: '请输入项目名称',
             allowClear: true,
             value: query.name as string | undefined,
             onChange: (v: string) => {
@@ -96,9 +97,8 @@ export const useTableHandlers = ({
               e.stopPropagation();
               onCreate();
             }}
-            data-testid="new-project-btn"
           >
-            New Project
+            新建项目
           </Button>,
         );
       }
@@ -114,9 +114,8 @@ export const useTableHandlers = ({
               e.stopPropagation();
               onImport();
             }}
-            data-testid="import-project-btn"
           >
-            Import Project
+            导入项目
           </Button>,
         );
       }

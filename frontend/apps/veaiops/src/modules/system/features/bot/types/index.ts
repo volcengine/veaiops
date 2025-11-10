@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * Bot类型定义统一导出
- * 按照模块分类导出类型定义
+ * Bot type definitions unified export
+ * Export type definitions by module category
  */
 
-// Bot 相关类型
+// Bot related types
 export * from './bot';
 
-// Bot 属性相关类型
+// Bot attributes related types
 export * from './attributes';

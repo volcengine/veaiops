@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 订阅管理常量导出
- * 从 constants/index.ts 统一导出所有常量
+ * Subscription management constants export
+ * Unified export of all constants from constants/index.ts
  */
 
 export * from './constants/index';

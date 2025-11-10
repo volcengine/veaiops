@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 注意：useCardTemplateManagementLogic 和 useCardTemplateTableConfig 已移至
-// modules/system/features/card-template 目录，通过 @card-template 别名导入
+// Note: useCardTemplateManagementLogic and useCardTemplateTableConfig have been moved to
+// modules/system/features/card-template directory, imported via @card-template alias
 
 export {
   useCardTemplatePage,

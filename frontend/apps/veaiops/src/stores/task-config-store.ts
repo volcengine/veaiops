@@ -23,7 +23,7 @@ import type {
 } from 'api-generate';
 import { create } from 'zustand';
 
-// API 返回的原始任务数据类型
+// Raw task data type returned by API
 export interface ApiTaskItem {
   _id?: string;
   id?: string;
@@ -84,22 +84,22 @@ export interface PaginationState {
   pageSize: number;
 }
 
-// Store 状态接口
+// Store state interface
 interface TaskConfigState {
-  // 任务列表状态
+  // Task list state
   loading: boolean;
   taskList: IntelligentThresholdTask[];
   total: number;
   pagination: PaginationState;
 
-  // 抽屉状态
+  // Drawer state
   taskDrawer: DrawerState;
   alarmDrawer: DrawerState;
 
-  // 选中状态
+  // Selected state
   selectedTasks: string[];
 
-  // 筛选器状态
+  // Filter state
   filterDatasourceType?: string;
 
   // Actions
@@ -110,7 +110,7 @@ interface TaskConfigState {
   setSelectedTasks: (tasks: string[]) => void;
   setFilterDatasourceType: (datasourceType?: string) => void;
 
-  // 抽屉操作
+  // Drawer operations
   openTaskDrawer: (params: {
     type: TaskOperateType;
     record?: IntelligentThresholdTask;
@@ -119,7 +119,7 @@ interface TaskConfigState {
   openAlarmDrawer: (record: IntelligentThresholdTask) => void;
   closeAlarmDrawer: () => void;
 
-  // 业务操作
+  // Business operations
   loadTasks: (params?: Partial<TaskListParams>) => Promise<{
     data: IntelligentThresholdTask[];
     total: number;
@@ -129,7 +129,7 @@ interface TaskConfigState {
   batchRerunTasks: (taskIds: string[]) => Promise<boolean>;
   updatePagination: (params: { page: number; pageSize: number }) => void;
 
-  // 任务操作处理器
+  // Task operation handlers
   handleCreateTask: () => void;
   handleRerunTask: (record: IntelligentThresholdTask) => void;
   handleViewTaskDetails: (record: IntelligentThresholdTask) => void;
@@ -139,9 +139,9 @@ interface TaskConfigState {
   handleBatchRerun: () => Promise<boolean>;
 }
 
-// 创建 Zustand store
+// Create Zustand store
 export const useTaskConfigStore = create<TaskConfigState>((set, get) => ({
-  // 初始状态
+  // Initial state
   loading: false,
   taskList: [],
   total: 0,
@@ -158,7 +158,7 @@ export const useTaskConfigStore = create<TaskConfigState>((set, get) => ({
   selectedTasks: [],
   filterDatasourceType: undefined,
 
-  // 基础状态设置
+  // Basic state setters
   setLoading: (loading: boolean) => set({ loading }),
   setTaskList: (tasks: IntelligentThresholdTask[]) => set({ taskList: tasks }),
   setTotal: (total: number) => set({ total }),
@@ -168,7 +168,7 @@ export const useTaskConfigStore = create<TaskConfigState>((set, get) => ({
     set({ filterDatasourceType: datasourceType }),
 
   /**
-   * openTaskDrawer 参数接口
+   * openTaskDrawer parameter interface
    */
   openTaskDrawer: ({
     type,
@@ -185,7 +185,7 @@ export const useTaskConfigStore = create<TaskConfigState>((set, get) => ({
       },
     });
 
-    // 如果是查看任务详情，将 taskName 添加到 URL 参数
+    // If viewing task details, add taskName to URL parameters
     if (type === 'detail' && record && record.task_name) {
       const newParams = new URLSearchParams(window.location.search);
       newParams.set('taskName', record.task_name);
@@ -203,7 +203,7 @@ export const useTaskConfigStore = create<TaskConfigState>((set, get) => ({
       },
     });
 
-    // 关闭抽屉时清空 URL 中的 taskName 参数
+    // Clear taskName parameter from URL when closing drawer
     const newParams = new URLSearchParams(window.location.search);
     newParams.delete('taskName');
     const newUrl = newParams.toString()
@@ -228,7 +228,7 @@ export const useTaskConfigStore = create<TaskConfigState>((set, get) => ({
       },
     }),
 
-  // 业务操作
+  // Business operations
   loadTasks: async (params?: Partial<TaskListParams>) => {
     const { pagination } = get();
     set({ loading: true });
@@ -277,12 +277,12 @@ export const useTaskConfigStore = create<TaskConfigState>((set, get) => ({
         };
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       set({ loading: false });
       const errorMessage =
         error instanceof Error ? error.message : '加载任务列表失败，请重试';
       Message.error(`加载任务列表失败：${errorMessage}`);
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       throw errorObj;
@@ -293,16 +293,16 @@ export const useTaskConfigStore = create<TaskConfigState>((set, get) => ({
     try {
       set({ loading: true });
 
-      // 模拟批量操作
+      // Simulate batch operation
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       Message.success(`批量重新执行 ${taskIds.length} 个任务成功`);
 
-      // 刷新列表
+      // Refresh list
       await get().loadTasks();
       return true;
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || '批量重新执行失败，请重试';
@@ -331,7 +331,7 @@ export const useTaskConfigStore = create<TaskConfigState>((set, get) => ({
     set({ pagination: { page, pageSize } });
   },
 
-  // 任务操作处理器
+  // Task operation handlers
   handleCreateTask: () => {
     get().openTaskDrawer({ type: TaskOperateType.CREATE });
   },

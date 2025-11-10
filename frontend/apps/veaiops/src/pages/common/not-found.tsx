@@ -18,10 +18,10 @@ import { useNavigate } from '@modern-js/runtime/router';
 import type React from 'react';
 
 /**
- * 404 页面组件
+ * 404 page component
  *
- * 用于显示页面不存在的提示信息
- * 提供返回上一页和返回首页的操作
+ * Used to display page not found message
+ * Provides actions to go back or return to home page
  */
 const NotFoundPage: React.FC = () => {
   const navigate = useNavigate();

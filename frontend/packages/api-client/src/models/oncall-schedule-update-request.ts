@@ -15,35 +15,35 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type OncallScheduleUpdateRequest = {
   /**
-   * 值班计划名称
+   * Oncall schedule name
    */
   name?: string;
   /**
-   * 值班计划描述
+   * Oncall schedule description
    */
   description?: string;
   /**
-   * 值班参与者列表
+   * Oncall participants list
    */
   participants?: Array<Record<string, any>>;
   /**
-   * 值班计划配置
+   * Oncall schedule configuration
    */
   schedule_config?: Record<string, any>;
   /**
-   * 升级策略
+   * Escalation policy
    */
   escalation_policy?: Record<string, any>;
   /**
-   * 是否激活
+   * Whether active
    */
   is_active?: boolean;
   /**
-   * 生效开始时间
+   * Effective start time
    */
   effective_start?: string;
   /**
-   * 生效结束时间
+   * Effective end time
    */
   effective_end?: string;
 };

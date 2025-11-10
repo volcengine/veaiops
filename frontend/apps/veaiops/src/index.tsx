@@ -20,7 +20,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 
-// 🔧 移除 StrictMode 以解决组件频繁重建导致的数据丢失问题
-// StrictMode 在开发环境会导致组件双重渲染和频繁卸载/重新挂载
-// 这会中断正在进行的异步数据获取请求，导致 Select 组件的 options 为空
+// 🔧 Remove StrictMode to fix data loss issues caused by frequent component rebuilds
+// StrictMode in development causes double rendering and frequent unmount/remount
+// This interrupts ongoing async data fetching requests, causing Select component options to be empty
 root.render(<App />);

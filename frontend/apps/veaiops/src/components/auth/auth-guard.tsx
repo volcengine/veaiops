@@ -26,9 +26,9 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // 开发模式绕过认证
+    // Bypass authentication in development mode
     if (authConfig.devMode.enabled && authConfig.devMode.bypassAuth) {
-      // 自动设置模拟用户信息
+      // Automatically set mock user information
       sessionStorage.setItem(
         authConfig.storageKeys.token,
         authConfig.devMode.mockUser.token,
@@ -41,7 +41,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       return;
     }
 
-    // 正常认证流程
+    // Normal authentication flow
     const token = sessionStorage.getItem(authConfig.storageKeys.token);
     setIsAuthenticated(Boolean(token));
   }, []);

@@ -13,22 +13,22 @@
 // limitations under the License.
 
 /**
- * Renderers - 统一导出入口
- * 职责：提供完整的渲染器功能，包括核心组件、业务逻辑和特定提供商的渲染器
+ * Renderers - Unified export entry
+ * Responsibility: Provide complete renderer functionality, including core components, business logic, and provider-specific renderers
  *
- * 目录结构：
- * - core/: 核心渲染组件和函数
- * - components/: UI组件
- * - providers/: 特定云服务商的渲染器
+ * Directory structure:
+ * - core/: Core rendering components and functions
+ * - components/: UI components
+ * - providers/: Cloud provider-specific renderers
  */
 
-// 导出主要业务函数
+// Export main business functions
 export { renderDataSourceConfig } from './render-data-source-config';
 
-// 导出组件
+// Export components
 export { CollapsibleConfigItems } from './components';
 
-// 导出核心渲染器（供高级使用）
+// Export core renderers (for advanced use)
 export {
   renderAllConfigItems,
   ConfigKeyLabel,
@@ -37,8 +37,8 @@ export {
   ConfigItemRenderer,
 } from './core';
 
-// 导出类型
+// Export types
 export type { ConfigItem } from './core';
 
-// 导出特定云服务商的渲染器
+// Export cloud provider-specific renderers
 export * from './providers';

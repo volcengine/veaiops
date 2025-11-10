@@ -15,15 +15,15 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type UpdatePasswordRequest = {
   /**
-   * 旧密码
+   * Old password
    */
   old_password: string;
   /**
-   * 新密码
+   * New password
    */
   new_password: string;
   /**
-   * 确认新密码，需要与新密码一致
+   * Confirm new password, must match the new password
    */
   confirm_password: string;
 };

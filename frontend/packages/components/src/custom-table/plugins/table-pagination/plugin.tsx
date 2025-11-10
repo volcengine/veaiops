@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格分页插件
+ * Table pagination plugin
  */
 import { PluginNames } from '@/custom-table/constants/enum';
 import type {
@@ -35,7 +35,7 @@ import {
 } from './core';
 
 /**
- * 表格分页插件工厂函数
+ * Table pagination plugin factory function
  */
 export const TablePaginationPlugin = (
   config: Partial<PaginationConfig> = {},
@@ -52,26 +52,26 @@ export const TablePaginationPlugin = (
   return {
     name: PluginNames.TABLE_PAGINATION,
     version: '1.0.0',
-    description: '表格分页插件',
+    description: 'Table pagination plugin',
     priority: finalConfig.priority || PluginPriorityEnum.MEDIUM,
     enabled: finalConfig.enabled !== false,
     dependencies: [],
     conflicts: [],
 
-    // 生命周期方法
+    // Lifecycle methods
     install,
     setup: (context) => setup({ context, finalConfig }),
     afterUpdate,
     uninstall,
 
-    // 分页钩子
+    // Pagination hooks
     hooks: {
       getPaginationInfo,
       getPaginationConfig,
       resetPagination,
     },
 
-    // 渲染方法
+    // Render methods
     render: {
       pagination: (context) => renderPagination({ context, finalConfig }),
     },

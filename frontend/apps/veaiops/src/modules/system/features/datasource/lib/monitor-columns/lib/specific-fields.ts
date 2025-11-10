@@ -19,10 +19,10 @@ import { createVolcengineSpecificFields } from './volcengine-fields';
 import { createZabbixSpecificFields } from './zabbix-fields';
 
 /**
- * 根据数据源类型获取特定字段列
+ * Get specific field columns based on data source type
  *
- * @param dataSourceType - 数据源类型
- * @returns 特定字段列数组
+ * @param dataSourceType - Data source type
+ * @returns Specific field columns array
  */
 export const getSpecificFields = (
   dataSourceType: DataSourceType,

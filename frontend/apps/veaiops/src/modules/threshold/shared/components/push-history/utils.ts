@@ -15,7 +15,7 @@
 import type React from 'react';
 
 /**
- * 截断长文本并添加省略号
+ * Truncate long text and add ellipsis
  */
 export const truncateText = (maxWidth = 200): React.CSSProperties => {
   return {

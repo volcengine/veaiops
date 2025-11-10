@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Oncall 模块页面统一导出
- * 从 modules/oncall/features 重新导出页面组件
+ * Oncall module page unified exports
+ * Re-export page components from modules/oncall/features
  */
 export * from '@/modules/oncall/features';

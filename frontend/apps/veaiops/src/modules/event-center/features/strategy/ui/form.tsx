@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 注意：PRIORITY_OPTIONS 常量已移除，使用默认选项
+// Note: PRIORITY_OPTIONS constant has been removed, use default options
 import {
   Divider,
   Form,
@@ -39,7 +39,7 @@ const { Option } = Select;
 const { TextArea } = Input;
 const { Title } = Typography;
 
-// 事件类型选项
+// Event type options
 const EVENT_TYPE_OPTIONS = [
   { label: '告警事件', value: 'alert' },
   { label: '恢复事件', value: 'recovery' },
@@ -47,7 +47,7 @@ const EVENT_TYPE_OPTIONS = [
   { label: '业务事件', value: 'business' },
 ];
 
-// 优先级选项
+// Priority options
 
 interface StrategyFormProps {
   form: any;

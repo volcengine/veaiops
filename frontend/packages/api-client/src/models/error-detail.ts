@@ -15,15 +15,15 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ErrorDetail = {
   /**
-   * 错误字段
+   * Error field name
    */
   field?: string;
   /**
-   * 错误消息
+   * Error message
    */
   message: string;
   /**
-   * 错误代码
+   * Error code
    */
   code?: string;
 };

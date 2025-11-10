@@ -29,7 +29,7 @@ import {
   isOptions,
 } from './utils';
 
-// 从命名空间获取常量和组件
+// Get constants and components from namespace
 
 const useFrontEnumsOptions = (_frontEnum?: unknown) => ({
   data: [],
@@ -45,21 +45,21 @@ const TitleFilter: FC<TableColumnTitleProps> = ({
   onChange,
   queryOptions,
   tip,
-  multiple = false, // 默认改为单选，与最新版本保持一致
+  multiple = false, // Default to single select, consistent with latest version
   style,
-  showTip = false, // 默认不显示Tip，保持向后兼容
-  frontEnum, // 新增：支持直接传入FrontEnum
+  showTip = false, // Default to not show Tip, maintain backward compatibility
+  frontEnum, // New: Support directly passing FrontEnum
 }) => {
   const [loading, setLoading] = useState(true);
   const [options, setOptions] = useState<Option[]>();
 
-  // 使用 useFrontEnumsOptions 获取枚举选项 - 必须在条件外调用
+  // Use useFrontEnumsOptions to get enum options - must be called outside conditions
   const frontEnumOptions = useFrontEnumsOptions(frontEnum);
 
-  // 获取值
+  // Get value
   const value = get(filters, dataIndex);
 
-  // 颜色
+  // Color
   const color = useMemo(() => {
     if (typeof value === 'string' && value !== '') {
       return selectColor;
@@ -75,12 +75,12 @@ const TitleFilter: FC<TableColumnTitleProps> = ({
     return unselectColor;
   }, [value]);
 
-  // 获取options的方法
+  // Method to get options
   const getOptions = useCallback(async () => {
     try {
       setLoading(true);
 
-      // ✅ 优先使用 frontEnum 获取选项
+      // ✅ Prefer using frontEnum to get options
       if (frontEnum && frontEnumOptions) {
         const enumOptions = Array.isArray(frontEnumOptions)
           ? frontEnumOptions[0]?.options
@@ -93,12 +93,12 @@ const TitleFilter: FC<TableColumnTitleProps> = ({
         }
       }
 
-      // 兜底使用 queryOptions
+      // Fallback to queryOptions
       if (typeof queryOptions !== 'function') {
-        throw new Error('未传入queryOptions或frontEnum');
+        throw new Error('queryOptions or frontEnum not provided');
       }
 
-      // 目前的查询函数都没有传入参数
+      // Current query functions do not pass parameters
       const nextOptions = await queryOptions({
         dataIndex,
       });
@@ -121,9 +121,9 @@ const TitleFilter: FC<TableColumnTitleProps> = ({
       const errorMessage =
         error instanceof Error ? error.message : String(error);
       Message.error(
-        `表头组件 title: ${
+        `Header component title: ${
           typeof title === 'string' ? title : '[ReactNode]'
-        }, dataIndex: ${dataIndex} 发生错误：${errorMessage}`,
+        }, dataIndex: ${dataIndex} error occurred: ${errorMessage}`,
       );
       setOptions(undefined);
     } finally {
@@ -131,7 +131,7 @@ const TitleFilter: FC<TableColumnTitleProps> = ({
     }
   }, [queryOptions, dataIndex, title, frontEnum, frontEnumOptions]);
 
-  // 改变函数
+  // Change function
   const handleChange = (nextValue?: (string | number)[] | string | number) => {
     if (isNil(nextValue)) {
       onChange('filters', {
@@ -144,7 +144,7 @@ const TitleFilter: FC<TableColumnTitleProps> = ({
     }
   };
 
-  // 获取基本的选择函数
+  // Get basic selection function
   const BaseSelectFooter = multiple
     ? BaseMultiSelectFooter
     : BaseSingleSelectFooter;

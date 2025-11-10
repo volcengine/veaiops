@@ -16,23 +16,23 @@
 import type { ChannelType } from './channel-type';
 export type InformStrategyCreate = {
   /**
-   * 消息卡片通知策略名称
+   * Message card notification strategy name
    */
   name: string;
   /**
-   * 消息卡片通知策略描述
+   * Message card notification strategy description
    */
   description?: string;
   /**
-   * 通知Channel类型
+   * Notification channel type
    */
   channel: ChannelType;
   /**
-   * 机器人ID
+   * Bot ID
    */
   bot_id: string;
   /**
-   * 群ID列表
+   * Group chat ID list
    */
   chat_ids: Array<string>;
 };

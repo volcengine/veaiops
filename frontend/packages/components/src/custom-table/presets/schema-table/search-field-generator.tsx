@@ -29,7 +29,7 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 /**
- * 生成搜索表单的字段
+ * Generate search form fields
  */
 export const generateSearchFields = (
   columns: ColumnSchema[],
@@ -50,7 +50,7 @@ export const generateSearchFields = (
       }
 
       const commonProps = {
-        placeholder: filterConfig.placeholder || `请输入${title}`,
+        placeholder: filterConfig.placeholder || `Please enter ${title}`,
         allowClear: filterConfig.allowClear !== false,
       };
 
@@ -95,7 +95,10 @@ export const generateSearchFields = (
           return (
             <Form.Item key={key} field={key} label={title}>
               <RangePicker
-                placeholder={[`请选择开始${title}`, `请选择结束${title}`]}
+                placeholder={[
+                  `Please select start ${title}`,
+                  `Please select end ${title}`,
+                ]}
                 allowClear={commonProps.allowClear}
               />
             </Form.Item>
@@ -105,9 +108,9 @@ export const generateSearchFields = (
           return (
             <Form.Item key={key} field={`${key}Range`} label={title}>
               <Space>
-                <InputNumber placeholder="最小值" />
+                <InputNumber placeholder="Min value" />{' '}
                 <span>{EMPTY_CONTENT_TEXT}</span>
-                <InputNumber placeholder="最大值" />
+                <InputNumber placeholder="Max value" />{' '}
               </Space>
             </Form.Item>
           );

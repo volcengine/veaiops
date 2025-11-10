@@ -71,3 +71,4 @@ export const normalizeUrlParams = (searchParams: URLSearchParams): string => {
 
   return params.toString();
 };
+

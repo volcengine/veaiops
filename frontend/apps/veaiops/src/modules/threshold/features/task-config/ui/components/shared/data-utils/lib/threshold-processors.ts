@@ -15,7 +15,7 @@
 import type { IntelligentThresholdConfig, MetricThresholdResult } from 'api-generate';
 
 /**
- * 单个时段的阈值配置接口
+ * Single time segment threshold configuration interface
  */
 export interface TimeSegmentThresholdConfig {
   startHour: number;
@@ -27,32 +27,32 @@ export interface TimeSegmentThresholdConfig {
 }
 
 /**
- * 阈值配置接口（兼容旧接口 + 新增分段配置）
+ * Threshold configuration interface (compatible with old interface + new segmented configuration)
  */
 export interface ThresholdConfig {
-  // 向后兼容：保留第一段阈值的快捷访问
+  // Backward compatible: Keep quick access to first segment threshold
   upperBoundValue: number | undefined;
   lowerBoundValue: number;
   hasUpperBound: boolean;
   hasLowerBound: boolean;
-  // 新增：所有分段阈值配置
+  // New: All segmented threshold configurations
   segments: TimeSegmentThresholdConfig[];
 }
 
 /**
- * 从 metric 中提取所有分段的阈值配置
+ * Extract all segmented threshold configurations from metric
  *
- * 边界情况处理：
- * 1. metric.thresholds 为 null/undefined → 返回空配置
- * 2. metric.thresholds 为空数组 → 返回空配置
- * 3. threshold.upper_bound/lower_bound 为 null → 对应阈值不显示
- * 4. 时段小时值超出 0-24 范围 → 记录警告但仍处理
- * 5. 时段跨越午夜（start_hour > end_hour）→ 支持，如 [22, 2] 表示 22:00-02:00
+ * Edge case handling:
+ * 1. metric.thresholds is null/undefined → Return empty configuration
+ * 2. metric.thresholds is empty array → Return empty configuration
+ * 3. threshold.upper_bound/lower_bound is null → Corresponding threshold not displayed
+ * 4. Time segment hour value exceeds 0-24 range → Log warning but still process
+ * 5. Time segment crosses midnight (start_hour > end_hour) → Supported, e.g., [22, 2] means 22:00-02:00
  */
 export const extractThresholdConfig = (
   metric: MetricThresholdResult,
 ): ThresholdConfig => {
-  // 安全的数值解析函数
+  // Safe number parsing function
   const parseToNumber = (value: unknown): number | undefined => {
     if (value === null || value === undefined) {
       return undefined;
@@ -70,10 +70,10 @@ export const extractThresholdConfig = (
     return undefined;
   };
 
-  // 边界检查：获取所有阈值配置段（防御性处理 null/undefined）
+  // Boundary check: Get all threshold configuration segments (defensive handling of null/undefined)
   const thresholds = metric?.thresholds || [];
 
-  // 边界检查：如果没有阈值配置，返回空配置
+  // Boundary check: If no threshold configuration, return empty configuration
   if (thresholds.length === 0) {
     return {
       upperBoundValue: undefined,
@@ -84,15 +84,15 @@ export const extractThresholdConfig = (
     };
   }
 
-  // 转换所有分段配置
+  // Convert all segment configurations
   const segments: TimeSegmentThresholdConfig[] = thresholds.map(
     (threshold: IntelligentThresholdConfig) => {
       const upperBoundValue = parseToNumber(threshold.upper_bound);
       const lowerBoundValue = parseToNumber(threshold.lower_bound) ?? 0;
       const hasUpperBound =
         upperBoundValue !== undefined && Number.isFinite(upperBoundValue);
-      // 下限阈值：只有在 lower_bound 有值且不为 null 时才显示，否则不显示
-      // 注意：这里改为只有明确设置了 lower_bound 时才显示，避免所有时段都显示 0
+      // Lower bound threshold: Only display when lower_bound has value and is not null, otherwise don't display
+      // Note: Changed to only display when lower_bound is explicitly set, avoid displaying 0 for all segments
       const hasLowerBound =
         threshold.lower_bound !== null && threshold.lower_bound !== undefined;
 
@@ -107,7 +107,7 @@ export const extractThresholdConfig = (
     },
   );
 
-  // 获取第一个阈值配置（向后兼容）
+  // Get first threshold configuration (backward compatible)
   const firstThreshold = thresholds[0];
   const upperBoundValue = parseToNumber(firstThreshold?.upper_bound);
   const lowerBoundValue = parseToNumber(firstThreshold?.lower_bound) ?? 0;
@@ -118,12 +118,12 @@ export const extractThresholdConfig = (
     firstThreshold?.lower_bound !== undefined;
 
   return {
-    // 向后兼容：第一段阈值
+    // Backward compatible: First segment threshold
     upperBoundValue,
     lowerBoundValue,
     hasUpperBound,
     hasLowerBound,
-    // 新增：所有分段阈值
+    // New: All segmented thresholds
     segments,
   };
 };

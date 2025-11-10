@@ -24,15 +24,15 @@ interface CollapsibleConfigItemsProps {
 }
 
 /**
- * 可折叠的配置项组件
- * 用于显示超过3个的配置项
+ * Collapsible config items component
+ * Used to display config items exceeding 3
  */
 export const CollapsibleConfigItems: React.FC<CollapsibleConfigItemsProps> = ({
   items,
 }) => {
   const [expanded, setExpanded] = useState(false);
 
-  // 显示前3个，其余折叠
+  // Display first 3, rest collapsed
   const displayItems = expanded ? items : items.slice(0, 3);
   const remainingCount = items.length - 3;
 

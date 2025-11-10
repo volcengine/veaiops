@@ -19,12 +19,12 @@ import type {
 } from '@/custom-table/types';
 import type { CustomTablePluginProps } from '@/custom-table/types/plugins/core';
 /**
- * 表格列管理插件类型定义
+ * Table column management plugin type definitions
  */
 import type { ColumnProps } from '@arco-design/web-react/es/Table';
 
 /**
- * 扩展的 PluginProps，包含列管理需要的属性
+ * Extended PluginProps, includes properties needed for column management
  */
 export interface TableColumnsPluginProps<
   RecordType extends BaseRecord = BaseRecord,
@@ -36,7 +36,7 @@ export interface TableColumnsPluginProps<
 }
 
 /**
- * 表格列配置
+ * Table column configuration
  */
 export interface TableColumnsConfig extends PluginBaseConfig {
   enableColumnVisibility?: boolean;
@@ -48,7 +48,7 @@ export interface TableColumnsConfig extends PluginBaseConfig {
 }
 
 /**
- * 列配置项
+ * Column configuration item
  */
 export interface ColumnItem<RecordType = Record<string, unknown>>
   extends Omit<ColumnProps<RecordType>, 'fixed'> {
@@ -61,7 +61,7 @@ export interface ColumnItem<RecordType = Record<string, unknown>>
 }
 
 /**
- * 表格列状态
+ * Table column state
  */
 export interface TableColumnsState<RecordType = Record<string, unknown>> {
   columns: ColumnItem<RecordType>[];
@@ -78,12 +78,12 @@ export interface TableColumnsState<RecordType = Record<string, unknown>> {
 }
 
 /**
- * 表格列方法
+ * Table column methods
  */
 export interface TableColumnsMethods<RecordType = Record<string, unknown>> {
   setColumnVisible: (key: string, visible: boolean) => void;
   setColumnWidth: (key: string, width: number | string) => void;
-  setColumnFixed: (key: string, fixed: boolean | 'left' | 'right') => void; // 兼容 Arco Design 的类型
+  setColumnFixed: (key: string, fixed: boolean | 'left' | 'right') => void; // Compatible with Arco Design types
   setColumnOrder: (key: string, order: number) => void;
   resetColumns: () => void;
   getColumns: () => ColumnItem<RecordType>[];

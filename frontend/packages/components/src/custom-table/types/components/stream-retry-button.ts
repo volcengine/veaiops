@@ -13,36 +13,36 @@
 // limitations under the License.
 
 /**
- * StreamRetryButton 组件类型定义
- * 从 components/stream-retry-button/types.ts 迁移而来
+ * StreamRetryButton component type definitions
+ * Migrated from components/stream-retry-button/types.ts
  */
 
 /**
- * @name 流式加载重试按钮属性
+ * @name Stream loading retry button properties
  */
 export interface StreamRetryButtonProps {
-  /** @name 是否正在重试 */
+  /** @name Whether it is retrying */
   isRetrying?: boolean;
-  /** @name 是否有错误 */
+  /** @name Whether there is an error */
   hasError?: boolean;
-  /** @name 错误类型 */
+  /** @name Error type */
   errorType?: 'rate_limit' | 'concurrency_limit' | 'timeout' | 'unknown';
-  /** @name 是否需要继续加载 */
+  /** @name Whether to continue loading */
   needContinue?: boolean;
-  /** @name 重试回调 */
+  /** @name Retry callback */
   onRetry?: () => void;
-  /** @name 自动重试延迟时间 */
+  /** @name Auto retry delay time */
   autoRetryDelay?: number;
-  /** @name 容器样式类名 */
+  /** @name Container style class name */
   className?: string;
-  /** @name 是否有更多数据 */
+  /** @name Whether there is more data */
   hasMoreData?: boolean;
-  /** @name 加载更多数据回调 */
+  /** @name Load more data callback */
   onLoadMore?: () => void;
 }
 
 /**
- * 重试配置
+ * Retry configuration
  */
 export interface RetryConfig {
   maxRetries?: number;

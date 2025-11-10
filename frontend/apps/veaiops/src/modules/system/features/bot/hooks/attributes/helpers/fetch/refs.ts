@@ -15,7 +15,7 @@
 import { useRef } from 'react';
 
 /**
- * Bot属性获取Hook的Ref管理
+ * Bot attribute fetching Hook ref management
  */
 export const useFetchAttributesRefs = ({
   botId,
@@ -24,11 +24,11 @@ export const useFetchAttributesRefs = ({
   botId: string;
   channel: string;
 }) => {
-  // 使用ref来稳定botId和channel的引用，避免循环依赖
+  // Use refs to stabilize botId and channel references, avoid circular dependencies
   const botIdRef = useRef(botId);
   const channelRef = useRef(channel);
 
-  // 更新ref值，但不触发重新渲染
+  // Update ref values without triggering re-render
   botIdRef.current = botId;
   channelRef.current = channel;
 

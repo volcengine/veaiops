@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * WrapperWithTitle 组件统一导出
+ * WrapperWithTitle component unified exports
  */
 
-// 重新导出组件
+// Re-export component
 export {
   WrapperWithTitle,
   type WrapperWithTitleProps,

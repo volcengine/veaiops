@@ -13,25 +13,25 @@
 // limitations under the License.
 
 /**
- * 重置用户密码
+ * Reset user password
  *
- * @returns 返回 { success: boolean; error?: Error; data?: string } 格式的结果对象
+ * @returns Returns result object in format { success: boolean; error?: Error; data?: string }
  */
 export const resetUserPassword = async (
   id: string,
   newPassword?: string,
 ): Promise<{ success: boolean; error?: Error; data?: string }> => {
   try {
-    // TODO: 需要后端提供管理员重置用户密码的API接口
-    // 当前的 /apis/v1/manager/users/{user_id}/password 接口需要旧密码，不适用于管理员重置
+    // TODO: Backend needs to provide admin reset user password API interface
+    // Current /apis/v1/manager/users/{user_id}/password interface requires old password, not suitable for admin reset
     // const response = await apiClient.users.putApisV1ManagerUsersPassword({...});
 
-    // 临时返回生成的密码
+    // Temporarily return generated password
     const generatedPassword = newPassword || 'TempPass123!';
 
     return { success: true, data: generatedPassword };
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     return { success: false, error: errorObj };
@@ -39,22 +39,22 @@ export const resetUserPassword = async (
 };
 
 /**
- * 锁定用户
+ * Lock user
  *
- * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+ * @returns Returns result object in format { success: boolean; error?: Error }
  */
 export const lockUser = async (
   _id: string,
 ): Promise<{ success: boolean; error?: Error }> => {
   try {
-    // TODO: 替换为实际的API调用
+    // TODO: Replace with actual API call
     // await apiClient.post(`/api/users/${id}/lock`);
 
-    // 模拟API调用延迟
+    // Simulate API call delay
     await new Promise((resolve) => setTimeout(resolve, 300));
     return { success: true };
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     return { success: false, error: errorObj };
@@ -62,22 +62,22 @@ export const lockUser = async (
 };
 
 /**
- * 解锁用户
+ * Unlock user
  *
- * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+ * @returns Returns result object in format { success: boolean; error?: Error }
  */
 export const unlockUser = async (
   _id: string,
 ): Promise<{ success: boolean; error?: Error }> => {
   try {
-    // TODO: 替换为实际的API调用
+    // TODO: Replace with actual API call
     // await apiClient.post(`/api/users/${id}/unlock`);
 
-    // 模拟API调用延迟
+    // Simulate API call delay
     await new Promise((resolve) => setTimeout(resolve, 300));
     return { success: true };
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     return { success: false, error: errorObj };
@@ -85,22 +85,22 @@ export const unlockUser = async (
 };
 
 /**
- * 批量删除用户
+ * Batch delete users
  *
- * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+ * @returns Returns result object in format { success: boolean; error?: Error }
  */
 export const batchDeleteUsers = async (
   _ids: string[],
 ): Promise<{ success: boolean; error?: Error }> => {
   try {
-    // TODO: 替换为实际的API调用
+    // TODO: Replace with actual API call
     // await apiClient.post('/api/users/batch-delete', { ids });
 
-    // 模拟API调用延迟
+    // Simulate API call delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return { success: true };
   } catch (error: unknown) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     return { success: false, error: errorObj };

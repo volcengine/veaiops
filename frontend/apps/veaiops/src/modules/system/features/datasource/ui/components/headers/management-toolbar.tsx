@@ -22,7 +22,7 @@ interface ManagementToolbarProps {
 }
 
 /**
- * 监控数据源管理管理页面工具栏组件
+ * Monitor data source management page toolbar component
  */
 export const ManagementToolbar: React.FC<ManagementToolbarProps> = ({
   onOpenConnectionManager,

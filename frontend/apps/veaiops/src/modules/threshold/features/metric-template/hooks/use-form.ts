@@ -17,8 +17,8 @@ import type { MetricTemplate } from 'api-generate';
 import { useCallback, useState } from 'react';
 
 /**
- * 指标模板表单处理 Hook
- * 提供表单状态管理和操作处理逻辑
+ * Metric template form handling Hook
+ * Provides form state management and operation handling logic
  */
 export const useMetricTemplateForm = () => {
   const [form] = Form.useForm();
@@ -28,31 +28,31 @@ export const useMetricTemplateForm = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   /**
-   * 处理编辑操作
+   * Handle edit operation
    */
   const handleEdit = useCallback(
     async (template: MetricTemplate): Promise<boolean> => {
       setEditingTemplate(template);
       setModalVisible(true);
-      // 填充表单数据
+      // Populate form data
       form.setFieldsValue({ ...template });
-      return true; // 编辑操作成功
+      return true; // Edit operation successful
     },
     [form],
   );
 
   /**
-   * 处理新建操作
+   * Handle create operation
    */
   const handleAdd = useCallback(async (): Promise<boolean> => {
     setEditingTemplate(null);
     setModalVisible(true);
     form.resetFields();
-    return true; // 新建操作成功
+    return true; // Create operation successful
   }, [form]);
 
   /**
-   * 处理模态框取消
+   * Handle modal cancel
    */
   const handleCancel = useCallback(() => {
     setModalVisible(false);
@@ -61,14 +61,14 @@ export const useMetricTemplateForm = () => {
   }, [form]);
 
   /**
-   * 处理表单提交
+   * Handle form submission
    */
   const handleSubmit = useCallback(
     async (onSubmit: (values: any) => Promise<any>) => {
       try {
         const values = await form.validate();
 
-        // 为未在表单中显示的字段添加默认值
+        // Add default values for fields not displayed in form
         const completeValues = {
           ...values,
           min_step: values.min_step ?? 0.01,
@@ -85,18 +85,18 @@ export const useMetricTemplateForm = () => {
 
         const result = await onSubmit(completeValues);
 
-        // 根据结果判断是否成功
+        // Determine success based on result
         if (result) {
           setModalVisible(false);
           setEditingTemplate(null);
           form.resetFields();
           return result;
         } else {
-          // 操作失败，保持模态框打开
+          // Operation failed, keep modal open
           return false;
         }
       } catch (error) {
-        // 表单验证失败或API调用失败（错误已在 Hook 中处理）
+        // Form validation failed or API call failed (error already handled in Hook)
         return false;
       }
     },
@@ -104,12 +104,12 @@ export const useMetricTemplateForm = () => {
   );
 
   return {
-    // 状态
+    // State
     form,
     editingTemplate,
     modalVisible,
 
-    // 操作方法
+    // Operation methods
     handleEdit,
     handleAdd,
     handleCancel,

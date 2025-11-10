@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * 全局引导埋点追踪器
- * 用于收集用户行为数据，优化引导体验
+ * Global guide tracking tracker
+ * Used to collect user behavior data and optimize guide experience
  */
 
 /**
- * 通用追踪方法参数接口
+ * Common tracking method parameters interface
  */
 interface TrackParams {
   eventName: string;
@@ -35,22 +35,22 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 获取用户ID
+   * Get user ID
    */
   private getUserId(): string {
-    // 从localStorage或用户信息中获取
+    // Get from localStorage or user information
     return localStorage.getItem('userId') || 'anonymous';
   }
 
   /**
-   * 生成会话ID
+   * Generate session ID
    */
   private generateSessionId(): string {
     return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
   /**
-   * 追踪步骤查看
+   * Track step view
    */
   trackStepView(stepNumber: number): void {
     this.track({
@@ -65,7 +65,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪步骤完成
+   * Track step completion
    */
   trackStepComplete(stepNumber: number): void {
     this.track({
@@ -80,7 +80,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪提示点击
+   * Track hint click
    */
   trackHintClick({
     stepNumber,
@@ -102,7 +102,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪快速修复
+   * Track quick fix
    */
   trackQuickFix({
     stepNumber,
@@ -124,7 +124,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪路由跳转
+   * Track route jump
    */
   trackRouteJump({
     fromRoute,
@@ -146,7 +146,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪引导关闭
+   * Track guide close
    */
   trackGuideClose(): void {
     this.track({
@@ -160,7 +160,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪引导打开
+   * Track guide open
    */
   trackGuideOpen(): void {
     this.track({
@@ -174,7 +174,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪错误发生
+   * Track error occurrence
    */
   trackError({
     stepNumber,
@@ -199,7 +199,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪任务创建
+   * Track task creation
    */
   trackTaskCreate({
     taskType,
@@ -221,7 +221,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪注入操作
+   * Track injection operation
    */
   trackInjection({
     platform,
@@ -246,7 +246,7 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 追踪版本管理
+   * Track version management
    */
   trackVersionManagement({
     action,
@@ -268,14 +268,14 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 通用追踪方法
+   * Common tracking method
    */
   private track({ eventName, properties }: TrackParams): void {
     try {
-      // 这里可以集成实际的埋点服务
-      // 例如：analytics.track(eventName, properties);
+      // Can integrate actual tracking service here
+      // e.g., analytics.track(eventName, properties);
 
-      // 存储到本地用于调试
+      // Store locally for debugging
       const trackingData = {
         event: eventName,
         properties,
@@ -287,19 +287,19 @@ export class GlobalGuideTracker {
       );
       existingData.push(trackingData);
 
-      // 只保留最近100条记录
+      // Only keep the most recent 100 records
       if (existingData.length > 100) {
         existingData.splice(0, existingData.length - 100);
       }
 
       localStorage.setItem('guide_tracking', JSON.stringify(existingData));
     } catch (error) {
-      // console.error 已移除
+      // console.error removed
     }
   }
 
   /**
-   * 获取追踪数据
+   * Get tracking data
    */
   getTrackingData(): any[] {
     try {
@@ -311,12 +311,12 @@ export class GlobalGuideTracker {
   }
 
   /**
-   * 清除追踪数据
+   * Clear tracking data
    */
   clearTrackingData(): void {
     localStorage.removeItem('guide_tracking');
   }
 }
 
-// 创建全局实例
+// Create global instance
 export const globalGuideTracker = new GlobalGuideTracker();

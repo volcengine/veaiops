@@ -13,15 +13,15 @@
 // limitations under the License.
 
 /**
- * CustomTable 核心类型统一导出
+ * CustomTable core types unified export
  */
 
-// ==================== 基础类型 ====================
-// 从 common 中导出所有类型（PluginPriority、PluginStatus、LifecyclePhase 已从 enums 导出，common 中不再重复定义）
+// ==================== Base Types ====================
+// Export all types from common (PluginPriority, PluginStatus, LifecyclePhase are already exported from enums, not redefined in common)
 export * from './common';
 
-// ==================== 数据源类型 ====================
-// 注意：DataSourceConfig 需要重命名为 CoreDataSourceConfig 以避免与 plugins/data-source.ts 中的 DataSourceConfig 冲突
+// ==================== Data Source Types ====================
+// Note: DataSourceConfig needs to be renamed to CoreDataSourceConfig to avoid conflict with DataSourceConfig in plugins/data-source.ts
 export type {
   TableDataSource,
   DataSourceState,
@@ -31,19 +31,19 @@ export type {
   DataProcessor,
 } from './data-source';
 
-// ==================== 请求管理类型 ====================
+// ==================== Request Management Types ====================
 export * from './request-manager';
 
-// ==================== 表格助手类型 ====================
+// ==================== Table Helper Types ====================
 export * from './table-helpers';
 
-// ==================== 类型守卫和安全转换 ====================
+// ==================== Type Guards and Safe Conversions ====================
 export * from './type-guards';
 
-// ==================== 枚举类型 ====================
-// ⚠️ 注意：枚举类型通过 export * 导出，但构建工具可能无法正确追踪多层导出链
-// 因此在顶层 types/index.ts 中也需要显式导出枚举（见 types/index.ts 第 60-72 行）
-// 这样可以确保：
-// 1. 通过 export * from './core' 的路径可以访问枚举（用于类型检查）
-// 2. 通过显式导出路径可以访问枚举（用于运行时构建）
+// ==================== Enum Types ====================
+// ⚠️ Note: Enum types are exported via export *, but build tools may not correctly track multi-level export chains
+// Therefore, enums also need to be explicitly exported in the top-level types/index.ts (see types/index.ts lines 60-72)
+// This ensures:
+// 1. Enums can be accessed via export * from './core' path (for type checking)
+// 2. Enums can be accessed via explicit export path (for runtime builds)
 export * from './enums';

@@ -67,7 +67,7 @@ export const LoadingButton: FC<IProps> = (props) => {
     onClick: handleClick,
   } as ButtonProps;
 
-  // 按钮非禁用态时，常驻提示
+  // When button is not disabled, show persistent tip
   if (!disabled && tip) {
     return (
       <Popover trigger="hover" title={null} content={tip}>

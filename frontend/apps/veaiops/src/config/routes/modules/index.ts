@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 模块路由层统一导出
+ * Module route layer unified export
  *
- * 包含所有业务模块的路由配置：
- * - system: 系统配置模块
- * - threshold: 智能阈值模块
- * - event-center: 事件中心模块
- * - oncall: Oncall异动模块
- * - statistics: 统计模块
+ * Contains route configurations for all business modules:
+ * - system: System configuration module
+ * - threshold: Intelligent threshold module
+ * - event-center: Event center module
+ * - oncall: Oncall alert module
+ * - statistics: Statistics module
  */
 
 export * from './system';

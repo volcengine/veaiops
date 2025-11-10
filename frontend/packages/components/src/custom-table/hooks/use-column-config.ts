@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ✅ 优化：合并同源导入
+// ✅ Optimization: Merge imports from same source
 import { DEFAULT_TABLE_COLUMNS_CONFIG } from '@/custom-table/plugins/table-columns/config';
 import type {
   ColumnItem,
@@ -20,22 +20,22 @@ import type {
   UseColumnsResult,
 } from '@/custom-table/types';
 /**
- * 表格列配置管理Hook
- * 专用于列的可见性、宽度、固定位置等基础配置管理
- * 适用于插件化架构的表格系统
+ * Table Column Configuration Management Hook
+ * Dedicated to managing basic column configuration such as visibility, width, fixed position, etc.
+ * Suitable for plugin-based table system
  */
 import { useCallback, useMemo, useState } from 'react';
 
-// 类型已迁移到 ../types/hooks/column-config.ts
+// Types have been migrated to ../types/hooks/column-config.ts
 
 /**
- * 表格列配置管理Hook
+ * Table Column Configuration Management Hook
  *
- * @description 专门用于管理表格列的基础配置，包括：
- * - 列的可见性控制
- * - 列宽度动态调整
- * - 列固定位置设置
- * - 列显示顺序管理
+ * @description Dedicated to managing basic table column configuration, including:
+ * - Column visibility control
+ * - Dynamic column width adjustment
+ * - Column fixed position settings
+ * - Column display order management
  *
  * @example
  * ```tsx
@@ -55,7 +55,7 @@ export const useColumns = <RecordType = Record<string, unknown>>({
     ...config,
   };
 
-  // 列配置和可见性状态
+  // Column configuration and visibility state
   const [columnSettings, setColumnSettings] = useState<
     Record<
       string,
@@ -68,15 +68,15 @@ export const useColumns = <RecordType = Record<string, unknown>>({
     >
   >({});
 
-  // 过滤器状态
+  // Filter state
   const [filters, setFilters] = useState<Record<string, (string | number)[]>>(
     defaultFilters || {},
   );
 
-  // 查询参数
+  // Query parameters
   const [query, setQuery] = useState<Record<string, unknown>>({});
 
-  // 应用列配置
+  // Apply column configuration
   const columns = useMemo(() => {
     if (!baseColumns || baseColumns.length === 0) {
       return [];
@@ -102,7 +102,7 @@ export const useColumns = <RecordType = Record<string, unknown>>({
     });
   }, [baseColumns, columnSettings]);
 
-  // 过滤可见列
+  // Filter visible columns
   const visibleColumns = useMemo(() => {
     if (!enableColumnVisibility) {
       return columns;
@@ -111,14 +111,14 @@ export const useColumns = <RecordType = Record<string, unknown>>({
   }, [columns, enableColumnVisibility]);
 
   /**
-   * 设置列可见性的参数接口
+   * Parameter interface for setting column visibility
    */
   interface SetColumnVisibleParams {
     key: string;
     visible: boolean;
   }
 
-  // 设置列可见性
+  // Set column visibility
   const setColumnVisible = useCallback(
     ({ key, visible }: SetColumnVisibleParams) => {
       setColumnSettings((prev) => ({
@@ -133,14 +133,14 @@ export const useColumns = <RecordType = Record<string, unknown>>({
   );
 
   /**
-   * 设置列宽度的参数接口
+   * Parameter interface for setting column width
    */
   interface SetColumnWidthParams {
     key: string;
     width: number | string;
   }
 
-  // 设置列宽度
+  // Set column width
   const setColumnWidth = useCallback(({ key, width }: SetColumnWidthParams) => {
     setColumnSettings((prev) => ({
       ...prev,
@@ -152,14 +152,14 @@ export const useColumns = <RecordType = Record<string, unknown>>({
   }, []);
 
   /**
-   * 设置列固定的参数接口
+   * Parameter interface for setting column fixed position
    */
   interface SetColumnFixedParams {
     key: string;
     fixed: 'left' | 'right' | undefined;
   }
 
-  // 设置列固定
+  // Set column fixed position
   const setColumnFixed = useCallback(({ key, fixed }: SetColumnFixedParams) => {
     setColumnSettings((prev) => ({
       ...prev,
@@ -170,7 +170,7 @@ export const useColumns = <RecordType = Record<string, unknown>>({
     }));
   }, []);
 
-  // 设置列顺序
+  // Set column order
   interface SetColumnOrderParams {
     key: string;
     order: number;
@@ -186,7 +186,7 @@ export const useColumns = <RecordType = Record<string, unknown>>({
     }));
   }, []);
 
-  // 重置列设置
+  // Reset column settings
   const resetColumns = useCallback(() => {
     setColumnSettings({});
   }, []);

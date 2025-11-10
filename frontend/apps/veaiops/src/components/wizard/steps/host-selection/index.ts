@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 主机选择步骤组件导出
+ * Host selection step component export
  */
 
 export * from './components';

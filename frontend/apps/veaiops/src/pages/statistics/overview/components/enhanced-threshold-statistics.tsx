@@ -69,8 +69,8 @@ interface EnhancedThresholdStatisticsProps {
 }
 
 /**
- * 增强版智能阈值统计组件
- * @description 展示智能阈值任务统计和趋势表，具有更好的视觉效果和交互性
+ * Enhanced intelligent threshold statistics component
+ * @description Displays intelligent threshold task statistics and trend charts with better visual effects and interactivity
  */
 export const EnhancedThresholdStatistics: React.FC<
   EnhancedThresholdStatisticsProps
@@ -78,14 +78,14 @@ export const EnhancedThresholdStatistics: React.FC<
   const [hoveredChart, setHoveredChart] = useState<string | null>(null);
 
   /**
-   * calculateSuccessRate 参数接口
+   * calculateSuccessRate parameters interface
    */
   interface CalculateSuccessRateParams {
     success: number;
     failed: number;
   }
 
-  // 计算成功率
+  // Calculate success rate
   const calculateSuccessRate = ({
     success,
     failed,
@@ -94,7 +94,7 @@ export const EnhancedThresholdStatistics: React.FC<
     return total === 0 ? 0 : Math.round((success / total) * 100);
   };
 
-  // 处理智能阈值趋势数据
+  // Process intelligent threshold trend data
   const processedThresholdData = getThresholdTrendData().map((item) => ({
     period: item.period,
     success: item.success,
@@ -106,7 +106,7 @@ export const EnhancedThresholdStatistics: React.FC<
     }),
   }));
 
-  // 智能阈值趋势图表配置
+  // Intelligent threshold trend chart configuration
   const thresholdChartConfig = {
     data: processedThresholdData.flatMap((item) => [
       {
@@ -222,7 +222,7 @@ export const EnhancedThresholdStatistics: React.FC<
     },
   };
 
-  // 计算整体成功率趋势
+  // Calculate overall success rate trend
   const calculateOverallTrend = () => {
     if (processedThresholdData.length < 2) {
       return null;
@@ -287,7 +287,7 @@ export const EnhancedThresholdStatistics: React.FC<
                 </div>
               </div>
 
-              {/* 成功率概览 */}
+              {/* Success rate overview */}
               <div style={{ marginTop: '20px' }}>
                 <div
                   style={{

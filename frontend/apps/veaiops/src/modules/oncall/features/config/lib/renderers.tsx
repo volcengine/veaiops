@@ -19,11 +19,11 @@ import { formatDateTime } from "@veaiops/utils";
 import { Interest } from "api-generate";
 
 /**
- * 动作类别配置映射
+ * Action category configuration mapping
  *
- * 三方对照验证：
- * - Python 后端: veaiops/schema/types.py InterestActionType (Filter, Detect)
- * - OpenAPI 规范: frontend/packages/openapi-specs/src/specs/modules/oncall.json (Detect, Filter)
+ * Three-way cross-validation:
+ * - Python backend: veaiops/schema/types.py InterestActionType (Filter, Detect)
+ * - OpenAPI spec: frontend/packages/openapi-specs/src/specs/modules/oncall.json (Detect, Filter)
  * - TypeScript: api-generate/models/interest.ts Interest.action_category (DETECT, FILTER)
  */
 const ACTION_CATEGORY_CONFIG = {
@@ -32,7 +32,7 @@ const ACTION_CATEGORY_CONFIG = {
 } as const;
 
 /**
- * 格式化告警类别
+ * Format action category
  */
 export const formatActionCategory = (category: Interest.action_category) => {
   if (!category) {
@@ -48,11 +48,11 @@ export const formatActionCategory = (category: Interest.action_category) => {
 };
 
 /**
- * 检查类别配置映射
+ * Inspect category configuration mapping
  *
- * 三方对照验证：
- * - Python 后端: veaiops/schema/types.py InterestInspectType (Semantic, RE)
- * - OpenAPI 规范: frontend/packages/openapi-specs/src/specs/modules/oncall.json (Semantic, RE)
+ * Three-way cross-validation:
+ * - Python backend: veaiops/schema/types.py InterestInspectType (Semantic, RE)
+ * - OpenAPI spec: frontend/packages/openapi-specs/src/specs/modules/oncall.json (Semantic, RE)
  * - TypeScript: api-generate/models/interest.ts Interest.inspect_category (SEMANTIC, RE)
  */
 const INSPECT_CATEGORY_CONFIG = {
@@ -61,7 +61,7 @@ const INSPECT_CATEGORY_CONFIG = {
 } as const;
 
 /**
- * 格式化检查类别
+ * Format inspect category
  */
 export const formatInspectCategory = (category: Interest.inspect_category) => {
   if (!category) {
@@ -77,23 +77,23 @@ export const formatInspectCategory = (category: Interest.inspect_category) => {
 };
 
 /**
- * 格式化告警抑制间隔
- * 支持两种格式：
- * 1. 数字（秒）- 用于表格显示
- * 2. 时间字符串（如 "6h", "30m", "1d", "1d12h"）- 用于表单输入和预览
+ * Format alert silence interval
+ * Supports two formats:
+ * 1. Number (seconds) - for table display
+ * 2. Time string (e.g., "6h", "30m", "1d", "1d12h") - for form input and preview
  */
 export const formatSilenceDelta = (delta: number | string | undefined): string => {
-  // 边界case 1: 空值处理
+  // Edge case 1: Handle empty values
   if (!delta || (typeof delta === 'number' && delta === 0)) {
     return '-';
   }
 
-  // 如果是字符串格式（时间字符串），解析并格式化
+  // If string format (time string), parse and format
   if (typeof delta === 'string') {
     return formatSilenceDeltaString(delta);
   }
 
-  // 如果是数字（秒），转换为可读格式
+  // If number (seconds), convert to readable format
   const seconds = delta;
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -114,13 +114,13 @@ export const formatSilenceDelta = (delta: number | string | undefined): string =
 };
 
 /**
- * 格式化时间字符串格式的抑制间隔（用于表单预览）
- * 支持格式：6h, 30m, 1d, 1w, 1d12h, PT6H (ISO 8601)
+ * Format silence interval in time string format (for form preview)
+ * Supports formats: 6h, 30m, 1d, 1w, 1d12h, PT6H (ISO 8601)
  */
 export const formatSilenceDeltaString = (duration: string): string => {
   const trimmedDuration = duration.trim();
 
-  // 先尝试解析 ISO 8601 duration 格式 (PT6H, PT30M, P1D, PT1H30M, etc.)
+  // First try to parse ISO 8601 duration format (PT6H, PT30M, P1D, PT1H30M, etc.)
   const iso8601Match = trimmedDuration.match(
     /^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/,
   );
@@ -145,11 +145,11 @@ export const formatSilenceDeltaString = (duration: string): string => {
     return parts.length > 0 ? parts.join('') : '-';
   }
 
-  // 尝试解析简化格式 (6h, 30m, 1d, 1w, 60s, 1d12h)
+  // Try to parse simplified format (6h, 30m, 1d, 1w, 60s, 1d12h)
   const simpleMatch = trimmedDuration.match(/^(\d+)([dhms])(\d+)([dhms])?$/i);
 
   if (simpleMatch && simpleMatch[4]) {
-    // 复合格式：1d12h
+    // Compound format: 1d12h
     const [, num1, unit1, num2, unit2] = simpleMatch;
     const parts: string[] = [];
 
@@ -167,7 +167,7 @@ export const formatSilenceDeltaString = (duration: string): string => {
     return parts.join('');
   }
 
-  // 单单位格式：6h, 30m, 1d, 1w
+  // Single unit format: 6h, 30m, 1d, 1w
   const singleMatch = trimmedDuration.match(/^(\d+)([dhmsw])$/i);
 
   if (singleMatch) {
@@ -189,12 +189,12 @@ export const formatSilenceDeltaString = (duration: string): string => {
     return `${num}${unitMap[unit.toLowerCase()] || unit}`;
   }
 
-  // 如果无法解析，返回原值
+  // If unable to parse, return original value
   return trimmedDuration;
 };
 
 /**
- * 格式化规则信息
+ * Format rule information
  */
 export interface FormatRuleInfoParams {
   name: string;
@@ -206,42 +206,42 @@ export const formatRuleInfo = ({ name, record }: FormatRuleInfoParams) => {
 };
 
 /**
- * 格式化描述
+ * Format description
  */
 export const formatDescription = (description: string) => {
   return <CellRender.Ellipsis text={description || "-"} />;
 };
 
 /**
- * 格式化正则表达式
+ * Format regex pattern
  */
 export const formatRegex = (regex: string) => {
   return <CellRender.Ellipsis text={regex || "-"} />;
 };
 
 /**
- * 格式化检测历史
+ * Format inspect history
  */
 export const formatInspectHistory = (count: number) => {
   return count ? `${count} 条` : "-";
 };
 
 /**
- * 格式化创建时间
+ * Format created time
  */
 export const formatCreatedAt = (date: string) => {
   return formatDateTime(date);
 };
 
 /**
- * 格式化更新时间
+ * Format updated time
  */
 export const formatUpdatedAt = (date: string) => {
   return formatDateTime(date);
 };
 
 /**
- * 切换状态参数接口
+ * Toggle status parameters interface
  */
 interface HandleToggleStatusParams {
   ruleUuid: string;
@@ -249,8 +249,8 @@ interface HandleToggleStatusParams {
 }
 
 /**
- * 创建状态切换处理器
- * 适配器函数：将对象参数转换为位置参数，供 StatusColumn 组件使用
+ * Create status toggle handler
+ * Adapter function: converts object parameters to positional parameters for StatusColumn component
  */
 interface CreateStatusToggleHandlerParams {
   onToggleStatus: (params: HandleToggleStatusParams) => Promise<boolean>;
@@ -261,7 +261,7 @@ export const createStatusToggleHandler = ({
 }: CreateStatusToggleHandlerParams): (ruleUuid: string, checked: boolean) => Promise<boolean> => {
   return async (ruleUuid: string, checked: boolean) => {
     try {
-      // 适配器：将位置参数转换为对象参数
+      // Adapter: convert positional parameters to object parameters
       const result = await onToggleStatus({ ruleUuid, isActive: checked });
       return result;
     } catch (error) {

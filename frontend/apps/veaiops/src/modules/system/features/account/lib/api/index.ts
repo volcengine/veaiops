@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== 类型导出 ====================
+// ==================== Type Exports ====================
 export type {
   UserListParams,
   UserListResponse,
   UpdateUserParams,
 } from './types';
 
-// ==================== 用户列表 ====================
+// ==================== User List ====================
 export { getUserList } from './services/user-list';
 
-// ==================== 用户 CRUD ====================
+// ==================== User CRUD ====================
 export { createUser, updateUser, deleteUser } from './services/user-crud';
 
-// ==================== 用户管理 ====================
+// ==================== User Management ====================
 export {
   resetUserPassword,
   lockUser,
@@ -33,11 +33,11 @@ export {
   batchDeleteUsers,
 } from './services/user-management';
 
-// ==================== 用户导出 ====================
+// ==================== User Export ====================
 export { exportUsers } from './services/user-export';
 
-// ==================== 表格请求包装器 ====================
+// ==================== Table Request Wrapper ====================
 export { createUserTableRequestWrapper } from './services/user-table';
 
-// ==================== 工具函数 ====================
+// ==================== Utility Functions ====================
 export { transformApiUserToUser } from './utils';

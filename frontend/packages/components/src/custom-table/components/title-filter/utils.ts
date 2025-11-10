@@ -30,7 +30,7 @@ export const isNormalOptions = (
   );
 
 /**
- * 获取数组类型的选项
+ * Get array type options
  */
 export const getArrayTypeOptions = (
   nextOptions: (string | number)[][],

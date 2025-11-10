@@ -17,16 +17,16 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import type { ContactGroup } from '../shared/types';
 
 /**
- * 获取火山引擎联系组
+ * Get Volcengine contact groups
  *
- * @param datasourceId - 数据源ID
+ * @param datasourceId - Data source ID
  * @returns Promise<ContactGroup[]>
  */
 export const fetchVolcengineContactGroups = async (
   datasourceId: string,
 ): Promise<ContactGroup[]> => {
   try {
-    // 使用生成的 API 方法调用后端接口
+    // Use generated API method to call backend interface
     const response =
       await apiClient.dataSources.getApisV1DatasourceVolcengineContactGroups({
         datasourceId,
@@ -39,32 +39,32 @@ export const fetchVolcengineContactGroups = async (
     if (response.code === API_RESPONSE_CODE.SUCCESS && contactGroupsData) {
       return contactGroupsData;
     } else {
-      const error = response.message || '获取联系组失败';
+      const error = response.message || 'Failed to fetch contact groups';
 
       throw new Error(error);
     }
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Expose actual error information
     const errorObj = error instanceof Error ? error : new Error(String(error));
     throw new Error(
       errorObj instanceof Error
         ? errorObj.message
-        : '获取火山引擎联系组失败，请稍后重试',
+        : 'Failed to fetch Volcengine contact groups, please try again later',
     );
   }
 };
 
 /**
- * 获取阿里云联系组
+ * Get Aliyun contact groups
  *
- * @param datasourceId - 数据源ID
+ * @param datasourceId - Data source ID
  * @returns Promise<ContactGroup[]>
  */
 export const fetchAliyunContactGroups = async (
   datasourceId: string,
 ): Promise<ContactGroup[]> => {
   try {
-    // 步骤1: 获取DataSource详情以获得connect_id
+    // Step 1: Get DataSource details to obtain connect_id
 
     const datasourceResponse =
       await apiClient.dataSources.getApisV1DatasourceAliyun1({
@@ -72,26 +72,26 @@ export const fetchAliyunContactGroups = async (
       });
 
     if (datasourceResponse.code !== API_RESPONSE_CODE.SUCCESS) {
-      const error = datasourceResponse.message || '获取数据源信息失败';
+      const error = datasourceResponse.message || 'Failed to fetch datasource information';
 
       throw new Error(error);
     }
 
     if (!datasourceResponse.data) {
-      throw new Error('数据源信息为空');
+      throw new Error('Datasource information is empty');
     }
 
     const dataSourceData: any = datasourceResponse.data;
 
-    // 步骤2: 从DataSource中获取connect的ID
+    // Step 2: Get connect ID from DataSource
     const connectId = dataSourceData.connect?._id || dataSourceData.connect;
 
     if (!connectId) {
-      throw new Error('数据源未配置连接信息');
+      throw new Error('Datasource connection information not configured');
     }
 
-    // 步骤3: 使用connect_id调用Aliyun的contact groups API
-    // 后端接口：POST /apis/v1/datasource/connect/aliyun/{connect_id}/describe-contact-group-list
+    // Step 3: Use connect_id to call Aliyun's contact groups API
+    // Backend interface: POST /apis/v1/datasource/connect/aliyun/{connect_id}/describe-contact-group-list
     const response: any = await apiClient.request.request({
       method: 'POST',
       url: `/apis/v1/datasource/connect/aliyun/${connectId}/describe-contact-group-list`,
@@ -104,26 +104,26 @@ export const fetchAliyunContactGroups = async (
     if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
       return response.data as ContactGroup[];
     } else {
-      const error = response.message || '获取联系组失败';
+      const error = response.message || 'Failed to fetch contact groups';
 
       throw new Error(error);
     }
   } catch (error) {
-    // ✅ 正确：透出实际的错误信息
+    // ✅ Correct: Expose actual error information
     const errorObj = error instanceof Error ? error : new Error(String(error));
     throw new Error(
       errorObj instanceof Error
         ? errorObj.message
-        : '获取阿里云联系组失败，请稍后重试',
+        : 'Failed to fetch Aliyun contact groups, please try again later',
     );
   }
 };
 
 /**
- * 根据数据源类型获取联系组
+ * Get contact groups based on datasource type
  *
- * @param datasourceType - 数据源类型 (Volcengine|Aliyun|Zabbix)
- * @param datasourceId - 数据源ID
+ * @param datasourceType - Data source type (Volcengine|Aliyun|Zabbix)
+ * @param datasourceId - Data source ID
  * @returns Promise<ContactGroup[]>
  */
 export const fetchContactGroups = async (

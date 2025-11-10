@@ -21,22 +21,22 @@ import { useAccountManagementLogic } from './hooks/use-account-management-logic'
 import { AccountModal, AccountTable } from './ui';
 
 /**
- * 系统配置 - 账号管理页面
- * 提供账号的增删改查功能 - 使用 CustomTable 和 Zustand 状态管理
+ * System configuration - Account management page
+ * Provides account CRUD functionality - Uses CustomTable and Zustand state management
  *
- * 架构特点：
- * - 使用自定义Hook封装业务逻辑
- * - 组件职责单一，易于维护
- * - 状态管理与UI渲染分离
- * - 支持配置化和扩展
- * - 使用CustomTable提供高级表格功能
- * - 支持系统管理员(密码变更登录)和非管理员成员(增删改查)权限管控
+ * Architecture features:
+ * - Uses custom Hooks to encapsulate business logic
+ * - Single responsibility components, easy to maintain
+ * - State management separated from UI rendering
+ * - Supports configuration and extension
+ * - Uses CustomTable to provide advanced table functionality
+ * - Supports system admin (password change login) and non-admin member (CRUD) permission control
  */
 const AccountManagement: React.FC = () => {
-  // 表格引用，用于获取刷新函数
+  // Table ref, used to get refresh function
   const tableRef = useRef<CustomTableActionType<BaseRecord, BaseQuery>>(null);
 
-  // ✅ 修复：获取表格刷新函数，返回 Promise<boolean>
+  // ✅ Fix: Get table refresh function, returns Promise<boolean>
   const getRefreshTable = async (): Promise<boolean> => {
     logger.debug({
       message: '[AccountPage] 🔄 准备刷新表格',
@@ -86,14 +86,14 @@ const AccountManagement: React.FC = () => {
     }
   };
 
-  // 使用自定义Hook获取所有业务逻辑，传入刷新函数
+  // Use custom Hook to get all business logic, pass refresh function
   const {
-    // 状态
+    // State
     modalVisible,
     editingUser,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,
@@ -103,7 +103,7 @@ const AccountManagement: React.FC = () => {
 
   return (
     <>
-      {/* 账号表格组件 - 使用CustomTable */}
+      {/* Account table component - Uses CustomTable */}
       <AccountTable
         ref={tableRef}
         onEdit={handleEdit}
@@ -111,7 +111,7 @@ const AccountManagement: React.FC = () => {
         onAdd={handleAdd}
       />
 
-      {/* 账号弹窗组件 */}
+      {/* Account modal component */}
       <AccountModal
         visible={modalVisible}
         editingUser={editingUser}

@@ -36,8 +36,8 @@ import type React from 'react';
 const { Row, Col } = Grid;
 
 /**
- * 项目弹窗组件
- * 支持新增和编辑项目功能
+ * Project modal component
+ * Supports create and edit project functionality
  */
 export const ProjectModal: React.FC<ProjectModalProps> = ({
   visible,
@@ -52,7 +52,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
     try {
       const values = await form.validate();
 
-      // 转换日期格式
+      // Convert date format
       const formData: ProjectFormData = {
         ...values,
         start_date: values.start_date
@@ -65,7 +65,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
       await onSubmit(formData);
     } catch (error) {
-      // 错误已在 Hook 中处理，此处静默处理
+      // Errors are handled in Hook, silently handle here
     }
   };
 
@@ -85,7 +85,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
       cancelText="取消"
     >
       <Form form={form} layout="vertical" scrollToFirstError>
-        {/* 基本信息 */}
+        {/* Basic information */}
         <div className="mb-4">
           <h4 className="text-base font-medium text-gray-900 mb-3">基本信息</h4>
 
@@ -153,7 +153,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
         <Divider />
 
-        {/* 项目配置 */}
+        {/* Project configuration */}
         <div className="mb-4">
           <h4 className="text-base font-medium text-gray-900 mb-3">项目配置</h4>
 
@@ -217,7 +217,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
         <Divider />
 
-        {/* 时间和预算 */}
+        {/* Time and budget */}
         <div className="mb-4">
           <h4 className="text-base font-medium text-gray-900 mb-3">
             时间和预算
@@ -275,7 +275,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
         <Divider />
 
-        {/* 其他设置 */}
+        {/* Other settings */}
         <div>
           <h4 className="text-base font-medium text-gray-900 mb-3">其他设置</h4>
 

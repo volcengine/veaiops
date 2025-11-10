@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 用户表单数据接口
- * 基于 UserCreateRequest，添加表单特有字段
+ * User form data interface
+ * Based on UserCreateRequest, adds form-specific fields
  */
 export interface UserFormData {
   username: string;
@@ -25,7 +25,7 @@ export interface UserFormData {
 }
 
 /**
- * 更新用户的参数接口
+ * Update user parameters interface
  */
 export interface UpdateUserParams {
   userId: string;

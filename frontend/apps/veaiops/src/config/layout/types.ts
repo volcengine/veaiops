@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 布局状态接口
+ * Layout state interface
  */
 export interface LayoutState {
   collapsed: boolean;

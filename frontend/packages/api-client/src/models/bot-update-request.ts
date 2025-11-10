@@ -16,15 +16,15 @@
 import type { AgentCfgPayload } from './agent-cfg-payload';
 import type { VolcCfgPayload } from './volc-cfg-payload';
 /**
- * 更新机器人请求。所有字段均为可选，只更新提供的字段
+ * Update bot request. All fields are optional, only update provided fields
  */
 export type BotUpdateRequest = {
   /**
-   * 机器人App Secret（可选）
+   * Bot App Secret (optional)
    */
   secret?: string;
   /**
-   * Webhook URL列表（可选）
+   * Webhook URL list (optional)
    */
   webhook_urls?: Array<string>;
   volc_cfg?: VolcCfgPayload;

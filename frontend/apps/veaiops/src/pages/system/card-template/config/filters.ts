@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 卡片模版管理过滤器配置
+ * Card template management filter configuration
 
  */
 
@@ -31,7 +31,7 @@ interface FilterConfigProps {
 }
 
 /**
- * 获取卡片模版管理过滤器配置
+ * Get card template management filter configuration
  */
 export const getCardTemplateFilters = ({
   query,
@@ -47,7 +47,7 @@ export const getCardTemplateFilters = ({
         onChange: (v: string) => handleChange({ key: 'templateId', value: v }),
       },
     },
-    // Agent类型筛选
+    // Agent type filter
     {
       type: 'Select',
       componentProps: {
@@ -60,7 +60,7 @@ export const getCardTemplateFilters = ({
       },
     },
 
-    // 通道类型筛选（当前仅支持飞书）
+    // Channel type filter (currently only supports Lark)
     {
       type: 'Select',
       componentProps: {
@@ -72,11 +72,11 @@ export const getCardTemplateFilters = ({
         onChange: (v: string) => handleChange({ key: 'channels', value: v }),
       },
     },
-    // // 创建时间范围
+    // // Creation time range
     // {
     //   type: "RangePicker",
     //   componentProps: {
-    //     prefix: "创建时间",
+    //     prefix: "Creation Time", // UI text, keep Chinese
     //     value: query?.createTimeRanges,
     //     showTime: true,
     //     onChange: (v: number[]) => {

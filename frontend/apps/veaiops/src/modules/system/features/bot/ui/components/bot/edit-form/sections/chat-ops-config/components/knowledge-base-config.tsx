@@ -31,7 +31,7 @@ const CollapseItem = Collapse.Item;
 const { Text } = Typography;
 
 /**
- * 知识库配置组件的 Props
+ * Knowledge base configuration component Props
  */
 interface KnowledgeBaseConfigProps {
   form: FormInstance;
@@ -50,7 +50,7 @@ interface KnowledgeBaseConfigProps {
 }
 
 /**
- * 知识库配置组件
+ * Knowledge base configuration component
  */
 export const KnowledgeBaseConfig: React.FC<KnowledgeBaseConfigProps> = ({
   form,
@@ -133,7 +133,7 @@ export const KnowledgeBaseConfig: React.FC<KnowledgeBaseConfigProps> = ({
           </Select>
         </Form.Item>
 
-        {/* 知识库集合配置 */}
+        {/* Knowledge base collection configuration */}
         <div className="mb-4">
           <Text className="block mb-2">火山引擎方舟知识库集合</Text>
           <Text type="secondary" className="block mb-3">

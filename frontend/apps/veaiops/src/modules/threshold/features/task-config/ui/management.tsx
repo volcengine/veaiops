@@ -18,69 +18,30 @@ import type {
 } from 'api-generate';
 import type React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  useDatasourceDetail,
-  useTaskManagementLogic,
-  useUrlParams,
-} from '../hooks';
+import { useTaskManagementLogic, useUrlParams } from '../hooks';
 import { AlarmDrawer } from './alarm';
-import { DatasourceDetailDrawer } from './components/drawers';
 import { BatchRerunModal, TimeseriesChartModal } from './components/modals';
 import { TaskDrawer, TaskTable, type TaskTableRef } from './task';
 
 /**
- * 智能阈值任务管理页面
- * 提供任务的增删改查功能 - 使用 CustomTable 和业务逻辑分离
+ * Intelligent threshold task management page
+ * Provides CRUD functionality for tasks - uses CustomTable with separated business logic
  *
- * 架构特点：
- * - 使用自定义Hook封装业务逻辑
- * - 组件职责单一，易于维护
- * - 状态管理与UI渲染分离
- * - 支持配置化和扩展
- * - 使用CustomTable提供高级表格功能
+ * Architecture features:
+ * - Uses custom Hooks to encapsulate business logic
+ * - Single responsibility components, easy to maintain
+ * - Separated state management and UI rendering
+ * - Supports configuration and extension
+ * - Uses CustomTable to provide advanced table functionality
  */
 const TaskManagement: React.FC = () => {
-  // 表格引用，用于调用刷新方法
+  // Table ref, used for calling refresh method
   const tableRef = useRef<TaskTableRef>(null);
 
-  // URL 参数管理
+  // URL parameter management
   const { getParam } = useUrlParams();
 
-  // 🔍 记录页面加载时的状态
-  useEffect(() => {
-    logger.info({
-      message: '[TaskManagement] ========== 页面加载/刷新 ==========',
-      data: {
-        windowLocationHref:
-          typeof window !== 'undefined' ? window.location.href : 'N/A',
-        windowLocationSearch:
-          typeof window !== 'undefined' ? window.location.search : 'N/A',
-        windowLocationPathname:
-          typeof window !== 'undefined' ? window.location.pathname : 'N/A',
-        // 解析 URL 参数
-        urlParams:
-          typeof window !== 'undefined'
-            ? (() => {
-                const params = new URLSearchParams(window.location.search);
-                const result: Record<string, string> = {};
-                for (const [key, value] of params.entries()) {
-                  result[key] = value;
-                }
-                return result;
-              })()
-            : {},
-        urlParamsDatasourceType:
-          typeof window !== 'undefined'
-            ? new URLSearchParams(window.location.search).get('datasource_type')
-            : undefined,
-        timestamp: new Date().toISOString(),
-      },
-      source: 'TaskManagement',
-      component: 'useEffect_pageLoad',
-    });
-  }, []);
-
-  // 时序图模态框状态
+  // Timeseries modal state
   const [timeseriesModalVisible, setTimeseriesModalVisible] = useState(false);
   const [selectedMetric, setSelectedMetric] =
     useState<MetricThresholdResult | null>(null);
@@ -92,7 +53,7 @@ const TaskManagement: React.FC = () => {
     task?: IntelligentThresholdTask;
   }
 
-  // 处理查看时序图（内部使用对象参数）
+  // Handle view timeseries (internal use object parameters)
   const handleViewTimeSeriesInternal = ({
     record,
     task,
@@ -102,7 +63,7 @@ const TaskManagement: React.FC = () => {
     setTimeseriesModalVisible(true);
   };
 
-  // 适配外部接口的位置参数格式（注意：第三方库回调必须使用位置参数）
+  // Adapt to external interface position parameter format (Note: third-party library callbacks must use position parameters)
   const handleViewTimeSeries = (
     record: MetricThresholdResult,
     task?: IntelligentThresholdTask,
@@ -110,7 +71,7 @@ const TaskManagement: React.FC = () => {
     handleViewTimeSeriesInternal({ record, task });
   };
 
-  // 🎯 创建稳定的刷新函数引用
+  // 🎯 Create stable refresh function reference
   const refreshTable = useCallback(async () => {
     if (tableRef.current?.refresh) {
       return await tableRef.current.refresh();
@@ -118,9 +79,9 @@ const TaskManagement: React.FC = () => {
     return { success: false, error: new Error('表格刷新函数未准备就绪') };
   }, []);
 
-  // 🎯 使用自定义Hook获取所有业务逻辑，传入稳定的刷新函数用于新增和编辑操作后刷新
+  // 🎯 Use custom hook to get all business logic, pass stable refresh function for refreshing after add and edit operations
   const {
-    // 状态
+    // State
     drawerVisible,
     alarmDrawerVisible,
     batchRerunModalVisible,
@@ -132,7 +93,7 @@ const TaskManagement: React.FC = () => {
     form,
     taskList,
 
-    // 事件处理器
+    // Event handlers
     handleAdd,
     handleRerun,
     handleViewVersions,
@@ -144,23 +105,23 @@ const TaskManagement: React.FC = () => {
     handleSubmit,
     handleAlarmSubmit,
     handleTaskDetail,
-    // 选择处理
+    // Selection handling
     setSelectedTasks,
   } = useTaskManagementLogic(
-    // ✅ 传入稳定的刷新函数，用于新增和编辑操作成功后刷新表格
+    // ✅ Pass stable refresh function, used for refreshing table after add and edit operations succeed
     refreshTable,
   );
 
-  // 占位符处理器 - edit通过详情处理
+  // Placeholder handler - edit is handled through detail
   const handleEdit = (task: IntelligentThresholdTask) => {
     handleTaskDetail(task);
   };
 
-  // 处理 URL 参数中的 taskName，自动打开对应任务的详情抽屉
+  // Handle taskName in URL parameters, automatically open detail drawer for corresponding task
   useEffect(() => {
     const taskNameFromUrl = getParam('taskName');
     if (taskNameFromUrl && taskList.length > 0 && !drawerVisible) {
-      // 根据 taskName 查找对应的任务
+      // Find corresponding task by taskName
       const targetTask = taskList.find(
         (task) => task.task_name === taskNameFromUrl,
       );
@@ -170,46 +131,10 @@ const TaskManagement: React.FC = () => {
     }
   }, [getParam, taskList, drawerVisible, handleTaskDetail]);
 
-  // 数据源详情管理
-  const {
-    datasource,
-    loading: datasourceLoading,
-    visible: datasourceDrawerVisible,
-    fetchDatasourceDetail,
-    handleClose: handleCloseDatasourceDrawer,
-  } = useDatasourceDetail();
-
-  // 处理查看数据源详情
-  const handleViewDatasource = useCallback(
-    (task: IntelligentThresholdTask) => {
-      if (!task.datasource_id) {
-        logger.warn({
-          message: '任务缺少数据源ID',
-          data: { taskId: task._id, taskName: task.task_name },
-          source: 'TaskManagement',
-          component: 'handleViewDatasource',
-        });
-        return;
-      }
-
-      // 数据源类型映射：任务的 datasource_type 到 API 需要的类型
-      const datasourceType = task.datasource_type as
-        | 'Volcengine'
-        | 'Aliyun'
-        | 'Zabbix';
-
-      fetchDatasourceDetail({
-        datasourceId: task.datasource_id,
-        datasourceType,
-      });
-    },
-    [fetchDatasourceDetail],
-  );
-
-  // 批量重新执行成功后的回调
+  // Callback after batch rerun success
   const handleBatchRerunSuccess = async () => {
     setSelectedTasks([]);
-    // 🎯 批量操作成功后，手动调用表格刷新
+    // 🎯 After batch operation success, manually call table refresh
     if (tableRef.current) {
       const refreshResult = await tableRef.current.refresh();
       if (!refreshResult.success && refreshResult.error) {
@@ -229,7 +154,7 @@ const TaskManagement: React.FC = () => {
 
   return (
     <>
-      {/* 任务表格组件 - 使用CustomTable */}
+      {/* Task table component - Use CustomTable */}
       <TaskTable
         ref={tableRef}
         onEdit={handleEdit}
@@ -243,10 +168,9 @@ const TaskManagement: React.FC = () => {
         selectedTasks={selectedTasks}
         onSelectedTasksChange={setSelectedTasks}
         handleTaskDetail={handleTaskDetail}
-        onViewDatasource={handleViewDatasource}
       />
 
-      {/* 任务抽屉组件 */}
+      {/* Task drawer component */}
       <TaskDrawer
         visible={drawerVisible}
         operationType={operationType}
@@ -258,19 +182,19 @@ const TaskManagement: React.FC = () => {
         onViewTimeSeries={handleViewTimeSeries}
       />
 
-      {/* 告警规则创建抽屉 */}
+      {/* Alarm rule creation drawer */}
       <AlarmDrawer
         visible={alarmDrawerVisible}
         task={editingTask || null}
         onCancel={handleCancel}
         onSubmit={async (payload) => {
-          // payload 类型是 SyncAlarmRulesPayload，直接传递即可
+          // payload type is SyncAlarmRulesPayload, can pass directly
           return await handleAlarmSubmit(payload);
         }}
         loading={loading}
       />
 
-      {/* 时序图模态框 */}
+      {/* Timeseries modal */}
       <TimeseriesChartModal
         visible={timeseriesModalVisible}
         onClose={() => {
@@ -282,20 +206,12 @@ const TaskManagement: React.FC = () => {
         task={selectedTaskForTimeseries}
       />
 
-      {/* 批量重新执行确认弹窗 */}
+      {/* Batch rerun confirmation modal */}
       <BatchRerunModal
         visible={batchRerunModalVisible}
         taskIds={selectedTasks}
         onClose={() => setBatchRerunModalVisible(false)}
         onSuccess={handleBatchRerunSuccess}
-      />
-
-      {/* 数据源详情抽屉 */}
-      <DatasourceDetailDrawer
-        visible={datasourceDrawerVisible}
-        datasource={datasource}
-        loading={datasourceLoading}
-        onClose={handleCloseDatasourceDrawer}
       />
     </>
   );

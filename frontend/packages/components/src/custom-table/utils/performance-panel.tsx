@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * CustomTable 性能测试控制面板
- * @description 提供可视化的性能监控界面
+ * CustomTable performance test control panel
+ * @description Provides visual performance monitoring interface
 
  *
  */
@@ -46,14 +46,14 @@ interface PerformanceStats {
 }
 
 /**
- * 性能控制面板组件
+ * Performance control panel component
  */
 export const PerformancePanel: React.FC = () => {
   const [isMonitoring, setIsMonitoring] = useState(false);
   const [stats, setStats] = useState<PerformanceStats | null>(null);
   const [autoRefresh, setAutoRefresh] = useState(true);
 
-  // 自动刷新统计数据
+  // Auto refresh statistics data
   useEffect(() => {
     if (!autoRefresh || !isMonitoring) {
       return undefined;
@@ -66,31 +66,31 @@ export const PerformancePanel: React.FC = () => {
     return () => clearInterval(interval);
   }, [autoRefresh, isMonitoring]);
 
-  // 开始监控
+  // Start monitoring
   const handleStartMonitoring = () => {
     performanceLogger.enable();
     setIsMonitoring(true);
     setStats(performanceLogger.getStats());
   };
 
-  // 停止监控
+  // Stop monitoring
   const handleStopMonitoring = () => {
     performanceLogger.disable();
     setIsMonitoring(false);
   };
 
-  // 导出日志
+  // Export logs
   const handleExportLogs = () => {
     performanceLogger.exportLogs();
   };
 
-  // 清空日志
+  // Clear logs
   const handleClearLogs = () => {
     performanceLogger.clear();
     setStats(null);
   };
 
-  // 手动刷新
+  // Manual refresh
   const handleRefresh = () => {
     if (isMonitoring) {
       setStats(performanceLogger.getStats());
@@ -99,7 +99,7 @@ export const PerformancePanel: React.FC = () => {
 
   return (
     <Card
-      title="CustomTable 性能监控面板"
+      title="CustomTable 性能监控面板" // Keep Chinese for UI text
       style={{ width: '100%', marginBottom: 16 }}
       extra={
         <Space>
@@ -111,19 +111,20 @@ export const PerformancePanel: React.FC = () => {
             <Button onClick={handleStopMonitoring}>停止监控</Button>
           )}
           <Button onClick={handleRefresh} disabled={!isMonitoring}>
-            刷新
+            刷新 {/* Keep Chinese for UI text */}
           </Button>
           <Button onClick={handleExportLogs} disabled={!stats}>
-            导出日志
+            导出日志 {/* Keep Chinese for UI text */}
           </Button>
-          <Button onClick={handleClearLogs}>清空日志</Button>
+          <Button onClick={handleClearLogs}>清空日志</Button>{' '}
+          {/* Keep Chinese for UI text */}
         </Space>
       }
     >
       {!isMonitoring && !stats && (
         <Alert
           type="info"
-          content="点击开始监控按钮开始收集 CustomTable 的性能数据"
+          content="点击开始监控按钮开始收集 CustomTable 的性能数据" // Keep Chinese for UI text
           style={{ marginBottom: 16 }}
         />
       )}
@@ -131,7 +132,7 @@ export const PerformancePanel: React.FC = () => {
       {isMonitoring && (
         <Alert
           type="success"
-          content="性能监控已启用，正在实时收集数据..."
+          content="性能监控已启用，正在实时收集数据..." // Keep Chinese for UI text
           style={{ marginBottom: 16 }}
         />
       )}
@@ -141,14 +142,14 @@ export const PerformancePanel: React.FC = () => {
           <Row gutter={16} style={{ marginBottom: 16 }}>
             <Col span={6}>
               <Statistic
-                title="总渲染次数"
+                title="总渲染次数" // Keep Chinese for UI text
                 value={stats.totalRenders}
-                suffix="次"
+                suffix="次" // Keep Chinese for UI text
               />
             </Col>
             <Col span={6}>
               <Statistic
-                title="平均渲染时间"
+                title="平均渲染时间" // Keep Chinese for UI text
                 value={stats.averageRenderTime}
                 precision={2}
                 suffix="ms"
@@ -156,7 +157,7 @@ export const PerformancePanel: React.FC = () => {
             </Col>
             <Col span={6}>
               <Statistic
-                title="最大渲染时间"
+                title="最大渲染时间" // Keep Chinese for UI text
                 value={stats.maxRenderTime}
                 precision={2}
                 suffix="ms"
@@ -164,19 +165,21 @@ export const PerformancePanel: React.FC = () => {
             </Col>
             <Col span={6}>
               <Statistic
-                title="渲染频率"
+                title="渲染频率" // Keep Chinese for UI text
                 value={stats.renderFrequency}
                 precision={2}
-                suffix="次/秒"
+                suffix="次/秒" // Keep Chinese for UI text
               />
             </Col>
           </Row>
 
-          {/* 性能指标评估 */}
+          {/* Performance metrics evaluation */}
           <Card size="small" title="性能评估" style={{ marginBottom: 16 }}>
+            {' '}
+            {/* Keep Chinese for UI text */}
             <Space direction="vertical" style={{ width: '100%' }}>
               <div>
-                <Text>平均渲染时间: </Text>
+                <Text>平均渲染时间: </Text> {/* Keep Chinese for UI text */}
                 <Progress
                   percent={Math.min((stats.averageRenderTime / 50) * 100, 100)}
                   status={stats.averageRenderTime > 16 ? 'error' : 'success'}
@@ -184,11 +187,12 @@ export const PerformancePanel: React.FC = () => {
                   showText={false}
                 />
                 <Text style={{ marginLeft: 8 }}>
-                  {stats.averageRenderTime > 16 ? '需要优化' : '性能良好'}
+                  {stats.averageRenderTime > 16 ? '需要优化' : '性能良好'}{' '}
+                  {/* Keep Chinese for UI text */}
                 </Text>
               </div>
               <div>
-                <Text>渲染频率: </Text>
+                <Text>渲染频率: </Text> {/* Keep Chinese for UI text */}
                 <Progress
                   percent={Math.min((stats.renderFrequency / 60) * 100, 100)}
                   status={stats.renderFrequency > 60 ? 'error' : 'success'}
@@ -196,14 +200,17 @@ export const PerformancePanel: React.FC = () => {
                   showText={false}
                 />
                 <Text style={{ marginLeft: 8 }}>
-                  {stats.renderFrequency > 60 ? '渲染过于频繁' : '渲染频率正常'}
+                  {stats.renderFrequency > 60 ? '渲染过于频繁' : '渲染频率正常'}{' '}
+                  {/* Keep Chinese for UI text */}
                 </Text>
               </div>
             </Space>
           </Card>
 
-          {/* 组件渲染次数分解 */}
+          {/* Component render count breakdown */}
           <Card size="small" title="组件渲染次数分解">
+            {' '}
+            {/* Keep Chinese for UI text */}
             <Space direction="vertical" style={{ width: '100%' }}>
               {Object.entries(stats.componentBreakdown)
                 .sort(([, a], [, b]) => b - a)
@@ -213,7 +220,8 @@ export const PerformancePanel: React.FC = () => {
                     style={{ display: 'flex', justifyContent: 'space-between' }}
                   >
                     <Text>{component}</Text>
-                    <Text bold>{count} 次</Text>
+                    <Text bold>{count} 次</Text>{' '}
+                    {/* Keep Chinese for UI text */}
                   </div>
                 ))}
             </Space>

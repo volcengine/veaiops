@@ -18,7 +18,7 @@ import { safeStringify } from '../../../utils/field-translation';
 const { Text } = Typography;
 
 /**
- * renderComplexObject 参数接口
+ * renderComplexObject parameters interface
  */
 export interface RenderComplexObjectParams {
   obj: unknown;
@@ -26,7 +26,7 @@ export interface RenderComplexObjectParams {
 }
 
 /**
- * 渲染复杂对象
+ * Render complex object
  */
 export const renderComplexObject = ({
   obj,
@@ -36,7 +36,7 @@ export const renderComplexObject = ({
     return String(obj);
   }
 
-  // 生成完整的 JSON 字符串用于 tooltip
+  // Generate complete JSON string for tooltip
   const fullJsonString = JSON.stringify(obj, null, 2);
 
   if (Array.isArray(obj)) {
@@ -77,7 +77,7 @@ export const renderComplexObject = ({
     );
   }
 
-  // 处理普通对象
+  // Handle regular objects
   const entries = Object.entries(obj).slice(0, maxItems);
   if (entries.length === 0) {
     return <Text type="secondary">空对象</Text>;

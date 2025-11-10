@@ -16,39 +16,39 @@ import type { TaskTableActions } from '@task-config/lib';
 import type { IntelligentThresholdTask } from 'api-generate';
 
 /**
- * 任务管理页面 Hook
+ * Task management page Hook
  *
- * 提供任务管理页面的完整业务逻辑，包括状态管理和事件处理
+ * Provides complete business logic for task management page, including state management and event handling
  */
 export const useTaskManagementLogic = (): {
   tableActions: TaskTableActions;
 } => {
-  // 🎯 基础业务逻辑实现
-  // 这里提供基础的表格操作配置，后续可以根据实际需求完善
+  // 🎯 Basic business logic implementation
+  // Here provides basic table operation configuration, can be improved based on actual requirements
 
   return {
-    // 表格操作配置 - 基础实现
+    // Table operation configuration - basic implementation
     tableActions: {
       onAdd: () => {
-        // 添加任务
+        // Add task
       },
       onRerun: (_task: IntelligentThresholdTask) => {
-        // 重新运行任务
+        // Rerun task
       },
       onViewVersions: (_task: IntelligentThresholdTask) => {
-        // 查看版本
+        // View versions
       },
       onCreateAlarm: (_task: IntelligentThresholdTask) => {
-        // 创建告警
+        // Create alarm
       },
       onCopy: (_task: IntelligentThresholdTask) => {
-        // 复制任务
+        // Copy task
       },
       onTaskDetail: (_task: IntelligentThresholdTask) => {
-        // 查看任务详情
+        // View task details
       },
       onBatchRerun: () => {
-        // 批量重新运行
+        // Batch rerun
       },
     } as TaskTableActions,
   };

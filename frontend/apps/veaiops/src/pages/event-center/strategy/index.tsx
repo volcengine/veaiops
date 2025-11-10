@@ -15,8 +15,8 @@
 import { StrategyManagement } from '@/modules/event-center';
 
 /**
- * 事件中心 - 消息卡片通知策略页面
- * 使用 CustomTable 重构后的策略管理功能
+ * Event center - Message card notification strategy page
+ * Strategy management functionality refactored using CustomTable
  */
 const StrategyPage = () => {
   return <StrategyManagement />;

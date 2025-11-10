@@ -20,7 +20,7 @@ import type {
 } from '../../types/plugin';
 
 /**
- * 缓存处理插件实现
+ * Cache handler plugin implementation
  */
 export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   name = 'cache-handler';
@@ -43,7 +43,7 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
     this.context = context;
     logger.debug(
       'CacheHandler',
-      '插件初始化',
+      'Plugin initialized',
       {
         cacheKey: this.config.cacheKey,
         dataSourceShare: this.config.dataSourceShare,
@@ -54,7 +54,7 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 从缓存中获取数据
+   * Get data from cache
    */
   getFromCache(key: string): any {
     if (!this.context) {
@@ -69,7 +69,7 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
     const data = this.context.utils.sessionStore.get(key);
     logger.debug(
       'CacheHandler',
-      '从缓存获取数据',
+      'Get data from cache',
       {
         key,
         hasData: Boolean(data),
@@ -81,7 +81,7 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 设置缓存数据
+   * Set cache data
    */
   setToCache(key: string, data: any): void {
     if (!this.context) {
@@ -96,7 +96,7 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
     this.context.utils.sessionStore.set(key, data);
     logger.debug(
       'CacheHandler',
-      '设置缓存数据',
+      'Set cache data',
       {
         key,
         dataType: typeof data,
@@ -106,12 +106,12 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 从缓存中移除数据
+   * Remove data from cache
    */
   removeFromCache(key: string): void {
     this.context.utils.sessionStore.remove(key);
 
-    // 清除定时器
+    // Clear timer
     const timeout = this.removalTimeouts.get(key);
     if (timeout) {
       clearTimeout(timeout);
@@ -120,18 +120,18 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 安排延迟移除缓存
+   * Schedule delayed cache removal
    */
   scheduleRemoval(key: string, delay?: number): void {
     const removeDelay = delay ?? this.config.autoRemoveDelay;
 
-    // 清除之前的定时器
+    // Clear previous timer
     const existingTimeout = this.removalTimeouts.get(key);
     if (existingTimeout) {
       clearTimeout(existingTimeout);
     }
 
-    // 设置新的定时器
+    // Set new timer
     const timeout = setTimeout(() => {
       this.removeFromCache(key);
     }, removeDelay);
@@ -140,7 +140,7 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 检查缓存中是否存在指定key的数据
+   * Check if data exists in cache for specified key
    */
   hasCache(key: string): boolean {
     const data = this.getFromCache(key);
@@ -148,16 +148,16 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 清空所有缓存
+   * Clear all cache
    */
   clearAllCache(): void {
-    // 清除所有定时器
+    // Clear all timers
     this.removalTimeouts.forEach((timeout) => clearTimeout(timeout));
     this.removalTimeouts.clear();
   }
 
   /**
-   * 处理数据源共享的缓存逻辑
+   * Handle data source sharing cache logic
    */
   handleDataSourceCache(api: string, response: any): void {
     if (this.config.dataSourceShare) {
@@ -166,22 +166,22 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 获取或设置缓存数据
+   * Get or set cache data
    */
   getOrSetCache<T>(
     key: string,
     factory: () => Promise<T> | T,
     shouldCache = true,
   ): Promise<T> | T {
-    // 检查缓存中是否存在数据
+    // Check if data exists in cache
     const cachedData = this.getFromCache(key);
     if (cachedData !== null && cachedData !== undefined) {
-      // 如果找到缓存数据，安排延迟移除
+      // If cached data found, schedule delayed removal
       this.scheduleRemoval(key);
       return cachedData;
     }
 
-    // 如果缓存中没有数据，调用factory函数获取
+    // If no data in cache, call factory function to get
     const result = factory();
 
     if (result instanceof Promise) {
@@ -199,19 +199,19 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 处理组件卸载或重置时的缓存清理
+   * Handle cache cleanup when component unmounts or resets
    */
   handleComponentReset(): void {
     const { cacheKey } = this.config;
 
     if (cacheKey) {
-      // 移除当前组件的缓存
+      // Remove current component's cache
       this.removeFromCache(cacheKey);
     }
   }
 
   /**
-   * 获取缓存统计信息
+   * Get cache statistics
    */
   getCacheStats(): { activeTimeouts: number; cacheKey?: string } {
     return {
@@ -221,7 +221,7 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 延长缓存生存时间
+   * Extend cache lifetime
    */
   extendCacheLifetime(key: string, additionalDelay?: number): void {
     const delay = additionalDelay ?? this.config.autoRemoveDelay;
@@ -229,18 +229,18 @@ export class CacheHandlerPluginImpl implements CacheHandlerPlugin {
   }
 
   /**
-   * 立即移除指定缓存
+   * Immediately remove specified cache
    */
   immediateRemove(key: string): void {
     this.removeFromCache(key);
   }
 
   destroy(): void {
-    // 清除所有定时器
+    // Clear all timers
     this.removalTimeouts.forEach((timeout) => clearTimeout(timeout));
     this.removalTimeouts.clear();
 
-    // 清理当前组件相关的缓存
+    // Clean up cache related to current component
     if (this.config.cacheKey) {
       this.removeFromCache(this.config.cacheKey);
     }

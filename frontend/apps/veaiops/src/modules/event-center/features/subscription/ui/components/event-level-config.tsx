@@ -19,15 +19,15 @@ import type React from 'react';
 const FormItem = Form.Item;
 
 /**
- * 事件级别配置组件属性接口
+ * Event level configuration component props interface
  */
-// 注意：使用 object 类型替代 Record<string, never>，因为组件没有 props
-// TODO: 如果后续添加 props，应定义具体的接口类型
+// Note: Use object type instead of Record<string, never>, because the component has no props
+// TODO: If props are added later, define a specific interface type
 type EventLevelConfigProps = object;
 
 /**
- * 事件级别配置组件
- * 包含订阅的事件级别配置
+ * Event level configuration component
+ * Contains event level configuration for subscriptions
  */
 export const EventLevelConfig: React.FC<EventLevelConfigProps> = () => {
   return (

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { EMPTY_CONTENT_TEXT } from '@veaiops/constants';
-import { formatUtcToLocal, useTimezone } from '@veaiops/utils';
 import type { FC } from 'react';
 
 const formatTimestamp = (
@@ -25,35 +24,34 @@ const formatTimestamp = (
     return EMPTY_CONTENT_TEXT;
   }
 
-  // ✅ Use timezone conversion function to ensure time is displayed correctly according to user-selected timezone
-  // formatUtcToLocal automatically handles UTC to local timezone conversion
-  const formatted = formatUtcToLocal(time, template);
-
-  if (!formatted || formatted === '') {
+  const date = new Date(time);
+  if (Number.isNaN(date.getTime())) {
     return EMPTY_CONTENT_TEXT;
   }
 
-  return formatted;
+  // Simple date formatting implementation
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return template
+    .replace('YYYY', String(year))
+    .replace('MM', month)
+    .replace('DD', day)
+    .replace('HH', hours)
+    .replace('mm', minutes)
+    .replace('ss', seconds);
 };
 
-/**
- * StampTime component
- *
- * ✅ Automatically responds to timezone changes: internally uses useTimezone Hook
- * When user switches timezone, all StampTime components will automatically re-render and display time in the new timezone
- *
- * Zero-intrusion design: business code requires no changes, just use <CellRender.StampTime /> directly
- */
 const StampTimeRender: FC<{
   time: number | string | undefined;
   template?: string;
   compareMoment?: number;
-}> = ({ time, template, compareMoment }) => {
-  // ✅ 使用 useTimezone Hook，时区变化时自动重新渲染
-  const timezone = useTimezone();
-
-  // ✅ 时区变化时，formatTimestamp 会重新执行，使用最新时区
-  return <>{formatTimestamp(time, template, compareMoment)}</>;
-};
+}> = ({ time, template, compareMoment }) => (
+  <>{formatTimestamp(time, template, compareMoment)}</>
+);
 
 export { StampTimeRender };

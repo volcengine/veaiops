@@ -12,41 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Custom Fields 组件类型定义
+// Custom Fields component type definitions
 import type { ModernTableColumnProps } from '../shared/types';
 
 export interface CustomFieldsProps<T = any> {
-  /** 禁止选择的字段 */
+  /** Fields that cannot be selected */
   disabledFields: Map<string, string | undefined>;
-  /** 基础的列 */
+  /** Base columns */
   columns: ModernTableColumnProps<T>[];
-  /** 当前值 */
+  /** Current value */
   value: string[] | undefined;
-  /** 初始值 */
+  /** Initial value */
   initialFields?: string[];
-  /** 确认回调 */
+  /** Confirm callback */
   confirm: (value: string[]) => void;
-  /** 按钮文本 */
+  /** Button text */
   buttonText?: string;
-  /** 抽屉标题 */
+  /** Drawer title */
   drawerTitle?: string;
 }
 
 export interface CheckBoxDrawerProps<T = any> {
-  /** 禁止选择的字段 */
+  /** Fields that cannot be selected */
   disabledFields: Map<string, string | undefined>;
-  /** 基础的列 */
+  /** Base columns */
   columns: ModernTableColumnProps<T>[];
-  /** 显/隐 */
+  /** Show/hide */
   visible: boolean;
-  /** 关闭 */
+  /** Close */
   close: () => void;
-  /** 确认 */
+  /** Confirm */
   confirm: (value: string[]) => void;
-  /** 当前值 */
+  /** Current value */
   value: string[] | undefined;
-  /** 初始值 */
+  /** Initial value */
   initialValue?: string[];
-  /** 标题 */
+  /** Title */
   title: string;
 }

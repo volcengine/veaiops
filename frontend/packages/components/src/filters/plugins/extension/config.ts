@@ -19,14 +19,14 @@ import type {
 } from '@veaiops/types';
 import { pluginExtensionManager } from './manager';
 
-// 导出扩展管理器
+// Export extension manager
 export { pluginExtensionManager };
 
 /**
- * 预定义的插件全局配置
+ * Predefined plugin global configurations
  */
 export const PLUGIN_GLOBAL_CONFIGS: Record<string, PluginConfig> = {
-  // 输入类组件的通用配置
+  // Common configuration for input components
   Input: {
     allowClear: true,
     placeholder: '请输入...',
@@ -46,7 +46,7 @@ export const PLUGIN_GLOBAL_CONFIGS: Record<string, PluginConfig> = {
     size: 'default',
   },
 
-  // 选择类组件的通用配置
+  // Common configuration for select components
   Select: {
     allowClear: true,
     placeholder: '请选择',
@@ -68,7 +68,7 @@ export const PLUGIN_GLOBAL_CONFIGS: Record<string, PluginConfig> = {
     treeDefaultExpandAll: false,
   },
 
-  // 日期组件的通用配置
+  // Common configuration for date components
   DatePicker: {
     allowClear: true,
     placeholder: '请选择日期...',
@@ -81,7 +81,7 @@ export const PLUGIN_GLOBAL_CONFIGS: Record<string, PluginConfig> = {
     size: 'default',
   },
 
-  // 特殊组件配置
+  // Special component configuration
   XByteTreeSelector: {
     allowClear: true,
     placeholder: '请选择服务...',
@@ -90,10 +90,10 @@ export const PLUGIN_GLOBAL_CONFIGS: Record<string, PluginConfig> = {
 };
 
 /**
- * 预定义的插件钩子
+ * Predefined plugin hooks
  */
 export const PLUGIN_HOOKS: Record<string, FilterPluginHooks> = {
-  // 通用日志钩子
+  // Common log hook
   _global: {
     beforeRender: (props: any) => {
       return props;
@@ -109,10 +109,10 @@ export const PLUGIN_HOOKS: Record<string, FilterPluginHooks> = {
     },
   },
 
-  // Input 组件特定钩子
+  // Input component specific hook
   Input: {
     beforeRender: (props: FilterPluginRenderProps) => {
-      // 为 Input 组件添加额外的样式类
+      // Add additional style class for Input component
       return {
         ...props,
         hijackedProps: {
@@ -127,15 +127,15 @@ export const PLUGIN_HOOKS: Record<string, FilterPluginHooks> = {
     },
   },
 
-  // Select 组件特定钩子
+  // Select component specific hook
   Select: {
     beforeRender: (props: FilterPluginRenderProps) => {
-      // 为 Select 组件添加搜索功能的增强
+      // Add search functionality enhancement for Select component
       return {
         ...props,
         hijackedProps: {
           ...props.hijackedProps,
-          showSearch: props.hijackedProps.showSearch !== false, // 默认开启搜索
+          showSearch: props.hijackedProps.showSearch !== false, // Enable search by default
           filterOption: (input: string, option: unknown) => {
             const optionLabel = (option as { label?: string })?.label || '';
             return optionLabel.toLowerCase().includes(input.toLowerCase());
@@ -145,10 +145,10 @@ export const PLUGIN_HOOKS: Record<string, FilterPluginHooks> = {
     },
   },
 
-  // 日期组件钩子
+  // Date component hook
   DatePicker: {
     beforeRender: (props: FilterPluginRenderProps) => {
-      // 添加日期格式化，如果有showTime则使用带时间的格式
+      // Add date formatting, use time format if showTime is enabled
       const hasShowTime = props.hijackedProps?.showTime;
       const defaultFormat = hasShowTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
 
@@ -164,7 +164,7 @@ export const PLUGIN_HOOKS: Record<string, FilterPluginHooks> = {
 
   RangePicker: {
     beforeRender: (props: FilterPluginRenderProps) => {
-      // 添加日期范围格式化，如果有showTime则使用带时间的格式
+      // Add date range formatting, use time format if showTime is enabled
       const hasShowTime = props.hijackedProps?.showTime;
       const defaultFormat = hasShowTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
 
@@ -180,22 +180,22 @@ export const PLUGIN_HOOKS: Record<string, FilterPluginHooks> = {
 };
 
 /**
- * 初始化插件扩展配置
+ * Initialize plugin extension configuration
  */
 export const initializePluginExtensions = (): void => {
-  // 设置全局配置
+  // Set global configuration
   Object.entries(PLUGIN_GLOBAL_CONFIGS).forEach(([pluginType, config]) => {
     pluginExtensionManager.setGlobalConfig({ pluginType, config });
   });
 
-  // 注册钩子
+  // Register hooks
   Object.entries(PLUGIN_HOOKS).forEach(([pluginType, hooks]) => {
     pluginExtensionManager.registerHooks({ pluginType, hooks });
   });
 };
 
 /**
- * 获取插件配置的辅助函数
+ * Helper function to get plugin configuration
  */
 export const getPluginConfig = (
   pluginType: string,
@@ -205,7 +205,7 @@ export const getPluginConfig = (
 };
 
 /**
- * 添加自定义插件配置
+ * Add custom plugin configuration
  */
 export const addCustomPluginConfig = (
   pluginType: string,
@@ -221,7 +221,7 @@ export const addCustomPluginConfig = (
 };
 
 /**
- * 添加自定义插件钩子
+ * Add custom plugin hooks
  */
 export const addCustomPluginHooks = (
   pluginType: string,

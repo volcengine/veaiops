@@ -15,17 +15,17 @@
 import type { TaskQueryParams, TaskListResponse } from "./types";
 import { realApiRequest } from "./api";
 /**
- * 智能阈值任务数据源配置
+ * Intelligent threshold task data source configuration
  */
 export const taskDataSource = {
-  // 请求函数 - 类型明确的泛型函数
+  // Request function - type-explicit generic function
   request: realApiRequest as (query: TaskQueryParams) => Promise<TaskListResponse>,
 
-  // 是否准备就绪
+  // Whether ready
   ready: true,
 
   formatPayload: (payload: Record<string, unknown>) => {
-    // 适配新的 API 结构，将分页参数转换为 skip/limit
+    // Adapt to new API structure, convert pagination parameters to skip/limit
     return {
       projects: payload.projects,
       task_name: payload.task_name,
@@ -39,6 +39,6 @@ export const taskDataSource = {
     };
   },
 
-  // 是否为服务端分页
+  // Whether server-side pagination
   isServerPagination: true,
 };

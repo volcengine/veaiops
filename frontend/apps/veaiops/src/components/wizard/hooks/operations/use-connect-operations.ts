@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 连接管理操作Hook
- * @description 管理数据源连接的获取和管理
+ * Connection management operations Hook
+ * @description Manages data source connection fetching and management
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -33,13 +33,13 @@ export const useConnectOperations = (
   setState: React.Dispatch<React.SetStateAction<WizardState>>,
   updateLoading: (key: keyof WizardState['loading'], value: boolean) => void,
 ) => {
-  // 获取连接列表
+  // Fetch connection list
   const fetchConnects = useCallback(
     async (dataSourceType?: DataSourceType) => {
       updateLoading('connects', true);
 
       try {
-        // 调用API获取连接列表
+        // Call API to fetch connection list
         const response =
           await apiClient.dataSourceConnect.getApisV1DatasourceConnect({
             limit: 100,
@@ -48,10 +48,10 @@ export const useConnectOperations = (
         if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
           let connects = response.data || [];
 
-          // 如果指定了数据源类型，进行过滤
+          // If data source type specified, filter
           if (dataSourceType) {
             connects = connects.filter((connect) => {
-              // API类型和本地类型的映射转换
+              // API type and local type mapping conversion
               const apiTypeToLocal: Record<string, DataSourceType> = {
                 Zabbix: DataSourceType.ZABBIX,
                 Aliyun: DataSourceType.ALIYUN,

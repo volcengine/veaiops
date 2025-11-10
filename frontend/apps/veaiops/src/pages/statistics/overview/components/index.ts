@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 统计概览页面组件导出
+ * Statistics overview page component exports
  */
 
 export { default as PageHeader } from './page-header';

@@ -15,8 +15,8 @@
 import { getUserList } from './crud';
 
 /**
- * 创建用户表格请求包装器
- * 用于CustomTable的dataSource配置
+ * Create user table request wrapper
+ * Used for CustomTable dataSource configuration
  */
 export const createUserTableRequestWrapper = () => {
   return {

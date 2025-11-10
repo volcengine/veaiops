@@ -15,51 +15,51 @@
 import type React from 'react';
 
 /**
- * 路由配置类型定义
+ * Route configuration type definition
  */
 export interface RouteConfig {
-  /** 路由路径 */
+  /** Route path */
   path: string;
-  /** React组件元素 */
+  /** React component element */
   element: React.ReactElement;
-  /** 页面标题 */
+  /** Page title */
   title?: string;
-  /** 图标名称 */
+  /** Icon name */
   icon?: string;
-  /** 是否需要认证 */
+  /** Whether authentication is required */
   requireAuth?: boolean;
-  /** 子路由配置 */
+  /** Child route configuration */
   children?: RouteConfig[];
 }
 
 /**
- * 页面配置类型
+ * Page configuration type
  */
 export interface PageConfig {
-  /** 公共页面 */
+  /** Common pages */
   common: Record<string, React.LazyExoticComponent<React.ComponentType>>;
-  /** 时序异常模块页面 */
+  /** Time series anomaly module pages */
   timeseries: Record<string, React.LazyExoticComponent<React.ComponentType>>;
-  /** 智能阈值模块页面 */
+  /** Intelligent threshold module pages */
   threshold: Record<string, React.LazyExoticComponent<React.ComponentType>>;
-  /** Oncall异动模块页面 */
+  /** Oncall anomaly module pages */
   oncall: Record<string, React.LazyExoticComponent<React.ComponentType>>;
-  /** 事件中心模块页面 */
+  /** Event center module pages */
   eventCenter: Record<string, React.LazyExoticComponent<React.ComponentType>>;
-  /** 系统配置模块页面 */
+  /** System configuration module pages */
   system: Record<string, React.LazyExoticComponent<React.ComponentType>>;
 }
 
 /**
- * 路由工具函数类型
+ * Route utility function types
  */
 export interface RouteUtils {
-  /** 根据路径获取路由配置 */
+  /** Get route configuration by path */
   getRouteByPath: (path: string) => RouteConfig | undefined;
-  /** 获取需要认证的路由 */
+  /** Get routes that require authentication */
   getAuthRequiredRoutes: () => RouteConfig[];
-  /** 获取不需要认证的路由 */
+  /** Get public routes (no authentication required) */
   getPublicRoutes: () => RouteConfig[];
-  /** 检查路径是否需要认证 */
+  /** Check if path requires authentication */
   requiresAuth: (path: string) => boolean;
 }

@@ -21,38 +21,38 @@ import { ProjectModal } from './project-modal';
 import { ProjectTable } from './project-table';
 
 /**
- * 项目管理页面
- * 提供项目的增删改查功能 - 使用 CustomTable 和标准化架构
+ * Project management page
+ * Provides CRUD functionality for projects - uses CustomTable and standardized architecture
  *
- * 架构特点：
- * - 使用自定义Hook封装业务逻辑
- * - 组件职责单一，易于维护
- * - 状态管理与UI渲染分离
- * - 支持配置化和扩展
- * - 使用CustomTable提供高级表格功能
- * - 集成真实API服务
- * - 🎯 使用 useBusinessTable 和 operationWrapper 实现自动刷新，无需手动管理 ref
+ * Architecture features:
+ * - Uses custom Hooks to encapsulate business logic
+ * - Single responsibility components, easy to maintain
+ * - Separation of state management and UI rendering
+ * - Supports configuration and extension
+ * - Uses CustomTable to provide advanced table functionality
+ * - Integrates real API services
+ * - 🎯 Uses useBusinessTable and operationWrapper to achieve auto refresh, no need to manually manage ref
  */
 export const ProjectManagement: React.FC = () => {
-  // 🎯 创建表格 ref，用于手动刷新表格
+  // 🎯 Create table ref for manual refresh
   const tableRef = useRef<{ refresh: () => Promise<void> }>(null);
 
-  // 🎯 使用自定义Hook获取所有业务逻辑，传递表格刷新方法
+  // 🎯 Use custom Hook to get all business logic, pass table refresh method
   const {
-    // 模态框状态
+    // Modal state
     modalVisible,
     editingProject,
     form,
 
-    // 导入抽屉状态
+    // Import drawer state
     importDrawerVisible,
     uploading,
 
-    // 新建抽屉状态
+    // Create drawer state
     createDrawerVisible,
     creating,
 
-    // 事件处理器
+    // Event handlers
     handleCancel,
     handleSubmit,
     handleDelete,
@@ -66,7 +66,7 @@ export const ProjectManagement: React.FC = () => {
 
   return (
     <>
-      {/* 项目表格组件 - 使用CustomTable，自动刷新 */}
+      {/* Project table component - uses CustomTable, auto refresh */}
       <ProjectTable
         ref={tableRef}
         onDelete={handleDelete}
@@ -74,7 +74,7 @@ export const ProjectManagement: React.FC = () => {
         onCreate={handleOpenCreateDrawer}
       />
 
-      {/* 项目弹窗组件 */}
+      {/* Project modal component */}
       <ProjectModal
         visible={modalVisible}
         editingProject={editingProject}
@@ -83,7 +83,7 @@ export const ProjectManagement: React.FC = () => {
         form={form}
       />
 
-      {/* 项目导入抽屉 */}
+      {/* Project import drawer */}
       <ProjectImportDrawer
         visible={importDrawerVisible}
         onClose={handleCloseImportDrawer}
@@ -91,7 +91,7 @@ export const ProjectManagement: React.FC = () => {
         loading={uploading}
       />
 
-      {/* 新建项目抽屉 */}
+      {/* Create project drawer */}
       <ProjectCreateDrawer
         visible={createDrawerVisible}
         onClose={handleCloseCreateDrawer}

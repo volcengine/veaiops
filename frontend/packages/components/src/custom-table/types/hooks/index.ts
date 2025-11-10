@@ -13,31 +13,31 @@
 // limitations under the License.
 
 /**
- * Hooks 相关类型定义统一导出
+ * Hooks related type definitions unified export
  */
 
-// ==================== 列配置类型 ====================
-// 注意：TableColumnsConfig 需要重命名为 HookTableColumnsConfig 以避免与 plugins 冲突
+// ==================== Column Configuration Types ====================
+// Note: TableColumnsConfig needs to be renamed to HookTableColumnsConfig to avoid conflicts with plugins
 export type {
   UseColumnsProps,
   UseColumnsResult,
   TableColumnsConfig as HookTableColumnsConfig,
 } from './column-config';
 
-// ==================== 表格操作类型 ====================
+// ==================== Table Action Types ====================
 export * from './table-actions';
 
-// ==================== 表格状态类型 ====================
+// ==================== Table State Types ====================
 export * from './table-state';
 
-// ==================== 表格实例类型 ====================
+// ==================== Table Instance Types ====================
 export * from './table-instance';
 
-// ==================== 表格配置类型 ====================
+// ==================== Table Configuration Types ====================
 export * from './table-config';
 
-// ==================== 表格数据获取类型 ====================
-// 注意：DataSourceConfig 需要重命名为 HookDataSourceConfig 以避免与 components 冲突
+// ==================== Table Data Fetch Types ====================
+// Note: DataSourceConfig needs to be renamed to HookDataSourceConfig to avoid conflicts with components
 export type {
   TableFetchActions,
   DataSourceConfig as HookDataSourceConfig,
@@ -46,18 +46,18 @@ export type {
   UseTableFetchReturn,
 } from './table-fetch';
 
-// ==================== 生命周期类型 ====================
+// ==================== Lifecycle Types ====================
 export * from './lifecycle';
 
-// ==================== 表格渲染器类型 ====================
-// 注意：TableRenderers 需要重命名为 HookTableRenderers 以避免与其他模块冲突
+// ==================== Table Renderer Types ====================
+// Note: TableRenderers needs to be renamed to HookTableRenderers to avoid conflicts with other modules
 export type { TableRenderers as HookTableRenderers } from './table-renderers';
 
-// ==================== 警告类型 ====================
+// ==================== Alert Types ====================
 export * from './alert';
 
-// ==================== 分页和排序类型 ====================
+// ==================== Pagination and Sorting Types ====================
 export * from './pagination-sorting';
 
-// ==================== 命令式操作上下文类型 ====================
+// ==================== Imperative Action Context Types ====================
 export * from './imperative-actions';

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 火山引擎指标列表项组件
- * @description 单个火山引擎指标项的展示和交互
+ * Volcengine metric list item component
+ * @description Display and interaction for a single Volcengine metric item
  */
 
 import { Tag, Typography } from '@arco-design/web-react';

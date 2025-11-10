@@ -14,8 +14,8 @@
 
 import type { ModernTableColumnProps } from '@/shared/types';
 /**
- * CustomTable 核心通用类型定义
- * 基于 Arco Design Table 的类型系统
+ * CustomTable core common type definitions
+ * Based on Arco Design Table type system
  */
 import type {
   RowSelectionProps as ArcoRowSelectionProps,
@@ -37,26 +37,26 @@ import type {
 
 // Import base types from @veaiops/types to avoid duplication
 
-// 重新导出 ModernTableColumnProps 供其他模块使用
+// Re-export ModernTableColumnProps for use by other modules
 export type { ModernTableColumnProps } from '@/shared/types';
 export type { BaseRecord, BaseQuery };
 
 /**
- * 标准查询接口（可选使用）
- * @description 提供标准的查询字段定义，用于通用组件
+ * Standard query interface (optional use)
+ * @description Provides standard query field definitions for common components
  */
 export interface StandardQuery {
-  // 前端分页参数（兼容 Arco Table）
+  // Frontend pagination parameters (compatible with Arco Table)
   pageSize?: number;
   current?: number;
 
-  // bam-service 分页参数 - 使用 skip/limit 格式
+  // bam-service pagination parameters - use skip/limit format
   page_req?: {
     skip: number;
     limit: number;
   };
 
-  // 通用过滤和排序参数
+  // Common filter and sort parameters
   filters?: Record<string, FilterValue>;
   sortColumns?: Array<{
     column: string;
@@ -65,13 +65,13 @@ export interface StandardQuery {
 }
 
 /**
- * 过滤器值类型
+ * Filter value type
  */
 export type FilterValue = string | number | boolean | null | undefined;
 
 /**
- * 查询参数值类型
- * @description 支持所有可能的查询参数值类型
+ * Query parameter value type
+ * @description Supports all possible query parameter value types
  */
 export type QueryValue =
   | string
@@ -83,39 +83,39 @@ export type QueryValue =
   | Record<string, unknown>;
 
 /**
- * React Key 类型
+ * React Key type
  */
 export type Key = string | number;
 
 /**
- * 查询格式化函数类型
- * @description 查询参数格式化函数的参数接口
+ * Query format function type
+ * @description Query parameter format function parameter interface
  */
 export interface QueryFormatParams {
   /**
-   * 前一个值（用于累积处理）
+   * Previous value (for cumulative processing)
    */
   pre: unknown;
   /**
-   * 当前值
+   * Current value
    */
   value: unknown;
 }
 
-// 泛型的查询格式化函数类型，支持自定义参数类型
+// Generic query format function type, supports custom parameter types
 export type QueryFormatFunction = (params: {
   pre: unknown;
   value: unknown;
 }) => unknown;
 
-// 基础查询格式化函数类型（向后兼容）
+// Base query format function type (backward compatible)
 export type BaseQueryFormatFunction = QueryFormatFunction;
 
-// 灵活的查询格式化对象类型，支持不同参数类型的格式化函数
+// Flexible query format object type, supports format functions with different parameter types
 export type QueryFormat = Record<string, QueryFormatFunction>;
 
 /**
- * 分页请求参数
+ * Pagination request parameters
  */
 export interface PageReq {
   skip: number;
@@ -123,7 +123,7 @@ export interface PageReq {
 }
 
 /**
- * 处理过滤器属性参数
+ * Handle filter property parameters
  */
 export interface HandleChangeSingleParams {
   key: string;
@@ -144,15 +144,15 @@ export interface HandleFilterProps<QueryType = BaseQuery> {
 }
 
 /**
- * 服务请求类型约束
- * @description 服务实例的类型约束，支持泛型配置和方法调用
- * 说明：保持对象约束以适配更精准的服务类型（如 LocationService<Config>）
- * 要求仅为"对象"，具体方法签名由 serviceMethod: keyof ServiceType 保证
+ * Service request type constraint
+ * @description Type constraint for service instances, supports generic configuration and method calls
+ * Note: Maintain object constraint to adapt to more precise service types (e.g., LocationService<Config>)
+ * Requirement is only "object", specific method signature is guaranteed by serviceMethod: keyof ServiceType
  */
 export type ServiceRequestType = object;
 
 /**
- * 处理成功响应类型
+ * Handle success response type
  */
 export interface OnSuccessResponse<
   RecordType = BaseRecord,
@@ -165,7 +165,7 @@ export interface OnSuccessResponse<
 }
 
 /**
- * 处理过程类型
+ * Process type
  */
 export interface OnProcessType {
   run: () => void;
@@ -174,12 +174,12 @@ export interface OnProcessType {
 }
 
 /**
- * 过滤器属性类型
+ * Filter property type
  */
 export type FiltersProps = Record<string, (string | number)[]>;
 
 /**
- * 格式化表格数据配置
+ * Format table data configuration
  */
 export interface FormTableDataProps<RecordType = BaseRecord> {
   sourceData: RecordType[];
@@ -189,7 +189,7 @@ export interface FormTableDataProps<RecordType = BaseRecord> {
 }
 
 /**
- * 扩展的表格属性
+ * Extended table properties
  */
 export interface ExtendedTableProps<RecordType = BaseRecord>
   extends Omit<ArcoTableProps<RecordType>, 'columns'> {
@@ -197,7 +197,7 @@ export interface ExtendedTableProps<RecordType = BaseRecord>
 }
 
 /**
- * 扩展的排序信息
+ * Extended sorter information
  */
 export interface ExtendedSorterInfo extends ArcoSorterInfo {
   sorterFn?: SorterFn;
@@ -205,7 +205,7 @@ export interface ExtendedSorterInfo extends ArcoSorterInfo {
 }
 
 /**
- * 扩展的行选择属性
+ * Extended row selection properties
  */
 export interface ExtendedRowSelectionProps<RecordType = BaseRecord>
   extends ArcoRowSelectionProps<RecordType> {
@@ -214,12 +214,12 @@ export interface ExtendedRowSelectionProps<RecordType = BaseRecord>
 }
 
 /**
- * 表格尺寸类型
+ * Table size type
  */
 export type TableSize = 'default' | 'middle' | 'small' | 'mini';
 
 /**
- * 表格边框配置
+ * Table border configuration
  */
 export type TableBorder =
   | boolean
@@ -231,7 +231,7 @@ export type TableBorder =
     };
 
 /**
- * 滚动配置
+ * Scroll configuration
  */
 export interface ScrollConfig {
   x?: number | string | boolean;
@@ -239,12 +239,12 @@ export interface ScrollConfig {
 }
 
 /**
- * 排序方向（基于枚举）
+ * Sort direction (based on enum)
  */
 export type SortDirection = SortDirectionEnum;
 
 /**
- * 表格位置
+ * Table position
  */
 export type TablePosition =
   | 'br'
@@ -255,48 +255,48 @@ export type TablePosition =
   | 'bottomCenter';
 
 /**
- * 表格操作类型（基于枚举）
+ * Table action type (based on enum)
  */
 export type TableActionType = TableActionEnum;
 
 /**
- * 列固定位置类型（基于枚举）
+ * Column fixed position type (based on enum)
  */
 export type ColumnFixed = ColumnFixedEnum;
 
 /**
- * 提示类型（基于枚举）
+ * Alert type (based on enum)
  */
 export type AlertType = AlertTypeEnum;
 
 /**
- * 插件优先级类型（基于枚举）
+ * Plugin priority type (based on enum)
  */
-// PluginPriority 已从 enums.ts 导出，此处移除避免重复
+// PluginPriority has been exported from enums.ts, removed here to avoid duplication
 
 /**
- * 插件状态类型（基于枚举）
+ * Plugin status type (based on enum)
  */
-// PluginStatus 已从 enums.ts 导出，此处移除避免重复
+// PluginStatus has been exported from enums.ts, removed here to avoid duplication
 
 /**
- * 生命周期阶段类型（基于枚举）
+ * Lifecycle phase type (based on enum)
  */
-// LifecyclePhase 已从 enums.ts 导出，此处移除避免重复
+// LifecyclePhase has been exported from enums.ts, removed here to avoid duplication
 
 /**
- * 表格特性类型（基于枚举）
+ * Table feature type (based on enum)
  */
 export type TableFeature = TableFeatureEnum;
 
 /**
- * 表格特性配置（基于现有源码的实际属性名）
+ * Table feature configuration (based on actual property names in existing source code)
  */
 export interface FeatureConfig {
   enablePagination: boolean;
   enableSorting: boolean;
-  enableFilter: boolean; // 注意：现有源码中使用的是 enableFilter 而不是 enableFiltering
-  enableSelection: boolean; // 注意：现有源码中使用的是 enableSelection 而不是 enableRowSelection
+  enableFilter: boolean; // Note: Existing source code uses enableFilter instead of enableFiltering
+  enableSelection: boolean; // Note: Existing source code uses enableSelection instead of enableRowSelection
   enableColumnResize: boolean;
   enableFullScreen: boolean;
 }

@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 列配置管理 Hook 相关类型定义
+ * Column configuration management Hook related type definitions
  */
-// 使用相对路径避免跨层级导入（遵循 .cursorrules 规范）
+// Use relative paths to avoid cross-level imports (following .cursorrules standards)
 import type { ColumnItem } from '../plugins/table-columns';
 
 /**
@@ -28,7 +28,7 @@ export interface UseColumnsProps<RecordType = Record<string, unknown>> {
 }
 
 /**
- * useColumnConfig Hook 返回值
+ * useColumnConfig Hook return value
  */
 export interface UseColumnsResult<RecordType = Record<string, unknown>> {
   columns: ColumnItem<RecordType>[];
@@ -57,15 +57,15 @@ export interface UseColumnsResult<RecordType = Record<string, unknown>> {
 }
 
 /**
- * 表格列配置
+ * Table column configuration
  */
 export interface TableColumnsConfig {
-  /** 是否启用列可见性控制 */
+  /** Whether to enable column visibility control */
   enableColumnVisibility?: boolean;
-  /** 是否启用列宽度拖拽 */
+  /** Whether to enable column width drag */
   enableColumnResize?: boolean;
-  /** 是否启用列固定 */
+  /** Whether to enable column fixed */
   enableColumnFixed?: boolean;
-  /** 是否启用列排序 */
+  /** Whether to enable column ordering */
   enableColumnOrder?: boolean;
 }

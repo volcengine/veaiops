@@ -22,14 +22,14 @@ const { CustomOutlineTag, Ellipsis: EllipsisRender } = CellRender;
 const { Text } = Typography;
 
 /**
- * 基本信息卡片组件参数
+ * Basic info card component parameters
  */
 interface BasicInfoCardProps {
   project: Project;
 }
 
 /**
- * 项目基本信息卡片组件
+ * Project basic info card component
  */
 export const BasicInfoCard: React.FC<BasicInfoCardProps> = ({ project }) => {
   return (
@@ -53,7 +53,7 @@ export const BasicInfoCard: React.FC<BasicInfoCardProps> = ({ project }) => {
                 lineHeight: '22px',
               }}
             >
-              基本信息
+              Basic Information
             </Text>
             <Text
               type="secondary"
@@ -63,7 +63,7 @@ export const BasicInfoCard: React.FC<BasicInfoCardProps> = ({ project }) => {
                 lineHeight: '16px',
               }}
             >
-              项目的基础属性和标识信息
+              Project basic attributes and identification information
             </Text>
           </div>
         </div>
@@ -80,18 +80,18 @@ export const BasicInfoCard: React.FC<BasicInfoCardProps> = ({ project }) => {
         column={2}
         data={[
           {
-            label: '项目ID',
+            label: 'Project ID',
             value: <EllipsisRender text={project.project_id} />,
           },
           {
-            label: '项目名称',
+            label: 'Project Name',
             value: <EllipsisRender text={project.name} />,
           },
           {
-            label: '状态',
+            label: 'Status',
             value: (
               <CustomOutlineTag>
-                {project.is_active ? '活跃' : '停用'}
+                {project.is_active ? 'Active' : 'Inactive'}
               </CustomOutlineTag>
             ),
           },

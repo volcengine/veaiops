@@ -22,8 +22,8 @@ import { useMemo } from 'react';
 import { createMetricTemplateTableRequestWrapper } from '../lib/metric-template-request';
 
 /**
- * 指标模板表格配置 Hook
- * 提供表格数据源和属性配置
+ * Metric template table configuration Hook
+ * Provides table data source and property configuration
  */
 export const useMetricTemplateTableConfig = ({
   handleEdit: _handleEdit,
@@ -37,13 +37,13 @@ export const useMetricTemplateTableConfig = ({
 } => {
   const request = useMemo(() => createMetricTemplateTableRequestWrapper(), []);
 
-  // 🎯 使用工具函数创建数据源
+  // 🎯 Use utility function to create data source
   const dataSource = useMemo(
     () => createServerPaginationDataSource({ request }),
     [request],
   );
 
-  // 🎯 使用工具函数创建表格属性
+  // 🎯 Use utility function to create table properties
   const tableProps = useMemo(
     () =>
       createStandardTableProps({

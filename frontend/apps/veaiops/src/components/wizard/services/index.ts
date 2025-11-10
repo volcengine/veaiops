@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源向导服务层统一导出
- * @description 统一导出所有服务层模块
+ * Data source wizard service layer unified export
+ * @description Unified export of all service layer modules
  * @author AI Assistant
  * @date 2025-01-16
  */

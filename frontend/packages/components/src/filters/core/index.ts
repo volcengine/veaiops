@@ -13,20 +13,20 @@
 // limitations under the License.
 
 /**
- * 筛选器核心模块导出
+ * Filter core module exports
  */
 
-// 导出核心类型
+// Export core types
 export * from './types';
 
-// 导出常量配置
+// Export constant configurations
 export * from './constants';
 
-// 导出工具函数
+// Export utility functions
 export * from './utils';
 
-// 导出渲染工具
+// Export rendering utilities
 export * from './renderer';
 
-// 导出自定义钩子
+// Export custom hooks
 export * from './hooks';

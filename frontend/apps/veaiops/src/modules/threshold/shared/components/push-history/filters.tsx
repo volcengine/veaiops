@@ -26,12 +26,12 @@ import { ModuleType } from '@veaiops/types';
 import type { EventShowStatus } from 'api-generate';
 
 /**
- * 获取历史事件过滤器配置
+ * Get historical event filter configuration
  *
- * 🔧 修复说明（与 origin/feat/web-v2 对齐）：
- * - 字段名使用 snake_case（agent_type, event_level, show_status），与后端 API 参数一致
- * - 添加 show_status 筛选器，支持筛选事件状态
- * - 确保 onChange 中空数组时传递 undefined，正确移除字段
+ * 🔧 Fix notes (aligned with origin/feat/web-v2):
+ * - Field names use snake_case (agent_type, event_level, show_status), consistent with backend API parameters
+ * - Add show_status filter, supports filtering event status
+ * - Ensure onChange passes undefined when array is empty, correctly removes field
  */
 export const getPushHistoryFilters = ({
   query,
@@ -44,14 +44,14 @@ export const getPushHistoryFilters = ({
 }): FieldItem[] => {
   const { moduleType } = handleFiltersProps as { moduleType?: ModuleType };
 
-  // 根据模块类型决定Agent选项和是否必填
+  // Determine Agent options and whether required based on module type
   const agentOptions =
     moduleType === ModuleType.ONCALL
       ? AGENT_OPTIONS_ONCALL_HISTORY
       : AGENT_OPTIONS_THRESHOLD_FILTER;
 
-  // 智能阈值模块：必填，默认选中智能阈值Agent
-  // Oncall模块：支持多选，必须至少选一个，默认全选（3个都选中）
+  // Intelligent threshold module: Required, default select intelligent threshold Agent
+  // Oncall module: Supports multiple selection, must select at least one, default select all (all 3 selected)
   const defaultAgentValue =
     moduleType === ModuleType.ONCALL
       ? AGENT_OPTIONS_ONCALL_HISTORY.map((opt) => opt.value)
@@ -60,7 +60,7 @@ export const getPushHistoryFilters = ({
   return [
     {
       field: 'agent_type',
-      label: '智能体', // ✅ 简洁写法：label 自动转换为 addBefore
+      label: '智能体', // ✅ Concise syntax: label automatically converted to addBefore
       type: 'Select',
       componentProps: {
         placeholder: '请选择智能体',
@@ -75,15 +75,15 @@ export const getPushHistoryFilters = ({
             Message.warning('智能体不能为空');
             return;
           }
-          // 🔧 修复：使用 agent_type (snake_case) 而不是 agentType (camelCase)
-          // 确保与 queryFormat 中定义的字段名一致，与后端 API 参数一致
+          // 🔧 Fix: Use agent_type (snake_case) instead of agentType (camelCase)
+          // Ensure consistent with field name defined in queryFormat, consistent with backend API parameters
           handleChange({ key: 'agent_type', value: v });
         },
       },
     },
     {
       field: 'event_level',
-      label: '事件级别', // ✅ 简洁写法：label 自动转换为 addBefore
+      label: '事件级别', // ✅ Concise syntax: label automatically converted to addBefore
       type: 'Select',
       componentProps: {
         placeholder: '请选择事件级别',
@@ -93,9 +93,9 @@ export const getPushHistoryFilters = ({
         options: EVENT_LEVEL_OPTIONS,
         maxTagCount: 3,
         onChange: (v: string[]) => {
-          // 🔧 修复：使用 event_level (snake_case) 而不是 eventLevel (camelCase)
-          // 确保与 queryFormat 中定义的字段名一致，与后端 API 参数一致
-          // 确保空数组时传递 undefined，而不是空数组，这样可以确保 handleChange 正确移除该字段
+          // 🔧 Fix: Use event_level (snake_case) instead of eventLevel (camelCase)
+          // Ensure consistent with field name defined in queryFormat, consistent with backend API parameters
+          // Ensure pass undefined when array is empty, not empty array, so handleChange correctly removes the field
           handleChange({
             key: 'event_level',
             value: v && v.length > 0 ? v : undefined,
@@ -105,7 +105,7 @@ export const getPushHistoryFilters = ({
     },
     {
       field: 'show_status',
-      label: '状态', // ✅ 简洁写法：label 自动转换为 addBefore
+      label: '状态', // ✅ Concise syntax: label automatically converted to addBefore
       type: 'Select',
       componentProps: {
         placeholder: '请选择状态',
@@ -115,8 +115,8 @@ export const getPushHistoryFilters = ({
         options: EVENT_SHOW_STATUS_OPTIONS,
         maxTagCount: 1,
         onChange: (v: EventShowStatus[]) => {
-          // 🔧 修复：确保空数组时传递 undefined，而不是空数组
-          // 这样可以确保 handleChange 正确移除该字段
+          // 🔧 Fix: Ensure pass undefined when array is empty, not empty array
+          // So handleChange correctly removes the field
           handleChange({
             key: 'show_status',
             value: v && v.length > 0 ? v : undefined,

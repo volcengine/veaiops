@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 实例列表空数据提示组件
- * 用于在搜索框筛选后没有数据时显示空状态提示
+ * Empty instance list component
+ * Used to display empty state when no data after search filter
  */
 
 import { Empty, Typography } from '@arco-design/web-react';
@@ -24,26 +24,26 @@ import type React from 'react';
 const { Text } = Typography;
 
 interface EmptyInstanceListProps {
-  /** 搜索关键词 */
+  /** Search keyword */
   searchKeyword?: string;
-  /** 总实例数 */
+  /** Total instance count */
   totalCount?: number;
-  /** 自定义提示文本 */
+  /** Custom message */
   customMessage?: string;
 }
 
 /**
- * 实例列表空数据提示组件
+ * Empty instance list component
  */
 export const EmptyInstanceList: React.FC<EmptyInstanceListProps> = ({
   searchKeyword,
   totalCount = 0,
   customMessage,
 }) => {
-  // 如果有搜索关键词，说明是搜索筛选后的空状态
+  // If there is a search keyword, it means empty state after search filter
   const isSearchEmpty = Boolean(searchKeyword) && searchKeyword.trim() !== '';
 
-  // 如果有总实例数但筛选后为空，说明是搜索无结果
+  // If there is total instance count but empty after filter, it means no search results
   const hasNoSearchResults = isSearchEmpty && totalCount > 0;
 
   const getEmptyMessage = () => {

@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Oncall管理模块导出
+// Oncall management module exports
 
-// 功能模块导出
+// Feature module exports
 export * from './features';
 
-// API导出
+// API exports
 export * from './api';
 
-// 共享资源导出
+// Shared resources exports
 export * from './shared';

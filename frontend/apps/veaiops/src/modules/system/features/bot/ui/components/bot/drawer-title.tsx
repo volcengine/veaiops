@@ -18,13 +18,13 @@ import { CellRender } from '@veaiops/components';
 import type { Bot } from 'api-generate';
 import type React from 'react';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 const { Title, Text } = Typography;
 
 /**
- * Bot抽屉标题组件属性接口
+ * Bot drawer title component props interface
  */
 interface BotDrawerTitleProps {
   bot: Bot;
@@ -32,13 +32,13 @@ interface BotDrawerTitleProps {
 }
 
 /**
- * Bot抽屉标题组件
- * 展示Bot的基本信息，包括App ID和名称
+ * Bot drawer title component
+ * Displays Bot's basic information, including App ID and name
  *
- * 对应 origin/feat/web-v2 分支的实现，确保功能一致性
+ * Corresponds to origin/feat/web-v2 branch implementation, ensuring functional consistency
  *
- * @param bot - Bot对象，包含bot_id和name信息
- * @param title - 抽屉标题文本
+ * @param bot - Bot object containing bot_id and name information
+ * @param title - Drawer title text
  */
 export const BotDrawerTitle: React.FC<BotDrawerTitleProps> = ({
   bot,
@@ -46,7 +46,7 @@ export const BotDrawerTitle: React.FC<BotDrawerTitleProps> = ({
 }) => {
   return (
     <div className="py-1 flex items-center justify-center gap-5">
-      {/* 主标题区域 */}
+      {/* Main title area */}
       <div className="flex items-center gap-1">
         <IconRobot className="text-lg text-[#165DFF]" />
         <Title heading={5} className="text-[#1D2129]" style={{ margin: 0 }}>
@@ -54,7 +54,7 @@ export const BotDrawerTitle: React.FC<BotDrawerTitleProps> = ({
         </Title>
       </div>
 
-      {/* Bot信息区域 - inline 布局 */}
+      {/* Bot information area - inline layout */}
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-2">
           <IconIdcard className="text-sm text-[#86909C]" />

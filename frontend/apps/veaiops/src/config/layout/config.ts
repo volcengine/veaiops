@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 布局配置
+ * Layout configuration
  */
 export const layoutConfig = {
-  // 侧边栏配置
+  // Sidebar configuration
   sidebar: {
     collapsedWidth: 'w-16', // 64px
     expandedWidth: 'w-60', // 240px
@@ -28,7 +28,7 @@ export const layoutConfig = {
       'shadow-[0_2px_8px_0_rgba(0,0,0,0.1),0_0_0_1px_rgba(255,255,255,0.05)]',
   },
 
-  // 头部配置
+  // Header configuration
   header: {
     backgroundColor: 'bg-surface',
     borderColor: 'border-b border-border',
@@ -36,13 +36,13 @@ export const layoutConfig = {
     padding: 'px-6 py-4',
   },
 
-  // 主内容配置
+  // Main content configuration
   main: {
     backgroundColor: 'bg-background',
     padding: 'p-6',
   },
 
-  // Logo配置
+  // Logo configuration
   logo: {
     gradient: 'bg-gradient-to-br from-primary to-secondary',
     sidebar: {
@@ -55,7 +55,7 @@ export const layoutConfig = {
     },
   },
 
-  // 图标尺寸配置
+  // Icon size configuration
   icons: {
     sidebarMenu: 'w-5 h-5',
     sidebarToggle: 'w-5 h-5',
@@ -65,14 +65,14 @@ export const layoutConfig = {
     card: 'w-5 h-5',
   },
 
-  // 导航配置
+  // Navigation configuration
   navigation: {
     activeClass: 'text-primary font-medium border-b-2 border-primary pb-1',
     inactiveClass:
       'text-textSecondary hover:text-text transition-colors border-b-2 border-transparent hover:border-primary pb-1',
   },
 
-  // 搜索配置
+  // Search configuration
   search: {
     width: 'w-80',
     background: 'bg-surfaceLight',
@@ -80,14 +80,14 @@ export const layoutConfig = {
     placeholder: 'placeholder-textSecondary',
   },
 
-  // 通知配置
+  // Notification configuration
   notification: {
     background: 'bg-surfaceLight',
     border: 'border border-border',
     badge: 'bg-error text-white text-xs',
   },
 
-  // 用户配置
+  // User configuration
   user: {
     avatar: 'bg-primary rounded-full',
     size: 'w-8 h-8',
@@ -95,10 +95,10 @@ export const layoutConfig = {
 } as const;
 
 /**
- * 模块配置
+ * Module configuration
  */
 export const moduleConfig = {
-  // 模块默认路径映射
+  // Module default path mapping
   defaultPaths: {
     statistics: '/statistics/overview',
     timeseries: '/timeseries/config',
@@ -108,7 +108,7 @@ export const moduleConfig = {
     system: '/system/datasource',
   },
 
-  // 导航项配置
+  // Navigation items configuration
   navItems: [
     { key: 'statistics', label: '用量统计' },
     { key: 'timeseries', label: '时序异常' },

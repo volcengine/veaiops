@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据预填充工具函数
- * @description 在编辑模式下，从现有数据源中提取配置并预填充到向导状态
+ * Data prefill utility functions
+ * @description Extract configuration from existing data source and prefill to wizard state in edit mode
  */
 
 import type {
@@ -29,7 +29,7 @@ import {
 } from '../../types';
 
 /**
- * 预填充 Zabbix 数据源配置
+ * Prefill Zabbix data source configuration
  */
 export const prefillZabbixData = async (
   config: ZabbixDataSourceConfig,
@@ -37,7 +37,7 @@ export const prefillZabbixData = async (
   state: WizardState,
 ) => {
   try {
-    // 预填充连接
+    // Prefill connection
     if (config.connect_name && state.connects.length > 0) {
       const connect = state.connects.find(
         (c) => c.name === config.connect_name,
@@ -49,7 +49,7 @@ export const prefillZabbixData = async (
     }
     // No connect_name or no connects available, skip
 
-    // 预填充监控项名称（作为选中的 metric）
+    // Prefill metric name (as selected metric)
     if (config.metric_name) {
       actions.setSelectedMetric({
         metric_name: config.metric_name,
@@ -59,12 +59,12 @@ export const prefillZabbixData = async (
       });
     }
 
-    // 预填充主机列表（从 targets 中提取，同时保留 itemid）
+    // Prefill host list (extract from targets, preserve itemid)
     if (config.targets && config.targets.length > 0) {
       const hosts = config.targets.map((target, index) => ({
-        name: target.hostname || `主机 ${index + 1}`,
+        name: target.hostname || `Host ${index + 1}`,
         host: target.hostname || '',
-        // 保留 itemid，以便编辑时能够正确重建 targets
+        // Preserve itemid so targets can be correctly rebuilt during editing
         itemid: target.itemid,
       }));
       actions.setSelectedHosts(hosts);
@@ -73,7 +73,7 @@ export const prefillZabbixData = async (
 };
 
 /**
- * 预填充阿里云数据源配置
+ * Prefill Aliyun data source configuration
  */
 export const prefillAliyunData = async (
   config: AliyunDataSourceConfig,
@@ -81,7 +81,7 @@ export const prefillAliyunData = async (
   state: WizardState,
 ) => {
   try {
-    // 预填充连接
+    // Prefill connection
     if (config.connect_name && state.connects.length > 0) {
       const connect = state.connects.find(
         (c) => c.name === config.connect_name,
@@ -89,7 +89,7 @@ export const prefillAliyunData = async (
       if (connect) {
         actions.setSelectedConnect(connect);
 
-        // 预填充项目（使用 namespace 作为 project）
+        // Prefill project (use namespace as project)
         if (config.namespace) {
           actions.setSelectNamespace({
             project: config.namespace,
@@ -97,7 +97,7 @@ export const prefillAliyunData = async (
           });
         }
 
-        // 预填充 region 到 state（用于 Region 输入框回显）
+        // Prefill region to state (for Region input field display)
         if (config.region) {
           actions.setAliyunRegion(config.region);
         }
@@ -106,7 +106,7 @@ export const prefillAliyunData = async (
     }
     // No connect_name or no connects available, skip
 
-    // 预填充监控项
+    // Prefill metric
     if (config.metric_name && config.namespace) {
       actions.setSelectedAliyunMetric({
         metricName: config.metric_name,
@@ -115,7 +115,7 @@ export const prefillAliyunData = async (
       });
     }
 
-    // 预填充实例（从 dimensions 中提取）
+    // Prefill instances (extract from dimensions)
     if (config.dimensions && config.dimensions.length > 0) {
       const instances = config.dimensions.map((dim, index) => ({
         instanceId: dim.InstanceId || dim.instanceId || `instance-${index}`,
@@ -124,7 +124,7 @@ export const prefillAliyunData = async (
           dim.instanceName ||
           dim.InstanceId ||
           dim.instanceId ||
-          `实例 ${index + 1}`,
+          `Instance ${index + 1}`,
         dimensions: dim,
       }));
       actions.setSelectedAliyunInstances(instances);
@@ -133,7 +133,7 @@ export const prefillAliyunData = async (
 };
 
 /**
- * 预填充火山引擎数据源配置
+ * Prefill Volcengine data source configuration
  */
 export const prefillVolcengineData = async (
   config: VolcengineDataSourceConfig,
@@ -141,12 +141,12 @@ export const prefillVolcengineData = async (
   state: WizardState,
 ) => {
   try {
-    // 边界情况：config 为空
+    // Edge case: config is empty
     if (!config) {
       return;
     }
 
-    // 预填充连接
+    // Prefill connection
     if (config.connect_name && state.connects && state.connects.length > 0) {
       const connect = state.connects.find(
         (c) => c.name === config.connect_name,
@@ -156,12 +156,12 @@ export const prefillVolcengineData = async (
       }
     }
 
-    // 预填充 region - 边界情况：空字符串不设置
+    // Prefill region - Edge case: do not set if empty string
     if (config.region?.trim()) {
       actions.setVolcengineRegion(config.region);
     }
 
-    // 预填充产品（使用 namespace 创建产品对象）
+    // Prefill product (create product object using namespace)
     if (config.namespace?.trim()) {
       actions.setSelectedProduct({
         namespace: config.namespace,
@@ -169,12 +169,12 @@ export const prefillVolcengineData = async (
       });
     }
 
-    // 预填充子命名空间 - 边界情况：空字符串不设置
+    // Prefill sub-namespace - Edge case: do not set if empty string
     if (config.sub_namespace?.trim()) {
       actions.setSelectedSubNamespace(config.sub_namespace);
     }
 
-    // 预填充监控项
+    // Prefill metric
     if (
       config.metric_name?.trim() &&
       config.namespace &&
@@ -188,7 +188,7 @@ export const prefillVolcengineData = async (
       });
     }
 
-    // 预填充实例列表
+    // Prefill instance list
     if (
       config.instances &&
       Array.isArray(config.instances) &&
@@ -197,9 +197,9 @@ export const prefillVolcengineData = async (
       const instances = config.instances
         .filter(
           (dimensionsObj) => dimensionsObj && typeof dimensionsObj === 'object',
-        ) // 过滤掉 null/undefined
+        ) // Filter out null/undefined
         .map((dimensionsObj, index) => {
-          // 从 dimensions 对象中尝试提取实例ID和名称
+          // Try to extract instance ID and name from dimensions object
           const instanceId =
             dimensionsObj.ResourceID ||
             dimensionsObj.resource_id ||
@@ -226,11 +226,11 @@ export const prefillVolcengineData = async (
           };
         });
 
-      // 边界情况：过滤后可能为空数组
+      // Edge case: may be empty array after filtering
       if (instances.length > 0) {
-        // 同时设置可用实例列表和已选实例列表
-        // 在编辑模式下，将已选实例同时作为可用实例列表显示
-        // 这样用户可以看到已选的实例，并且可以取消选择
+        // Set both available instance list and selected instance list
+        // In edit mode, show selected instances as available instance list
+        // This allows users to see selected instances and deselect them
         actions.setVolcengineInstances(instances);
         actions.setSelectedVolcengineInstances(instances);
       }
@@ -241,7 +241,7 @@ export const prefillVolcengineData = async (
 };
 
 /**
- * 预填充数据源配置（统一入口）
+ * Prefill data source configuration (unified entry point)
  */
 export const prefillDataSourceConfig = async (
   dataSource: any,
@@ -252,10 +252,10 @@ export const prefillDataSourceConfig = async (
     return;
   }
 
-  // 将类型转换为小写以匹配 DataSourceType 枚举值
+  // Convert type to lowercase to match DataSourceType enum values
   const dataSourceType = dataSource.type?.toLowerCase() as DataSourceType;
 
-  // 根据数据源类型获取对应的配置对象
+  // Get corresponding configuration object based on data source type
   let config: any = null;
   switch (dataSourceType) {
     case DataSourceType.ZABBIX:

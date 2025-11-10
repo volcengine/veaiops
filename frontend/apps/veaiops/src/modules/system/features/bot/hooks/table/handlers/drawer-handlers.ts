@@ -16,7 +16,7 @@ import type { Bot } from '@bot/lib';
 import { useCallback } from 'react';
 
 /**
- * 抽屉操作处理器参数
+ * Drawer operation handler parameters
  */
 interface DrawerHandlersParams {
   selectedBot: Bot | null;
@@ -30,7 +30,7 @@ interface DrawerHandlersParams {
 }
 
 /**
- * 抽屉操作处理器
+ * Drawer operation handlers
  */
 export const useDrawerHandlers = ({
   selectedBot,
@@ -39,7 +39,7 @@ export const useDrawerHandlers = ({
   setSelectedBotForChat,
   setChatManagementDrawerVisible,
 }: DrawerHandlersParams) => {
-  // 处理查看Bot属性
+  // Handle view bot attributes
   const handleViewAttributes = useCallback(
     (bot: Bot) => {
       setSelectedBot(bot);
@@ -48,13 +48,13 @@ export const useDrawerHandlers = ({
     [setSelectedBot, setAttributesDrawerVisible],
   );
 
-  // 关闭属性抽屉
+  // Close attributes drawer
   const handleCloseAttributesDrawer = useCallback(() => {
     setAttributesDrawerVisible(false);
     setSelectedBot(null);
   }, [setAttributesDrawerVisible, setSelectedBot]);
 
-  // 打开群管理抽屉
+  // Open chat management drawer
   const handleChatManagement = useCallback(
     (bot: Bot) => {
       setSelectedBotForChat(bot);
@@ -63,7 +63,7 @@ export const useDrawerHandlers = ({
     [setSelectedBotForChat, setChatManagementDrawerVisible],
   );
 
-  // 关闭群管理抽屉
+  // Close chat management drawer
   const handleCloseChatManagementDrawer = useCallback(() => {
     setChatManagementDrawerVisible(false);
     setSelectedBotForChat(null);

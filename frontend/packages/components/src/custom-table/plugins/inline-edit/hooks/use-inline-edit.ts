@@ -27,21 +27,21 @@ import type {
 import { devLog } from '@/custom-table/utils';
 import { Message } from '@arco-design/web-react';
 /**
- * 行内编辑 Hook
- * 基于 EPS 平台的可编辑表格功能
+ * Inline edit Hook
+ * Based on EPS platform editable table functionality
  */
 import { type Key, useCallback, useMemo, useRef, useState } from 'react';
 
 export interface UseInlineEditOptions<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 表格数据 */
+  /** Table data */
   data: RecordType[];
-  /** 配置 */
+  /** Configuration */
   config: any;
-  /** 获取行 key 的函数 */
+  /** Function to get row key */
   getRowKey: (record: RecordType) => Key;
-  /** 数据更新函数 */
+  /** Data update function */
   onDataChange: (newData: RecordType[]) => void;
 }
 
@@ -59,21 +59,21 @@ export interface GetCellKeyParams {
 export interface UseInlineEditReturn<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 当前编辑状态 */
+  /** Current editing state */
   state: any;
-  /** 编辑方法 */
+  /** Edit methods */
   methods: any;
-  /** 开始编辑单元格 */
+  /** Start editing cell */
   startEdit: (params: StartEditParams) => void;
-  /** 完成编辑 */
+  /** Finish editing */
   finishEdit: (value: unknown) => Promise<void>;
-  /** 取消编辑 */
+  /** Cancel editing */
   cancelEdit: () => void;
-  /** 批量开始编辑 */
+  /** Start batch editing */
   startBatchEdit: (rowKeys: Key[]) => void;
-  /** 是否正在编辑 */
+  /** Whether currently editing */
   isEditing: (params: IsEditingParams) => boolean;
-  /** 获取字段编辑配置 */
+  /** Get field edit configuration */
   getFieldEditConfig: (field: string) => FieldEditConfig<RecordType> | null;
 }
 
@@ -83,7 +83,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
   getRowKey,
   onDataChange,
 }: UseInlineEditOptions<RecordType>): UseInlineEditReturn<RecordType> => {
-  // 编辑状态
+  // Edit state
   const [editingCells, setEditingCells] = useState<
     Map<string, EditingCellInfo<RecordType>>
   >(new Map());
@@ -95,17 +95,17 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
     new Map(),
   );
 
-  // 引用
+  // References
   const dataRef = useRef(data);
   dataRef.current = data;
 
-  // 生成单元格 key
+  // Generate cell key
   const getCellKey = useCallback(
     ({ rowKey, field }: GetCellKeyParams) => `${rowKey}:${field}`,
     [],
   );
 
-  // 计算编辑状态
+  // Calculate edit state
   const state: EditState<RecordType> = useMemo(
     () => ({
       editingCells: new Map(editingCells),
@@ -114,7 +114,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
       validationErrors: new Map(validationErrors),
       hasChanges: editingCells.size > 0,
       isAnyEditing: editingCells.size > 0 || editingRows.size > 0,
-      editingValues: new Map(), // 添加缺失的属性
+      editingValues: new Map(), // Add missing properties
       editingErrors: new Map(),
       hasUnsavedChanges: editingCells.size > 0,
       validationState: new Map(),
@@ -122,7 +122,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
     [editingCells, editingRows, originalValues, validationErrors],
   );
 
-  // 获取字段编辑配置
+  // Get field edit configuration
   const getFieldEditConfig = useCallback(
     (field: string): FieldEditConfig<RecordType> | null =>
       config.fields?.find(
@@ -131,7 +131,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
     [config.fields],
   );
 
-  // 验证字段值
+  // Validate field value
   const validateField = useCallback(
     async ({
       field,
@@ -149,9 +149,9 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
       } catch (error: unknown) {
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Pass through actual error info
         const errorMessage =
-          error instanceof Error ? error.message : '验证失败';
+          error instanceof Error ? error.message : 'Validation failed'; // Error message for validation failure
         devLog.error({
           component: 'InlineEdit',
           message: 'Field validation error',
@@ -161,13 +161,13 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
             errorObj,
           },
         });
-        return errorMessage || '验证失败';
+        return errorMessage || 'Validation failed'; // Error message for validation failure
       }
     },
     [getFieldEditConfig],
   );
 
-  // 开始编辑单元格
+  // Start editing cell
   const startEdit = useCallback(
     async ({ rowKey, field }: StartEditParams) => {
       const fieldConfig = getFieldEditConfig(field);
@@ -188,7 +188,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
         return;
       }
 
-      // 执行编辑前回调
+      // Execute before edit callback
       if (config.onBeforeEdit) {
         const shouldContinue = await config.onBeforeEdit(field, record);
         if (shouldContinue === false) {
@@ -199,16 +199,16 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
       const cellKey = getCellKey({ rowKey, field });
       const currentValue = (record as Record<string, unknown>)[field];
 
-      // 保存原始值
+      // Save original value
       setOriginalValues((prev) => new Map(prev.set(cellKey, currentValue)));
 
-      // 设置编辑状态
+      // Set editing state
       const editingInfo: EditingCellInfo<RecordType> = {
         rowKey,
         field,
         fieldName: field,
-        rowIndex: 0, // TODO: 从外部传入正确的行索引
-        columnIndex: 0, // TODO: 从外部传入正确的列索引
+        rowIndex: 0, // TODO: Pass correct row index from external
+        columnIndex: 0, // TODO: Pass correct column index from external
         record,
         originalValue: currentValue,
         currentValue,
@@ -229,7 +229,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
     [config, getFieldEditConfig, getRowKey, getCellKey],
   );
 
-  // 完成编辑
+  // Finish editing
   const finishEdit = useCallback(
     async (value: unknown) => {
       const editingArray = Array.from(editingCells.values());
@@ -237,12 +237,12 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
         return;
       }
 
-      const currentCell = editingArray[editingArray.length - 1]; // 取最后一个编辑的单元格
+      const currentCell = editingArray[editingArray.length - 1]; // Get the last edited cell
       const { rowKey, field, record } = currentCell;
       const cellKey = getCellKey({ rowKey, field });
 
       try {
-        // 验证
+        // Validate
         if (config.validateOnChange) {
           const error = await validateField({ field, value, record });
           if (error) {
@@ -259,7 +259,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
           });
         }
 
-        // 更新数据
+        // Update data
         const newData = dataRef.current.map((item) => {
           if (getRowKey(item) === rowKey) {
             return {
@@ -272,12 +272,12 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
 
         onDataChange(newData);
 
-        // 自动保存
+        // Auto save
         if (config.autoSave && config.onSave) {
           await config.onSave(field, value, record);
         }
 
-        // 清除编辑状态
+        // Clear editing state
         setEditingCells((prev) => {
           const newMap = new Map(prev);
           newMap.delete(cellKey);
@@ -298,7 +298,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
           });
         }
 
-        // 执行编辑后回调
+        // Execute after edit callback
         if (config.onAfterEdit) {
           config.onAfterEdit(field, value, record);
         }
@@ -315,9 +315,9 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
       } catch (error: unknown) {
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        // ✅ 正确：透出实际错误信息
+        // ✅ Correct: Pass through actual error info
         const errorMessage =
-          error instanceof Error ? error.message : '保存失败';
+          error instanceof Error ? error.message : 'Save failed'; // Error message for save failure
         devLog.error({
           component: 'InlineEdit',
           message: 'Failed to finish editing',
@@ -336,7 +336,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
     [editingCells, config, validateField, getRowKey, getCellKey, onDataChange],
   );
 
-  // 取消编辑
+  // Cancel editing
   const cancelEdit = useCallback(() => {
     const editingArray = Array.from(editingCells.values());
     if (editingArray.length === 0) {
@@ -347,7 +347,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
     const { rowKey, field, record } = currentCell;
     const cellKey = getCellKey({ rowKey, field });
 
-    // 清除编辑状态
+    // Clear editing state
     setEditingCells((prev) => {
       const newMap = new Map(prev);
       newMap.delete(cellKey);
@@ -374,7 +374,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
       });
     }
 
-    // 执行取消回调
+    // Execute cancel callback
     if (config.onEditCancel) {
       config.onEditCancel(field, record);
     }
@@ -386,11 +386,11 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
     });
   }, [editingCells, config, getCellKey]);
 
-  // 批量开始编辑
+  // Batch start editing
   const startBatchEdit = useCallback(
     async (rowKeys: Key[]) => {
       if (!config.allowBatchEdit) {
-        // ✅ 正确：使用 devLog 记录警告，传递完整的上下文信息
+        // ✅ Correct: Use devLog to record warning, pass complete context info
         devLog.warn({
           component: 'InlineEdit',
           message: 'Batch edit not allowed',
@@ -415,7 +415,7 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
     [config.allowBatchEdit],
   );
 
-  // 检查是否正在编辑
+  // Check whether currently editing
   const isEditing = useCallback(
     ({ rowKey, field }: IsEditingParams) => {
       if (field) {
@@ -426,29 +426,29 @@ export const useInlineEdit = <RecordType extends BaseRecord = BaseRecord>({
     [editingCells, editingRows, getCellKey],
   );
 
-  // 编辑方法
+  // Edit methods
   const methods: InlineEditMethods<RecordType> = useMemo(
     () => ({
       startEdit,
       finishEdit,
       cancelEdit,
       startRowEdit: async (_rowKey: Key) => {
-        // TODO: 实现行编辑
+        // TODO: Implement row editing
       },
       finishRowEdit: async (_rowKey: Key) =>
-        // TODO: 实现行编辑完成
+        // TODO: Implement row editing complete
         true,
       cancelRowEdit: (_rowKey: Key) => {
-        // TODO: 实现取消行编辑
+        // TODO: Implement cancel row editing
       },
       saveAll: async () =>
-        // TODO: 实现保存所有编辑
+        // TODO: Implement save all editing
         true,
       cancelAll: () => {
-        // TODO: 实现取消所有编辑
+        // TODO: Implement cancel all editing
       },
       validate: async (params?: GetEditingErrorsParams) => {
-        // TODO: 实现验证
+        // TODO: Implement validation
         return true;
       },
       getEditingValue: ({ rowKey, field }: GetEditingValueParams) => {

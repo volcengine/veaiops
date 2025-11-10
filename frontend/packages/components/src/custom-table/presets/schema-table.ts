@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Schema Table 预设组件
- * @description 基于 Schema 配置的表格预设
+ * Schema Table preset component
+ * @description Table preset based on Schema configuration
 
  *
  */
@@ -24,23 +24,23 @@ import type { ModernTableColumnProps } from '@/shared/types';
 import type { PaginationProps } from '@arco-design/web-react/es/Pagination/pagination';
 
 /**
- * Schema Table 预设配置
+ * Schema Table preset configuration
  */
 export interface SchemaTableConfig<RecordType = Record<string, unknown>> {
-  /** 表格标题 */
+  /** Table title */
   title?: string;
-  /** 数据源配置 */
+  /** Data source configuration */
   dataSource?: CustomTableProps['dataSource'];
-  /** 列配置 */
+  /** Column configuration */
   columns?: ModernTableColumnProps<RecordType>[];
-  /** 分页配置 */
+  /** Pagination configuration */
   pagination?: PaginationProps | boolean;
 }
 
 /**
- * Schema Table 预设组件
- * @param config 预设配置
- * @returns 预设组件配置
+ * Schema Table preset component
+ * @param config Preset configuration
+ * @returns Preset component configuration
  */
 export const createSchemaTablePreset = (config: SchemaTableConfig) => {
   const paginationConfig =
@@ -51,7 +51,7 @@ export const createSchemaTablePreset = (config: SchemaTableConfig) => {
       : {};
   return {
     ...config,
-    // 默认配置
+    // Default configuration
     pagination: {
       pageSize: 10,
       ...paginationConfig,
@@ -60,7 +60,7 @@ export const createSchemaTablePreset = (config: SchemaTableConfig) => {
 };
 
 /**
- * 默认 Schema Table 预设
+ * Default Schema Table preset
  */
 export const defaultSchemaTablePreset = createSchemaTablePreset({
   title: 'Schema Table',

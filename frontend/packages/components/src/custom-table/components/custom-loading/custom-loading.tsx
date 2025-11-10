@@ -19,10 +19,12 @@ import './index.less';
 import type { CustomLoadingProps } from '@/custom-table/types';
 
 /**
- * 自定义固定位置的加载组件
- * 解决在长页面中加载图标不在视口内的问题
+ * Custom fixed position loading component
+ * Solves the issue of loading icon not being in viewport on long pages
  */
-const CustomLoading: React.FC<CustomLoadingProps> = ({ tip = '加载中...' }) => (
+const CustomLoading: React.FC<CustomLoadingProps> = ({
+  tip = 'Loading...',
+}) => (
   <div className="custom-table-loading-wrapper">
     <div className="custom-table-loading-mask" />
     <div className="custom-table-loading-container">

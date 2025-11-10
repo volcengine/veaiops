@@ -18,7 +18,7 @@ import type { Interest } from 'api-generate';
 import type React from 'react';
 
 /**
- * 操作列渲染组件
+ * Actions column render component
  */
 export const OncallActionsColumn: React.FC<{
   record: Interest;

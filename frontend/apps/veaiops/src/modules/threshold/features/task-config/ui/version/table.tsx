@@ -31,14 +31,14 @@ const TaskVersionTable: React.FC<TaskVersionTableProps> = ({
 }) => {
   const tableRef = useRef<CustomTableActionType<BaseRecord, BaseQuery>>(null);
 
-  // 使用抽屉 hooks
+  // Use drawer hooks
   const alarmDrawer = useAlarmDrawer(task);
   const rerunDrawer = useRerunDrawer(tableRef);
 
-  // 使用数据源配置
+  // Use data source configuration
   const { dataSource } = useTaskVersionTableConfig(task?._id);
 
-  // 渲染表格
+  // Render table
   const tableElement = useTaskVersionTableRenderer({
     dataSource,
     setDetailConfigData,
@@ -52,7 +52,7 @@ const TaskVersionTable: React.FC<TaskVersionTableProps> = ({
   return (
     <>
       {tableElement}
-      {/* 渲染抽屉组件 */}
+      {/* Render drawer components */}
       {alarmDrawer.render()}
       {rerunDrawer.render()}
     </>

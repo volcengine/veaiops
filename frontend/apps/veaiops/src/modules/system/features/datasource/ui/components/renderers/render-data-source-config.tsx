@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源配置渲染器 - 主要业务逻辑
- * 职责：提供数据源配置的渲染入口函数
+ * Data source configuration renderer - Main business logic
+ * Responsibility: Provide rendering entry function for data source configuration
  */
 
 import { EMPTY_CONTENT } from '@veaiops/constants';
@@ -23,7 +23,7 @@ import { CollapsibleConfigItems } from './components';
 import { renderAllConfigItems } from './core';
 
 /**
- * 渲染数据源配置
+ * Render data source configuration
  */
 export const renderDataSourceConfig = (record: Record<string, unknown>) => {
   const allConfigItems = extractAllConfigItems(record);
@@ -32,7 +32,7 @@ export const renderDataSourceConfig = (record: Record<string, unknown>) => {
     return EMPTY_CONTENT;
   }
 
-  // 如果配置项少于等于3个，直接显示所有
+  // If config items are 3 or less, display all directly
   if (allConfigItems.length <= 3) {
     return (
       <div className="flex flex-col gap-1">
@@ -41,6 +41,6 @@ export const renderDataSourceConfig = (record: Record<string, unknown>) => {
     );
   }
 
-  // 配置项超过3个时，使用折叠组件
+  // When config items exceed 3, use collapsible component
   return <CollapsibleConfigItems items={allConfigItems} />;
 };

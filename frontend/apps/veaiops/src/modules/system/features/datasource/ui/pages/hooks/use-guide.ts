@@ -21,12 +21,12 @@ import {
 } from '../config/guide-config';
 
 /**
- * 监控管理页面引导逻辑 Hook
+ * Monitor management page guide logic Hook
  *
  * @description
- * 封装引导组件的状态管理和配置逻辑
+ * Encapsulates state management and configuration logic for guide components
  *
- * @returns 引导配置对象
+ * @returns Guide configuration object
  */
 export const useGuide = () => {
   const [guideVisible, setGuideVisible] = useState(() => {
@@ -37,9 +37,9 @@ export const useGuide = () => {
     );
   });
 
-  // 等待DOM渲染完成后再显示引导
+  // Wait for DOM rendering to complete before showing guide
   useEffect(() => {
-    // 检查目标元素是否存在的函数
+    // Function to check if target elements exist
     const checkTargetElements = () => {
       const connectionBtn = document.querySelector(
         '#monitor-connection-manage-btn',
@@ -49,15 +49,15 @@ export const useGuide = () => {
       return connectionBtn && addConfigBtn;
     };
 
-    // 使用 requestAnimationFrame 确保DOM已渲染
+    // Use requestAnimationFrame to ensure DOM is rendered
     let rafId: number;
     let timeoutId: ReturnType<typeof setTimeout>;
 
     const attemptShowGuide = (attempt = 1) => {
       rafId = requestAnimationFrame(() => {
         if (checkTargetElements()) {
-          // 添加额外的延迟，确保布局完全稳定
-          // 等待所有CSS动画、过渡效果和布局计算完成
+          // Add extra delay to ensure layout is completely stable
+          // Wait for all CSS animations, transitions, and layout calculations to complete
           timeoutId = setTimeout(() => {
             const connectionBtn = document.querySelector(
               '#monitor-connection-manage-btn',
@@ -65,7 +65,7 @@ export const useGuide = () => {
 
             const connectionRect = connectionBtn?.getBoundingClientRect();
 
-            // 确保元素有实际的尺寸（不是display:none或visibility:hidden）
+            // Ensure element has actual dimensions (not display:none or visibility:hidden)
             if (
               connectionRect &&
               connectionRect.width > 0 &&
@@ -77,15 +77,15 @@ export const useGuide = () => {
                 urlParams.get('connectDrawerShow') !== 'true';
               setGuideVisible(connectDrawerShow);
 
-              // 显示引导后，再次延迟一小段时间，让 XGuide 组件完全初始化
-              // 然后触发一个 resize 事件，强制 XGuide 重新计算位置
+              // After showing guide, delay a short time to let XGuide component fully initialize
+              // Then trigger a resize event to force XGuide to recalculate position
               setTimeout(() => {
                 window.dispatchEvent(new Event('resize'));
               }, 100);
             }
-          }, 300); // 延迟300ms确保布局稳定
+          }, 300); // Delay 300ms to ensure layout is stable
         } else if (attempt < 20) {
-          // 最多尝试20次，每次间隔50ms
+          // Try up to 20 times, with 50ms interval each time
 
           timeoutId = setTimeout(() => attemptShowGuide(attempt + 1), 50);
         }

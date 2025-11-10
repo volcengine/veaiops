@@ -21,21 +21,21 @@ import { devLog } from '@/custom-table/utils';
 import { Button, Modal, Space } from '@arco-design/web-react';
 import { IconExclamationCircle } from '@arco-design/web-react/icon';
 /**
- * 批量操作组件
- * 基于行选择状态显示批量操作按钮
+ * Batch actions component
+ * Displays batch action buttons based on row selection state
  */
 import type React from 'react';
 import { useState } from 'react';
 import styles from './batch-actions.module.less';
 
 interface BatchActionsProps<RecordType extends BaseRecord = BaseRecord> {
-  /** 批量操作配置 */
+  /** Batch action configuration */
   actions: BatchActionConfig<RecordType>[];
-  /** 选择状态 */
+  /** Selection state */
   selectionState: RowSelectionState<RecordType>;
-  /** 执行批量操作 */
+  /** Execute batch action */
   onExecuteAction: (action: BatchActionConfig<RecordType>) => Promise<void>;
-  /** 样式类名 */
+  /** Style class name */
   className?: string;
 }
 
@@ -48,15 +48,15 @@ export const BatchActions = <RecordType extends BaseRecord = BaseRecord>({
   const [loading, setLoading] = useState<string | null>(null);
   const { selectedRowKeys, selectedRows } = selectionState;
 
-  // 没有选中行时不显示
+  // Don't display when no rows are selected
   if (selectedRowKeys.length === 0) {
     return null;
   }
 
-  // 处理操作执行
+  // Handle action execution
   const handleAction = async (action: BatchActionConfig<RecordType>) => {
     try {
-      // 权限检查
+      // Permission check
       if (action.permission && !action.permission(selectedRows)) {
         devLog.warn({
           component: 'BatchActions',
@@ -68,7 +68,7 @@ export const BatchActions = <RecordType extends BaseRecord = BaseRecord>({
         return;
       }
 
-      // 禁用状态检查
+      // Disabled state check
       if (
         typeof action.disabled === 'function' &&
         action.disabled(selectedRows)
@@ -94,7 +94,7 @@ export const BatchActions = <RecordType extends BaseRecord = BaseRecord>({
         return;
       }
 
-      // 确认提示
+      // Confirmation prompt
       if (action.confirmText) {
         const confirmMessage =
           typeof action.confirmText === 'function'
@@ -102,11 +102,11 @@ export const BatchActions = <RecordType extends BaseRecord = BaseRecord>({
             : action.confirmText;
 
         Modal.confirm({
-          title: '确认操作',
+          title: 'Confirm Operation',
           icon: <IconExclamationCircle />,
           content: confirmMessage,
-          okText: '确认',
-          cancelText: '取消',
+          okText: 'Confirm',
+          cancelText: 'Cancel',
           onOk: async () => {
             await executeAction(action);
           },
@@ -129,7 +129,7 @@ export const BatchActions = <RecordType extends BaseRecord = BaseRecord>({
     }
   };
 
-  // 执行操作
+  // Execute action
   const executeAction = async (action: BatchActionConfig<RecordType>) => {
     setLoading(action.key);
     try {
@@ -160,7 +160,7 @@ export const BatchActions = <RecordType extends BaseRecord = BaseRecord>({
     }
   };
 
-  // 渲染操作按钮
+  // Render action buttons
   const renderActionButton = (action: BatchActionConfig<RecordType>) => {
     const isDisabled =
       typeof action.disabled === 'function'
@@ -189,7 +189,7 @@ export const BatchActions = <RecordType extends BaseRecord = BaseRecord>({
     <div className={`${styles.batchActions} ${className || ''}`}>
       <Space size={8}>
         <span className={styles.selectedInfo}>
-          已选择 {selectedRowKeys.length} 项
+          {selectedRowKeys.length} item(s) selected
         </span>
         {actions.map(renderActionButton)}
       </Space>

@@ -14,7 +14,7 @@
 
 // import { ColumnWidthPersistencePlugin } from '@/custom-table/plugins/column-width-persistence';
 /**
- * CustomTable 默认插件配置
+ * CustomTable default plugin configuration
  */
 import { DataSourcePlugin } from '@/custom-table/plugins/data-source';
 // import { QuerySyncPlugin } from '@/custom-table/plugins/query-sync';
@@ -26,49 +26,49 @@ import { TableSortingPlugin } from '@/custom-table/plugins/table-sorting';
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 
 /**
- * 默认插件配置列表
+ * Default plugin configuration list
  */
 export const DEFAULT_PLUGINS = [
-  // 数据源处理
+  // Data source processing
   DataSourcePlugin({
     enabled: true,
     priority: PluginPriorityEnum.HIGH,
   }),
 
-  // 列管理
+  // Column management
   TableColumnsPlugin({
     enabled: true,
     priority: PluginPriorityEnum.HIGH,
   }),
 
-  // 列宽持久化 - 高优先级，需要在列管理之后执行
+  // Column width persistence - high priority, needs to execute after column management
   // ColumnWidthPersistencePlugin({
   //   enabled: true,
   //   priority: PluginPriorityEnum.HIGH,
   // }),
 
-  // 查询参数同步
+  // Query parameter synchronization
   // QuerySyncPlugin,
 
-  // 表格过滤
+  // Table filtering
   TableFilterPlugin({
     enabled: true,
     priority: PluginPriorityEnum.MEDIUM,
   }),
 
-  // 排序功能
+  // Sorting functionality
   TableSortingPlugin({
     enabled: true,
     priority: PluginPriorityEnum.MEDIUM,
   }),
 
-  // 分页功能
+  // Pagination functionality
   TablePaginationPlugin({
     enabled: true,
     priority: PluginPriorityEnum.MEDIUM,
   }),
 
-  // 提示信息 - 🐛 重新启用，使用简化实现
+  // Alert information - 🐛 Re-enabled, using simplified implementation
   TableAlertPlugin({
     enabled: true,
     priority: PluginPriorityEnum.LOW,

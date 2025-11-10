@@ -13,17 +13,17 @@
 // limitations under the License.
 
 /**
- * 筛选器子组件导出
- * 提供筛选器的各个子组件
+ * Filter sub-component exports
+ * Provides various sub-components for filters
  */
 
-// 导出组件
+// Export components
 export { ActionsArea } from './actions-area';
 export { FieldsArea } from './fields-area';
 export { FilterContainer } from './filter-container';
 export { RightActionsArea } from './right-actions-area';
 
-// 导出组件类型
+// Export component types
 export type { default as FilterContainerProps } from './filter-container';
 export type { default as FieldsAreaProps } from './fields-area';
 export type { default as ActionsAreaProps } from './actions-area';

@@ -17,6 +17,7 @@ import { IconDelete } from '@arco-design/web-react/icon';
 import { canDeleteProject, getDeleteRestrictionReason } from '@project';
 import { CellRender, type ModernTableColumnProps } from '@veaiops/components';
 import type { Project } from 'api-generate';
+import type React from 'react';
 import type { GetProjectTableColumnsParams } from '../types';
 
 // Destructure CellRender components to avoid repeated calls
@@ -60,7 +61,10 @@ export const getProjectTableColumns = ({
     key: 'created_at',
     width: 180,
     render: (createdAt: string) => (
-      <StampTime time={createdAt} template="YYYY-MM-DD HH:mm:ss" />
+      <StampTime
+        time={new Date(createdAt).getTime()}
+        template="YYYY-MM-DD HH:mm:ss"
+      />
     ),
   },
   {
@@ -69,7 +73,10 @@ export const getProjectTableColumns = ({
     key: 'updated_at',
     width: 180,
     render: (updatedAt: string) => (
-      <StampTime time={updatedAt} template="YYYY-MM-DD HH:mm:ss" />
+      <StampTime
+        time={new Date(updatedAt).getTime()}
+        template="YYYY-MM-DD HH:mm:ss"
+      />
     ),
   },
   {
@@ -88,9 +95,9 @@ export const getProjectTableColumns = ({
       return canDelete ? (
         <Popconfirm
           title="确认删除"
-          content={`确定要删除项目 "${record.name}" 吗？此操作无法撤销。`}
+          content={`确定要删除项目"${record.name}"吗？此操作不可恢复。`}
           onOk={async () => {
-            // Delete operation will automatically refresh through operationWrapper, no manual refresh needed
+            // Delete operation will be auto refreshed by operationWrapper, no need to manually refresh
             await onDelete(record.project_id || '');
           }}
           okText="确认删除"
@@ -101,7 +108,6 @@ export const getProjectTableColumns = ({
             size="small"
             status="danger"
             icon={<IconDelete />}
-            data-testid="delete-project-btn"
           >
             删除
           </Button>
@@ -114,7 +120,6 @@ export const getProjectTableColumns = ({
           icon={<IconDelete />}
           disabled
           title={deleteReason || '无法删除'}
-          data-testid="delete-project-btn"
         >
           删除
         </Button>

@@ -13,25 +13,25 @@
 // limitations under the License.
 
 /**
- * 环境变量配置
- * 统一管理前端环境变量，避免直接使用 process.env
+ * Environment variable configuration
+ * Unified management of frontend environment variables, avoiding direct use of process.env
  */
 
 export const ENV = {
-  // API 基础地址
+  // API base URL
   API_BASE_URL: 'http://localhost:8000',
 
-  // 环境类型
+  // Environment type
   NODE_ENV: 'development',
 
-  // 是否为开发环境
+  // Whether in development environment
   get isDevelopment() {
-    return true; // 在开发模式下始终为 true
+    return true; // Always true in development mode
   },
 
-  // 是否为生产环境
+  // Whether in production environment
   get isProduction() {
-    return false; // 在开发模式下始终为 false
+    return false; // Always false in development mode
   },
 } as const;
 

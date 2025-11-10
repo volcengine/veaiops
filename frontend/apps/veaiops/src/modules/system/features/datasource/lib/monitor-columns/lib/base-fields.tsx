@@ -18,10 +18,10 @@ import type React from 'react';
 import { getConfigData } from '../../config-data-utils';
 
 /**
- * 创建基础配置字段列（所有数据源都有）
+ * Create base configuration field columns (common to all data sources)
  *
- * @param dataSourceType - 数据源类型
- * @returns 基础配置字段列数组
+ * @param dataSourceType - Data source type
+ * @returns Base configuration field columns array
  */
 export const createBaseConfigFields = (
   dataSourceType: DataSourceType,

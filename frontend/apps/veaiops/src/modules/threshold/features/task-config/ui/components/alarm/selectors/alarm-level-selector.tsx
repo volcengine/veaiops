@@ -22,9 +22,9 @@ interface AlarmLevelSelectorProps {
 }
 
 /**
- * 告警级别选择器组件
+ * Alarm level selector component
  *
- * 所有数据源都需要选择告警级别
+ * All data sources need to select alarm level
  */
 export const AlarmLevelSelector: React.FC<AlarmLevelSelectorProps> = ({
   loading,

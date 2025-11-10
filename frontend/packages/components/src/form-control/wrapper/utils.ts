@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 获取表单项属性
- * @param props 表单项属性对象
- * @returns 处理过的表单项属性对象
+ * Get form item properties
+ * @param props Form item properties object
+ * @returns Processed form item properties object
  */
 export const getFormItemProps = (props: {
   formItemProps?: Record<string, any>;
@@ -40,9 +40,9 @@ export const getFormItemProps = (props: {
 };
 
 /**
- * 获取控件属性
- * @param props 控制属性对象
- * @returns 处理过的控制属性对象
+ * Get control properties
+ * @param props Control properties object
+ * @returns Processed control properties object
  */
 export const getControlProps = (props: any): any => {
   return {

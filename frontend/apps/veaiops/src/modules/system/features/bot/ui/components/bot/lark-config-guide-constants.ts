@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 飞书机器人最小权限配置
+ * Lark bot minimum permissions configuration
  */
 export const LARK_BOT_MIN_PERMISSIONS = {
   scopes: {
@@ -35,7 +35,7 @@ export const LARK_BOT_MIN_PERMISSIONS = {
 };
 
 /**
- * 获取飞书开发者平台的事件配置 URL
+ * Get Lark developer platform event configuration URL
  */
 export const getLarkEventUrl = (botId?: string) =>
   botId
@@ -43,7 +43,7 @@ export const getLarkEventUrl = (botId?: string) =>
     : 'https://open.larkoffice.com/app';
 
 /**
- * 获取飞书开发者平台的权限管理 URL
+ * Get Lark developer platform permission management URL
  */
 export const getLarkAuthUrl = (botId?: string) =>
   botId
@@ -51,18 +51,18 @@ export const getLarkAuthUrl = (botId?: string) =>
     : 'https://open.larkoffice.com/app';
 
 /**
- * 获取 Hook URL
+ * Get Hook URL
  */
 export const getHookUrl = (domain: string) => `${domain}/apis/v1/hook/Lark`;
 
 /**
- * 获取 Callback URL
+ * Get Callback URL
  */
 export const getCallbackUrl = (domain: string) =>
   `${domain}/apis/v1/callback/Lark`;
 
 /**
- * 飞书机器人必须订阅的事件列表
+ * Required event subscriptions for Lark bot
  */
 export const LARK_REQUIRED_EVENTS = [
   {
@@ -84,7 +84,7 @@ export const LARK_REQUIRED_EVENTS = [
 ];
 
 /**
- * 飞书机器人必须订阅的回调列表
+ * Required callback subscriptions for Lark bot
  */
 export const LARK_REQUIRED_CALLBACKS = [
   {

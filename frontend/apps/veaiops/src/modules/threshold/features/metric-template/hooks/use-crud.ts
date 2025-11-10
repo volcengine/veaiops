@@ -22,12 +22,12 @@ import type {
 } from '../lib/types';
 
 /**
- * 指标模板 CRUD 操作 Hook
- * 提供创建、更新、删除指标模板的 API 调用逻辑
+ * Metric template CRUD operations Hook
+ * Provides API call logic for creating, updating, and deleting metric templates
  */
 export const useMetricTemplateCrud = () => {
   /**
-   * 创建指标模板
+   * Create metric template
    */
   const createTemplate = useCallback(
     async (data: MetricTemplateCreateRequest) => {
@@ -38,14 +38,14 @@ export const useMetricTemplateCrud = () => {
           Message.success('创建指标模板成功');
           return true;
         } else {
-          throw new Error(response.message || '创建失败');
+          throw new Error(response.message || 'Failed to create');
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : '创建指标模板失败，请重试';
         Message.error(errorMessage);
-        // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+        // ✅ Correct: Convert error to Error object before throwing (conforms to @typescript-eslint/only-throw-error rule)
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         throw errorObj;
@@ -55,7 +55,7 @@ export const useMetricTemplateCrud = () => {
   );
 
   /**
-   * 更新指标模板
+   * Update metric template
    */
   interface UpdateTemplateParams {
     templateId: string;
@@ -73,14 +73,14 @@ export const useMetricTemplateCrud = () => {
           Message.success('更新指标模板成功');
           return true;
         } else {
-          throw new Error(response.message || '更新失败');
+          throw new Error(response.message || 'Failed to update');
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : '更新指标模板失败，请重试';
         Message.error(errorMessage);
-        // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+        // ✅ Correct: Convert error to Error object before throwing (conforms to @typescript-eslint/only-throw-error rule)
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         throw errorObj;
@@ -90,7 +90,7 @@ export const useMetricTemplateCrud = () => {
   );
 
   /**
-   * 删除指标模板
+   * Delete metric template
    */
   const deleteTemplate = useCallback(
     async (templateId: string): Promise<boolean> => {
@@ -101,10 +101,10 @@ export const useMetricTemplateCrud = () => {
           Message.success('删除指标模板成功');
           return true;
         } else {
-          throw new Error(response.message || '删除失败');
+          throw new Error(response.message || 'Failed to delete');
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorMessage =
           error instanceof Error ? error.message : '删除指标模板失败，请重试';
         Message.error(errorMessage);

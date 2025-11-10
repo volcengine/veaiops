@@ -16,19 +16,19 @@ import type React from 'react';
 import { ComingSoonPage } from './coming-soon-page';
 
 interface WithComingSoonOptions {
-  /** 页面标题 */
+  /** Page title */
   title?: string;
-  /** 页面描述 */
+  /** Page description */
   description?: string;
-  /** 是否启用 ComingSoon 模式，默认为 true */
+  /** Whether to enable ComingSoon mode, defaults to true */
   enabled?: boolean;
 }
 
 /**
- * ComingSoon HOC - 用于临时显示 ComingSoon 页面而不污染业务代码
- * @param WrappedComponent 被包装的组件
- * @param options 配置选项
- * @returns 包装后的组件
+ * ComingSoon HOC - Used to temporarily display ComingSoon page without polluting business code
+ * @param WrappedComponent Wrapped component
+ * @param options Configuration options
+ * @returns Wrapped component
  */
 export function withComingSoon<P extends object>(
   WrappedComponent: React.ComponentType<P>,
@@ -41,16 +41,16 @@ export function withComingSoon<P extends object>(
   } = options;
 
   const WithComingSoonComponent: React.FC<P> = (props) => {
-    // 如果启用了 ComingSoon 模式，显示 ComingSoon 页面
+    // If ComingSoon mode is enabled, show ComingSoon page
     if (enabled) {
       return <ComingSoonPage title={title} description={description} />;
     }
 
-    // 否则渲染原始组件
+    // Otherwise render original component
     return <WrappedComponent {...props} />;
   };
 
-  // 设置显示名称，便于调试
+  // Set display name for easier debugging
   WithComingSoonComponent.displayName = `withComingSoon(${
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
   })`;

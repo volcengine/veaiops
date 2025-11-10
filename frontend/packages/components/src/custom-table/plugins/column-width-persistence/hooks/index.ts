@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 列宽持久化插件Hooks统一导出
+ * Column width persistence plugin Hooks unified export
  *
 
  *

@@ -20,8 +20,8 @@ import type {
 } from 'api-generate';
 
 /**
- * 获取值班计划列表的参数类型
- * TODO: 等待后端API实现后，从api-generate导入
+ * Parameters type for getting oncall schedule list
+ * TODO: Import from api-generate after backend API is implemented
  */
 interface GetOncallSchedulesParams {
   channel?: string;
@@ -31,12 +31,12 @@ interface GetOncallSchedulesParams {
 }
 
 /**
- * Oncall 值班计划服务封装
- * 对应 API: /apis/v1/manager/rule-center/oncall/{channel}/{bot_id}/oncall_schedule/
+ * Oncall schedule service wrapper
+ * Corresponding API: /apis/v1/manager/rule-center/oncall/{channel}/{bot_id}/oncall_schedule/
  */
 export const oncallScheduleService = {
   /**
-   * 创建值班计划
+   * Create oncall schedule
    * POST /apis/v1/manager/rule-center/oncall/{channel}/{bot_id}/oncall_schedule/
    */
   createSchedule: async (
@@ -44,7 +44,7 @@ export const oncallScheduleService = {
     botId: string,
     data: OncallScheduleCreateRequest,
   ): Promise<{ code: number; message: string; data?: OncallSchedule }> => {
-    // TODO: 等待后端实现 API
+    // TODO: Wait for backend API implementation
     logger.warn({
       message: 'createSchedule API not implemented yet',
       data: {
@@ -67,7 +67,7 @@ export const oncallScheduleService = {
   },
 
   /**
-   * 获取值班计划列表
+   * Get oncall schedule list
    * GET /apis/v1/manager/rule-center/oncall/{channel}/{bot_id}/oncall_schedule/
    */
   getSchedules: async (
@@ -80,7 +80,7 @@ export const oncallScheduleService = {
     skip?: number;
     limit?: number;
   }> => {
-    // TODO: 等待后端实现 API
+    // TODO: Wait for backend API implementation
     logger.warn({
       message: 'getSchedules API not implemented yet',
       data: { params },
@@ -98,13 +98,13 @@ export const oncallScheduleService = {
   },
 
   /**
-   * 获取单个值班计划
+   * Get single oncall schedule
    * GET /apis/v1/manager/rule-center/oncall/oncall_schedule/{schedule_id}
    */
   getScheduleById: async (
     scheduleId: string,
   ): Promise<{ code: number; message: string; data?: OncallSchedule }> => {
-    // TODO: 等待后端实现 API
+    // TODO: Wait for backend API implementation
     logger.warn({
       message: 'getScheduleById API not implemented yet',
       data: { scheduleId },
@@ -119,14 +119,14 @@ export const oncallScheduleService = {
   },
 
   /**
-   * 更新值班计划
+   * Update oncall schedule
    * PUT /apis/v1/manager/rule-center/oncall/oncall_schedule/{schedule_id}
    */
   updateSchedule: async (
     scheduleId: string,
     data: OncallScheduleUpdateRequest,
   ): Promise<{ code: number; message: string; data?: OncallSchedule }> => {
-    // TODO: 等待后端实现 API
+    // TODO: Wait for backend API implementation
     logger.warn({
       message: 'updateSchedule API not implemented yet',
       data: {
@@ -144,13 +144,13 @@ export const oncallScheduleService = {
   },
 
   /**
-   * 删除值班计划
+   * Delete oncall schedule
    * DELETE /apis/v1/manager/rule-center/oncall/oncall_schedule/{schedule_id}
    */
   deleteSchedule: async (
     scheduleId: string,
   ): Promise<{ code: number; message: string; data?: boolean }> => {
-    // TODO: 等待后端实现 API
+    // TODO: Wait for backend API implementation
     logger.warn({
       message: 'deleteSchedule API not implemented yet',
       data: { scheduleId },

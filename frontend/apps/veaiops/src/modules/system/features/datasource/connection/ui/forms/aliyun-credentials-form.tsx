@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 阿里云认证字段组件
+ * Aliyun credentials form component
  */
 
 import { Form, Input } from '@arco-design/web-react';

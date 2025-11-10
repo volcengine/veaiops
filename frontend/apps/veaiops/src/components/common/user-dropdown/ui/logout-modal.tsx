@@ -17,7 +17,7 @@ import type React from 'react';
 import styles from '../../index.module.less';
 
 /**
- * LogoutModal 组件参数
+ * LogoutModal component parameters
  */
 export interface LogoutModalProps {
   visible: boolean;
@@ -27,7 +27,7 @@ export interface LogoutModalProps {
 }
 
 /**
- * 退出登录确认弹窗组件
+ * Logout confirmation modal component
  */
 export const LogoutModal: React.FC<LogoutModalProps> = ({
   visible,

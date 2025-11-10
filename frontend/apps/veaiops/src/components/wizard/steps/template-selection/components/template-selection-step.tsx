@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 模板选择步骤组件
- * @description 用于选择Zabbix监控模板
+ * Template selection step component
+ * @description Used for selecting Zabbix monitoring templates
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -55,16 +55,16 @@ export const TemplateSelectionStep: React.FC<TemplateSelectionStepProps> = ({
     searchText?: string;
   } | null>(null);
 
-  // 防抖处理搜索文本
+  // Debounce search text processing
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchText(searchText);
-    }, 500); // 500ms 防抖
+    }, 500); // 500ms debounce
 
     return () => clearTimeout(timer);
   }, [searchText]);
 
-  // 组件挂载时和搜索文本变化时获取模板列表
+  // Fetch template list when component mounts and when search text changes
   useEffect(() => {
     if (connect?.name && !loading) {
       const currentParams = {
@@ -72,7 +72,7 @@ export const TemplateSelectionStep: React.FC<TemplateSelectionStepProps> = ({
         searchText: debouncedSearchText || undefined,
       };
 
-      // 避免重复调用相同的参数
+      // Avoid duplicate calls with same parameters
       if (
         !lastFetchParams ||
         lastFetchParams.connectName !== currentParams.connectName ||
@@ -90,8 +90,8 @@ export const TemplateSelectionStep: React.FC<TemplateSelectionStepProps> = ({
     onTemplatesFetch,
   ]);
 
-  // 首次加载时，如果没有选中项且有可用模板，自动选中第一个
-  // 注意：使用后端搜索，不会触发前端验证逻辑导致的循环，但只有在没有搜索文本时才自动选中（更好的 UX）
+  // On first load, if no item selected and templates available, auto-select first one
+  // Note: Using backend search won't trigger frontend validation loop, but only auto-select when no search text (better UX)
   useEffect(() => {
     if (!selectedTemplate && templates.length > 0 && !loading && !searchText) {
       onTemplateSelect(templates[0]);
@@ -104,10 +104,10 @@ export const TemplateSelectionStep: React.FC<TemplateSelectionStepProps> = ({
     onTemplateSelect,
   ]);
 
-  // 不再需要本地过滤，直接使用从API返回的模板列表
+  // No longer need local filtering, directly use template list returned from API
   const filteredTemplates = templates;
 
-  // 将已选中的项放到第一位，方便编辑时快速查看
+  // Put selected item first for quick viewing during editing
   const sortedTemplates = [...filteredTemplates].sort((a, b) => {
     const aSelected = selectedTemplate?.templateid === a.templateid;
     const bSelected = selectedTemplate?.templateid === b.templateid;
@@ -151,7 +151,7 @@ export const TemplateSelectionStep: React.FC<TemplateSelectionStepProps> = ({
         从连接 {connect.name} 中选择一个监控模板，模板定义了要监控的指标和主机
       </div>
 
-      {/* 搜索框 */}
+      {/* Search box */}
       <div className={styles.searchContainer}>
         <Input
           prefix={<IconSearch />}

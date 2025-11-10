@@ -15,12 +15,12 @@
 import type { IntelligentThresholdTaskVersion } from 'api-generate';
 
 /**
- * 带可选行跨度的类型
+ * Type with optional row span
  */
 export type WithOptionalRowSpan<T> = T & { rowSpan?: number };
 
 /**
- * 扁平化的版本数据类型
+ * Flattened version data type
  */
 export type FlattenedVersion = WithOptionalRowSpan<
   IntelligentThresholdTaskVersion & {
@@ -29,8 +29,8 @@ export type FlattenedVersion = WithOptionalRowSpan<
 >;
 
 /**
- * 版本表格列配置所需的额外 Props
- * 注意：HandleColumnsProps 已在 @task-config/lib 中定义，这里只定义版本表格特有的类型
+ * Additional props required for version table column configuration
+ * Note: HandleColumnsProps is already defined in @task-config/lib, here we only define version table-specific types
  */
 export interface VersionColumnsProps {
   setDetailConfigData: (data: FlattenedVersion) => void;

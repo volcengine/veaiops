@@ -16,11 +16,11 @@
 import type { ChannelType } from './channel-type';
 export type AgentTemplate = {
   /**
-   * 数据库唯一标识
+   * Database unique identifier
    */
   _id?: string;
   /**
-   * 代理模板ID
+   * Agent template ID
    */
   id: string;
   /**
@@ -33,11 +33,11 @@ export type AgentTemplate = {
    */
   template_id: string;
   /**
-   * 创建时间
+   * Creation time
    */
   created_at?: string;
   /**
-   * 更新时间
+   * Update time
    */
   updated_at?: string;
 };

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 创建步骤组件导出
- * @description 统一导出创建步骤相关组件
+ * Create step component export
+ * @description Unified export of create step related components
  * @author AI Assistant
  * @date 2025-01-17
  */

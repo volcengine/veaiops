@@ -16,8 +16,8 @@ import { useCallback, useRef } from 'react';
 import { logger } from '../logger';
 
 /**
- * 调试日志系统Hook
- * 提供统一的调试日志收集和管理功能
+ * Debug logging system Hook
+ * Provides unified debug log collection and management functionality
  */
 export function useDebugLogging(hookTraceId: string) {
   const debugLogsRef = useRef<any[]>([]);
@@ -37,13 +37,13 @@ export function useDebugLogging(hookTraceId: string) {
 
       logger.debug(
         'UseSelectBlock',
-        `调试日志: ${action}`,
+        `Debug log: ${action}`,
         { logEntry },
         'addDebugLog',
         hookTraceId,
       );
     },
-    [hookTraceId], // 只依赖hookTraceId，避免因为数组变化导致函数重新创建
+    [hookTraceId], // Only depend on hookTraceId to avoid function recreation due to array changes
   );
 
   return {

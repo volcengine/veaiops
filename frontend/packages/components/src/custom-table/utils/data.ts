@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * CustomTable 数据处理工具函数
+ * CustomTable data processing utility functions
  */
 import { isEmpty, isNil, omitBy } from 'lodash-es';
 
 /**
- * 过滤空数据
+ * Filter empty data
  */
 export const filterEmptyDataByKeys = (
   obj: Record<string, unknown>,
@@ -30,7 +30,7 @@ export const filterEmptyDataByKeys = (
 };
 
 /**
- * 格式化表格数据
+ * Format table data
  */
 export const formatTableData = <RecordType, FormatRecordType>({
   sourceData,
@@ -50,25 +50,25 @@ export const formatTableData = <RecordType, FormatRecordType>({
   const processingData = JSON.parse(JSON.stringify(sourceData));
 
   return processingData.map((item: Record<string, unknown>, index: number) => {
-    // 添加行键
+    // Add row key
     if (addRowKey && !item.key) {
       item.key = `${index}`;
     }
 
-    // 处理数组字段
+    // Process array fields
     if (arrayFields?.length) {
       arrayFields.forEach((field) => {
         if (item[field] && typeof item[field] === 'string') {
           try {
             item[field] = JSON.parse(item[field]);
           } catch (error) {
-            // JSON 解析失败，保持原样（静默处理）
+            // JSON parse failed, keep original (silent handling)
           }
         }
       });
     }
 
-    // 应用自定义格式化配置
+    // Apply custom format configuration
     if (!isEmpty(formatDataConfig)) {
       Object.keys(formatDataConfig).forEach((key) => {
         const formatFn = formatDataConfig[key];
@@ -83,7 +83,7 @@ export const formatTableData = <RecordType, FormatRecordType>({
 };
 
 /**
- * 过滤表格数据的参数接口
+ * Filter table data parameters interface
  */
 export interface FilterTableDataParams<RecordType> {
   data: RecordType[];
@@ -91,7 +91,7 @@ export interface FilterTableDataParams<RecordType> {
 }
 
 /**
- * 过滤表格数据
+ * Filter table data
  */
 export const filterTableData = <RecordType>({
   data,

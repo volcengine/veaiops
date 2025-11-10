@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 直接使用 API 生成的类型
+// Directly use API generated types
 import type {
   IntelligentThresholdTask,
   IntelligentThresholdTaskVersion,
 } from "api-generate";
 /**
- * 任务操作类型枚举 - 统一的操作类型定义
+ * Task operation type enum - unified operation type definition
  */
 export enum TaskOperateType {
   CREATE = "create",
@@ -30,7 +30,7 @@ export enum TaskOperateType {
 }
 
 /**
- * 任务操作类型联合类型 - 与 TaskOperateType 保持一致
+ * Task operation type union - consistent with TaskOperateType
  */
 export type OperationType =
   | "create"
@@ -41,7 +41,7 @@ export type OperationType =
   | "detail";
 
 /**
- * 智能阈值任务表格操作回调 - 使用 IntelligentThresholdTask
+ * Intelligent threshold task table operation callbacks - uses IntelligentThresholdTask
  */
 export interface TaskTableActions {
   onTaskDetail: (record: IntelligentThresholdTask) => void;
@@ -68,7 +68,7 @@ export interface HandleColumnsProps {
 }
 
 /**
- * 任务列表响应类型 - 使用 IntelligentThresholdTask
+ * Task list response type - uses IntelligentThresholdTask
  */
 export interface TaskListResponse {
   data: Array<IntelligentThresholdTask & { key: string }>;
@@ -78,7 +78,7 @@ export interface TaskListResponse {
 }
 
 /**
- * 类型守卫：检查是否为任务表格数据
+ * Type guard: check if record is task table data
  */
 export function isTaskTableData(
   record: Record<string, unknown>

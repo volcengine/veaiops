@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 指标模板Hooks统一导出
+ * Metric template Hooks unified exports
  */
 
-// 主逻辑 Hook
+// Main logic Hook
 export * from './use-management';

@@ -13,14 +13,14 @@
 // limitations under the License.
 
 import { Card, Empty, Grid, Spin } from '@arco-design/web-react';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge same-source imports
 import { type StatisticsData, useChartConfigs } from '@ec/statistics';
 import type React from 'react';
 
 const { Row, Col } = Grid;
 
 /**
- * 统计图表组件属性接口
+ * Statistics charts component props interface
  */
 interface StatisticsChartsProps {
   loading: boolean;
@@ -28,8 +28,8 @@ interface StatisticsChartsProps {
 }
 
 /**
- * 简单的图表占位组件
- * 在实际项目中，这里应该使用真实的图表库如 ECharts 或 G2Plot
+ * Simple chart placeholder component
+ * In actual projects, real chart libraries like ECharts or G2Plot should be used here
  */
 const ChartPlaceholder: React.FC<{
   title: string;
@@ -62,21 +62,21 @@ const ChartPlaceholder: React.FC<{
 };
 
 /**
- * 统计图表组件
- * 提供各种统计图表的展示
+ * Statistics charts component
+ * Provides display of various statistical charts
  */
 export const StatisticsCharts: React.FC<StatisticsChartsProps> = ({
   loading,
   statisticsData,
 }) => {
-  // 获取图表配置
+  // Get chart configurations
   const { eventLevelPieConfig, eventTrendLineConfig, eventTypeBarConfig } =
     useChartConfigs(statisticsData);
 
   return (
     <Spin loading={loading}>
       <Row gutter={16}>
-        {/* 事件级别分布饼图 */}
+        {/* Event level distribution pie chart */}
         <Col span={8}>
           <Card title="事件级别分布" style={{ height: 400 }}>
             <ChartPlaceholder
@@ -87,7 +87,7 @@ export const StatisticsCharts: React.FC<StatisticsChartsProps> = ({
           </Card>
         </Col>
 
-        {/* 事件类型分布柱状图 */}
+        {/* Event type distribution bar chart */}
         <Col span={8}>
           <Card title="事件类型分布" style={{ height: 400 }}>
             <ChartPlaceholder
@@ -98,7 +98,7 @@ export const StatisticsCharts: React.FC<StatisticsChartsProps> = ({
           </Card>
         </Col>
 
-        {/* 成功率统计 */}
+        {/* Success rate statistics */}
         <Col span={8}>
           <Card title="处理成功率" style={{ height: 400 }}>
             <div className="h-[300px] flex items-center justify-center flex-col gap-4">
@@ -125,7 +125,7 @@ export const StatisticsCharts: React.FC<StatisticsChartsProps> = ({
         </Col>
       </Row>
 
-      {/* 事件趋势图 */}
+      {/* Event trend chart */}
       <Row gutter={16} className="mt-4">
         <Col span={24}>
           <Card title="事件趋势" style={{ height: 400 }}>
@@ -138,7 +138,7 @@ export const StatisticsCharts: React.FC<StatisticsChartsProps> = ({
         </Col>
       </Row>
 
-      {/* 响应时间分布 */}
+      {/* Response time distribution */}
       <Row gutter={16} className="mt-4">
         <Col span={12}>
           <Card title="响应时间统计" style={{ height: 300 }}>

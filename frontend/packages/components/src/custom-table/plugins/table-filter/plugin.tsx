@@ -22,14 +22,14 @@ import type { TableFilterConfig } from '@/custom-table/types/plugins/table-filte
 import { Filters } from '@/filters';
 import type { FieldItem } from '@/filters';
 /**
- * 表格过滤器插件
+ * Table Filter Plugin
  */
-// 使用新的 Filters 组件（插件化筛选器）
+// Use the new Filters component (plugin-based filter)
 import { logger } from '@veaiops/utils';
 import { DEFAULT_TABLE_FILTER_CONFIG } from './config';
 import { readFiltersPluginProps } from './props';
 
-// 🔍 TableFilter日志收集器
+// 🔍 TableFilter log collector
 interface TableFilterLogEntry {
   timestamp: number;
   level: 'info' | 'warn' | 'error' | 'debug';
@@ -64,7 +64,7 @@ class TableFilterLogger {
 
     this.logs.push(entry);
 
-    // ✅ 统一使用 @veaiops/utils logger（logger 内部已处理 console 输出）
+    // ✅ Unified use of @veaiops/utils logger (logger internally handles console output)
     const logData = data ? { data } : undefined;
     switch (level) {
       case 'error':
@@ -145,7 +145,7 @@ class TableFilterLogger {
 
 const tableFilterLogger = new TableFilterLogger();
 
-// 暴露到全局供日志导出系统使用
+// Expose to global for log export system
 if (typeof window !== 'undefined') {
   (window as any).getTableFilterLogs = () => tableFilterLogger.getLogs();
 }
@@ -155,14 +155,14 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
 ) => {
   const finalConfig = { ...DEFAULT_TABLE_FILTER_CONFIG, ...config };
 
-  // 🔧 缓存handleChangeAdapter和configs，避免每次render都重新创建
+  // 🔧 Cache handleChangeAdapter and configs to avoid recreating on each render
   let cachedHandleChange: any = null;
   let cachedHandleChangeAdapter: any = null;
   let cachedConfigs: any = null;
   let cachedQuery: any = null;
-  let cachedHandleFilters: any = null; // 🔥 新增：缓存handleFilters函数引用
+  let cachedHandleFilters: any = null; // 🔥 New: Cache handleFilters function reference
 
-  // 🚀 新增：插件实例ID，用于追踪同一插件实例的生命周期
+  // 🚀 New: Plugin instance ID for tracking the lifecycle of the same plugin instance
   const pluginInstanceId = `TableFilterPlugin-${Date.now()}-${Math.random()
     .toString(36)
     .substr(2, 9)}`;
@@ -170,14 +170,14 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
   return {
     name: PluginNames.TABLE_FILTER,
     version: '1.0.0',
-    description: '表格过滤器插件',
+    description: 'Table Filter Plugin',
     priority: finalConfig.priority || PluginPriorityEnum.MEDIUM,
     enabled: finalConfig.enabled !== false,
     dependencies: [],
     conflicts: [],
 
     install(_context: PluginContext) {
-      // 🔧 关键修复：安装时清理缓存，避免路由切换时使用旧页面的缓存
+      // 🔧 Critical fix: Clear cache on installation to avoid using old page cache during route switching
       const hadCache = cachedConfigs !== null;
       const oldCacheSnapshot = hadCache
         ? cachedConfigs?.map((c: any) => ({
@@ -186,7 +186,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
           }))
         : null;
 
-      // 清理缓存
+      // Clear cache
       cachedHandleChange = null;
       cachedHandleChangeAdapter = null;
       cachedConfigs = null;
@@ -194,7 +194,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
 
       tableFilterLogger.info({
         component: 'Plugin',
-        message: '🎬 插件安装',
+        message: '🎬 Plugin installation',
         data: {
           pluginInstanceId,
           hadOldCache: hadCache,
@@ -206,21 +206,21 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
     },
 
     setup(context: PluginContext) {
-      // 初始化过滤器逻辑
+      // Initialize filter logic
       const {
         props: {
-          // 🎯 从 props 中获取 showReset，优先使用 props 值
+          // 🎯 Get showReset from props, prioritize props value
           showReset: propsShowReset,
         },
       } = context;
 
-      // 🎯 优先使用 props 中的 showReset，如果没有则使用配置默认值
+      // 🎯 Prioritize showReset from props, otherwise use config default value
       const effectiveShowReset =
         propsShowReset !== undefined ? propsShowReset : finalConfig.showReset;
 
-      // 插件设置逻辑 - 不调用 Hook，只进行配置
-      // Hook 调用已移到组件层面
-      // 直接使用 props 中的值设置状态
+      // Plugin setup logic - Don't call Hooks, only configure
+      // Hook calls have been moved to component level
+      // Directly use values from props to set state
       Object.assign(context.state, {
         filterConfigs: finalConfig.filterConfigs || [],
         isFilterShow: finalConfig.isFilterShow,
@@ -232,14 +232,14 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
 
       Object.assign(context.helpers, {
         resetFilterValues: () => {
-          // 基于 Arco Table 的过滤器重置实现
-          // 重置所有过滤器值到初始状态
+          // Filter reset implementation based on Arco Table
+          // Reset all filter values to initial state
           Object.assign(context.state, {
             filters: {},
             filterValues: {},
             activeFilters: {},
           });
-          // 触发数据重新加载
+          // Trigger data reload
           if (context.helpers.reload) {
             context.helpers.reload();
           }
@@ -248,14 +248,14 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
     },
 
     update(_context: PluginContext) {
-      // 当配置或数据更新时的操作
+      // Operations when configuration or data is updated
     },
 
     uninstall(_context: PluginContext) {
-      // 卸载时的清理操作
+      // Cleanup operations during uninstallation
       tableFilterLogger.info({
         component: 'Plugin',
-        message: '🔚 插件卸载',
+        message: '🔚 Plugin uninstallation',
         data: {
           pluginInstanceId,
           hadCachedConfigs: cachedConfigs !== null,
@@ -268,7 +268,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
         },
       });
 
-      // 🚀 清理缓存 - 这是关键！必须清空才能让新页面重新生成configs
+      // 🚀 Clear cache - This is critical! Must clear to allow new page to regenerate configs
       cachedHandleChange = null;
       cachedHandleChangeAdapter = null;
       cachedConfigs = null;
@@ -276,7 +276,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
 
       tableFilterLogger.info({
         component: 'Plugin',
-        message: '✅ 缓存已清理',
+        message: '✅ Cache cleared',
         data: {
           pluginInstanceId,
           timestamp: new Date().toISOString(),
@@ -284,7 +284,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
       });
     },
 
-    // 过滤器钩子
+    // Filter hooks
     hooks: {
       resetFilters: (...args: unknown[]) => {
         const context = args[0] as PluginContext;
@@ -292,13 +292,13 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
       },
     },
 
-    // 渲染方法
+    // Render methods
     render: {
-      // 渲染过滤器
+      // Render filter
       filter(context: PluginContext) {
         tableFilterLogger.info({
           component: 'Plugin',
-          message: '🎨 render.filter被调用',
+          message: '🎨 render.filter called',
           data: {
             pluginInstanceId,
             timestamp: new Date().toISOString(),
@@ -312,7 +312,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
 
         tableFilterLogger.info({
           component: 'Plugin',
-          message: '📊 Context状态',
+          message: '📊 Context state',
           data: {
             pluginInstanceId,
             query,
@@ -322,7 +322,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
           },
         });
 
-        // 源头修复：使用强类型读取扩展 props，避免宽松断言
+        // Source fix: Use strong typing to read extended props, avoid loose assertions
         const {
           handleFilters,
           handleFiltersProps = {},
@@ -337,7 +337,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
           finalQuery,
         } = readFiltersPluginProps(context);
 
-        // 🎯 优先使用 props 中的 showReset，如果没有则默认为 true
+        // 🎯 Prioritize showReset from props, default to true if not provided
         const effectiveShowReset =
           propsShowReset !== undefined ? propsShowReset : true;
 
@@ -349,26 +349,26 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
           return null;
         }
 
-        // 动态生成过滤器配置
-        // 🔧 关键修复：缓存handleChangeAdapter，避免每次render都创建新函数
+        // Dynamically generate filter configuration
+        // 🔧 Critical fix: Cache handleChangeAdapter to avoid creating new function on each render
         if (cachedHandleChange !== handleChange) {
           cachedHandleChange = handleChange;
           cachedHandleChangeAdapter = (k: unknown, v: unknown) => {
             tableFilterLogger.info({
               component: 'handleChangeAdapter',
-              message: '📥 handleChangeAdapter被调用',
+              message: '📥 handleChangeAdapter called',
               data: {
                 key: k,
                 value: v,
                 timestamp: new Date().toISOString(),
               },
             });
-            // context.helpers.handleChange 接受 (keyOrObject, value?, handleFilter?, ctx?)
+            // context.helpers.handleChange accepts (keyOrObject, value?, handleFilter?, ctx?)
             cachedHandleChange?.(k as any, v);
           };
         }
 
-        // 🔧 关键修复：检查query或handleFilters函数是否变化
+        // 🔧 Critical fix: Check if query or handleFilters function has changed
         const queryChanged =
           JSON.stringify(cachedQuery) !== JSON.stringify(query);
         const handleFiltersChanged = cachedHandleFilters !== handleFilters;
@@ -383,7 +383,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
 
           tableFilterLogger.info({
             component: 'Plugin',
-            message: '🔄 重新生成configs',
+            message: '🔄 Regenerating configs',
             data: {
               pluginInstanceId,
               reason: changeReason,
@@ -408,7 +408,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
 
           tableFilterLogger.info({
             component: 'Plugin',
-            message: '✨ Configs生成完成',
+            message: '✨ Configs generation completed',
             data: {
               pluginInstanceId,
               configsLength: cachedConfigs?.length || 0,
@@ -418,7 +418,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
                   type: c.type,
                   label: c.label || c.componentProps?.addBefore || c.addBefore,
                   placeholder: c.componentProps?.placeholder || c.placeholder,
-                  optionsLength: c.componentProps?.options?.length || 0, // 🔥 新增：显示options长度
+                  optionsLength: c.componentProps?.options?.length || 0, // 🔥 New: Display options length
                   hasOptions: Boolean(c.componentProps?.options),
                 })) || [],
             },
@@ -426,7 +426,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
         } else {
           tableFilterLogger.debug({
             component: 'Plugin',
-            message: '✅ 使用缓存的configs',
+            message: '✅ Using cached configs',
             data: {
               pluginInstanceId,
               configsLength: cachedConfigs?.length || 0,
@@ -439,7 +439,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
 
         const configs = cachedConfigs;
 
-        // 调试日志：确认过滤器配置
+        // Debug log: Confirm filter configuration
         if (process.env.NODE_ENV === 'development') {
           logger.info({
             message: 'Rendering filter with configs',
@@ -457,9 +457,9 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
           return null;
         }
 
-        // 旧版 CustomFields 动态节点在此插件中未再使用，移除以避免未使用变量警告
+        // Legacy CustomFields dynamic nodes are no longer used in this plugin, removed to avoid unused variable warnings
 
-        // 规范化 filterStyle，确保满足 Filters 的 FilterStyle 类型要求
+        // Normalize filterStyle to ensure it meets Filters' FilterStyle type requirements
         const filterStyleSafe: {
           isWithBackgroundAndBorder: boolean;
           style?: React.CSSProperties;
@@ -472,14 +472,14 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
               }
             : { isWithBackgroundAndBorder: true };
 
-        // 将旧 TableFilter 的 props聚合为中间对象
-        // 并把 configs 明确断言为 FieldItem[] 以满足 Filters 的类型
+        // Aggregate legacy TableFilter props into intermediate object
+        // And explicitly assert configs as FieldItem[] to satisfy Filters' type requirements
         const configsTyped = configs as unknown as FieldItem[];
 
         const filterProps = {
-          config: configsTyped, // FieldItem[] 配置
+          config: configsTyped, // FieldItem[] configuration
           query: finalQuery || query,
-          // 旧布尔开关保留在插件层，不传给 Filters
+          // Legacy boolean switches remain at plugin level, not passed to Filters
           resetFilterValues: (props?: { resetEmptyData?: boolean }) => {
             reset?.(props || { resetEmptyData: false });
           },
@@ -492,7 +492,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
           ...tableFilterProps,
         };
 
-        // 调试日志：确认传递给 Filters 的属性（迁移）
+        // Debug log: Confirm props passed to Filters (migration)
         if (process.env.NODE_ENV === 'development') {
           logger.info({
             message: 'Mapped Filters props',
@@ -510,12 +510,12 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
           });
         }
 
-        // 将旧 TableFilter 的 props 映射到新 Filters 组件的 Props
+        // Map legacy TableFilter props to new Filters component Props
         const mappedProps = {
           config: filterProps.config,
           query: filterProps.query,
           showReset: Boolean(filterProps.showReset),
-          // 包装 reset，增加前后快照日志，便于定位“默认值被清空”的问题
+          // Wrap reset, add before/after snapshot logs to help locate "default values cleared" issue
           resetFilterValues: (props?: { resetEmptyData?: boolean }) => {
             if (process.env.NODE_ENV === 'development') {
               logger.info({
@@ -528,9 +528,9 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
                 component: 'TableFilterPlugin',
               });
             }
-            // 始终以不清空的方式触发表格 reset（恢复默认）
+            // Always trigger table reset in non-clearing mode (restore defaults)
             reset?.(props || { resetEmptyData: false });
-            // 下一宏任务读取一次 query 快照
+            // Read query snapshot in next macro task
             setTimeout(() => {
               if (process.env.NODE_ENV === 'development') {
                 logger.info({
@@ -544,7 +544,7 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
               }
             }, 0);
           },
-          // 将原始 actions/customActions 转为 ReactNode 类型以匹配 FiltersProps
+          // Convert original actions/customActions to ReactNode type to match FiltersProps
           actions: (filterProps.actions || []) as React.ReactNode[],
           customActions: (filterProps.customActions || []) as
             | React.ReactNode[]
@@ -552,10 +552,10 @@ export const TableFilterPlugin: PluginFactory<TableFilterConfig> = (
           customActionsStyle: filterProps.customActionsStyle as
             | React.CSSProperties
             | undefined,
-          // 新组件支持 wrapperClassName，旧组件使用 className 作为外层包装器类名
+          // New component supports wrapperClassName, legacy component uses className as outer wrapper class name
           className: '',
           wrapperClassName: filterProps.className || '',
-          // 规范化后的 filterStyle，满足 FilterStyle 要求
+          // Normalized filterStyle that meets FilterStyle requirements
           filterStyle: filterProps.filterStyle as {
             isWithBackgroundAndBorder: boolean;
             style?: React.CSSProperties;

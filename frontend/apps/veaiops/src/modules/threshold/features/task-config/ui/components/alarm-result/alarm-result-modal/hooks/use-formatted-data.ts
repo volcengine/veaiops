@@ -21,7 +21,7 @@ import type {
 } from '../types';
 
 /**
- * 格式化告警结果数据 Hook
+ * Format alarm result data Hook
  */
 export const useFormattedData = (
   data: SyncAlarmRulesResponse | null,
@@ -31,7 +31,7 @@ export const useFormattedData = (
       return null;
     }
 
-    // 处理 rule_operations 数据
+    // Process rule_operations data
     let ruleOperations: RuleOperations = {
       create: [],
       update: [],
@@ -39,7 +39,7 @@ export const useFormattedData = (
       failed: [],
     };
 
-    // 如果 rule_operations 是数组格式，需要转换
+    // If rule_operations is array format, need to convert
     if (Array.isArray(data.rule_operations)) {
       data.rule_operations.forEach((op: unknown) => {
         const operationData = op as Record<string, unknown>;
@@ -69,7 +69,7 @@ export const useFormattedData = (
       data.rule_operations &&
       typeof data.rule_operations === 'object'
     ) {
-      // 如果已经是对象格式，直接使用
+      // If already in object format, use directly
       ruleOperations = data.rule_operations as RuleOperations;
     }
 

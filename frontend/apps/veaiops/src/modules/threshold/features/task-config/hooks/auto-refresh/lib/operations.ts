@@ -15,7 +15,7 @@
 import { logger } from '@veaiops/utils';
 
 /**
- * 创建删除操作包装器
+ * Create delete operation wrapper
  */
 export const createDeleteOperation = (
   deleteApi: (id: string) => Promise<boolean>,
@@ -26,9 +26,9 @@ export const createDeleteOperation = (
       const success = await deleteApi(id);
 
       if (success) {
-        // 操作成功后自动刷新表格
+        // Automatically refresh table after successful operation
         const refreshResult = await refreshFn();
-        // 如果刷新失败，记录警告但不影响删除操作本身
+        // If refresh fails, log warning but don't affect delete operation itself
         if (
           refreshResult &&
           typeof refreshResult === 'object' &&
@@ -37,7 +37,7 @@ export const createDeleteOperation = (
           refreshResult.error
         ) {
           logger.warn({
-            message: '删除后刷新表格失败',
+            message: 'Failed to refresh table after delete',
             data: {
               error: refreshResult.error.message,
               stack: refreshResult.error.stack,
@@ -51,7 +51,7 @@ export const createDeleteOperation = (
       }
       return false;
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
@@ -65,14 +65,14 @@ export const createDeleteOperation = (
         source: 'AutoRefreshOperations',
         component: 'delete',
       });
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: Convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       throw errorObj;
     }
   };
 };
 
 /**
- * 创建更新操作包装器
+ * Create update operation wrapper
  */
 export const createUpdateOperation = (
   updateApi: () => Promise<boolean> | Promise<{ success: boolean; error?: Error }>,
@@ -81,18 +81,18 @@ export const createUpdateOperation = (
   return async (): Promise<{ success: boolean; error?: Error }> => {
     try {
       const updateResult = await updateApi();
-      // 检查更新操作是否成功（如果返回结果对象）
+      // Check if update operation succeeded (if returns result object)
       const updateSuccess =
         updateResult &&
         typeof updateResult === 'object' &&
         'success' in updateResult
           ? updateResult.success
-          : true; // 如果返回 void，默认认为成功
+          : true; // If returns void, default to success
 
       if (updateSuccess) {
-        // 操作成功后自动刷新表格
+        // Automatically refresh table after successful operation
         const refreshResult = await refreshFn();
-        // 如果刷新失败，记录警告但不影响更新操作本身
+        // If refresh fails, log warning but don't affect update operation itself
         if (
           refreshResult &&
           typeof refreshResult === 'object' &&
@@ -101,7 +101,7 @@ export const createUpdateOperation = (
           refreshResult.error
         ) {
           logger.warn({
-            message: '更新后刷新表格失败',
+            message: 'Failed to refresh table after update',
             data: {
               error: refreshResult.error.message,
             },
@@ -111,17 +111,17 @@ export const createUpdateOperation = (
         }
         return { success: true };
       } else {
-        // 更新操作失败，返回失败结果
+        // Update operation failed, return failure result
         const updateError =
           updateResult &&
           typeof updateResult === 'object' &&
           'error' in updateResult
             ? (updateResult as { error?: Error }).error
-            : new Error('更新操作失败');
+            : new Error('Update operation failed');
         return { success: false, error: updateError };
       }
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
@@ -140,7 +140,7 @@ export const createUpdateOperation = (
 };
 
 /**
- * 创建创建操作包装器
+ * Create create operation wrapper
  */
 export const createCreateOperation = (
   createApi: (data: any) => Promise<boolean> | Promise<{ success: boolean; error?: Error }>,
@@ -149,18 +149,18 @@ export const createCreateOperation = (
   return async (data: any): Promise<{ success: boolean; error?: Error }> => {
     try {
       const createResult = await createApi(data);
-      // 检查创建操作是否成功（如果返回结果对象）
+      // Check if create operation succeeded (if returns result object)
       const createSuccess =
         createResult &&
         typeof createResult === 'object' &&
         'success' in createResult
           ? createResult.success
-          : true; // 如果返回 void，默认认为成功
+          : true; // If returns void, default to success
 
       if (createSuccess) {
-        // 操作成功后自动刷新表格
+        // Automatically refresh table after successful operation
         const refreshResult = await refreshFn();
-        // 如果刷新失败，记录警告但不影响创建操作本身
+        // If refresh fails, log warning but don't affect create operation itself
         if (
           refreshResult &&
           typeof refreshResult === 'object' &&
@@ -169,7 +169,7 @@ export const createCreateOperation = (
           refreshResult.error
         ) {
           logger.warn({
-            message: '创建后刷新表格失败',
+            message: 'Failed to refresh table after create',
             data: {
               error: refreshResult.error.message,
               data,
@@ -180,17 +180,17 @@ export const createCreateOperation = (
         }
         return { success: true };
       } else {
-        // 创建操作失败，返回失败结果
+        // Create operation failed, return failure result
         const createError =
           createResult &&
           typeof createResult === 'object' &&
           'error' in createResult
             ? (createResult as { error?: Error }).error
-            : new Error('创建操作失败');
+            : new Error('Create operation failed');
         return { success: false, error: createError };
       }
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({

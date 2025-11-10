@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { convertUtcToLocal, getUserTimezone, logger } from '@veaiops/utils';
+import { logger } from '@veaiops/utils';
 import type { TimeseriesDataPoint } from '../../types';
 import type { ThresholdConfig } from '../lib/threshold-processors';
 import {
@@ -24,7 +24,7 @@ import type { TimeseriesBackendItem } from '../lib/validators';
 import { generateSeriesIdentifier } from './label-processors';
 
 /**
- * Handle data points for a single time series item
+ * Process data points for a single time series item
  */
 export const processTimeseriesItem = ({
   item,
@@ -47,11 +47,11 @@ export const processTimeseriesItem = ({
 
   const seriesType: '实际值' | '上阈值' | '下阈值' = '实际值';
 
-  // Handle each data point
+  // Process each data point
   for (let i = 0; i < loopLength; i++) {
     const rawTimestamp = timestamps[i];
 
-    // Boundary check: timestamp must be a number
+    // Boundary check: Timestamp must be a number
     if (!validateTimestamp(rawTimestamp)) {
       logger.warn({
         message: `Invalid timestamp at series ${seriesIndex}, index ${i}`,
@@ -74,9 +74,9 @@ export const processTimeseriesItem = ({
 
     const actualValue = parseToNumber(values[i]);
 
-    // Boundary check: value must be a valid number
+    // Boundary check: Value must be a valid number
     if (actualValue !== undefined) {
-      // Boundary check: value reasonableness
+      // Boundary check: Value reasonableness
       if (validateValueRange(actualValue)) {
         data.push({
           timestamp,
@@ -98,17 +98,17 @@ export const processTimeseriesItem = ({
 };
 
 /**
- * Get threshold configuration for corresponding time segment based on timestamp
+ * Get threshold configuration for the corresponding time segment based on timestamp
  *
  * Note:
  * 1. Backend uses Asia/Shanghai timezone (DEFAULT_TIMEZONE)
- * 2. Frontend timestamp is ISO string, Date.getHours() will use local timezone
- * 3. If local timezone is inconsistent with server timezone, may cause time segment matching error
- * 4. Current implementation uses local timezone, assumes user is in Asia/Shanghai timezone or time difference does not affect segment matching
+ * 2. Frontend timestamps are ISO strings, Date.getHours() uses local timezone
+ * 3. If local timezone differs from server timezone, time segment matching may be incorrect
+ * 4. Current implementation uses local timezone, assuming user is in Asia/Shanghai timezone or time difference doesn't affect segment matching
  *
  * @param timestamp - ISO timestamp string
  * @param thresholdConfig - Threshold configuration
- * @returns Threshold configuration for corresponding time segment, returns null if no match
+ * @returns Threshold configuration for the corresponding time segment, or null if no match
  */
 const getThresholdForTimestamp = (
   timestamp: string,
@@ -130,89 +130,70 @@ const getThresholdForTimestamp = (
     return null;
   }
 
-  try {
-    // Convert UTC timestamp to user's preferred timezone (default: Asia/Shanghai)
-    // This ensures threshold segment matching uses the correct timezone
-    const userTimezone = getUserTimezone();
-    const localTime = convertUtcToLocal(timestamp, userTimezone);
+  // Parse timestamp, extract hour (0-23)
+  const date = new Date(timestamp);
 
-    // Boundary check: localTime must be valid
-    if (!localTime.isValid()) {
-      logger.warn({
-        message: 'Invalid date from timestamp after timezone conversion',
-        data: { timestamp, userTimezone },
-        source: 'DataUtils',
-        component: 'getThresholdForTimestamp',
-      });
-      return null;
-    }
-
-    const hour = localTime.hour(); // 0-23 (in user's timezone)
-
-    // Boundary check: segments must exist and not be empty
-    if (!thresholdConfig.segments || thresholdConfig.segments.length === 0) {
-      return null;
-    }
-
-    // Find matching time segment configuration
-    // Segment matching rule: hour >= start_hour && hour < end_hour (left-closed, right-open interval)
-    // Special cases:
-    // 1. Segments crossing midnight (e.g., [22, 2]) need special handling: hour >= 22 || hour < 2
-    // 2. Normal segments (e.g., [6, 12]): hour >= 6 && hour < 12
-    const matchedSegment = thresholdConfig.segments.find((segment) => {
-      const { startHour, endHour } = segment;
-
-      // Boundary check: segment hour values must be in range 0-24
-      if (startHour < 0 || startHour > 24 || endHour < 0 || endHour > 24) {
-        logger.warn({
-          message: 'Invalid segment hour range',
-          data: { startHour, endHour },
-          source: 'DataUtils',
-          component: 'getThresholdForTimestamp',
-        });
-        return false;
-      }
-
-      // Handle segments crossing midnight (e.g., [22, 2])
-      if (startHour > endHour) {
-        // Crossing midnight: hour >= startHour || hour < endHour
-        return hour >= startHour || hour < endHour;
-      }
-
-      // Normal segment (left-closed, right-open): hour >= startHour && hour < endHour
-      return hour >= startHour && hour < endHour;
-    });
-
-    if (!matchedSegment) {
-      // If no matching segment found, return null (no threshold displayed)
-      // This may occur when:
-      // 1. Segment configuration has gaps (some hours not covered)
-      // 2. Timestamp hour value is outside all segment ranges
-      return null;
-    }
-
-    return {
-      upperBoundValue: matchedSegment.upperBoundValue,
-      lowerBoundValue: matchedSegment.lowerBoundValue,
-      hasUpperBound: matchedSegment.hasUpperBound,
-      hasLowerBound: matchedSegment.hasLowerBound,
-    };
-  } catch (error: unknown) {
-    // Handle timezone conversion errors
-    const errorObj = error instanceof Error ? error : new Error(String(error));
+  // Boundary check: Date object must be valid
+  if (Number.isNaN(date.getTime())) {
     logger.warn({
-      message: 'Failed to convert timestamp for threshold matching',
-      data: {
-        error: errorObj.message,
-        stack: errorObj.stack,
-        errorObj,
-        timestamp,
-      },
+      message: 'Invalid date from timestamp',
+      data: { timestamp },
       source: 'DataUtils',
       component: 'getThresholdForTimestamp',
     });
     return null;
   }
+
+  const hour = date.getHours(); // 0-23 (local timezone)
+
+  // Boundary check: segments must exist and not be empty
+  if (!thresholdConfig.segments || thresholdConfig.segments.length === 0) {
+    return null;
+  }
+
+  // Find matching time segment configuration
+  // Time segment matching rule: hour >= start_hour && hour < end_hour (left-closed, right-open interval)
+  // Special case handling:
+  // 1. Segments crossing midnight (e.g., [22, 2]) need special handling: hour >= 22 || hour < 2
+  // 2. Normal segments (e.g., [6, 12]): hour >= 6 && hour < 12
+  const matchedSegment = thresholdConfig.segments.find((segment) => {
+    const { startHour, endHour } = segment;
+
+    // Boundary check: Segment hour values must be in 0-24 range
+    if (startHour < 0 || startHour > 24 || endHour < 0 || endHour > 24) {
+      logger.warn({
+        message: 'Invalid segment hour range',
+        data: { startHour, endHour },
+        source: 'DataUtils',
+        component: 'getThresholdForTimestamp',
+      });
+      return false;
+    }
+
+    // Handle segments crossing midnight (e.g., [22, 2])
+    if (startHour > endHour) {
+      // Crossing midnight: hour >= startHour || hour < endHour
+      return hour >= startHour || hour < endHour;
+    }
+
+    // Normal segment (left-closed, right-open): hour >= startHour && hour < endHour
+    return hour >= startHour && hour < endHour;
+  });
+
+  if (!matchedSegment) {
+    // If no matching segment, return null (don't show threshold)
+    // This may occur when:
+    // 1. Time segment configuration has gaps (some hours not covered)
+    // 2. Timestamp hour value exceeds all segment ranges
+    return null;
+  }
+
+  return {
+    upperBoundValue: matchedSegment.upperBoundValue,
+    lowerBoundValue: matchedSegment.lowerBoundValue,
+    hasUpperBound: matchedSegment.hasUpperBound,
+    hasLowerBound: matchedSegment.hasLowerBound,
+  };
 };
 
 /**
@@ -253,7 +234,7 @@ export const addThresholdLines = ({
     return data;
   }
 
-  // New logic: select corresponding threshold based on timestamp segment
+  // New logic: Select corresponding threshold based on the time segment of the timestamp
   allTimestamps.forEach((timestamp) => {
     const segmentThreshold = getThresholdForTimestamp(
       timestamp,

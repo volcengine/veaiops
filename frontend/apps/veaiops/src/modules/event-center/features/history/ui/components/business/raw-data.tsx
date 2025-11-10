@@ -14,7 +14,7 @@
 
 import { Button, Space, Typography } from '@arco-design/web-react';
 import { IconCopy, IconDownload } from '@arco-design/web-react/icon';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: Use shortest path, merge same-source imports
 import {
   type RawDataProps,
   STYLES,
@@ -26,8 +26,8 @@ import type React from 'react';
 const { Text } = Typography;
 
 /**
- * 原始数据组件
- * 显示和操作事件的原始数据
+ * Raw data component
+ * Displays and operates on event raw data
  */
 export const RawData: React.FC<RawDataProps> = ({
   selectedRecord,
@@ -45,10 +45,10 @@ export const RawData: React.FC<RawDataProps> = ({
     downloadRawData(selectedRecord);
   };
 
-  // 根据格式渲染数据
+  // Render data based on format
   const renderData = () => {
     if (format === 'formatted') {
-      // 格式化视图：美化显示，适合阅读
+      // Formatted view: Beautified display, suitable for reading
       return (
         <div className="text-[#1D2129] leading-[1.8] text-sm">
           <pre className="m-0 whitespace-pre-wrap break-words">
@@ -57,7 +57,7 @@ export const RawData: React.FC<RawDataProps> = ({
         </div>
       );
     } else {
-      // JSON 视图：紧凑显示，适合复制和调试
+      // JSON view: Compact display, suitable for copying and debugging
       return (
         <div className="text-[#1D2129] leading-[1.2] text-xs">
           <pre className="m-0 whitespace-pre-wrap break-words">

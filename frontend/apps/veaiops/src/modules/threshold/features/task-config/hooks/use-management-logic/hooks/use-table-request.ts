@@ -25,11 +25,11 @@ import type {
 import { useMemo } from 'react';
 
 /**
- * 表格请求逻辑 Hook
+ * Table request logic Hook
  */
 export const useTableRequest = () => {
-  // 🎯 数据请求逻辑
-  // 注意：参数类型使用 CustomTableParams 以匹配 createServerPaginationDataSource 的期望
+  // 🎯 Data request logic
+  // Note: Use CustomTableParams type to match createServerPaginationDataSource expectations
   const request = useMemo(
     () =>
       async (
@@ -62,11 +62,11 @@ export const useTableRequest = () => {
             success: true,
           };
         } catch (error: unknown) {
-          // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+          // ✅ Correct: use logger to record error and expose actual error information
           const errorObj =
             error instanceof Error ? error : new Error(String(error));
           logger.error({
-            message: '获取任务列表失败',
+            message: 'Failed to fetch task list',
             data: {
               error: errorObj.message,
               stack: errorObj.stack,

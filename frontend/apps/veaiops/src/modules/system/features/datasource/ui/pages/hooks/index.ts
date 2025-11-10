@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Pages Hooks - 统一导出入口
+ * Pages Hooks - Unified export entry
  */
 
 export * from './use-guide';

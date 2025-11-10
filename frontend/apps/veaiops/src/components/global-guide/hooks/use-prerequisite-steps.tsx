@@ -35,13 +35,13 @@ interface HandlePrerequisiteStepsParams {
 }
 
 /**
- * Prerequisite steps handling related Hook
+ * Hook related to prerequisite step handling
  */
 export const usePrerequisiteSteps = () => {
   const { waitForElement } = useElementWait();
 
   /**
-   * Handle element waiting for next prerequisite step
+   * Handle element wait for next prerequisite step
    */
   const handleNextPrerequisiteStep = useCallback(
     async ({
@@ -96,7 +96,7 @@ export const usePrerequisiteSteps = () => {
               // Intelligently wait for page response and next prerequisite step element to appear
               const baseWaitDuration = 500; // Base wait time
 
-              // First wait for base time to let drawer animation and initial rendering complete
+              // Wait for base time first, let drawer animation and initial rendering complete
               await waitForPageReady({ maxWaitTime: baseWaitDuration });
 
               // If there is a next prerequisite step, wait for its element to appear

@@ -36,13 +36,13 @@ interface KbConfigProps {
 }
 
 /**
- * 知识库配置区块组件
+ * Knowledge base configuration block component
  *
- * 拆分说明：
- * - kb-config/volc-credentials.tsx: 火山引擎凭证配置（Access Key、Secret Key）
- * - kb-config/volc-settings.tsx: 火山引擎设置配置（TOS区域、网络类型）
- * - kb-config/kb-collections.tsx: 知识库集合配置
- * - kb-config.tsx: 主入口组件，负责组装和渲染
+ * Split description:
+ * - kb-config/volc-credentials.tsx: Volcengine credentials configuration (Access Key, Secret Key)
+ * - kb-config/volc-settings.tsx: Volcengine settings configuration (TOS region, network type)
+ * - kb-config/kb-collections.tsx: Knowledge base collections configuration
+ * - kb-config.tsx: Main entry component, responsible for assembly and rendering
  */
 export const KbConfig: React.FC<KbConfigProps> = ({
   showAdvancedConfig,

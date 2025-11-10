@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 验证日期格式
+ * Validate date format
  */
 export const validateDate = (dateString: string): boolean => {
   if (!dateString) {
-    return true; // 可选字段
+    return true; // Optional field
   }
 
   const date = new Date(dateString);
@@ -25,14 +25,14 @@ export const validateDate = (dateString: string): boolean => {
 };
 
 /**
- * 验证日期范围
+ * Validate date range
  */
 export const validateDateRange = (
   startDate: string,
   endDate: string,
 ): boolean => {
   if (!startDate || !endDate) {
-    return true; // 可选字段
+    return true; // Optional fields
   }
 
   const start = new Date(startDate);

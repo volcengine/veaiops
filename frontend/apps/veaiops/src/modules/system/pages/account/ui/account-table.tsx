@@ -30,10 +30,10 @@ import {
   useAccountTableConfig,
 } from '../hooks/use-account-management-logic';
 
-// ✅ 使用 api-generate 中的 User 类型（单一数据源原则）
+// ✅ Use User type from api-generate (single data source principle)
 type UserTableData = User;
 
-// 列配置函数 - 使用包装后的处理器
+// Column configuration function - use wrapped handlers
 const getUserColumns = (
   props: any,
   wrappedHandlers?: { delete?: (id: string) => Promise<boolean> },
@@ -51,7 +51,7 @@ const getUserColumns = (
     width: 200,
   },
   // {
-  //   title: '是否激活',
+  //   title: 'Is Active',
   //   dataIndex: 'is_active',
   //   key: 'is_active',
   //   width: 100,
@@ -71,7 +71,9 @@ const getUserColumns = (
     dataIndex: 'created_at',
     key: 'created_at',
     width: 150,
-    render: (time: string) => <CellRender.StampTime time={time} />,
+    render: (time: string) => (
+      <CellRender.StampTime time={new Date(time).getTime()} />
+    ),
   },
   {
     title: '操作',
@@ -80,7 +82,7 @@ const getUserColumns = (
     render: (_: any, record: User) => {
       const buttonConfigurations: ButtonConfiguration[] = [
         // {
-        //   text: '修改密码',
+        //   text: 'Change Password',
         //   disabled: !props?.isSupervisor,
         //   buttonProps: {
         //     icon: <IconEdit />,
@@ -97,14 +99,14 @@ const getUserColumns = (
           buttonProps: {
             icon: <IconDelete />,
             status: 'danger',
-            // 注意：使用 as any 是因为 Arco Design Button 的 BaseButtonProps 类型定义不包含 data-testid
-            // 但 data-testid 是 HTML 标准属性，在运行时会被正确传递
-            // TODO: 检查 Arco Design 源码，确认是否需要扩展类型定义
+            // Note: Using as any because Arco Design Button's BaseButtonProps type definition doesn't include data-testid
+            // But data-testid is a standard HTML attribute, will be correctly passed at runtime
+            // TODO: Check Arco Design source code to confirm if type definition needs to be extended
             'data-testid': 'delete-account-btn',
           } as any,
           onClick: async () => {
-            // ✅ 使用 useBusinessTable 自动包装的删除操作
-            // 删除操作会自动刷新表格
+            // ✅ Use useBusinessTable auto-wrapped delete operation
+            // Delete operation will automatically refresh table
             if (!record._id) {
               Message.error('用户 ID 不存在');
               return;
@@ -112,7 +114,7 @@ const getUserColumns = (
             if (wrappedHandlers?.delete) {
               await wrappedHandlers.delete(record._id);
             } else if (props.onDelete) {
-              // 兼容：如果没有包装的处理器，使用原始处理器
+              // Compatibility: If no wrapped handler, use original handler
               await props.onDelete(record._id);
             }
           },
@@ -130,13 +132,13 @@ const getUserColumns = (
   },
 ];
 
-// 临时的配置对象
+// Temporary configuration object
 const ACCOUNT_MANAGEMENT_CONFIG = {
   title: '账号管理',
 };
 
 /**
- * 账号表格组件属性接口
+ * Account table component properties interface
  */
 interface AccountTableProps {
   onEdit: (user: User) => void;
@@ -145,22 +147,22 @@ interface AccountTableProps {
 }
 
 /**
- * 账号表格组件
- * 封装表格的渲染逻辑，提供清晰的接口
+ * Account table component
+ * Encapsulates table rendering logic, provides clear interface
  */
 export const AccountTable = forwardRef<any, AccountTableProps>(
   ({ onEdit, onDelete, onAdd }, ref) => {
-    // 鉴权
+    // Authentication
     const isSupervisor =
       localStorage.getItem(authConfig.storageKeys.isSupervisor) === 'true';
 
-    // 表格配置
+    // Table configuration
     const { dataSource, tableProps } = useAccountTableConfig({
       handleEdit: onEdit,
       handleDelete: onDelete,
     });
 
-    // 🎯 使用 useBusinessTable 自动处理刷新逻辑
+    // 🎯 Use useBusinessTable to automatically handle refresh logic
     const { customTableProps, wrappedHandlers } = useBusinessTable({
       dataSource,
       tableProps,
@@ -179,10 +181,10 @@ export const AccountTable = forwardRef<any, AccountTableProps>(
       ref,
     });
 
-    // 操作按钮配置
+    // Action button configuration
     const { actions } = useAccountActionConfig(onAdd, isSupervisor);
 
-    // 创建 handleColumns 函数，传递操作回调给列配置
+    // Create handleColumns function, pass operation callbacks to column configuration
     const handleColumns = useCallback(
       (props: Record<string, unknown>) => {
         return getUserColumns(
@@ -213,7 +215,7 @@ export const AccountTable = forwardRef<any, AccountTableProps>(
   },
 );
 
-// 设置 displayName 用于调试
+// Set displayName for debugging
 AccountTable.displayName = 'AccountTable';
 
 export default AccountTable;

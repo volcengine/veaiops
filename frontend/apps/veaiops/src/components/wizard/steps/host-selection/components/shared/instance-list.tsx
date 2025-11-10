@@ -49,7 +49,7 @@ export const InstanceList: React.FC<InstanceListProps> = ({
 
   return (
     <>
-      {/* 全选控制 */}
+      {/* Select all control */}
       <div className={styles.selectAllContainer}>
         <Checkbox
           checked={isAllSelected}
@@ -63,11 +63,11 @@ export const InstanceList: React.FC<InstanceListProps> = ({
       <div className={styles.selectionList}>
         <Space direction="vertical" size="medium" style={{ width: '100%' }}>
           {instances.map((instance, index) => {
-            // 使用 areInstancesEqual 来比较实例，考虑 DiskName 等所有字段
+            // Use areInstancesEqual to compare instances, considering all fields like DiskName
             const isSelected = selectedInstances.some((selected) =>
               areInstancesEqual(selected, instance),
             );
-            // 使用统一的唯一标识生成函数，确保 key 和选中逻辑一致
+            // Use unified unique identifier generation function to ensure key and selection logic are consistent
             const uniqueKey = getInstanceUniqueId(instance, index);
 
             return (

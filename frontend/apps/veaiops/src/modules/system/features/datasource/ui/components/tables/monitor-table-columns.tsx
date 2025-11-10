@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 监控配置表格列配置
+ * Monitor configuration table column configuration
  *
- * 将列配置逻辑单独抽象出来，提高代码可维护性
- * 业务方可以通过修改这个文件来定制列配置
+ * Abstract column configuration logic separately to improve code maintainability
+ * Business side can customize column configuration by modifying this file
  */
 
 import type { DataSource, DataSourceType } from 'api-generate';
@@ -24,24 +24,24 @@ import { useCallback } from 'react';
 import { getCommonColumns } from './columns/index';
 
 /**
- * 监控表格列配置参数
+ * Monitor table column configuration parameters
  */
 export interface MonitorTableColumnsConfig {
-  /** 数据源类型 */
+  /** Data source type */
   dataSourceType: DataSourceType;
-  /** 编辑处理器 */
+  /** Edit handler */
   onEdit?: (monitor: DataSource) => void;
-  /** 删除处理器（返回 void，用于操作列） */
+  /** Delete handler (returns void, used for action column) */
   handleDelete?: (id: string) => Promise<boolean>;
-  /** 切换激活状态处理器 */
+  /** Toggle active status handler */
   handleToggle?: () => Promise<boolean>;
 }
 
 /**
- * 监控表格列配置 Hook
+ * Monitor table column configuration Hook
  *
- * @param config 列配置参数
- * @returns 列配置函数
+ * @param config Column configuration parameters
+ * @returns Column configuration function
  */
 export const useMonitorTableColumns = ({
   dataSourceType,
@@ -53,9 +53,9 @@ export const useMonitorTableColumns = ({
     (_props: Record<string, unknown>) => {
       return getCommonColumns(
         dataSourceType,
-        handleDelete || (() => Promise.resolve()), // 提供默认的删除处理器
-        onEdit, // ✅ 类型安全
-        handleToggle, // ✅ 自动刷新
+        handleDelete || (() => Promise.resolve()), // Provide default delete handler
+        onEdit, // ✅ Type safe
+        handleToggle, // ✅ Auto refresh
       );
     },
     [dataSourceType, handleDelete, handleToggle, onEdit],

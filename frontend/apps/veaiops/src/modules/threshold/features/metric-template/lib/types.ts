@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 优化：优先使用 api-generate 中的类型定义
+// Optimization: prioritize using type definitions from api-generate
 /**
- * 指标模板表格数据类型
- * 基于 api-generate 中的 MetricTemplate，仅添加前端特有字段
- * Note: 直接使用后端的 snake_case 命名，保持与 API 一致
+ * Metric template table data type
+ * Based on MetricTemplate from api-generate, only adds frontend-specific fields
+ * Note: Directly use backend's snake_case naming, keep consistent with API
  */
 import type { MetricTemplate } from "api-generate";
 
@@ -27,11 +27,11 @@ export type { APIResponseMetricTemplate } from "api-generate";
 export type { PaginatedAPIResponseMetricTemplateList } from "api-generate";
 
 export interface MetricTemplateTableData extends MetricTemplate {
-  key?: string; // 表格行的唯一标识，用于前端渲染
+  key?: string; // Unique identifier for table row, used for frontend rendering
 }
 
 /**
- * 指标模板筛选参数
+ * Metric template filter parameters
  */
 export interface MetricTemplateFilterParams {
   name?: string;
@@ -41,12 +41,12 @@ export interface MetricTemplateFilterParams {
 }
 
 /**
- * 指标模板操作类型
+ * Metric template operation type
  */
 export type MetricTemplateAction = "create" | "edit" | "delete" | "view";
 
 /**
- * 指标模板模态框状态
+ * Metric template modal state
  */
 export interface MetricTemplateModalState {
   visible: boolean;

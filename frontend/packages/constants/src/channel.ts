@@ -13,39 +13,39 @@
 // limitations under the License.
 
 /**
- * ⚠️ 注意：ChannelType 枚举定义在 @veaiops/api-client
+ * ⚠️ Note: ChannelType enum is defined in @veaiops/api-client
  *
- * ✅ 单一数据源原则：
- * - ChannelType 枚举从 @veaiops/api-client 导入（不在此处重新导出，避免中转）
- * - CHANNEL_OPTIONS 等配置常量在此处定义（UI 展示配置）
+ * ✅ Single data source principle:
+ * - ChannelType enum is imported from @veaiops/api-client (not re-exported here to avoid proxying)
+ * - CHANNEL_OPTIONS and other configuration constants are defined here (UI display configuration)
  *
- * 对应后端枚举（veaiops/schema/types.py）：
+ * Corresponding backend enum (veaiops/schema/types.py):
  * - Lark = "Lark"
  * - DingTalk = "DingTalk"
  * - WeChat = "WeChat"
  * - Webhook = "Webhook"
  */
 
-// ✅ 作为使用方，导入 ChannelType 用于类型定义和值比较
+// ✅ As a consumer, import ChannelType for type definitions and value comparisons
 import { ChannelType } from '@veaiops/api-client';
 
 /**
- * 通道类型选项配置（带中文标签和可用状态）
+ * Channel type option configuration (with labels and availability status)
  *
- * 注意：
- * - value 值使用 ChannelType 枚举
- * - 当前只支持飞书（Lark），其他通道标记为 disabled
+ * Note:
+ * - value uses ChannelType enum
+ * - Currently only Lark is supported, other channels are marked as disabled
  */
 export const CHANNEL_OPTIONS = [
-  { label: '飞书', value: ChannelType.LARK, disabled: false },
-  //   { label: '钉钉', value: ChannelType.DING_TALK, disabled: true },
-  //   { label: '企业微信', value: ChannelType.WE_CHAT, disabled: true },
+  { label: 'Lark', value: ChannelType.LARK, disabled: false },
+  //   { label: 'DingTalk', value: ChannelType.DING_TALK, disabled: true },
+  //   { label: 'WeChat', value: ChannelType.WE_CHAT, disabled: true },
   //   { label: 'Webhook', value: ChannelType.WEBHOOK, disabled: true },
 ] as const;
 
 /**
- * 通道类型映射表
- * 用于快速查找配置
+ * Channel type mapping table
+ * Used for quick configuration lookup
  */
 export const CHANNEL_MAP = CHANNEL_OPTIONS.reduce(
   (acc, cur) => {
@@ -56,7 +56,7 @@ export const CHANNEL_MAP = CHANNEL_OPTIONS.reduce(
 );
 
 /**
- * 获取通道类型的中文标签
+ * Get label for channel type
  */
 export const getChannelLabel = (value: ChannelType | string): string => {
   const option = CHANNEL_OPTIONS.find((opt) => opt.value === value);
@@ -64,7 +64,7 @@ export const getChannelLabel = (value: ChannelType | string): string => {
 };
 
 /**
- * 可用的通道选项（仅返回未禁用的选项）
+ * Available channel options (only returns non-disabled options)
  */
 export const AVAILABLE_CHANNEL_OPTIONS = CHANNEL_OPTIONS.filter(
   (opt) => !opt.disabled,

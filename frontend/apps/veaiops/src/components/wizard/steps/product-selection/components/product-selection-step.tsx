@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 产品选择步骤组件
- * @description 用于选择火山引擎产品
+ * Product selection step component
+ * @description Used for selecting Volcengine products
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -46,15 +46,15 @@ export const ProductSelectionStep: React.FC<ProductSelectionStepProps> = ({
 }) => {
   const [searchText, setSearchText] = React.useState('');
 
-  // 组件挂载时获取产品列表
+  // Fetch product list when component mounts
   useEffect(() => {
     if (products.length === 0 && !loading) {
       onProductsFetch();
     }
   }, [products.length, loading, onProductsFetch]);
 
-  // 首次加载时，如果没有选中项且有可用产品，自动选中第一个
-  // 注意：只有在没有搜索文本时才自动选中，避免搜索时触发自动选中导致循环
+  // On first load, if no item selected and products available, auto-select first one
+  // Note: Only auto-select when no search text, avoid triggering auto-select during search causing loop
   useEffect(() => {
     const hasNoSearch = !searchText.trim();
     if (!selectedProduct && products.length > 0 && !loading && hasNoSearch) {
@@ -72,7 +72,7 @@ export const ProductSelectionStep: React.FC<ProductSelectionStepProps> = ({
     }
   }, [products.length, loading, selectedProduct, searchText, onProductSelect]);
 
-  // 过滤产品（前端过滤）
+  // Filter products (client-side filtering)
   const filteredProducts = useMemo(() => {
     const trimmedSearch = (searchText || '').trim();
     if (!trimmedSearch) {
@@ -87,14 +87,14 @@ export const ProductSelectionStep: React.FC<ProductSelectionStepProps> = ({
     );
   }, [products, searchText]);
 
-  // 验证选中项的有效性：如果有搜索输入，且选中的项不在搜索结果中，清空选中状态
+  // Validate selected item validity: if search input exists and selected item not in search results, clear selection
   useEffect(() => {
     if (!selectedProduct || loading) {
       return;
     }
 
     const trimmedSearch = (searchText || '').trim();
-    // 只有在有搜索文本时才验证，避免无搜索时误清空
+    // Only validate when search text exists, avoid accidentally clearing when no search
     if (!trimmedSearch) {
       return;
     }
@@ -118,12 +118,12 @@ export const ProductSelectionStep: React.FC<ProductSelectionStepProps> = ({
         component: 'useEffect-validate-selection',
       });
 
-      // setSelectedProduct 支持 null，可以直接清空
+      // setSelectedProduct supports null, can directly clear
       onProductSelect(null);
     }
   }, [selectedProduct, filteredProducts, searchText, loading, onProductSelect]);
 
-  // 将已选中的项放到第一位，方便编辑时快速查看
+  // Put selected item first for quick viewing during editing
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     const aSelected = selectedProduct?.namespace === a.namespace;
     const bSelected = selectedProduct?.namespace === b.namespace;
@@ -165,7 +165,7 @@ export const ProductSelectionStep: React.FC<ProductSelectionStepProps> = ({
         选择要监控的火山引擎产品，产品定义了监控的服务类型
       </div>
 
-      {/* 搜索框 */}
+      {/* Search box */}
       <div className={styles.searchContainer}>
         <Input
           prefix={<IconSearch />}

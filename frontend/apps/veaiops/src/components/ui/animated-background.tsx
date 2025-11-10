@@ -36,7 +36,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
       return undefined;
     }
 
-    // 设置画布尺寸
+    // Set canvas size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -45,7 +45,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // 粒子系统
+    // Particle system
     const particles: Array<{
       x: number;
       y: number;
@@ -56,7 +56,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
       hue: number;
     }> = [];
 
-    // 创建粒子
+    // Create particle
     const createParticle = () => {
       return {
         x: Math.random() * canvas.width,
@@ -65,26 +65,26 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
         vy: (Math.random() - 0.5) * 0.5,
         size: Math.random() * 3 + 1,
         opacity: Math.random() * 0.5 + 0.2,
-        hue: Math.random() * 60 + 240, // 紫色到蓝色范围
+        hue: Math.random() * 60 + 240, // Purple to blue range
       };
     };
 
-    // 初始化粒子
+    // Initialize particles
     for (let i = 0; i < 100; i++) {
       particles.push(createParticle());
     }
 
-    // 动画循环
+    // Animation loop
     const animate = () => {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // 更新和绘制粒子
+      // Update and draw particles
       particles.forEach((particle, index) => {
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // 边界检测
+        // Boundary detection
         if (particle.x < 0 || particle.x > canvas.width) {
           particle.vx *= -1;
         }
@@ -92,13 +92,13 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
           particle.vy *= -1;
         }
 
-        // 绘制粒子
+        // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fillStyle = `hsla(${particle.hue}, 70%, 60%, ${particle.opacity})`;
         ctx.fill();
 
-        // 连接附近的粒子
+        // Connect nearby particles
         particles.slice(index + 1).forEach((otherParticle) => {
           const dx = particle.x - otherParticle.x;
           const dy = particle.y - otherParticle.y;
@@ -132,7 +132,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* 背景渐变 */}
+      {/* Background gradient */}
       <div
         className="absolute inset-0"
         style={{
@@ -144,14 +144,14 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
         }}
       />
 
-      {/* 动态粒子画布 */}
+      {/* Animated particle canvas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0"
         style={{ zIndex: 1 }}
       />
 
-      {/* 光晕效果 */}
+      {/* Glow effect */}
       <div
         className="absolute inset-0 opacity-30"
         style={{
@@ -163,7 +163,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
         }}
       />
 
-      {/* 内容 */}
+      {/* Content */}
       <div className="relative z-10">{children}</div>
     </div>
   );

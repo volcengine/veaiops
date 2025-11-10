@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源向导步骤工具函数
- * @description 提供步骤相关的通用工具函数，如获取步骤配置、按钮文本等
+ * Data source wizard step utility functions
+ * @description Provides common utility functions related to steps, such as getting step configuration, button text, etc.
  * @author AI Assistant
  * @date 2025-01-19
  */
@@ -23,10 +23,10 @@ import { DATA_SOURCE_CONFIGS } from '../../config/datasource-configs';
 import { type DataSourceType, WizardStep } from '../../types';
 
 /**
- * 获取步骤进度文本
- * @param selectedType 选中的数据源类型
- * @param currentStep 当前步骤索引
- * @returns 进度文本，如 "2 / 5"
+ * Get step progress text
+ * @param selectedType Selected data source type
+ * @param currentStep Current step index
+ * @returns Progress text, e.g., "2 / 5"
  */
 export const getStepProgressText = (
   selectedType: DataSourceType | null,
@@ -45,10 +45,10 @@ export const getStepProgressText = (
 };
 
 /**
- * 获取当前步骤配置
- * @param selectedType 选中的数据源类型
- * @param currentStep 当前步骤索引
- * @returns 步骤配置对象，如果没有找到则返回 null
+ * Get current step configuration
+ * @param selectedType Selected data source type
+ * @param currentStep Current step index
+ * @returns Step configuration object, or null if not found
  */
 export const getCurrentStepConfig = (
   selectedType: DataSourceType | null,
@@ -67,41 +67,41 @@ export const getCurrentStepConfig = (
 };
 
 /**
- * 获取下一步按钮文本
- * @param selectedType 选中的数据源类型
- * @param currentStep 当前步骤索引
- * @returns 按钮文本
+ * Get next step button text
+ * @param selectedType Selected data source type
+ * @param currentStep Current step index
+ * @returns Button text
  */
 export const getButtonText = (
   selectedType: DataSourceType | null,
   currentStep: number,
 ): string => {
   if (!selectedType) {
-    return '开始配置';
+    return 'Start Configuration';
   }
 
   if (currentStep === WizardStep.TYPE_SELECTION) {
-    return '开始配置';
+    return 'Start Configuration';
   }
 
   const config = DATA_SOURCE_CONFIGS.find((c) => c.type === selectedType);
   if (!config) {
-    return '下一步';
+    return 'Next';
   }
 
-  // 如果是最后一步，显示"完成"
+  // If it's the last step, show "Complete"
   if (currentStep === config.steps.length - 1) {
-    return '完成';
+    return 'Complete';
   }
 
-  return '下一步';
+  return 'Next';
 };
 
 /**
- * 检查是否是最后一步
- * @param selectedType 选中的数据源类型
- * @param currentStep 当前步骤索引
- * @returns 是否是最后一步
+ * Check if it's the last step
+ * @param selectedType Selected data source type
+ * @param currentStep Current step index
+ * @returns Whether it's the last step
  */
 export const isLastStep = (
   selectedType: DataSourceType | null,
@@ -120,9 +120,9 @@ export const isLastStep = (
 };
 
 /**
- * 获取数据源类型的显示名称
- * @param type 数据源类型
- * @returns 显示名称
+ * Get display name for data source type
+ * @param type Data source type
+ * @returns Display name
  */
 export const getDataSourceTypeDisplayName = (type: DataSourceType): string => {
   const config = DATA_SOURCE_CONFIGS.find((c) => c.type === type);

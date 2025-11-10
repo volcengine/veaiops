@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Descriptions, Drawer } from '@arco-design/web-react';
-// ✅ 优化：使用统一导出
+// ✅ Optimization: Use unified export
 import { channelInfoMap } from '@ec/strategy';
 import { CellRender } from '@veaiops/components';
 import type { InformStrategy } from 'api-generate';
@@ -22,20 +22,20 @@ import type React from 'react';
 const { StampTime } = CellRender;
 
 /**
- * 策略详情抽屉组件属性接口
+ * Strategy detail drawer component props interface
  */
 export interface StrategyDetailDrawerProps {
-  /** 是否显示抽屉 */
+  /** Whether to show drawer */
   visible: boolean;
-  /** 选中的策略 */
+  /** Selected strategy */
   selectedStrategy: InformStrategy | null;
-  /** 关闭抽屉的回调 */
+  /** Callback to close drawer */
   onClose: () => void;
 }
 
 /**
- * 策略详情抽屉组件
- * 提供策略详细信息的查看功能
+ * Strategy detail drawer component
+ * Provides functionality to view strategy details
  */
 export const StrategyDetailDrawer: React.FC<StrategyDetailDrawerProps> = ({
   visible,
@@ -91,11 +91,11 @@ export const StrategyDetailDrawer: React.FC<StrategyDetailDrawerProps> = ({
           },
           {
             label: '创建时间',
-            value: '-', // InformStrategy 类型中不包含 created_at 字段
+            value: '-', // InformStrategy type does not include created_at field
           },
           {
             label: '更新时间',
-            value: '-', // InformStrategy 类型中不包含 updated_at 字段
+            value: '-', // InformStrategy type does not include updated_at field
           },
         ]}
       />

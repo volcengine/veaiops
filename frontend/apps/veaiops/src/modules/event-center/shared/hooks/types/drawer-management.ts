@@ -16,7 +16,7 @@ import type { InformStrategyCreate, InformStrategyUpdate } from 'api-generate';
 import type React from 'react';
 
 /**
- * 项目导入Hook返回值类型
+ * Project import Hook return value type
  */
 export interface UseProjectImportReturn {
   visible: boolean;
@@ -29,7 +29,7 @@ export interface UseProjectImportReturn {
 }
 
 /**
- * 策略创建Hook返回值类型
+ * Strategy create Hook return value type
  */
 export interface UseStrategyCreateReturn {
   visible: boolean;
@@ -43,10 +43,10 @@ export interface UseStrategyCreateReturn {
 }
 
 /**
- * 抽屉管理Hook的返回值类型
+ * Drawer management Hook return value type
  */
 export interface UseDrawerManagementReturn {
-  // 项目导入相关
+  // Project import related
   projectImportVisible: boolean;
   projectImportLoading: boolean;
   projectRefreshTrigger: number;
@@ -54,7 +54,7 @@ export interface UseDrawerManagementReturn {
   closeProjectImport: () => void;
   handleProjectImport: (file: File) => Promise<boolean>;
 
-  // 策略创建相关
+  // Strategy create related
   strategyCreateVisible: boolean;
   strategyRefreshTrigger: number;
   openStrategyCreate: () => void;
@@ -63,11 +63,11 @@ export interface UseDrawerManagementReturn {
     values: InformStrategyCreate | InformStrategyUpdate,
   ) => Promise<boolean>;
 
-  // 渲染组件
+  // Render components
   renderProjectImportDrawer: () => React.ReactNode;
   renderStrategyCreateDrawer: () => React.ReactNode;
 
-  // Tooltip状态
+  // Tooltip state
   showProjectTooltip: boolean;
   showStrategyTooltip: boolean;
   hideProjectTooltip: () => void;
@@ -75,41 +75,41 @@ export interface UseDrawerManagementReturn {
 }
 
 /**
- * 项目导入Hook配置
+ * Project import Hook configuration
  */
 export interface UseProjectImportConfig {
   /**
-   * 项目导入成功后的回调
+   * Callback after successful project import
    */
   onSuccess?: () => void;
 }
 
 /**
- * 策略创建Hook配置
+ * Strategy create Hook configuration
  */
 export interface UseStrategyCreateConfig {
   /**
-   * 策略创建成功后的回调
+   * Callback after successful strategy creation
    */
   onSuccess?: () => void;
 
   /**
-   * 抽屉宽度，默认为800px
+   * Drawer width, default is 800px
    */
   width?: number;
 }
 
 /**
- * 抽屉管理Hook配置
+ * Drawer management Hook configuration
  */
 export interface UseDrawerManagementConfig {
   /**
-   * 项目导入成功后的回调
+   * Callback after successful project import
    */
   onProjectImportSuccess?: () => void;
 
   /**
-   * 策略创建成功后的回调
+   * Callback after successful strategy creation
    */
   onStrategyCreateSuccess?: () => void;
 }

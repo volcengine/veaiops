@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 查询参数同步插件导出
+ * Query parameter sync plugin export
  */
 
 export { QuerySyncPlugin } from './plugin';

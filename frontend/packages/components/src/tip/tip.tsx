@@ -19,11 +19,11 @@ import type { ReactNode } from 'react';
 import styles from './index.module.less';
 
 export type TipProps = {
-  /** tip提示的内容 */
+  /** Tip content */
   content?: ReactNode;
-  /** 组件的尺寸 */
+  /** Component size */
   size?: string;
-  /** 组件的样式名文件 */
+  /** Component style class name */
   className?: string;
 };
 

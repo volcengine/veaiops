@@ -15,8 +15,8 @@
 import { TaskManagement } from '@/modules/threshold/features/task-config';
 
 /**
- * 智能阈值任务配置页面
- * @description 管理智能阈值任务的创建、执行、监控和告警规则配置
+ * Intelligent threshold task configuration page
+ * @description Manages creation, execution, monitoring, and alert rule configuration for intelligent threshold tasks
  */
 export default function TaskConfigPage() {
   return <TaskManagement />;

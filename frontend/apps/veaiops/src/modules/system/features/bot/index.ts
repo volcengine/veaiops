@@ -13,18 +13,18 @@
 // limitations under the License.
 
 /**
- * Bot管理模块统一导出
- * 使用 export * from 的方式层层导出所有子模块内容
+ * Bot management module unified export
+ * Uses export * from to export all sub-module content layer by layer
  */
 
-// 类型定义
+// Type definitions
 export * from './types';
 
-// 业务逻辑 Hooks
+// Business logic Hooks
 export * from './hooks';
 
-// 工具函数和配置
+// Utility functions and configuration
 export * from './lib';
 
-// UI 组件
+// UI components
 export * from './ui';

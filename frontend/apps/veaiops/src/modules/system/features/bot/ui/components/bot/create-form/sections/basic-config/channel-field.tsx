@@ -23,7 +23,7 @@ interface ChannelFieldProps {
 }
 
 /**
- * 企业协同工具选择字段组件
+ * Enterprise collaboration tool selection field component
  */
 export const ChannelField: React.FC<ChannelFieldProps> = ({
   selectedChannel,

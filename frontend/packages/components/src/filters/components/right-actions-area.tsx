@@ -16,16 +16,16 @@ import type { FC, ReactNode } from 'react';
 import { renderActions } from '../core/renderer';
 
 interface RightActionsAreaProps {
-  /** 操作按钮列表 */
+  /** Action button list */
   actions: ReactNode[];
 }
 
 /**
- * 右侧操作区域组件
- * 负责渲染右侧的操作按钮
+ * Right actions area component
+ * Responsible for rendering right-side action buttons
  */
 const RightActionsArea: FC<RightActionsAreaProps> = ({ actions }) => {
-  // 如果没有操作按钮，不渲染
+  // If there are no action buttons, don't render
   if (!actions || actions.length === 0) {
     return null;
   }

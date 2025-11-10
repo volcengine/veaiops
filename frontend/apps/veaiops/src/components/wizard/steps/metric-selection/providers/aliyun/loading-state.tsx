@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 加载状态组件
- * @description 显示正在加载监控指标的状态
+ * Loading state component
+ * @description Displays the state when loading monitoring metrics
  */
 
 import type React from 'react';

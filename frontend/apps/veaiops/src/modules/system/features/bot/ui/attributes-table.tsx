@@ -18,13 +18,13 @@ import type { BotAttributesTableProps } from '../types';
 import { AttributesTableContent } from './components';
 
 /**
- * Bot属性表格组件
- * 提供Bot属性的CRUD功能
+ * Bot attributes table component
+ * Provides CRUD functionality for Bot attributes
  *
- * 架构说明：
- * - AttributesTableContent 组件完全内聚了 CustomTable、useBotAttributesTable Hook 和所有相关 UI（包括模态框）
- * - 主组件只负责外层容器和提示信息，不管理任何业务逻辑和状态
- * - 符合 Feature-Based 架构的内聚原则：表格相关的所有内容都在 AttributesTableContent 中
+ * Architecture description:
+ * - AttributesTableContent component fully encapsulates CustomTable, useBotAttributesTable Hook and all related UI (including modals)
+ * - Main component only handles outer container and info messages, does not manage any business logic or state
+ * - Follows Feature-Based architecture cohesion principle: all table-related content is in AttributesTableContent
  */
 export const BotAttributesTable: React.FC<BotAttributesTableProps> = ({
   botId,
@@ -32,7 +32,7 @@ export const BotAttributesTable: React.FC<BotAttributesTableProps> = ({
 }) => {
   return (
     <div className="bot-attributes-table">
-      {/* 功能说明提示 */}
+      {/* Feature description alert */}
       <Alert
         type="info"
         content={BOT_ATTRIBUTES_INFO_MESSAGE}
@@ -40,7 +40,7 @@ export const BotAttributesTable: React.FC<BotAttributesTableProps> = ({
         style={{ marginBottom: 16 }}
       />
 
-      {/* 🎯 表格内容组件（完全自包含：CustomTable + useBotAttributesTable + 模态框） */}
+      {/* 🎯 Table content component (fully self-contained: CustomTable + useBotAttributesTable + modals) */}
       <AttributesTableContent botId={botId} channel={channel} />
     </div>
   );

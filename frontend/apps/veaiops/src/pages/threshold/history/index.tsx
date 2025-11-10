@@ -20,8 +20,8 @@ import type React from 'react';
 import { useState } from 'react';
 
 /**
- * 智能阈值历史事件页面
- * 使用统一的历史事件表格组件，自动过滤只显示智能阈值Agent
+ * Intelligent threshold history events page
+ * Uses unified history events table component, automatically filters to show only Intelligent Threshold Agent
  */
 const History: React.FC = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);

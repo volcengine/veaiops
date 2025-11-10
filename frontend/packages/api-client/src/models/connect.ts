@@ -16,20 +16,20 @@
 import type { DataSourceType } from './data-source-type';
 export type Connect = {
   /**
-   * 连接ID
+   * Connection ID
    */
   _id?: string;
   /**
-   * 连接ID (别名)
+   * Connection ID (alias)
    */
   id?: string;
   /**
-   * 连接名称
+   * Connection name
    */
   name: string;
   type: DataSourceType;
   /**
-   * 连接描述
+   * Connection description
    */
   description?: string;
   /**
@@ -37,27 +37,27 @@ export type Connect = {
    */
   zabbix_api_url?: string;
   /**
-   * Zabbix API 用户名
+   * Zabbix API username
    */
   zabbix_api_user?: string;
   /**
-   * 阿里云 Access Key ID
+   * Alibaba Cloud Access Key ID
    */
   aliyun_access_key_id?: string;
   /**
-   * 火山引擎 Access Key ID
+   * Volcano Engine Access Key ID
    */
   volcengine_access_key_id?: string;
   /**
-   * 是否激活
+   * Whether active
    */
   is_active?: boolean;
   /**
-   * 创建时间
+   * Creation time
    */
   created_at?: string;
   /**
-   * 更新时间
+   * Update time
    */
   updated_at?: string;
 };

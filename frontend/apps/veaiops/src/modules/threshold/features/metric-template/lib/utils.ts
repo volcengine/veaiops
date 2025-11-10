@@ -16,7 +16,7 @@ import type { MetricTemplate } from "api-generate";
 import type { MetricTemplateTableData } from "./types";
 
 /**
- * 转换指标模板数据为表格数据
+ * Transform metric template data to table data
  */
 export const transformMetricTemplateToTableData = (
   template: MetricTemplate
@@ -28,7 +28,7 @@ export const transformMetricTemplateToTableData = (
 };
 
 /**
- * 转换指标模板列表为表格数据列表
+ * Transform metric template list to table data list
  */
 export const transformMetricTemplateListToTableData = (
   templates: MetricTemplate[]
@@ -37,7 +37,7 @@ export const transformMetricTemplateListToTableData = (
 };
 
 /**
- * 格式化阈值配置显示
+ * Format threshold configuration display
  */
 export const formatThresholdConfig = (
   config?: Record<string, unknown>
@@ -51,7 +51,7 @@ export const formatThresholdConfig = (
 };
 
 /**
- * 验证指标模板数据
+ * Validate metric template data
  */
 export const validateMetricTemplate = (
   template: Partial<MetricTemplate>
@@ -119,14 +119,14 @@ export const validateMetricTemplate = (
 };
 
 /**
- * 生成唯一的临时ID
+ * Generate unique temporary ID
  */
 export const generateTempId = (): string => {
   return `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 };
 
 /**
- * 深度克隆对象
+ * Deep clone object
  */
 export const deepClone = <T>(obj: T): T => {
   if (obj === null || typeof obj !== "object") {
@@ -155,7 +155,7 @@ export const deepClone = <T>(obj: T): T => {
 };
 
 /**
- * 安全的JSON解析
+ * Safe JSON parsing
  */
 export const safeJsonParse = <T = unknown>(
   jsonString: string,
@@ -169,7 +169,7 @@ export const safeJsonParse = <T = unknown>(
 };
 
 /**
- * 安全的JSON字符串化
+ * Safe JSON stringification
  */
 export const safeJsonStringify = (
   obj: unknown,

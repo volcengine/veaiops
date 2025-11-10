@@ -165,20 +165,20 @@
         "properties": {
           "timestamp": {
             "type": "string",
-            "description": "日志时间戳"
+            "description": "Log timestamp"
           },
           "level": {
             "type": "string",
             "enum": ["INFO", "WARNING", "ERROR"],
-            "description": "日志级别"
+            "description": "Log level"
           },
           "message": {
             "type": "string",
-            "description": "日志消息"
+            "description": "Log message"
           },
           "details": {
             "type": "object",
-            "description": "详细信息",
+            "description": "Additional details",
             "additionalProperties": true
           }
         },
@@ -189,42 +189,42 @@
         "properties": {
           "total_rows": {
             "type": "integer",
-            "description": "总行数"
+            "description": "Total number of rows"
           },
           "successful_imports": {
             "type": "integer",
-            "description": "成功导入数量"
+            "description": "Number of successful imports"
           },
           "failed_imports": {
             "type": "integer",
-            "description": "失败导入数量"
+            "description": "Number of failed imports"
           },
           "skipped_rows": {
             "type": "integer",
-            "description": "跳过行数"
+            "description": "Number of skipped rows"
           },
           "errors": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "错误信息列表"
+            "description": "List of error messages"
           },
           "logs": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ImportLog"
             },
-            "description": "导入日志列表"
+            "description": "List of import logs"
           },
           "start_time": {
             "type": "string",
-            "description": "开始时间"
+            "description": "Start time"
           },
           "end_time": {
             "type": "string",
             "nullable": true,
-            "description": "结束时间"
+            "description": "End time"
           }
         },
         "required": [

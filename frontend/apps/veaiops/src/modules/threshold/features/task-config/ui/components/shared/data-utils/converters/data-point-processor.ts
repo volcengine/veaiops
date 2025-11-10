@@ -18,7 +18,7 @@ import type { ConversionStats, TimeseriesBackendItem } from '../types';
 import { getLabelValue, parseToNumber } from '../utils';
 
 /**
- * 处理单个数据点
+ * Process single data point
  */
 export const processDataPoint = ({
   rawTimestamp,
@@ -35,10 +35,10 @@ export const processDataPoint = ({
   stats: ConversionStats;
   data: TimeseriesDataPoint[];
 }): void => {
-  // 边界检查：时间戳必须是数字
+  // Boundary check: Timestamp must be a number
   if (typeof rawTimestamp !== 'number' || !Number.isFinite(rawTimestamp)) {
     stats.skippedTimestampCount++;
-    // ✅ 正确：使用 logger 记录警告
+    // ✅ Correct: Use logger to record warning
     logger.warn({
       message: `Invalid timestamp at series ${seriesIndex}, index ${dataIndex}`,
       data: { seriesIndex, index: dataIndex, rawTimestamp },
@@ -48,12 +48,12 @@ export const processDataPoint = ({
     return;
   }
 
-  // 边界检查：时间戳范围合理性（1970-2100年之间）
+  // Boundary check: Timestamp range reasonableness (between 1970-2100)
   const MIN_TIMESTAMP = 0; // 1970-01-01
   const MAX_TIMESTAMP = 4102444800; // 2100-01-01
   if (rawTimestamp < MIN_TIMESTAMP || rawTimestamp > MAX_TIMESTAMP) {
     stats.skippedTimestampCount++;
-    // ✅ 正确：使用 logger 记录警告
+    // ✅ Correct: Use logger to record warning
     logger.warn({
       message: `Timestamp out of reasonable range at series ${seriesIndex}, index ${dataIndex}`,
       data: {
@@ -71,7 +71,7 @@ export const processDataPoint = ({
 
   const timestampDate = new Date(rawTimestamp * 1000);
 
-  // 边界检查：Date 对象必须有效
+  // Boundary check: Date object must be valid
   if (Number.isNaN(timestampDate.getTime())) {
     stats.skippedTimestampCount++;
     return;
@@ -82,10 +82,10 @@ export const processDataPoint = ({
 
   const actualValue = parseToNumber(rawValue);
 
-  // 边界检查：值必须是有效数字
+  // Boundary check: Value must be a valid number
   if (actualValue !== undefined) {
-    // 边界检查：值的合理性（可选，根据业务需求）
-    // 例如：过滤掉异常大的值
+    // Boundary check: Value reasonableness (optional, based on business requirements)
+    // For example: Filter out abnormally large values
     const MAX_REASONABLE_VALUE = Number.MAX_SAFE_INTEGER;
     const MIN_REASONABLE_VALUE = -Number.MAX_SAFE_INTEGER;
 
@@ -100,7 +100,7 @@ export const processDataPoint = ({
       });
     } else {
       stats.skippedValueCount++;
-      // ✅ 正确：使用 logger 记录警告
+      // ✅ Correct: Use logger to record warning
       logger.warn({
         message: `Value out of reasonable range at series ${seriesIndex}, index ${dataIndex}`,
         data: { seriesIndex, index: dataIndex, actualValue },
@@ -114,7 +114,7 @@ export const processDataPoint = ({
 };
 
 /**
- * 处理时间序列项
+ * Process time series item
  */
 export const processTimeseriesItem = ({
   item,
@@ -133,11 +133,11 @@ export const processTimeseriesItem = ({
   const { values } = item;
   const labels = item.labels || {};
 
-  // 边界检查：timestamps 和 values 长度可能不一致，取最小值
+  // Boundary check: timestamps and values lengths may be inconsistent, take minimum
   const loopLength = Math.min(timestamps.length, values.length);
 
   if (timestamps.length !== values.length) {
-    // ✅ 正确：使用 logger 记录警告
+    // ✅ Correct: Use logger to record warning
     logger.warn({
       message: `Timestamp and value arrays have different lengths for series ${seriesIndex}`,
       data: {
@@ -150,12 +150,12 @@ export const processTimeseriesItem = ({
     });
   }
 
-  // 获取标签值
+  // Get label values
   const hostname = getLabelValue({ obj: labels, key: 'hostname' });
   const itemid = getLabelValue({ obj: labels, key: 'itemid' });
   const instanceId = getLabelValue({ obj: labels, key: 'instance_id' });
 
-  // 边界检查：生成有意义的系列名称（预留，未来可能用于图表系列标识）
+  // Boundary check: Generate meaningful series name (reserved, may be used for chart series identification in the future)
   let _seriesIdentifier = '';
   if (hostname) {
     _seriesIdentifier = hostname;
@@ -167,7 +167,7 @@ export const processTimeseriesItem = ({
     _seriesIdentifier = `series-${seriesIndex + 1}`;
   }
 
-  // 处理每个数据点
+  // Process each data point
   for (let i = 0; i < loopLength; i++) {
     const rawTimestamp = timestamps[i];
     const rawValue = values[i];
@@ -181,7 +181,7 @@ export const processTimeseriesItem = ({
       data,
     });
 
-    // 记录时间戳到集合中（用于后续添加阈值线）
+    // Record timestamp to set (for adding threshold lines later)
     if (typeof rawTimestamp === 'number' && Number.isFinite(rawTimestamp)) {
       const timestampDate = new Date(rawTimestamp * 1000);
       if (!Number.isNaN(timestampDate.getTime())) {

@@ -1,5 +1,5 @@
 /**
- * 可编辑单元格样式
+ * Editable cell styles
  */
 
 .editableCell {
@@ -49,7 +49,7 @@
     width: 100%;
     gap: 4px;
 
-    // 编辑器占满宽度
+    // Editor takes full width
     :global(.arco-input),
     :global(.arco-input-number),
     :global(.arco-select),
@@ -95,7 +95,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     z-index: 1000;
 
-    // 三角箭头
+    // Triangle arrow
     &::before {
       content: '';
       position: absolute;
@@ -110,7 +110,7 @@
   }
 }
 
-// 禁用状态
+// Disabled state
 .editableCell.disabled {
   cursor: not-allowed;
   opacity: 0.6;
@@ -120,7 +120,7 @@
   }
 }
 
-// 只读状态
+// Read-only state
 .editableCell.readOnly {
   cursor: default;
 
@@ -129,7 +129,7 @@
   }
 }
 
-// 必填字段标识
+// Required field indicator
 .editableCell.required {
   .displayValue {
     &::after {
@@ -140,7 +140,7 @@
   }
 }
 
-// 行编辑模式样式
+// Row edit mode styles
 .editableCell.rowMode {
   &.editing {
     .displayValue {

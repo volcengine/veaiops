@@ -15,23 +15,23 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type VolcCfg = {
   /**
-   * 火山引擎Access Key
+   * Volcano Engine Access Key
    */
   ak?: string;
   /**
-   * 火山引擎Secret Key
+   * Volcano Engine Secret Key
    */
   sk?: string;
   /**
-   * TOS区域
+   * TOS region
    */
   tos_region?: string;
   /**
-   * TOS区域
+   * TOS region
    */
   network_type?: string;
   /**
-   * 额外的知识库集合
+   * Additional knowledge base collections
    */
   extra_kb_collections?: Array<string>;
 };

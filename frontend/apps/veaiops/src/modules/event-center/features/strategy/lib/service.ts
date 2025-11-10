@@ -22,9 +22,9 @@ import type {
 } from "api-generate";
 
 /**
- * 消息卡片通知策略服务
+ * Message card notification strategy service
  *
- * 封装消息卡片通知策略相关的API调用，提供统一的API接口
+ * Encapsulates message card notification strategy related API calls, provides unified API interface
  *
  * @example
  * ```typescript
@@ -34,7 +34,7 @@ import type {
  */
 export class StrategyService {
   /**
-   * 获取消息卡片通知策略列表
+   * Get message card notification strategy list
    */
   async getStrategies(params?: {
     skip?: number;
@@ -58,7 +58,7 @@ export class StrategyService {
   }
 
   /**
-   * 创建消息卡片通知策略
+   * Create message card notification strategy
    */
   async createStrategy(strategyData: InformStrategyCreate) {
     const response =
@@ -72,7 +72,7 @@ export class StrategyService {
   }
 
   /**
-   * 更新消息卡片通知策略
+   * Update message card notification strategy
    */
   async updateStrategy(strategyId: string, updateData: InformStrategyUpdate) {
     const response =
@@ -85,7 +85,7 @@ export class StrategyService {
   }
 
   /**
-   * 删除消息卡片通知策略
+   * Delete message card notification strategy
    */
   async deleteStrategy(strategyId: string) {
     const response =
@@ -99,7 +99,7 @@ export class StrategyService {
   }
 
   /**
-   * 检查策略名称是否重复
+   * Check if strategy name is duplicate
    */
   async checkStrategyNameDuplicate(name: string, excludeId?: string) {
     const response =
@@ -119,5 +119,5 @@ export class StrategyService {
   }
 }
 
-// 创建单例实例
+// Create singleton instance
 export const strategyService = new StrategyService();

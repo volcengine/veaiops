@@ -17,28 +17,28 @@ import type { PaginationProps } from '@arco-design/web-react';
 import type { ColumnProps } from '@arco-design/web-react/es/Table';
 
 /**
- * 表格渲染配置参数类型
+ * Table render configuration parameter types
  */
 export interface TableRenderConfig<RecordType extends BaseRecord = BaseRecord> {
-  /** 表格样式配置 */
+  /** Table style configuration */
   style: {
     className: string;
     rowKey: string | ((record: RecordType) => React.Key);
   };
 
-  /** 列配置 */
+  /** Column configuration */
   columns: {
     baseColumns: ColumnProps<RecordType>[];
   };
 
-  /** 数据配置 */
+  /** Data configuration */
   data: {
     formattedData: RecordType[];
     total: number;
     emptyStateElement: React.ReactNode;
   };
 
-  /** 分页配置 */
+  /** Pagination configuration */
   pagination: {
     current: number;
     pageSize: number;
@@ -47,7 +47,7 @@ export interface TableRenderConfig<RecordType extends BaseRecord = BaseRecord> {
     onPageSizeChange: (size: number) => void;
   };
 
-  /** 加载状态配置 */
+  /** Loading state configuration */
   loading: {
     isLoading: boolean;
     useCustomLoader: boolean;

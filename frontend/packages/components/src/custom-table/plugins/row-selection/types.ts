@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 行选择插件类型定义
- * 基于 Arco Table useRowSelection 能力
+ * Row selection plugin type definitions
+ * Based on Arco Table useRowSelection capability
  */
 
-// 重新导出类型，避免重复定义
+// Re-export types to avoid duplicate definitions
 export type {
   SelectionStrategy,
   BatchActionConfig,

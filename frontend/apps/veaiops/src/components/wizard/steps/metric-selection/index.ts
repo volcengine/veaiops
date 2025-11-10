@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 指标选择模块统一导出
- * @description 导出所有指标选择相关的组件和hooks
+ * Metric selection module unified export
+ * @description Exports all metric selection related components and hooks
  * @author AI Assistant
  * @date 2025-01-16
  */

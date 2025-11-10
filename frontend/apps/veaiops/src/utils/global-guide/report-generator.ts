@@ -13,48 +13,48 @@
 // limitations under the License.
 
 /**
- * 生成建议
+ * Generate recommendations
  */
 export function generateRecommendations(): string[] {
   const recommendations: string[] = [];
 
-  // 检查 localStorage 问题
+  // Check localStorage issues
   const guideStore = localStorage.getItem('global-guide-store');
   if (guideStore) {
     try {
       const parsed = JSON.parse(guideStore);
       if ('state' in parsed && 'guideVisible' in parsed.state) {
         recommendations.push(
-          '立即清除 localStorage 中的 global-guide-store 项',
+          'Immediately clear global-guide-store item in localStorage',
         );
         recommendations.push(
-          '检查 partialize 配置，确保 guideVisible 不被持久化',
+          'Check partialize configuration to ensure guideVisible is not persisted',
         );
       }
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
-      const errorMessage = errorObj.message || 'JSON 格式问题';
+      const errorMessage = errorObj.message || 'JSON format issue';
       recommendations.push(
-        `修复 global-guide-store 的 JSON 格式问题: ${errorMessage}`,
+        `Fix JSON format issue in global-guide-store: ${errorMessage}`,
       );
     }
   }
 
-  // 检查 DOM 问题
+  // Check DOM issues
   const visibleElements = document.querySelectorAll(
     '[class*="global-guide"]:not([style*="display: none"])',
   );
   if (visibleElements.length > 0) {
-    recommendations.push('检查全局引导组件的条件渲染逻辑');
-    recommendations.push('确保 guideVisible 状态正确控制组件显示');
+    recommendations.push('Check conditional rendering logic of global guide component');
+    recommendations.push('Ensure guideVisible state correctly controls component display');
   }
 
-  // 通用建议
-  recommendations.push('使用浏览器开发者工具检查组件状态');
-  recommendations.push('检查 React DevTools 中的组件 props 和 state');
-  recommendations.push('清除浏览器缓存和 localStorage 后重新测试');
+  // General recommendations
+  recommendations.push('Use browser developer tools to check component state');
+  recommendations.push('Check component props and state in React DevTools');
+  recommendations.push('Clear browser cache and localStorage, then test again');
 
   return recommendations;
 }

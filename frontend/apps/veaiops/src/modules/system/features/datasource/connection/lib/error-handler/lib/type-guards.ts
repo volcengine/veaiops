@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 错误对象类型守卫
- * 检查对象是否包含 message 属性
+ * Error object type guard
+ * Check if object contains message property
  */
 export function hasMessage(obj: unknown): obj is { message: unknown } {
   return (
@@ -25,8 +25,8 @@ export function hasMessage(obj: unknown): obj is { message: unknown } {
 }
 
 /**
- * 错误对象类型守卫
- * 检查对象是否包含 code 属性
+ * Error object type guard
+ * Check if object contains code property
  */
 export function hasCode(obj: unknown): obj is { code: unknown } {
   return (
@@ -37,7 +37,7 @@ export function hasCode(obj: unknown): obj is { code: unknown } {
 }
 
 /**
- * 网络错误对象类型守卫
+ * Network error object type guard
  */
 export function isNetworkError(obj: unknown): boolean {
   return (
@@ -47,7 +47,7 @@ export function isNetworkError(obj: unknown): boolean {
 }
 
 /**
- * HTTP 响应错误对象类型守卫
+ * HTTP response error object type guard
  */
 export function hasResponse(obj: unknown): obj is { response?: { status?: number; data?: { message?: unknown; error?: unknown } } } {
   return (
@@ -58,7 +58,7 @@ export function hasResponse(obj: unknown): obj is { response?: { status?: number
 }
 
 /**
- * HTTP 状态错误对象类型守卫
+ * HTTP status error object type guard
  */
 export function hasStatus(obj: unknown): obj is { status?: number } {
   return (

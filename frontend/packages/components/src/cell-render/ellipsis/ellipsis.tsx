@@ -33,12 +33,12 @@ export interface EllipsisRenderProps {
   empty?: JSX.Element;
   icon?: ReactNode;
   sensitive?: boolean;
-  startFrom?: number; // 添加 startFrom 属性
-  center?: boolean; // 添加 center 属性
-  right?: boolean; // 添加 right 属性
-  precision?: number; // 添加 precision 属性，用于浮点精度参数
+  startFrom?: number; // Add startFrom property
+  center?: boolean; // Add center property
+  right?: boolean; // Add right property
+  precision?: number; // Add precision property for floating point precision parameter
   onClick?: () => void;
-  isLink?: boolean; // 添加了 isLink 属性
+  isLink?: boolean; // Add isLink property
   className?: string;
 }
 
@@ -55,14 +55,14 @@ const EllipsisRender: FC<EllipsisRenderProps> = ({
   right = false,
   sensitive = false,
   isLink = false,
-  startFrom = 0, // 设置默认值为 0
+  startFrom = 0, // Set default value to 0
   precision,
   className = '',
 }) => {
   const iconBtn = icon ? <Button icon={icon} size="mini" /> : null;
   const emptyDom = empty || EMPTY_CONTENT;
 
-  // 计算justifyContent值以避免嵌套三元表达式
+  // Calculate justifyContent value to avoid nested ternary expressions
   let justifyContentValue: string | undefined;
   if (center) {
     justifyContentValue = 'center';
@@ -80,7 +80,7 @@ const EllipsisRender: FC<EllipsisRenderProps> = ({
     ...style,
   };
 
-  // 将 useMemo 移到条件语句之前
+  // Move useMemo before conditional statements
   const displayText = useMemo(() => {
     if (isNil(text) || (isString(text) && text?.length === 0)) {
       return '';
@@ -94,18 +94,18 @@ const EllipsisRender: FC<EllipsisRenderProps> = ({
       );
     } else if (typeof text === 'number') {
       if (precision !== undefined) {
-        // 智能格式化：对于极大/极小值使用科学计数法，避免超长数字字符串
+        // Smart formatting: Use scientific notation for very large/small values to avoid overly long number strings
         const absValue = Math.abs(text);
-        const threshold = 1e6; // 阈值：超过100万或小于0.000001使用科学计数法
+        const threshold = 1e6; // Threshold: Use scientific notation for values over 1 million or less than 0.000001
 
         if (
           absValue >= threshold ||
           (absValue > 0 && absValue < 1 / threshold)
         ) {
-          // 使用科学计数法显示，保留 precision 位小数
+          // Use scientific notation, keep precision decimal places
           return text.toExponential(precision);
         } else {
-          // 正常范围内使用 toFixed
+          // Use toFixed for normal range
           return Number(text).toFixed(precision);
         }
       } else {

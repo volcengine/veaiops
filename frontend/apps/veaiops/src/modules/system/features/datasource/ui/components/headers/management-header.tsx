@@ -19,7 +19,7 @@ interface ManagementHeaderProps {
 }
 
 /**
- * 监控数据源管理管理页面头部组件
+ * Monitor data source management page header component
  */
 export const ManagementHeader: React.FC<ManagementHeaderProps> = ({
   pageTitle,

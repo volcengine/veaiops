@@ -27,7 +27,7 @@ interface AppSecretFieldProps {
 }
 
 /**
- * App Secret 输入字段组件
+ * App Secret input field component
  */
 export const AppSecretField: React.FC<AppSecretFieldProps> = ({
   showSecrets,

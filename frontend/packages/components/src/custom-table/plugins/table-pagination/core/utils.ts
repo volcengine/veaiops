@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 表格分页插件工具函数
+ * Table pagination plugin utility functions
  */
 
 /**
- * getStateNumber 参数接口
+ * getStateNumber parameter interface
  */
 export interface GetStateNumberParams {
   value: unknown;
@@ -25,7 +25,7 @@ export interface GetStateNumberParams {
 }
 
 /**
- * 类型守卫：确保 state 属性存在且为 number 类型
+ * Type guard: ensure state property exists and is number type
  */
 export function getStateNumber({
   value,
@@ -35,7 +35,7 @@ export function getStateNumber({
 }
 
 /**
- * 类型守卫：确保 helper 方法存在且可调用
+ * Type guard: ensure helper method exists and is callable
  */
 export function isCallableFunction(
   value: unknown,

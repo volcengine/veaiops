@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 表格实例 Hook 相关类型定义
+ * Table instance Hook related type definitions
  */
 import type { PaginationProps } from '@arco-design/web-react/es/Pagination/pagination';
 import type { TableProps as ArcoTableProps } from '@arco-design/web-react/es/Table/interface';
@@ -27,69 +27,69 @@ export interface UseTableInstanceProps<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  // 状态相关
-  /** 初始数据源 */
+  // State related
+  /** Initial data source */
   initialDataSource?: RecordType[];
-  /** 初始查询参数 */
+  /** Initial query parameters */
   initialQuery?: QueryType;
-  /** 初始页码 */
+  /** Initial page number */
   initialCurrent?: number;
-  /** 初始页面大小 */
+  /** Initial page size */
   initialPageSize?: number;
 
-  // 数据获取相关
-  /** 数据源 */
+  // Data fetching related
+  /** Data source */
   dataSource?: RecordType[];
-  /** 手动模式 */
+  /** Manual mode */
   manual?: boolean;
-  /** 是否准备就绪 */
+  /** Whether ready */
   ready?: boolean;
-  /** 启用获取 */
+  /** Enable fetching */
   enableFetch?: boolean;
-  /** 轮询间隔 */
+  /** Polling interval */
   pollingInterval?: number;
-  /** 防抖时间 */
+  /** Debounce time */
   debounceTime?: number;
-  /** 成功回调 */
+  /** Success callback */
   onSuccess?: (data: RecordType[], params: QueryType) => void;
-  /** 错误回调 */
+  /** Error callback */
   onError?: (error: Error, params: QueryType) => void;
-  /** 完成回调 */
+  /** Finally callback */
   onFinally?: (params: QueryType, data?: RecordType[], error?: Error) => void;
-  /** 依赖项 */
+  /** Dependencies */
   effects?: unknown[];
 
-  // 表格配置
-  /** 查询参数 */
+  // Table configuration
+  /** Query parameters */
   query?: QueryType;
-  /** 分页配置 */
+  /** Pagination configuration */
   pagination?: PaginationProps | boolean;
-  /** 表格配置 */
+  /** Table configuration */
   tableProps?: Partial<Omit<ArcoTableProps<RecordType>, 'columns' | 'data'>>;
-  /** 启用的功能 */
+  /** Enabled features */
   features?: string[];
 
-  /** 其他配置 */
+  /** Other configuration */
   [key: string]: unknown;
 }
 
 /**
- * useTableInstance Hook 返回值
+ * useTableInstance Hook return value
  */
 export interface UseTableInstanceReturn<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  // 表格操作 API（类似 pro-components 的 ActionType）
+  // Table operation API (similar to pro-components ActionType)
   tableRef: React.MutableRefObject<
     CustomTableActionType<RecordType> | undefined
   >;
 
-  // 状态和数据
+  // State and data
   dataSource: RecordType[];
   loading: boolean;
   error: Error | null;
 
-  // 分页信息
+  // Pagination information
   pagination: {
     current: number;
     pageSize: number;
@@ -97,14 +97,14 @@ export interface UseTableInstanceReturn<
     onChange: (page: number, size?: number) => void;
   };
 
-  // 选择信息
+  // Selection information
   rowSelection: {
     selectedRowKeys: (string | number)[];
     onSelectionChange: (keys: (string | number)[]) => void;
     clearSelection: () => void;
   };
 
-  // 操作方法
+  // Operation methods
   actions: {
     reload: (resetPageIndex?: boolean) => Promise<void>;
     reset: () => void;

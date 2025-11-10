@@ -21,7 +21,7 @@ import type {
 } from 'api-generate';
 
 /**
- * 策略ID类型：可能是字符串、数字或包含id的对象
+ * Strategy ID type: may be string, number, or object containing id
  */
 export type StrategyIdItem =
   | string
@@ -31,7 +31,7 @@ export type StrategyIdItem =
   | undefined;
 
 /**
- * Webhook请求头配置
+ * Webhook request header configuration
  */
 export interface WebhookHeader {
   key: string;
@@ -39,32 +39,32 @@ export interface WebhookHeader {
 }
 
 /**
- * 表单管理Hook的配置参数
+ * Form management Hook configuration parameters
  */
 export interface UseSubscriptionFormConfig {
-  /** 表单是否可见 */
+  /** Whether form is visible */
   visible: boolean;
-  /** 初始数据（编辑模式） */
+  /** Initial data (edit mode) */
   initialData?: SubscribeRelationWithAttributes | null;
-  /** 模块类型 */
+  /** Module type */
   moduleType?: ModuleType;
 }
 
 /**
- * 表单管理Hook的返回值
+ * Form management Hook return value
  */
 export interface UseSubscriptionFormReturn {
-  /** 表单实例 */
+  /** Form instance */
   form: FormInstance;
-  /** 提交加载状态 */
+  /** Submit loading state */
   loading: boolean;
   /**
-   * 提交处理函数
-   * @param onSubmit - 提交回调函数，返回 true 表示成功，false 表示失败
-   * @param onCancel - 取消回调函数，成功时会被调用
-   * @param webhookHeaders - Webhook请求头配置
-   * @param enableWebhook - 是否启用Webhook
-   * @returns Promise<boolean> - 返回 true 表示提交成功，false 表示提交失败
+   * Submit handler function
+   * @param onSubmit - Submit callback function, returns true on success, false on failure
+   * @param onCancel - Cancel callback function, called on success
+   * @param webhookHeaders - Webhook request header configuration
+   * @param enableWebhook - Whether Webhook is enabled
+   * @returns Promise<boolean> - Returns true on successful submission, false on failed submission
    */
   handleSubmit: (
     onSubmit: (

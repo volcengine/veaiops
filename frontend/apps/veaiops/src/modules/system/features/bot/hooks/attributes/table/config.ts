@@ -27,7 +27,7 @@ import { useCallback, useMemo, useRef } from 'react';
 import { useBotAttributes } from '../main';
 
 /**
- * Bot 属性表格配置 Hook 参数
+ * Bot attributes table configuration Hook parameters
  */
 export interface UseBotAttributesTableConfigParams {
   botId?: string;
@@ -39,10 +39,10 @@ export interface UseBotAttributesTableConfigParams {
 }
 
 /**
- * Bot 属性表格配置 Hook 返回值
+ * Bot attributes table configuration Hook return value
  */
 export interface UseBotAttributesTableConfigReturn {
-  // 表格配置
+  // Table configuration
   tableRef: React.RefObject<
     CustomTableActionType<BotAttribute, BotAttributeFiltersQuery>
   >;
@@ -58,8 +58,8 @@ export interface UseBotAttributesTableConfigReturn {
 }
 
 /**
- * Bot 属性表格配置 Hook
- * 提供表格的数据源配置、列配置、筛选配置等
+ * Bot attributes table configuration Hook
+ * Provides table data source configuration, column configuration, filter configuration, etc.
  */
 export const useBotAttributesTableConfig = ({
   botId,
@@ -67,39 +67,39 @@ export const useBotAttributesTableConfig = ({
   onDelete,
   tableRef,
 }: UseBotAttributesTableConfigParams): UseBotAttributesTableConfigReturn => {
-  // 业务逻辑 Hook
-  // 注意：botId 和 channel 可能为 undefined，但 useBotAttributes 需要非 undefined 值
-  // 如果未提供，使用空字符串作为默认值（实际使用时会通过 API 进行验证）
+  // Business logic Hook
+  // Note: botId and channel may be undefined, but useBotAttributes requires non-undefined values
+  // If not provided, use empty string as default value (will be validated by API in actual use)
   const { fetchAttributes } = useBotAttributes({
     botId: botId || '',
     channel: (channel || 'lark') as ChannelType,
   });
 
-  // 使用 ref 来稳定 fetchAttributes 函数的引用，避免死循环
+  // Use ref to stabilize fetchAttributes function reference, avoid infinite loop
   const fetchAttributesRef = useRef(fetchAttributes);
   fetchAttributesRef.current = fetchAttributes;
 
-  // 创建一个稳定的请求函数
-  // 为什么使用 unknown：params 参数来自 CustomTable，可能包含多种类型的参数（page_req、query、filters 等）
-  // 使用 unknown 比 any 更安全，强制进行类型检查后再使用
+  // Create a stable request function
+  // Why use unknown: params parameter comes from CustomTable, may contain various types of parameters (page_req, query, filters, etc.)
+  // Using unknown is safer than any, forces type checking before use
   const stableFetchAttributes = useCallback(
     (params?: Record<string, unknown>) => {
       return fetchAttributesRef.current(params);
     },
-    [], // 空依赖数组，确保函数引用稳定
+    [], // Empty dependency array, ensures function reference is stable
   );
 
-  // 表格列配置
+  // Table column configuration
   const handleColumns = useCallback(
     () => getBotAttributesColumns({ onDelete }),
     [onDelete],
   );
 
-  // 筛选配置
+  // Filter configuration
   const handleFilters = getBotAttributeFilters;
 
-  // ✅ 修复死循环：使用 useMemo 稳定化 dataSource 对象，避免每次渲染创建新引用
-  // 根据规范：直接返回对象会导致每次渲染创建新引用，触发子组件重新渲染
+  // ✅ Fix infinite loop: Use useMemo to stabilize dataSource object, avoid creating new reference on each render
+  // According to specification: Directly returning object causes new reference on each render, triggers child component re-render
   const dataSource = useMemo(
     () => ({
       request: stableFetchAttributes,

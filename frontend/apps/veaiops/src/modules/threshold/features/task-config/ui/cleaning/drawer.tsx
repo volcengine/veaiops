@@ -25,18 +25,18 @@ import { TaskDrawerTitle } from '../components/displays';
 import { useCleaningResultColumns } from '../hooks';
 
 /**
- * 清洗结果抽屉属性接口
+ * Cleaning result drawer props interface
  */
 export interface CleaningResultDrawerProps {
-  /** 是否可见 */
+  /** Whether visible */
   visible: boolean;
-  /** 任务记录 */
+  /** Task record */
   taskRecord?: IntelligentThresholdTask | null;
-  /** 版本记录 */
+  /** Version record */
   versionRecord?: IntelligentThresholdTaskVersion | null;
-  /** 关闭回调 */
+  /** Close callback */
   onClose: () => void;
-  /** 查看时序图回调 */
+  /** View timeseries chart callback */
   onViewTimeSeries?: (
     record: MetricThresholdResult,
     task?: IntelligentThresholdTask,
@@ -44,8 +44,8 @@ export interface CleaningResultDrawerProps {
 }
 
 /**
- * 清洗结果抽屉组件
- * 使用 CustomTable 展示清洗结果数据
+ * Cleaning result drawer component
+ * Uses CustomTable to display cleaning result data
  */
 const CleaningResultDrawer: React.FC<CleaningResultDrawerProps> = ({
   visible,
@@ -54,7 +54,7 @@ const CleaningResultDrawer: React.FC<CleaningResultDrawerProps> = ({
   onClose,
   onViewTimeSeries,
 }) => {
-  // 处理列配置，包装 onViewTimeSeries 以传递 task 信息
+  // Handle column configuration, wrap onViewTimeSeries to pass task information
   const wrappedOnViewTimeSeries = onViewTimeSeries
     ? (record: MetricThresholdResult) =>
         onViewTimeSeries(record, taskRecord || undefined)
@@ -64,23 +64,23 @@ const CleaningResultDrawer: React.FC<CleaningResultDrawerProps> = ({
     onViewTimeSeries: wrappedOnViewTimeSeries,
   });
 
-  // 处理过滤器配置（暂时为空，可以后续扩展）
+  // Handle filter configuration (temporarily empty, can be extended later)
   const handleFilters = useMemo(() => {
     return () => [];
   }, []);
 
-  // 数据源配置
+  // Data source configuration
   const dataSource = useMemo(() => {
     const results = versionRecord?.result || [];
 
     return {
-      // 使用静态数据源
+      // Use static data source
       dataList: results,
       ready: false,
     };
   }, [versionRecord?.result]);
 
-  // 生成行键
+  // Generate row key
   // const getRowKey = useMemo(() => {
   //   return (record: MetricThresholdResult) =>
   //     record.unique_key || record.name || 'unknown';

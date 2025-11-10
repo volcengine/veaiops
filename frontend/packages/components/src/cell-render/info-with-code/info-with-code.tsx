@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 导入 React 相关模块和组件
+// Import React related modules and components
 
-// 导入 arco-design/web-react 模块中的组件，用于创建工具提示和排版元素
+// Import components from arco-design/web-react module for creating tooltips and typography elements
 import {
   type LinkProps as ArcoLinkProps,
   Typography,
@@ -103,7 +103,7 @@ const getHref = (
   }
 };
 
-// 提取常量
+// Extract constants
 const DEFAULT_STYLES = {
   container: {
     width: '100%',
@@ -120,11 +120,11 @@ const DEFAULT_STYLES = {
 } as const;
 
 const DEFAULT_LABELS = {
-  name: '名称',
+  name: 'Name',
   code: 'ID',
 } as const;
 
-// 提取可复用的组件
+// Extract reusable components
 const Label = ({
   className,
   children,
@@ -247,10 +247,10 @@ const CellInfoWithCode = ({
   linkProps,
   navigate,
 }: CellInfoWithCodeProps) => {
-  // 缓存 href 计算结果
+  // Cache href calculation result
   const href = useMemo(() => getHref(routePath, code), [routePath, code]);
 
-  // 缓存点击处理函数
+  // Cache click handler function
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLSpanElement>) => {
       if (!routePath || !navigate) {
@@ -280,7 +280,7 @@ const CellInfoWithCode = ({
     [routePath, code, state, navigate, linkProps?.target],
   );
 
-  // 缓存名称内容
+  // Cache name content
   const nameContent = useMemo(() => {
     if (!name) {
       if (!isNameEmptyLabelShow && !isCodeShow) {
@@ -323,7 +323,7 @@ const CellInfoWithCode = ({
     nameLabel,
   ]);
 
-  // 缓存代码内容
+  // Cache code content
   const codeContent = useMemo(() => {
     if (!isCodeShow || (isCodeUndefinedShow && !code)) {
       return null;
@@ -349,7 +349,7 @@ const CellInfoWithCode = ({
     codeEmpty,
   ]);
 
-  // 缓存是否显示空内容的判断
+  // Cache whether to show empty content
   const shouldShowEmpty = useMemo(
     () =>
       !name &&
@@ -360,13 +360,13 @@ const CellInfoWithCode = ({
     [name, code, isNameEmptyLabelShow, isCodeUndefinedShow, isCodeShow],
   );
 
-  // 缓存容器类名
+  // Cache container class name
   const containerClassName = useMemo(
     () => `flex ${direction === 'vertical' ? 'flex-col' : 'flex-row gap-2'}`,
     [direction],
   );
 
-  // 缓存最终渲染的内容 - 移到条件语句之前
+  // Cache final rendered content - moved before conditional statements
   const finalContent = useMemo(
     () => (
       <div className={containerClassName}>

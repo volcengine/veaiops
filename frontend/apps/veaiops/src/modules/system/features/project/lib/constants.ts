@@ -15,87 +15,87 @@
 import type { ProjectStatus, ProjectPriority } from '@project/types';
 
 /**
- * 项目管理配置常量
+ * Project management configuration constants
  */
 export const PROJECT_MANAGEMENT_CONFIG = {
-  title: "项目管理",
+  title: "Project Management",
   pageSize: 10,
   maxNameLength: 100,
   maxDescriptionLength: 1000,
   maxOwnerLength: 50,
-  maxBudget: 10000000, // 1000万
+  maxBudget: 10000000, // 10 million
   minProgress: 0,
   maxProgress: 100,
 } as const;
 
 /**
- * 项目状态配置
+ * Project status configuration
  */
 export const PROJECT_STATUS_CONFIG: Record<
   ProjectStatus,
   { text: string; color: string }
 > = {
-  planning: { text: "规划中", color: "blue" },
-  active: { text: "进行中", color: "green" },
-  suspended: { text: "已暂停", color: "orange" },
-  completed: { text: "已完成", color: "arcoblue" },
-  cancelled: { text: "已取消", color: "red" },
+  planning: { text: "Planning", color: "blue" },
+  active: { text: "In Progress", color: "green" },
+  suspended: { text: "Suspended", color: "orange" },
+  completed: { text: "Completed", color: "arcoblue" },
+  cancelled: { text: "Cancelled", color: "red" },
 } as const;
 
 /**
- * 项目优先级配置
+ * Project priority configuration
  */
 export const PROJECT_PRIORITY_CONFIG: Record<
   ProjectPriority,
   { text: string; color: string }
 > = {
-  low: { text: "低", color: "gray" },
-  medium: { text: "中", color: "blue" },
-  high: { text: "高", color: "orange" },
-  urgent: { text: "紧急", color: "red" },
+  low: { text: "Low", color: "gray" },
+  medium: { text: "Medium", color: "blue" },
+  high: { text: "High", color: "orange" },
+  urgent: { text: "Urgent", color: "red" },
 } as const;
 
 /**
- * 项目状态选项
+ * Project status options
  */
 export const PROJECT_STATUS_OPTIONS = [
-  { label: "全部状态", value: "" },
-  { label: "规划中", value: "planning" },
-  { label: "进行中", value: "active" },
-  { label: "已暂停", value: "suspended" },
-  { label: "已完成", value: "completed" },
-  { label: "已取消", value: "cancelled" },
+  { label: "All Statuses", value: "" },
+  { label: "Planning", value: "planning" },
+  { label: "In Progress", value: "active" },
+  { label: "Suspended", value: "suspended" },
+  { label: "Completed", value: "completed" },
+  { label: "Cancelled", value: "cancelled" },
 ] as const;
 
 /**
- * 项目优先级选项
+ * Project priority options
  */
 export const PROJECT_PRIORITY_OPTIONS = [
-  { label: "全部优先级", value: "" },
-  { label: "低", value: "low" },
-  { label: "中", value: "medium" },
-  { label: "高", value: "high" },
-  { label: "紧急", value: "urgent" },
+  { label: "All Priorities", value: "" },
+  { label: "Low", value: "low" },
+  { label: "Medium", value: "medium" },
+  { label: "High", value: "high" },
+  { label: "Urgent", value: "urgent" },
 ] as const;
 
 /**
- * 项目表格列配置
+ * Project table column configuration
  */
 export const PROJECT_TABLE_COLUMNS = {
-  name: { title: "项目名称", width: 200 },
-  status: { title: "状态", width: 100 },
-  priority: { title: "优先级", width: 100 },
-  owner: { title: "负责人", width: 120 },
-  progress: { title: "进度", width: 120 },
-  budget: { title: "预算", width: 120 },
-  start_date: { title: "开始时间", width: 120 },
-  end_date: { title: "结束时间", width: 120 },
-  created_at: { title: "创建时间", width: 150 },
-  actions: { title: "操作", width: 200 },
+  name: { title: "Project Name", width: 200 },
+  status: { title: "Status", width: 100 },
+  priority: { title: "Priority", width: 100 },
+  owner: { title: "Owner", width: 120 },
+  progress: { title: "Progress", width: 120 },
+  budget: { title: "Budget", width: 120 },
+  start_date: { title: "Start Date", width: 120 },
+  end_date: { title: "End Date", width: 120 },
+  created_at: { title: "Created At", width: 150 },
+  actions: { title: "Actions", width: 200 },
 } as const;
 
 /**
- * 项目导入模板字段
+ * Project import template fields
  */
 export const PROJECT_IMPORT_TEMPLATE_FIELDS = [
   "project_id",
@@ -111,7 +111,7 @@ export const PROJECT_IMPORT_TEMPLATE_FIELDS = [
 ] as const;
 
 /**
- * 项目验证规则
+ * Project validation rules
  */
 export const PROJECT_VALIDATION_RULES = {
   name: {
@@ -143,16 +143,16 @@ export const PROJECT_VALIDATION_RULES = {
 } as const;
 
 /**
- * 项目进度颜色配置
+ * Project progress color configuration
  */
 export const PROJECT_PROGRESS_COLORS = {
-  low: "#f53f3f", // 0-30% 红色
-  medium: "#ff7d00", // 31-70% 橙色
-  high: "#00b42a", // 71-100% 绿色
+  low: "#f53f3f", // 0-30% red
+  medium: "#ff7d00", // 31-70% orange
+  high: "#00b42a", // 71-100% green
 } as const;
 
 /**
- * 项目预算格式化配置
+ * Project budget formatting configuration
  */
 export const PROJECT_BUDGET_CONFIG = {
   currency: "¥",

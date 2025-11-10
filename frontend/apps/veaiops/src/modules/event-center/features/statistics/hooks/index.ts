@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 统计管理 Hooks 统一导出
+ * Statistics management Hooks unified export
  */
 
 export {

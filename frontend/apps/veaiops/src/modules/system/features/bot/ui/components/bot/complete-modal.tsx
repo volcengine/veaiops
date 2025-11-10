@@ -30,8 +30,8 @@ interface BotCompleteModalProps {
 }
 
 /**
- * 完整的Bot创建/编辑弹窗组件
- * @description 根据是否有editingBot来决定显示创建表单还是编辑表单
+ * Complete Bot create/edit modal component
+ * @description Determines whether to display create form or edit form based on whether editingBot exists
  */
 export const BotCompleteModal: React.FC<BotCompleteModalProps> = ({
   visible,
@@ -40,7 +40,7 @@ export const BotCompleteModal: React.FC<BotCompleteModalProps> = ({
   onSubmit,
   loading = false,
 }) => {
-  // 使用 Hook 封装提交逻辑，统一处理创建和编辑表单
+  // Use Hook to encapsulate submit logic, unified handling of create and edit forms
   const { handleCreateSubmit, handleEditSubmit } = useBotCompleteSubmit({
     onSubmit,
   });

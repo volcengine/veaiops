@@ -23,8 +23,8 @@ interface RerunFormConfigProps {
 }
 
 /**
- * 重新执行表单配置组件
- * 只包含用户需要配置的核心参数
+ * Rerun form configuration component
+ * Only contains core parameters that users need to configure
  */
 export const RerunFormConfig: React.FC<RerunFormConfigProps> = ({
   form,
@@ -33,7 +33,7 @@ export const RerunFormConfig: React.FC<RerunFormConfigProps> = ({
   return (
     <Form form={form} layout="vertical" disabled={readOnly}>
       <div className={'flex justify-between w-[100%]'}>
-        {/* 阈值方向 */}
+        {/* Threshold direction */}
         <Select.Block
           isControl
           inline
@@ -53,7 +53,7 @@ export const RerunFormConfig: React.FC<RerunFormConfigProps> = ({
             ],
           }}
         />
-        {/* 滑动窗口 */}
+        {/* Sliding window */}
         <VeInput.Number
           isControl
           required
@@ -72,11 +72,11 @@ export const RerunFormConfig: React.FC<RerunFormConfigProps> = ({
         />
       </div>
 
-      {/* 指标详情区域 */}
+      {/* Metric details area */}
       <div className="mt-6">
         <h3 className="mb-4 text-sm font-medium">指标详情</h3>
         <div className="flex flex-wrap justify-between p-4 border border-[#e5e5e5] rounded-md bg-[#f9f9f9]">
-          {/* 正常起始值和正常止值 */}
+          {/* Normal start and end values */}
           <div className="w-full flex flex-col gap-0">
             <Form.Item
               label="默认阈值下界"

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 用户表单数据类型
+ * User form data type
  */
 export interface UserFormData {
   username: string;
@@ -24,7 +24,7 @@ export interface UserFormData {
 }
 
 /**
- * 更新用户信息的参数接口
+ * Update user information parameters interface
  */
 export interface UpdateUserParams {
   userId: string;

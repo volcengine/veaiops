@@ -30,7 +30,7 @@ export interface TipProps {
   theme?: 'bits-light' | null | string;
   _stepText?: (current: number, total: number) => string;
   stepIndex?: number;
-  steps?: any[]; // 修改为数组类型
+  steps?: any[]; // Changed to array type
   showPreviousBtn?: boolean;
   handlePreviousChange?: () => void;
   _prevText?: string;
@@ -72,7 +72,7 @@ export interface TipFooterProps {
   showStepInfo?: boolean;
   showPreviousBtn?: boolean;
   stepIndex?: number;
-  steps?: any[]; // 修改为数组类型
+  steps?: any[]; // Changed to array type
   _stepText?: (current: number, total: number) => string;
   handlePreviousChange?: () => void;
   _prevText?: string;

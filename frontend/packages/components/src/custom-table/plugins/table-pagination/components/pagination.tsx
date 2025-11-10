@@ -15,7 +15,7 @@
 import { Pagination } from '@arco-design/web-react';
 import type { PaginationProps } from '@arco-design/web-react/es/Pagination';
 /**
- * 分页组件
+ * Pagination component
  */
 import type React from 'react';
 import type { ReactNode } from 'react';
@@ -39,7 +39,7 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
   onChange,
   ...restProps
 }) => {
-  // Compose showTotal renderer: "第1-10条，共12条（2页），10条/页"
+  // Compose showTotal renderer: "Items 1-10, Total 12 (2 pages), 10 items/page"
   const renderTotal:
     | ((total: number, range: number[]) => ReactNode)
     | undefined =
@@ -52,12 +52,12 @@ const CustomPagination: React.FC<CustomPaginationProps> = ({
           const end =
             range?.[1] ??
             (pageSize > 0 ? Math.min(current * pageSize, t || 0) : 0);
-          return `第${start}-${end}条，共${t}条（${pages}页），${pageSize}条/页`;
+          return `Items ${start}-${end}, Total ${t} (${pages} pages), ${pageSize} items/page`;
         }
       : undefined;
 
   // Prevent external showTotal from overriding our renderer
-  // Arco PaginationProps 的 showTotal 可能是函数或 boolean，需要显式处理
+  // Arco PaginationProps' showTotal can be a function or boolean, needs explicit handling
   const safeRestProps = restProps as Omit<typeof restProps, 'showTotal'>;
 
   return (

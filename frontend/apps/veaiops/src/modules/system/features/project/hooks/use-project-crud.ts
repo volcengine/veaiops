@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Project CRUD 操作 Hook
- * @description 项目的创建、更新、删除、导入等操作
+ * Project CRUD operations Hook
+ * @description Create, update, delete, import and other operations for projects
  */
 
 import { Form, Message } from '@arco-design/web-react';
@@ -31,39 +31,39 @@ import type { Project } from 'api-generate';
 import { useCallback, useState } from 'react';
 
 /**
- * Project CRUD Hook 返回值
+ * Project CRUD Hook return value
  */
 export interface UseProjectCRUDReturn {
-  // 状态
+  // State
   form: ReturnType<typeof Form.useForm<ProjectFormData>>[0];
   editingProject: Project | null;
   modalVisible: boolean;
   submitting: boolean;
 
-  // 导入相关状态
+  // Import-related state
   importDrawerVisible: boolean;
   uploading: boolean;
 
-  // 新建项目相关状态
+  // Create project-related state
   createDrawerVisible: boolean;
   creating: boolean;
 
-  // 状态管理
+  // State management
   setEditingProject: (project: Project | null) => void;
   setModalVisible: (visible: boolean) => void;
 
-  // CRUD 操作
+  // CRUD operations
   handleSubmit: (values: ProjectFormData) => Promise<boolean>;
   handleCancel: () => void;
   handleDelete: (projectId: string) => Promise<boolean>;
   checkDeletePermission: (project: Project) => boolean;
 
-  // 导入相关操作
+  // Import-related operations
   handleImport: (file: File) => Promise<boolean>;
   handleOpenImportDrawer: () => void;
   handleCloseImportDrawer: () => void;
 
-  // 新建项目相关操作
+  // Create project-related operations
   handleCreate: (values: {
     project_id: string;
     name: string;
@@ -81,23 +81,23 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
   const [modalVisible, setModalVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // 导入相关状态
+  // Import-related state
   const [importDrawerVisible, setImportDrawerVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  // 新建项目相关状态
+  // Create project-related state
   const [createDrawerVisible, setCreateDrawerVisible] = useState(false);
   const [creating, setCreating] = useState(false);
 
-  // 🎯 CRUD 操作函数
+  // 🎯 CRUD operation functions
   /**
-   * 处理表单提交
-   * 支持新增和编辑两种模式
+   * Handle form submission
+   * Supports both create and edit modes
    */
   const handleSubmit = useCallback(
     async (values: ProjectFormData): Promise<boolean> => {
       try {
-        // 表单验证
+        // Form validation
         const validationErrors = validateProjectFormData(values);
         if (validationErrors.length > 0) {
           Message.error(validationErrors[0]);
@@ -109,11 +109,11 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
         let success = false;
 
         if (editingProject) {
-          // 编辑模式 - 暂时只支持创建，编辑功能待后端API支持
-          Message.warning('编辑功能暂未开放，请联系管理员');
+          // Edit mode - Currently only supports create, edit functionality pending backend API support
+          Message.warning('Edit feature is not yet available, please contact administrator');
           return false;
         } else {
-          // 新增模式
+          // Create mode
           success = await createProject(values);
         }
 
@@ -126,9 +126,9 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
 
         return false;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
-          error instanceof Error ? error.message : '操作失败，请重试';
+          error instanceof Error ? error.message : 'Operation failed, please try again';
         Message.error(errorMessage);
         return false;
       } finally {
@@ -139,7 +139,7 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
   );
 
   /**
-   * 关闭弹窗
+   * Close modal
    */
   const handleCancel = useCallback(() => {
     setModalVisible(false);
@@ -149,8 +149,8 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
   }, [form]);
 
   /**
-   * 删除项目
-   * 包含权限检查和用户确认
+   * Delete project
+   * Includes permission check and user confirmation
    */
   const handleDelete = useCallback(
     async (projectId: string): Promise<boolean> => {
@@ -158,9 +158,9 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
         const result = await deleteProject(projectId);
         return result;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
-          error instanceof Error ? error.message : '删除项目失败，请重试';
+          error instanceof Error ? error.message : 'Failed to delete project, please try again';
         Message.error(errorMessage);
         return false;
       }
@@ -169,7 +169,7 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
   );
 
   /**
-   * 检查项目删除权限
+   * Check project delete permission
    */
   const checkDeletePermission = useCallback((project: Project): boolean => {
     const canDelete = canDeleteProject(project);
@@ -185,7 +185,7 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
   }, []);
 
   /**
-   * 处理项目导入
+   * Handle project import
    */
   const handleImport = useCallback(async (file: File): Promise<boolean> => {
     try {
@@ -193,17 +193,17 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
       const success = await importProjects(file);
 
       if (success) {
-        Message.success('项目导入成功');
+        Message.success('Projects imported successfully');
         setImportDrawerVisible(false);
         return true;
       } else {
-        Message.error('项目导入失败');
+        Message.error('Failed to import projects');
         return false;
       }
     } catch (error) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Extract actual error information
       const errorMessage =
-        error instanceof Error ? error.message : '项目导入失败，请重试';
+        error instanceof Error ? error.message : 'Failed to import projects, please try again';
       Message.error(errorMessage);
       return false;
     } finally {
@@ -212,21 +212,21 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
   }, []);
 
   /**
-   * 打开导入抽屉
+   * Open import drawer
    */
   const handleOpenImportDrawer = useCallback(() => {
     setImportDrawerVisible(true);
   }, []);
 
   /**
-   * 关闭导入抽屉
+   * Close import drawer
    */
   const handleCloseImportDrawer = useCallback(() => {
     setImportDrawerVisible(false);
   }, []);
 
   /**
-   * 处理新建项目
+   * Handle project creation
    */
   const handleCreate = useCallback(
     async (values: { project_id: string; name: string }): Promise<boolean> => {
@@ -235,17 +235,17 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
         const success = await createProject(values);
 
         if (success) {
-          Message.success('项目创建成功');
+          Message.success('Project created successfully');
           setCreateDrawerVisible(false);
           return true;
         } else {
-          Message.error('项目创建失败');
+          Message.error('Failed to create project');
           return false;
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
-          error instanceof Error ? error.message : '项目创建失败，请重试';
+          error instanceof Error ? error.message : 'Failed to create project, please try again';
         Message.error(errorMessage);
         return false;
       } finally {
@@ -256,14 +256,14 @@ export const useProjectCRUD = (): UseProjectCRUDReturn => {
   );
 
   /**
-   * 打开新建抽屉
+   * Open create drawer
    */
   const handleOpenCreateDrawer = useCallback(() => {
     setCreateDrawerVisible(true);
   }, []);
 
   /**
-   * 关闭新建抽屉
+   * Close create drawer
    */
   const handleCloseCreateDrawer = useCallback(() => {
     setCreateDrawerVisible(false);

@@ -15,7 +15,7 @@
 import type { ApiError } from './error-types';
 
 /**
- * 检查错误对象是否包含 status 属性
+ * Check if error object contains status property
  */
 export function isApiError(error: unknown): error is ApiError {
   return (

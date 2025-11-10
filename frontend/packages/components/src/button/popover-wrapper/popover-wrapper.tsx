@@ -17,17 +17,17 @@ import type { PopoverProps } from '@arco-design/web-react/es/Popover/interface';
 import type { ReactNode } from 'react';
 
 /**
- * 高阶组件，将 Popover 功能添加到组件中
- * @param {React.ComponentType} WrappedComponent - 要包裹的组件
- * @returns {React.ComponentType} - 包含 Popover 功能的新组件
+ * Higher-order component that adds Popover functionality to components
+ * @param {React.ComponentType} WrappedComponent - Component to wrap
+ * @returns {React.ComponentType} - New component with Popover functionality
  */
 const WithPopover = (
   WrappedComponent: JSX.Element,
 ): (({ popoverProps }: { popoverProps: PopoverProps }) => ReactNode) => {
   /**
-   * 包含 Popover 功能的组件
-   * @param {PopoverProps} props.popoverProps - Popover 组件的属性
-   * @returns {React.ReactNode} - 渲染的组件
+   * Component with Popover functionality
+   * @param {PopoverProps} props.popoverProps - Popover component properties
+   * @returns {React.ReactNode} - Rendered component
    */
   return ({ popoverProps }: { popoverProps: PopoverProps }): ReactNode => {
     return <Popover {...popoverProps}>{WrappedComponent}</Popover>;

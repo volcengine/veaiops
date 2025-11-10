@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Custom Filter Setting 插件默认配置
+ * Default configuration for Custom Filter Setting plugin
  */
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 import type { ReactNode } from 'react';
@@ -29,7 +29,7 @@ export const DEFAULT_FILTER_SETTING_CONFIG: Required<CustomFilterSettingConfig> 
       allOptions: [],
       selectedOptions: [],
       hiddenOptions: [],
-      title: '搜索项设置',
+      title: 'Search Items Settings',
       mode: ['select'],
       caseSelectText: (key: string) => key,
       saveFun: () => {

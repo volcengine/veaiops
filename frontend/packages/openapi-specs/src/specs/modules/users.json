@@ -3,7 +3,7 @@
   "info": {
     "title": "VolcAIOpsKit - Users API",
     "version": "1.0.0",
-    "description": "用户管理相关接口"
+    "description": "User management related API endpoints"
   },
   "paths": {
     "/apis/v1/manager/users/": {
@@ -238,35 +238,35 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "用户ID"
+            "description": "User ID"
           },
           "username": {
             "type": "string",
-            "description": "用户名"
+            "description": "Username"
           },
           "email": {
             "type": "string",
-            "description": "邮箱地址"
+            "description": "Email address"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否激活",
+            "description": "Whether the user is active",
             "default": true
           },
           "is_supervisor": {
             "type": "boolean",
-            "description": "是否为管理员",
+            "description": "Whether the user is a supervisor",
             "default": false
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation timestamp"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Last update timestamp"
           }
         },
         "required": ["username", "email"]
@@ -276,20 +276,20 @@
         "properties": {
           "username": {
             "type": "string",
-            "description": "用户名"
+            "description": "Username"
           },
           "email": {
             "type": "string",
             "format": "email",
-            "description": "邮箱地址"
+            "description": "Email address"
           },
           "password": {
             "type": "string",
-            "description": "密码"
+            "description": "Password"
           },
           "is_supervisor": {
             "type": "boolean",
-            "description": "是否为管理员",
+            "description": "Whether the user is a supervisor",
             "default": false
           }
         },
@@ -300,11 +300,11 @@
         "properties": {
           "is_active": {
             "type": "boolean",
-            "description": "是否激活"
+            "description": "Whether the user is active"
           },
           "is_supervisor": {
             "type": "boolean",
-            "description": "是否为管理员"
+            "description": "Whether the user is a supervisor"
           }
         }
       },
@@ -313,15 +313,15 @@
         "properties": {
           "old_password": {
             "type": "string",
-            "description": "旧密码"
+            "description": "Old password"
           },
           "new_password": {
             "type": "string",
-            "description": "新密码"
+            "description": "New password"
           },
           "confirm_password": {
             "type": "string",
-            "description": "确认新密码，需要与新密码一致"
+            "description": "Confirm new password, must match the new password"
           }
         },
         "required": ["old_password", "new_password", "confirm_password"]

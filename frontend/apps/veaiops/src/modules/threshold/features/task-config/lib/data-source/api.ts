@@ -30,7 +30,7 @@ import {
 import type { TaskQueryParams } from "./types";
 
 /**
- * 真实 API 请求函数
+ * Real API request function
  */
 export const realApiRequest = async (
   query: TaskQueryParams
@@ -53,14 +53,14 @@ export const realApiRequest = async (
         limit: response.limit || apiRequest.limit || 100,
       };
     } else {
-      throw new Error(response.message || "获取任务列表失败：响应数据格式错误");
+      throw new Error(response.message || "Failed to fetch task list: Invalid response data format");
     }
   } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: Use logger to record error and expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: "获取任务列表失败",
+      message: "Failed to fetch task list",
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -70,7 +70,7 @@ export const realApiRequest = async (
       component: "realApiRequest",
     });
     const errorMessage =
-      error instanceof Error ? error.message : "获取任务列表失败，请重试";
+      error instanceof Error ? error.message : "Failed to fetch task list, please try again";
     Message.error(errorMessage);
 
     return {
@@ -83,7 +83,7 @@ export const realApiRequest = async (
 };
 
 /**
- * 创建任务
+ * Create task
  */
 export const createTask = async (
   taskData: IntelligentThresholdTaskCreateRequest
@@ -99,14 +99,14 @@ export const createTask = async (
     if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
       return transformApiResponseToTableData(response.data);
     } else {
-      throw new Error(response.message || "创建任务失败：响应数据格式错误");
+      throw new Error(response.message || "Failed to create task: Invalid response data format");
     }
   } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: Use logger to record error and expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: "创建任务失败",
+      message: "Failed to create task",
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -118,14 +118,14 @@ export const createTask = async (
     const errorMessage =
       error instanceof Error
         ? error.message
-        : "创建任务失败：未知错误";
+        : "Failed to create task: Unknown error";
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 /**
- * 重新运行任务
+ * Rerun task
  */
 export const rerunTask = async (
   taskData: RerunIntelligentThresholdTaskRequest
@@ -142,14 +142,14 @@ export const rerunTask = async (
       Message.success("任务重新运行成功");
       return true;
     } else {
-      throw new Error(response.message || "重新运行任务失败");
+      throw new Error(response.message || "Failed to rerun task");
     }
   } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: Use logger to record error and expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: "重新运行任务失败",
+      message: "Failed to rerun task",
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -161,14 +161,14 @@ export const rerunTask = async (
     const errorMessage =
       error instanceof Error
         ? error.message
-        : "重新运行任务失败：未知错误";
+        : "Failed to rerun task: Unknown error";
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 /**
- * 更新任务结果
+ * Update task result
  */
 export const updateTaskResult = async (
   taskId: string,
@@ -187,14 +187,14 @@ export const updateTaskResult = async (
       Message.success("任务结果更新成功");
       return true;
     } else {
-      throw new Error(response.message || "更新任务结果失败：响应数据格式错误");
+      throw new Error(response.message || "Failed to update task result: Invalid response data format");
     }
   } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: Use logger to record error and expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: "更新任务结果失败",
+      message: "Failed to update task result",
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -206,14 +206,14 @@ export const updateTaskResult = async (
     const errorMessage =
       error instanceof Error
         ? error.message
-        : "更新任务结果失败：未知错误";
+        : "Failed to update task result: Unknown error";
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 /**
- * 更新自动刷新开关
+ * Update auto refresh switch
  */
 export const updateAutoRefreshSwitch = async (
   taskIds: string[],
@@ -234,14 +234,14 @@ export const updateAutoRefreshSwitch = async (
       Message.success("自动刷新开关更新成功");
       return true;
     } else {
-      throw new Error(response.message || "更新自动刷新开关失败");
+      throw new Error(response.message || "Failed to update auto refresh switch");
     }
   } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: Use logger to record error and expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: "更新自动刷新开关失败",
+      message: "Failed to update auto refresh switch",
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -253,14 +253,14 @@ export const updateAutoRefreshSwitch = async (
     const errorMessage =
       error instanceof Error
         ? error.message
-        : "更新自动刷新开关失败：未知错误";
+        : "Failed to update auto refresh switch: Unknown error";
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 /**
- * 删除任务
+ * Delete task
  */
 export const deleteTask = async (taskId: string): Promise<boolean> => {
   try {
@@ -299,14 +299,14 @@ export const deleteTask = async (taskId: string): Promise<boolean> => {
       });
       return true;
     } else {
-      throw new Error(response.message || "删除任务失败");
+      throw new Error(response.message || "Failed to delete task");
     }
   } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+    // ✅ Correct: Use logger to record error and expose actual error information
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
     logger.error({
-      message: "删除任务失败",
+      message: "Failed to delete task",
       data: {
         error: errorObj.message,
         stack: errorObj.stack,
@@ -316,7 +316,7 @@ export const deleteTask = async (taskId: string): Promise<boolean> => {
       component: "deleteTask",
     });
     const errorMessage =
-      error instanceof Error ? error.message : "删除任务失败：未知错误";
+      error instanceof Error ? error.message : "Failed to delete task: Unknown error";
     Message.error(errorMessage);
     return false;
   }

@@ -17,8 +17,8 @@ import type { CustomCheckBoxProps } from '@/custom-table/types/components/title-
 import { Checkbox } from '@arco-design/web-react';
 import type { FC, MouseEvent } from 'react';
 /**
- * 标题复选框组件
- * @description 用于表格标题区域的复选框控件，支持查询和过滤功能
+ * Title checkbox component
+ * @description Checkbox control for table title area, supports query and filter functionality
 
  *
  */
@@ -32,10 +32,10 @@ const TitleCheckbox: FC<CustomCheckBoxProps> = ({
   onChange,
 }) => {
   /**
-   * 生成值对象
-   * @param key - 对象键名
-   * @param value - 对象值
-   * @returns 生成的对象或 undefined
+   * Generate value object
+   * @param key - Object key name
+   * @param value - Object value
+   * @returns Generated object or undefined
    */
   const generateValueObject = (
     key: string | undefined,
@@ -50,8 +50,8 @@ const TitleCheckbox: FC<CustomCheckBoxProps> = ({
   };
 
   /**
-   * 处理复选框状态变化
-   * @param nextValue - 新的复选框状态
+   * Handle checkbox state change
+   * @param nextValue - New checkbox state
    */
   const handleChange = (nextValue?: boolean) => {
     let changeType: string | undefined;

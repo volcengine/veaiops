@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 过滤器插件系统统一导出
- * @description 过滤器插件系统的入口文件，提供所有插件相关功能的导出
+ * Filter plugin system unified export
+ * @description Entry file for filter plugin system, provides exports for all plugin-related functionality
 
  *
  */
 
-// ===== 类型定义导出 =====
+// ===== Type definitions export =====
 export type {
   FieldItem,
   FilterEventBus,
@@ -31,15 +31,15 @@ export type {
   PluginRegistryOptions,
 } from '@veaiops/types';
 
-// ===== 核心组件导出 =====
+// ===== Core components export =====
 export * from './extension/manager';
 export * from './registry';
 
-// ===== 核心插件导出 =====
+// ===== Core plugins export =====
 export * from './core/date.plugin';
 export * from './core/input.plugin';
 export * from './core/select.plugin';
 
-// ===== 插件集合和初始化 =====
+// ===== Plugin collections and initialization =====
 export * from './core-plugins';
 export * from './initialization';

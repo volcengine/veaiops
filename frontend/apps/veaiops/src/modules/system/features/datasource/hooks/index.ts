@@ -28,17 +28,17 @@
 export { useMonitorAccessLogic } from './use-monitor-access-logic';
 export { useMonitorActionConfig } from './use-monitor-action-config';
 
-// 导出新的 useMonitorTableConfig（使用 ModernTableColumnProps 和 HandleFilterProps）
+// Export new useMonitorTableConfig (using ModernTableColumnProps and HandleFilterProps)
 export {
   useMonitorTableConfig,
   type UseMonitorTableConfigOptions,
   type UseMonitorTableConfigReturn,
 } from './use-monitor-table-config';
 
-// 数据源处理器 Hook
+// Data source handler Hook
 export { useDataSourceHandlers } from './use-data-source-handlers';
 
-// 从迁移的 hooks 文件导出
+// Export from migrated hooks file
 export {
   useDataSourceManagement,
   useZabbixDataSource,

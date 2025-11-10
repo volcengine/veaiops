@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 步骤指示器组件
- * @description 展示当前向导的步骤进度
+ * Step indicator component
+ * @description Displays current wizard step progress
  * @author AI Assistant
  * @date 2025-01-15
  */
@@ -32,7 +32,7 @@ export interface StepIndicatorProps {
 }
 
 /**
- * 获取步骤状态
+ * Get step status
  */
 const getStepStatus = (index: number, currentStep: number): StepStatus => {
   if (index < currentStep) {
@@ -48,12 +48,12 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
   selectedType,
   currentStep,
 }) => {
-  // ✅ 所有 Hooks 必须在组件顶层调用，在任何条件判断之前
+  // ✅ All Hooks must be called at component top level, before any conditional checks
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(false);
 
-  // 检查滚动状态
+  // Check scroll state
   const checkScrollState = React.useCallback(() => {
     if (!scrollRef.current) {
       return;
@@ -64,13 +64,13 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
   }, []);
 
-  // 滚动到指定位置
+  // Scroll to specified position
   const scrollTo = React.useCallback((direction: 'left' | 'right') => {
     if (!scrollRef.current) {
       return;
     }
 
-    const scrollAmount = 280; // 一个卡片的宽度
+    const scrollAmount = 280; // One card width
     const currentScroll = scrollRef.current.scrollLeft;
     const newScroll =
       direction === 'left'
@@ -83,13 +83,13 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
     });
   }, []);
 
-  // 滚动到当前步骤
+  // Scroll to current step
   const scrollToCurrentStep = React.useCallback(() => {
     if (!scrollRef.current) {
       return;
     }
 
-    const stepWidth = 280; // 卡片宽度
+    const stepWidth = 280; // Card width
     const scrollAmount = currentStep * stepWidth;
 
     scrollRef.current.scrollTo({
@@ -98,7 +98,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
     });
   }, [currentStep]);
 
-  // 监听滚动事件
+  // Listen to scroll events
   React.useEffect(() => {
     const scrollElement = scrollRef.current;
     if (scrollElement) {
@@ -112,12 +112,12 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
     return undefined;
   }, [checkScrollState]);
 
-  // 当步骤改变时，滚动到当前步骤
+  // When step changes, scroll to current step
   React.useEffect(() => {
     scrollToCurrentStep();
   }, [scrollToCurrentStep]);
 
-  // ✅ 条件判断移到 Hooks 之后
+  // ✅ Conditional checks moved after Hooks
   if (!selectedType) {
     return null;
   }
@@ -129,7 +129,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
 
   return (
     <div className={styles.stepsContainer}>
-      {/* 左箭头 */}
+      {/* Left arrow */}
       <button
         className={`${styles.scrollArrow} ${styles.left} ${
           !canScrollLeft ? styles.disabled : ''
@@ -141,7 +141,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
         <IconLeft className={styles.arrowIcon} />
       </button>
 
-      {/* 右箭头 */}
+      {/* Right arrow */}
       <button
         className={`${styles.scrollArrow} ${styles.right} ${
           !canScrollRight ? styles.disabled : ''
@@ -163,7 +163,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({
               status={getStepStatus(index, currentStep)}
               showConnector={false}
             />
-            {/* 所有步骤都有连接器容器，最后一个设为不可见以保持宽度一致 */}
+            {/* All steps have connector container, last one set to invisible to maintain consistent width */}
             <div
               className={`${styles.connectorWrapper} ${
                 index >= config.steps.length - 1 ? styles.hidden : ''

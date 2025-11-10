@@ -18,14 +18,14 @@ import type { TextAreaProps } from '@arco-design/web-react/es/Input/interface';
 import type { FC } from 'react';
 
 const commonInputTextAreaProps = {
-  placeholder: '请输入',
+  placeholder: 'Please enter',
   style: { width: '100%' },
   autoComplete: 'off' as const,
 };
 
 /**
- * TextArea 组件包装器
- * 提供表单项包装功能，支持垂直布局等特性
+ * TextArea component wrapper
+ * Provides form item wrapper functionality, supports vertical layout and other features
  */
 const TextArea: FC<FormItemControlProps<TextAreaProps>> = (props) => {
   const { controlProps, ...wrapperProps } = props;

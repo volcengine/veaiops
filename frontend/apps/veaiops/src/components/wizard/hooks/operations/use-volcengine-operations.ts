@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 火山引擎数据源操作Hook
- * @description 管理火山引擎相关的API调用和状态更新
+ * Volcengine data source operations Hook
+ * @description Manages Volcengine-related API calls and state updates
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -35,7 +35,7 @@ import type {
   WizardState,
 } from '../../types';
 
-// 火山引擎实例API响应类型
+// Volcengine instance API response type
 type APIVolcengineInstance = Record<string, string>;
 
 export const useVolcengineOperations = (
@@ -43,7 +43,7 @@ export const useVolcengineOperations = (
   setState: React.Dispatch<React.SetStateAction<WizardState>>,
   updateLoading: (key: keyof WizardState['loading'], value: boolean) => void,
 ) => {
-  // 获取火山引擎产品列表
+  // Fetch Volcengine product list
   const fetchVolcengineProducts = useCallback(async () => {
     updateLoading('products', true);
     try {
@@ -51,7 +51,7 @@ export const useVolcengineOperations = (
         await apiClient.dataSources.getApisV1DatasourceVolcengineProducts();
 
       if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
-        // 转换API响应数据为组件需要的格式
+        // Transform API response data to component-required format
         const products: VolcengineProduct[] = response.data.map(
           (item: APIVolcengineProduct) => ({
             namespace: item.namespace,
@@ -72,7 +72,7 @@ export const useVolcengineOperations = (
 
       Message.error('获取火山引擎产品失败，请重试');
 
-      // 设置空数组作为fallback
+      // Set empty array as fallback
       setState((prev) => ({
         ...prev,
         volcengine: { ...prev.volcengine, products: [] },
@@ -82,7 +82,7 @@ export const useVolcengineOperations = (
     }
   }, [setState, updateLoading]);
 
-  // 设置选中的产品
+  // Set selected product
   const setSelectedProduct = useCallback(
     (product: VolcengineProduct | null) => {
       setState((prev) => ({
@@ -90,7 +90,7 @@ export const useVolcengineOperations = (
         volcengine: {
           ...prev.volcengine,
           selectedProduct: product,
-          // 当选择新产品时，清空子命名空间相关数据
+          // Clear sub-namespace related data when selecting new product
           subNamespaces: [],
           selectedSubNamespace: null,
           metrics: [],
@@ -103,7 +103,7 @@ export const useVolcengineOperations = (
     [setState],
   );
 
-  // 获取火山引擎子命名空间
+  // Fetch Volcengine sub-namespaces
   const fetchVolcengineSubNamespaces = useCallback(
     async (namespace: string) => {
       updateLoading('subNamespaces', true);
@@ -132,7 +132,7 @@ export const useVolcengineOperations = (
 
         Message.error('获取火山引擎子命名空间失败，请重试');
 
-        // 设置空数组作为fallback
+        // Set empty array as fallback
         setState((prev) => ({
           ...prev,
           volcengine: { ...prev.volcengine, subNamespaces: [] },
@@ -144,7 +144,7 @@ export const useVolcengineOperations = (
     [setState, updateLoading],
   );
 
-  // 设置选中的子命名空间
+  // Set selected sub-namespace
   const setSelectedSubNamespace = useCallback(
     (subNamespace: string | null) => {
       setState((prev) => ({
@@ -152,7 +152,7 @@ export const useVolcengineOperations = (
         volcengine: {
           ...prev.volcengine,
           selectedSubNamespace: subNamespace,
-          // 切换子命名空间时清除所有后续依赖数据
+          // Clear all subsequent dependent data when switching sub-namespace
           metrics: [],
           selectedMetric: null,
           instances: [],
@@ -164,7 +164,7 @@ export const useVolcengineOperations = (
     [setState],
   );
 
-  // 获取火山引擎指标列表
+  // Fetch Volcengine metrics list
   const fetchVolcengineMetrics = useCallback(
     async (namespace?: string, subNamespace?: string) => {
       updateLoading('metrics', true);
@@ -178,7 +178,7 @@ export const useVolcengineOperations = (
           );
 
         if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
-          // 转换API响应数据为组件需要的格式
+          // Transform API response data to component-required format
           const metrics: VolcengineMetric[] = response.data.map(
             (item: APIVolcengineMetric) => ({
               metricName: item.metric_name,
@@ -200,9 +200,9 @@ export const useVolcengineOperations = (
         const errorMessage =
           error instanceof Error ? error.message : '未知错误';
 
-        Message.error('获取火山引擎监控项失败，请重试');
+        Message.error('获取火山引擎指标失败，请重试');
 
-        // 设置空数组作为fallback
+        // Set empty array as fallback
         setState((prev) => ({
           ...prev,
           volcengine: { ...prev.volcengine, metrics: [] },
@@ -214,7 +214,7 @@ export const useVolcengineOperations = (
     [setState, updateLoading],
   );
 
-  // 设置选中的监控项
+  // Set selected metric
   const setSelectedVolcengineMetric = useCallback(
     (metric: VolcengineMetric | null) => {
       setState((prev) => ({
@@ -222,7 +222,7 @@ export const useVolcengineOperations = (
         volcengine: {
           ...prev.volcengine,
           selectedMetric: metric,
-          // 切换监控项时清除实例和分组，防止数据不一致
+          // Clear instances and grouping when switching metrics to prevent data inconsistency
           instances: [],
           selectedInstances: [],
           selectedGroupBy: [],
@@ -232,7 +232,7 @@ export const useVolcengineOperations = (
     [setState],
   );
 
-  // 获取火山引擎实例列表
+  // Fetch Volcengine instance list
   const fetchVolcengineInstances = useCallback(
     async (
       connectName: string,
@@ -243,7 +243,7 @@ export const useVolcengineOperations = (
     ) => {
       updateLoading('instances', true);
       try {
-        // 使用火山引擎API获取实例列表（POST 方法）
+        // Use Volcengine API to fetch instance list (POST method)
         const response =
           await apiClient.dataSources.postApisV1DatasourceVolcengineMetricsInstances(
             {
@@ -258,12 +258,12 @@ export const useVolcengineOperations = (
           );
 
         if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
-          // 转换API响应数据为组件需要的格式
-          // 火山引擎返回的数据格式: [{"ResourceID": "i-xxx"}, {"ResourceID": "i-yyy"}]
-          // 需要兼容多种可能的字段名
+          // Transform API response data to component-required format
+          // Volcengine response format: [{"ResourceID": "i-xxx"}, {"ResourceID": "i-yyy"}]
+          // Need to support multiple possible field names
           const instances: VolcengineInstance[] =
             response.data?.map((item: APIVolcengineInstance) => {
-              // 尝试从多个可能的字段获取实例ID
+              // Try to get instance ID from multiple possible fields
               const instanceId =
                 item.ResourceID ||
                 item.resource_id ||
@@ -272,7 +272,7 @@ export const useVolcengineOperations = (
                 item.instanceId ||
                 'unknown';
 
-              // 尝试从多个可能的字段获取实例名称
+              // Try to get instance name from multiple possible fields
               const instanceName =
                 item.ResourceName ||
                 item.resource_name ||
@@ -284,7 +284,7 @@ export const useVolcengineOperations = (
               return {
                 instanceId,
                 instanceName,
-                region: item.region || region, // 使用传入的 region
+                region: item.region || region, // Use passed region
                 namespace,
                 subNamespace: subNamespace || '',
                 dimensions: item,
@@ -304,7 +304,7 @@ export const useVolcengineOperations = (
 
         Message.error('获取火山引擎实例失败，请重试');
 
-        // 设置空数组作为fallback
+        // Set empty array as fallback
         setState((prev) => ({
           ...prev,
           volcengine: { ...prev.volcengine, instances: [] },
@@ -316,7 +316,7 @@ export const useVolcengineOperations = (
     [setState, updateLoading],
   );
 
-  // 设置可用实例列表（用于预填充）
+  // Set available instance list (for prefill)
   const setVolcengineInstances = useCallback(
     (instances: VolcengineInstance[]) => {
       setState((prev) => ({
@@ -327,7 +327,7 @@ export const useVolcengineOperations = (
     [setState],
   );
 
-  // 设置选中的实例
+  // Set selected instances
   const setSelectedVolcengineInstances = useCallback(
     (instances: VolcengineInstance[]) => {
       setState((prev) => ({
@@ -338,7 +338,7 @@ export const useVolcengineOperations = (
     [setState],
   );
 
-  // 设置选中的分组维度
+  // Set selected grouping dimensions
   const setSelectedVolcengineGroupBy = useCallback(
     (groupBy: string[]) => {
       setState((prev) => ({
@@ -349,7 +349,7 @@ export const useVolcengineOperations = (
     [setState],
   );
 
-  // 设置区域
+  // Set region
   const setVolcengineRegion = useCallback(
     (region: string) => {
       setState((prev) => ({

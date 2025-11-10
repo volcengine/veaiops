@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Bot API服务
- * 统一管理 Bot 和 Bot 属性相关的 API 调用
+ * Bot API service
+ * Unified management of Bot and Bot attribute related API calls
  */
 
 import { API_RESPONSE_CODE } from '@veaiops/constants';
@@ -29,7 +29,7 @@ import type {
 } from 'api-generate';
 
 /**
- * 获取Bot列表参数接口
+ * Get Bot list parameters interface
  */
 export interface GetBotsParams {
   skip?: number;
@@ -39,7 +39,7 @@ export interface GetBotsParams {
 }
 
 /**
- * 获取Bot列表
+ * Get Bot list
  */
 export const getBots = async (params: GetBotsParams = {}) => {
   const response = await apiClient.bots.getApisV1ManagerSystemConfigBots(
@@ -52,7 +52,7 @@ export const getBots = async (params: GetBotsParams = {}) => {
 };
 
 /**
- * 删除Bot
+ * Delete Bot
  */
 export const deleteBot = async (botId: string): Promise<boolean> => {
   const response = await apiClient.bots.deleteApisV1ManagerSystemConfigBots({
@@ -67,7 +67,7 @@ export const deleteBot = async (botId: string): Promise<boolean> => {
 };
 
 /**
- * 创建Bot
+ * Create Bot
  */
 export const createBot = async (data: BotCreateRequest) => {
   const response = await apiClient.bots.postApisV1ManagerSystemConfigBots({
@@ -77,7 +77,7 @@ export const createBot = async (data: BotCreateRequest) => {
 };
 
 /**
- * updateBot 参数接口
+ * updateBot parameters interface
  */
 export interface UpdateBotParams {
   botId: string;
@@ -85,7 +85,7 @@ export interface UpdateBotParams {
 }
 
 /**
- * 更新Bot
+ * Update Bot
  */
 export const updateBot = async ({
   botId,
@@ -99,7 +99,7 @@ export const updateBot = async ({
 };
 
 /**
- * 获取Bot加密信息参数接口
+ * Get Bot secret information parameters interface
  */
 export interface GetBotSecretParams {
   botId: string;
@@ -107,7 +107,7 @@ export interface GetBotSecretParams {
 }
 
 /**
- * 获取Bot加密信息
+ * Get Bot secret information
  */
 export const getBotSecret = async ({
   botId,
@@ -126,27 +126,27 @@ export const getBotSecret = async ({
   throw new Error(response.message || '获取加密信息失败');
 };
 
-// ==================== Bot 属性 API ====================
+// ==================== Bot Attributes API ====================
 
 /**
- * 获取 Bot 属性列表的请求参数接口
+ * Request parameters interface for getting Bot attribute list
  *
- * 对应 API: getApisV1ManagerSystemConfigBotAttributes
- * 基于 api-generate 中的参数定义
+ * Corresponds to API: getApisV1ManagerSystemConfigBotAttributes
+ * Based on parameter definitions in api-generate
  */
 export interface FetchAttributesParams {
-  /** 跳过的记录数 */
+  /** Number of records to skip */
   skip?: number;
-  /** 返回的最大记录数 */
+  /** Maximum number of records to return */
   limit?: number;
-  /** 按属性名称筛选（多选） */
+  /** Filter by attribute name (multiple selection) */
   names?: Array<AttributeKey> | string[];
-  /** 按属性值筛选（模糊搜索） */
+  /** Filter by attribute value (fuzzy search) */
   value?: string;
 }
 
 /**
- * 获取特别关注列表 API
+ * Get special attention list API
  */
 export async function fetchAttributesApi(
   params: FetchAttributesParams,
@@ -173,7 +173,7 @@ export async function fetchAttributesApi(
 }
 
 /**
- * 创建特别关注 API
+ * Create special attention API
  */
 export async function createAttributeApi(
   payload: BotAttributePayload,
@@ -191,7 +191,7 @@ export async function createAttributeApi(
 }
 
 /**
- * 更新特别关注 API
+ * Update special attention API
  */
 export async function updateAttributeApi(params: {
   botAttributeId: string;
@@ -210,7 +210,7 @@ export async function updateAttributeApi(params: {
 }
 
 /**
- * 删除特别关注 API
+ * Delete special attention API
  */
 export async function deleteAttributeApi(params: {
   botAttributeId: string;

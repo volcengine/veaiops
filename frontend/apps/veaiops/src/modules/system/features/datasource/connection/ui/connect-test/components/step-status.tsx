@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 步骤状态组件
+ * Step status component
  */
 
 import { Steps } from '@arco-design/web-react';

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 步骤相关功能统一导出
- * @description 包含步骤验证、数据获取、工具函数等
+ * Step-related functionality unified export
+ * @description Includes step validation, data fetching, utility functions, etc.
  */
 
 export * from './validators';

@@ -18,8 +18,8 @@ import type { Interest } from 'api-generate';
 import { useEffect, useState } from 'react';
 
 /**
- * 规则抽屉 Hook
- * 负责表单状态管理和初始化逻辑
+ * Rule drawer Hook
+ * Responsible for form state management and initialization logic
  */
 export interface UseRuleDrawerOptions {
   visible: boolean;
@@ -36,7 +36,7 @@ export interface UseRuleDrawerReturn {
 }
 
 /**
- * 规则抽屉业务逻辑 Hook
+ * Rule drawer business logic Hook
  */
 export const useRuleDrawer = ({
   visible,
@@ -44,27 +44,27 @@ export const useRuleDrawer = ({
   rule,
   form,
 }: UseRuleDrawerOptions): UseRuleDrawerReturn => {
-  // 检测类别状态（用于条件显示字段）
+  // Inspection category state (for conditional field display)
   const [inspectCategory, setInspectCategory] = useState<
     Interest['inspect_category'] | undefined
   >(undefined);
 
-  // 当前抑制间隔（用于实时预览）
+  // Current silence delta (for real-time preview)
   const [currentSilenceDelta, setCurrentSilenceDelta] = useState<
     string | undefined
   >(undefined);
 
-  // 表单字段名称映射（用于监听变化）
+  // Form field name mapping (for change monitoring)
   const inspect_category = Form.useWatch('inspect_category', form);
 
-  // 当检测类别变化时，更新状态
+  // Update state when inspection category changes
   useEffect(() => {
     if (inspect_category) {
       setInspectCategory(inspect_category as Interest['inspect_category']);
     }
   }, [inspect_category]);
 
-  // 初始化表单值
+  // Initialize form values
   useEffect(() => {
     if (visible && rule && isEdit) {
       const category = rule.inspect_category;
@@ -92,7 +92,7 @@ export const useRuleDrawer = ({
       .validate()
       .then(onSubmit)
       .catch(() => {
-        // 表单验证失败，无需额外处理
+        // Form validation failed, no additional handling needed
       });
   };
 

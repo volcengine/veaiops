@@ -15,7 +15,7 @@
 import type React from 'react';
 
 /**
- * 检查历史列渲染组件
+ * Inspect history column render component
  */
 export const InspectHistoryColumn: React.FC<{ count: number }> = ({ count }) =>
   count === 0 ? '全部' : `${count}条`;

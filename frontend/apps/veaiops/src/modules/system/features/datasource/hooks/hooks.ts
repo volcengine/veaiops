@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 监控数据源管理相关自定义Hooks
+ * Monitor data source management related custom Hooks
  */
 
 import { Message } from '@arco-design/web-react';
@@ -24,14 +24,14 @@ import type { MonitorItem } from '../lib/types';
 import { transformDataSourceToMonitorItem } from '../lib/utils';
 
 /**
- * 监控数据源管理Hook
+ * Monitor data source management Hook
  */
 export const useDataSourceManagement = (type: DataSourceType) => {
   const [data, setData] = useState<MonitorItem[]>([]);
   const [loading, setLoading] = useState(false);
 
   /**
-   * 获取数据源列表
+   * Get data source list
    */
   const fetchData = useCallback(async () => {
     try {
@@ -44,7 +44,7 @@ export const useDataSourceManagement = (type: DataSourceType) => {
 
       setData(transformedData);
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Extract actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || `获取${type}数据源失败，请重试`;
@@ -55,7 +55,7 @@ export const useDataSourceManagement = (type: DataSourceType) => {
   }, [type]);
 
   /**
-   * 删除数据源
+   * Delete data source
    */
   const deleteDataSource = useCallback(
     async (id: string) => {
@@ -65,7 +65,7 @@ export const useDataSourceManagement = (type: DataSourceType) => {
       );
       if (result.success) {
         Message.success('删除成功');
-        await fetchData(); // 重新获取数据
+        await fetchData(); // Re-fetch data
       } else if (result.error) {
         const errorMessage =
           result.error instanceof Error
@@ -86,31 +86,31 @@ export const useDataSourceManagement = (type: DataSourceType) => {
 };
 
 /**
- * Zabbix数据源Hook
+ * Zabbix data source Hook
  */
 export const useZabbixDataSource = () => {
-  // ✅ 类型安全：使用枚举值替代字符串字面量
+  // ✅ Type safe: Use enum value instead of string literal
   return useDataSourceManagement(DataSourceType.ZABBIX);
 };
 
 /**
- * 阿里云数据源Hook
+ * Aliyun data source Hook
  */
 export const useAliyunDataSource = () => {
-  // ✅ 类型安全：使用枚举值替代字符串字面量
+  // ✅ Type safe: Use enum value instead of string literal
   return useDataSourceManagement(DataSourceType.ALIYUN);
 };
 
 /**
- * 火山引擎数据源Hook
+ * Volcengine data source Hook
  */
 export const useVolcengineDataSource = () => {
-  // ✅ 类型安全：使用枚举值替代字符串字面量
+  // ✅ Type safe: Use enum value instead of string literal
   return useDataSourceManagement(DataSourceType.VOLCENGINE);
 };
 
 /**
- * 详情查看Hook
+ * Detail view Hook
  */
 export const useDetailView = () => {
   const [visible, setVisible] = useState(false);

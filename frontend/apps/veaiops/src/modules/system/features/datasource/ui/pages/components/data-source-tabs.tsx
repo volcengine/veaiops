@@ -22,10 +22,10 @@ import type { DataSourceConfig, TableRefMap } from '../types';
 const { TabPane } = Tabs;
 
 /**
- * 渲染数据源 TabPane 的辅助函数
+ * Helper function to render data source TabPane
  *
- * 注意：不能使用组件包装，因为 Arco Tabs 使用 React.Children.forEach
- * 只能识别直接子元素，必须直接在 Tabs 内部调用此函数
+ * Note: Cannot use component wrapper, because Arco Tabs uses React.Children.forEach
+ * Only recognizes direct child elements, must call this function directly inside Tabs
  */
 export const renderDataSourceTabs = (
   dataSourceConfigs: DataSourceConfig[],

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 步骤头部组件
- * @description 显示步骤的标题和描述信息
+ * Step header component
+ * @description Displays title and description information for the step
  */
 
 import type React from 'react';

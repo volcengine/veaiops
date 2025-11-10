@@ -17,8 +17,8 @@ import type React from 'react';
 import type { FormActionsProps } from './types';
 
 /**
- * 表单操作按钮组件
- * 提供取消和提交按钮
+ * Form action buttons component
+ * Provides cancel and submit buttons
  */
 export const FormActions: React.FC<FormActionsProps> = ({
   onSubmit,

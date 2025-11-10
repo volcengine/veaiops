@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 数据源配置验证器
+ * Data source configuration validator
  */
 
 import type { DataSourceType, WizardState } from '@/components/wizard/types';
@@ -51,7 +51,7 @@ export const validateConfiguration = (
       if (!state.aliyun.selectedMetric) {
         return '请选择监控指标';
       }
-      // 阿里云实例选择是可选的，不选择实例将监控所有实例
+      // Aliyun instance selection is optional, not selecting instances will monitor all instances
       break;
 
     case DataSource.type.VOLCENGINE:

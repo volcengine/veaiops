@@ -19,7 +19,7 @@ import '../../styles/components/default-footer.less';
 import type { DefaultStreamFooterProps } from '@/custom-table/types';
 
 /**
- * 默认表格底部加载更多/继续搜索按钮
+ * Default table footer load more/continue search button
  */
 const DefaultStreamFooter: React.FC<DefaultStreamFooterProps> = ({
   hasMoreData = false,
@@ -36,7 +36,7 @@ const DefaultStreamFooter: React.FC<DefaultStreamFooterProps> = ({
       onClick={onLoadMore}
     >
       <IconSearch />
-      {needContinue ? '继续搜索更多数据' : '加载更多'}
+      {needContinue ? 'Continue searching for more data' : 'Load more'}{' '}
     </div>
   );
 };

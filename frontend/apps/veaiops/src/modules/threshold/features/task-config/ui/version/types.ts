@@ -18,7 +18,7 @@ import type {
 } from 'api-generate';
 
 /**
- * 任务版本表格组件属性接口
+ * Task version table component props interface
  */
 export interface TaskVersionTableProps {
   task: IntelligentThresholdTask | null;
@@ -28,7 +28,7 @@ export interface TaskVersionTableProps {
 }
 
 /**
- * 表格操作状态接口
+ * Table action states interface
  */
 export interface TableActionStates {
   alarmDrawerVisible: boolean;

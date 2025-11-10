@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * AI 模型相关常量
+ * AI model related constants
  */
 
-// 模型类型选项
+// Model type options
 export const MODEL_TYPE_OPTIONS = [
   { label: '分类模型', value: 'classification' },
   { label: '回归模型', value: 'regression' },
@@ -25,7 +25,7 @@ export const MODEL_TYPE_OPTIONS = [
   { label: '时序预测', value: 'forecasting' },
 ];
 
-// 框架选项
+// Framework options
 export const FRAMEWORK_OPTIONS = [
   { label: 'TensorFlow', value: 'tensorflow' },
   { label: 'PyTorch', value: 'pytorch' },
@@ -34,7 +34,7 @@ export const FRAMEWORK_OPTIONS = [
   { label: 'LightGBM', value: 'lightgbm' },
 ];
 
-// 状态选项
+// Status options
 export const STATUS_OPTIONS = [
   { label: '训练中', value: 'training', color: 'blue' },
   { label: '已部署', value: 'deployed', color: 'green' },
@@ -43,7 +43,7 @@ export const STATUS_OPTIONS = [
   { label: '等待中', value: 'pending', color: 'orange' },
 ];
 
-// 优化器选项
+// Optimizer options
 export const OPTIMIZER_OPTIONS = [
   { label: 'Adam', value: 'adam' },
   { label: 'SGD', value: 'sgd' },
@@ -51,7 +51,7 @@ export const OPTIMIZER_OPTIONS = [
   { label: 'AdaGrad', value: 'adagrad' },
 ];
 
-// 损失函数选项
+// Loss function options
 export const LOSS_FUNCTION_OPTIONS = [
   { label: 'Cross Entropy', value: 'cross_entropy' },
   { label: 'Mean Squared Error', value: 'mse' },
@@ -60,8 +60,8 @@ export const LOSS_FUNCTION_OPTIONS = [
 ];
 
 /**
- * 获取AI模型的默认配置
- * 用于创建新模型时的初始值
+ * Get default configuration for AI model
+ * Used as initial values when creating new model
  */
 export const DEFAULT_MODEL_CONFIG = {
   type: 'classification',
@@ -86,10 +86,10 @@ export const DEFAULT_MODEL_CONFIG = {
 };
 
 /**
- * 注意：MOCK_MODELS 已被移除
- * 请使用 useBots Hook 从真实API获取Bot数据（作为AI模型的替代）
+ * Note: MOCK_MODELS has been removed
+ * Please use useBots Hook to get Bot data from real API (as replacement for AI models)
  *
- * 使用示例：
+ * Usage example:
  * import { useBots } from '@/hooks/use-api-data';
  *
  * const { data: bots, loading, error, refetch } = useBots();

@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 卡片模版管理相关类型定义
+ * Card template management related type definitions
 
  */
 
-// 导入生成的API类型
+// Import generated API types
 import type {
   AgentTemplateCreateRequest,
   AgentTemplateUpdateRequest,
@@ -25,60 +25,60 @@ import type {
 } from 'api-generate';
 
 /**
- * Agent模版查询参数
+ * Agent template query parameters
  */
 export interface AgentTemplateQuery {
-  /** Agent类型筛选 */
+  /** Agent type filter */
   agents?: string[];
-  /** 通道类型筛选 */
+  /** Channel type filter */
   channels?: ChannelType[];
-  /** 模版ID搜索 */
+  /** Template ID search */
   templateId?: string;
-  /** 模版名称搜索 */
+  /** Template name search */
   name?: string;
-  /** 是否启用 */
+  /** Whether enabled */
   is_active?: boolean;
-  /** 创建时间范围 */
+  /** Creation time range */
   createTimeRanges?: number[];
-  /** 分页参数 */
+  /** Pagination parameters */
   skip?: number;
-  /** 每页大小 */
+  /** Page size */
   limit?: number;
-  /** 索引签名以满足 BaseQuery 约束 */
+  /** Index signature to satisfy BaseQuery constraints */
   [key: string]: unknown;
 }
 
 /**
- * 创建Agent模版请求 - 使用生成的API类型
+ * Create Agent template request - uses generated API types
  */
 export type CreateAgentTemplateRequest = AgentTemplateCreateRequest;
 
 /**
- * 更新Agent模版请求 - 使用生成的API类型
+ * Update Agent template request - uses generated API types
  */
 export type UpdateAgentTemplateRequest = AgentTemplateUpdateRequest;
 
 /**
- * 通道类型选项已迁移到 @veaiops/constants
+ * Channel type options have been migrated to @veaiops/constants
  * @see frontend/packages/constants/src/channel.ts
  *
- * 使用方式：
+ * Usage:
  * import { CHANNEL_OPTIONS } from '@veaiops/constants';
  */
 
 /**
- * 引导步骤类型
+ * Guide step type
  */
 export interface GuideStep {
-  /** 步骤标题 */
+  /** Step title */
   title: string;
-  /** 步骤描述 */
+  /** Step description */
   description: string;
-  /** 步骤图标 */
+  /** Step icon */
   icon?: React.ReactNode;
-  /** 是否完成 */
+  /** Whether completed */
   completed?: boolean;
-  /** 操作按钮 */
+  /** Action button */
   action?: {
     text: string;
     onClick: () => void;

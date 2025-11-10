@@ -27,8 +27,8 @@ interface UpdateTooltipProps {
 }
 
 /**
- * 数据更新提示Tooltip组件
- * 提供优雅的视觉反馈，告知用户数据已更新
+ * Data update notification Tooltip component
+ * Provides elegant visual feedback to inform users that data has been updated
  */
 export const UpdateTooltip: React.FC<UpdateTooltipProps> = ({
   children,
@@ -43,7 +43,7 @@ export const UpdateTooltip: React.FC<UpdateTooltipProps> = ({
     if (show) {
       setVisible(true);
 
-      // 自动隐藏
+      // Auto hide
       const timer = setTimeout(() => {
         setVisible(false);
         onHide?.();

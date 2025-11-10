@@ -20,10 +20,10 @@ export const EMPTY_CONTENT = (
   <span className="text-gray-default">{EMPTY_CONTENT_TEXT}</span>
 );
 
-export const EMPTY_CONTENT_TEXT_DOM = <span>暂无数据</span>;
+export const EMPTY_CONTENT_TEXT_DOM = <span>No Data</span>;
 
 export const EmptyDataTagRender: FC<{ text?: string }> = ({
-  text = '暂无数据',
+  text = 'No Data',
 }) => <span className="text-gray-default">{text}</span>;
 
 export const EMPTY_CONTENT_TAG = (

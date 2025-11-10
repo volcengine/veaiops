@@ -12,13 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { GlobalGuideStep } from '../../../lib';
-import type { OnFeatureClickParams } from '../frontend-feature-item';
+/**
+ * Subscribe relation form logic Hooks
+ */
 
-export interface ExpandedPanelProps {
-  panelContentVisible: boolean;
-  currentStepConfig: GlobalGuideStep | null;
-  onClosePanelContent: () => void;
-  onStepClick: (stepNumber: number) => void;
-  onFrontendFeatureClick: (params: OnFeatureClickParams) => void;
-}
+export { useSubscribeRelationFormLogic } from './use-form-logic-subscribe';
+export { useSubscribeRelationTable } from './use-table';

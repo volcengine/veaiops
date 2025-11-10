@@ -24,8 +24,8 @@ interface MetricConfigDrawerProps {
 }
 
 /**
- * 指标模版配置抽屉组件
- * 显示简化的配置信息：阈值方向、滑动窗口、正常起始值、正常止值
+ * Metric template configuration drawer component
+ * Displays simplified configuration information: threshold direction, sliding window, normal start value, normal end value
  */
 export const MetricConfigDrawer: React.FC<MetricConfigDrawerProps> = ({
   visible,

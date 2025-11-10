@@ -25,55 +25,55 @@ import type { IntelligentThresholdTask } from 'api-generate';
 import type React from 'react';
 import { useMemo } from 'react';
 
-// 解构CellRender组件，避免重复调用
+// Destructure CellRender component to avoid repeated calls
 const { CustomOutlineTag } = CellRender;
 
 const { Title, Text } = Typography;
 
 /**
- * 任务抽屉标题组件属性接口
+ * Task drawer title component props interface
  */
 interface TaskDrawerTitleProps {
-  /** 标题类型 */
+  /** Title type */
   titleType: 'cleaning-result' | 'task-detail';
-  /** 任务记录 */
+  /** Task record */
   taskRecord?: IntelligentThresholdTask | null;
-  /** 版本号 */
+  /** Version number */
   version?: string | number;
 }
 
 /**
- * 任务抽屉标题组件
- * 根据标题类型展示不同的标题内容，支持从URL获取taskName
+ * Task drawer title component
+ * Displays different title content based on title type, supports getting taskName from URL
  *
- * @param titleType - 标题类型
- * @param taskRecord - 任务记录
- * @param version - 版本号
+ * @param titleType - Title type
+ * @param taskRecord - Task record
+ * @param version - Version number
  */
 export const TaskDrawerTitle: React.FC<TaskDrawerTitleProps> = ({
   titleType,
   taskRecord,
   version,
 }) => {
-  // 获取URL参数
+  // Get URL parameters
   const [searchParams] = useSearchParams();
   const urlTaskName = searchParams.get('taskName');
 
-  // 生成标题数据
+  // Generate title data
   const titleData = useMemo(() => {
-    // 优先使用URL参数中的taskName，其次使用taskRecord中的task_name
-    const taskName = urlTaskName || taskRecord?.task_name || '未知任务';
-    // 只有当版本存在且不是"未知"时才使用版本信息
-    const versionInfo = version && version !== '未知' ? version : null;
+    // Prioritize taskName from URL parameters, then use task_name from taskRecord
+    const taskName = urlTaskName || taskRecord?.task_name || '未知任务'; // Reverted to Chinese (code string)
+    // Only use version information when version exists and is not "unknown" - UI text, keep Chinese
+    const versionInfo = version && version !== '未知' ? version : null; // Reverted to Chinese (code string)
 
     return { taskName, version: versionInfo };
   }, [urlTaskName, taskRecord?.task_name, version]);
 
-  // 根据标题类型渲染不同的内容
+  // Render different content based on title type
   if (titleType === 'cleaning-result') {
     return (
       <div className="py-1 flex items-center justify-center gap-5">
-        {/* 主标题区域 */}
+        {/* Main title area */}
         <div className="flex items-center gap-1">
           <IconExperiment style={{ fontSize: 18, color: '#165DFF' }} />
           <Title
@@ -85,7 +85,7 @@ export const TaskDrawerTitle: React.FC<TaskDrawerTitleProps> = ({
           </Title>
         </div>
 
-        {/* 任务信息区域 - inline 布局 */}
+        {/* Task information area - inline layout */}
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <IconFile style={{ fontSize: 14, color: '#86909C' }} />
@@ -113,10 +113,10 @@ export const TaskDrawerTitle: React.FC<TaskDrawerTitleProps> = ({
     );
   }
 
-  // 任务详情标题
+  // Task detail title
   return (
     <div className="py-1 flex items-center justify-center gap-5">
-      {/* 主标题区域 */}
+      {/* Main title area */}
       <div className="flex items-center gap-1">
         <IconSettings style={{ fontSize: 18, color: '#165DFF' }} />
         <Title
@@ -128,7 +128,7 @@ export const TaskDrawerTitle: React.FC<TaskDrawerTitleProps> = ({
         </Title>
       </div>
 
-      {/* 任务信息区域 - inline 布局 */}
+      {/* Task information area - inline layout */}
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-2">
           <IconFile style={{ fontSize: 14, color: '#86909C' }} />

@@ -14,23 +14,23 @@
 
 import { Bot, ChannelType, Chat } from "api-generate";
 
-// 基础类型定义
+// Basic type definitions
 /**
- * 聊天相关企业协同工具类型
+ * Chat-related enterprise collaboration tool type
  *
- * ✅ 单一数据源原则：使用 ChannelType 枚举
- * 对应后端 ChannelType 枚举（veaiops/schema/types.py）
- * 对应 API 生成的 ChannelType 枚举（@veaiops/api-client/models/channel-type.ts）
+ * ✅ Single data source principle: Use ChannelType enum
+ * Corresponds to backend ChannelType enum (veaiops/schema/types.py)
+ * Corresponds to API-generated ChannelType enum (@veaiops/api-client/models/channel-type.ts)
  *
- * @deprecated 建议直接使用 ChannelType 枚举
+ * @deprecated Recommend directly using ChannelType enum
  */
 export type ChatChannelType = ChannelType;
 
 /**
- * Channel类型选项（仅聊天相关）
+ * Channel type options (chat-related only)
  *
- * ✅ 单一数据源原则：统一使用后端枚举值
- * 枚举值映射：
+ * ✅ Single data source principle: Uniformly use backend enum values
+ * Enum value mapping:
  * - ChannelType.LARK ↔ Python ChannelType.Lark = "Lark"
  * - ChannelType.DING_TALK ↔ Python ChannelType.DingTalk = "DingTalk"
  * - ChannelType.WE_CHAT ↔ Python ChannelType.WeChat = "WeChat"
@@ -42,7 +42,7 @@ export const CHAT_CHANNEL_TYPE_OPTIONS = [
 ];
 
 /**
- * 群类型选项
+ * Chat type options
  */
 export const CHAT_TYPE_OPTIONS = [
   { label: "群聊", value: "group" },
@@ -50,7 +50,7 @@ export const CHAT_TYPE_OPTIONS = [
 ];
 
 /**
- * 群配置更新请求
+ * Chat configuration update request
  */
 export interface ChatConfigUpdateRequest {
   enable_func_proactive_reply: boolean;
@@ -58,7 +58,7 @@ export interface ChatConfigUpdateRequest {
 }
 
 /**
- * 分页响应
+ * Paginated response
  */
 export interface PaginatedAPIResponseChatList {
   code: number;
@@ -72,7 +72,7 @@ export interface PaginatedAPIResponseChatList {
 }
 
 /**
- * 群管理查询参数
+ * Chat management query parameters
  */
 export interface ChatQueryParams {
   skip?: number;
@@ -88,17 +88,17 @@ export interface ChatQueryParams {
 }
 
 /**
- * 群表格数据类型
+ * Chat table data type
  */
 /**
- * 群聊表格数据类型
- * 直接使用 api-generate 的 Chat 类型
- * @deprecated 建议直接使用 Chat 类型，CustomTable 会自动处理 rowKey
+ * Chat table data type
+ * Directly use Chat type from api-generate
+ * @deprecated Recommend directly using Chat type, CustomTable will automatically handle rowKey
  */
 export type ChatTableData = Chat;
 
 /**
- * 群管理抽屉属性
+ * Chat management drawer properties
  */
 export interface ChatManagementDrawerProps {
   visible: boolean;
@@ -107,7 +107,7 @@ export interface ChatManagementDrawerProps {
 }
 
 /**
- * 群配置编辑表单数据
+ * Chat configuration edit form data
  */
 export interface ChatConfigFormData {
   enable_func_proactive_reply: boolean;
@@ -115,7 +115,7 @@ export interface ChatConfigFormData {
 }
 
 /**
- * 群管理操作回调
+ * Chat management operation callbacks
  */
 export interface ChatTableActions {
   onConfigEdit: (chat: Chat) => void;
@@ -123,7 +123,7 @@ export interface ChatTableActions {
 }
 
 /**
- * 类型守卫：检查是否为群表格数据
+ * Type guard: Check if record is chat table data
  */
 export function isChatTableData(
   record: Record<string, unknown>

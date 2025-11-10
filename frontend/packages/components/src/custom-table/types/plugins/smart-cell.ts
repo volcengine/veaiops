@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 智能单元格插件类型定义
- * 基于 EPS 平台的智能空值处理能力
+ * Smart cell plugin type definition
+ * Based on EPS platform's smart empty value handling capability
  */
 import type { ReactNode } from 'react';
 import type { BaseRecord } from '../core/common';
@@ -22,7 +22,7 @@ import type { PluginPriorityEnum } from '../core/enums';
 import type { PluginBaseConfig } from './core';
 
 /**
- * 空值展示策略
+ * Empty value display strategy
  */
 export type EmptyValueStrategy =
   | 'text'
@@ -33,64 +33,64 @@ export type EmptyValueStrategy =
   | 'hide';
 
 /**
- * 用户角色类型
+ * User role type
  */
 export type UserRole = 'admin' | 'editor' | 'viewer' | 'owner';
 
 /**
- * 空值上下文信息
+ * Empty value context information
  */
 export interface EmptyValueContext {
-  /** 字段名 */
+  /** Field name */
   fieldName: string;
-  /** 实体类型 */
+  /** Entity type */
   entityType?: string;
-  /** 用户角色 */
+  /** User role */
   userRole?: UserRole;
-  /** 是否有权限 */
+  /** Whether has permission */
   hasPermission?: boolean;
-  /** 是否必填 */
+  /** Whether required */
   isRequired?: boolean;
-  /** 是否可编辑 */
+  /** Whether editable */
   canEdit?: boolean;
-  /** 相关数据 */
+  /** Related data */
   relatedData?: BaseRecord;
-  /** 自定义上下文 */
+  /** Custom context */
   [key: string]: unknown;
 }
 
 /**
- * 空值处理配置
+ * Empty value processing configuration
  */
 export interface EmptyValueConfig {
-  /** 展示策略 */
+  /** Display strategy */
   strategy?: EmptyValueStrategy;
-  /** 显示文本 */
+  /** Display text */
   text?: string;
-  /** 图标 */
+  /** Icon */
   icon?: ReactNode;
-  /** 自定义组件 */
+  /** Custom component */
   component?: React.ComponentType<Record<string, unknown>>;
-  /** 是否允许编辑 */
+  /** Whether editing is allowed */
   allowEdit?: boolean;
-  /** 是否显示提示 */
+  /** Whether to show tooltip */
   showTooltip?: boolean;
-  /** 提示内容 */
+  /** Tooltip content */
   tooltip?: string;
-  /** 权限配置 */
+  /** Permission configuration */
   permission?: {
     hint?: string;
     allowedRoles?: UserRole[];
   };
-  /** 点击事件 */
+  /** Click event */
   onClick?: (params: Record<string, unknown>) => void;
-  /** 占位符文本 */
+  /** Placeholder text */
   placeholder?: string;
-  /** 交互提示文本 */
+  /** Interactive hint text */
   interactiveText?: string;
-  /** 自定义渲染函数 */
+  /** Custom render function */
   customRender?: (context: EmptyValueContext) => ReactNode;
-  /** 样式配置 */
+  /** Style configuration */
   style?: {
     className?: string;
     style?: React.CSSProperties;
@@ -100,24 +100,24 @@ export interface EmptyValueConfig {
 }
 
 /**
- * 字段权限配置
+ * Field permission configuration
  */
 export interface FieldPermissionConfig {
-  /** 字段名 */
+  /** Field name */
   fieldName: string;
-  /** 只读字段列表 */
+  /** Read-only field list */
   readonlyFields?: string[];
-  /** 敏感字段列表 */
+  /** Sensitive field list */
   sensitiveFields?: string[];
-  /** 必填字段列表 */
+  /** Required field list */
   requiredFields?: string[];
-  /** 权限检查函数 */
+  /** Permission check function */
   checkPermission?: (
     fieldName: string,
     record: BaseRecord,
     userRole?: UserRole,
   ) => boolean;
-  /** 编辑权限检查函数 */
+  /** Edit permission check function */
   canEdit?: (
     fieldName: string,
     record: BaseRecord,
@@ -126,34 +126,34 @@ export interface FieldPermissionConfig {
 }
 
 /**
- * 智能单元格配置
+ * Smart cell configuration
  */
 export interface SmartCellConfig extends PluginBaseConfig {
-  /** 默认空值配置 */
+  /** Default empty value configuration */
   defaultEmptyConfig?: EmptyValueConfig;
-  /** 字段特定配置 */
+  /** Field-specific configuration */
   fieldConfigs?: Record<string, EmptyValueConfig>;
-  /** 权限配置 */
+  /** Permission configuration */
   permissionConfig?: FieldPermissionConfig;
-  /** 全局上下文 */
+  /** Global context */
   globalContext?: Partial<EmptyValueContext>;
-  /** 用户角色 */
+  /** User role */
   userRole?: UserRole;
-  /** 是否显示权限提示 */
+  /** Whether to show permission hints */
   showPermissionHints?: boolean;
-  /** 是否启用上下文显示 */
+  /** Whether to enable contextual display */
   enableContextualDisplay?: boolean;
-  /** 编辑回调 */
+  /** Edit callback */
   onEdit?: (fieldName: string, record: BaseRecord) => Promise<boolean>;
-  /** 空值点击回调 */
+  /** Empty value click callback */
   onEmptyClick?: (
     fieldName: string,
     record: BaseRecord,
     context: EmptyValueContext,
   ) => void;
-  /** 空值点击回调（扩展版） */
+  /** Empty value click callback (extended version) */
   onEmptyValueClick?: (params: Record<string, unknown>) => void;
-  /** 单元格渲染回调 */
+  /** Cell render callback */
   onCellRender?: (
     params: CellRenderParams,
     fieldConfig: EmptyValueConfig,
@@ -162,53 +162,53 @@ export interface SmartCellConfig extends PluginBaseConfig {
 }
 
 /**
- * 单元格渲染参数
+ * Cell render parameters
  */
 export interface CellRenderParams<RecordType extends BaseRecord = BaseRecord> {
-  /** 单元格值 */
+  /** Cell value */
   value: unknown;
-  /** 行记录 */
+  /** Row record */
   record: RecordType;
-  /** 字段名 */
+  /** Field name */
   field: string;
-  /** 字段名（别名） */
+  /** Field name (alias) */
   fieldName?: string;
-  /** 是否为空值 */
+  /** Whether value is empty */
   isEmpty?: boolean;
-  /** 列索引 */
+  /** Column index */
   columnIndex?: number;
-  /** 行索引 */
+  /** Row index */
   rowIndex?: number;
-  /** 上下文信息 */
+  /** Context information */
   context?: EmptyValueContext;
-  /** 用户角色 */
+  /** User role */
   userRole?: UserRole;
 }
 
 /**
- * 智能单元格渲染函数
+ * Smart cell render function
  */
 export type SmartCellRenderer<RecordType extends BaseRecord = BaseRecord> = (
   params: CellRenderParams<RecordType>,
 ) => ReactNode;
 
 /**
- * 插件状态
+ * Plugin state
  */
 export interface SmartCellState {
-  /** 空值字段集合 */
+  /** Empty value field set */
   emptyFields?: Set<string>;
-  /** 字段统计 */
+  /** Field statistics */
   fieldStats?: Map<string, { total: number; empty: number }>;
-  /** 总行数 */
+  /** Total row count */
   totalRows?: number;
-  /** 用户角色 */
+  /** User role */
   userRole?: UserRole;
-  /** 当前用户角色 */
+  /** Current user role */
   currentUserRole: UserRole;
-  /** 字段权限映射 */
+  /** Field permission mapping */
   fieldPermissions: Map<string, boolean>;
-  /** 空值统计 */
+  /** Empty value statistics */
   emptyValueStats: {
     totalEmptyCount: number;
     fieldEmptyCounts: Record<string, number>;
@@ -217,21 +217,21 @@ export interface SmartCellState {
 }
 
 /**
- * 插件方法
+ * Plugin methods
  */
 export interface SmartCellMethods<RecordType extends BaseRecord = BaseRecord> {
-  /** 渲染智能单元格 */
+  /** Render smart cell */
   renderSmartCell: SmartCellRenderer<RecordType>;
-  /** 检查字段权限 */
+  /** Check field permission */
   checkFieldPermission: (fieldName: string, record: RecordType) => boolean;
-  /** 检查编辑权限 */
+  /** Check edit permission */
   checkEditPermission: (fieldName: string, record: RecordType) => boolean;
-  /** 获取空值配置 */
+  /** Get empty value configuration */
   getEmptyConfig: (fieldName: string) => EmptyValueConfig;
-  /** 处理空值点击 */
+  /** Handle empty value click */
   handleEmptyClick: (fieldName: string, record: RecordType) => void;
-  /** 更新用户角色 */
+  /** Update user role */
   updateUserRole: (role: UserRole) => void;
-  /** 获取空值统计 */
+  /** Get empty value statistics */
   getEmptyStats: () => SmartCellState['emptyValueStats'];
 }

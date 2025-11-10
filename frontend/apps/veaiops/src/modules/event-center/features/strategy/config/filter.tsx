@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ✅ 优化：使用统一导出
+// ✅ Optimization: Use unified export
 import { channelTypeOptions } from '@ec/strategy';
 
 import type { FieldItem, HandleFilterProps } from '@veaiops/components';
 
 /**
- * 策略过滤器配置函数
- * 按照 CustomTable 最佳实践，提供完整的过滤器配置
+ * Strategy filter configuration function
+ * Follow CustomTable best practices to provide complete filter configuration
  *
- * 返回类型明确为 FieldItem[]，避免类型断言
+ * Return type is explicitly FieldItem[] to avoid type assertions
  */
-// ✅ 优化：使用正确的 HandleFilterProps 类型
+// ✅ Optimization: Use correct HandleFilterProps type
 export const getStrategyFilters = ({
   query,
   handleChange,
@@ -42,7 +42,7 @@ export const getStrategyFilters = ({
         value: query?.name as string | undefined,
         allowClear: true,
         onChange: (v: string) => {
-          // ✅ 正确：handleChange 接受 HandleChangeSingleParams，即 { key: string; value?: unknown }
+          // ✅ Correct: handleChange accepts HandleChangeSingleParams, i.e., { key: string; value?: unknown }
           handleChange({ key: 'name', value: v });
         },
       },

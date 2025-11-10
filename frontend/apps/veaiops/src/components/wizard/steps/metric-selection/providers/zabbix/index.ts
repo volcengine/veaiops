@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Zabbix指标选择组件导出
+ * Zabbix metric selection component export
  */
 
 export { ZabbixMetricSelection } from './zabbix-metric-selection';

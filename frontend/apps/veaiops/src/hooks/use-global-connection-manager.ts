@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 全局连接管理Hook
+ * Global connection management Hook
  */
 
 import { logger } from '@veaiops/utils';
@@ -22,7 +22,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useConnections } from './use-connections';
 
 /**
- * 连接统计信息
+ * Connection statistics
  */
 interface ConnectionStats {
   total: number;
@@ -31,7 +31,7 @@ interface ConnectionStats {
 }
 
 /**
- * 全局连接统计信息
+ * Global connection statistics
  */
 interface GlobalConnectionStats {
   zabbix: ConnectionStats;
@@ -55,12 +55,12 @@ export const useGlobalConnectionManager = (
   const { visible = false } = props;
   const [loading, setLoading] = useState(false);
 
-  // 各数据源的连接管理Hook
+  // Connection management Hooks for each data source
   const zabbixConnections = useConnections(DataSourceType.ZABBIX);
   const aliyunConnections = useConnections(DataSourceType.ALIYUN);
   const volcengineConnections = useConnections(DataSourceType.VOLCENGINE);
 
-  // 计算连接统计信息
+  // Calculate connection statistics
   const getConnectionStats = useCallback(
     (connections: any[]): ConnectionStats => {
       const total = connections.length;
@@ -72,14 +72,14 @@ export const useGlobalConnectionManager = (
     [],
   );
 
-  // 全局连接统计
+  // Global connection statistics
   const connectionStats: GlobalConnectionStats = {
     zabbix: getConnectionStats(zabbixConnections.connections),
     aliyun: getConnectionStats(aliyunConnections.connections),
     volcengine: getConnectionStats(volcengineConnections.connections),
   };
 
-  // 刷新所有连接
+  // Refresh all connections
   const refreshAll = useCallback(async (): Promise<boolean> => {
     try {
       setLoading(true);
@@ -90,7 +90,7 @@ export const useGlobalConnectionManager = (
       ]);
       return true;
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.warn({
@@ -109,7 +109,7 @@ export const useGlobalConnectionManager = (
     }
   }, [zabbixConnections, aliyunConnections, volcengineConnections]);
 
-  // 只在可见时刷新所有连接
+  // Only refresh all connections when visible
   useEffect(() => {
     if (visible) {
       refreshAll();

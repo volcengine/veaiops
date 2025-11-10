@@ -13,16 +13,16 @@
 // limitations under the License.
 
 /**
- * 列宽持久化插件统一导出
+ * Column width persistence plugin unified exports
  *
 
  *
  */
 
-// 插件实现
+// Plugin implementation
 export { ColumnWidthPersistencePlugin } from './plugin';
 
-// 类型定义
+// Type definitions
 export type {
   ColumnWidthInfo,
   ColumnWidthPersistenceConfig,
@@ -30,7 +30,7 @@ export type {
   ColumnWidthPersistenceState,
 } from './types';
 
-// 配置和常量
+// Configuration and constants
 export {
   DEFAULT_COLUMN_WIDTH_PERSISTENCE_CONFIG,
   PLUGIN_CONSTANTS,
@@ -43,7 +43,7 @@ export {
   type UseColumnWidthPersistenceResult,
 } from './hooks';
 
-// 工具函数
+// Utility functions
 export {
   compareColumnWidths,
   createColumnWidthInfo,

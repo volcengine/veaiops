@@ -16,7 +16,7 @@ import apiClient from '@/utils/api-client';
 import type { RequestParams } from '../types';
 
 /**
- * 根据数据源类型调用API
+ * Call API based on datasource type
  */
 export const callTimeseriesApi = async ({
   datasourceTypeNormalized,
@@ -27,9 +27,9 @@ export const callTimeseriesApi = async ({
 }: RequestParams) => {
   const requestBody = {
     datasource_id: datasourceId,
-    start_time: Math.floor(startTime / 1000), // 转换为秒级时间戳
+    start_time: Math.floor(startTime / 1000), // Convert to second-level timestamp
     end_time: Math.floor(endTime / 1000),
-    period: '60s', // 默认1分钟采样周期
+    period: '60s', // Default 1-minute sampling period
     instances,
   };
 
@@ -52,6 +52,6 @@ export const callTimeseriesApi = async ({
       },
     );
   } else {
-    throw new Error(`不支持的数据源类型: ${datasourceTypeNormalized}`);
+    throw new Error(`Unsupported datasource type: ${datasourceTypeNormalized}`);
   }
 };

@@ -19,16 +19,13 @@ import {
   EVENT_STATUS_OPTIONS,
 } from '@ec/subscription';
 import type { FieldItem, HandleFilterProps } from '@veaiops/components';
-import {
-  convertLocalTimeRangeToUtc,
-  convertUtcTimeRangeToLocal,
-  disabledDate,
-} from '@veaiops/utils';
+import { disabledDate } from '@veaiops/utils';
 import type { EventLevel, EventShowStatus, EventStatus } from 'api-generate';
+import dayjs from 'dayjs';
 
 /**
  * History event filter configuration
- * Configured according to Python API parameter requirements
+ * Configure according to Python interface parameter requirements
  */
 export const getHistoryFilters = ({
   query,
@@ -38,7 +35,7 @@ export const getHistoryFilters = ({
   handleChange: HandleFilterProps<unknown>['handleChange'];
   handleFiltersProps?: Record<string, unknown>;
 }): FieldItem[] => [
-  // Agent type filter - aligned with backend agent_type parameter, supports multiple selection
+  // Agent type filter - Align with backend agent_type parameter, support multiple selection
   {
     field: 'agent_type',
     label: '智能体',
@@ -54,7 +51,7 @@ export const getHistoryFilters = ({
       },
     },
   },
-  // Event level filter - uses correct EventLevel enum values
+  // Event level filter - Use correct EventLevel enum values
   {
     field: 'event_level',
     label: '事件级别',
@@ -71,7 +68,7 @@ export const getHistoryFilters = ({
       },
     },
   },
-  // Status filter - uses show_status (display status)
+  // Status filter - Use show_status (Chinese status)
   {
     field: 'show_status',
     label: '状态',
@@ -88,7 +85,7 @@ export const getHistoryFilters = ({
       },
     },
   },
-  // Status filter - uses status (status enum values)
+  // Status filter - Use status (status enum values)
   {
     field: 'status',
     label: '状态',
@@ -105,38 +102,26 @@ export const getHistoryFilters = ({
       },
     },
   },
-  // Time range filter - corresponds to backend start_time and end_time parameters
+  // Time range filter - Corresponds to backend start_time and end_time parameters
   {
     field: 'dateRange',
     label: '时间范围',
     type: 'RangePicker',
     componentProps: {
       placeholder: ['开始时间', '结束时间'],
-      // Display: UTC → Local Time
       value:
         query?.start_time && query?.end_time
-          ? convertUtcTimeRangeToLocal([
-              query.start_time as string,
-              query.end_time as string,
-            ]) || undefined
+          ? [dayjs(query.start_time as string), dayjs(query.end_time as string)]
           : undefined,
       showTime: true,
       format: 'YYYY-MM-DD HH:mm:ss',
       allowClear: true,
       disabledDate,
-      // Note: RangePicker returns date strings in user timezone, need to convert to UTC ISO 8601 format
       onChange: (dateStrings: string[] | null) => {
         if (dateStrings && dateStrings.length === 2) {
-          // Send: Local Time → UTC
-          const utcRange = convertLocalTimeRangeToUtc(dateStrings);
-          if (utcRange) {
-            handleChange({ key: 'start_time', value: utcRange[0] });
-            handleChange({ key: 'end_time', value: utcRange[1] });
-          } else {
-            // Conversion failed, clear time range
-            handleChange({ key: 'start_time', value: undefined });
-            handleChange({ key: 'end_time', value: undefined });
-          }
+          const [startTimeStr, endTimeStr] = dateStrings;
+          handleChange({ key: 'start_time', value: startTimeStr });
+          handleChange({ key: 'end_time', value: endTimeStr });
         } else {
           handleChange({ key: 'start_time', value: undefined });
           handleChange({ key: 'end_time', value: undefined });

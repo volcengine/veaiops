@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 重新导出错误处理相关的内容
-// 错误处理已按功能拆分到多个文件中
+// Re-export error handling related content
+// Error handling has been split into multiple files by functionality
 export * from './error-types';
 export * from './error-utils';
 export * from './error-handlers';

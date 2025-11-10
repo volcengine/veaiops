@@ -18,7 +18,7 @@ import type {
   DataSourceType,
 } from 'api-generate';
 
-// 表单字段配置类型
+// Form field configuration type
 export interface FormFieldConfig {
   label: string;
   field: string;
@@ -27,21 +27,21 @@ export interface FormFieldConfig {
   autoFocus?: boolean;
 }
 
-// 表单字段组件属性
+// Form field component props
 export interface FormFieldProps {
   config: FormFieldConfig;
   disabled?: boolean;
   initialValue?: string;
 }
 
-// 表单字段列表组件属性
+// Form fields list component props
 export interface FormFieldsListProps {
   connectType: DataSourceType;
   connect?: Connect;
   disabledFields?: string[];
 }
 
-// 密码表单组件属性
+// Password form component props
 export interface PasswordFormProps {
   connectType: DataSourceType;
   connect?: Connect;
@@ -51,12 +51,12 @@ export interface PasswordFormProps {
   showButtons?: boolean;
 }
 
-// 密码表单组件引用
+// Password form component ref
 export interface PasswordFormRef {
   submit: () => void;
 }
 
-// 表单操作按钮组件属性
+// Form action buttons component props
 export interface FormActionsProps {
   onSubmit: () => void;
   onCancel: () => void;

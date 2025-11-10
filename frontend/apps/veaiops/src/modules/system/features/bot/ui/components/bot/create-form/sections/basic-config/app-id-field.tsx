@@ -25,7 +25,7 @@ interface AppIdFieldProps {
 }
 
 /**
- * App ID 输入字段组件
+ * App ID input field component
  */
 export const AppIdField: React.FC<AppIdFieldProps> = ({
   form,
@@ -58,12 +58,12 @@ export const AppIdField: React.FC<AppIdFieldProps> = ({
         allowClear
         {...AutofillBlockerPresets.appId()}
         onBlur={async () => {
-          // 从表单获取当前值，更安全可靠
+          // Get current value from form, more secure and reliable
           const appId = form.getFieldValue('bot_id') as string | undefined;
           if (appId?.trim()) {
             const errorMessage = await checkAppIdDuplicate(appId.trim());
             if (errorMessage) {
-              // 设置表单字段错误（使用 setFields 方法）
+              // Set form field error (using setFields method)
               form.setFields({
                 bot_id: {
                   error: {
@@ -71,10 +71,10 @@ export const AppIdField: React.FC<AppIdFieldProps> = ({
                   },
                 },
               });
-              // 显示错误提示
+              // Show error message
               Message.error(errorMessage);
             } else {
-              // 清除错误状态
+              // Clear error state
               form.setFields({
                 bot_id: {
                   error: undefined,

@@ -14,7 +14,7 @@
 
 /**
  * Connection list component
- * @description Connection selection list component with search, auto-selection, sorting, and status hints
+ * @description Connection selection list component with search, auto-selection, sorting, and status hints support
  */
 
 import {
@@ -62,8 +62,8 @@ const ConnectList: React.FC<ConnectListProps> = ({
     searchText,
   });
 
-  // On first load, if there's no selected item and available connections, automatically select the first one
-  // Note: Only auto-select when there's no search text to avoid triggering auto-selection during search causing loops
+  // On first load, if no item selected and connections available, auto-select first one
+  // Note: Only auto-select when no search text, avoid triggering auto-select during search causing loop
   useEffect(() => {
     const hasNoSearch = !searchText.trim();
     if (!selectedConnect && connects.length > 0 && hasNoSearch) {
@@ -71,7 +71,7 @@ const ConnectList: React.FC<ConnectListProps> = ({
     }
   }, [connects.length, selectedConnect, searchText, onConnectSelect]);
 
-  // Sort selected items: move selected items to the first position for quick viewing during editing
+  // Selected item sorting: Put selected item first for quick viewing during editing
   const sortedConnects = [...filteredConnects].sort((a, b) => {
     const aSelected =
       selectedConnect?.id === a.id || selectedConnect?._id === a._id;

@@ -17,7 +17,7 @@ import type { Bot } from '@bot/lib';
 import { logger } from '@veaiops/utils';
 
 /**
- * 更新前验证
+ * Pre-update validation
  */
 export const validateUpdateRequest = ({
   editingBot,

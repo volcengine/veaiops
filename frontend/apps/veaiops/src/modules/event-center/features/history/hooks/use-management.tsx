@@ -26,8 +26,8 @@ import { type AgentType, type Event, EventLevel } from 'api-generate';
 import { useMemo, useState } from 'react';
 
 /**
- * 历史事件管理逻辑Hook
- * 提供历史事件的状态管理和业务逻辑
+ * History event management logic Hook
+ * Provides state management and business logic for history events
  */
 export const useHistoryManagementLogic = () => {
   const [filters, setFilters] = useState<HistoryFilters>({});
@@ -59,8 +59,8 @@ export const useHistoryManagementLogic = () => {
 };
 
 /**
- * 历史事件表格配置Hook
- * 提供CustomTable所需的数据源配置
+ * History event table configuration Hook
+ * Provides data source configuration required by CustomTable
  */
 export const useHistoryTableConfig = ({
   filters,
@@ -71,11 +71,11 @@ export const useHistoryTableConfig = ({
     () =>
       createTableRequestWithResponseHandler({
         apiCall: async ({ skip, limit }) => {
-          // 构建API参数 - 使用生成的 API 类型，确保类型完全匹配
+          // Build API parameters - use generated API types to ensure complete type matching
           type ApiParams = Parameters<
             typeof apiClient.event.getApisV1ManagerEventCenterEvent
           >[0];
-          // 注意：API 参数类型不包含 status 字段（只有 showStatus），但 historyService 层会处理 status 到 event_status 的映射
+          // Note: API parameter type doesn't include status field (only showStatus), but historyService layer will handle status to event_status mapping
           const apiParams: Partial<ApiParams> & {
             skip: number;
             limit: number;
@@ -85,8 +85,8 @@ export const useHistoryTableConfig = ({
             limit: limit ?? 10,
           };
 
-          // 处理代理类型（API 支持数组）
-          // ✅ 类型安全：使用类型断言，确保数组元素类型匹配
+          // Handle agent type (API supports array)
+          // ✅ Type safe: Use type assertion to ensure array element types match
           if (
             filters.agent_type &&
             Array.isArray(filters.agent_type) &&
@@ -95,16 +95,16 @@ export const useHistoryTableConfig = ({
             apiParams.agentType = filters.agent_type as AgentType[];
           }
 
-          // 处理事件级别
-          // ✅ 类型安全：根据 Python 源码分析（veaiops/handler/routers/apis/v1/event_center/event.py）
+          // Handle event level
+          // ✅ Type safe: Based on Python source code analysis (veaiops/handler/routers/apis/v1/event_center/event.py)
           // Python: event_level: Optional[List[EventLevel]] = None
-          // Python EventLevel 枚举（veaiops/schema/types.py）: P0, P1, P2
-          // OpenAPI 规范: Array<EventLevel>，其中 EventLevel 枚举为 ["P0", "P1", "P2"]
-          // 生成的 TypeScript: EventLevel 枚举包含 P0, P1, P2
-          // API 服务期望: Array<EventLevel>（与 Python 后端一致）
+          // Python EventLevel enum (veaiops/schema/types.py): P0, P1, P2
+          // OpenAPI spec: Array<EventLevel>, where EventLevel enum is ["P0", "P1", "P2"]
+          // Generated TypeScript: EventLevel enum contains P0, P1, P2
+          // API service expects: Array<EventLevel> (consistent with Python backend)
           if (filters.event_level) {
             if (Array.isArray(filters.event_level)) {
-              // 数组类型：过滤有效的 EventLevel 枚举值
+              // Array type: filter valid EventLevel enum values
               const validLevels = filters.event_level.filter(
                 (level): level is EventLevel =>
                   level === EventLevel.P0 ||
@@ -112,7 +112,7 @@ export const useHistoryTableConfig = ({
                   level === EventLevel.P2,
               );
               if (validLevels.length > 0) {
-                // ✅ 类型匹配：validLevels 是 EventLevel[]，符合 API 期望的 Array<EventLevel>
+                // ✅ Type match: validLevels is EventLevel[], matches API expected Array<EventLevel>
                 apiParams.eventLevel = validLevels;
               }
             } else if (
@@ -121,23 +121,23 @@ export const useHistoryTableConfig = ({
                 filters.event_level === EventLevel.P1 ||
                 filters.event_level === EventLevel.P2)
             ) {
-              // 单个值：转换为数组
+              // Single value: convert to array
               apiParams.eventLevel = [filters.event_level as EventLevel];
             }
           }
 
-          // 处理状态（中文）
+          // Handle status (Chinese)
           if (filters.show_status && filters.show_status.length > 0) {
             apiParams.showStatus = filters.show_status;
           }
 
-          // 处理事件状态（使用 status 参数，对应后端的 event_status）
-          // 注意：HistoryFilters 类型包含 status 字段
+          // Handle event status (use status parameter, corresponds to backend's event_status)
+          // Note: HistoryFilters type includes status field
           if (filters.status && filters.status.length > 0) {
             apiParams.status = filters.status;
           }
 
-          // 处理时间范围
+          // Handle time range
           if (filters.start_time) {
             apiParams.startTime = filters.start_time;
           }
@@ -147,7 +147,7 @@ export const useHistoryTableConfig = ({
 
           const response =
             await apiClient.event.getApisV1ManagerEventCenterEvent(apiParams);
-          // 类型转换：PaginatedAPIResponseEventList 与 StandardApiResponse<Event[]> 结构兼容
+          // Type conversion: PaginatedAPIResponseEventList is structurally compatible with StandardApiResponse<Event[]>
           return response as unknown as StandardApiResponse<Event[]>;
         },
         options: {
@@ -196,7 +196,7 @@ export const useHistoryTableConfig = ({
 };
 
 /**
- * 历史事件操作按钮配置Hook
+ * History event action button configuration Hook
  */
 export const useHistoryActionConfig = ({
   loading = false,

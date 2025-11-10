@@ -27,10 +27,10 @@ interface FormFieldsProps {
 }
 
 /**
- * 表单字段区块组件
+ * Form fields block component
  *
- * 注意：类目的 onChange 必须绑定在 Select 上，而不是 Form.onValuesChange
- * 因为 Form.onValuesChange 会在 form.resetFields() 时触发，导致无限循环
+ * Note: The onChange for category must be bound to Select, not Form.onValuesChange
+ * Because Form.onValuesChange will be triggered when form.resetFields() is called, causing infinite loop
  */
 export const FormFields: React.FC<FormFieldsProps> = ({
   form,
@@ -106,7 +106,7 @@ export const FormFields: React.FC<FormFieldsProps> = ({
           loading={loadingValues}
           allowClear
           showSearch
-          mode={type === 'create' ? 'multiple' : undefined} // 新建时支持多选，编辑时单选
+          mode={type === 'create' ? 'multiple' : undefined} // Support multiple selection when creating, single selection when editing
           filterOption={(inputValue, option) =>
             option?.props?.children
               ?.toLowerCase()

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 数据源设置器类型
- * 根据 @veaiops/components 中 Select.Block 的定义
+ * Data source setter type
+ * Based on Select.Block definition in @veaiops/components
  */
 export interface DataSourceSetter {
   serviceInstance: unknown;
@@ -27,7 +27,7 @@ export interface DataSourceSetter {
 }
 
 /**
- * 选择数据源属性类型
+ * Select data source props type
  */
 export interface SelectDataSourceProps {
   search?: unknown;
@@ -37,7 +37,7 @@ export interface SelectDataSourceProps {
 }
 
 /**
- * 数据源选项类型
+ * Data source option type
  */
 export interface DataSourceOption<T = unknown> {
   label: string;

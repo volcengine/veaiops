@@ -20,27 +20,27 @@ import { createBaseConfigFields } from './lib/base-fields';
 import { getSpecificFields } from './lib/specific-fields';
 
 /**
- * 创建监控表格列配置
+ * Create monitor table column configuration
  *
- * 完整对齐 origin/feat/web-v2 分支（包含配置信息分组列）
+ * Fully aligned with origin/feat/web-v2 branch (includes configuration information grouping column)
  *
- * @param dataSourceType - 数据源类型
- * @returns 列配置数组
+ * @param dataSourceType - Data source type
+ * @returns Column configuration array
  */
 export const createMonitorTableColumns = (
   dataSourceType: DataSourceType,
 ): ModernTableColumnProps<DataSource>[] => {
-  // 解构 CellRender 组件
+  // Destructure CellRender components
   const { CustomOutlineTag, Ellipsis, StampTime, InfoWithCode } =
     CellRender;
 
-  // 基础配置字段（所有数据源都有）
+  // Base configuration fields (all data sources have)
   const baseConfigFields = createBaseConfigFields(dataSourceType);
 
-  // 根据数据源类型添加特定字段
+  // Add specific fields based on data source type
   const specificFields = getSpecificFields(dataSourceType);
 
-  // 配置信息分组列
+  // Configuration information grouping column
   const configColumn: ModernTableColumnProps<DataSource> = {
     title: '配置信息',
     children: [...baseConfigFields, ...specificFields],
@@ -99,6 +99,6 @@ export const createMonitorTableColumns = (
         <StampTime time={updatedAt} />
       ),
     },
-    // 注意：操作列由 CustomTable 的内置操作处理，或由外部传入
+    // Note: Action column is handled by CustomTable's built-in operations, or passed from outside
   ];
 };

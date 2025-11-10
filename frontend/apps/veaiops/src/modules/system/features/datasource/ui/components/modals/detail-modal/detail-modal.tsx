@@ -41,7 +41,7 @@ interface DetailModalProps {
 }
 
 /**
- * 数据源详情模态框组件
+ * Data source detail modal component
  */
 export const DetailModal: React.FC<DetailModalProps> = ({
   visible,
@@ -52,7 +52,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
     return null;
   }
 
-  // 将 DataSourceType 枚举值转换为字符串键
+  // Convert DataSourceType enum value to string key
   const getTypeKey = (type: DataSourceType): string => {
     if (type === ApiDataSourceType.ZABBIX) {
       return 'Zabbix';
@@ -63,7 +63,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
     if (type === ApiDataSourceType.VOLCENGINE) {
       return 'Volcengine';
     }
-    return 'Zabbix'; // 默认使用 Zabbix
+    return 'Zabbix'; // Default to Zabbix
   };
   const typeKey = getTypeKey(item.type);
   const dataSourceConfig =
@@ -137,7 +137,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
         ]}
       />
 
-      {/* 根据数据源类型显示特定配置信息 */}
+      {/* Display specific configuration information based on data source type */}
       {item.type === ApiDataSourceType.ZABBIX && <ZabbixDetailSection />}
       {item.type === ApiDataSourceType.ALIYUN && <AliyunDetailSection />}
       {item.type === ApiDataSourceType.VOLCENGINE && (

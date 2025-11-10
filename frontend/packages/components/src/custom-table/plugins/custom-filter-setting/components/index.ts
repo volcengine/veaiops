@@ -13,6 +13,6 @@
 // limitations under the License.
 
 /**
- * Custom Filter Setting 插件组件导出
+ * Custom Filter Setting plugin component export
  */
 export { DraggableFilterSetting } from './draggable-filter-setting';

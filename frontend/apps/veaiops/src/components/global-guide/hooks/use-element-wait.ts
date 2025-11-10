@@ -26,9 +26,9 @@ export interface WaitForElementParams {
 /**
  * Wait for element to appear in DOM
  * @param selector CSS selector
- * @param timeout Timeout time (milliseconds)
- * @param checkInterval Check interval (milliseconds)
- * @param allowDisabled Whether to allow disabled elements (some guides need to show tooltip for disabled buttons)
+ * @param timeout Timeout in milliseconds
+ * @param checkInterval Check interval in milliseconds
+ * @param allowDisabled Whether to allow disabled elements (some guides need to show tips for disabled buttons)
  */
 export const useElementWait = () => {
   const guideLogger = useGuideLogger();
@@ -51,7 +51,7 @@ export const useElementWait = () => {
           if (elements.length === 0) {
             // No elements found, continue waiting
             if (currentWaitTime >= timeout) {
-              const error = `Element wait timeout: No elements matching ${selector} found`;
+              const error = `等待元素超时：未找到任何匹配 ${selector} 的元素`;
               reject(new Error(error));
               return;
             }
@@ -108,11 +108,7 @@ export const useElementWait = () => {
           if (allDisabled && !allowDisabled) {
             // Check if timeout
             if (Date.now() - startTime >= timeout) {
-              reject(
-                new Error(
-                  'Wait for available element timeout: All elements are disabled',
-                ),
-              );
+              reject(new Error('等待可用元素超时：所有元素都被禁用'));
               return;
             }
 

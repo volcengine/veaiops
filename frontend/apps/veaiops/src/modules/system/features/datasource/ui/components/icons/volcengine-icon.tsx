@@ -21,7 +21,7 @@ interface IconProps {
 }
 
 /**
- * 火山引擎图标
+ * Volcengine icon component
  */
 export const VolcengineIcon: React.FC<IconProps> = ({
   size = 16,

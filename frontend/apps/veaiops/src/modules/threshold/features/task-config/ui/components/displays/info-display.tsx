@@ -26,7 +26,7 @@ interface TaskInfoDisplayProps {
 }
 
 /**
- * 任务信息展示组件
+ * Task information display component
  */
 export const TaskInfoDisplay: React.FC<TaskInfoDisplayProps> = ({
   task,
@@ -46,7 +46,7 @@ export const TaskInfoDisplay: React.FC<TaskInfoDisplayProps> = ({
             <Text bold>数据源类型：</Text>
             <CustomOutlineTag>{task?.datasource_type}</CustomOutlineTag>
           </div>
-          {/* 注意：IntelligentThresholdTask 类型不包含 status 字段，这里仅展示已有字段 */}
+          {/* Note: IntelligentThresholdTask type does not include status field, only displaying existing fields here */}
           <div>
             <Text bold>最后更新：</Text>
             <Text>{task?.updated_at}</Text>

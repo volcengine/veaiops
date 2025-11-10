@@ -25,7 +25,7 @@ import {
 import { useRefreshAttributesTable } from './logic/refresh';
 
 /**
- * Bot 属性表格业务逻辑 Hook 参数
+ * Bot attributes table business logic Hook parameters
  */
 export interface UseBotAttributesTableLogicParams {
   botId?: string;
@@ -33,10 +33,10 @@ export interface UseBotAttributesTableLogicParams {
 }
 
 /**
- * Bot 属性表格业务逻辑 Hook 返回值
+ * Bot attributes table business logic Hook return value
  */
 export interface UseBotAttributesTableLogicReturn {
-  // 状态
+  // State
   editingAttribute: BotAttribute | null;
   isModalVisible: boolean;
   modalType: ModalType;
@@ -44,7 +44,7 @@ export interface UseBotAttributesTableLogicReturn {
   viewingAttribute: BotAttribute | null;
   loading: boolean;
 
-  // 业务逻辑
+  // Business logic
   createAttribute: (params: {
     name: AttributeKey;
     values: string[];
@@ -52,10 +52,10 @@ export interface UseBotAttributesTableLogicReturn {
   updateAttribute: (params: { id: string; value: string }) => Promise<boolean>;
   deleteAttribute: (attribute: BotAttribute) => Promise<boolean>;
 
-  // 事件处理
+  // Event handling
   handleOpenCreateModal: () => void;
   handleCloseModal: () => void;
-  handleFormSubmit: (values: BotAttributeFormData) => Promise<boolean>; // 返回成功状态，用于刷新表格
+  handleFormSubmit: (values: BotAttributeFormData) => Promise<boolean>; // Returns success status, used for refreshing table
   handleDelete: (
     attribute: BotAttribute,
     tableRef: React.RefObject<
@@ -71,30 +71,30 @@ export interface UseBotAttributesTableLogicReturn {
 }
 
 /**
- * Bot 属性表格业务逻辑 Hook
- * 管理模态框状态、事件处理和业务操作
+ * Bot attributes table business logic Hook
+ * Manages modal state, event handling, and business operations
  *
- * 拆分说明：
- * - logic/state.ts: 状态管理（editingAttribute、isModalVisible、modalType等）
- * - logic/business.ts: 业务逻辑Hook调用（useBotAttributes）
- * - logic/refresh.ts: 刷新表格辅助函数
- * - logic/handlers.ts: 事件处理器（handleOpenCreateModal、handleFormSubmit、handleDelete等）
- * - logic.ts: 主入口，负责组装和导出
+ * Split description:
+ * - logic/state.ts: State management (editingAttribute, isModalVisible, modalType, etc.)
+ * - logic/business.ts: Business logic Hook calls (useBotAttributes)
+ * - logic/refresh.ts: Refresh table helper function
+ * - logic/handlers.ts: Event handlers (handleOpenCreateModal, handleFormSubmit, handleDelete, etc.)
+ * - logic.ts: Main entry, responsible for assembly and export
  */
 export const useBotAttributesTableLogic = ({
   botId,
   channel,
 }: UseBotAttributesTableLogicParams): UseBotAttributesTableLogicReturn => {
-  // 状态管理
+  // State management
   const state = useBotAttributesTableState();
 
-  // 业务逻辑 Hook
+  // Business logic Hook
   const businessLogic = useBotAttributesBusinessLogic({ botId, channel });
 
-  // 刷新表格辅助函数
+  // Refresh table helper function
   const { refreshTable } = useRefreshAttributesTable();
 
-  // 事件处理器
+  // Event handlers
   const handlers = useBotAttributesTableHandlers({
     modalType: state.modalType,
     editingAttribute: state.editingAttribute,
@@ -110,7 +110,7 @@ export const useBotAttributesTableLogic = ({
   });
 
   return {
-    // 状态
+    // State
     editingAttribute: state.editingAttribute,
     isModalVisible: state.isModalVisible,
     modalType: state.modalType,
@@ -118,12 +118,12 @@ export const useBotAttributesTableLogic = ({
     viewingAttribute: state.viewingAttribute,
     loading: businessLogic.loading,
 
-    // 业务逻辑
+    // Business logic
     createAttribute: businessLogic.createAttribute,
     updateAttribute: businessLogic.updateAttribute,
     deleteAttribute: businessLogic.deleteAttribute,
 
-    // 事件处理
+    // Event handling
     handleOpenCreateModal: handlers.handleOpenCreateModal,
     handleCloseModal: handlers.handleCloseModal,
     handleFormSubmit: handlers.handleFormSubmit,

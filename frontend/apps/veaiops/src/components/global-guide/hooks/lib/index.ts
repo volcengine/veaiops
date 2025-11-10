@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Unified export for use-guide-logger Hook related modules
+ * Unified exports for use-guide-logger Hook related modules
  */
 
 export * from './logger-types';

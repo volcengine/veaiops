@@ -28,22 +28,22 @@ import {
 } from '../card-template';
 
 /**
- * 卡片模板管理逻辑Hook参数接口
+ * Card template management logic Hook parameters interface
  */
 export interface UseCardTemplateManagementLogicParams {
   refreshTable?: () => Promise<boolean>;
 }
 
 /**
- * 卡片模板管理逻辑Hook返回值接口
+ * Card template management logic Hook return value interface
  */
 export interface UseCardTemplateManagementLogicReturn {
-  // 状态
+  // State
   modalVisible: boolean;
   editingTemplate: AgentTemplate | null;
   form: FormInstance;
 
-  // 事件处理器
+  // Event handlers
   handleEdit: (template: AgentTemplate) => void;
   handleAdd: () => void;
   handleCancel: () => void;
@@ -54,13 +54,13 @@ export interface UseCardTemplateManagementLogicReturn {
 }
 
 /**
- * 卡片模板管理逻辑Hook
- * 提供卡片模板管理页面的所有业务逻辑
+ * Card template management logic Hook
+ * Provides all business logic for card template management page
  */
 export const useCardTemplateManagementLogic = (
   refreshTable?: () => Promise<boolean>,
 ): UseCardTemplateManagementLogicReturn => {
-  // 使用管理刷新 Hook
+  // Use management refresh Hook
   const { afterCreate, afterUpdate, afterDelete } =
     useManagementRefresh(refreshTable);
 
@@ -70,19 +70,19 @@ export const useCardTemplateManagementLogic = (
   );
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 删除模板处理器
+  // Delete template handler
   const handleDelete = useCallback(
     async (templateId: string) => {
       try {
         const success = await deleteTemplate(templateId);
         if (success) {
-          // 删除成功后刷新表格
+          // Refresh table after successful deletion
           const refreshResult = await afterDelete();
           if (!refreshResult.success && refreshResult.error) {
-            // ✅ 正确：使用 logger 记录警告，传递完整的错误信息
+            // ✅ Correct: Use logger to record warning, pass complete error information
             const errorObj = refreshResult.error;
             logger.warn({
-              message: '删除后刷新表格失败',
+              message: 'Failed to refresh table after deletion',
               data: {
                 error: errorObj.message,
                 stack: errorObj.stack,
@@ -96,7 +96,7 @@ export const useCardTemplateManagementLogic = (
         }
         return false;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
           error instanceof Error ? error.message : '删除失败，请重试';
         Message.error(errorMessage);
@@ -106,7 +106,7 @@ export const useCardTemplateManagementLogic = (
     [afterDelete],
   );
 
-  // 创建模板处理器
+  // Create template handler
   const handleCreate = useCallback(
     async (values: AgentTemplateCreateRequest) => {
       try {
@@ -114,11 +114,11 @@ export const useCardTemplateManagementLogic = (
         if (success) {
           setModalVisible(false);
           form.resetFields();
-          // 创建成功后刷新表格
+          // Refresh table after successful creation
           const refreshResult = await afterCreate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
-              message: '创建后刷新表格失败',
+              message: 'Failed to refresh table after creation',
               data: {
                 error: refreshResult.error.message,
                 stack: refreshResult.error.stack,
@@ -132,7 +132,7 @@ export const useCardTemplateManagementLogic = (
         }
         return false;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
           error instanceof Error ? error.message : '创建失败，请重试';
         Message.error(errorMessage);
@@ -142,7 +142,7 @@ export const useCardTemplateManagementLogic = (
     [form, afterCreate],
   );
 
-  // 更新模板处理器
+  // Update template handler
   const handleUpdate = useCallback(
     async (values: AgentTemplateUpdateRequest) => {
       if (!editingTemplate) {
@@ -156,9 +156,9 @@ export const useCardTemplateManagementLogic = (
         return false;
       }
 
-      // ✅ 使用 logger 记录调试信息（对象解构参数）
+      // ✅ Use logger to record debug information (object destructuring parameters)
       logger.debug({
-        message: '更新模板',
+        message: 'Update template',
         data: {
           targetId,
           values,
@@ -176,11 +176,11 @@ export const useCardTemplateManagementLogic = (
           setModalVisible(false);
           setEditingTemplate(null);
           form.resetFields();
-          // 更新成功后刷新表格
+          // Refresh table after successful update
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
-              message: '更新后刷新表格失败',
+              message: 'Failed to refresh table after update',
               data: {
                 error: refreshResult.error.message,
                 stack: refreshResult.error.stack,
@@ -194,7 +194,7 @@ export const useCardTemplateManagementLogic = (
         }
         return false;
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
           error instanceof Error ? error.message : '更新失败，请重试';
         Message.error(errorMessage);
@@ -204,7 +204,7 @@ export const useCardTemplateManagementLogic = (
     [editingTemplate, form, afterUpdate],
   );
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = useCallback(
     async (values: AgentTemplateCreateRequest | AgentTemplateUpdateRequest) => {
       if (editingTemplate) {
@@ -215,7 +215,7 @@ export const useCardTemplateManagementLogic = (
     [editingTemplate, handleUpdate, handleCreate],
   );
 
-  // 打开编辑弹窗
+  // Open edit modal
   const handleEdit = useCallback(
     (template: any) => {
       setEditingTemplate(template);
@@ -228,14 +228,14 @@ export const useCardTemplateManagementLogic = (
     [form],
   );
 
-  // 打开新增弹窗
+  // Open add modal
   const handleAdd = useCallback(() => {
     setEditingTemplate(null);
     form.resetFields();
     setModalVisible(true);
   }, [form]);
 
-  // 关闭弹窗
+  // Close modal
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     setEditingTemplate(null);
@@ -243,12 +243,12 @@ export const useCardTemplateManagementLogic = (
   }, [form]);
 
   return {
-    // 状态
+    // State
     modalVisible,
     editingTemplate,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,

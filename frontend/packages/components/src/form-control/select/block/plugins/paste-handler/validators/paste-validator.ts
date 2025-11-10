@@ -16,25 +16,29 @@ import { Message } from '@arco-design/web-react';
 import type { PluginContext } from '../../../types/plugin';
 
 /**
- * 粘贴值验证器
+ * Paste value validator
  */
 export class PasteValidator {
   constructor(private context: PluginContext) {}
 
   /**
-   * 第1步：基础验证和预处理
+   * Step 1: Basic validation and preprocessing
    */
   preValidateValues(values: string[]): {
     isValid: boolean;
     validValues: string[];
     errorMessage?: string;
   } {
-    // 检查空值
+    // Check empty values
     if (!values || values.length === 0) {
-      return { isValid: false, validValues: [], errorMessage: '粘贴内容为空' };
+      return {
+        isValid: false,
+        validValues: [],
+        errorMessage: 'Pasted content is empty',
+      };
     }
 
-    // 过滤空字符串和无效值
+    // Filter empty strings and invalid values
     const validValues = values
       .map((val) => val.trim())
       .filter((val) => val.length > 0)
@@ -44,28 +48,28 @@ export class PasteValidator {
       return {
         isValid: false,
         validValues: [],
-        errorMessage: '粘贴的内容格式不正确',
+        errorMessage: 'Pasted content format is incorrect',
       };
     }
 
-    // 检查单个值长度限制
+    // Check single value length limit
     const oversizedValues = validValues.filter((val) => val.length > 50);
     if (oversizedValues.length > 0) {
       return {
         isValid: false,
         validValues: [],
-        errorMessage: `以下值过长（超过50字符）：${oversizedValues.slice(0, 3).join(', ')}${
+        errorMessage: `The following values are too long (exceeds 50 characters): ${oversizedValues.slice(0, 3).join(', ')}${
           oversizedValues.length > 3 ? '...' : ''
         }`,
       };
     }
 
-    // 检查粘贴数量限制 - 放宽限制，支持更大批量操作
+    // Check paste count limit - relax limit, support larger batch operations
     if (validValues.length > 1000) {
       return {
         isValid: false,
         validValues: [],
-        errorMessage: `一次最多粘贴1000个值，当前粘贴了${validValues.length}个`,
+        errorMessage: `Maximum 1000 values can be pasted at once, currently pasted ${validValues.length} values`,
       };
     }
 
@@ -73,19 +77,19 @@ export class PasteValidator {
   }
 
   /**
-   * 第2步：值类型转换
+   * Step 2: Value type conversion
    */
   convertValueTypes(values: string[]): (string | number)[] {
-    // 🔧 防御性检查：确保context存在
+    // 🔧 Defensive check: ensure context exists
     if (!this.context) {
       return values;
     }
 
     const { props } = this.context;
 
-    // 如果使用了pasteValueKey，优先使用自定义处理函数或保持字符串类型
+    // If pasteValueKey is used, prefer custom processor function or keep string type
     if (props.pasteValueKey) {
-      const initialValues = values.map((val) => val); // 先转换为基础类型数组
+      const initialValues = values.map((val) => val); // First convert to basic type array
 
       if (props.pasteValueProcessor) {
         return props.pasteValueProcessor(initialValues);
@@ -94,7 +98,7 @@ export class PasteValidator {
     }
 
     return values.map((val) => {
-      // 原有逻辑：根据optionCfg.valueRender决定类型转换
+      // Original logic: determine type conversion based on optionCfg.valueRender
       const { dataSource } = props;
       if (
         dataSource &&
@@ -114,7 +118,7 @@ export class PasteValidator {
   }
 
   /**
-   * 第3步：去重检查
+   * Step 3: Deduplication check
    */
   checkDuplication(
     newValues: (string | number)[],
@@ -133,7 +137,7 @@ export class PasteValidator {
         duplicateValues.push(val);
       } else {
         newUniqueValues.push(val);
-        currentSet.add(String(val)); // 避免本次粘贴内部重复
+        currentSet.add(String(val)); // Avoid duplicates within this paste operation
       }
     });
 
@@ -145,7 +149,7 @@ export class PasteValidator {
   }
 
   /**
-   * 第4步：数量限制检查
+   * Step 4: Quantity limit check
    */
   checkLimits(
     newValues: (string | number)[],
@@ -155,33 +159,37 @@ export class PasteValidator {
     finalValues: (string | number)[];
     errorMessage?: string;
   } {
-    // 🔧 防御性检查：确保context存在
+    // 🔧 Defensive check: ensure context exists
     if (!this.context) {
-      console.warn('[PasteValidator] context已被销毁，跳过数量限制检查');
+      console.warn(
+        '[PasteValidator] Context has been destroyed, skipping quantity limit check',
+      );
       return { isValid: true, finalValues: newValues };
     }
 
-    // 🔧 批量粘贴场景下完全放开数量限制，不进行任何数量检查
-    // 这样可以支持大批量的数据导入操作
+    // 🔧 In batch paste scenario, completely remove quantity limit, no quantity check
+    // This allows support for large-scale data import operations
     return { isValid: true, finalValues: newValues };
   }
 
   /**
-   * 第5步：数据源验证（验证值是否在远程数据源中存在）
+   * Step 5: Data source validation (verify if values exist in remote data source)
    */
   async validateAgainstDataSource(values: (string | number)[]): Promise<{
     validValues: (string | number)[];
     invalidValues: (string | number)[];
   }> {
-    // 🔧 防御性检查：确保context存在
+    // 🔧 Defensive check: ensure context exists
     if (!this.context) {
-      console.warn('[PasteValidator] context已被销毁，跳过数据源验证');
+      console.warn(
+        '[PasteValidator] Context has been destroyed, skipping data source validation',
+      );
       return { validValues: values, invalidValues: [] };
     }
 
     const { props } = this.context;
 
-    // 如果没有数据源，跳过验证
+    // If no data source, skip validation
     if (
       !props.dataSource ||
       typeof props.dataSource !== 'object' ||
@@ -191,16 +199,16 @@ export class PasteValidator {
     }
 
     try {
-      // 由于数据源验证较为复杂，暂时跳过远程验证
-      // 将所有值视为有效，由用户在选择后通过正常的数据获取流程来验证
+      // Due to complexity of data source validation, temporarily skip remote validation
+      // Treat all values as valid, let user verify through normal data fetching flow after selection
 
-      // 简单的格式验证（针对数字ID）
+      // Simple format validation (for numeric IDs)
       const validValues: (string | number)[] = [];
       const invalidValues: (string | number)[] = [];
 
       values.forEach((value) => {
         const strValue = String(value);
-        // 基础格式验证：如果是数字ID，应该只包含数字
+        // Basic format validation: if it's a numeric ID, should only contain digits
         if (
           /^\d+$/.test(strValue) &&
           strValue.length >= 3 &&
@@ -214,43 +222,45 @@ export class PasteValidator {
 
       return { validValues, invalidValues };
     } catch (error) {
-      // 验证失败时，为了用户体验，可以选择跳过验证或显示警告
-      Message.warning('数据验证时发生错误，已跳过验证');
+      // When validation fails, for better UX, can skip validation or show warning
+      Message.warning(
+        'An error occurred during data validation, validation has been skipped',
+      );
       return { validValues: values, invalidValues: [] };
     }
   }
 
   /**
-   * 验证粘贴的值
+   * Validate pasted value
    */
   validatePastedValue(value: string): boolean {
-    // 基础验证：非空字符串
+    // Basic validation: non-empty string
     if (!value || typeof value !== 'string' || value.trim() === '') {
       return false;
     }
 
-    // 这里可以添加更多的验证逻辑
-    // 例如：格式验证、长度限制等
+    // Can add more validation logic here
+    // For example: format validation, length limits, etc.
     return true;
   }
 
   /**
-   * 过滤有效的粘贴值
+   * Filter valid pasted values
    */
   filterValidValues(values: string[]): string[] {
     return values.filter((value) => this.validatePastedValue(value));
   }
 
   /**
-   * 处理特殊字符
+   * Handle special characters
    */
   sanitizeValue(value: string): string {
-    // 移除不可见字符和多余的空格
+    // Remove invisible characters and extra spaces
     return value.trim().replace(/[\u200B-\u200D]|\uFEFF/g, '');
   }
 
   /**
-   * 批量处理粘贴值
+   * Process pasted values in batch
    */
   processPastedValues(
     values: string[],

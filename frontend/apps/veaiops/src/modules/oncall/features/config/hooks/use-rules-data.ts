@@ -35,14 +35,14 @@ export interface UseRulesDataProps {
 }
 
 /**
- * 内聚型Hook - 规则数据逻辑
- * 负责业务逻辑：数据源配置、API调用
- * 使用 CustomTable 的自动刷新机制
+ * Cohesive Hook - rule data logic
+ * Responsible for business logic: data source configuration, API calls
+ * Uses CustomTable's automatic refresh mechanism
  */
 export const useRulesData = ({ bots, ref }: UseRulesDataProps) => {
-  // 🎯 数据请求函数 - 使用工具函数
-  // 注意：将复杂对象参数提取为变量，避免 TypeScript 解析错误（TS1136）
-  // 原因：options 对象包含嵌套的 onError 回调，可能导致解析器无法正确识别对象边界
+  // 🎯 Data request function - uses utility functions
+  // Note: Extract complex object parameters as variables to avoid TypeScript parsing errors (TS1136)
+  // Reason: options object contains nested onError callback, may cause parser to fail to correctly identify object boundaries
   const requestOptions = useMemo(
     () => ({
       errorMessagePrefix: '获取Oncall规则失败',
@@ -88,9 +88,9 @@ export const useRulesData = ({ bots, ref }: UseRulesDataProps) => {
             };
           }
 
-          // ✅ 修复：Bot.channel 是枚举类型，枚举值是字符串（如 'Lark', 'DingTalk'）
-          // API 期望 string 类型，需要将枚举值转换为字符串
-          // 使用类型守卫确保类型安全
+          // ✅ Fix: Bot.channel is an enum type, enum values are strings (e.g., 'Lark', 'DingTalk')
+          // API expects string type, need to convert enum value to string
+          // Use type guard to ensure type safety
           let channelValue = '';
           if (selectedBot.channel != null) {
             if (typeof selectedBot.channel === 'string') {
@@ -104,7 +104,7 @@ export const useRulesData = ({ bots, ref }: UseRulesDataProps) => {
             botId,
             otherParams,
           );
-          // 类型转换：APIResponseInterestList 与 StandardApiResponse<Interest[]> 结构兼容
+          // Type conversion: APIResponseInterestList is compatible with StandardApiResponse<Interest[]> structure
           return response as unknown as StandardApiResponse<Interest[]>;
         },
         options: requestOptions,
@@ -112,7 +112,7 @@ export const useRulesData = ({ bots, ref }: UseRulesDataProps) => {
     [bots, requestOptions],
   );
 
-  // 🎯 数据源配置 - 使用工具函数
+  // 🎯 Data source configuration - uses utility functions
   const dataSource = useMemo(
     () =>
       createServerPaginationDataSource({
@@ -122,7 +122,7 @@ export const useRulesData = ({ bots, ref }: UseRulesDataProps) => {
     [request, bots.length],
   );
 
-  // 🎯 表格配置 - 使用工具函数
+  // 🎯 Table configuration - uses utility functions
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
@@ -132,8 +132,8 @@ export const useRulesData = ({ bots, ref }: UseRulesDataProps) => {
     [],
   );
 
-  // 使用 useBusinessTable
-  // 注意：ref 类型使用断言适配，因为 useBusinessTable 的 ref 类型是通用的 CustomTableActionType
+  // Use useBusinessTable
+  // Note: ref type uses assertion adaptation, because useBusinessTable's ref type is generic CustomTableActionType
   const { customTableProps, operations } = useBusinessTable({
     dataSource,
     tableProps,
@@ -142,7 +142,7 @@ export const useRulesData = ({ bots, ref }: UseRulesDataProps) => {
       successMessage: '刷新成功',
       errorMessage: '刷新失败，请重试',
     },
-    // ✅ 修复：useBusinessTable 现在支持泛型参数，无需使用 as any
+    // ✅ Fix: useBusinessTable now supports generic parameters, no need to use as any
     ref,
   });
 

@@ -18,8 +18,8 @@ import { FormField } from './form-field';
 import type { FormFieldsListProps } from './types';
 
 /**
- * 表单字段列表组件
- * 根据连接类型渲染对应的表单字段
+ * Form fields list component
+ * Renders corresponding form fields based on connection type
  */
 export const FormFieldsList: React.FC<FormFieldsListProps> = ({
   connectType,
@@ -32,7 +32,7 @@ export const FormFieldsList: React.FC<FormFieldsListProps> = ({
     <>
       {fieldConfigs.map((config) => {
         const isDisabled = disabledFields.includes(config.field);
-        // 密码字段不预填充，始终为空，让用户手动输入
+        // Password fields are not pre-filled, always empty, let user input manually
         let initialValue: string | undefined;
         if (config.isPassword) {
           initialValue = undefined;
@@ -41,9 +41,9 @@ export const FormFieldsList: React.FC<FormFieldsListProps> = ({
           typeof connect === 'object' &&
           config.field in connect
         ) {
-          // ✅ 修复：使用类型守卫安全地访问动态字段
-          // Connect 类型包含 Record<string, unknown> 索引签名，可以安全访问任意字段
-          // 使用类型检查确保字段值类型正确
+          // ✅ Fix: Use type guard to safely access dynamic fields
+          // Connect type includes Record<string, unknown> index signature, can safely access any field
+          // Use type check to ensure field value type is correct
           const fieldValue = (connect as Record<string, unknown>)[config.field];
           initialValue =
             typeof fieldValue === 'string' ? fieldValue : undefined;

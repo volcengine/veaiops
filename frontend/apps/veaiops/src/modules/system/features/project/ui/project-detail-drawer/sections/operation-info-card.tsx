@@ -19,7 +19,7 @@ import type React from 'react';
 const { Text } = Typography;
 
 /**
- * 项目操作说明卡片组件
+ * Project operation instructions card component
  */
 export const OperationInfoCard: React.FC = () => {
   return (
@@ -43,7 +43,7 @@ export const OperationInfoCard: React.FC = () => {
                 lineHeight: '22px',
               }}
             >
-              操作说明
+              Operation Instructions
             </Text>
             <Text
               type="secondary"
@@ -53,7 +53,7 @@ export const OperationInfoCard: React.FC = () => {
                 lineHeight: '16px',
               }}
             >
-              项目管理的重要提示和注意事项
+              Important tips and notes for project management
             </Text>
           </div>
         </div>
@@ -77,7 +77,7 @@ export const OperationInfoCard: React.FC = () => {
             <div className="w-2 h-2 rounded-full bg-white" />
           </div>
           <Text className="text-sm text-[#4e5969] leading-[1.6]">
-            项目信息由系统管理员通过CSV文件批量导入
+            Project information is imported in bulk by system administrators via CSV files
           </Text>
         </div>
         <div className="flex items-start gap-3 px-4 py-3 rounded-lg border border-[#bedaff] bg-[#f0f6ff]">
@@ -85,7 +85,7 @@ export const OperationInfoCard: React.FC = () => {
             <div className="w-2 h-2 rounded-full bg-white" />
           </div>
           <Text className="text-sm text-[#4e5969] leading-[1.6]">
-            项目描述用于说明项目的用途和功能范围
+            Project description is used to explain the purpose and functional scope of the project
           </Text>
         </div>
         <div className="flex items-start gap-3 px-4 py-3 rounded-lg border border-[#ffccc7] bg-[#fff2f0]">
@@ -93,7 +93,7 @@ export const OperationInfoCard: React.FC = () => {
             <div className="w-2 h-2 rounded-full bg-white" />
           </div>
           <Text className="text-sm text-[#4e5969] leading-[1.6]">
-            删除项目将同时删除相关的所有历史数据，请谨慎操作
+            Deleting a project will also delete all related historical data. Please proceed with caution.
           </Text>
         </div>
       </Space>

@@ -18,64 +18,64 @@ import { type FieldItem, Filters } from './index';
 import { filterPluginRegistry, pluginExtensionManager } from './plugins';
 
 /**
- * 插件化筛选器使用示例
+ * Plugin-based filter usage example
  */
 export const FilterExample: React.FC = () => {
   const [query, setQuery] = useState<Record<string, unknown>>({});
 
-  // 示例配置 - 使用插件化系统
+  // Example configuration - using plugin system
   const filterConfig: FieldItem[] = [
     {
       field: 'name',
-      label: '姓名',
+      label: 'Name',
       type: 'Input',
       componentProps: {
-        placeholder: '请输入姓名',
+        placeholder: 'Please enter name',
         allowClear: true,
       },
     },
     {
       field: 'age',
-      label: '年龄',
+      label: 'Age',
       type: 'InputNumber',
       componentProps: {
-        placeholder: '请输入年龄',
+        placeholder: 'Please enter age',
         min: 0,
         max: 120,
       },
     },
     {
       field: 'status',
-      label: '状态',
+      label: 'Status',
       type: 'Select',
       componentProps: {
         options: [
-          { label: '启用', value: 'active' },
-          { label: '禁用', value: 'inactive' },
-          { label: '待审核', value: 'pending' },
+          { label: 'Active', value: 'active' },
+          { label: 'Inactive', value: 'inactive' },
+          { label: 'Pending', value: 'pending' },
         ],
       },
     },
     {
       field: 'category',
-      label: '分类',
+      label: 'Category',
       type: 'Cascader',
       componentProps: {
         options: [
           {
             value: 'tech',
-            label: '技术',
+            label: 'Technology',
             children: [
-              { value: 'frontend', label: '前端' },
-              { value: 'backend', label: '后端' },
+              { value: 'frontend', label: 'Frontend' },
+              { value: 'backend', label: 'Backend' },
             ],
           },
           {
             value: 'design',
-            label: '设计',
+            label: 'Design',
             children: [
-              { value: 'ui', label: 'UI设计' },
-              { value: 'ux', label: 'UX设计' },
+              { value: 'ui', label: 'UI Design' },
+              { value: 'ux', label: 'UX Design' },
             ],
           },
         ],
@@ -83,7 +83,7 @@ export const FilterExample: React.FC = () => {
     },
     {
       field: 'dateRange',
-      label: '日期范围',
+      label: 'Date Range',
       type: 'RangePicker',
       componentProps: {
         format: 'YYYY-MM-DD',
@@ -91,34 +91,34 @@ export const FilterExample: React.FC = () => {
     },
     {
       field: 'tags',
-      label: '标签',
+      label: 'Tags',
       type: 'InputTag',
       componentProps: {
-        placeholder: '请输入标签',
+        placeholder: 'Please enter tags',
       },
     },
     {
       field: 'isActive',
-      label: '是否激活',
+      label: 'Is Active',
       type: 'Checkbox',
       componentProps: {
-        label: '激活状态',
+        label: 'Active Status',
       },
     },
     {
       field: 'customerIDs',
-      label: '账户',
+      label: 'Account',
       type: 'Select.Account',
       componentProps: {
         mode: 'multiple',
         maxTagCount: 1,
-        placeholder: '请选择账户',
+        placeholder: 'Please select account',
         allowClear: true,
       },
     },
     {
       field: 'employeeIDs',
-      label: '员工',
+      label: 'Employee',
       type: 'Select.Employee',
       componentProps: {
         mode: 'multiple',
@@ -129,9 +129,9 @@ export const FilterExample: React.FC = () => {
     },
   ];
 
-  // 自定义配置示例
+  // Custom configuration example
   React.useEffect(() => {
-    // 为 Input 组件添加全局配置
+    // Add global configuration for Input component
     pluginExtensionManager.setGlobalConfig({
       pluginType: 'Input',
       config: {
@@ -140,7 +140,7 @@ export const FilterExample: React.FC = () => {
       },
     });
 
-    // 为 Select 组件添加自定义钩子
+    // Add custom hooks for Select component
     pluginExtensionManager.registerHooks({
       pluginType: 'Select',
       hooks: {
@@ -166,15 +166,15 @@ export const FilterExample: React.FC = () => {
     setQuery(newQuery);
   };
 
-  // 获取插件系统统计信息
+  // Get plugin system statistics
   const pluginStats = filterPluginRegistry.getStats();
   const extensionStats = pluginExtensionManager.getStats();
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2>插件化筛选器示例</h2>
+      <h2>Plugin-based filter example</h2>
 
-      {/* 插件系统信息 */}
+      {/* Plugin system information */}
       <div
         style={{
           marginBottom: '20px',
@@ -190,7 +190,7 @@ export const FilterExample: React.FC = () => {
         <p>全局配置: {extensionStats.configsCount} 个</p>
       </div>
 
-      {/* 筛选器组件 */}
+      {/* Filter component */}
       <Filters
         config={filterConfig}
         query={query}
@@ -202,7 +202,7 @@ export const FilterExample: React.FC = () => {
         }}
       />
 
-      {/* 当前查询状态 */}
+      {/* Current query state */}
       <div style={{ marginTop: '20px' }}>
         <h4>当前查询状态:</h4>
         <pre

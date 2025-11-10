@@ -19,7 +19,7 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import { useCallback, useEffect, useState } from 'react';
 
 /**
- * 查看加密信息的参数接口
+ * Parameters interface for viewing encrypted information
  */
 interface UseSecretViewerParams {
   botId?: string;
@@ -27,7 +27,7 @@ interface UseSecretViewerParams {
 }
 
 /**
- * 查看加密信息的返回值接口
+ * Return value interface for viewing encrypted information
  */
 export interface UseSecretViewerReturn {
   loadingSecrets: {
@@ -48,7 +48,7 @@ export interface UseSecretViewerReturn {
 }
 
 /**
- * 管理加密信息查看的 Hook
+ * Hook for managing encrypted information viewing
  */
 export const useSecretViewer = ({
   botId,
@@ -66,8 +66,8 @@ export const useSecretViewer = ({
   });
 
   /**
-   * 查看加密信息
-   * 通过API获取解密后的值并填充到表单
+   * View encrypted information
+   * Get decrypted value through API and fill it into the form
    */
   const handleViewSecret = useCallback(
     async (
@@ -111,7 +111,7 @@ export const useSecretViewer = ({
     [botId, form],
   );
 
-  // 自动隐藏 tooltip
+  // Auto-hide tooltip
   useEffect(() => {
     const timers = Object.entries(showSecretTooltips).map(([key, show]) => {
       if (show) {

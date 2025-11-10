@@ -69,7 +69,7 @@ export const InstanceSelectionStep: React.FC<InstanceSelectionStepProps> = ({
   onAliyunInstanceSelect,
   onVolcengineInstanceSelect,
 }) => {
-  // 管理搜索文本状态
+  // Manage search text state
   const [searchText, setSearchText] = React.useState('');
 
   switch (dataSourceType) {

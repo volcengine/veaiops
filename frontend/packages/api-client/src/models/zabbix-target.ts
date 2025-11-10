@@ -15,11 +15,11 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type ZabbixTarget = {
   /**
-   * Zabbix 项目 ID
+   * Zabbix item ID
    */
   itemid: string;
   /**
-   * 主机名
+   * Hostname
    */
   hostname: string;
 };

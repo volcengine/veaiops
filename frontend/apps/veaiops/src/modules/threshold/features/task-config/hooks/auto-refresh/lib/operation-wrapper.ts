@@ -16,9 +16,9 @@ import { logger } from '@veaiops/utils';
 import type { CreateOperationWrapperParams } from './types';
 
 /**
- * 高级用法：自定义操作包装器
+ * Advanced usage: custom operation wrapper
  *
- * 如果需要更复杂的操作逻辑，可以使用这个函数来创建自定义的包装器
+ * If more complex operation logic is needed, use this function to create a custom wrapper
  *
  * @example
  * ```typescript
@@ -43,12 +43,12 @@ export const createOperationWrapper = <TArgs extends any[], TResult>({
     try {
       const result = await operation(...args);
 
-      // 检查是否需要刷新（默认为true，或者使用自定义条件）
+      // Check if refresh is needed (default true, or use custom condition)
       const shouldRefresh = successCondition ? successCondition(result) : true;
 
       if (shouldRefresh) {
         const refreshResult = await refreshFn();
-        // 如果刷新失败，记录警告但不影响操作本身
+        // If refresh fails, log warning but don't affect operation itself
         if (
           refreshResult &&
           typeof refreshResult === 'object' &&
@@ -57,7 +57,7 @@ export const createOperationWrapper = <TArgs extends any[], TResult>({
           refreshResult.error
         ) {
           logger.warn({
-            message: '操作后刷新表格失败',
+            message: 'Failed to refresh table after operation',
             data: {
               error: refreshResult.error.message,
               stack: refreshResult.error.stack,
@@ -71,7 +71,7 @@ export const createOperationWrapper = <TArgs extends any[], TResult>({
 
       return result;
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: use logger to record error and expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
@@ -84,7 +84,7 @@ export const createOperationWrapper = <TArgs extends any[], TResult>({
         source: 'AutoRefreshOperations',
         component: 'createOperationWrapper',
       });
-      // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
+      // ✅ Correct: convert error to Error object before throwing (complies with @typescript-eslint/only-throw-error rule)
       throw errorObj;
     }
   };

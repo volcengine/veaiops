@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * Schema Table 类型统一导出
+ * Schema Table type unified export
  */
 
 export * from './types';
-// 显式重新导出关键类型，确保 DTS 生成时正确识别（路径别名解析问题）
+// Explicitly re-export key types to ensure correct recognition during DTS generation (path alias resolution issue)
 export type {
   TableSchema,
   RequestConfig,

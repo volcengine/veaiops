@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// export * from './x-guide'; // x-guide.tsx 中已无有效导出
+// export * from './x-guide'; // x-guide.tsx no longer has valid exports
 export * from './interface';
 export * from './constant';
 export * from './guide';

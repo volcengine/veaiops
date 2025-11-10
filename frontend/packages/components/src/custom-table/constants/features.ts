@@ -13,17 +13,17 @@
 // limitations under the License.
 
 /**
- * CustomTable 功能开关常量定义
+ * CustomTable feature flag constants definition
  */
 import { PluginNames } from './enum';
 
 /**
- * 功能开关默认值
- * 基于实际业务需求优化，列宽持久化默认启用
+ * Feature flag default values
+ * Optimized based on actual business requirements, column width persistence enabled by default
  */
 export const DEFAULT_FEATURES = {
   enableFilter: true,
-  // 🐛 重新启用，使用简化实现
+  // 🐛 Re-enabled, using simplified implementation
   enableAlert: true,
   enablePagination: true,
   enableSorting: true,
@@ -33,15 +33,15 @@ export const DEFAULT_FEATURES = {
   enableToolbar: false,
   enableSearch: false,
   enableRowSelection: false,
-  enableColumnWidthPersistence: true, // 🎯 默认启用列宽持久化
+  enableColumnWidthPersistence: true, // 🎯 Column width persistence enabled by default
 } as const;
 
-// 功能开关类型已移动到 types 目录统一管理
-// 避免循环导入，直接从 types/constants/features 导入
+// Feature flag types have been moved to types directory for unified management
+// Avoid circular imports, import directly from types/constants/features
 export type { FeatureFlags } from '@/custom-table/types/constants/features';
 
 /**
- * 功能插件映射表
+ * Feature plugin mapping table
  */
 export const FEATURE_PLUGIN_MAP = {
   enableFilter: [PluginNames.TABLE_FILTER],

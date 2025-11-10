@@ -13,13 +13,13 @@
 // limitations under the License.
 
 /**
- * 历史事件模块类型定义
+ * History event module type definitions
  *
- * 注意：公共类型已迁移到 @veaiops/types
- * 此文件仅保留模块特定类型
+ * Note: Common types have been migrated to @veaiops/types
+ * This file only retains module-specific types
  */
 
-// 从 packages 导入公共类型
+// Import common types from packages
 import type {
   EventQueryParams,
   EventTableData,
@@ -27,7 +27,7 @@ import type {
   TableDataResponse,
 } from "@veaiops/types";
 
-// 重新导出公共类型（向后兼容）
+// Re-export common types (backward compatibility)
 export type {
   EventQueryParams as HistoryQueryParams,
   EventTableData as HistoryTableData,
@@ -35,12 +35,12 @@ export type {
   TableDataResponse,
 };
 
-// 从 api-generate 导出原始类型
+// Export original types from api-generate
 export type { Event, AgentType, EventLevel } from "api-generate";
 
-// ✅ 直接从 @veaiops/api-client 导出 EventStatus（不通过 constants 中转）
+// ✅ Directly export EventStatus from @veaiops/api-client (not through constants)
 export { EventStatus } from "@veaiops/api-client";
 
-// 导出新增的类型定义（从 origin/feat/web-v2 迁移）
-// 使用 origin/feat/web-v2 的字段定义方式
+// Export new type definitions (migrated from origin/feat/web-v2)
+// Use origin/feat/web-v2 field definition approach
 export type { EventApiParams, HistoryFilters } from "../types/event-api-params";

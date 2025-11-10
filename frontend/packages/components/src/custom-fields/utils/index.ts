@@ -14,14 +14,14 @@
 
 import type { ModernTableColumnProps } from '@/shared/types';
 
-// 为了向后兼容，创建类型别名
+// Create type alias for backward compatibility
 type CustomTableColumnProps<T = any> = ModernTableColumnProps<T>;
 
 /**
- * 获取树形列的数据索引
- * @param columns 基础的列配置
- * @param condition dataIndex是否可以选中的判断函数
- * @returns 所有符合条件的dataIndex数组
+ * Get data indices of tree columns
+ * @param columns Base column configuration
+ * @param condition Judgment function to determine if dataIndex can be selected
+ * @returns Array of all dataIndex that meet the condition
  */
 export const getTreeColumnsDataIndex = (
   columns: CustomTableColumnProps[],
@@ -33,16 +33,16 @@ export const getTreeColumnsDataIndex = (
     const { dataIndex, children } = column;
 
     if (Array.isArray(children)) {
-      // 如果有下一层，则继续递归
+      // If there is a next level, continue recursively
       children.forEach(getColumnDataIndex);
     } else if (dataIndex) {
-      // 根据条件判断是否加入fields
+      // Determine whether to add to fields based on condition
       if (typeof condition === 'function') {
         if (condition(dataIndex)) {
           fields.push(dataIndex);
         }
       } else {
-        // 没有条件函数，直接加入
+        // No condition function, add directly
         fields.push(dataIndex);
       }
     }
@@ -53,11 +53,11 @@ export const getTreeColumnsDataIndex = (
 };
 
 /**
- * 按字段排序列配置
- * @param columns 列配置
- * @param fields 排序字段数组
- * @param addNoSelected 是否添加未选择的字段
- * @returns 排序后的列配置
+ * Sort column configuration by fields
+ * @param columns Column configuration
+ * @param fields Sorting field array
+ * @param addNoSelected Whether to add unselected fields
+ * @returns Sorted column configuration
  */
 export const sortColumnsByFields = <T>({
   columns,
@@ -71,7 +71,7 @@ export const sortColumnsByFields = <T>({
   const sortedColumns: CustomTableColumnProps<T>[] = [];
   const remainingColumns: CustomTableColumnProps<T>[] = [];
 
-  // 先添加指定字段的列
+  // First add columns for specified fields
   fields.forEach((field) => {
     const column = columns.find((col) => col.dataIndex === field);
     if (column) {
@@ -79,7 +79,7 @@ export const sortColumnsByFields = <T>({
     }
   });
 
-  // 如果需要添加未选择的字段
+  // If need to add unselected fields
   if (addNoSelected) {
     columns.forEach((column) => {
       if (!fields.includes(column.dataIndex as string)) {

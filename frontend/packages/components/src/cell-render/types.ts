@@ -13,105 +13,103 @@
 // limitations under the License.
 
 /**
- * CellRender 组件类型定义
- * @description 单元格渲染组件的类型定义
-
- *
+ * CellRender component type definitions
+ * @description Type definitions for cell rendering components
  */
 
 import type { CSSProperties, ReactNode } from 'react';
 
 /**
- * 基础单元格渲染属性接口
- * @description 定义基础单元格渲染组件的属性
+ * Base cell rendering property interface
+ * @description Defines properties for base cell rendering components
  */
 export interface BaseCellRenderProps {
-  /** 单元格内容 */
+  /** Cell content */
   children?: ReactNode;
-  /** 自定义样式类名 */
+  /** Custom style class name */
   className?: string;
-  /** 自定义样式 */
+  /** Custom style */
   style?: CSSProperties;
-  /** 是否可点击 */
+  /** Whether clickable */
   clickable?: boolean;
-  /** 点击回调 */
+  /** Click callback */
   onClick?: () => void;
 }
 
 /**
- * 省略号单元格渲染属性接口
- * @description 定义省略号单元格渲染组件的属性
+ * Ellipsis cell rendering property interface
+ * @description Defines properties for ellipsis cell rendering components
  */
 export interface EllipsisProps extends BaseCellRenderProps {
-  /** 显示文本 */
+  /** Display text */
   text: string;
-  /** 最大长度 */
+  /** Maximum length */
   maxLength?: number;
-  /** 省略符号 */
+  /** Ellipsis symbol */
   ellipsis?: string;
-  /** 是否显示tooltip */
+  /** Whether to show tooltip */
   showTooltip?: boolean;
-  /** tooltip内容 */
+  /** Tooltip content */
   tooltipContent?: string;
 }
 
 /**
- * 员工单元格渲染属性接口
- * @description 定义员工单元格渲染组件的属性
+ * Employee cell rendering property interface
+ * @description Defines properties for employee cell rendering components
  */
 export interface EmployeeProps extends BaseCellRenderProps {
-  /** 员工ID */
+  /** Employee ID */
   employeeId: string;
-  /** 员工姓名 */
+  /** Employee name */
   name?: string;
-  /** 员工头像 */
+  /** Employee avatar */
   avatar?: string;
-  /** 员工部门 */
+  /** Employee department */
   department?: string;
-  /** 是否显示部门 */
+  /** Whether to show department */
   showDepartment?: boolean;
-  /** 是否显示头像 */
+  /** Whether to show avatar */
   showAvatar?: boolean;
-  /** 头像大小 */
+  /** Avatar size */
   avatarSize?: 'small' | 'medium' | 'large';
 }
 
 /**
- * 信息代码单元格渲染属性接口
- * @description 定义信息代码单元格渲染组件的属性
+ * Info with code cell rendering property interface
+ * @description Defines properties for info with code cell rendering components
  */
 export interface InfoWithCodeProps extends BaseCellRenderProps {
-  /** 信息标题 */
+  /** Info title */
   title: string;
-  /** 信息代码 */
+  /** Info code */
   code?: string;
-  /** 信息描述 */
+  /** Info description */
   description?: string;
-  /** 是否显示代码 */
+  /** Whether to show code */
   showCode?: boolean;
-  /** 代码样式 */
+  /** Code style */
   codeStyle?: CSSProperties;
-  /** 标题样式 */
+  /** Title style */
   titleStyle?: CSSProperties;
-  /** 描述样式 */
+  /** Description style */
   descriptionStyle?: CSSProperties;
 }
 
 /**
- * 时间戳单元格渲染属性接口
- * @description 定义时间戳单元格渲染组件的属性
+ * Timestamp cell rendering property interface
+ * @description Defines properties for timestamp cell rendering components
  */
 export interface StampTimeProps extends BaseCellRenderProps {
-  /** 时间值 */
+  /** Time value */
   time: string | number | Date;
-  /** 时间格式 */
+  /** Time format */
   format?: string;
-  /** 是否显示相对时间 */
+  /** Whether to show relative time */
   showRelative?: boolean;
-  /** 相对时间阈值（毫秒） */
+  /** Relative time threshold (milliseconds) */
   relativeThreshold?: number;
-  /** 时区 */
+  /** Timezone */
   timezone?: string;
-  /** 是否显示时区 */
+  /** Whether to show timezone */
   showTimezone?: boolean;
 }

@@ -18,7 +18,7 @@ import { getErrorMessage } from './message-extractor';
 import { hasMessage, hasResponse, hasStatus, isNetworkError } from './type-guards';
 
 /**
- * 显示错误消息参数接口
+ * Show error message parameter interface
  */
 export interface ShowErrorMessageParams {
   error: unknown;
@@ -26,7 +26,7 @@ export interface ShowErrorMessageParams {
 }
 
 /**
- * 显示错误消息
+ * Show error message
  */
 export function showErrorMessage({ error, defaultMessage = '操作失败' }: ShowErrorMessageParams): void {
   const message = getErrorMessage(error) || defaultMessage;
@@ -34,7 +34,7 @@ export function showErrorMessage({ error, defaultMessage = '操作失败' }: Sho
 }
 
 /**
- * 处理API错误参数接口
+ * Handle API error parameter interface
  */
 export interface HandleApiErrorParams {
   error: unknown;
@@ -42,10 +42,10 @@ export interface HandleApiErrorParams {
 }
 
 /**
- * 处理API错误
+ * Handle API error
  */
 export function handleApiError({ error, context }: HandleApiErrorParams): void {
-  // ✅ 正确：使用类型守卫创建 Error 对象
+  // ✅ Correct: use type guard to create Error object
   const errorObj =
     error instanceof Error ? error : new Error(String(error));
 
@@ -65,11 +65,11 @@ export function handleApiError({ error, context }: HandleApiErrorParams): void {
 }
 
 /**
- * 处理网络错误
- * @param error 错误对象（unknown 类型）
+ * Handle network error
+ * @param error Error object (unknown type)
  */
 export function handleNetworkError(error: unknown): void {
-  // ✅ 正确：使用类型守卫创建 Error 对象
+  // ✅ Correct: use type guard to create Error object
   const errorObj =
     error instanceof Error ? error : new Error(String(error));
 
@@ -84,8 +84,8 @@ export function handleNetworkError(error: unknown): void {
     component: 'handleNetworkError',
   });
 
-  // ✅ 正确：透出实际的错误信息，而不是使用固定消息
-  // 优先提取实际错误信息，只有在无法提取时才使用默认消息
+  // ✅ Correct: expose actual error information, not use fixed message
+  // Prioritize extracting actual error information, only use default message when unable to extract
   let errorMessage: string;
 
   if (error instanceof Error) {
@@ -99,16 +99,16 @@ export function handleNetworkError(error: unknown): void {
     errorMessage = '网络请求失败';
   }
 
-  // 优先显示实际错误信息
+  // Prioritize displaying actual error information
   Message.error(errorMessage);
 }
 
 /**
- * 处理权限错误
- * @param error 错误对象（unknown 类型）
+ * Handle permission error
+ * @param error Error object (unknown type)
  */
 export function handlePermissionError(error: unknown): void {
-  // ✅ 正确：使用类型守卫创建 Error 对象
+  // ✅ Correct: use type guard to create Error object
   const errorObj =
     error instanceof Error ? error : new Error(String(error));
 
@@ -123,7 +123,7 @@ export function handlePermissionError(error: unknown): void {
     component: 'handlePermissionError',
   });
 
-  // ✅ 正确：透出实际的错误信息，而不是使用固定消息
+  // ✅ Correct: expose actual error information, not use fixed message
   let errorMessage: string;
 
   if (error instanceof Error) {
@@ -135,7 +135,7 @@ export function handlePermissionError(error: unknown): void {
     errorMessage = '访问被拒绝';
   }
 
-  // 优先显示实际错误信息，如果没有则根据状态码提供默认提示
+  // Prioritize displaying actual error information, if none then provide default prompt based on status code
   if (errorMessage && errorMessage !== '访问被拒绝') {
     Message.error(errorMessage);
   } else if (
@@ -149,7 +149,7 @@ export function handlePermissionError(error: unknown): void {
 }
 
 /**
- * 通用错误处理器参数接口
+ * General error handler parameter interface
  */
 export interface HandleErrorOptions {
   context?: string;
@@ -158,9 +158,9 @@ export interface HandleErrorOptions {
 }
 
 /**
- * 通用错误处理器
- * @param error 错误对象（unknown 类型）
- * @param options 处理选项
+ * General error handler
+ * @param error Error object (unknown type)
+ * @param options Handling options
  */
 export function handleError(
   error: unknown,
@@ -169,7 +169,7 @@ export function handleError(
   const { context, showMessage = true, logError = true } = options;
 
   if (logError) {
-    // ✅ 正确：使用类型守卫创建 Error 对象
+    // ✅ Correct: use type guard to create Error object
     const errorObj =
       error instanceof Error ? error : new Error(String(error));
 

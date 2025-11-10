@@ -17,7 +17,7 @@ import { CellRender } from '@veaiops/components';
 import type { Interest } from 'api-generate';
 
 /**
- * 规则信息展示组件
+ * Rule information display component
  */
 export const RuleInfo = ({ rule }: { rule: Interest }) => {
   return (
@@ -28,7 +28,7 @@ export const RuleInfo = ({ rule }: { rule: Interest }) => {
 };
 
 /**
- * 规则状态展示组件
+ * Rule status display component
  */
 export const RuleStatus = ({ isActive }: { isActive: boolean }) => {
   return (
@@ -37,7 +37,7 @@ export const RuleStatus = ({ isActive }: { isActive: boolean }) => {
 };
 
 /**
- * 规则类别展示组件
+ * Rule category display component
  */
 export const RuleCategories = ({
   actionCategory,
@@ -61,7 +61,7 @@ export const RuleCategories = ({
 };
 
 /**
- * 规则配置展示组件
+ * Rule configuration display component
  */
 export const RuleConfig = ({
   regex,

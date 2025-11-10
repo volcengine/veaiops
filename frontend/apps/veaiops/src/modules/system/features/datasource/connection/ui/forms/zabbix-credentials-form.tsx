@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Zabbix 认证字段组件
+ * Zabbix credentials form component
  */
 
 import { Form, Input } from '@arco-design/web-react';

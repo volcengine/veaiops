@@ -14,7 +14,7 @@
 
 import type { TableAlertConfig } from '@/custom-table/types';
 /**
- * 表格提示信息Hook
+ * Table alert message Hook
  */
 import { type ReactNode, useCallback, useState } from 'react';
 import { DEFAULT_TABLE_ALERT_CONFIG } from '../config';
@@ -36,7 +36,7 @@ export const useAlert = ({
 }: UseAlertProps) => {
   const { defaultType = 'info' } = { ...DEFAULT_TABLE_ALERT_CONFIG, ...config };
 
-  // 提示信息状态
+  // Alert message state
   const [alertVisible, setAlertVisible] = useState(isAlertShow);
   const [currentAlertType, setCurrentAlertType] = useState(
     alertType || defaultType,
@@ -45,7 +45,7 @@ export const useAlert = ({
     ReactNode | string
   >(alertContent || '');
 
-  // 显示提示信息
+  // Show alert message
   const showAlert = useCallback(
     (
       content: ReactNode | string,
@@ -58,7 +58,7 @@ export const useAlert = ({
     [defaultType],
   );
 
-  // 隐藏提示信息
+  // Hide alert message
   const hideAlert = useCallback(() => {
     setAlertVisible(false);
   }, []);

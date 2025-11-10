@@ -82,7 +82,7 @@ const TagKvsInput: FC<FormItemControlProps<FormListProps>> = (props) => {
                       inline
                       formItemProps={{ field: `${item.field}.groupBy` }}
                       controlProps={{
-                        addBefore: '是否分组',
+                        addBefore: 'Group by?',
                         style: { width: 200 },
                         enumOptionConfig: {
                           key: 'Boolean',
@@ -107,7 +107,7 @@ const TagKvsInput: FC<FormItemControlProps<FormListProps>> = (props) => {
                     add({ operator: '=', groupBy: true });
                   }}
                 >
-                  添加
+                  Add
                 </Button>
               </div>
             </div>

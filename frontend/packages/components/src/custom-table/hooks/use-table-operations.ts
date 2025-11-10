@@ -13,20 +13,20 @@
 // limitations under the License.
 
 /**
- * 表格操作 Hook - 自动包装业务操作+刷新
+ * Table operations Hook - Automatically wraps business operations + refresh
  *
- * 进一步简化，自动包装删除/更新/创建等操作，无需手动调用刷新
+ * Further simplified, automatically wraps delete/update/create operations, no manual refresh call needed
  *
  * @example
  * ```tsx
  * const operations = useTableOperations(onRefreshHandlers);
  *
- * // 自动包装：删除后自动刷新
+ * // Auto wrap: auto refresh after delete
  * const handleDelete = operations.wrapDelete(async (id) => {
  *   await deleteById(id);
  * });
  *
- * // 使用
+ * // Usage
  * <CustomTable onRefreshHandlers={operations.onRefreshHandlers} />
  * ```
  */
@@ -35,54 +35,54 @@ import { useCallback } from 'react';
 import type { RefreshHandlers } from './use-table-refresh-handlers';
 
 /**
- * 操作包装器
+ * Operation wrapper
  */
 export interface TableOperations {
-  /** CustomTable 注入回调 */
+  /** CustomTable injected callback */
   onRefreshHandlers: (handlers: RefreshHandlers) => void;
 
-  /** 包装创建操作（成功后自动刷新） */
+  /** Wrap create operation (auto refresh after success) */
   wrapCreate: <T extends (...args: unknown[]) => Promise<unknown>>(fn: T) => T;
 
-  /** 包装更新操作（成功后自动刷新） */
+  /** Wrap update operation (auto refresh after success) */
   wrapUpdate: <T extends (...args: unknown[]) => Promise<unknown>>(fn: T) => T;
 
-  /** 包装删除操作（成功后自动刷新） */
+  /** Wrap delete operation (auto refresh after success) */
   wrapDelete: <T extends (...args: unknown[]) => Promise<boolean>>(
     fn: T,
   ) => (...args: Parameters<T>) => Promise<boolean>;
 
-  /** 包装导入操作（成功后自动刷新） */
+  /** Wrap import operation (auto refresh after success) */
   wrapImport: <T extends (...args: unknown[]) => Promise<unknown>>(fn: T) => T;
 
-  /** 包装批量操作（成功后自动刷新） */
+  /** Wrap batch operation (auto refresh after success) */
   wrapBatchOperation: <T extends (...args: unknown[]) => Promise<unknown>>(
     fn: T,
   ) => T;
 
-  /** 直接刷新方法 */
+  /** Direct refresh method */
   refresh: () => Promise<void>;
 }
 
 /**
- * Hook 返回值
+ * Hook return value
  */
 export interface UseTableOperationsReturn {
-  /** 操作包装器 */
+  /** Operation wrapper */
   operations: TableOperations;
 }
 
 /**
- * 使用表格操作 Hook
- * 自动包装业务操作，操作成功后自动刷新表格
+ * Use table operations Hook
+ * Automatically wraps business operations, auto refreshes table after operation success
  */
 export const useTableOperations = (
   onRefreshHandlersFromHook: (handlers: RefreshHandlers) => void,
 ): UseTableOperationsReturn => {
-  // 存储刷新方法
+  // Store refresh methods
   let refreshHandlers: RefreshHandlers | null = null;
 
-  // 处理注入的刷新方法
+  // Handle injected refresh methods
   const onRefreshHandlers = useCallback(
     (handlers: RefreshHandlers) => {
       refreshHandlers = handlers;
@@ -91,7 +91,7 @@ export const useTableOperations = (
     [onRefreshHandlersFromHook],
   );
 
-  // 包装创建操作
+  // Wrap create operation
   const wrapCreate = useCallback(
     <T extends (...args: unknown[]) => Promise<unknown>>(fn: T): T => {
       return (async (...args: Parameters<T>) => {
@@ -103,7 +103,7 @@ export const useTableOperations = (
     [],
   );
 
-  // 包装更新操作
+  // Wrap update operation
   const wrapUpdate = useCallback(
     <T extends (...args: unknown[]) => Promise<unknown>>(fn: T): T => {
       return (async (...args: Parameters<T>) => {
@@ -115,7 +115,7 @@ export const useTableOperations = (
     [],
   );
 
-  // 包装删除操作（特殊处理返回值）
+  // Wrap delete operation (special handling for return value)
   const wrapDelete = useCallback(
     <T extends (...args: unknown[]) => Promise<boolean>>(
       fn: T,
@@ -131,7 +131,7 @@ export const useTableOperations = (
     [],
   );
 
-  // 包装导入操作
+  // Wrap import operation
   const wrapImport = useCallback(
     <T extends (...args: unknown[]) => Promise<unknown>>(fn: T): T => {
       return (async (...args: Parameters<T>) => {
@@ -143,7 +143,7 @@ export const useTableOperations = (
     [],
   );
 
-  // 包装批量操作
+  // Wrap batch operation
   const wrapBatchOperation = useCallback(
     <T extends (...args: unknown[]) => Promise<unknown>>(fn: T): T => {
       return (async (...args: Parameters<T>) => {
@@ -155,7 +155,7 @@ export const useTableOperations = (
     [],
   );
 
-  // 直接刷新
+  // Direct refresh
   const refresh = useCallback(async () => {
     await refreshHandlers?.refresh?.();
   }, []);

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 状态图标组件
+ * Status icon component
  */
 
 import { Spin } from '@arco-design/web-react';

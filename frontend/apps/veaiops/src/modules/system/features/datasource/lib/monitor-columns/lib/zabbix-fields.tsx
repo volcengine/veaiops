@@ -18,10 +18,10 @@ import type React from 'react';
 import { getConfigData } from '../../config-data-utils';
 
 /**
- * 创建 Zabbix 特定字段列
+ * Create Zabbix specific field columns
  *
- * @param dataSourceType - 数据源类型
- * @returns Zabbix 特定字段列数组
+ * @param dataSourceType - Data source type
+ * @returns Zabbix specific field column array
  */
 export const createZabbixSpecificFields = (
   dataSourceType: DataSourceType,
@@ -37,7 +37,7 @@ export const createZabbixSpecificFields = (
       render: (_: unknown, record: DataSource) => {
         const configData = getConfigData({ record, dsType: dataSourceType });
         const targets = (configData as Record<string, unknown>)?.targets;
-        // 简化渲染，如果有目标列表则显示数量
+        // Simplified rendering, show count if target list exists
         if (Array.isArray(targets) && targets.length > 0) {
           return <Ellipsis text={`${targets.length} 个主机`} />;
         }

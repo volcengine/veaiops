@@ -13,40 +13,40 @@
 // limitations under the License.
 
 /**
- * 预设配置类型定义
+ * Preset configuration type definitions
  */
 import type { FieldItem } from '../core/types';
 
 /**
- * 预设配置生成器
+ * Preset configuration generator
  */
 export type PresetGenerator = (
   params?: Record<string, unknown>,
 ) => Omit<FieldItem, 'preset'>;
 
 /**
- * 预设配置映射
+ * Preset configuration mapping
  */
 export interface PresetRegistry {
   [presetName: string]: PresetGenerator;
 }
 
 /**
- * 预设配置参数
+ * Preset configuration parameters
  */
 export interface PresetParams {
-  /** 字段名称 */
+  /** Field name */
   field?: string;
-  /** 标签文本 */
+  /** Label text */
   label?: string;
-  /** 占位符 */
+  /** Placeholder */
   placeholder?: string;
-  /** 是否必填 */
+  /** Whether required */
   required?: boolean;
-  /** 最大标签数量 */
+  /** Maximum tag count */
   maxTagCount?: number;
-  /** 选择模式 */
+  /** Selection mode */
   mode?: 'single' | 'multiple';
-  /** 自定义属性 */
+  /** Custom properties */
   [key: string]: unknown;
 }

@@ -43,7 +43,7 @@ interface MainTaskDrawerProps {
 }
 
 /**
- * 主任务抽屉组件
+ * Main task drawer component
  */
 export const MainTaskDrawer: React.FC<MainTaskDrawerProps> = ({
   visible,
@@ -59,7 +59,7 @@ export const MainTaskDrawer: React.FC<MainTaskDrawerProps> = ({
   setDetailConfigVisible,
   onViewCleaningResult,
 }) => {
-  // 监控 loading 状态变化
+  // Monitor loading state changes
   useEffect(() => {
     logger.info({
       message: '[MainTaskDrawer] Loading 状态变化',

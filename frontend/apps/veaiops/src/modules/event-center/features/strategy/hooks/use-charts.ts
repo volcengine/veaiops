@@ -28,7 +28,7 @@ const useChatsList = () => {
         limit: 100,
       });
       if (res.code !== API_RESPONSE_CODE.SUCCESS) {
-        throw new Error(res.message || '获取飞书群列表失败');
+        throw new Error(res.message || 'Failed to fetch Lark chat list');
       }
       const options = (res?.data || [])?.map((item) => ({
         label: item.name || item.chat_id,

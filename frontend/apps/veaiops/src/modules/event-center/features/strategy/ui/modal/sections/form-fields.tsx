@@ -21,7 +21,7 @@ import { WarningAlert } from './alert-messages';
 const { TextArea } = Input;
 
 /**
- * 表单字段区块组件属性接口
+ * Form fields block component props interface
  */
 export interface FormFieldsProps {
   form: FormInstance;
@@ -32,8 +32,8 @@ export interface FormFieldsProps {
 }
 
 /**
- * 表单字段区块组件
- * 包含策略名称、描述、企业协同工具、机器人、通知群等字段，以及底部的注意事项
+ * Form fields block component
+ * Contains fields such as strategy name, description, enterprise collaboration tool, bot, notification groups, and notes at the bottom
  */
 export const FormFields: React.FC<FormFieldsProps> = ({
   form,
@@ -109,7 +109,7 @@ export const FormFields: React.FC<FormFieldsProps> = ({
         />
       </Form.Item>
 
-      {/* 注意事项 - 放在表单字段最后 */}
+      {/* Notes - Placed at the end of form fields */}
       <WarningAlert selectedBotName={selectedBotName} />
     </>
   );

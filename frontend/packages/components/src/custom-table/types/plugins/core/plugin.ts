@@ -13,19 +13,19 @@
 // limitations under the License.
 
 /**
- * 插件接口定义
+ * Plugin interface definition
  */
 
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
 import type { ReactNode } from 'react';
-// PluginPriority 已在 core/enums.ts 中定义，从 core 导入避免重复
-// 静态导入枚举值，禁止使用动态 import()
+// PluginPriority is already defined in core/enums.ts, import from core to avoid duplication
+// Static import enum values, dynamic import() is prohibited
 import type { PluginPriority, PluginPriorityEnum } from '../../core/enums';
 import type { PluginContext } from './context';
 import type { PluginHook } from './utils';
 
 /**
- * 插件接口定义（完整版本）
+ * Plugin interface definition (full version)
  */
 export interface Plugin<Config = Record<string, unknown>> {
   name: string;
@@ -37,7 +37,7 @@ export interface Plugin<Config = Record<string, unknown>> {
   conflicts?: string[];
   config?: Config;
 
-  // 生命周期方法
+  // Lifecycle methods
   install: (context: PluginContext) => void | Promise<void>;
   setup?: (context: PluginContext) => void | Promise<void>;
   beforeMount?: (context: PluginContext) => void | Promise<void>;
@@ -48,28 +48,28 @@ export interface Plugin<Config = Record<string, unknown>> {
   afterUnmount?: (context: PluginContext) => void | Promise<void>;
   uninstall?: (context: PluginContext) => void | Promise<void>;
 
-  // 旧版生命周期方法兼容
+  // Legacy lifecycle method compatibility
   onMount?: (context: PluginContext) => void | Promise<void>;
   onUnmount?: (context: PluginContext) => void | Promise<void>;
   activate?: (context: PluginContext) => void | Promise<void>;
   deactivate?: (context: PluginContext) => void | Promise<void>;
 
-  // 钩子方法
+  // Hook methods
   hooks?: Record<string, PluginHook>;
 
-  // 事件处理器
+  // Event handlers
   tableEvents?: Record<
     string,
     (context: PluginContext<BaseRecord, BaseQuery>, ...args: unknown[]) => void
   >;
 
-  // 数据处理器
+  // Data processors
   dataProcessors?: Record<
     string,
     (data: unknown, context: PluginContext) => unknown
   >;
 
-  // 渲染器
+  // Renderers
   render?: Record<
     string,
     (
@@ -78,52 +78,52 @@ export interface Plugin<Config = Record<string, unknown>> {
     ) => ReactNode
   >;
 
-  // 组件增强器
+  // Component enhancers
   enhanceProps?: (
     props: Record<string, unknown>,
     context: PluginContext,
   ) => Record<string, unknown>;
 
-  // 插件特定配置
+  // Plugin-specific configuration
   features?: string[];
   settings?: Record<string, unknown>;
 }
 
 /**
- * 插件接口（简化版本，保持向后兼容）
+ * Plugin interface (simplified version, maintain backward compatibility)
  */
 export interface CorePlugin<Config = Record<string, unknown>> {
-  /** 插件名称 */
+  /** Plugin name */
   readonly name: string;
-  /** 插件配置 */
+  /** Plugin configuration */
   readonly config: Config;
-  /** 插件优先级 */
+  /** Plugin priority */
   readonly priority: typeof PluginPriorityEnum;
-  /** 是否启用 */
+  /** Whether enabled */
   readonly enabled: boolean;
 
   /**
-   * 插件初始化
+   * Plugin initialization
    */
   initialize?: (context: PluginContext) => Promise<void> | void;
 
   /**
-   * 插件销毁
+   * Plugin destruction
    */
   destroy?: () => Promise<void> | void;
 
   /**
-   * 渲染插件内容
+   * Render plugin content
    */
   render?: (context: PluginContext) => ReactNode;
 
   /**
-   * 获取插件状态
+   * Get plugin state
    */
   getState?: () => Record<string, unknown>;
 
   /**
-   * 更新插件状态
+   * Update plugin state
    */
   updateState?: (state: Record<string, unknown>) => void;
 }

@@ -19,22 +19,22 @@ import { logger } from '@veaiops/utils';
 import type { User as ApiUser } from 'api-generate';
 import type React from 'react';
 import { useCallback, useRef } from 'react';
-// 从 pages 目录导入组件（pages 目录是页面入口，features 目录是功能模块）
+// Import components from pages directory (pages directory is page entry, features directory is feature modules)
 import { AccountModal, AccountTable } from '../../../pages/account/ui';
 
-// 扩展 API User 类型以匹配 AccountModal 的期望
+// Extend API User type to match AccountModal's expectations
 interface ExtendedUser
   extends Omit<ApiUser, 'id' | 'created_at' | 'updated_at'> {
-  id: string; // 覆盖 ApiUser 的可选 id，使其成为必需的
-  created_at: string; // 覆盖 ApiUser 的可选 created_at，使其成为必需的
-  updated_at: string; // 覆盖 ApiUser 的可选 updated_at，使其成为必需的
+  id: string; // Override ApiUser's optional id to make it required
+  created_at: string; // Override ApiUser's optional created_at to make it required
+  updated_at: string; // Override ApiUser's optional updated_at to make it required
   role: 'admin' | 'user' | 'viewer';
   status: 'active';
   is_system_admin: boolean;
   last_login?: string;
 }
 
-// 转换函数：将 API User 转换为 ExtendedUser
+// Transform function: Convert API User to ExtendedUser
 export const transformApiUserToExtendedUser = (
   apiUser: ApiUser,
 ): ExtendedUser => {
@@ -45,31 +45,31 @@ export const transformApiUserToExtendedUser = (
     email: apiUser.email,
     is_active: apiUser.is_active,
     is_supervisor: apiUser.is_supervisor,
-    id: apiUser._id || `temp-${Date.now()}`, // 确保 id 不为 undefined
+    id: apiUser._id || `temp-${Date.now()}`, // Ensure id is not undefined
     created_at: apiUser.created_at || now,
     updated_at: apiUser.updated_at || now,
     role: apiUser.is_supervisor ? 'admin' : 'user',
     status: 'active' as const,
     is_system_admin: apiUser.is_supervisor || false,
-    last_login: undefined, // API 中暂无此字段
+    last_login: undefined, // This field is not available in API yet
   };
 };
 
 /**
- * 账号管理页面
- * 提供账号的增删改查功能 - 使用 CustomTable 和 Zustand 状态管理
+ * Account management page
+ * Provides account CRUD functionality - uses CustomTable and Zustand state management
  */
 export const AccountManagement: React.FC = () => {
-  // CustomTable ref用于获取刷新函数
+  // CustomTable ref for getting refresh function
   const tableRef = useRef<CustomTableActionType<BaseRecord, BaseQuery>>(null);
 
-  // 获取表格刷新函数
+  // Get table refresh function
   const getRefreshTable = useCallback(async (): Promise<boolean> => {
     if (tableRef.current?.refresh) {
       const result = await tableRef.current.refresh();
       if (!result.success && result.error) {
         logger.warn({
-          message: '账户表格刷新失败',
+          message: 'Account table refresh failed',
           data: {
             error: result.error.message,
             stack: result.error.stack,
@@ -85,14 +85,14 @@ export const AccountManagement: React.FC = () => {
     return false;
   }, []);
 
-  // 使用自定义Hook获取所有业务逻辑，传递刷新函数
+  // Use custom Hook to get all business logic, pass refresh function
   const {
-    // 状态
+    // State
     modalVisible,
     editingUser,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,
@@ -102,7 +102,7 @@ export const AccountManagement: React.FC = () => {
 
   return (
     <>
-      {/* 账号表格 */}
+      {/* Account table */}
       <AccountTable
         ref={tableRef}
         onEdit={handleEdit}
@@ -110,7 +110,7 @@ export const AccountManagement: React.FC = () => {
         onAdd={handleAdd}
       />
 
-      {/* 账号弹窗 */}
+      {/* Account modal */}
       <AccountModal
         visible={modalVisible}
         editingUser={

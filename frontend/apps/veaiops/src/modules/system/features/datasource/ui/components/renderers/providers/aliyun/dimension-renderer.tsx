@@ -16,7 +16,7 @@ import { CellRender } from '@veaiops/components';
 import { EMPTY_CONTENT } from '@veaiops/constants';
 
 /**
- * 渲染阿里云维度（使用 CustomOutlineTagList）
+ * Render Aliyun dimension (using CustomOutlineTagList)
  */
 export const renderAliyunDimension = (value: unknown) => {
   if (!value || !Array.isArray(value)) {
@@ -24,7 +24,7 @@ export const renderAliyunDimension = (value: unknown) => {
   }
 
   const dataList = value.map((item: unknown) => ({ name: String(item) }));
-  // 其他类型直接转字符串
+  // Other types are directly converted to strings
   return (
     <CellRender.CustomOutlineTagList
       dataList={dataList}

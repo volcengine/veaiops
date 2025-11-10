@@ -16,28 +16,28 @@ import type { ScrollConfig } from '@/custom-table/types/core/common';
 import { useMemo } from 'react';
 
 /**
- * 自动计算 scroll.y 配置
+ * Auto-calculate scroll.y configuration
  */
 export interface AutoScrollYConfig {
-  /** 是否启用自动计算，默认 true */
+  /** Whether to enable auto-calculation, default true */
   enabled?: boolean;
-  /** 固定高度偏移量（像素），默认 350 */
+  /** Fixed height offset (pixels), default 350 */
   offset?: number;
-  /** 最小高度（像素），防止表格过小，默认 300 */
+  /** Minimum height (pixels), prevents table from being too small, default 300 */
   minHeight?: number;
-  /** 最大高度（像素），防止表格过大，默认 undefined */
+  /** Maximum height (pixels), prevents table from being too large, default undefined */
   maxHeight?: number;
 }
 
 /**
- * 使用 CSS calc() 表达式计算 scroll.y
+ * Calculate scroll.y using CSS calc() expression
  *
  * @description
- * 使用 CSS calc() 表达式的优势：
- * 1. 浏览器原生支持，性能更好
- * 2. 自动响应视口变化，无需 resize 监听
- * 3. 避免额外的 reflow/repaint
- * 4. 支持 CSS min/max/clamp 函数实现边界限制
+ * Advantages of using CSS calc() expression:
+ * 1. Native browser support, better performance
+ * 2. Automatically responds to viewport changes, no resize listener needed
+ * 3. Avoids additional reflow/repaint
+ * 4. Supports CSS min/max/clamp functions for boundary constraints
  */
 export const useAutoScrollYWithCalc = (
   config: AutoScrollYConfig = {},
@@ -54,7 +54,7 @@ export const useAutoScrollYWithCalc = (
       x: userScroll?.x !== undefined ? userScroll.x : 'max-content',
     };
 
-    // 如果用户已设置 scroll.y，优先使用用户配置
+    // If user has set scroll.y, prioritize user configuration
     if (userScroll?.y !== undefined) {
       return {
         ...baseScroll,
@@ -62,18 +62,18 @@ export const useAutoScrollYWithCalc = (
       };
     }
 
-    // 构建 calc() 表达式
+    // Build calc() expression
     let calcExpression = `calc(100vh - ${offset}px)`;
 
-    // 使用 CSS 数学函数实现边界限制
+    // Use CSS math functions to implement boundary constraints
     if (minHeight !== undefined && maxHeight !== undefined) {
-      // 同时有最小和最大限制：clamp(min, preferred, max)
+      // Both min and max constraints: clamp(min, preferred, max)
       calcExpression = `clamp(${minHeight}px, calc(100vh - ${offset}px), ${maxHeight}px)`;
     } else if (minHeight !== undefined) {
-      // 只有最小限制：max(min, preferred)
+      // Only min constraint: max(min, preferred)
       calcExpression = `max(${minHeight}px, calc(100vh - ${offset}px))`;
     } else if (maxHeight !== undefined) {
-      // 只有最大限制：min(preferred, max)
+      // Only max constraint: min(preferred, max)
       calcExpression = `min(calc(100vh - ${offset}px), ${maxHeight}px)`;
     }
 
@@ -85,6 +85,6 @@ export const useAutoScrollYWithCalc = (
 };
 
 /**
- * 简化版本：直接返回自动计算的 scroll 配置
+ * Simplified version: Directly return auto-calculated scroll configuration
  */
 export const useAutoScrollY = useAutoScrollYWithCalc;

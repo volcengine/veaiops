@@ -28,8 +28,8 @@ interface TemplateSelectorProps {
 }
 
 /**
- * Zabbix模板选择器组件
- * @description 支持远程搜索的模板选择器，可以根据模板名称进行模糊匹配
+ * Zabbix template selector component
+ * @description Template selector with remote search support, can perform fuzzy matching by template name
  */
 export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
   connectName,
@@ -41,7 +41,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState('');
 
-  // 获取模板列表
+  // Fetch template list
   const fetchTemplates = useCallback(
     async (name?: string) => {
       if (!connectName) {
@@ -54,7 +54,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
         const response =
           await apiClient.dataSources.getApisV1DatasourceZabbixTemplates({
             connectName,
-            name, // 使用name参数进行远程搜索
+            name, // Use name parameter for remote search
           });
 
         if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
@@ -75,19 +75,19 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
     [connectName],
   );
 
-  // 防抖搜索
+  // Debounced search
   const [searchTimer, setSearchTimer] = useState<NodeJS.Timeout | null>(null);
 
   const handleSearch = useCallback(
     (searchText: string) => {
       setSearchValue(searchText);
 
-      // 清除之前的定时器
+      // Clear previous timer
       if (searchTimer) {
         clearTimeout(searchTimer);
       }
 
-      // 设置新的防抖定时器
+      // Set new debounce timer
       const timer = setTimeout(() => {
         fetchTemplates(searchText || undefined);
       }, 300);
@@ -97,11 +97,11 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
     [fetchTemplates, searchTimer],
   );
 
-  // 初始加载
+  // Initial load
   useEffect(() => {
     fetchTemplates();
 
-    // 清理定时器
+    // Cleanup timer
     return () => {
       if (searchTimer) {
         clearTimeout(searchTimer);
@@ -109,7 +109,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
     };
   }, [connectName]);
 
-  // 处理模板选择
+  // Handle template selection
   const handleTemplateChange = (templateId: string) => {
     const selectedTemplate = templates.find((t) => t.templateid === templateId);
     if (selectedTemplate && onChange) {
@@ -117,7 +117,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
     }
   };
 
-  // 渲染选项
+  // Render options
   const renderOption = (template: ZabbixTemplate) => (
     <Select.Option key={template.templateid} value={template.templateid}>
       <div className="template-option">
@@ -145,7 +145,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
         value={value}
         onChange={handleTemplateChange}
         loading={loading}
-        showSearch={false} // 使用自定义搜索
+        showSearch={false} // Use custom search
         allowClear
         style={{ width: '100%' }}
         notFoundContent={
@@ -168,7 +168,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
         {templates.map(renderOption)}
       </Select>
 
-      {/* 搜索提示 */}
+      {/* Search hint */}
       {searchValue && (
         <div
           className="search-hint"

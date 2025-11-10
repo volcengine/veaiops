@@ -21,35 +21,35 @@ import { useBotCreateFormState } from './main-logic/state';
 import { urlValidator } from './validators';
 
 /**
- * 使用表单创建逻辑的 Hook
+ * Hook for form creation logic
  *
- * 拆分说明：
- * - use-bot-create-form/state.ts: 状态管理（form、kbCollections、showSecrets等）
- * - use-bot-create-form/effects.ts: 副作用管理（useEffect逻辑）
- * - use-bot-create-form/callbacks.ts: 回调函数（addKbCollection、removeKbCollection等）
- * - handlers/form-handlers.ts: 表单提交处理器
- * - utils/: 工具函数（kb-collections.ts、validations.ts）
- * - validators/: 验证器（url-validator.ts）
- * - use-bot-create-form.ts: 主入口，负责逻辑组装
+ * Split explanation:
+ * - use-bot-create-form/state.ts: State management (form, kbCollections, showSecrets, etc.)
+ * - use-bot-create-form/effects.ts: Side effects management (useEffect logic)
+ * - use-bot-create-form/callbacks.ts: Callback functions (addKbCollection, removeKbCollection, etc.)
+ * - handlers/form-handlers.ts: Form submission handler
+ * - utils/: Utility functions (kb-collections.ts, validations.ts)
+ * - validators/: Validators (url-validator.ts)
+ * - use-bot-create-form.ts: Main entry, responsible for logic assembly
  */
 export const useBotCreateForm = () => {
-  // 状态管理
+  // State management
   const state = useBotCreateFormState();
 
-  // 副作用管理
+  // Side effects management
   useBotCreateFormEffects({
     form: state.form,
     showAdvancedConfig: state.showAdvancedConfig,
   });
 
-  // 获取当前表单的bot_id值
-  // 注意：Form.useWatch 需要使用泛型 FormInstance，但这里使用类型断言确保兼容性
+  // Get current form's bot_id value
+  // Note: Form.useWatch requires generic FormInstance, but here use type assertion to ensure compatibility
   const currentBotId =
     (Form.useWatch('bot_id', state.form as FormInstance) as
       | string
       | undefined) || '';
 
-  // 回调函数
+  // Callback functions
   const callbacks = useBotCreateFormCallbacks({
     form: state.form,
     kbCollections: state.kbCollections,
@@ -57,7 +57,7 @@ export const useBotCreateForm = () => {
     setShowSecrets: state.setShowSecrets,
   });
 
-  // 表单提交处理器
+  // Form submission handler
   const { createSubmitHandler } = useFormHandlers({
     form: state.form,
     showAdvancedConfig: state.showAdvancedConfig,

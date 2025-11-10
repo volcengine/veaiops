@@ -17,7 +17,7 @@ import type { BotAttributeFormData } from '@bot/types';
 import { logger } from '@veaiops/utils';
 
 /**
- * Bot属性表单模态框的事件处理函数
+ * Bot attribute form modal event handler functions
  */
 export const useAttributeFormModalHandlers = ({
   form,
@@ -33,12 +33,12 @@ export const useAttributeFormModalHandlers = ({
   setSelectedAttributeName: (name: string) => void;
 }) => {
   /**
-   * 处理表单提交
+   * Handle form submission
    */
   const handleSubmit = async (): Promise<boolean> => {
     try {
       const values = await form.validate();
-      // 确保 value 不为 undefined
+      // Ensure value is not undefined
       if (
         values.value === undefined ||
         (Array.isArray(values.value) && values.value.length === 0)
@@ -47,7 +47,7 @@ export const useAttributeFormModalHandlers = ({
       }
       return await onSubmit(values);
     } catch (error: unknown) {
-      // ✅ 正确：透出实际错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || '提交失败，请重试';
@@ -66,7 +66,7 @@ export const useAttributeFormModalHandlers = ({
   };
 
   /**
-   * 处理取消操作
+   * Handle cancel operation
    */
   const handleCancel = (): void => {
     form.resetFields();

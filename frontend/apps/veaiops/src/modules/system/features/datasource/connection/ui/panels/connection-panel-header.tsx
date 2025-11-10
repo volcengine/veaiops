@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接面板头部组件
+ * Connection panel header component
  */
 
 import {
@@ -46,10 +46,11 @@ export const ConnectionPanelHeader: React.FC<ConnectionPanelHeaderProps> = ({
   onRefreshClick,
   onBatchDeleteClick,
 }) => {
-  // 记录组件渲染和按钮创建日志
+  // Log component rendering and button creation
   useEffect(() => {
     logger.info({
-      message: '[ConnectionPanelHeader] 连接面板头部组件已渲染',
+      message:
+        '[ConnectionPanelHeader] Connection panel header component rendered',
       data: {
         type,
         loading,
@@ -61,14 +62,14 @@ export const ConnectionPanelHeader: React.FC<ConnectionPanelHeaderProps> = ({
       component: 'render',
     });
 
-    // 检查新建连接按钮是否存在
+    // Check if new connection button exists
     const checkButton = () => {
       const button = document.querySelector(
         '[data-testid="new-connection-btn"]',
       );
       if (button) {
         logger.info({
-          message: '[ConnectionPanelHeader] 新建连接按钮已找到',
+          message: '[ConnectionPanelHeader] New connection button found',
           data: {
             type,
             buttonExists: true,
@@ -84,7 +85,7 @@ export const ConnectionPanelHeader: React.FC<ConnectionPanelHeaderProps> = ({
         });
       } else {
         logger.warn({
-          message: '[ConnectionPanelHeader] 新建连接按钮未找到',
+          message: '[ConnectionPanelHeader] New connection button not found',
           data: {
             type,
             buttonExists: false,
@@ -97,15 +98,15 @@ export const ConnectionPanelHeader: React.FC<ConnectionPanelHeaderProps> = ({
       }
     };
 
-    // 延迟检查，确保DOM已完全渲染
+    // Delay check to ensure DOM is fully rendered
     const timer = setTimeout(checkButton, 100);
     return () => clearTimeout(timer);
   }, [type, loading, selectedCount]);
 
-  // 增强onCreateClick处理，添加日志
+  // Enhance onCreateClick handling, add logging
   const handleCreateClick = () => {
     logger.info({
-      message: '[ConnectionPanelHeader] 新建连接按钮被点击',
+      message: '[ConnectionPanelHeader] New connection button clicked',
       data: {
         type,
         url: window.location.href,

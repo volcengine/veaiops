@@ -20,7 +20,7 @@ import type { BotAttribute } from 'api-generate';
 import { ATTRIBUTE_NAME_MAP } from '../types/attributes';
 
 // Destructure CellRender component to avoid repeated calls
-const { CustomOutlineTag, StampTime } = CellRender;
+const { CustomOutlineTag } = CellRender;
 
 export interface BotAttributesColumnsProps {
   onDelete: (attribute: BotAttribute) => void | Promise<void>;
@@ -61,14 +61,24 @@ export const getBotAttributesColumns = ({
     dataIndex: 'created_at',
     key: 'created_at',
     width: 180,
-    render: (createdAt: string) => <StampTime time={createdAt} />,
+    render: (createdAt: string) => {
+      if (!createdAt) {
+        return '-';
+      }
+      return new Date(createdAt).toLocaleString('zh-CN');
+    },
   },
   {
     title: '更新时间',
     dataIndex: 'updated_at',
     key: 'updated_at',
     width: 180,
-    render: (updatedAt: string) => <StampTime time={updatedAt} />,
+    render: (updatedAt: string) => {
+      if (!updatedAt) {
+        return '-';
+      }
+      return new Date(updatedAt).toLocaleString('zh-CN');
+    },
   },
   {
     title: '操作',

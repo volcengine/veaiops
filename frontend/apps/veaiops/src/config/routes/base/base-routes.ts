@@ -16,15 +16,15 @@ import type { RouteConfig } from '@/types/route';
 import { Navigate } from '@modern-js/runtime/router';
 import React from 'react';
 
-// 直接从 routes/config 目录导入，避免通过 config/index.ts 造成循环引用
-// 使用 ../config 会解析到 routes/config/index.ts，不会经过 config/index.ts
+// Import directly from routes/config directory to avoid circular reference through config/index.ts
+// Using ../config resolves to routes/config/index.ts, does not go through config/index.ts
 import { CommonPages } from '../config';
 
 /**
- * 基础路由配置（不包含 404）
+ * Base route configuration (excluding 404)
  */
 export const baseRoutes: RouteConfig[] = [
-  // 根路径重定向到第一个顶导的第一个菜单
+  // Root path redirects to first top navigation's first menu
   {
     path: '/',
     element: React.createElement(Navigate, {
@@ -34,7 +34,7 @@ export const baseRoutes: RouteConfig[] = [
     requireAuth: true,
   },
 
-  // 登录页面
+  // Login page
   {
     path: '/login',
     element: React.createElement(CommonPages.Login),
@@ -44,7 +44,7 @@ export const baseRoutes: RouteConfig[] = [
 ];
 
 /**
- * 404 兜底路由 - 必须放在所有路由配置的最后
+ * 404 fallback route - must be placed at the end of all route configurations
  */
 export const notFoundRoute: RouteConfig = {
   path: '*',

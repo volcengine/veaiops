@@ -22,41 +22,41 @@ import type {
 } from './types/drawer-management';
 
 /**
- * 项目导入Hook
- * 提供项目导入的完整功能，包括状态管理、API调用和UI渲染
+ * Project import Hook
+ * Provides complete functionality for project import, including state management, API calls, and UI rendering
  */
 export const useProjectImport = (
   config: UseProjectImportConfig = {},
 ): UseProjectImportReturn => {
   const { onSuccess } = config;
 
-  // 状态管理
+  // State management
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   /**
-   * 打开项目导入抽屉
+   * Open project import drawer
    */
   const open = () => {
     setVisible(true);
   };
 
   /**
-   * 关闭项目导入抽屉
+   * Close project import drawer
    */
   const close = () => {
     setVisible(false);
   };
 
   /**
-   * 处理项目导入
+   * Handle project import
    */
   const handleImport = async (file: File): Promise<boolean> => {
     try {
       setLoading(true);
 
-      // 使用项目导入API
+      // Use project import API
       const result = await importProjects(file);
       const { success } = result;
 
@@ -67,9 +67,9 @@ export const useProjectImport = (
       if (success) {
         Message.success('项目导入成功');
         setVisible(false);
-        // 触发项目列表刷新
+        // Trigger project list refresh
         setRefreshTrigger((prev) => prev + 1);
-        // 执行成功回调
+        // Execute success callback
         onSuccess?.();
       } else {
         Message.error('项目导入失败，请重试');
@@ -77,7 +77,7 @@ export const useProjectImport = (
 
       return success;
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || '项目导入失败，请重试';
@@ -89,7 +89,7 @@ export const useProjectImport = (
   };
 
   /**
-   * 渲染项目导入抽屉
+   * Render project import drawer
    */
   const renderDrawer = () => {
     return (

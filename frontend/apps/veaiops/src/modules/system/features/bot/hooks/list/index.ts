@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Bot列表管理模块
- * 提供机器人列表相关的状态管理和业务逻辑
+ * Bot list management module
+ * Provides state management and business logic for bot list
  */
 
 export { useBotList } from './list';

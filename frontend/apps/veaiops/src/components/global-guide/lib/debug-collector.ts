@@ -13,20 +13,20 @@
 // limitations under the License.
 
 /**
- * 调试日志收集器
- * 专门用于收集新建连接功能的调试日志
+ * Debug log collector
+ * Specifically for collecting debug logs for new connection feature
  */
 
 import { exportLogsToFile, logger } from '@veaiops/utils';
 
 /**
- * 收集新建连接相关的所有日志
+ * Collect all logs related to new connection
  */
 export const collectNewConnectionLogs = () => {
   const startTime = Date.now();
 
   logger.info({
-    message: '[DebugLogCollector] 开始收集新建连接功能日志',
+    message: '[DebugLogCollector] Start collecting new connection feature logs',
     data: {
       url: window.location.href,
       timestamp: new Date().toISOString(),
@@ -36,7 +36,7 @@ export const collectNewConnectionLogs = () => {
     component: 'collectNewConnectionLogs',
   });
 
-  // 检查页面状态
+  // Check page status
   const pageInfo = {
     url: window.location.href,
     pathname: window.location.pathname,
@@ -45,7 +45,7 @@ export const collectNewConnectionLogs = () => {
     title: document.title,
   };
 
-  // 检查目标按钮状态
+  // Check target button status
   const targetButton = document.querySelector(
     '[data-testid="new-connection-btn"]',
   );
@@ -63,7 +63,7 @@ export const collectNewConnectionLogs = () => {
         exists: false,
       };
 
-  // 检查所有相关按钮
+  // Check all related buttons
   const allButtons = document.querySelectorAll('button');
   const allTestIds = document.querySelectorAll('[data-testid]');
   const connectionButtons = Array.from(allButtons).filter(
@@ -92,13 +92,13 @@ export const collectNewConnectionLogs = () => {
   };
 
   logger.info({
-    message: '[DebugLogCollector] 页面状态检查完成',
+    message: '[DebugLogCollector] Page status check completed',
     data: debugInfo,
     source: 'DebugLogCollector',
     component: 'pageCheck',
   });
 
-  // 检查全局引导系统状态
+  // Check global guide system status
   const guideElements = document.querySelectorAll('[data-x-guide]');
   const guideInfo = {
     guideElementsCount: guideElements.length,
@@ -110,7 +110,7 @@ export const collectNewConnectionLogs = () => {
   };
 
   logger.info({
-    message: '[DebugLogCollector] 全局引导系统状态检查完成',
+    message: '[DebugLogCollector] Global guide system status check completed',
     data: guideInfo,
     source: 'DebugLogCollector',
     component: 'guideCheck',
@@ -120,7 +120,7 @@ export const collectNewConnectionLogs = () => {
   const totalTime = endTime - startTime;
 
   logger.info({
-    message: '[DebugLogCollector] 新建连接功能日志收集完成',
+    message: '[DebugLogCollector] New connection feature log collection completed',
     data: {
       totalTime,
       url: window.location.href,
@@ -138,11 +138,11 @@ export const collectNewConnectionLogs = () => {
 };
 
 /**
- * 导出所有相关日志
+ * Export all related logs
  */
 export const exportNewConnectionLogs = () => {
   logger.info({
-    message: '[DebugLogCollector] 导出新建连接功能日志',
+    message: '[DebugLogCollector] Export new connection feature logs',
     data: {
       url: window.location.href,
       timestamp: new Date().toISOString(),
@@ -151,10 +151,10 @@ export const exportNewConnectionLogs = () => {
     component: 'exportLogs',
   });
 
-  // 先收集当前状态
+  // First collect current status
   collectNewConnectionLogs();
 
-  // 导出所有日志
+  // Export all logs
   exportLogsToFile(
     `new-connection-debug-${new Date()
       .toISOString()
@@ -164,7 +164,7 @@ export const exportNewConnectionLogs = () => {
 };
 
 /**
- * 在控制台输出调试信息
+ * Output debug information to console
  */
 export const logDebugInfo = () => {
   const info = collectNewConnectionLogs();
@@ -172,20 +172,20 @@ export const logDebugInfo = () => {
 };
 
 /**
- * 检查是否在数据源管理页面
+ * Check if on datasource management page
  */
 const isDataSourcePage = (url: string): boolean => {
   return url.includes('/system/datasource') || url.includes('datasource');
 };
 
 /**
- * 增强的日志收集（针对数据源管理页面）
+ * Enhanced log collection (for datasource management page)
  */
 const collectEnhancedLogs = () => {
   const url = window.location.href;
 
   logger.info({
-    message: '[DebugLogCollector] 执行增强日志收集',
+    message: '[DebugLogCollector] Execute enhanced log collection',
     data: {
       url,
       isDataSourcePage: isDataSourcePage(url),
@@ -195,13 +195,13 @@ const collectEnhancedLogs = () => {
     component: 'collectEnhancedLogs',
   });
 
-  // 基础日志收集
+  // Basic log collection
   collectNewConnectionLogs();
 
-  // 如果是数据源管理页面，进行增强收集
+  // If on datasource management page, perform enhanced collection
   if (isDataSourcePage(url)) {
     logger.info({
-      message: '[DebugLogCollector] 检测到数据源管理页面，执行增强收集',
+      message: '[DebugLogCollector] Detected datasource management page, execute enhanced collection',
       data: {
         url,
         timestamp: new Date().toISOString(),
@@ -210,12 +210,12 @@ const collectEnhancedLogs = () => {
       component: 'enhancedCollection',
     });
 
-    // 检查连接管理抽屉状态
+    // Check connection management drawer status
     const connectDrawerShow = new URLSearchParams(window.location.search).get(
       'connectDrawerShow',
     );
 
-    // 检查所有连接面板
+    // Check all connection panels
     const connectionPanels = document.querySelectorAll(
       '[class*="connection-panel"]',
     );
@@ -223,7 +223,7 @@ const collectEnhancedLogs = () => {
       '[class*="connection-panel-header"]',
     );
 
-    // 检查新建连接按钮的详细状态
+    // Check detailed status of new connection buttons
     const newConnectionButtons = document.querySelectorAll(
       '[data-testid="new-connection-btn"]',
     );
@@ -244,7 +244,7 @@ const collectEnhancedLogs = () => {
     };
 
     logger.info({
-      message: '[DebugLogCollector] 数据源页面增强信息收集完成',
+      message: '[DebugLogCollector] Datasource page enhanced information collection completed',
       data: enhancedInfo,
       source: 'DebugLogCollector',
       component: 'enhancedInfoCollected',
@@ -253,8 +253,8 @@ const collectEnhancedLogs = () => {
 };
 
 /**
- * 页面初始化时自动收集日志
- * @returns 清理函数，用于停止自动收集
+ * Automatically collect logs on page initialization
+ * @returns Cleanup function to stop automatic collection
  */
 export const initAutoLogCollection = (): (() => void) | undefined => {
   if (typeof window === 'undefined') {
@@ -262,7 +262,7 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
   }
 
   logger.info({
-    message: '[DebugLogCollector] 初始化自动日志收集',
+    message: '[DebugLogCollector] Initialize automatic log collection',
     data: {
       url: window.location.href,
       timestamp: new Date().toISOString(),
@@ -272,11 +272,11 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
     component: 'initAutoLogCollection',
   });
 
-  // 页面加载完成后的延迟收集
+  // Delayed collection after page load completes
   const collectOnLoad = () => {
     setTimeout(() => {
       logger.info({
-        message: '[DebugLogCollector] 页面加载完成，开始自动收集日志',
+        message: '[DebugLogCollector] Page load completed, start automatic log collection',
         data: {
           url: window.location.href,
           timestamp: new Date().toISOString(),
@@ -286,24 +286,24 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
       });
 
       collectEnhancedLogs();
-    }, 1000); // 延迟1秒确保DOM完全渲染
+    }, 1000); // Delay 1 second to ensure DOM is fully rendered
   };
 
-  // 监听页面加载事件
+  // Listen for page load events
   if (document.readyState === 'complete') {
     collectOnLoad();
   } else {
     window.addEventListener('load', collectOnLoad);
   }
 
-  // 监听路由变化（SPA应用）
+  // Listen for route changes (SPA application)
   let currentUrl = window.location.href;
   const checkUrlChange = () => {
     if (window.location.href !== currentUrl) {
       currentUrl = window.location.href;
 
       logger.info({
-        message: '[DebugLogCollector] 检测到路由变化，重新收集日志',
+        message: '[DebugLogCollector] Route change detected, re-collect logs',
         data: {
           newUrl: currentUrl,
           timestamp: new Date().toISOString(),
@@ -312,21 +312,21 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
         component: 'autoCollectOnRouteChange',
       });
 
-      // 延迟收集，确保新页面内容已加载
+      // Delayed collection to ensure new page content is loaded
       setTimeout(() => {
         collectEnhancedLogs();
       }, 500);
     }
   };
 
-  // 定期检查URL变化
+  // Periodically check URL changes
   const urlCheckInterval = setInterval(checkUrlChange, 1000);
 
-  // 监听popstate事件（浏览器前进后退）
+  // Listen for popstate event (browser forward/back)
   window.addEventListener('popstate', () => {
     setTimeout(() => {
       logger.info({
-        message: '[DebugLogCollector] 检测到浏览器导航，重新收集日志',
+        message: '[DebugLogCollector] Browser navigation detected, re-collect logs',
         data: {
           url: window.location.href,
           timestamp: new Date().toISOString(),
@@ -339,7 +339,7 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
     }, 500);
   });
 
-  // 监听pushstate/replacestate（程序化导航）
+  // Listen for pushstate/replacestate (programmatic navigation)
   const originalPushState = history.pushState;
   const originalReplaceState = history.replaceState;
 
@@ -347,7 +347,7 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
     originalPushState.apply(history, args);
     setTimeout(() => {
       logger.info({
-        message: '[DebugLogCollector] 检测到pushState导航，重新收集日志',
+        message: '[DebugLogCollector] pushState navigation detected, re-collect logs',
         data: {
           url: window.location.href,
           timestamp: new Date().toISOString(),
@@ -364,7 +364,7 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
     originalReplaceState.apply(history, args);
     setTimeout(() => {
       logger.info({
-        message: '[DebugLogCollector] 检测到replaceState导航，重新收集日志',
+        message: '[DebugLogCollector] replaceState navigation detected, re-collect logs',
         data: {
           url: window.location.href,
           timestamp: new Date().toISOString(),
@@ -377,7 +377,7 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
     }, 500);
   };
 
-  // 清理函数
+  // Cleanup function
   const cleanup = () => {
     clearInterval(urlCheckInterval);
     window.removeEventListener('load', collectOnLoad);
@@ -386,11 +386,11 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
     history.replaceState = originalReplaceState;
   };
 
-  // 页面卸载时清理
+  // Cleanup on page unload
   window.addEventListener('beforeunload', cleanup);
 
   logger.info({
-    message: '[DebugLogCollector] 自动日志收集已启动',
+    message: '[DebugLogCollector] Automatic log collection started',
     data: {
       url: window.location.href,
       timestamp: new Date().toISOString(),
@@ -403,13 +403,13 @@ export const initAutoLogCollection = (): (() => void) | undefined => {
 };
 
 /**
- * 停止自动日志收集
+ * Stop automatic log collection
  */
 export const stopAutoLogCollection = (cleanup: () => void) => {
   if (cleanup) {
     cleanup();
     logger.info({
-      message: '[DebugLogCollector] 自动日志收集已停止',
+      message: '[DebugLogCollector] Automatic log collection stopped',
       data: {
         url: window.location.href,
         timestamp: new Date().toISOString(),
@@ -420,7 +420,7 @@ export const stopAutoLogCollection = (cleanup: () => void) => {
   }
 };
 
-// 将调试函数挂载到全局对象，方便在控制台调用
+// Mount debug functions to global object for easy console access
 if (typeof window !== 'undefined') {
   (window as any).debugNewConnection = {
     collectLogs: collectNewConnectionLogs,
@@ -430,7 +430,7 @@ if (typeof window !== 'undefined') {
     stopAutoCollection: stopAutoLogCollection,
   };
 
-  // 自动启动日志收集
+  // Automatically start log collection
   const cleanup = initAutoLogCollection();
   (window as any).debugNewConnection._cleanup = cleanup;
 }

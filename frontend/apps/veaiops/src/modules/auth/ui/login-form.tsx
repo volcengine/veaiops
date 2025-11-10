@@ -35,17 +35,17 @@ interface LoginFormProps {
   ) => Promise<{ success: boolean; error?: Error }>;
 }
 const LoginForm: React.FC<LoginFormProps> = ({ form, loading, onSubmit }) => {
-  // 处理表单提交
+  // Handle form submission
   const handleFormSubmit = (values: LoginFormData) => {
-    // 确保values不为空
+    // Ensure values are not empty
     if (!values || (!values.username && !values.password)) {
       const formValues = form.getFieldsValue();
 
-      // 类型安全检查：确保必需字段存在
+      // Type safety check: ensure required fields exist
       if (formValues.username && formValues.password) {
         onSubmit(formValues);
       } else {
-        // 类型安全检查失败，静默跳过（表单验证会处理必填字段）
+        // Type safety check failed, silently skip (form validation will handle required fields)
       }
     } else {
       onSubmit(values);
@@ -62,10 +62,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ form, loading, onSubmit }) => {
     e.currentTarget.style.boxShadow = loginStyles.button.leave.boxShadow;
   };
 
-  // 开发模式快速登录
+  // Development mode quick login
   const handleDevLogin = () => {
     if (authConfig.devMode.enabled) {
-      // 设置模拟用户信息
+      // Set mock user information
       sessionStorage.setItem(
         authConfig.storageKeys.token,
         authConfig.devMode.mockUser.token,
@@ -77,7 +77,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ form, loading, onSubmit }) => {
 
       Message.success('开发模式登录成功');
 
-      // 使用完整的URL路径进行重定向，确保正确跳转
+      // Use full URL path for redirect to ensure correct navigation
       window.location.href = `${window.location.origin}${authConfig.defaultRedirectPath}`;
     }
   };
@@ -89,7 +89,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ form, loading, onSubmit }) => {
       onSubmit={handleFormSubmit}
       className={loginStyles.form.container}
     >
-      {/* 用户名输入框 */}
+      {/* Username input */}
       <Form.Item
         label={
           <span className={loginStyles.form.label}>
@@ -108,7 +108,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ form, loading, onSubmit }) => {
         />
       </Form.Item>
 
-      {/* 密码输入框 */}
+      {/* Password input */}
       <Form.Item
         label={
           <span className={loginStyles.form.label}>
@@ -127,7 +127,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ form, loading, onSubmit }) => {
         />
       </Form.Item>
 
-      {/* 登录按钮 */}
+      {/* Login button */}
       <Form.Item>
         <Button
           type="primary"
@@ -142,7 +142,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ form, loading, onSubmit }) => {
         </Button>
       </Form.Item>
 
-      {/* 开发模式快速登录按钮 */}
+      {/* Development mode quick login button */}
       {authConfig.devMode.enabled && (
         <Form.Item>
           <Button

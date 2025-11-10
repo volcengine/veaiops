@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Button, Message } from '@arco-design/web-react';
-// ✅ 优化：使用最短路径，合并同源导入
+// ✅ Optimization: use shortest path, merge imports from same source
 import {
   getStrategyColumns,
   getStrategyFilters,
@@ -34,7 +34,7 @@ import type { Bot, InformStrategy } from 'api-generate';
 import { useCallback, useMemo } from 'react';
 
 /**
- * 策略筛选参数类型
+ * Strategy filter parameters type
  */
 export interface StrategyFilters {
   name?: string;
@@ -44,7 +44,7 @@ export interface StrategyFilters {
 }
 
 /**
- * 策略查询参数类型 (扩展自 BaseQuery)
+ * Strategy query parameters type (extends BaseQuery)
  */
 export interface StrategyQueryParams extends BaseQuery {
   skip?: number;
@@ -56,23 +56,23 @@ export interface StrategyQueryParams extends BaseQuery {
 }
 
 /**
- * 策略表格配置 Hook 的选项类型
+ * Strategy table configuration Hook options type
  */
 export interface UseStrategyTableConfigOptions {
   onEdit?: (strategy: InformStrategy) => void;
   onDelete?: (strategyId: string) => Promise<boolean>;
   onCreate?: () => void;
   onRefresh?: () => void;
-  ref?: React.Ref<{ refresh: () => Promise<void> }>; // ✅ 添加 ref 参数
+  ref?: React.Ref<{ refresh: () => Promise<void> }>; // ✅ Add ref parameter
 }
 
 /**
- * 策略表格配置 Hook 的返回值类型
+ * Strategy table configuration Hook return value type
  */
 export interface UseStrategyTableConfigReturn {
   customTableProps: ReturnType<typeof useBusinessTable>['customTableProps'];
   customOperations: ReturnType<typeof useBusinessTable>['customOperations'];
-  // ✅ 兼容性：operations 作为 customOperations 的别名
+  // ✅ Compatibility: operations as alias for customOperations
   operations: ReturnType<typeof useBusinessTable>['customOperations'];
   handleColumns: (
     props?: Record<string, QueryValue>,
@@ -83,27 +83,27 @@ export interface UseStrategyTableConfigReturn {
 }
 
 /**
- * 策略表格配置聚合 Hook
+ * Strategy table configuration aggregation Hook
  *
- * 🎯 Hook 聚合模式 + 自动刷新机制
- * - 使用 useBusinessTable 统一管理表格逻辑
- * - 通过 operationWrapper 实现自动刷新
- * - 集中管理数据源、表格配置、列配置等
+ * 🎯 Hook aggregation pattern + auto-refresh mechanism
+ * - Use useBusinessTable to uniformly manage table logic
+ * - Implement auto-refresh via operationWrapper
+ * - Centralized management of data source, table configuration, column configuration, etc.
  *
- * @param options - Hook 配置选项
- * @returns 表格配置和处理器
+ * @param options - Hook configuration options
+ * @returns Table configuration and handlers
  */
 export const useStrategyTableConfig = ({
   onEdit,
   onDelete,
   onCreate,
   onRefresh,
-  ref, // ✅ 接收 ref 参数
+  ref, // ✅ Receive ref parameter
 }: UseStrategyTableConfigOptions): UseStrategyTableConfigReturn => {
-  // 🎯 获取业务数据
+  // 🎯 Get business data
   const { data: bots } = useBotsList();
 
-  // 🎯 构造机器人选项
+  // 🎯 Construct bot options
   const botsOptions = useMemo(() => {
     if (!bots || !Array.isArray(bots)) {
       return [];
@@ -114,7 +114,7 @@ export const useStrategyTableConfig = ({
     }));
   }, [bots]);
 
-  // 🎯 数据请求逻辑
+  // 🎯 Data request logic
   const request = useMemo(() => {
     return async (params: StrategyQueryParams) => {
       try {
@@ -128,18 +128,18 @@ export const useStrategyTableConfig = ({
         });
 
         if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
-          // response.data 类型已经是 Array<InformStrategy> | undefined，无需类型断言
+          // response.data type is already Array<InformStrategy> | undefined, no need for type assertion
           return {
             data: response.data,
             total: response.total ?? response.data.length,
             success: true,
           };
         } else {
-          throw new Error(response.message || '获取策略列表失败');
+          throw new Error(response.message || 'Failed to fetch strategy list');
         }
       } catch (error) {
         const errorMessage =
-          error instanceof Error ? error.message : '加载策略列表失败，请重试';
+          error instanceof Error ? error.message : 'Failed to load strategy list, please try again';
         Message.error(errorMessage);
         return {
           data: [],
@@ -150,7 +150,7 @@ export const useStrategyTableConfig = ({
     };
   }, []);
 
-  // 🎯 数据源配置
+  // 🎯 Data source configuration
   const dataSource = useMemo(
     () => ({
       request,
@@ -160,7 +160,7 @@ export const useStrategyTableConfig = ({
     [request],
   );
 
-  // 🎯 表格配置
+  // 🎯 Table configuration
   const tableProps = useMemo(
     () => ({
       rowKey: '_id',
@@ -176,7 +176,7 @@ export const useStrategyTableConfig = ({
     [],
   );
 
-  // 🎯 业务操作包装 - 自动刷新
+  // 🎯 Business operation wrapper - auto-refresh
   const { customTableProps, customOperations } =
     useBusinessTable<StrategyQueryParams>({
       dataSource,
@@ -189,14 +189,14 @@ export const useStrategyTableConfig = ({
       operationWrapper: ({ wrapDelete }: OperationWrappers) => ({
         handleDelete: (..._args: unknown[]) =>
           wrapDelete(async (_id: string): Promise<boolean> => {
-            // operationWrapper暂不需要实际调用，仅用于自动刷新
+            // operationWrapper doesn't need actual call for now, only used for auto-refresh
             return true;
           }),
       }),
-      ref, // ✅ 传递 ref 给 useBusinessTable
+      ref, // ✅ Pass ref to useBusinessTable
     });
 
-  // 🎯 列配置
+  // 🎯 Column configuration
   const handleColumns = useCallback(
     (
       _props?: Record<string, QueryValue>,
@@ -212,12 +212,12 @@ export const useStrategyTableConfig = ({
     [onEdit, onDelete],
   );
 
-  // 🎯 筛选配置
-  // ✅ 修复：handleFilters 的返回类型必须匹配 CustomTable 的期望
-  // CustomTable 期望 handleFilters: (props: HandleFilterProps<QueryType>) => FieldItem[]
+  // 🎯 Filter configuration
+  // ✅ Fix: handleFilters return type must match CustomTable's expectations
+  // CustomTable expects handleFilters: (props: HandleFilterProps<QueryType>) => FieldItem[]
   const handleFilters = useCallback(
     (props: HandleFilterProps<BaseQuery>): FieldItem[] => {
-      // ✅ 类型安全：StrategyQueryParams extends BaseQuery，可以安全转换
+      // ✅ Type safe: StrategyQueryParams extends BaseQuery, can safely convert
       const query = props.query as StrategyQueryParams;
       return getStrategyFilters({
         query,
@@ -228,7 +228,7 @@ export const useStrategyTableConfig = ({
     [botsOptions],
   );
 
-  // 🎯 操作配置
+  // 🎯 Action configuration
   const renderActions = useCallback(
     (_props?: Record<string, QueryValue>): JSX.Element[] =>
       [
@@ -247,16 +247,16 @@ export const useStrategyTableConfig = ({
   );
 
   return {
-    // 表格配置
+    // Table configuration
     customTableProps,
     customOperations,
-    // ✅ 兼容性：operations 作为 customOperations 的别名
+    // ✅ Compatibility: operations as alias for customOperations
     operations: customOperations,
     handleColumns,
     handleFilters,
     renderActions,
 
-    // 业务数据
+    // Business data
     botsOptions,
   };
 };

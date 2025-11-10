@@ -16,7 +16,7 @@ import { Form, Input, InputNumber } from '@arco-design/web-react';
 import type { FormInstance } from '@arco-design/web-react/es/Form';
 import { Select, Input as VeInput } from '@veaiops/components';
 import type React from 'react';
-// 定义指标类型选项
+// Define metric type options
 const metricTypeOptions = [
   { label: 'CPU', value: 'cpu' },
   { label: '内存', value: 'memory' },
@@ -30,7 +30,7 @@ interface MetricDetailConfigProps {
 }
 
 /**
- * 指标详情配置组件
+ * Metric detail configuration component
  */
 export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
   form,
@@ -39,7 +39,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
   return (
     <Form form={form} layout="vertical" disabled={readOnly}>
       <div className={'flex justify-between w-[100%]'}>
-        {/* 阈值方向 */}
+        {/* Threshold direction */}
         <Select.Block
           isControl
           inline
@@ -58,7 +58,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
             ],
           }}
         />
-        {/* 滑动窗口 */}
+        {/* Sliding window */}
         <VeInput.Number
           isControl
           required
@@ -76,7 +76,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
         />
       </div>
 
-      {/* 指标详情区域 */}
+      {/* Metric details area */}
       <div className="mt-6">
         <h3 className="mb-4 text-sm font-medium">指标详情</h3>
         <div
@@ -85,7 +85,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
           <div
             className={`w-full flex ${readOnly ? 'flex-row gap-4' : 'flex-col gap-0'}`}
           >
-            {/* 指标模版名称 */}
+            {/* Metric template name */}
             <VeInput.Block
               isControl
               required
@@ -99,7 +99,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
                 placeholder: '请输入模版名称',
               }}
             />
-            {/* 指标模版 */}
+            {/* Metric template */}
             <Select.Block
               isControl
               inline
@@ -115,7 +115,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
             />
           </div>
 
-          {/* 第一行 */}
+          {/* First row */}
           <div
             className={`w-full flex ${readOnly ? 'flex-row gap-4' : 'flex-col gap-0'}`}
           >
@@ -142,7 +142,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
             </Form.Item>
           </div>
 
-          {/* 第二行 */}
+          {/* Second row */}
           <div
             className={`w-full flex ${readOnly ? 'flex-row gap-4' : 'flex-col gap-0'}`}
           >
@@ -167,7 +167,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
             </Form.Item>
           </div>
 
-          {/* 第三行 */}
+          {/* Third row */}
           <div
             className={`w-full flex ${readOnly ? 'flex-row gap-4' : 'flex-col gap-0'}`}
           >
@@ -192,7 +192,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
             </Form.Item>
           </div>
 
-          {/* 第四行 */}
+          {/* Fourth row */}
           <div
             className={`w-full flex ${readOnly ? 'flex-row gap-4' : 'flex-col gap-0'}`}
           >
@@ -224,7 +224,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
             </Form.Item>
           </div>
 
-          {/* 第五行 */}
+          {/* Fifth row */}
           <div
             className={`w-full flex ${readOnly ? 'flex-row gap-4' : 'flex-col gap-0'}`}
           >
@@ -254,7 +254,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
             </Form.Item>
           </div>
 
-          {/* 第六行 */}
+          {/* Sixth row */}
           <div
             className={`w-full flex ${readOnly ? 'flex-row gap-4' : 'flex-col gap-0'}`}
           >
@@ -288,7 +288,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
             </Form.Item>
           </div>
 
-          {/* 第七行 */}
+          {/* Seventh row */}
           <div
             className={`w-full flex ${readOnly ? 'flex-row gap-4' : 'flex-col gap-0'}`}
           >

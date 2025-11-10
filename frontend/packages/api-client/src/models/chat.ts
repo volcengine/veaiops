@@ -16,57 +16,57 @@
 import type { ChannelType } from './channel-type';
 export type Chat = {
   /**
-   * 群ID
+   * Chat ID
    */
   _id?: string;
   /**
-   * 群标识
+   * Chat identifier
    */
   chat_id: string;
   /**
-   * 群名称
+   * Chat name
    */
   name: string;
   /**
-   * 群类型
+   * Chat type
    */
   chat_type: Chat.chat_type;
   /**
-   * 企业协同工具
+   * Enterprise collaboration tool
    */
   channel: ChannelType;
   /**
-   * 关联的机器人ID
+   * Associated bot ID
    */
   bot_id?: string;
   /**
-   * 群描述
+   * Chat description
    */
   description?: string;
   /**
-   * 是否激活
+   * Whether the chat is active
    */
   is_active?: boolean;
   /**
-   * 是否启用主动回复功能
+   * Whether to enable proactive reply function
    */
   enable_func_proactive_reply?: boolean;
   /**
-   * 是否启用兴趣检测功能
+   * Whether to enable interest detection function
    */
   enable_func_interest?: boolean;
   /**
-   * 创建时间
+   * Creation timestamp
    */
   created_at?: string;
   /**
-   * 更新时间
+   * Last update timestamp
    */
   updated_at?: string;
 };
 export namespace Chat {
   /**
-   * 群类型
+   * Chat type
    */
   export enum chat_type {
     GROUP = 'group',

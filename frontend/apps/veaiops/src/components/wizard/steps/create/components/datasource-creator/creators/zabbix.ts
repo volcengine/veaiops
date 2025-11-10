@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Zabbix 数据源创建函数
+ * Zabbix data source creation function
  */
 
 import type { WizardState } from '@/components/wizard/types';
@@ -26,9 +26,9 @@ import { processApiError } from '../utils';
 export const createZabbixDataSource = async (
   state: WizardState,
 ): Promise<CreateResult> => {
-  // 为每个选中的主机找到对应的 item
+  // Find corresponding item for each selected host
   const targets = state.zabbix.selectedHosts.map((host) => {
-    // 优先使用host对象自带的itemid（编辑模式下从prefill保留的）
+    // Prefer using itemid from host object (preserved from prefill in edit mode)
     if (host.itemid) {
       return {
         itemid: host.itemid,
@@ -36,7 +36,7 @@ export const createZabbixDataSource = async (
       };
     }
 
-    // 否则从 items 数组中找到匹配的 item（创建模式）
+    // Otherwise find matching item from items array (create mode)
     const item = state.zabbix.items.find(
       (item) => item.hostname === host.host || item.hostname === host.name,
     );
@@ -51,7 +51,7 @@ export const createZabbixDataSource = async (
     connect_name: state.selectedConnect!.name,
     targets,
     metric_name: state.zabbix.selectedMetric!.metric_name,
-    history_type: 0, // 默认历史类型，可以根据需要调整
+    history_type: 0, // Default history type, can be adjusted as needed
   };
 
   try {

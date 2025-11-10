@@ -12,12 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * 基础路由层统一导出
- *
- * 包含：
- * - baseRoutes: 基础路由（根路径、登录等）
- * - notFoundRoute: 404 兜底路由
- */
-
-export * from './base-routes';
+export { baseRoutes, notFoundRoute } from './base-routes';

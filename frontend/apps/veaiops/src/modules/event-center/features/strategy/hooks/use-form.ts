@@ -24,22 +24,22 @@ import type {
 import { useCallback, useState } from 'react';
 
 /**
- * 策略表单管理 Hook 参数
+ * Strategy form management Hook parameters
  */
 export interface UseStrategyFormParams {
   refreshTable?: () => Promise<boolean>;
 }
 
 /**
- * 策略表单管理 Hook 返回值
+ * Strategy form management Hook return value
  */
 export interface UseStrategyFormResult {
-  // 状态
+  // State
   modalVisible: boolean;
   editingStrategy: InformStrategy | null;
   form: ReturnType<typeof Form.useForm>[0];
 
-  // 事件处理器
+  // Event handlers
   handleEdit: (strategy: InformStrategy) => void;
   handleAdd: () => void;
   handleCancel: () => void;
@@ -50,43 +50,43 @@ export interface UseStrategyFormResult {
 }
 
 /**
- * 策略表单管理 Hook
+ * Strategy form management Hook
  *
- * 提供策略表单的状态管理和业务逻辑：
- * - 表单状态管理（modalVisible, editingStrategy, form）
- * - 表单操作处理器（handleEdit, handleAdd, handleCancel, handleSubmit, handleDelete）
- * - 自动刷新表格（使用 useManagementRefresh）
+ * Provides state management and business logic for strategy form:
+ * - Form state management (modalVisible, editingStrategy, form)
+ * - Form operation handlers (handleEdit, handleAdd, handleCancel, handleSubmit, handleDelete)
+ * - Automatic table refresh (using useManagementRefresh)
  *
- * 根据 Python 源码分析：
- * - InformStrategyVO 包含 bot: BotVO 和 group_chats: List[GroupChatVO]
- * - 表单需要扁平化的 bot_id 和 chat_ids，使用 adaptStrategyForEdit 适配器转换
+ * Based on Python source code analysis:
+ * - InformStrategyVO contains bot: BotVO and group_chats: List[GroupChatVO]
+ * - Form requires flattened bot_id and chat_ids, uses adaptStrategyForEdit adapter for conversion
  */
 export const useStrategyForm = ({
   refreshTable,
 }: UseStrategyFormParams): UseStrategyFormResult => {
-  // 使用管理刷新 Hook
+  // Use management refresh Hook
   const { afterCreate, afterUpdate, afterDelete } =
     useManagementRefresh(refreshTable);
 
   const [form] = Form.useForm();
-  // ✅ 修复：根据 Python 源码分析，API 返回 InformStrategyVO（对应 InformStrategy）
-  // 统一使用 InformStrategy（来自 api-generate），符合单一数据源原则
+  // ✅ Fix: Based on Python source code analysis, API returns InformStrategyVO (corresponds to InformStrategy)
+  // Unified use of InformStrategy (from api-generate), conforms to single source of truth principle
   const [editingStrategy, setEditingStrategy] = useState<InformStrategy | null>(
     null,
   );
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 删除策略处理器
+  // Delete strategy handler
   const handleDelete = useCallback(
     async (strategyId: string) => {
       try {
         const result = await strategyApi.deleteStrategy(strategyId);
         if (result.success) {
-          // 删除成功后刷新表格
+          // Refresh table after successful deletion
           const refreshResult = await afterDelete();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
-              message: '删除后刷新表格失败',
+              message: 'Failed to refresh table after deletion',
               data: {
                 error: refreshResult.error.message,
                 stack: refreshResult.error.stack,
@@ -100,10 +100,10 @@ export const useStrategyForm = ({
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '删除失败，请重试';
+        const errorMessage = errorObj.message || 'Deletion failed, please try again';
         Message.error(errorMessage);
         return false;
       }
@@ -111,7 +111,7 @@ export const useStrategyForm = ({
     [afterDelete],
   );
 
-  // 创建策略处理器
+  // Create strategy handler
   const handleCreate = useCallback(
     async (values: InformStrategyCreate) => {
       try {
@@ -119,11 +119,11 @@ export const useStrategyForm = ({
         if (result.success) {
           setModalVisible(false);
           form.resetFields();
-          // 创建成功后刷新表格
+          // Refresh table after successful creation
           const refreshResult = await afterCreate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
-              message: '创建后刷新表格失败',
+              message: 'Failed to refresh table after creation',
               data: {
                 error: refreshResult.error.message,
                 stack: refreshResult.error.stack,
@@ -137,10 +137,10 @@ export const useStrategyForm = ({
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '创建失败，请重试';
+        const errorMessage = errorObj.message || 'Creation failed, please try again';
         Message.error(errorMessage);
         return false;
       }
@@ -148,11 +148,11 @@ export const useStrategyForm = ({
     [form, afterCreate],
   );
 
-  // 更新策略处理器
+  // Update strategy handler
   const handleUpdate = useCallback(
     async (values: InformStrategyUpdate) => {
       if (!editingStrategy || !editingStrategy.id) {
-        Message.error('策略 ID 不能为空');
+        Message.error('Strategy ID cannot be empty');
         return false;
       }
 
@@ -165,11 +165,11 @@ export const useStrategyForm = ({
           setModalVisible(false);
           setEditingStrategy(null);
           form.resetFields();
-          // 更新成功后刷新表格
+          // Refresh table after successful update
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
-              message: '更新后刷新表格失败',
+              message: 'Failed to refresh table after update',
               data: {
                 error: refreshResult.error.message,
                 stack: refreshResult.error.stack,
@@ -183,10 +183,10 @@ export const useStrategyForm = ({
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '更新失败，请重试';
+        const errorMessage = errorObj.message || 'Update failed, please try again';
         Message.error(errorMessage);
         return false;
       }
@@ -194,17 +194,17 @@ export const useStrategyForm = ({
     [editingStrategy, form, afterUpdate],
   );
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = useCallback(
     async (values: InformStrategyCreate | InformStrategyUpdate) => {
-      // 检查名称重复
+      // Check for duplicate name
       if (values.name) {
         const checkResult = await strategyApi.checkNameDuplicate(
           values.name,
           editingStrategy?.id,
         );
         if (checkResult.isDuplicate) {
-          Message.error('策略名称不能重复');
+          Message.error('Strategy name cannot be duplicated');
           return false;
         }
       }
@@ -218,21 +218,21 @@ export const useStrategyForm = ({
     [editingStrategy, handleUpdate, handleCreate],
   );
 
-  // 打开编辑弹窗
-  // ✅ 修复：使用 InformStrategy 类型，通过适配器提取表单字段
-  // 根据 Python 源码：InformStrategyVO 包含 bot: BotVO 和 group_chats: List[GroupChatVO]
-  // 表单需要扁平化的 bot_id 和 chat_ids，使用 adaptStrategyForEdit 适配器转换
+  // Open edit modal
+  // ✅ Fix: Use InformStrategy type, extract form fields via adapter
+  // According to Python source code: InformStrategyVO contains bot: BotVO and group_chats: List[GroupChatVO]
+  // Form requires flattened bot_id and chat_ids, uses adaptStrategyForEdit adapter for conversion
   const handleEdit = useCallback(
     (strategy: InformStrategy) => {
       setEditingStrategy(strategy);
-      // ✅ 使用类型适配器函数（符合 .cursorrules 规范）
-      // adaptStrategyForEdit 会从 InformStrategy.bot.bot_id 和 InformStrategy.group_chats[].open_chat_id 提取值
+      // ✅ Use type adapter function (conforms to .cursorrules specification)
+      // adaptStrategyForEdit extracts values from InformStrategy.bot.bot_id and InformStrategy.group_chats[].open_chat_id
       const adaptedStrategy = adaptStrategyForEdit(strategy);
       form.setFieldsValue({
         name: strategy.name,
         description: strategy.description,
         channel: strategy.channel || 'Lark',
-        // ✅ 类型安全：使用适配器提取的 bot_id 和 chat_ids
+        // ✅ Type safe: Use bot_id and chat_ids extracted by adapter
         bot_id: adaptedStrategy.bot_id || '',
         chat_ids: adaptedStrategy.chat_ids || [],
       });
@@ -241,14 +241,14 @@ export const useStrategyForm = ({
     [form],
   );
 
-  // 打开新增弹窗
+  // Open add modal
   const handleAdd = useCallback(() => {
     setEditingStrategy(null);
     form.resetFields();
     setModalVisible(true);
   }, [form]);
 
-  // 关闭弹窗
+  // Close modal
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     setEditingStrategy(null);
@@ -256,12 +256,12 @@ export const useStrategyForm = ({
   }, [form]);
 
   return {
-    // 状态
+    // State
     modalVisible,
     editingStrategy,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,

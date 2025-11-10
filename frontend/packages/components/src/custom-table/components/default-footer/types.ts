@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 默认页脚组件类型定义
- * 类型已迁移到 ../../types/components/default-footer.ts
- * 此文件保留以兼容现有引用，实际类型请从types目录导入
+ * Default footer component type definitions
+ * Types have been migrated to ../../types/components/default-footer.ts
+ * This file is kept for backward compatibility with existing references, actual types should be imported from types directory
  */
 export type { DefaultFooterProps, FooterConfig } from '@/custom-table/types';

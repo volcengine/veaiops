@@ -13,22 +13,22 @@
 // limitations under the License.
 
 /**
- * TableAlert 组件类型定义
- * 从 components/table-alert/types.ts 迁移而来
+ * TableAlert component type definitions
+ * Migrated from components/table-alert/types.ts
  */
 
 import type { ReactNode } from 'react';
 
 /**
- * @name 表格提示组件属性
+ * @name Table alert component properties
  */
 export interface TableAlertProps {
-  /** @name 是否显示提示 */
+  /** @name Whether to show alert */
   show?: boolean;
-  /** @name 提示类型 */
+  /** @name Alert type */
   type?: 'info' | 'success' | 'warning' | 'error';
-  /** @name 提示内容 */
+  /** @name Alert content */
   content?: ReactNode | string;
-  /** @name 容器样式类名 */
+  /** @name Container style class name */
   className?: string;
 }

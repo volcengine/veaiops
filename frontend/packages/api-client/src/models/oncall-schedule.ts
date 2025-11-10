@@ -15,39 +15,39 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type OncallSchedule = {
   /**
-   * 值班计划ID
+   * Oncall schedule ID
    */
   id?: string;
   /**
-   * 关联的规则ID
+   * Associated rule ID
    */
   rule_id: string;
   /**
-   * 值班计划名称
+   * Oncall schedule name
    */
   name: string;
   /**
-   * 值班计划描述
+   * Oncall schedule description
    */
   description?: string;
   /**
-   * 值班计划类型
+   * Oncall schedule type
    */
   schedule_type: OncallSchedule.schedule_type;
   /**
-   * 值班参与者列表
+   * Oncall participants list
    */
   participants: Array<{
     /**
-     * 用户ID
+     * User ID
      */
     user_id: string;
     /**
-     * 用户名
+     * User name
      */
     user_name: string;
     /**
-     * 联系信息
+     * Contact information
      */
     contact_info?: {
       phone?: string;
@@ -55,49 +55,49 @@ export type OncallSchedule = {
       chat_id?: string;
     };
     /**
-     * 优先级
+     * Priority
      */
     priority?: number;
   }>;
   /**
-   * 值班计划配置
+   * Oncall schedule configuration
    */
   schedule_config: {
     /**
-     * 轮换间隔（小时）
+     * Rotation interval (hours)
      */
     rotation_interval?: number;
     /**
-     * 开始时间
+     * Start time
      */
     start_time?: string;
     /**
-     * 结束时间
+     * End time
      */
     end_time?: string;
     /**
-     * 时区
+     * Timezone
      */
     timezone?: string;
     /**
-     * 工作日（0=周日，6=周六）
+     * Weekdays (0=Sunday, 6=Saturday)
      */
     weekdays?: Array<number>;
   };
   /**
-   * 升级策略
+   * Escalation policy
    */
   escalation_policy?: {
     /**
-     * 是否启用升级
+     * Whether escalation is enabled
      */
     enabled?: boolean;
     /**
-     * 升级超时时间（分钟）
+     * Escalation timeout (minutes)
      */
     escalation_timeout?: number;
     /**
-     * 升级级别配置
+     * Escalation level configuration
      */
     escalation_levels?: Array<{
       level?: number;
@@ -106,29 +106,29 @@ export type OncallSchedule = {
     }>;
   };
   /**
-   * 是否激活
+   * Whether active
    */
   is_active?: boolean;
   /**
-   * 生效开始时间
+   * Effective start time
    */
   effective_start?: string;
   /**
-   * 生效结束时间
+   * Effective end time
    */
   effective_end?: string;
   /**
-   * 创建时间
+   * Creation time
    */
   created_at?: string;
   /**
-   * 更新时间
+   * Last update timestamp
    */
   updated_at?: string;
 };
 export namespace OncallSchedule {
   /**
-   * 值班计划类型
+   * Oncall schedule type
    */
   export enum schedule_type {
     DAILY = 'daily',

@@ -35,10 +35,10 @@ import {
 import type { DataSource, DataSourceType } from 'api-generate';
 
 /**
- * 根据数据源类型获取数据请求函数
+ * Get data request function based on data source type
  *
- * @param dataSourceType - 数据源类型
- * @returns 数据请求函数
+ * @param dataSourceType - Data source type
+ * @returns Data request function
  */
 export const createMonitorTableRequest = (
   dataSourceType: DataSourceType,
@@ -68,8 +68,8 @@ export const createMonitorTableRequest = (
         default:
           throw new Error(`Unsupported data source type: ${dataSourceType}`);
       }
-      // 注意：使用类型断言将 API 响应转换为 StandardApiResponse 格式
-      // TODO: 完善 API 类型定义，统一响应格式
+      // Note: Use type assertion to convert API response to StandardApiResponse format
+      // TODO: Improve API type definitions, unify response format
       return response as unknown as StandardApiResponse<DataSource[]>;
     },
     options: {

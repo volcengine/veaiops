@@ -15,19 +15,19 @@
 /* generated using openapi-typescript-codegen -- do not edit */
 export type UpdateDataSourceRequest = {
   /**
-   * 数据源名称
+   * Data source name
    */
   name?: string;
   /**
-   * 数据源配置
+   * Data source configuration
    */
   config?: Record<string, any>;
   /**
-   * 数据源描述
+   * Data source description
    */
   description?: string;
   /**
-   * 是否激活
+   * Whether the data source is active
    */
   is_active?: boolean;
 };

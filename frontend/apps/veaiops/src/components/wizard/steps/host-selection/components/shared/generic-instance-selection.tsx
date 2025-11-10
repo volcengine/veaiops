@@ -13,13 +13,14 @@
 // limitations under the License.
 
 /**
- * 通用实例选择组件
- * @description 通过配置参数支持不同数据源的实例选择
+ * Generic instance selection component
+ * @description Supports instance selection for different data sources through configuration parameters
  * @author AI Assistant
  * @date 2025-01-18
  */
 
 import { IconSearch } from '@arco-design/web-react/icon';
+import { logger } from '@veaiops/utils';
 import styles from '@wizard/datasource-wizard.module.less';
 import type { ZabbixHost } from 'api-generate/index';
 import type React from 'react';
@@ -44,17 +45,17 @@ import type {
 } from './instance-selection-config';
 
 export interface GenericInstanceSelectionProps<T> {
-  /** 原始数据列表 */
+  /** Original data list */
   items: T[];
-  /** 已选择的原始数据列表 */
+  /** Selected original data list */
   selectedItems: T[];
-  /** 加载状态 */
+  /** Loading state */
   loading: boolean;
-  /** 搜索文本 */
+  /** Search text */
   searchText: string;
-  /** 搜索文本变化回调 */
+  /** Search text change callback */
   onSearchChange: (value: string) => void;
-  /** 配置 */
+  /** Configuration */
   config: InstanceSelectionConfig<T>;
 }
 
@@ -66,15 +67,15 @@ export function GenericInstanceSelection<T>({
   onSearchChange,
   config,
 }: GenericInstanceSelectionProps<T>) {
-  // 使用 useMemo 优化排序性能，只在 items 或 selectedItems 变化时重新计算
+  // Use useMemo to optimize sorting performance, only recalculate when items or selectedItems change
   const sortedItems = useMemo(() => {
-    // 边界情况：如果 items 为空或 selectedItems 为空，直接返回原数组
+    // Edge case: If items is empty or selectedItems is empty, return original array
     if (!items || items.length === 0) {
       return items || [];
     }
 
-    // ✅ 修复：添加去重逻辑，避免重复实例导致勾选错误
-    // 使用 Map 来去重，key 为实例的唯一标识（通过转换后的实例数据生成）
+    // ✅ Fix: Add deduplication logic to avoid duplicate instances causing selection errors
+    // Use Map for deduplication, key is the unique identifier of the instance (generated from transformed instance data)
     const uniqueItemsMap = new Map<string, T>();
     let duplicateCount = 0;
 
@@ -82,42 +83,55 @@ export function GenericInstanceSelection<T>({
       const transformedItem = config.dataTransformer(item);
       const uniqueKey = getInstanceUniqueId(transformedItem);
 
-      // 如果 Map 中已存在相同 key，保留第一个出现的实例
+      // If the same key already exists in Map, keep the first occurrence
       if (!uniqueItemsMap.has(uniqueKey)) {
         uniqueItemsMap.set(uniqueKey, item);
       } else {
         duplicateCount++;
-        // 在开发环境输出警告，便于调试
+        // Output warning in development environment for debugging
         if (process.env.NODE_ENV === 'development') {
-          console.warn(`[GenericInstanceSelection] 发现重复实例，已去重:`, {
-            uniqueKey,
-            transformedItem,
-            duplicateCount,
+          logger.warn({
+            message:
+              '[GenericInstanceSelection] Duplicate instance found, deduplicated',
+            data: {
+              uniqueKey,
+              transformedItem,
+              duplicateCount,
+            },
+            source: 'GenericInstanceSelection',
+            component: 'sortedItems',
           });
         }
       }
     }
 
-    // 在开发环境输出去重统计
+    // Output deduplication statistics in development environment
     if (process.env.NODE_ENV === 'development' && duplicateCount > 0) {
-      console.info(
-        `[GenericInstanceSelection] 去重完成: 原始数量=${items.length}, 去重后数量=${uniqueItemsMap.size}, 去除重复=${duplicateCount}`,
-      );
+      logger.info({
+        message: '[GenericInstanceSelection] Deduplication completed',
+        data: {
+          originalCount: items.length,
+          deduplicatedCount: uniqueItemsMap.size,
+          removedDuplicates: duplicateCount,
+        },
+        source: 'GenericInstanceSelection',
+        component: 'sortedItems',
+      });
     }
 
-    // 转换 Map 为数组
+    // Convert Map to array
     const uniqueItems = Array.from(uniqueItemsMap.values());
 
     if (!selectedItems || selectedItems.length === 0) {
       return uniqueItems;
     }
 
-    // 创建已选 ID 的 Set，提高查找性能（O(1) vs O(n)）
+    // Create a Set of selected IDs to improve lookup performance (O(1) vs O(n))
     const selectedIdSet = new Set(
       selectedItems.map((item) => config.getId(item)),
     );
 
-    // 对原始 items 进行排序：将已选项排在最前面
+    // Sort original items: put selected items first
     return uniqueItems.sort((a, b) => {
       const aIsSelected = selectedIdSet.has(config.getId(a));
       const bIsSelected = selectedIdSet.has(config.getId(b));
@@ -132,58 +146,66 @@ export function GenericInstanceSelection<T>({
     });
   }, [items, selectedItems, config]);
 
-  // 转换数据格式以适配通用组件
+  // Transform data format to adapt to generic component
   const transformedItems: InstanceData[] = useMemo(() => {
     return sortedItems
       .map((item) => {
         try {
-          // 边界情况：数据转换函数可能抛出异常，需要捕获
+          // Edge case: Data transformation function may throw exceptions, need to catch
           return config.dataTransformer(item);
         } catch (error) {
-          // 数据转换出错时，记录错误并跳过该项
+          // When data transformation fails, log error and skip this item
           if (process.env.NODE_ENV === 'development') {
-            console.warn(
-              '[GenericInstanceSelection] 数据转换函数出错，跳过该项:',
-              {
+            logger.warn({
+              message:
+                '[GenericInstanceSelection] Data transformation function error, skipping item',
+              data: {
                 item,
-                error,
+                error:
+                  error instanceof Error ? error : new Error(String(error)),
               },
-            );
+              source: 'GenericInstanceSelection',
+              component: 'transformedItems',
+            });
           }
           return null;
         }
       })
-      .filter((item): item is InstanceData => item !== null); // 过滤掉转换失败的项目
+      .filter((item): item is InstanceData => item !== null); // Filter out items that failed transformation
   }, [sortedItems, config.dataTransformer]);
 
   const transformedSelectedItems: InstanceData[] = useMemo(() => {
     return (selectedItems || [])
       .map((item) => {
         try {
-          // 边界情况：数据转换函数可能抛出异常，需要捕获
+          // Edge case: Data transformation function may throw exceptions, need to catch
           return config.dataTransformer(item);
         } catch (error) {
-          // 数据转换出错时，记录错误并跳过该项
+          // When data transformation fails, log error and skip this item
           if (process.env.NODE_ENV === 'development') {
-            console.warn(
-              '[GenericInstanceSelection] 已选项数据转换函数出错，跳过该项:',
-              {
+            logger.warn({
+              message:
+                '[GenericInstanceSelection] Selected item data transformation function error, skipping item',
+              data: {
                 item,
-                error,
+                error:
+                  error instanceof Error ? error : new Error(String(error)),
               },
-            );
+              source: 'GenericInstanceSelection',
+              component: 'transformedSelectedItems',
+            });
           }
           return null;
         }
       })
-      .filter((item): item is InstanceData => item !== null); // 过滤掉转换失败的项目
+      .filter((item): item is InstanceData => item !== null); // Filter out items that failed transformation
   }, [selectedItems, config.dataTransformer]);
 
-  // 过滤实例
+  // Filter instances
   const filteredItems = useMemo(() => {
     const searchValue = (searchText || '').toLowerCase().trim();
 
-    // 边界情况：如果没有搜索文本，返回所有转换后的项
+    // Edge case: If there is no search text, return all transformed items
     if (!searchValue) {
       return transformedItems;
     }
@@ -193,92 +215,105 @@ export function GenericInstanceSelection<T>({
         const originalItem = sortedItems.find(
           (item) => config.getId(item) === instance.id,
         );
-        // 边界情况：如果找不到原始项，跳过该项
+        // Edge case: If original item not found, skip this item
         if (!originalItem) {
           return false;
         }
-        // 边界情况：搜索过滤函数可能抛出异常，需要捕获
+        // Edge case: Search filter function may throw exceptions, need to catch
         return config.searchFilter(originalItem, searchValue);
       } catch (error) {
-        // 搜索过滤出错时，跳过该项（保守策略：不显示错误的项）
+        // When search filter fails, skip this item (conservative strategy: don't show erroneous items)
         if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            '[GenericInstanceSelection] 搜索过滤函数出错，跳过该项:',
-            {
+          logger.warn({
+            message:
+              '[GenericInstanceSelection] Search filter function error, skipping item',
+            data: {
               instance,
-              error,
+              error: error instanceof Error ? error : new Error(String(error)),
             },
-          );
+            source: 'GenericInstanceSelection',
+            component: 'filteredItems',
+          });
         }
         return false;
       }
     });
   }, [transformedItems, sortedItems, searchText, config]);
 
-  // 过滤 Zabbix 主机（用于 useHostList 情况）
+  // Filter Zabbix hosts (for useHostList case)
   const filteredHosts = useMemo(() => {
     const searchValue = (searchText || '').toLowerCase().trim();
 
-    // 边界情况：如果没有搜索文本，返回所有主机
+    // Edge case: If there is no search text, return all hosts
     if (!searchValue) {
       return sortedItems;
     }
 
     return sortedItems.filter((item) => {
       try {
-        // 边界情况：搜索过滤函数可能抛出异常，需要捕获
+        // Edge case: Search filter function may throw exceptions, need to catch
         return config.searchFilter(item, searchValue);
       } catch (error) {
-        // 搜索过滤出错时，跳过该项（保守策略：不显示错误的项）
+        // When search filter fails, skip this item (conservative strategy: don't show erroneous items)
         if (process.env.NODE_ENV === 'development') {
-          console.warn(
-            '[GenericInstanceSelection] 搜索过滤函数出错，跳过该项:',
-            {
+          logger.warn({
+            message:
+              '[GenericInstanceSelection] Search filter function error, skipping item',
+            data: {
               item,
-              error,
+              error: error instanceof Error ? error : new Error(String(error)),
             },
-          );
+            source: 'GenericInstanceSelection',
+            component: 'filteredHosts',
+          });
         }
         return false;
       }
     });
   }, [sortedItems, searchText, config]);
 
-  // 处理实例选择
+  // Handle instance selection
   const handleInstanceToggle = (instance: InstanceData, checked: boolean) => {
     try {
-      // 通过比较转换后的实例来找到匹配的原始项
-      // 因为同一 ResourceID 可能对应多个 DiskName，需要精确匹配
+      // Find matching original item by comparing transformed instances
+      // Because the same ResourceID may correspond to multiple DiskNames, precise matching is required
       const originalItem = sortedItems.find((item) => {
         try {
           const transformedItem = config.dataTransformer(item);
           return areInstancesEqual(transformedItem, instance);
         } catch (error) {
-          // 边界情况：数据转换出错时，跳过该项
+          // Edge case: When data transformation fails, skip this item
           if (process.env.NODE_ENV === 'development') {
-            console.warn('[GenericInstanceSelection] 实例选择时数据转换出错:', {
-              item,
-              error,
+            logger.warn({
+              message:
+                '[GenericInstanceSelection] Data transformation error during instance selection',
+              data: {
+                item,
+                error:
+                  error instanceof Error ? error : new Error(String(error)),
+              },
+              source: 'GenericInstanceSelection',
+              component: 'handleInstanceToggle',
             });
           }
           return false;
         }
       });
 
-      // 边界情况：如果找不到原始项，不执行任何操作
+      // Edge case: If original item not found, do nothing
       if (!originalItem) {
         return;
       }
 
       if (checked) {
-        // 边界情况：检查是否已经选中，避免重复添加
-        // 使用转换后的实例进行比较，确保精确匹配（包括 DiskName）
+        // Edge case: Check if already selected to avoid duplicate addition
+        // Use transformed instances for comparison to ensure precise matching (including DiskName)
         const isAlreadySelected = selectedItems.some((item) => {
           try {
             const transformedSelectedItem = config.dataTransformer(item);
             return areInstancesEqual(transformedSelectedItem, instance);
           } catch (error) {
-            // 边界情况：数据转换出错时，跳过该项
+            // Edge case: When data transformation fails, skip this item
             return false;
           }
         });
@@ -287,35 +322,41 @@ export function GenericInstanceSelection<T>({
         }
         config.selectionAction([...selectedItems, originalItem]);
       } else {
-        // 取消选中：使用转换后的实例进行比较，确保只取消匹配的项
+        // Deselect: Use transformed instances for comparison to ensure only matching items are deselected
         config.selectionAction(
           selectedItems.filter((item) => {
             try {
               const transformedSelectedItem = config.dataTransformer(item);
               return !areInstancesEqual(transformedSelectedItem, instance);
             } catch (error) {
-              // 边界情况：数据转换出错时，保留该项（保守策略）
+              // Edge case: When data transformation fails, keep this item (conservative strategy)
               return true;
             }
           }),
         );
       }
     } catch (error) {
-      // 边界情况：整个选择操作出错时，记录错误但不影响其他功能
+      // Edge case: When the entire selection operation fails, log error but don't affect other functionality
       if (process.env.NODE_ENV === 'development') {
-        console.error('[GenericInstanceSelection] 实例选择操作出错:', {
-          instance,
-          checked,
-          error,
+        logger.error({
+          message:
+            '[GenericInstanceSelection] Instance selection operation error',
+          data: {
+            instance,
+            checked,
+            error: error instanceof Error ? error : new Error(String(error)),
+          },
+          source: 'GenericInstanceSelection',
+          component: 'handleInstanceToggle',
         });
       }
     }
   };
 
-  // 处理 Zabbix 主机选择（直接使用原始类型）
+  // Handle Zabbix host selection (use original type directly)
   const handleHostToggle = (host: T, checked: boolean) => {
     if (checked) {
-      // 边界情况：检查是否已经选中，避免重复添加
+      // Edge case: Check if already selected to avoid duplicate addition
       const isAlreadySelected = selectedItems.some(
         (item) => config.getId(item) === config.getId(host),
       );
@@ -332,11 +373,11 @@ export function GenericInstanceSelection<T>({
     }
   };
 
-  // 全选/取消全选
+  // Select all / Deselect all
   const handleSelectAll = (checked: boolean) => {
     try {
       if (checked) {
-        // 根据是否使用主机列表，选择不同的过滤列表
+        // Select different filter lists based on whether host list is used
         const itemsToSelect = config.useHostList
           ? filteredHosts
           : filteredItems
@@ -346,22 +387,28 @@ export function GenericInstanceSelection<T>({
                     (item) => config.getId(item) === instance.id,
                   );
                 } catch (error) {
-                  // 边界情况：获取 ID 出错时，跳过该项
+                  // Edge case: When getting ID fails, skip this item
                   if (process.env.NODE_ENV === 'development') {
-                    console.warn(
-                      '[GenericInstanceSelection] 全选时获取 ID 出错:',
-                      {
+                    logger.warn({
+                      message:
+                        '[GenericInstanceSelection] Error getting ID during select all',
+                      data: {
                         instance,
-                        error,
+                        error:
+                          error instanceof Error
+                            ? error
+                            : new Error(String(error)),
                       },
-                    );
+                      source: 'GenericInstanceSelection',
+                      component: 'handleSelectAll',
+                    });
                   }
                   return undefined;
                 }
               })
-              .filter((item): item is T => item !== undefined); // 类型守卫，过滤掉 undefined
+              .filter((item): item is T => item !== undefined); // Type guard, filter out undefined
 
-        // 边界情况：如果没有可选择的项，不执行操作
+        // Edge case: If there are no selectable items, do nothing
         if (itemsToSelect.length === 0) {
           return;
         }
@@ -371,11 +418,16 @@ export function GenericInstanceSelection<T>({
         config.selectionAction([]);
       }
     } catch (error) {
-      // 边界情况：全选操作出错时，记录错误但不影响其他功能
+      // Edge case: When select all operation fails, log error but don't affect other functionality
       if (process.env.NODE_ENV === 'development') {
-        console.error('[GenericInstanceSelection] 全选操作出错:', {
-          checked,
-          error,
+        logger.error({
+          message: '[GenericInstanceSelection] Select all operation error',
+          data: {
+            checked,
+            error: error instanceof Error ? error : new Error(String(error)),
+          },
+          source: 'GenericInstanceSelection',
+          component: 'handleSelectAll',
         });
       }
     }
@@ -385,12 +437,12 @@ export function GenericInstanceSelection<T>({
     return <LoadingState title={config.title} />;
   }
 
-  // 边界情况：items 为空或未定义
+  // Edge case: items is empty or undefined
   if (!items || items.length === 0) {
     return (
       <EmptyState
         title={config.title}
-        stepDescription={`选择要监控的${config.itemType}`}
+        stepDescription={`Select ${config.itemType} to monitor`}
         icon={config.icon as React.ReactElement}
         description={config.emptyDescription}
       />
@@ -402,31 +454,31 @@ export function GenericInstanceSelection<T>({
       <div className={styles.stepTitle}>{config.title}</div>
       <div className={styles.stepDescription}>{config.description}</div>
 
-      {/* 搜索框 */}
+      {/* Search box */}
       <SearchBox
         placeholder={config.searchPlaceholder}
         value={searchText}
         onChange={onSearchChange}
       />
 
-      {/* 搜索后无数据提示 */}
+      {/* No data prompt after search */}
       {(() => {
         const hasSearchText = Boolean(searchText.trim());
         const hasNoFilteredData = config.useHostList
           ? filteredHosts.length === 0
           : filteredItems.length === 0;
 
-        // 边界情况 1：有搜索文本但无匹配结果 -> 显示搜索无结果提示
+        // Edge case 1: Has search text but no matching results -> Show no search results prompt
         if (hasSearchText && hasNoFilteredData) {
           return (
             <EmptyState
               icon={<IconSearch />}
-              description={`未找到包含 "${searchText.trim()}" 的${config.itemType}`}
+              description={`No ${config.itemType} found containing "${searchText.trim()}"`}
             />
           );
         }
 
-        // 边界情况 2：无搜索文本但过滤后无数据 -> 可能是数据转换失败，显示初始空状态
+        // Edge case 2: No search text but no filtered data -> May be data transformation failure, show initial empty state
         if (!hasSearchText && hasNoFilteredData) {
           return (
             <EmptyState
@@ -436,7 +488,7 @@ export function GenericInstanceSelection<T>({
           );
         }
 
-        // 正常情况：有数据，显示列表
+        // Normal case: Has data, show list
         return (
           <>
             {config.useHostList ? (
@@ -455,7 +507,7 @@ export function GenericInstanceSelection<T>({
               <InstanceList
                 instances={filteredItems}
                 selectedInstances={transformedSelectedItems}
-                iconType={config.itemType === '主机' ? 'desktop' : 'cloud'}
+                iconType={config.itemType === 'host' ? 'desktop' : 'cloud'}
                 onInstanceToggle={handleInstanceToggle}
                 onSelectAll={handleSelectAll}
               />
@@ -464,7 +516,7 @@ export function GenericInstanceSelection<T>({
         );
       })()}
 
-      {/* 选择提示 - 只在有数据且没有显示空提示时显示 */}
+      {/* Selection alert - Only show when there is data and no empty prompt is displayed */}
       {((config.useHostList && filteredHosts.length > 0) ||
         (!config.useHostList && filteredItems.length > 0)) && (
         <SelectionAlert

@@ -27,26 +27,26 @@ import { LoginPage } from '@/modules/auth';
 
 import { routesConfig } from '@/config/routes';
 
-// 认证路由组件Props
+// Authentication route component Props
 interface AuthRoutesProps {
   isAuthenticated: boolean;
 }
 
-// 认证路由组件
+// Authentication route component
 export const AuthRoutes: FC<AuthRoutesProps> = ({ isAuthenticated }) => {
   const location = useLocation();
 
-  // 如果未认证且不在登录页面，重定向到登录页
+  // If not authenticated and not on login page, redirect to login page
   if (!isAuthenticated && location.pathname !== authConfig.loginPath) {
     return <Navigate to={authConfig.loginPath} replace />;
   }
 
-  // 如果已认证且在登录页面，重定向到默认页面
+  // If authenticated and on login page, redirect to default page
   if (isAuthenticated && location.pathname === authConfig.loginPath) {
     return <Navigate to={authConfig.defaultRedirectPath} replace />;
   }
 
-  // 如果未认证且在登录页面，显示登录页面
+  // If not authenticated and on login page, show login page
   if (!isAuthenticated && location.pathname === authConfig.loginPath) {
     return (
       <ConfigProvider theme={themeConfig}>
@@ -55,7 +55,7 @@ export const AuthRoutes: FC<AuthRoutesProps> = ({ isAuthenticated }) => {
     );
   }
 
-  // 已认证用户，显示完整的应用布局
+  // Authenticated user, show full application layout
   return (
     <ConfigProvider theme={themeConfig}>
       <AppLayout>

@@ -19,25 +19,24 @@ import {
 } from '@/custom-table/types/core/enums';
 import { devLog } from '@/custom-table/utils';
 /**
- * 插件生命周期管理模块
- * 负责插件的启用、禁用和生命周期执行
+ * Plugin lifecycle management module
+ * Responsible for plugin enabling, disabling, and lifecycle execution
  *
-
  * @date 2025-12-19
  */
 import type { PluginContext } from '@veaiops/types';
 import type { PluginRegistry } from './plugin-registry';
 
 /**
- * @name 插件生命周期管理器
+ * @name Plugin lifecycle manager
  */
 export class PluginLifecycleManager {
   constructor(private registry: PluginRegistry) {}
 
   /**
-   * @name 启用插件
+   * @name Enable plugin
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object with format { success: boolean; error?: Error }
    */
   async enablePlugin(
     pluginName: string,
@@ -46,7 +45,7 @@ export class PluginLifecycleManager {
     if (!plugin) {
       return {
         success: false,
-        error: new Error(`插件 "${pluginName}" 不存在`),
+        error: new Error(`Plugin "${pluginName}" does not exist`),
       };
     }
 
@@ -87,9 +86,9 @@ export class PluginLifecycleManager {
   }
 
   /**
-   * @name 禁用插件
+   * @name Disable plugin
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object with format { success: boolean; error?: Error }
    */
   async disablePlugin(
     pluginName: string,
@@ -98,7 +97,7 @@ export class PluginLifecycleManager {
     if (!plugin) {
       return {
         success: false,
-        error: new Error(`插件 "${pluginName}" 不存在`),
+        error: new Error(`Plugin "${pluginName}" does not exist`),
       };
     }
 
@@ -126,7 +125,7 @@ export class PluginLifecycleManager {
             status: PluginStatusEnum.ERROR,
           });
         }
-        // 即使卸载失败，也禁用插件
+        // Disable plugin even if unmount fails
         plugin.enabled = false;
         return { success: false, error: errorObj };
       }
@@ -137,9 +136,9 @@ export class PluginLifecycleManager {
   }
 
   /**
-   * @name 执行生命周期钩子
+   * @name Execute lifecycle hook
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object with format { success: boolean; error?: Error }
    */
   async executeHook({
     lifecycle,
@@ -182,10 +181,10 @@ export class PluginLifecycleManager {
             status: PluginStatusEnum.ERROR,
           });
         }
-        // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
+        // ✅ Correct: Use devLog to record errors and expose actual error information
         devLog.error({
           component: 'PluginLifecycleManager',
-          message: `执行插件生命周期钩子失败`,
+          message: `Plugin lifecycle hook execution failed`,
           data: {
             pluginName: plugin.name,
             lifecycle,
@@ -206,7 +205,7 @@ export class PluginLifecycleManager {
   }
 
   /**
-   * @name 更新插件状态
+   * @name Update plugin status
    */
   private updatePluginStatus({
     pluginName,
@@ -234,7 +233,7 @@ export class PluginLifecycleManager {
         });
         break;
       case 'onUpdate':
-        // 保持当前状态
+        // Keep current status
         break;
       case 'onDestroy':
         this.registry.updatePluginStatus({
@@ -243,15 +242,15 @@ export class PluginLifecycleManager {
         });
         break;
       default:
-        // 其他生命周期保持当前状态
+        // Other lifecycle phases keep current status
         break;
     }
   }
 
   /**
-   * @name 初始化所有插件
+   * @name Initialize all plugins
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object with format { success: boolean; error?: Error }
    */
   async initializePlugins(
     context: PluginContext,
@@ -261,10 +260,10 @@ export class PluginLifecycleManager {
       context,
     });
     if (!result.success && result.error) {
-      // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
+      // ✅ Correct: Use devLog to record errors and expose actual error information
       devLog.error({
         component: 'PluginLifecycleManager',
-        message: '初始化插件失败',
+        message: 'Plugin initialization failed',
         data: {
           error: result.error.message,
           stack: result.error.stack,
@@ -276,9 +275,9 @@ export class PluginLifecycleManager {
   }
 
   /**
-   * @name 清理所有插件
+   * @name Cleanup all plugins
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object with format { success: boolean; error?: Error }
    */
   async cleanupPlugins(
     context: PluginContext,
@@ -288,10 +287,10 @@ export class PluginLifecycleManager {
       context,
     });
     if (!result.success && result.error) {
-      // ✅ 正确：使用 devLog 记录错误，并透出实际错误信息
+      // ✅ Correct: Use devLog to record errors and expose actual error information
       devLog.error({
         component: 'PluginLifecycleManager',
-        message: '清理插件失败',
+        message: 'Plugin cleanup failed',
         data: {
           error: result.error.message,
           stack: result.error.stack,

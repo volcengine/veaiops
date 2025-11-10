@@ -17,7 +17,7 @@ import type { BotAttribute } from 'api-generate';
 import { useCallback } from 'react';
 
 /**
- * Bot属性表格模态框处理Hook
+ * Bot attributes table modal handlers Hook
  */
 export const useBotAttributesTableModalHandlers = ({
   setEditingAttribute,
@@ -33,7 +33,7 @@ export const useBotAttributesTableModalHandlers = ({
   setViewingAttribute: (attribute: BotAttribute | null) => void;
 }) => {
   /**
-   * 打开创建模态框
+   * Open create modal
    */
   const handleOpenCreateModal = useCallback(() => {
     setModalType('create');
@@ -42,7 +42,7 @@ export const useBotAttributesTableModalHandlers = ({
   }, [setModalType, setEditingAttribute, setIsModalVisible]);
 
   /**
-   * 关闭模态框
+   * Close modal
    */
   const handleCloseModal = useCallback(() => {
     setIsModalVisible(false);
@@ -50,7 +50,7 @@ export const useBotAttributesTableModalHandlers = ({
   }, [setIsModalVisible, setEditingAttribute]);
 
   /**
-   * 关闭查看弹窗
+   * Close view modal
    */
   const handleCloseViewModal = useCallback(() => {
     setViewModalVisible(false);

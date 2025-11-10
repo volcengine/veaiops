@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 订阅管理 Hooks 统一导出
+ * Subscription management Hooks unified export
  */
 
 export {
@@ -29,7 +29,7 @@ export { useSubscriptionForm } from './use-subscription-form';
 export { useWebhookManagement } from './use-webhook-logic';
 export { useSubscribeRelationFormLogic } from './use-relation-form-logic';
 
-// 导出类型
+// Export types
 export type {
   SubscriptionQueryParams,
   UseSubscriptionTableConfigOptions,

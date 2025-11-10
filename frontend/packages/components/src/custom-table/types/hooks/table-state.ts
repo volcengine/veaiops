@@ -14,74 +14,74 @@
 
 import type { SorterInfo } from '@arco-design/web-react/es/Table/interface';
 /**
- * Table State Hook 相关类型定义
+ * Table State Hook related type definitions
  */
 import type React from 'react';
 import type { BaseQuery, BaseRecord } from '../core';
 
 /**
- * 表格状态接口
+ * Table state interface
  */
 export interface TableState<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  // 数据状态
+  // Data state
   dataSource: RecordType[];
   formattedTableData: RecordType[];
   loading: boolean;
   error: Error | null;
 
-  // 分页状态
+  // Pagination state
   current: number;
   pageSize: number;
   total: number;
   tableTotal: number;
 
-  // 查询状态
+  // Query state
   query: QueryType;
   filters: Record<string, (string | number)[]>;
   sorter: SorterInfo;
 
-  // 选择状态
+  // Selection state
   selectedRowKeys: (string | number)[];
   expandedRowKeys: (string | number)[];
 
-  // 其他状态
+  // Other state
   resetEmptyData: boolean;
 }
 
 /**
- * 表格状态操作接口
+ * Table state actions interface
  */
 export interface TableStateActions<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  // 数据操作
+  // Data operations
   setDataSource: (dataSource: RecordType[]) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: Error | null) => void;
 
-  // 分页操作
+  // Pagination operations
   setCurrent: (current: number) => void;
   setPageSize: (pageSize: number) => void;
   setTotal: (total: number) => void;
   setTableTotal: (tableTotal: number) => void;
 
-  // 查询操作
+  // Query operations
   setQuery: (query: QueryType | ((prev: QueryType) => QueryType)) => void;
   setFilters: (filters: Record<string, (string | number)[]>) => void;
   setSorter: (sorter: SorterInfo) => void;
 
-  // 选择操作
+  // Selection operations
   setSelectedRowKeys: (keys: (string | number)[]) => void;
   setExpandedRowKeys: (keys: (string | number)[]) => void;
 
-  // 其他操作
+  // Other operations
   setResetEmptyData: (reset: boolean) => void;
 
-  // 组合操作
+  // Combined operations
   reset: () => void;
   updatePagination: (pagination: {
     current?: number;
@@ -98,13 +98,13 @@ export interface UseTableStateProps<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  // 初始状态
+  // Initial state
   initialDataSource?: RecordType[];
   initialQuery?: QueryType;
   initialCurrent?: number;
   initialPageSize?: number;
 
-  // 配置选项
+  // Configuration options
   defaultQuery?: QueryType;
   defaultPageSize?: number;
   defaultCurrent?: number;
@@ -113,7 +113,7 @@ export interface UseTableStateProps<
 }
 
 /**
- * useTableState Hook 返回值
+ * useTableState Hook return value
  */
 export interface UseTableStateReturn<
   RecordType extends BaseRecord = BaseRecord,

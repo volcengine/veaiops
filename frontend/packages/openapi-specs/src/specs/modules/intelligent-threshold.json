@@ -3,7 +3,7 @@
   "info": {
     "title": "VolcAIOpsKit - Intelligent Threshold API",
     "version": "1.0.0",
-    "description": "智能阈值管理相关接口"
+    "description": "Intelligent threshold management related APIs"
   },
   "paths": {
     "/apis/v1/intelligent-threshold/task/": {
@@ -36,7 +36,7 @@
       },
       "get": {
         "summary": "List Tasks",
-        "description": "获取任务列表",
+        "description": "Get task list",
         "tags": ["Intelligent Threshold Task"],
         "parameters": [
           {
@@ -49,7 +49,7 @@
                 "type": "string"
               }
             },
-            "description": "项目名称列表"
+            "description": "List of project names"
           },
           {
             "name": "task_name",
@@ -58,7 +58,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "任务名称过滤"
+            "description": "Task name filter"
           },
           {
             "name": "datasource_type",
@@ -69,7 +69,7 @@
               "enum": ["Zabbix", "Aliyun", "Volcengine"],
               "default": "Volcengine"
             },
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           {
             "name": "auto_update",
@@ -78,7 +78,7 @@
             "schema": {
               "type": "boolean"
             },
-            "description": "自动更新开关"
+            "description": "Auto update switch"
           },
           {
             "name": "created_at_start",
@@ -88,7 +88,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "创建时间范围开始"
+            "description": "Creation time range start"
           },
           {
             "name": "created_at_end",
@@ -98,7 +98,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "创建时间范围结束"
+            "description": "Creation time range end"
           },
           {
             "name": "updated_at_start",
@@ -108,7 +108,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "更新时间范围开始"
+            "description": "Update time range start"
           },
           {
             "name": "updated_at_end",
@@ -118,7 +118,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "更新时间范围结束"
+            "description": "Update time range end"
           },
           {
             "name": "skip",
@@ -129,7 +129,7 @@
               "minimum": 0,
               "default": 0
             },
-            "description": "跳过的记录数"
+            "description": "Number of records to skip"
           },
           {
             "name": "limit",
@@ -141,12 +141,12 @@
               "maximum": 1000,
               "default": 100
             },
-            "description": "每页大小"
+            "description": "Page size"
           }
         ],
         "responses": {
           "200": {
-            "description": "获取任务列表成功",
+            "description": "Get task list successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -198,12 +198,12 @@
             "schema": {
               "type": "string"
             },
-            "description": "任务ID"
+            "description": "Task ID"
           }
         ],
         "responses": {
           "200": {
-            "description": "删除任务成功",
+            "description": "Delete task successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -247,7 +247,7 @@
     "/apis/v1/intelligent-threshold/task/rerun": {
       "post": {
         "summary": "Rerun Task",
-        "description": "重新运行智能阈值任务",
+        "description": "Rerun intelligent threshold task",
         "tags": ["Intelligent Threshold Task"],
         "requestBody": {
           "required": true,
@@ -261,7 +261,7 @@
         },
         "responses": {
           "200": {
-            "description": "任务重新运行成功",
+            "description": "Task rerun successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -276,7 +276,7 @@
     "/apis/v1/intelligent-threshold/task/versions/": {
       "get": {
         "summary": "List Task Versions",
-        "description": "获取任务版本列表",
+        "description": "Get task version list",
         "tags": ["Intelligent Threshold Task"],
         "parameters": [
           {
@@ -286,7 +286,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "任务ID"
+            "description": "Task ID"
           },
           {
             "name": "status",
@@ -295,7 +295,7 @@
             "schema": {
               "$ref": "#/components/schemas/IntelligentThresholdTaskStatus"
             },
-            "description": "按任务状态过滤"
+            "description": "Filter by task status"
           },
           {
             "name": "created_at_start",
@@ -305,7 +305,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "创建时间范围开始"
+            "description": "Creation time range start"
           },
           {
             "name": "created_at_end",
@@ -315,7 +315,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "创建时间范围结束"
+            "description": "Creation time range end"
           },
           {
             "name": "updated_at_start",
@@ -325,7 +325,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "更新时间范围开始"
+            "description": "Update time range start"
           },
           {
             "name": "updated_at_end",
@@ -335,7 +335,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "更新时间范围结束"
+            "description": "Update time range end"
           },
           {
             "name": "skip",
@@ -346,7 +346,7 @@
               "minimum": 0,
               "default": 0
             },
-            "description": "跳过的项目数量"
+            "description": "Number of items to skip"
           },
           {
             "name": "limit",
@@ -358,12 +358,12 @@
               "maximum": 1000,
               "default": 100
             },
-            "description": "返回的最大项目数量"
+            "description": "Maximum number of items to return"
           }
         ],
         "responses": {
           "200": {
-            "description": "获取版本列表成功",
+            "description": "Get version list successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -378,7 +378,7 @@
     "/apis/v1/intelligent-threshold/task/{task_id}/update_result": {
       "post": {
         "summary": "Update Task Result Endpoint",
-        "description": "更新任务结果",
+        "description": "Update task result",
         "tags": ["Intelligent Threshold Task"],
         "parameters": [
           {
@@ -402,7 +402,7 @@
         },
         "responses": {
           "200": {
-            "description": "更新任务结果成功",
+            "description": "Update task result successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -417,7 +417,7 @@
     "/apis/v1/intelligent-threshold/alarm/sync": {
       "post": {
         "summary": "Sync Alarm Rules",
-        "description": "同步告警规则",
+        "description": "Sync alarm rules",
         "tags": ["Intelligent Threshold Alarm"],
         "requestBody": {
           "required": true,
@@ -431,7 +431,7 @@
         },
         "responses": {
           "200": {
-            "description": "同步告警规则成功",
+            "description": "Sync alarm rules successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -486,7 +486,7 @@
           },
           "data": {
             "type": "object",
-            "description": "响应数据，具体结构根据接口而定"
+            "description": "Response data, structure depends on the API endpoint"
           }
         }
       },
@@ -509,64 +509,64 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "模板ID"
+            "description": "Template ID"
           },
           "name": {
             "type": "string",
-            "description": "模板名称"
+            "description": "Template name"
           },
           "description": {
             "type": "string",
-            "description": "模板描述"
+            "description": "Template description"
           },
           "metric_name": {
             "type": "string",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "datasource_type": {
             "type": "string",
             "enum": ["Zabbix", "Aliyun", "Volcengine"],
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           "threshold_config": {
             "type": "object",
-            "description": "阈值配置",
+            "description": "Threshold configuration",
             "properties": {
               "upper_bound": {
                 "type": "number",
-                "description": "上界阈值"
+                "description": "Upper bound threshold"
               },
               "lower_bound": {
                 "type": "number",
-                "description": "下界阈值"
+                "description": "Lower bound threshold"
               },
               "algorithm": {
                 "type": "string",
                 "enum": ["static", "dynamic", "ml"],
-                "description": "阈值算法"
+                "description": "Threshold algorithm"
               },
               "sensitivity": {
                 "type": "number",
                 "minimum": 0,
                 "maximum": 1,
-                "description": "敏感度"
+                "description": "Sensitivity"
               }
             }
           },
           "is_active": {
             "type": "boolean",
             "default": true,
-            "description": "是否激活"
+            "description": "Whether active"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Update time"
           }
         },
         "required": [
@@ -581,24 +581,24 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "模板名称"
+            "description": "Template name"
           },
           "description": {
             "type": "string",
-            "description": "模板描述"
+            "description": "Template description"
           },
           "metric_name": {
             "type": "string",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "datasource_type": {
             "type": "string",
             "enum": ["Zabbix", "Aliyun", "Volcengine"],
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           "threshold_config": {
             "type": "object",
-            "description": "阈值配置"
+            "description": "Threshold configuration"
           }
         },
         "required": [
@@ -613,19 +613,19 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "模板名称"
+            "description": "Template name"
           },
           "description": {
             "type": "string",
-            "description": "模板描述"
+            "description": "Template description"
           },
           "threshold_config": {
             "type": "object",
-            "description": "阈值配置"
+            "description": "Threshold configuration"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否激活"
+            "description": "Whether active"
           }
         }
       },
@@ -674,82 +674,82 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "任务ID"
+            "description": "Task ID"
           },
           "task_name": {
             "type": "string",
-            "description": "任务名称"
+            "description": "Task name"
           },
           "description": {
             "type": "string",
-            "description": "任务描述"
+            "description": "Task description"
           },
           "template_id": {
             "type": "string",
-            "description": "关联的模板ID"
+            "description": "Associated template ID"
           },
           "datasource_id": {
             "type": "string",
-            "description": "数据源ID"
+            "description": "Data source ID"
           },
           "datasource_type": {
             "type": "string",
             "enum": ["Zabbix", "Aliyun", "Volcengine"],
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           "projects": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "项目列表"
+            "description": "List of projects"
           },
           "auto_update": {
             "type": "boolean",
-            "description": "是否自动更新"
+            "description": "Whether auto update"
           },
           "status": {
             "type": "string",
             "enum": ["pending", "running", "completed", "failed", "cancelled"],
-            "description": "任务状态"
+            "description": "Task status"
           },
           "config": {
             "type": "object",
-            "description": "任务配置",
+            "description": "Task configuration",
             "properties": {
               "schedule": {
                 "type": "string",
-                "description": "调度表达式 (cron)"
+                "description": "Schedule expression (cron)"
               },
               "timeout": {
                 "type": "integer",
-                "description": "超时时间（秒）"
+                "description": "Timeout in seconds"
               },
               "retry_count": {
                 "type": "integer",
-                "description": "重试次数"
+                "description": "Retry count"
               }
             }
           },
           "last_execution_time": {
             "type": "string",
             "format": "date-time",
-            "description": "最后执行时间"
+            "description": "Last execution time"
           },
           "next_execution_time": {
             "type": "string",
             "format": "date-time",
-            "description": "下次执行时间"
+            "description": "Next execution time"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Update time"
           }
         },
         "required": ["task_name", "template_id", "datasource_id"]
@@ -759,23 +759,23 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "版本ID"
+            "description": "Version ID"
           },
           "task_id": {
             "type": "string",
-            "description": "任务ID"
+            "description": "Task ID"
           },
           "metric_template_value": {
             "$ref": "#/components/schemas/MetricTemplateValue"
           },
           "n_count": {
             "type": "integer",
-            "description": "N计数"
+            "description": "N count"
           },
           "direction": {
             "type": "string",
             "enum": ["up", "down", "both"],
-            "description": "阈值计算方向"
+            "description": "Threshold calculation direction"
           },
           "status": {
             "type": "string",
@@ -787,32 +787,32 @@
               "Success",
               "Failed"
             ],
-            "description": "任务状态"
+            "description": "Task status"
           },
           "version": {
             "type": "integer",
-            "description": "版本号"
+            "description": "Version number"
           },
           "result": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MetricThresholdResult"
             },
-            "description": "阈值结果"
+            "description": "Threshold result"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Update time"
           },
           "error_message": {
             "type": "string",
-            "description": "错误信息（如果任务失败）"
+            "description": "Error message (if task failed)"
           }
         },
         "required": [
@@ -829,59 +829,59 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "任务ID"
+            "description": "Task ID"
           },
           "task_name": {
             "type": "string",
-            "description": "任务名称"
+            "description": "Task name"
           },
           "template_id": {
             "type": "string",
-            "description": "关联的模板ID"
+            "description": "Associated template ID"
           },
           "datasource_id": {
             "type": "string",
-            "description": "数据源ID"
+            "description": "Data source ID"
           },
           "datasource_type": {
             "type": "string",
             "enum": ["Zabbix", "Aliyun", "Volcengine"],
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           "auto_update": {
             "type": "boolean",
-            "description": "自动更新开关"
+            "description": "Auto update switch"
           },
           "projects": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "项目名称列表"
+            "description": "List of project names"
           },
           "products": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "产品名称列表"
+            "description": "List of product names"
           },
           "customers": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "客户名称列表"
+            "description": "List of customer names"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Update time"
           },
           "latest_version": {
             "$ref": "#/components/schemas/IntelligentThresholdTaskVersion"
@@ -899,33 +899,33 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "指标名称"
+            "description": "Metric name"
           },
           "unique_key": {
             "type": "string",
-            "description": "唯一标识"
+            "description": "Unique identifier"
           },
           "thresholds": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/IntelligentThresholdConfig"
             },
-            "description": "阈值配置列表"
+            "description": "List of threshold configurations"
           },
           "labels": {
             "type": "object",
             "additionalProperties": {
               "type": "string"
             },
-            "description": "标签"
+            "description": "Labels"
           },
           "status": {
             "type": "string",
-            "description": "状态（Success 或 Failed）"
+            "description": "Status (Success or Failed)"
           },
           "error_message": {
             "type": "string",
-            "description": "错误信息（如果状态为 Failed）"
+            "description": "Error message (if status is Failed)"
           }
         },
         "required": ["name", "unique_key", "thresholds", "labels"]
@@ -935,25 +935,25 @@
         "properties": {
           "start_hour": {
             "type": "integer",
-            "description": "开始小时"
+            "description": "Start hour"
           },
           "end_hour": {
             "type": "integer",
-            "description": "结束小时"
+            "description": "End hour"
           },
           "upper_bound": {
             "type": "number",
             "nullable": true,
-            "description": "上界"
+            "description": "Upper bound"
           },
           "lower_bound": {
             "type": "number",
             "nullable": true,
-            "description": "下界"
+            "description": "Lower bound"
           },
           "window_size": {
             "type": "integer",
-            "description": "窗口大小"
+            "description": "Window size"
           }
         },
         "required": ["start_hour", "end_hour", "window_size"]
@@ -963,53 +963,53 @@
         "properties": {
           "task_name": {
             "type": "string",
-            "description": "任务名称"
+            "description": "Task name"
           },
           "datasource_id": {
             "type": "string",
-            "description": "数据源ID"
+            "description": "Data source ID"
           },
           "datasource_type": {
             "type": "string",
             "enum": ["Zabbix", "Aliyun", "Volcengine"],
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           "auto_update": {
             "type": "boolean",
-            "description": "自动更新开关"
+            "description": "Auto update switch"
           },
           "projects": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "项目名称列表"
+            "description": "List of project names"
           },
           "products": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "产品名称列表"
+            "description": "List of product names"
           },
           "customers": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "客户名称列表"
+            "description": "List of customer names"
           },
           "direction": {
             "type": "string",
             "enum": ["up", "down", "both"],
-            "description": "阈值计算方向"
+            "description": "Threshold calculation direction"
           },
           "metric_template_value": {
             "$ref": "#/components/schemas/MetricTemplateValue"
           },
           "n_count": {
             "type": "integer",
-            "description": "N计数"
+            "description": "N count"
           }
         },
         "required": [
@@ -1026,19 +1026,19 @@
         "properties": {
           "task_id": {
             "type": "string",
-            "description": "任务ID"
+            "description": "Task ID"
           },
           "metric_template_value": {
             "$ref": "#/components/schemas/MetricTemplateValue"
           },
           "n_count": {
             "type": "integer",
-            "description": "N计数"
+            "description": "N count"
           },
           "direction": {
             "type": "string",
             "enum": ["up", "down", "both"],
-            "description": "阈值计算方向"
+            "description": "Threshold calculation direction"
           }
         },
         "required": ["task_id", "metric_template_value", "n_count", "direction"]
@@ -1051,54 +1051,54 @@
             "items": {
               "type": "string"
             },
-            "description": "项目名称列表"
+            "description": "List of project names"
           },
           "task_name": {
             "type": "string",
-            "description": "任务名称过滤"
+            "description": "Task name filter"
           },
           "datasource_type": {
             "type": "string",
             "enum": ["Zabbix", "Aliyun", "Volcengine"],
             "default": "Volcengine",
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           "auto_update": {
             "type": "boolean",
-            "description": "自动更新开关"
+            "description": "Auto update switch"
           },
           "created_at_start": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间范围开始"
+            "description": "Creation time range start"
           },
           "created_at_end": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间范围结束"
+            "description": "Creation time range end"
           },
           "updated_at_start": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间范围开始"
+            "description": "Update time range start"
           },
           "updated_at_end": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间范围结束"
+            "description": "Update time range end"
           },
           "skip": {
             "type": "integer",
             "minimum": 0,
             "default": 0,
-            "description": "跳过的记录数"
+            "description": "Number of records to skip"
           },
           "limit": {
             "type": "integer",
             "minimum": 1,
             "maximum": 1000,
             "default": 100,
-            "description": "每页大小"
+            "description": "Page size"
           }
         }
       },
@@ -1107,7 +1107,7 @@
         "properties": {
           "task_id": {
             "type": "string",
-            "description": "任务ID"
+            "description": "Task ID"
           },
           "statuses": {
             "type": "array",
@@ -1121,7 +1121,7 @@
                 "cancelled"
               ]
             },
-            "description": "任务状态列表"
+            "description": "List of task statuses"
           },
           "create_time_range": {
             "$ref": "#/components/schemas/TimeRange"
@@ -1137,7 +1137,7 @@
             "items": {
               "$ref": "#/components/schemas/SortColumn"
             },
-            "description": "排序列"
+            "description": "Sort columns"
           }
         },
         "required": ["task_id", "page_req"]
@@ -1147,11 +1147,11 @@
         "properties": {
           "task_id": {
             "type": "string",
-            "description": "任务ID"
+            "description": "Task ID"
           },
           "task_version": {
             "type": "integer",
-            "description": "任务版本"
+            "description": "Task version"
           },
           "status": {
             "type": "string",
@@ -1163,14 +1163,14 @@
               "Success",
               "Failed"
             ],
-            "description": "任务状态"
+            "description": "Task status"
           },
           "results": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MetricThresholdResult"
             },
-            "description": "算法结果"
+            "description": "Algorithm result"
           }
         },
         "required": ["task_id", "task_version", "status"]
@@ -1183,11 +1183,11 @@
             "items": {
               "type": "string"
             },
-            "description": "任务ID列表"
+            "description": "List of task IDs"
           },
           "auto_update": {
             "type": "boolean",
-            "description": "自动更新开关值"
+            "description": "Auto update switch value"
           }
         },
         "required": ["task_ids", "auto_update"]
@@ -1199,14 +1199,14 @@
             "type": "integer",
             "minimum": 1,
             "default": 1,
-            "description": "页码"
+            "description": "Page number"
           },
           "page_size": {
             "type": "integer",
             "minimum": 1,
             "maximum": 1000,
             "default": 20,
-            "description": "每页大小"
+            "description": "Page size"
           }
         },
         "required": ["page", "page_size"]
@@ -1216,11 +1216,11 @@
         "properties": {
           "column": {
             "type": "string",
-            "description": "排序字段"
+            "description": "Sort field"
           },
           "desc": {
             "type": "boolean",
-            "description": "是否降序排序"
+            "description": "Whether descending sort"
           }
         },
         "required": ["column", "desc"]
@@ -1231,12 +1231,12 @@
           "start_time": {
             "type": "string",
             "format": "date-time",
-            "description": "开始时间"
+            "description": "Start time"
           },
           "end_time": {
             "type": "string",
             "format": "date-time",
-            "description": "结束时间"
+            "description": "End time"
           }
         },
         "required": ["start_time", "end_time"]
@@ -1260,52 +1260,52 @@
         "properties": {
           "_id": {
             "type": "string",
-            "description": "告警ID"
+            "description": "Alarm ID"
           },
           "task_id": {
             "type": "string",
-            "description": "关联的任务ID"
+            "description": "Associated task ID"
           },
           "alarm_type": {
             "type": "string",
             "enum": ["threshold_breach", "anomaly_detected", "system_error"],
-            "description": "告警类型"
+            "description": "Alarm type"
           },
           "severity": {
             "type": "string",
             "enum": ["INFO", "WARNING", "ERROR", "CRITICAL"],
-            "description": "告警级别"
+            "description": "Alarm level"
           },
           "title": {
             "type": "string",
-            "description": "告警标题"
+            "description": "Alarm title"
           },
           "message": {
             "type": "string",
-            "description": "告警消息"
+            "description": "Alarm message"
           },
           "metric_value": {
             "type": "number",
-            "description": "触发告警的指标值"
+            "description": "Metric value that triggered the alarm"
           },
           "threshold_value": {
             "type": "number",
-            "description": "阈值"
+            "description": "Threshold"
           },
           "status": {
             "type": "string",
             "enum": ["active", "resolved", "suppressed"],
-            "description": "告警状态"
+            "description": "Alarm status"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "resolved_at": {
             "type": "string",
             "format": "date-time",
-            "description": "解决时间"
+            "description": "Resolution time"
           }
         },
         "required": ["task_id", "alarm_type", "severity", "title", "message"]
@@ -1315,33 +1315,33 @@
         "properties": {
           "task_id": {
             "type": "string",
-            "description": "关联的任务ID"
+            "description": "Associated task ID"
           },
           "alarm_type": {
             "type": "string",
             "enum": ["threshold_breach", "anomaly_detected", "system_error"],
-            "description": "告警类型"
+            "description": "Alarm type"
           },
           "severity": {
             "type": "string",
             "enum": ["INFO", "WARNING", "ERROR", "CRITICAL"],
-            "description": "告警级别"
+            "description": "Alarm level"
           },
           "title": {
             "type": "string",
-            "description": "告警标题"
+            "description": "Alarm title"
           },
           "message": {
             "type": "string",
-            "description": "告警消息"
+            "description": "Alarm message"
           },
           "metric_value": {
             "type": "number",
-            "description": "触发告警的指标值"
+            "description": "Metric value that triggered the alarm"
           },
           "threshold_value": {
             "type": "number",
-            "description": "阈值"
+            "description": "Threshold"
           }
         },
         "required": ["task_id", "alarm_type", "severity", "title", "message"]
@@ -1405,15 +1405,15 @@
           },
           "limit": {
             "type": "integer",
-            "description": "每页大小"
+            "description": "Page size"
           },
           "skip": {
             "type": "integer",
-            "description": "跳过的记录数"
+            "description": "Number of records to skip"
           },
           "total": {
             "type": "integer",
-            "description": "总记录数"
+            "description": "Total number of records"
           }
         }
       },
@@ -1434,15 +1434,15 @@
           },
           "limit": {
             "type": "integer",
-            "description": "每页大小"
+            "description": "Page size"
           },
           "skip": {
             "type": "integer",
-            "description": "跳过的记录数"
+            "description": "Number of records to skip"
           },
           "total": {
             "type": "integer",
-            "description": "总记录数"
+            "description": "Total number of records"
           }
         }
       },
@@ -1451,18 +1451,18 @@
         "properties": {
           "task_id": {
             "type": "string",
-            "description": "智能阈值任务ID"
+            "description": "Intelligent threshold task ID"
           },
           "task_version_id": {
             "type": "string",
-            "description": "智能阈值任务版本ID"
+            "description": "Intelligent threshold task version ID"
           },
           "contact_group_ids": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "联系组ID列表（Volcengine和Aliyun需要）"
+            "description": "List of contact group IDs (required for Volcengine and Aliyun)"
           },
           "alert_methods": {
             "type": "array",
@@ -1470,46 +1470,46 @@
               "type": "string",
               "enum": ["Email", "Phone", "SMS"]
             },
-            "description": "告警通知方式（仅Volcengine有效）"
+            "description": "Alarm notification methods (only valid for Volcengine)"
           },
           "mediatype_ids": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "媒介类型ID列表（仅Zabbix需要，对应Zabbix的告警通知方式）"
+            "description": "List of media type IDs (only required for Zabbix, corresponds to Zabbix alarm notification methods)"
           },
           "usergroup_ids": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "用户组ID列表（仅Zabbix需要，对应Zabbix的告警组）"
+            "description": "List of user group IDs (only required for Zabbix, corresponds to Zabbix alarm groups)"
           },
           "webhook": {
             "type": "string",
-            "description": "Webhook URL（可选）"
+            "description": "Webhook URL (optional)"
           },
           "alarm_level": {
             "type": "string",
             "enum": ["P0", "P1", "P2"],
             "default": "P2",
-            "description": "告警级别（对所有告警源都有效）"
+            "description": "Alarm level (valid for all alarm sources)"
           },
           "max_workers": {
             "type": "integer",
             "default": 1,
-            "description": "最大并发工作线程数"
+            "description": "Maximum number of concurrent worker threads"
           },
           "rate_limit_period": {
             "type": "number",
             "default": 1.0,
-            "description": "速率限制周期（秒）"
+            "description": "Rate limit period in seconds"
           },
           "rate_limit_count": {
             "type": "integer",
             "default": 5,
-            "description": "每个周期最大请求数"
+            "description": "Maximum number of requests per period"
           }
         },
         "required": ["task_id", "task_version_id", "alarm_level"]
@@ -1519,51 +1519,51 @@
         "properties": {
           "total": {
             "type": "integer",
-            "description": "处理的规则总数"
+            "description": "Total number of rules processed"
           },
           "created": {
             "type": "integer",
-            "description": "创建的规则数量"
+            "description": "Number of rules created"
           },
           "updated": {
             "type": "integer",
-            "description": "更新的规则数量"
+            "description": "Number of rules updated"
           },
           "deleted": {
             "type": "integer",
-            "description": "删除的规则数量"
+            "description": "Number of rules deleted"
           },
           "failed": {
             "type": "integer",
-            "description": "失败的规则数量"
+            "description": "Number of rules failed"
           },
           "created_rule_ids": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "创建的规则ID列表"
+            "description": "List of created rule IDs"
           },
           "updated_rule_ids": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "更新的规则ID列表"
+            "description": "List of updated rule IDs"
           },
           "deleted_rule_ids": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "删除的规则ID列表"
+            "description": "List of deleted rule IDs"
           },
           "rule_operations": {
             "type": "array",
             "items": {
               "type": "object"
             },
-            "description": "规则操作列表"
+            "description": "List of rule operations"
           }
         },
         "required": ["total", "created", "updated", "deleted", "failed"]
@@ -1571,7 +1571,7 @@
       "IntelligentThresholdTaskStatus": {
         "type": "string",
         "enum": ["Launching", "Running", "Stopped", "Success", "Failed"],
-        "description": "智能阈值任务状态"
+        "description": "Intelligent threshold task status"
       },
       "APIResponseSyncAlarmRulesResponse": {
         "type": "object",
@@ -1592,15 +1592,15 @@
         "properties": {
           "media_type_id": {
             "type": "string",
-            "description": "Zabbix媒介类型ID"
+            "description": "Zabbix media type ID"
           },
           "name": {
             "type": "string",
-            "description": "媒介类型名称"
+            "description": "Media type name"
           },
           "media_type": {
             "type": "string",
-            "description": "媒介类型"
+            "description": "Media type"
           }
         },
         "required": ["media_type_id", "name", "media_type"]
@@ -1610,23 +1610,23 @@
         "properties": {
           "usrgrpid": {
             "type": "string",
-            "description": "Zabbix用户组ID"
+            "description": "Zabbix user group ID"
           },
           "name": {
             "type": "string",
-            "description": "用户组名称"
+            "description": "User group name"
           },
           "gui_access": {
             "type": "string",
-            "description": "GUI访问级别"
+            "description": "GUI access level"
           },
           "users_status": {
             "type": "string",
-            "description": "用户状态"
+            "description": "User status"
           },
           "debug_mode": {
             "type": "string",
-            "description": "调试模式"
+            "description": "Debug mode"
           }
         },
         "required": [

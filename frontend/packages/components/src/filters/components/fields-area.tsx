@@ -18,26 +18,26 @@ import { commonClassName } from '../core/constants';
 import type { FieldItem } from '../core/types';
 
 interface FieldsAreaProps {
-  /** 字段配置列表 */
+  /** Field configuration list */
   config: FieldItem[];
-  /** 字段渲染器 */
+  /** Field renderer */
   renderFieldItem: (field: FieldItem) => React.ReactNode;
-  /** 操作区域组件 */
+  /** Actions area component */
   actionsArea?: React.ReactNode;
 }
 
 /**
- * 字段区域组件
- * 负责渲染所有的筛选字段
+ * Fields area component
+ * Responsible for rendering all filter fields
  */
 const FieldsArea: FC<FieldsAreaProps> = ({
   config,
   renderFieldItem,
   actionsArea,
 }) => {
-  // 🔧 添加详细日志：追踪 FieldsArea 渲染
+  // 🔧 Add detailed logging: track FieldsArea rendering
   if (process.env.NODE_ENV === 'development') {
-    console.info('[Filters/FieldsArea] FieldsArea 渲染', {
+    console.info('[Filters/FieldsArea] FieldsArea rendering', {
       configLength: config.length,
       configReference: config,
       configHash: JSON.stringify(config).substring(0, 200),
@@ -48,9 +48,9 @@ const FieldsArea: FC<FieldsAreaProps> = ({
 
   return (
     <div className={`${commonClassName} w-full`}>
-      {/* 渲染字段列表 */}
+      {/* Render field list */}
       {config.map((item, index) => {
-        // 检查字段可见性
+        // Check field visibility
         if (item.visible === false) {
           return null;
         }
@@ -61,7 +61,7 @@ const FieldsArea: FC<FieldsAreaProps> = ({
           field: fieldKey,
         };
 
-        // 🔧 添加详细日志：追踪每个字段的渲染
+        // 🔧 Add detailed logging: track each field rendering
         if (process.env.NODE_ENV === 'development') {
           const isSelectType = item.type === 'select' || item.type === 'Select';
           if (isSelectType) {
@@ -71,7 +71,7 @@ const FieldsArea: FC<FieldsAreaProps> = ({
               ? (item.componentProps as any).options
               : undefined;
 
-            console.info('[Filters/FieldsArea] 渲染 Select 字段', {
+            console.info('[Filters/FieldsArea] Rendering Select field', {
               index,
               fieldKey,
               type: item.type,
@@ -88,7 +88,7 @@ const FieldsArea: FC<FieldsAreaProps> = ({
         );
       })}
 
-      {/* 操作区域 */}
+      {/* Actions area */}
       {actionsArea}
     </div>
   );

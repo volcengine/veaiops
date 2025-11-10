@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 基础组件导出
+ * Base components export
  */
 
 export { CollapsibleSection } from './collapsible-section';

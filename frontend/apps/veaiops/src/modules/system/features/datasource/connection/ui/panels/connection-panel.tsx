@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 数据源连接面板组件
+ * Data source connection panel component
  */
 
 import { useConnections } from '@/hooks/use-connections';
@@ -32,7 +32,7 @@ export interface ConnectionPanelProps {
 }
 
 export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
-  // 状态管理
+  // State management
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [testModalVisible, setTestModalVisible] = useState(false);
@@ -40,10 +40,10 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
   const [testingConnect, setTestingConnect] = useState<Connect | null>(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
-  // 记录组件初始化日志
+  // Log component initialization
   useEffect(() => {
     logger.info({
-      message: '[ConnectionPanel] 连接面板组件已初始化',
+      message: '[ConnectionPanel] Connection panel component initialized',
       data: {
         type,
         url: window.location.href,
@@ -54,7 +54,7 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
     });
   }, [type]);
 
-  // 数据加载
+  // Data loading
   const {
     connections,
     loading,
@@ -67,7 +67,7 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
 
   useEffect(() => {
     logger.info({
-      message: '[ConnectionPanel] 开始加载连接数据',
+      message: '[ConnectionPanel] Starting to load connection data',
       data: {
         type,
         url: window.location.href,
@@ -79,11 +79,11 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
     refresh();
   }, [refresh, type]);
 
-  // 记录数据加载结果
+  // Log data loading results
   useEffect(() => {
     if (connections.length > 0) {
       logger.info({
-        message: '[ConnectionPanel] 连接数据加载完成',
+        message: '[ConnectionPanel] Connection data loading completed',
         data: {
           type,
           connectionCount: connections.length,
@@ -96,8 +96,8 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
     }
   }, [connections, type]);
 
-  // 事件处理
-  // 注意：update 函数已经使用对象解构参数，与 useConnectionPanelHandlers 的期望类型一致
+  // Event handling
+  // Note: update function already uses object destructuring parameters, consistent with useConnectionPanelHandlers expected type
   const handlers = useConnectionPanelHandlers({
     editingConnect,
     selectedRowKeys,
@@ -113,10 +113,10 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
     setSelectedRowKeys,
   });
 
-  // 弹窗关闭处理
+  // Modal close handlers
   const handleCreateCancel = () => {
     logger.info({
-      message: '[ConnectionPanel] 取消创建连接',
+      message: '[ConnectionPanel] Cancel creating connection',
       data: {
         type,
         url: window.location.href,
@@ -130,7 +130,7 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
 
   const handleEditCancel = () => {
     logger.info({
-      message: '[ConnectionPanel] 取消编辑连接',
+      message: '[ConnectionPanel] Cancel editing connection',
       data: {
         type,
         editingConnectId: editingConnect?._id,
@@ -146,7 +146,7 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
 
   const handleTestClose = () => {
     logger.info({
-      message: '[ConnectionPanel] 关闭连接测试',
+      message: '[ConnectionPanel] Close connection test',
       data: {
         type,
         testingConnectId: testingConnect?._id,
@@ -162,7 +162,7 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
 
   return (
     <div className="connection-panel">
-      {/* 头部 */}
+      {/* Header */}
       <ConnectionPanelHeader
         type={type}
         loading={loading}
@@ -172,7 +172,7 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
         onBatchDeleteClick={handlers.handleBatchDelete}
       />
 
-      {/* 错误提示 */}
+      {/* Error alert */}
       {error && (
         <Alert
           type="error"
@@ -187,7 +187,7 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
         />
       )}
 
-      {/* 连接列表表格 */}
+      {/* Connection list table */}
       <ConnectionTable
         type={type}
         connects={connections}
@@ -201,7 +201,7 @@ export const ConnectionPanel: React.FC<ConnectionPanelProps> = ({ type }) => {
         onCreateMonitor={handlers.handleCreateMonitor}
       />
 
-      {/* 弹窗集合 */}
+      {/* Modal collection */}
       <ConnectionModals
         type={type}
         createModalVisible={createModalVisible}

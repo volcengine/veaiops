@@ -21,7 +21,7 @@ import { useDataFetching } from './hooks/use-data-fetching';
 import { prepareRequestParams } from './utils/prepare-params';
 
 /**
- * 时序数据Hook参数接口
+ * Timeseries data Hook parameters interface
  */
 export interface UseTimeseriesDataOptions {
   metric?: MetricThresholdResult;
@@ -30,15 +30,15 @@ export interface UseTimeseriesDataOptions {
 }
 
 /**
- * 时序数据Hook
- * 提供时序数据的获取和处理功能
+ * Timeseries data Hook
+ * Provides timeseries data fetching and processing functionality
  */
 export const useTimeseriesData = ({
   metric,
   task,
   timeRange,
 }: UseTimeseriesDataOptions) => {
-  // 准备请求参数的函数（使用 useMemo 稳定化）
+  // Function to prepare request parameters (stabilized with useMemo)
   const prepareParams = useMemo(
     () => () =>
       prepareRequestParams({
@@ -49,7 +49,7 @@ export const useTimeseriesData = ({
     [metric, task, timeRange],
   );
 
-  // 使用数据获取Hook
+  // Use data fetching Hook
   const { loading, timeseriesData, fetchTimeseriesData } = useDataFetching({
     metric,
     timeRange,
@@ -63,7 +63,7 @@ export const useTimeseriesData = ({
   };
 };
 
-// 导出类型
+// Export types
 export type { RequestParams } from './types';
 export type {
   ValidateInputsParams,

@@ -16,12 +16,12 @@ import { extractErrorSummary } from '@task-config/lib';
 import type React from 'react';
 
 /**
- * 错误详情 Tooltip 内容组件
+ * Error details Tooltip content component
  *
- * 用于统一渲染任务失败原因的 Tooltip 内容
- * 支持：
- * - 显示错误摘要
- * - 如果有详细信息，显示完整错误信息
+ * Used to uniformly render Tooltip content for task failure reasons
+ * Supports:
+ * - Display error summary
+ * - If detailed information exists, display complete error information
  */
 export const ErrorTooltipContent: React.FC<{ errorMessage: string }> = ({
   errorMessage,

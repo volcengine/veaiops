@@ -26,6 +26,7 @@ import {
   createServerPaginationDataSource,
   createStandardTableProps,
   createTableRequestWithResponseHandler,
+  logger,
 } from '@veaiops/utils';
 import type { Project } from 'api-generate';
 import type React from 'react';
@@ -40,15 +41,15 @@ import { getProjectTableColumns } from './lib/columns';
 import { getProjectTableFilters } from './lib/filters';
 
 /**
- * Project 表格配置聚合 Hook
+ * Project table configuration aggregation Hook
  *
- * 🎯 Hook 聚合模式 + 自动刷新机制
- * - 使用 useBusinessTable 统一管理表格逻辑
- * - 通过 operationWrapper 实现自动刷新
- * - 集中管理数据源、表格配置、列配置等
+ * 🎯 Hook aggregation pattern + auto-refresh mechanism
+ * - Use useBusinessTable to uniformly manage table logic
+ * - Implement auto-refresh through operationWrapper
+ * - Centrally manage data source, table configuration, column configuration, etc.
  *
- * @param options - Hook 配置选项
- * @returns 表格配置和处理器
+ * @param options - Hook configuration options
+ * @returns Table configuration and handlers
  */
 export const useProjectTableConfig = ({
   onEdit,
@@ -56,22 +57,27 @@ export const useProjectTableConfig = ({
   onCreate,
   onImport,
   onToggleStatus,
-  ref, // ✅ 接收 ref 参数
+  ref, // ✅ Receive ref parameter
 }: UseProjectTableConfigOptions): UseProjectTableConfigReturn => {
-  // 🎯 使用 CRUD Hook 管理业务逻辑
+  // 🎯 Use CRUD Hook to manage business logic
   const crud = useProjectCRUD();
 
-  // 🎯 数据请求逻辑 - 使用工具函数
-  // ✅ 关键修复：使用 useMemo 稳定化 request 函数引用
+  // 🎯 Data request logic - use utility functions
+  // ✅ Key fix: Use useMemo to stabilize request function reference
   const request = useMemo(
     () =>
       createTableRequestWithResponseHandler<Project[]>({
         apiCall: async ({ skip, limit, name }) => {
-          console.log('[ProjectTableConfig] 🔵 API 请求开始', {
-            skip,
-            limit,
-            name,
-            timestamp: Date.now(),
+          logger.debug({
+            message: '[ProjectTableConfig] 🔵 API request started',
+            data: {
+              skip,
+              limit,
+              name,
+              timestamp: Date.now(),
+            },
+            source: 'ProjectTableConfig',
+            component: 'apiCall',
           });
 
           const response =
@@ -81,14 +87,19 @@ export const useProjectTableConfig = ({
               name: name as string | undefined,
             });
 
-          console.log('[ProjectTableConfig] ✅ API 请求成功', {
-            dataLength: response.data?.length,
-            total: response.total,
-            timestamp: Date.now(),
+          logger.debug({
+            message: '[ProjectTableConfig] ✅ API request succeeded',
+            data: {
+              dataLength: response.data?.length,
+              total: response.total,
+              timestamp: Date.now(),
+            },
+            source: 'ProjectTableConfig',
+            component: 'apiCall',
           });
 
-          // 强制类型兼容：PaginatedAPIResponseProjectList -> StandardApiResponse<Project[]>
-          // 保证 code 为 number，满足 StandardApiResponse 要求
+          // Force type compatibility: PaginatedAPIResponseProjectList -> StandardApiResponse<Project[]>
+          // Ensure code is number, meeting StandardApiResponse requirements
           return {
             code: response.code ?? API_RESPONSE_CODE.SUCCESS,
             data: response.data ?? [],
@@ -99,39 +110,58 @@ export const useProjectTableConfig = ({
           };
         },
         options: {
-          errorMessagePrefix: '获取项目列表失败',
+          errorMessagePrefix: 'Failed to fetch project list',
           defaultLimit: PROJECT_MANAGEMENT_CONFIG.pageSize,
           onError: (error) => {
-            console.error('[ProjectTableConfig] ❌ API 请求失败', {
-              error: error instanceof Error ? error.message : String(error),
-              timestamp: Date.now(),
+            const errorObj =
+              error instanceof Error ? error : new Error(String(error));
+            logger.error({
+              message: '[ProjectTableConfig] ❌ API request failed',
+              data: {
+                error: errorObj.message,
+                stack: errorObj.stack,
+                errorObj,
+                timestamp: Date.now(),
+              },
+              source: 'ProjectTableConfig',
+              component: 'apiCall',
             });
             const errorMessage =
               error instanceof Error
                 ? error.message
-                : '获取项目列表失败，请重试';
+                : 'Failed to fetch project list, please try again';
             Message.error(errorMessage);
           },
         },
       }),
-    [], // ✅ 空依赖数组，request 函数保持稳定
+    [], // ✅ Empty dependency array, request function remains stable
   );
 
-  // 添加渲染日志
-  console.log('[ProjectTableConfig] 🔄 组件渲染', {
-    hasRequest: Boolean(request),
-    timestamp: Date.now(),
+  // Add render log
+  logger.debug({
+    message: '[ProjectTableConfig] 🔄 Component rendering',
+    data: {
+      hasRequest: Boolean(request),
+      timestamp: Date.now(),
+    },
+    source: 'ProjectTableConfig',
+    component: 'useProjectTableConfig',
   });
 
-  // 🎯 数据源配置 - 使用工具函数
+  // 🎯 Data source configuration - use utility functions
   const dataSource = useMemo(() => {
-    console.log('[ProjectTableConfig] 🔧 创建 dataSource', {
-      timestamp: Date.now(),
+    logger.debug({
+      message: '[ProjectTableConfig] 🔧 Creating dataSource',
+      data: {
+        timestamp: Date.now(),
+      },
+      source: 'ProjectTableConfig',
+      component: 'useProjectTableConfig',
     });
     return createServerPaginationDataSource({ request });
   }, [request]);
 
-  // 🎯 表格配置 - 使用工具函数
+  // 🎯 Table configuration - use utility functions
   const tableProps = useMemo(
     () =>
       createStandardTableProps({
@@ -142,23 +172,33 @@ export const useProjectTableConfig = ({
     [],
   );
 
-  // 🎯 业务操作包装 - 自动刷新
-  // ✅ 使用 handlers 模式，让 useBusinessTable 自动包装操作函数
+  // 🎯 Business operation wrapper - auto-refresh
+  // ✅ Use handlers pattern, let useBusinessTable automatically wrap operation functions
   const { customTableProps, wrappedHandlers } = useBusinessTable({
     dataSource,
     tableProps,
     handlers: {
       delete: async (id: string) => {
-        console.log('[ProjectTableConfig] 🗑️ 执行删除操作（包装前）', {
-          projectId: id,
-          timestamp: Date.now(),
+        logger.debug({
+          message: '[ProjectTableConfig] 🗑️ Executing delete operation (before wrapping)',
+          data: {
+            projectId: id,
+            timestamp: Date.now(),
+          },
+          source: 'ProjectTableConfig',
+          component: 'delete',
         });
         if (onDelete) {
           const result = await onDelete(id);
-          console.log('[ProjectTableConfig] ✅ 删除操作完成', {
-            projectId: id,
-            success: result,
-            timestamp: Date.now(),
+          logger.debug({
+            message: '[ProjectTableConfig] ✅ Delete operation completed',
+            data: {
+              projectId: id,
+              success: result,
+              timestamp: Date.now(),
+            },
+            source: 'ProjectTableConfig',
+            component: 'delete',
           });
           return result;
         }
@@ -167,19 +207,24 @@ export const useProjectTableConfig = ({
     },
     refreshConfig: {
       enableRefreshFeedback: true,
-      successMessage: '操作成功',
-      errorMessage: '操作失败，请重试',
+      successMessage: 'Operation succeeded',
+      errorMessage: 'Operation failed, please try again',
     },
-    ref, // ✅ 传递 ref 给 useBusinessTable
+    ref, // ✅ Pass ref to useBusinessTable
   });
 
-  // 🎯 使用包装后的删除函数
+  // 🎯 Use wrapped delete function
   const wrappedOnDelete = useCallback(
     async (id: string): Promise<boolean> => {
-      console.log('[ProjectTableConfig] 📞 调用包装后的删除函数', {
-        projectId: id,
-        hasWrappedDelete: Boolean(wrappedHandlers?.delete),
-        timestamp: Date.now(),
+      logger.debug({
+        message: '[ProjectTableConfig] 📞 Calling wrapped delete function',
+        data: {
+          projectId: id,
+          hasWrappedDelete: Boolean(wrappedHandlers?.delete),
+          timestamp: Date.now(),
+        },
+        source: 'ProjectTableConfig',
+        component: 'wrappedOnDelete',
       });
       if (wrappedHandlers?.delete) {
         return await wrappedHandlers.delete(id);
@@ -189,18 +234,18 @@ export const useProjectTableConfig = ({
     [wrappedHandlers],
   );
 
-  // 🎯 列配置 - 使用包装后的删除函数
+  // 🎯 Column configuration - use wrapped delete function
   const handleColumns = useCallback(
     (_props?: Record<string, unknown>) =>
       getProjectTableColumns({
         onEdit,
-        onDelete: wrappedOnDelete, // ✅ 使用包装后的函数
+        onDelete: wrappedOnDelete, // ✅ Use wrapped function
         onToggleStatus,
       }),
     [onEdit, wrappedOnDelete, onToggleStatus],
   );
 
-  // 🎯 筛选配置
+  // 🎯 Filter configuration
   const handleFilters = useCallback(
     (props: HandleFilterProps<BaseQuery>): FieldItem[] => {
       return getProjectTableFilters(props);
@@ -208,13 +253,13 @@ export const useProjectTableConfig = ({
     [],
   );
 
-  // 🎯 适配 onCreate 类型（void -> Promise<boolean>）
+  // 🎯 Adapt onCreate type (void -> Promise<boolean>)
   const adaptedOnCreate = useCallback(async () => {
     onCreate?.();
     return true;
   }, [onCreate]);
 
-  // 🎯 操作配置
+  // 🎯 Action configuration
   const renderActions = useCallback(
     (_props?: Record<string, unknown>) => {
       return getProjectTableActions({ onCreate, onImport });
@@ -222,13 +267,13 @@ export const useProjectTableConfig = ({
     [onCreate, onImport],
   );
 
-  // 🎯 转换 renderActions 为 actions
+  // 🎯 Convert renderActions to actions
   const actions = useMemo(() => {
     return renderActions({});
   }, [renderActions]);
 
   return {
-    // 表格配置
+    // Table configuration
     customTableProps,
     wrappedHandlers,
     handleColumns,
@@ -236,32 +281,32 @@ export const useProjectTableConfig = ({
     renderActions,
     actions,
 
-    // 业务逻辑状态
+    // Business logic state
     modalVisible: crud.modalVisible,
     editingProject: crud.editingProject,
     submitting: crud.submitting,
     form: crud.form,
 
-    // 导入相关状态
+    // Import-related state
     importDrawerVisible: crud.importDrawerVisible,
     uploading: crud.uploading,
 
-    // 新建项目相关状态
+    // Create project-related state
     createDrawerVisible: crud.createDrawerVisible,
     creating: crud.creating,
 
-    // 业务逻辑处理器
+    // Business logic handlers
     handleCancel: crud.handleCancel,
     handleSubmit: crud.handleSubmit,
     handleDelete: crud.handleDelete,
     checkDeletePermission: crud.checkDeletePermission,
 
-    // 导入相关处理器
+    // Import-related handlers
     handleImport: crud.handleImport,
     handleOpenImportDrawer: crud.handleOpenImportDrawer,
     handleCloseImportDrawer: crud.handleCloseImportDrawer,
 
-    // 新建项目相关处理器
+    // Create project-related handlers
     handleCreate: crud.handleCreate,
     handleOpenCreateDrawer: crud.handleOpenCreateDrawer,
     handleCloseCreateDrawer: crud.handleCloseCreateDrawer,

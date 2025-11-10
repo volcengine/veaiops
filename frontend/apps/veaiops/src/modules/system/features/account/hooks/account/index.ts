@@ -26,14 +26,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// ==================== Hooks 导出 ====================
+// ==================== Hooks export ====================
 export { useAccount } from './use-account';
 
-// ==================== 类型导出 ====================
+// ==================== Type export ====================
 export type { UserFormData, UpdateUserParams } from './lib/types';
 
-// ==================== 工具函数导出 ====================
+// ==================== Utility functions export ====================
 export { transformUserToTableData } from './lib/utils';
 
-// 注意：useAccountTableConfig 和 useAccountActionConfig 已移至 pages/account/hooks 目录
-// 如需使用，请从 pages/account/hooks 导入
+// Note: useAccountTableConfig and useAccountActionConfig have been moved to pages/account/hooks directory
+// If needed, please import from pages/account/hooks

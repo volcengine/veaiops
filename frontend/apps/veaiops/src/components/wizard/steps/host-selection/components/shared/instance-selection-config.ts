@@ -16,44 +16,44 @@ import type React from 'react';
 import type { InstanceData } from './instance-list-item';
 
 /**
- * 数据转换函数类型
+ * Data transformation function type
  */
 export type DataTransformer<T> = (item: T) => InstanceData;
 
 /**
- * 选择动作函数类型
+ * Selection action function type
  */
 export type SelectionAction<T> = (items: T[]) => void;
 
 /**
- * 搜索过滤函数类型
+ * Search filter function type
  */
 export type SearchFilter<T> = (item: T, searchValue: string) => boolean;
 
 /**
- * 实例选择组件配置接口
+ * Instance selection component configuration interface
  */
 export interface InstanceSelectionConfig<T> {
-  /** 标题 */
+  /** Title */
   title: string;
-  /** 描述 */
+  /** Description */
   description: string;
-  /** 空状态描述 */
+  /** Empty state description */
   emptyDescription: string;
-  /** 搜索框占位符 */
+  /** Search box placeholder */
   searchPlaceholder: string;
-  /** 选择提示的物品类型 */
+  /** Item type for selection hint */
   itemType: string;
-  /** 图标 */
+  /** Icon */
   icon: React.ReactNode;
-  /** 数据转换函数 */
+  /** Data transformation function */
   dataTransformer: DataTransformer<T>;
-  /** 选择动作函数 */
+  /** Selection action function */
   selectionAction: SelectionAction<T>;
-  /** 搜索过滤函数 */
+  /** Search filter function */
   searchFilter: SearchFilter<T>;
-  /** 获取项目ID的函数 */
+  /** Function to get item ID */
   getId: (item: T) => string;
-  /** 是否使用特殊的主机列表（Zabbix专用） */
+  /** Whether to use special host list (Zabbix specific) */
   useHostList?: boolean;
 }

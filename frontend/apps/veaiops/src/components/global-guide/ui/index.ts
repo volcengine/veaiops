@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * GlobalGuide UI 组件统一导出
+ * GlobalGuide UI components unified export
  */
 
-// 导出主组件
+// Export main component
 export { GlobalGuide } from './main';
 
-// 导出子组件
+// Export sub-components
 export * from './components';
 
-// 导出 guide-tip 工具
+// Export guide-tip utilities
 export * from './components/guide-tip';

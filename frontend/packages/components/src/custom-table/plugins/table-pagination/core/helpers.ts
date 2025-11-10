@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * 表格分页插件辅助方法工厂
+ * Table pagination plugin helper method factory
  */
 import { getStateNumber, isCallableFunction } from './utils';
 
 /**
- * 创建分页辅助方法集合
+ * Create pagination helper method collection
  */
 export function createPaginationHelpers(context: any) {
   const { setCurrent } = context.helpers;

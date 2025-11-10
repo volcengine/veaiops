@@ -19,7 +19,7 @@ import { useMemo } from 'react';
 import type { ExampleInputProps } from '../types';
 
 /**
- * 示例输入组件（带预览）
+ * Example input component (with preview)
  */
 export const ExampleInput: React.FC<ExampleInputProps> = ({
   value,
@@ -27,7 +27,7 @@ export const ExampleInput: React.FC<ExampleInputProps> = ({
   placeholder,
   onChange,
 }) => {
-  // 解析当前示例列表
+  // Parse current example list
   const examples = useMemo(() => {
     if (!value || !value.trim()) {
       return [];
@@ -49,7 +49,7 @@ export const ExampleInput: React.FC<ExampleInputProps> = ({
 
   return (
     <div className="w-full">
-      {/* 当前示例预览 */}
+      {/* Current example preview */}
       {examples.length > 0 && (
         <div className="mb-3">
           <Space direction="vertical" className="w-full" size="small">
@@ -80,7 +80,7 @@ export const ExampleInput: React.FC<ExampleInputProps> = ({
         </div>
       )}
 
-      {/* 输入框 */}
+      {/* Input field */}
       <Input.TextArea
         value={value}
         placeholder={placeholder}

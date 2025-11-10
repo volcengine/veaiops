@@ -87,7 +87,7 @@ export const getTableColumns = ({
     render: (type: string) => <CustomOutlineTag>{type}</CustomOutlineTag>,
   };
 
-  // Dynamically generate configuration columns based on data source type
+  // Dynamically generate config columns based on data source type
   const getConfigColumns = (): ModernTableColumnProps<Connect> => {
     switch (type) {
       case 'Zabbix':
@@ -228,7 +228,7 @@ export const getTableColumns = ({
       align: 'center',
       width: 150,
       render: (createdAt: string) => (
-        <Tooltip content={<CellRender.StampTime time={createdAt} />}>
+        <Tooltip content={new Date(createdAt).toLocaleString()}>
           <Text type="secondary">{formatConnectionTime(createdAt)}</Text>
         </Tooltip>
       ),

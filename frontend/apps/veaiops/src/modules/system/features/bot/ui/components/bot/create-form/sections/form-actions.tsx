@@ -21,8 +21,8 @@ interface FormActionsProps {
 }
 
 /**
- * 表单操作按钮区块组件
- * @description 包含取消和创建机器人按钮
+ * Form action buttons section component
+ * @description Contains cancel and create bot buttons
  */
 export const FormActions: React.FC<FormActionsProps> = ({
   onCancel,

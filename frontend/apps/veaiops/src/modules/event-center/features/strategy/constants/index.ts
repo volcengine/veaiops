@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 策略管理常量统一导出
+ * Strategy management constants unified export
  *
- * 根据 .cursorrules 规范：
- * - 统一导出：每个目录都**必须**有 `index.ts` 文件进行统一导出
- * - 优先使用统一导出，而不是直接导入具体文件
+ * According to .cursorrules specification:
+ * - Unified export: Each directory **must** have an `index.ts` file for unified export
+ * - Prefer unified export over direct import from specific files
  */
 
 export * from './config';

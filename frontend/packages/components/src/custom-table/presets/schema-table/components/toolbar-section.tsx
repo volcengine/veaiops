@@ -24,7 +24,7 @@ interface ToolbarSectionProps {
 }
 
 /**
- * 工具栏区域组件
+ * Toolbar section component
  */
 export const ToolbarSection: React.FC<ToolbarSectionProps> = ({
   schema,

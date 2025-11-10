@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import apiClient from '@/utils/api-client';
-import { Button, Message } from '@arco-design/web-react';
+import { Button } from '@arco-design/web-react';
 import { IconPlus } from '@arco-design/web-react/icon';
 import {
   type BaseQuery,
@@ -53,7 +53,7 @@ export type {
 } from './types';
 
 /**
- * Get card template table column configuration parameters interface
+ * Parameters interface for getting card template table column configuration
  */
 export interface GetCardTemplateTableColumnsParams {
   onEdit?: (record: AgentTemplate) => Promise<boolean>;
@@ -77,9 +77,9 @@ export const getCardTemplateTableColumns = ({
 /**
  * Card Template table configuration aggregation Hook
  *
- * 🎯 Hook aggregation pattern + auto refresh mechanism
+ * 🎯 Hook aggregation pattern + auto-refresh mechanism
  * - Use useBusinessTable to centrally manage table logic
- * - Implement auto refresh through operationWrapper
+ * - Implement auto-refresh through operationWrapper
  * - Centrally manage data source, table configuration, column configuration, etc.
  *
  * @param options - Hook configuration options
@@ -92,7 +92,7 @@ export const useCardTemplateTableConfig = ({
   onToggleStatus,
   ref: externalRef,
 }: UseCardTemplateTableConfigOptions = {}): UseCardTemplateTableConfigReturn => {
-  // 🔍 Log: Hook execution entry
+  // 🔍 Log: Hook execution entry point
   const renderCountRef = useRef(0);
   renderCountRef.current += 1;
 
@@ -111,8 +111,8 @@ export const useCardTemplateTableConfig = ({
     component: 'entry',
   });
 
-  // 🎯 Use external ref or create new ref
-  // ✅ Fix: Prioritize external ref to ensure using the same ref as page component
+  // 🎯 Use external ref or create a new ref
+  // ✅ Fix: Prioritize external ref to ensure using the same ref as the page component
   const internalRef =
     useRef<CustomTableActionType<AgentTemplate, BaseQuery>>(null);
   const tableActionRef = externalRef || internalRef;
@@ -136,7 +136,7 @@ export const useCardTemplateTableConfig = ({
   }, [crud.modalVisible, crud.editingTemplate]);
 
   // 🎯 Data request logic - use utility functions
-  // ✅ Fix: Use useMemo to stabilize request function, avoid creating new reference on every render
+  // ✅ Fix: Use useMemo to stabilize request function, avoiding creating new reference on every render
   const request = useMemo(() => {
     logger.info({
       message: '🟡 [useCardTemplateTableConfig] request function created',
@@ -195,7 +195,7 @@ export const useCardTemplateTableConfig = ({
         defaultLimit: 10,
       },
     });
-  }, []); // ✅ Empty dependency array, because API call logic doesn't depend on any props or state
+  }, []); // ✅ Empty dependency array, as API call logic does not depend on any props or state
 
   // 🔍 Log: Monitor request reference changes
   const requestRef = useRef(request);
@@ -257,15 +257,15 @@ export const useCardTemplateTableConfig = ({
     [],
   );
 
-  // 🎯 Business operation wrapper - auto refresh
-  // ✅ Fix: Use handlers mechanism to ensure auto refresh after handleSubmit succeeds
+  // 🎯 Business operation wrapper - auto-refresh
+  // ✅ Fix: Use handlers mechanism to ensure auto-refresh after handleSubmit success
   // Note: handleAdd and handleEdit only open modal, should not trigger refresh
-  // Refresh should be triggered after handleSubmit (form submission succeeds)
+  // Refresh should be triggered after handleSubmit (form submission success)
 
   // 🔍 Log: Record handlers creation
-  // Note: handlers.delete is no longer needed, because useBusinessTable will automatically wrap through wrappedHandlers
-  // But for backward compatibility, we still provide an empty handlers object
-  // Delete operation refresh logic has been handled in handleDeleteWithRefresh
+  // Note: handlers.delete is no longer needed, as useBusinessTable will automatically wrap through wrappedHandlers
+  // But to maintain backward compatibility, we still provide an empty handlers object
+  // Delete operation refresh logic has been moved to handleDeleteWithRefresh
   const handlers = useMemo(() => {
     logger.info({
       message: '🟡 [useCardTemplateTableConfig] handlers created (deprecated)',
@@ -279,7 +279,7 @@ export const useCardTemplateTableConfig = ({
     });
 
     return {
-      // ✅ Create operation: auto refresh after form submission succeeds
+      // ✅ Create operation: auto-refresh after form submission success
       create: async () => {
         logger.info({
           message: '🟢 [useCardTemplateTableConfig] handlers.create called',
@@ -288,9 +288,9 @@ export const useCardTemplateTableConfig = ({
           component: 'handlers.create',
         });
         // Actual create logic is handled in handleSubmit
-        // This is just a placeholder, real refresh will be triggered through afterCreate after handleSubmit succeeds
+        // This is just a placeholder, actual refresh will be triggered through afterCreate after handleSubmit success
       },
-      // ✅ Update operation: auto refresh after form submission succeeds
+      // ✅ Update operation: auto-refresh after form submission success
       update: async () => {
         logger.info({
           message: '🟢 [useCardTemplateTableConfig] handlers.update called',
@@ -299,7 +299,7 @@ export const useCardTemplateTableConfig = ({
           component: 'handlers.update',
         });
         // Actual update logic is handled in handleSubmit
-        // This is just a placeholder, real refresh will be triggered through afterUpdate after handleSubmit succeeds
+        // This is just a placeholder, actual refresh will be triggered through afterUpdate after handleSubmit success
       },
       // ✅ Delete operation moved to handleDeleteWithRefresh, no longer used here
     };
@@ -329,9 +329,9 @@ export const useCardTemplateTableConfig = ({
     refreshConfig: {
       enableRefreshFeedback: true,
       successMessage: 'Operation successful',
-      errorMessage: 'Operation failed, please try again',
+      errorMessage: 'Operation failed, please retry',
     },
-    ref: tableActionRef, // ✅ Pass ref so operations.afterDelete can work properly
+    ref: tableActionRef, // ✅ Pass ref to make operations.afterDelete work properly
   });
 
   // 🔍 Log: Monitor customTableProps changes
@@ -349,8 +349,8 @@ export const useCardTemplateTableConfig = ({
     });
   }, [customTableProps]);
 
-  // ✅ Wrap crud.handleDelete, add refresh logic
-  // Note: If external onDelete is provided, prioritize using it (already includes refresh logic)
+  // ✅ Wrap crud.handleDelete with refresh logic
+  // Note: If external onDelete is provided, prioritize it (already includes refresh logic)
   const handleDeleteWithRefresh = useCallback(
     async (templateId: string): Promise<boolean> => {
       // If external onDelete is provided, use it directly (assume external has handled refresh logic)
@@ -362,13 +362,13 @@ export const useCardTemplateTableConfig = ({
       try {
         const success = await crud.handleDelete(templateId);
         if (success && operations.afterDelete) {
-          // Refresh table after successful delete
+          // Refresh table after successful deletion
           const refreshResult = await operations.afterDelete();
           if (!refreshResult.success && refreshResult.error) {
-            // ✅ Correct: Use logger to record warning, pass complete error information
+            // ✅ Correct: Use logger to record warning with complete error information
             const errorObj = refreshResult.error;
             logger.warn({
-              message: 'Failed to refresh table after delete',
+              message: 'Failed to refresh table after deletion',
               data: {
                 error: errorObj.message,
                 stack: errorObj.stack,
@@ -381,12 +381,22 @@ export const useCardTemplateTableConfig = ({
         }
         return success;
       } catch (error) {
-        // ✅ Correct: Pass through actual error information
+        // ✅ Correct: Extract actual error message and log with logger
+        const errorObj =
+          error instanceof Error ? error : new Error(String(error));
         const errorMessage =
-          error instanceof Error
-            ? error.message
-            : 'Delete failed, please try again';
-        Message.error(errorMessage);
+          errorObj.message || 'Deletion failed, please retry';
+        logger.error({
+          message: 'Deletion failed',
+          data: {
+            error: errorMessage,
+            stack: errorObj.stack,
+            errorObj,
+            templateId,
+          },
+          source: 'CardTemplate',
+          component: 'handleDeleteWithRefresh',
+        });
         return false;
       }
     },
@@ -395,7 +405,7 @@ export const useCardTemplateTableConfig = ({
 
   // 🎯 Column configuration
   // ✅ Fix: Use handleDeleteWithRefresh that includes refresh logic
-  // Note: crud.handleEdit returns void, needs to be wrapped as Promise<boolean> to satisfy type requirements
+  // Note: crud.handleEdit returns void, needs to be wrapped as Promise<boolean> to meet type requirements
   const handleColumns = useCallback(
     (_props?: Record<string, unknown>) => {
       const editHandler =
@@ -427,13 +437,13 @@ export const useCardTemplateTableConfig = ({
   // 🎯 Action configuration
   const renderActions = useCallback(
     (_props?: Record<string, unknown>) => {
-      // Prioritize external onCreate, if not provided use internal crud.handleAdd
+      // Prioritize external onCreate, otherwise use internal crud.handleAdd
       const createHandler =
         onCreate ||
         (() => {
           logger.info({
             message:
-              '🟢 [useCardTemplateTableConfig] handleAdd called (new button clicked)',
+              '🟢 [useCardTemplateTableConfig] handleAdd called (create button clicked)',
             data: {
               timestamp: Date.now(),
               modalVisible: crud.modalVisible,
@@ -449,9 +459,8 @@ export const useCardTemplateTableConfig = ({
           type="primary"
           icon={<IconPlus />}
           onClick={createHandler}
-          data-testid="new-card-template-btn"
         >
-          新建模版
+          Create Template
         </Button>,
       ];
     },
@@ -469,12 +478,12 @@ export const useCardTemplateTableConfig = ({
     [],
   );
 
-  // ✅ Fix: Wrap handleSubmit to ensure auto refresh after success
+  // ✅ Fix: Wrap handleSubmit to ensure auto-refresh after success
   const handleSubmit = useCallback(
     async (
       values: AgentTemplateCreateRequest | AgentTemplateUpdateRequest,
     ): Promise<boolean> => {
-      // ✅ Save editingTemplate value first, because it may be cleared after handleSubmit executes
+      // ✅ Save editingTemplate value first, as it may be cleared after handleSubmit execution
       const isUpdate = Boolean(crud.editingTemplate);
 
       logger.info({
@@ -495,7 +504,7 @@ export const useCardTemplateTableConfig = ({
         if (isUpdate) {
           const refreshResult = await operations.afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
-            // ✅ Correct: Use logger to record warning, pass complete error information
+            // ✅ Correct: Use logger to record warning with complete error information
             const errorObj = refreshResult.error;
             logger.warn({
               message: 'Failed to refresh table after update',
@@ -518,7 +527,7 @@ export const useCardTemplateTableConfig = ({
         } else {
           const refreshResult = await operations.afterCreate();
           if (!refreshResult.success && refreshResult.error) {
-            // ✅ Correct: Use logger to record warning, pass complete error information
+            // ✅ Correct: Use logger to record warning with complete error information
             const errorObj = refreshResult.error;
             logger.warn({
               message: 'Failed to refresh table after create',

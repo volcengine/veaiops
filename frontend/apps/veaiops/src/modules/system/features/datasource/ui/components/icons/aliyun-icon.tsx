@@ -21,7 +21,7 @@ interface IconProps {
 }
 
 /**
- * 阿里云图标
+ * Aliyun icon component
  */
 export const AliyunIcon: React.FC<IconProps> = ({
   size = 16,

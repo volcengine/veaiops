@@ -21,11 +21,11 @@ import { logger } from '@veaiops/utils';
 import type React from 'react';
 import { useEffect } from 'react';
 
-// Select 插件 - 基础选择器（增强：defaultActiveFirstOption=true 时在 options 就绪后自动选中首项）
+// Select plugin - Basic selector (enhanced: automatically select first option when defaultActiveFirstOption=true and options are ready)
 export const SelectPlugin: FilterPlugin = {
   type: 'Select',
-  name: '选择器',
-  description: '基础下拉选择组件',
+  name: 'Selector',
+  description: 'Basic dropdown select component',
   version: '2.1.0',
   render: ({
     componentProps,
@@ -44,9 +44,9 @@ export const SelectPlugin: FilterPlugin = {
       ...rest
     } = hijackedProps || {};
 
-    // 添加日志追踪
+    // Add log tracking
     logger.info({
-      message: 'SelectPlugin render被调用',
+      message: 'SelectPlugin render called',
       data: {
         hasOptions: Boolean(options),
         optionsLength: Array.isArray(options) ? options.length : 0,
@@ -58,7 +58,7 @@ export const SelectPlugin: FilterPlugin = {
       component: 'render',
     });
 
-    // 小型渲染器：在 options 就绪后做一次"自动选中首项"的兜底（仅当启用 defaultActiveFirstOption 且当前值为空）
+    // Small renderer: fallback to automatically select first option when options are ready (only when defaultActiveFirstOption is enabled and current value is empty)
     const DefaultFirstWrapper: React.FC = () => {
       useEffect(() => {
         const isMultiple = mode === 'multiple' || mode === 'tags';
@@ -71,7 +71,7 @@ export const SelectPlugin: FilterPlugin = {
             value !== null &&
             value !== '');
 
-        // 仅在启用 defaultActiveFirstOption、无当前值、存在 options 时触发
+        // Only trigger when defaultActiveFirstOption is enabled, no current value, and options exist
         if (
           defaultActiveFirstOption === true &&
           !hasValue &&
@@ -91,7 +91,7 @@ export const SelectPlugin: FilterPlugin = {
             firstValue = first;
           }
 
-          // 输出调试日志，便于问题复盘
+          // Output debug logs for troubleshooting
           if (process.env.NODE_ENV === 'development') {
             logger.info({
               message: 'SelectPlugin defaultActiveFirstOption applied',
@@ -142,16 +142,16 @@ export const SelectPlugin: FilterPlugin = {
   validateConfig: (config: Record<string, unknown>) =>
     typeof config === 'object',
   defaultConfig: {
-    placeholder: '请选择',
+    placeholder: 'Please select',
     allowClear: true,
   },
 };
 
-// Cascader 插件
+// Cascader plugin
 export const CascaderPlugin: FilterPlugin = {
   type: 'Cascader',
-  name: '级联选择器',
-  description: '级联选择组件',
+  name: 'Cascader',
+  description: 'Cascader select component',
   version: '1.0.0',
   render: ({ hijackedProps }: { hijackedProps: Record<string, unknown> }) => (
     <CascaderBlock {...hijackedProps} />
@@ -159,16 +159,16 @@ export const CascaderPlugin: FilterPlugin = {
   validateConfig: (config: Record<string, unknown>) =>
     typeof config === 'object',
   defaultConfig: {
-    placeholder: '请选择',
+    placeholder: 'Please select',
     allowClear: true,
   },
 };
 
-// TreeSelect 插件
+// TreeSelect plugin
 export const TreeSelectPlugin: FilterPlugin = {
   type: 'TreeSelect',
-  name: '树形选择器',
-  description: '树形选择组件',
+  name: 'Tree Select',
+  description: 'Tree select component',
   version: '1.0.0',
   render: ({ hijackedProps }: { hijackedProps: Record<string, unknown> }) => (
     <TreeSelect {...hijackedProps} />
@@ -176,16 +176,16 @@ export const TreeSelectPlugin: FilterPlugin = {
   validateConfig: (config: Record<string, unknown>) =>
     typeof config === 'object',
   defaultConfig: {
-    placeholder: '请选择',
+    placeholder: 'Please select',
     allowClear: true,
   },
 };
 
-// EnumsCheckBoxGroup 插件
+// EnumsCheckBoxGroup plugin
 export const EnumsCheckBoxGroupPlugin: FilterPlugin = {
   type: 'EnumsCheckBoxGroup',
-  name: '枚举复选框组',
-  description: '枚举复选框组件',
+  name: 'Enum Checkbox Group',
+  description: 'Enum checkbox component',
   version: '1.0.0',
   render: ({ hijackedProps }: { hijackedProps: Record<string, unknown> }) => {
     const {
@@ -216,12 +216,12 @@ export const EnumsCheckBoxGroupPlugin: FilterPlugin = {
   },
 };
 
-// Checkbox 插件
-// CheckboxPlugin 修复
+// Checkbox plugin
+// CheckboxPlugin fix
 export const CheckboxPlugin: FilterPlugin = {
   type: 'Checkbox',
-  name: '复选框',
-  description: '单个复选框组件',
+  name: 'Checkbox',
+  description: 'Single checkbox component',
   version: '1.0.0',
   render: ({ componentProps }: { componentProps: Record<string, unknown> }) => {
     const { label, ...restProps } = componentProps;
@@ -231,11 +231,11 @@ export const CheckboxPlugin: FilterPlugin = {
     typeof config === 'object',
 };
 
-// CheckboxGroup 插件
+// CheckboxGroup plugin
 export const CheckboxGroupPlugin: FilterPlugin = {
   type: 'CheckboxGroup',
-  name: '复选框组',
-  description: '复选框组组件',
+  name: 'Checkbox Group',
+  description: 'Checkbox group component',
   version: '1.0.0',
   render: ({ hijackedProps }) => <Checkbox.Group {...hijackedProps} />,
   validateConfig: (config: Record<string, unknown>) =>

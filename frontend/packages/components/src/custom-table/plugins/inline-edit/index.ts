@@ -13,10 +13,10 @@
 // limitations under the License.
 
 /**
- * 行内编辑插件统一导出
+ * Inline edit plugin unified export
  */
 
-// 重新导出类型
+// Re-export types
 export type {
   EditorType,
   EditMode,

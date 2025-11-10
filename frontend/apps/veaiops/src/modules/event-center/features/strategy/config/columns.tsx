@@ -18,7 +18,7 @@ import { adaptStrategyForEdit, channelInfoMap } from '@ec/strategy';
 import { CellRender, type ModernTableColumnProps } from '@veaiops/components';
 import type { InformStrategy } from 'api-generate';
 
-const { CustomOutlineTag, Ellipsis, StampTime } = CellRender;
+const { CustomOutlineTag, Ellipsis } = CellRender;
 
 /**
  * Column configuration callback function type definition
@@ -27,28 +27,28 @@ const { CustomOutlineTag, Ellipsis, StampTime } = CellRender;
  * - Python InformStrategyVO (API response): bot: BotVO, group_chats: List[GroupChatVO]
  * - Python InformStrategyPayload (API request): bot_id: str, chat_ids: List[str]
  * - Frontend InformStrategy (api-generate) = InformStrategyVO (API response format)
- * - Edit form needs bot_id and chat_ids, transformed through adaptStrategyForEdit adapter
+ * - Edit form requires bot_id and chat_ids, converted via adaptStrategyForEdit adapter
  *
- * According to .cursorrules: prioritize using types from api-generate (single source of truth principle)
+ * According to .cursorrules specification: prioritize using types from api-generate (single source of truth principle)
  */
 interface StrategyColumnsProps {
-  // ✅ Unified use of InformStrategy (api-generate), conforms to single source of truth principle
-  // Edit form will extract bot_id and chat_ids through adaptStrategyForEdit adapter
+  // ✅ Unified use of InformStrategy (from api-generate), conforms to single source of truth principle
+  // Edit form will extract bot_id and chat_ids via adaptStrategyForEdit adapter
   onEdit?: (record: InformStrategy) => void;
   onDelete?: (id: string) => void;
 }
 
 /**
  * Strategy column configuration function
- * Provides complete column configuration following CustomTable best practices
+ * Follows CustomTable best practices, provides complete column configuration
  *
- * Return type is explicitly ModernTableColumnProps<InformStrategy>[], avoiding type assertions
+ * Return type explicitly ModernTableColumnProps<InformStrategy>[], avoids type assertions
  */
 export const getStrategyColumns = (
   props: StrategyColumnsProps,
 ): ModernTableColumnProps<InformStrategy>[] => [
   {
-    title: '策略名称',
+    title: 'Strategy Name',
     dataIndex: 'name',
     key: 'name',
     width: 150,
@@ -56,7 +56,7 @@ export const getStrategyColumns = (
     ellipsis: true,
   },
   {
-    title: '企业协同工具',
+    title: 'Enterprise Collaboration Tool',
     dataIndex: 'channel',
     key: 'channel',
     width: 120,
@@ -72,7 +72,7 @@ export const getStrategyColumns = (
     },
   },
   {
-    title: '通知机器人',
+    title: 'Notification Bot',
     dataIndex: 'bot_name',
     key: 'bot_name',
     width: 160,
@@ -89,7 +89,7 @@ export const getStrategyColumns = (
     },
   },
   {
-    title: '通知群',
+    title: 'Notification Groups',
     dataIndex: 'chat_names',
     key: 'chat_names',
     width: 300,
@@ -98,7 +98,7 @@ export const getStrategyColumns = (
         return '-';
       }
 
-      // Transform group_chats data to format required by CustomOutlineTagList
+      // Convert group_chats data to format required by CustomOutlineTagList
       const tagData = record.group_chats.map((item, index: number) => ({
         name: item.chat_name || item.open_chat_id,
         key: `chat-${item.id || index}`,
@@ -115,22 +115,44 @@ export const getStrategyColumns = (
     },
   },
   {
-    title: '创建时间',
+    title: 'Created At',
     dataIndex: 'created_at',
     key: 'created_at',
     width: 160,
-    render: (value: string) => <StampTime time={value} />,
+    render: (value: string) => {
+      if (!value) {
+        return '-';
+      }
+      return new Date(value).toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    },
   },
   {
-    title: '更新时间',
+    title: 'Updated At',
     dataIndex: 'updated_at',
     key: 'updated_at',
     width: 160,
     // sorter: true,
-    render: (value: string) => <StampTime time={value} />,
+    render: (value: string) => {
+      if (!value) {
+        return '-';
+      }
+      return new Date(value).toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    },
   },
   {
-    title: '描述',
+    title: 'Description',
     dataIndex: 'description',
     key: 'description',
     width: 200,
@@ -143,7 +165,7 @@ export const getStrategyColumns = (
     },
   },
   {
-    title: '操作',
+    title: 'Actions',
     key: 'actions',
     width: 150,
     fixed: 'right' as const,
@@ -153,34 +175,34 @@ export const getStrategyColumns = (
           size="small"
           type="text"
           onClick={() => {
-            // ✅ Type-safe: Use type adapter function to transform InformStrategy to format required by edit form
+            // ✅ Type safe: Use type adapter function to convert InformStrategy to format required by edit form
             //
             // Based on Python source code analysis (veaiops/schema/models/event/event.py):
             // - InformStrategyVO returns bot: BotVO and group_chats: List[GroupChatVO]
-            // - Edit form needs flattened bot_id and chat_ids (conforms to EventStrategy interface requirements)
+            // - Edit form requires flattened bot_id and chat_ids (conforms to EventStrategy interface requirements)
             // - adaptStrategyForEdit extracts these values from nested objects
             //
             // Type notes:
             // - record type: InformStrategy (from api-generate, corresponds to Python InformStrategyVO)
             // - adaptedStrategy type: AdaptedStrategyForEdit (InformStrategy & { bot_id: string; chat_ids: string[] })
-            // - EventStrategy type: extends InformStrategy, includes optional bot_id and chat_ids
-            // - Since AdaptedStrategyForEdit's bot_id and chat_ids are required, while EventStrategy has them optional, types are compatible
-            // ✅ Pass InformStrategy directly, edit form will handle it through adaptStrategyForEdit adapter internally
-            // According to .cursorrules: unified use of types from api-generate
+            // - EventStrategy type: extends InformStrategy, contains optional bot_id and chat_ids
+            // - Since AdaptedStrategyForEdit's bot_id and chat_ids are required, while EventStrategy has optional ones, types are compatible
+            // ✅ Directly pass InformStrategy, edit form will handle via adaptStrategyForEdit adapter internally
+            // According to .cursorrules specification: unified use of types from api-generate
             props.onEdit?.(record);
           }}
         >
-          编辑
+          Edit
         </Button>
         <Popconfirm
-          title="确定要删除这个策略吗？"
-          content="删除后无法恢复，请谨慎操作。"
+          title="Are you sure you want to delete this strategy?"
+          content="This action cannot be undone. Please proceed with caution."
           onOk={() => props.onDelete?.(record.id)}
-          okText="确定"
-          cancelText="取消"
+          okText="Confirm"
+          cancelText="Cancel"
         >
           <Button size="small" type="text" status="danger">
-            删除
+            Delete
           </Button>
         </Popconfirm>
       </Space>

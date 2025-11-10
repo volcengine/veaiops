@@ -28,10 +28,10 @@
  */
 
 /**
- * TableFilterPlugin 兼容型扩展 Props
- * - 将旧插件在不同页面透传的扩展属性封装为统一接口
- * - 字段均为可选，避免未传入造成的类型错误
- * - 仅负责类型与安全读取，不引入业务逻辑
+ * TableFilterPlugin Compatible Extended Props
+ * - Encapsulates extended properties passed through from old plugins in different pages as a unified interface
+ * - All fields are optional to avoid type errors when not provided
+ * - Only responsible for type and safe reading, does not introduce business logic
  */
 import type { PluginContext } from '@/custom-table/types/plugins';
 
@@ -58,17 +58,17 @@ export interface FiltersPluginProps {
 }
 
 /**
- * 安全读取并规范化插件扩展 Props
- * - 对每个字段进行 typeof/Array 判定
- * - 返回 Partial<FiltersPluginProps>
+ * Safely read and normalize plugin extended Props
+ * - Perform typeof/Array checks for each field
+ * - Return Partial<FiltersPluginProps>
  */
 export const readFiltersPluginProps = (
   context: PluginContext,
 ): Partial<FiltersPluginProps> => {
-  // 先收窄到 unknown，再断言为可索引对象，避免直接从具体类型转换
+  // First narrow to unknown, then assert as indexable object, avoid direct conversion from specific type
   const raw = context.props as unknown as Record<string, unknown>;
 
-  // 使用解构读取，满足 eslint 对解构的偏好
+  // Use destructuring to read, satisfy eslint preference for destructuring
   const {
     handleFilters: rawHandleFilters,
     handleFiltersProps,

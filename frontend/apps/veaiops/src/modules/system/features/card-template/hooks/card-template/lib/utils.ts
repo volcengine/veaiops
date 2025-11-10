@@ -16,7 +16,7 @@ import type { AgentTemplate } from 'api-generate';
 import type { CardTemplateTableData } from './types';
 
 /**
- * 转换模板数据为表格数据
+ * Transform template data to table data
  */
 export const transformAgentTemplateToTableData = (
   template: AgentTemplate,

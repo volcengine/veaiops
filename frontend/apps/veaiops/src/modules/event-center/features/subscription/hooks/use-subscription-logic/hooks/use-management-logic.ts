@@ -14,6 +14,7 @@
 
 import { Form, Message } from '@arco-design/web-react';
 import { useManagementRefresh } from '@veaiops/hooks';
+import { logger } from '@veaiops/utils';
 import type {
   SubscribeRelationCreate,
   SubscribeRelationUpdate,
@@ -27,13 +28,13 @@ import {
 } from '../lib/api';
 
 /**
- * 订阅管理逻辑Hook
- * 提供订阅管理页面的所有业务逻辑
+ * Subscription management logic Hook
+ * Provides all business logic for subscription management page
  */
 export const useSubscriptionManagementLogic = (
   refreshTable?: () => Promise<boolean>,
 ) => {
-  // 使用管理刷新 Hook
+  // Use management refresh Hook
   const { afterCreate, afterUpdate, afterDelete } =
     useManagementRefresh(refreshTable);
   const [form] = Form.useForm();
@@ -41,13 +42,13 @@ export const useSubscriptionManagementLogic = (
     useState<SubscribeRelationWithAttributes | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 删除订阅关系处理器
+  // Delete subscription relation handler
   const handleDelete = useCallback(
     async (subscriptionId: string) => {
       try {
         const success = await deleteSubscription({ subscriptionId });
         if (success) {
-          // 删除成功后刷新表格
+          // Refresh table after successful deletion
           const refreshResult = await afterDelete();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
@@ -65,7 +66,7 @@ export const useSubscriptionManagementLogic = (
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '删除失败，请重试';
@@ -76,7 +77,7 @@ export const useSubscriptionManagementLogic = (
     [afterDelete],
   );
 
-  // 创建订阅关系处理器
+  // Create subscription relation handler
   const handleCreate = useCallback(
     async (values: SubscribeRelationCreate) => {
       try {
@@ -84,7 +85,7 @@ export const useSubscriptionManagementLogic = (
         if (success) {
           setModalVisible(false);
           form.resetFields();
-          // 创建成功后刷新表格
+          // Refresh table after successful creation
           const refreshResult = await afterCreate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
@@ -102,7 +103,7 @@ export const useSubscriptionManagementLogic = (
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '创建失败，请重试';
@@ -113,7 +114,7 @@ export const useSubscriptionManagementLogic = (
     [form, afterCreate],
   );
 
-  // 更新订阅关系处理器
+  // Update subscription relation handler
   const handleUpdate = useCallback(
     async (values: SubscribeRelationUpdate) => {
       try {
@@ -125,7 +126,7 @@ export const useSubscriptionManagementLogic = (
           setModalVisible(false);
           setEditingSubscription(null);
           form.resetFields();
-          // 更新成功后刷新表格
+          // Refresh table after successful update
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
@@ -143,7 +144,7 @@ export const useSubscriptionManagementLogic = (
         }
         return false;
       } catch (error: unknown) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Expose actual error information
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
         const errorMessage = errorObj.message || '更新失败，请重试';
@@ -154,7 +155,7 @@ export const useSubscriptionManagementLogic = (
     [editingSubscription, form, afterUpdate],
   );
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = useCallback(
     async (
       values: SubscribeRelationCreate | SubscribeRelationUpdate,
@@ -164,7 +165,7 @@ export const useSubscriptionManagementLogic = (
         : await handleCreate(values as SubscribeRelationCreate);
 
       if (!success) {
-        // 阻止弹窗在失败时自动关闭
+        // Prevent modal from closing automatically on failure
         throw new Error('Operation failed but error message was displayed.');
       }
       return success;
@@ -172,7 +173,7 @@ export const useSubscriptionManagementLogic = (
     [editingSubscription, handleUpdate, handleCreate],
   );
 
-  // 打开编辑弹窗
+  // Open edit modal
   const handleEdit = useCallback(
     (subscription: SubscribeRelationWithAttributes) => {
       setEditingSubscription(subscription);
@@ -184,14 +185,14 @@ export const useSubscriptionManagementLogic = (
     [form],
   );
 
-  // 打开新增弹窗
+  // Open add modal
   const handleAdd = useCallback(() => {
     setEditingSubscription(null);
     form.resetFields();
     setModalVisible(true);
   }, [form]);
 
-  // 关闭弹窗
+  // Close modal
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     setEditingSubscription(null);
@@ -199,12 +200,12 @@ export const useSubscriptionManagementLogic = (
   }, [form]);
 
   return {
-    // 状态
+    // State
     modalVisible,
     editingSubscription,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,

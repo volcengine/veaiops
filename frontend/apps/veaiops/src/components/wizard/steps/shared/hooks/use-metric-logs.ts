@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 指标选择步骤日志管理Hook
- * @description 处理日志收集、导出等功能
+ * Metric selection step log management Hook
+ * @description Handles log collection, export, and other functionality
  * @author AI Assistant
  * @date 2025-01-16
  */
@@ -41,12 +41,12 @@ export const useMetricLogs = ({
   selectedTemplate,
   metricsCount,
 }: UseMetricLogsProps) => {
-  // 日志导出功能
+  // Log export functionality
   const handleExportLogs = () => {
     try {
-      // 记录导出操作
+      // Record export operation
 
-      // 导出日志文件
+      // Export log file
       exportLogsToFile(
         `datasource-wizard-logs-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.log`,
       );
@@ -64,11 +64,11 @@ export const useMetricLogs = ({
     stopLogCollection();
   };
 
-  // 组件挂载时开始日志收集
+  // Start log collection when component mounts
   useEffect(() => {
     handleStartLogCollection();
 
-    // 组件卸载时停止日志收集
+    // Stop log collection when component unmounts
     return () => {
       handleStopLogCollection();
     };

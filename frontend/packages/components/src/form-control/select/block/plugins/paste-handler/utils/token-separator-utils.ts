@@ -13,37 +13,37 @@
 // limitations under the License.
 
 /**
- * 分隔符工具类 - 提供常用的分隔符预设
+ * Separator utility class - provides common separator presets
  */
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class TokenSeparatorUtils {
   /**
-   * 常用分隔符预设
+   * Common separator presets
    */
   static presets: Record<string, string[]> = {
-    // 基础分隔符
+    // Basic separators
     basic: [',', '\n', ';', '\t'],
-    // 扩展分隔符（包含中文）
+    // Extended separators (includes Chinese)
     extended: [',', '\n', ';', '\t', ' ', '|', '，', '；'],
-    // 仅逗号和换行
+    // Only comma and newline
     simple: [',', '\n'],
-    // Excel风格（制表符和换行）
+    // Excel style (tab and newline)
     excel: ['\t', '\n'],
-    // 中文友好
+    // Chinese friendly
     chinese: [',', '\n', ';', '，', '；'],
-    // 空格分隔
+    // Space separated
     space: [' ', '\n', '\t'],
   };
 
   /**
-   * 自定义分隔符构建器
+   * Custom separator builder
    */
   static custom(...separators: string[]): string[] {
     return separators;
   }
 
   /**
-   * 合并多个分隔符预设
+   * Merge multiple separator presets
    */
   static merge(
     ...presetNames: (keyof typeof TokenSeparatorUtils.presets)[]
@@ -51,11 +51,11 @@ export class TokenSeparatorUtils {
     const allSeparators = presetNames.flatMap(
       (name) => TokenSeparatorUtils.presets[name],
     );
-    return Array.from(new Set(allSeparators)); // 去重
+    return Array.from(new Set(allSeparators)); // Deduplicate
   }
 
   /**
-   * 验证分隔符是否有效
+   * Validate if separators are valid
    */
   static validate(separators: string[]): boolean {
     return (
@@ -65,7 +65,7 @@ export class TokenSeparatorUtils {
   }
 
   /**
-   * 增强的文本切分方法，支持多种分隔符
+   * Enhanced text splitting method, supports multiple separators
    */
   static splitTextByMultipleSeparators(
     text: string,
@@ -75,13 +75,13 @@ export class TokenSeparatorUtils {
       return [text].filter(Boolean);
     }
 
-    // 创建正则表达式，支持多个分隔符
+    // Create regex, supports multiple separators
     const escapedSeparators = separators.map((sep) =>
       sep.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
     );
     const regex = new RegExp(`[${escapedSeparators.join('')}]+`, 'g');
 
-    // 分割文本并过滤空字符串
+    // Split text and filter empty strings
     const result = text
       .split(regex)
       .map((item) => item.trim())
@@ -91,7 +91,7 @@ export class TokenSeparatorUtils {
   }
 
   /**
-   * 获取默认分隔符
+   * Get default separators
    */
   static getDefaultSeparators(): string[] {
     return ['\n', ',', ';', '\t', ' ', '|', '，', '；'];

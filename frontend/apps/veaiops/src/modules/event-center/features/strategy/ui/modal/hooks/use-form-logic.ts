@@ -18,7 +18,7 @@ import type { Bot } from 'api-generate';
 import { useEffect, useMemo } from 'react';
 
 /**
- * 表单逻辑 Hook 返回值接口
+ * Form logic Hook return value interface
  */
 export interface UseFormLogicResult {
   botsOptions: Array<{ label: string; value: string; extra?: Bot }>;
@@ -27,8 +27,8 @@ export interface UseFormLogicResult {
 }
 
 /**
- * 表单逻辑 Hook
- * 处理机器人列表、群组列表获取和选中状态
+ * Form logic Hook
+ * Handles bot list, chat list fetching and selected state
  */
 export const useFormLogic = (form: FormInstance): UseFormLogicResult => {
   const { data: botsOptions = [] } = useBotsList();
@@ -36,7 +36,7 @@ export const useFormLogic = (form: FormInstance): UseFormLogicResult => {
 
   const bot_id = Form.useWatch('bot_id', form);
 
-  // 获取选中机器人的名字（label）
+  // Get selected bot name (label)
   const selectedBotName = useMemo(() => {
     if (!bot_id) {
       return null;
@@ -45,7 +45,7 @@ export const useFormLogic = (form: FormInstance): UseFormLogicResult => {
     return selectedBot?.label || null;
   }, [bot_id, botsOptions]);
 
-  // 当机器人变化时，重新获取群组列表
+  // Re-fetch chat list when bot changes
   useEffect(() => {
     if (bot_id) {
       const botExtra = botsOptions.find((item) => item.value === bot_id)?.extra;

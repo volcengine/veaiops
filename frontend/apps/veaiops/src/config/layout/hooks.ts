@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react';
 import type { LayoutState } from './types';
 
 /**
- * 布局Hook
+ * Layout Hook
  */
 export const useLayout = () => {
   const [layoutState, setLayoutState] = useState<LayoutState>({
@@ -27,7 +27,7 @@ export const useLayout = () => {
 
   const location = useLocation();
 
-  // 根据当前路径自动设置activeModule
+  // Automatically set activeModule based on current path
   useEffect(() => {
     const pathSegments = location.pathname.split('/').filter(Boolean);
     if (pathSegments.length > 0) {
@@ -39,7 +39,7 @@ export const useLayout = () => {
     }
   }, [location.pathname]);
 
-  // 切换侧边栏折叠状态
+  // Toggle sidebar collapse state
   const toggleCollapse = () => {
     setLayoutState((prev) => ({
       ...prev,
@@ -47,7 +47,7 @@ export const useLayout = () => {
     }));
   };
 
-  // 设置侧边栏折叠状态
+  // Set sidebar collapse state
   const setCollapsed = (collapsed: boolean) => {
     setLayoutState((prev) => ({
       ...prev,
@@ -55,7 +55,7 @@ export const useLayout = () => {
     }));
   };
 
-  // 设置活动模块
+  // Set active module
   const setActiveModule = (module: string) => {
     setLayoutState((prev) => ({
       ...prev,

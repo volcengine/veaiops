@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 表格配置 Hook 相关类型定义
+ * Table configuration Hook related type definitions
  */
 import type { PaginationProps } from '@arco-design/web-react/es/Pagination/pagination';
 import type { BaseQuery, BaseRecord } from '../core';
-// 使用相对路径避免跨层级导入（遵循 .cursorrules 规范）
+// Use relative paths to avoid cross-level imports (following .cursorrules standards)
 import type { ColumnItem } from '../plugins/table-columns';
 
 /**
@@ -27,48 +27,48 @@ export interface TableConfigOptions<
   RecordType extends BaseRecord = BaseRecord,
   QueryType extends BaseQuery = BaseQuery,
 > {
-  /** 基础列配置 */
+  /** Base column configuration */
   baseColumns?: ColumnItem<RecordType>[];
-  /** 处理列的函数 */
+  /** Column processing function */
   handleColumns?: (props: Record<string, unknown>) => ColumnItem<RecordType>[];
-  /** 列处理函数的额外参数 */
+  /** Additional parameters for column processing function */
   handleColumnsProps?: Record<string, unknown>;
-  /** 查询参数 */
+  /** Query parameters */
   query?: QueryType;
-  /** 是否启用列管理 */
+  /** Whether to enable column management */
   enableColumnManagement?: boolean;
-  /** 是否启用筛选 */
+  /** Whether to enable filter */
   enableFilter?: boolean;
-  /** 是否启用排序 */
+  /** Whether to enable sorting */
   enableSorting?: boolean;
-  /** 是否启用分页 */
+  /** Whether to enable pagination */
   enablePagination?: boolean;
 }
 
 /**
- * 表格特性配置类型
+ * Table feature configuration type
  */
 export interface TableFeaturesConfig {
-  /** 列管理是否启用 */
+  /** Whether column management is enabled */
   columnManagement?: boolean;
-  /** 筛选是否启用 */
+  /** Whether filter is enabled */
   filter?: boolean;
-  /** 排序是否启用 */
+  /** Whether sorting is enabled */
   sorting?: boolean;
-  /** 分页是否启用 */
+  /** Whether pagination is enabled */
   pagination?: boolean;
-  /** 其他特性配置 */
+  /** Other feature configuration */
   [key: string]: boolean | undefined;
 }
 
 /**
- * useTableConfig Hook 返回值
+ * useTableConfig Hook return value
  */
 export interface TableConfigResult<RecordType extends BaseRecord = BaseRecord> {
-  // 处理后的列配置
+  // Processed column configuration
   columns: ColumnItem<RecordType>[];
 
-  // 表格属性
+  // Table properties
   tableProps: {
     columns: ColumnItem<RecordType>[];
     loading?: boolean;
@@ -76,13 +76,13 @@ export interface TableConfigResult<RecordType extends BaseRecord = BaseRecord> {
     onChange?: (page: number, pageSize: number) => void;
   };
 
-  // 分页配置
+  // Pagination configuration
   paginationConfig: PaginationProps | boolean;
 
-  // 特性配置
+  // Feature configuration
   features: TableFeaturesConfig;
 
-  // 配置信息
+  // Configuration information
   config: {
     enableColumnManagement: boolean;
     enableFilter: boolean;
@@ -90,6 +90,6 @@ export interface TableConfigResult<RecordType extends BaseRecord = BaseRecord> {
     enablePagination: boolean;
   };
 
-  // 更新配置
+  // Update configuration
   updateConfig: (newConfig: Partial<TableConfigOptions<RecordType>>) => void;
 }

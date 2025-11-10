@@ -27,8 +27,8 @@
 // limitations under the License.
 
 /**
- * 脱敏渲染组件
- * 用于安全地显示敏感信息，支持复制、显示/隐藏、刷新功能
+ * Masked renderer component
+ * Displays sensitive information in a masked format, with a toggle to reveal it.
  */
 
 import { Button, Message, Tooltip, Typography } from '@arco-design/web-react';
@@ -41,8 +41,8 @@ import {
 import { logger, safeCopyToClipboard } from '@veaiops/utils';
 import { useState } from 'react';
 
-// 公共工具：安全复制（优先使用 Clipboard API，失败回退 execCommand）
-// 相对路径从当前文件到 frontend/packages/utils/src/tools/common.ts
+// Common utility: Safe copy (prefer Clipboard API, fallback to execCommand)
+// Relative path from current file to frontend/packages/utils/src/tools/common.ts
 
 const { Text } = Typography;
 
@@ -55,8 +55,8 @@ interface MaskedRendererProps {
 }
 
 /**
- * 脱敏渲染组件
- * 提供复制、显示/隐藏、刷新功能
+ * Masked renderer component
+ * Provides copy, show/hide, and refresh functionality
  */
 export const MaskedRenderer = ({
   value,
@@ -67,7 +67,7 @@ export const MaskedRenderer = ({
 }: MaskedRendererProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
-  // 生成脱敏字符串
+  // Generate masked string
   const generateMaskedValue = (val: string) => {
     if (!val) {
       return '';
@@ -79,14 +79,14 @@ export const MaskedRenderer = ({
     return `${visiblePart}${maskedPart}`;
   };
 
-  // 复制到剪贴板（使用公共工具 safeCopyToClipboard），在 UI 层做用户提示与日志
+  // Copy to clipboard (using common utility safeCopyToClipboard), handle user prompts and logging in UI layer
   /**
-   * 复制到剪贴板
+   * Copy to clipboard
    *
-   * @returns 返回 { success: boolean; error?: Error } 格式的结果对象
+   * @returns Returns result object in format { success: boolean; error?: Error }
    */
   const handleCopy = async (): Promise<{ success: boolean; error?: Error }> => {
-    // ✅ 正确：检查 safeCopyToClipboard 的返回值
+    // ✅ Correct: Check the return value of safeCopyToClipboard
     const result = await safeCopyToClipboard(value);
 
     if (result.success) {
@@ -94,7 +94,7 @@ export const MaskedRenderer = ({
       return { success: true };
     } else {
       const error = result.error || new Error('复制失败');
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ Correct: Use logger to record error and expose actual error information
       logger.error({
         message: 'safeCopyToClipboard 复制失败',
         data: {
@@ -106,19 +106,19 @@ export const MaskedRenderer = ({
         source: 'MaskedRenderer',
         component: 'handleCopy',
       });
-      // 错误处理：透出错误信息
+      // Error handling: expose error information
       const errorMessage = error.message || '复制失败';
       Message.error(errorMessage);
       return { success: false, error };
     }
   };
 
-  // 切换显示/隐藏
+  // Toggle show/hide
   const toggleVisibility = () => {
     setIsVisible(!isVisible);
   };
 
-  // 刷新/重新生成
+  // Refresh/regenerate
   const handleRefresh = () => {
     if (onRefresh) {
       onRefresh();
@@ -135,7 +135,7 @@ export const MaskedRenderer = ({
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      {/* 脱敏值显示 */}
+      {/* Masked value display */}
       <div className="flex-1 min-w-0">
         <Text
           className="font-mono text-xs select-all"
@@ -148,9 +148,9 @@ export const MaskedRenderer = ({
         </Text>
       </div>
 
-      {/* 操作按钮组 */}
+      {/* Action button group */}
       <div className="flex items-center gap-1 flex-shrink-0">
-        {/* 复制按钮 */}
+        {/* Copy button */}
         <Tooltip content="复制">
           <Button
             type="text"
@@ -161,7 +161,7 @@ export const MaskedRenderer = ({
           />
         </Tooltip>
 
-        {/* 显示/隐藏切换按钮 */}
+        {/* Show/hide toggle button */}
         <Tooltip content={isVisible ? '隐藏' : '显示'}>
           <Button
             type="text"
@@ -172,7 +172,7 @@ export const MaskedRenderer = ({
           />
         </Tooltip>
 
-        {/* 刷新按钮 */}
+        {/* Refresh button */}
         {onRefresh && (
           <Tooltip content="刷新">
             <Button

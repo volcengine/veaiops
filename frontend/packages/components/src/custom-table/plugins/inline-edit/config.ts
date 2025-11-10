@@ -14,7 +14,7 @@
 
 import type { BaseRecord } from '@/custom-table/types';
 /**
- * 行内编辑插件默认配置
+ * Default configuration for Inline Edit plugin
  */
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 import type { Key } from 'react';

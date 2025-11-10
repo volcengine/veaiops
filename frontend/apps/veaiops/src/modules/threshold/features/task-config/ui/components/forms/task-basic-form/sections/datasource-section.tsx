@@ -19,7 +19,7 @@ import { logger } from '@veaiops/utils';
 import type React from 'react';
 
 /**
- * 数据源区块组件参数
+ * Datasource section component parameters
  */
 interface DatasourceSectionProps {
   form: FormInstance;
@@ -30,7 +30,7 @@ interface DatasourceSectionProps {
 }
 
 /**
- * 数据源配置区块
+ * Datasource configuration section
  */
 export const DatasourceSection: React.FC<DatasourceSectionProps> = ({
   form,
@@ -41,7 +41,7 @@ export const DatasourceSection: React.FC<DatasourceSectionProps> = ({
 }) => {
   return (
     <>
-      {/* 时序数据源类型 */}
+      {/* Timeseries datasource type */}
       <Select.Block
         isControl
         inline
@@ -77,7 +77,7 @@ export const DatasourceSection: React.FC<DatasourceSectionProps> = ({
         }}
       />
 
-      {/* 时序数据源 */}
+      {/* Timeseries datasource */}
       <Select.Block
         isControl
         inline
@@ -100,7 +100,7 @@ export const DatasourceSection: React.FC<DatasourceSectionProps> = ({
           searchKey: 'name',
           dataSource: datasourceDataSource,
           dropdownRender: (dom: React.ReactNode) => {
-            // 构建创建数据源的链接，携带 datasource_type 和 returnUrl 参数
+            // Build create datasource link with datasource_type and returnUrl parameters
             const currentUrl =
               window.location.pathname + window.location.search;
             const createDataSourceUrl = datasourceType

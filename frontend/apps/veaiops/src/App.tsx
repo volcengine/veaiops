@@ -22,7 +22,6 @@ import '@veaiops/theme-ve-o';
 import './styles/arco-theme.less';
 
 import { SubscriptionProvider } from '@veaiops/components';
-import { useTimezone } from '@veaiops/utils';
 // Import components and configuration
 import { ErrorBoundary, LoadingFallback } from './components';
 import { AuthRoutes } from './components/auth/auth-routes';
@@ -41,29 +40,13 @@ const AppContent: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const { themeConfig } = useTheme();
 
-  // ✅ Use useTimezone Hook, automatically re-render ConfigProvider when timezone changes
-  const timezone = useTimezone();
-
-  // Show loading state
+  // Display loading state
   if (isLoading()) {
     return <LoadingScreen />;
   }
 
   return (
-    <ConfigProvider
-      theme={themeConfig}
-      componentConfig={{
-        // ✅ Global configuration for DatePicker timezone
-        // All DatePicker, RangePicker, TimePicker will automatically use the user-selected timezone
-        // Zero-intrusion design: no changes needed in business code
-        DatePicker: {
-          timezone,
-        },
-        TimePicker: {
-          timezone,
-        },
-      }}
-    >
+    <ConfigProvider theme={themeConfig}>
       <ErrorBoundary>
         <SubscriptionProvider>
           <BrowserRouter>

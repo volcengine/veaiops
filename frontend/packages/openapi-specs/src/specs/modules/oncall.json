@@ -3,7 +3,7 @@
   "info": {
     "title": "VolcAIOpsKit - Oncall API",
     "version": "1.0.0",
-    "description": "值班管理相关接口"
+    "description": "Oncall management related APIs"
   },
   "paths": {
     "/apis/v1/manager/rule-center/oncall/{channel}/{bot_id}": {
@@ -404,7 +404,7 @@
           "level": {
             "type": "string",
             "enum": ["P0", "P1", "P2"],
-            "description": "告警等级"
+            "description": "Alert level"
           },
           "examples_positive": {
             "type": "array",
@@ -441,7 +441,7 @@
           },
           "silence_delta": {
             "type": "string",
-            "description": "告警抑制间隔"
+            "description": "Alert suppression interval"
           },
           "is_active": {
             "type": "boolean",
@@ -470,42 +470,42 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "规则名称"
+            "description": "Rule name"
           },
           "description": {
             "type": "string",
-            "description": "描述"
+            "description": "Description"
           },
           "level": {
             "type": "string",
             "enum": ["P0", "P1", "P2"],
-            "description": "告警等级"
+            "description": "Alert level"
           },
           "silence_delta": {
             "type": "string",
-            "description": "告警抑制间隔"
+            "description": "Alert suppression interval"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否启用状态"
+            "description": "Whether enabled"
           },
           "examples_positive": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "正面示例（当检测类别为语义分析时可编辑）"
+            "description": "Positive examples (editable when inspection category is semantic analysis)"
           },
           "examples_negative": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "反面示例（当检测类别为语义分析时可编辑）"
+            "description": "Negative examples (editable when inspection category is semantic analysis)"
           },
           "regular_expression": {
             "type": "string",
-            "description": "正则表达式（当检测类别为正则表达式时可编辑）"
+            "description": "Regular expression (editable when inspection category is regular expression)"
           }
         }
       },
@@ -545,24 +545,24 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "值班计划ID"
+            "description": "Oncall schedule ID"
           },
           "rule_id": {
             "type": "string",
-            "description": "关联的规则ID"
+            "description": "Associated rule ID"
           },
           "name": {
             "type": "string",
-            "description": "值班计划名称"
+            "description": "Oncall schedule name"
           },
           "description": {
             "type": "string",
-            "description": "值班计划描述"
+            "description": "Oncall schedule description"
           },
           "schedule_type": {
             "type": "string",
             "enum": ["daily", "weekly", "monthly", "custom"],
-            "description": "值班计划类型"
+            "description": "Oncall schedule type"
           },
           "participants": {
             "type": "array",
@@ -571,15 +571,15 @@
               "properties": {
                 "user_id": {
                   "type": "string",
-                  "description": "用户ID"
+                  "description": "User ID"
                 },
                 "user_name": {
                   "type": "string",
-                  "description": "用户名"
+                  "description": "User name"
                 },
                 "contact_info": {
                   "type": "object",
-                  "description": "联系信息",
+                  "description": "Contact information",
                   "properties": {
                     "phone": {
                       "type": "string"
@@ -594,34 +594,34 @@
                 },
                 "priority": {
                   "type": "integer",
-                  "description": "优先级"
+                  "description": "Priority"
                 }
               },
               "required": ["user_id", "user_name"]
             },
-            "description": "值班参与者列表"
+            "description": "Oncall participants list"
           },
           "schedule_config": {
             "type": "object",
-            "description": "值班计划配置",
+            "description": "Oncall schedule configuration",
             "properties": {
               "rotation_interval": {
                 "type": "integer",
-                "description": "轮换间隔（小时）"
+                "description": "Rotation interval (hours)"
               },
               "start_time": {
                 "type": "string",
                 "format": "time",
-                "description": "开始时间"
+                "description": "Start time"
               },
               "end_time": {
                 "type": "string",
                 "format": "time",
-                "description": "结束时间"
+                "description": "End time"
               },
               "timezone": {
                 "type": "string",
-                "description": "时区"
+                "description": "Timezone"
               },
               "weekdays": {
                 "type": "array",
@@ -630,21 +630,21 @@
                   "minimum": 0,
                   "maximum": 6
                 },
-                "description": "工作日（0=周日，6=周六）"
+                "description": "Weekdays (0=Sunday, 6=Saturday)"
               }
             }
           },
           "escalation_policy": {
             "type": "object",
-            "description": "升级策略",
+            "description": "Escalation policy",
             "properties": {
               "enabled": {
                 "type": "boolean",
-                "description": "是否启用升级"
+                "description": "Whether escalation is enabled"
               },
               "escalation_timeout": {
                 "type": "integer",
-                "description": "升级超时时间（分钟）"
+                "description": "Escalation timeout (minutes)"
               },
               "escalation_levels": {
                 "type": "array",
@@ -665,34 +665,34 @@
                     }
                   }
                 },
-                "description": "升级级别配置"
+                "description": "Escalation level configuration"
               }
             }
           },
           "is_active": {
             "type": "boolean",
             "default": true,
-            "description": "是否激活"
+            "description": "Whether active"
           },
           "effective_start": {
             "type": "string",
             "format": "date-time",
-            "description": "生效开始时间"
+            "description": "Effective start time"
           },
           "effective_end": {
             "type": "string",
             "format": "date-time",
-            "description": "生效结束时间"
+            "description": "Effective end time"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Last update timestamp"
           }
         },
         "required": [
@@ -708,16 +708,16 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "值班计划名称"
+            "description": "Oncall schedule name"
           },
           "description": {
             "type": "string",
-            "description": "值班计划描述"
+            "description": "Oncall schedule description"
           },
           "schedule_type": {
             "type": "string",
             "enum": ["daily", "weekly", "monthly", "custom"],
-            "description": "值班计划类型"
+            "description": "Oncall schedule type"
           },
           "participants": {
             "type": "array",
@@ -726,42 +726,42 @@
               "properties": {
                 "user_id": {
                   "type": "string",
-                  "description": "用户ID"
+                  "description": "User ID"
                 },
                 "user_name": {
                   "type": "string",
-                  "description": "用户名"
+                  "description": "User name"
                 },
                 "contact_info": {
                   "type": "object",
-                  "description": "联系信息"
+                  "description": "Contact information"
                 },
                 "priority": {
                   "type": "integer",
-                  "description": "优先级"
+                  "description": "Priority"
                 }
               },
               "required": ["user_id", "user_name"]
             },
-            "description": "值班参与者列表"
+            "description": "Oncall participants list"
           },
           "schedule_config": {
             "type": "object",
-            "description": "值班计划配置"
+            "description": "Oncall schedule configuration"
           },
           "escalation_policy": {
             "type": "object",
-            "description": "升级策略"
+            "description": "Escalation policy"
           },
           "effective_start": {
             "type": "string",
             "format": "date-time",
-            "description": "生效开始时间"
+            "description": "Effective start time"
           },
           "effective_end": {
             "type": "string",
             "format": "date-time",
-            "description": "生效结束时间"
+            "description": "Effective end time"
           }
         },
         "required": ["name", "schedule_type", "participants", "schedule_config"]
@@ -771,40 +771,40 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "值班计划名称"
+            "description": "Oncall schedule name"
           },
           "description": {
             "type": "string",
-            "description": "值班计划描述"
+            "description": "Oncall schedule description"
           },
           "participants": {
             "type": "array",
             "items": {
               "type": "object"
             },
-            "description": "值班参与者列表"
+            "description": "Oncall participants list"
           },
           "schedule_config": {
             "type": "object",
-            "description": "值班计划配置"
+            "description": "Oncall schedule configuration"
           },
           "escalation_policy": {
             "type": "object",
-            "description": "升级策略"
+            "description": "Escalation policy"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否激活"
+            "description": "Whether active"
           },
           "effective_start": {
             "type": "string",
             "format": "date-time",
-            "description": "生效开始时间"
+            "description": "Effective start time"
           },
           "effective_end": {
             "type": "string",
             "format": "date-time",
-            "description": "生效结束时间"
+            "description": "Effective end time"
           }
         }
       },

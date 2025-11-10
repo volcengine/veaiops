@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 火山引擎指标选择组件导出
+ * Volcengine metric selection component export
  */
 
 export { VolcengineMetricSelection } from './volcengine-metric-selection';

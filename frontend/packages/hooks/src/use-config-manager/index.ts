@@ -16,59 +16,59 @@ import { Message } from '@arco-design/web-react';
 import { useCallback, useEffect, useState } from 'react';
 
 /**
- * 配置管理选项
+ * Configuration management options
  */
 export interface UseConfigManagerOptions<T> {
-  /** 配置类型标识 */
+  /** Configuration type identifier */
   configType: string;
-  /** 加载配置函数 */
+  /** Load configuration function */
   loadConfig: () => Promise<T>;
-  /** 保存配置函数 */
+  /** Save configuration function */
   saveConfig: (config: T) => Promise<void>;
-  /** 重置配置函数 */
+  /** Reset configuration function */
   resetConfig?: () => Promise<T>;
-  /** 验证配置函数 */
+  /** Validate configuration function */
   validateConfig?: (config: T) => Promise<boolean>;
-  /** 导出配置函数 */
+  /** Export configuration function */
   exportConfig?: (config: T) => Promise<void>;
-  /** 导入配置函数 */
+  /** Import configuration function */
   importConfig?: (file: File) => Promise<T>;
-  /** 是否启用自动保存 */
+  /** Whether to enable auto-save */
   autoSave?: boolean;
-  /** 自动保存间隔(毫秒) */
+  /** Auto-save interval (milliseconds) */
   autoSaveInterval?: number;
 }
 
 /**
- * 配置管理结果
+ * Configuration management result
  */
 export interface UseConfigManagerResult<T> {
-  /** 当前配置 */
+  /** Current configuration */
   config: T | null;
-  /** 加载状态 */
+  /** Loading state */
   loading: boolean;
-  /** 保存状态 */
+  /** Saving state */
   saving: boolean;
-  /** 错误信息 */
+  /** Error information */
   error: Error | null;
-  /** 加载配置 */
+  /** Load configuration */
   loadConfig: () => Promise<void>;
-  /** 保存配置 */
+  /** Save configuration */
   saveConfig: (config: T) => Promise<void>;
-  /** 重置配置 */
+  /** Reset configuration */
   resetConfig: () => Promise<T>;
-  /** 验证配置 */
+  /** Validate configuration */
   validateConfig: (config: T) => Promise<boolean>;
-  /** 导出配置 */
+  /** Export configuration */
   exportConfig: (config: T) => Promise<void>;
-  /** 导入配置 */
+  /** Import configuration */
   importConfig: (file: File) => Promise<T>;
-  /** 刷新配置 */
+  /** Refresh configuration */
   refresh: () => Promise<void>;
 }
 
 /**
- * 配置变更检测Hook
+ * Configuration change detection Hook
  */
 export const useConfigChanges = <T>(
   originalConfig: T | null,
@@ -82,7 +82,7 @@ export const useConfigChanges = <T>(
       return;
     }
 
-    // 深度比较配置对象
+    // Deep compare configuration objects
     const isEqual =
       JSON.stringify(originalConfig) === JSON.stringify(currentConfig);
     setHasChanges(!isEqual);
@@ -92,10 +92,8 @@ export const useConfigChanges = <T>(
 };
 
 /**
- * 配置管理Hook
- * @description 提供配置的CRUD操作、变更检测、自动保存等功能
-
-
+ * Configuration management Hook
+ * @description Provides CRUD operations, change detection, auto-save, and other features for configurations
  */
 export const useConfigManager = <T>(
   options: UseConfigManagerOptions<T>,
@@ -109,7 +107,7 @@ export const useConfigManager = <T>(
     exportConfig: exportConfigFn,
     importConfig: importConfigFn,
     autoSave = false,
-    autoSaveInterval = 30000, // 30秒
+    autoSaveInterval = 30000, // 30 seconds
   } = options;
 
   const [config, setConfig] = useState<T | null>(null);
@@ -117,7 +115,7 @@ export const useConfigManager = <T>(
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  // 加载配置
+  // Load configuration
   const loadConfig = useCallback(async () => {
     try {
       setLoading(true);
@@ -136,14 +134,14 @@ export const useConfigManager = <T>(
     }
   }, [loadConfigFn, configType]);
 
-  // 保存配置
+  // Save configuration
   const saveConfig = useCallback(
     async (configToSave: T) => {
       try {
         setSaving(true);
         setError(null);
 
-        // 验证配置
+        // Validate configuration
         if (validateConfigFn) {
           const isValid = await validateConfigFn(configToSave);
           if (!isValid) {
@@ -168,7 +166,7 @@ export const useConfigManager = <T>(
     [saveConfigFn, validateConfigFn, configType],
   );
 
-  // 重置配置
+  // Reset configuration
   const resetConfig = useCallback(async (): Promise<T> => {
     if (!resetConfigFn) {
       throw new Error('重置配置功能未实现');
@@ -195,7 +193,7 @@ export const useConfigManager = <T>(
     }
   }, [resetConfigFn, configType]);
 
-  // 验证配置
+  // Validate configuration
   const validateConfig = useCallback(
     async (configToValidate: T): Promise<boolean> => {
       if (!validateConfigFn) {
@@ -205,14 +203,14 @@ export const useConfigManager = <T>(
       try {
         return await validateConfigFn(configToValidate);
       } catch (error) {
-        // 配置验证失败，返回 false（静默处理）
+        // Configuration validation failed, return false (silent handling)
         return false;
       }
     },
     [validateConfigFn, configType],
   );
 
-  // 导出配置
+  // Export configuration
   const exportConfig = useCallback(
     async (configToExport: T) => {
       if (!exportConfigFn) {
@@ -233,7 +231,7 @@ export const useConfigManager = <T>(
     [exportConfigFn, configType],
   );
 
-  // 导入配置
+  // Import configuration
   const importConfig = useCallback(
     async (file: File): Promise<T> => {
       if (!importConfigFn) {
@@ -257,12 +255,12 @@ export const useConfigManager = <T>(
     [importConfigFn, configType],
   );
 
-  // 刷新配置
+  // Refresh configuration
   const refresh = useCallback(async () => {
     await loadConfig();
   }, [loadConfig]);
 
-  // 自动保存
+  // Auto-save
   useEffect(() => {
     if (!autoSave || !config) {
       return undefined;
@@ -275,7 +273,7 @@ export const useConfigManager = <T>(
     return () => clearInterval(timer);
   }, [autoSave, config, saveConfig, autoSaveInterval]);
 
-  // 初始化加载
+  // Initial load
   useEffect(() => {
     loadConfig();
   }, [loadConfig]);

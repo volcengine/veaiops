@@ -20,15 +20,15 @@ import type React from 'react';
 const { Text } = Typography;
 
 /**
- * 渠道消息组件属性接口
+ * Channel message component props interface
  */
 interface ChannelMessageProps {
   selectedRecord: Event;
 }
 
 /**
- * 渠道消息组件
- * 显示事件的渠道消息信息
+ * Channel message component
+ * Displays channel message information of the event
  */
 export const ChannelMessage: React.FC<ChannelMessageProps> = ({
   selectedRecord,

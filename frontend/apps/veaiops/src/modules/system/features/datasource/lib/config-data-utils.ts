@@ -29,7 +29,7 @@
 import type { DataSource, DataSourceType } from 'api-generate';
 
 /**
- * 数据源记录扩展类型（包含特定配置字段）
+ * Data source record extended type (contains specific configuration fields)
  */
 export type DataSourceWithConfigs = DataSource & {
   volcengine_config?: Record<string, unknown>;
@@ -38,18 +38,18 @@ export type DataSourceWithConfigs = DataSource & {
 };
 
 /**
- * 根据数据源类型获取配置数据
+ * Get configuration data based on data source type
  *
- * 为什么使用类型断言：
- * - DataSource 类型定义可能不包含特定数据源的配置字段（volcengine_config、aliyun_config、zabbix_config）
- * - 实际API返回的数据包含这些字段，但类型定义可能不完整
- * - 使用类型断言确保类型安全，运行时数据由API保证正确性
+ * Why use type assertion:
+ * - DataSource type definition may not include specific data source configuration fields (volcengine_config, aliyun_config, zabbix_config)
+ * - Actual API returned data contains these fields, but type definition may be incomplete
+ * - Use type assertion to ensure type safety, runtime data correctness guaranteed by API
  *
- * TODO: 完善 api-generate 中的 DataSource 类型定义，添加可选配置字段
+ * TODO: Improve DataSource type definition in api-generate, add optional configuration fields
  *
- * @param record - 数据源记录
- * @param dsType - 数据源类型
- * @returns 配置数据对象
+ * @param record - Data source record
+ * @param dsType - Data source type
+ * @returns Configuration data object
  */
 export interface GetConfigDataParams {
   record: DataSource;
@@ -60,7 +60,7 @@ export const getConfigData = ({
   record,
   dsType,
 }: GetConfigDataParams): Record<string, unknown> | undefined => {
-  // 使用类型断言，因为实际数据结构包含特定配置字段
+  // Use type assertion because actual data structure contains specific configuration fields
   const recordWithConfigs = record as DataSourceWithConfigs;
 
   switch (dsType) {

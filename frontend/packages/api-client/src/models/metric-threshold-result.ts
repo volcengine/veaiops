@@ -16,27 +16,27 @@
 import type { IntelligentThresholdConfig } from './intelligent-threshold-config';
 export type MetricThresholdResult = {
   /**
-   * 指标名称
+   * Metric name
    */
   name: string;
   /**
-   * 唯一标识
+   * Unique identifier
    */
   unique_key: string;
   /**
-   * 阈值配置列表
+   * List of threshold configurations
    */
   thresholds: Array<IntelligentThresholdConfig>;
   /**
-   * 标签
+   * Labels
    */
   labels: Record<string, string>;
   /**
-   * 状态（Success 或 Failed）
+   * Status (Success or Failed)
    */
   status?: string;
   /**
-   * 错误信息（如果状态为 Failed）
+   * Error message (if status is Failed)
    */
   error_message?: string;
 };

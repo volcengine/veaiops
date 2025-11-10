@@ -21,9 +21,9 @@ import type { MetricTemplateFilterParams } from "./types";
 import { getMetricTypeOptions } from "./metric-type-translations";
 
 /**
- * 指标模板筛选配置 - CustomTable标准格式
- * @param props - 筛选器属性参数
- * @returns FieldItem[] - 符合CustomTable要求的筛选配置
+ * Metric template filter configuration - CustomTable standard format
+ * @param props - Filter props parameters
+ * @returns FieldItem[] - Filter configuration meeting CustomTable requirements
  */
 export const getMetricTemplateFilters = (
   props: HandleFilterProps<MetricTemplateFilterParams & BaseQuery>,
@@ -61,7 +61,7 @@ export const getMetricTemplateFilters = (
 };
 
 /**
- * 转换筛选参数为API请求参数
+ * Transform filter parameters to API request parameters
  */
 export const transformFilterParams = (
   filters: Record<string, unknown>,
@@ -78,12 +78,12 @@ export const transformFilterParams = (
 };
 
 /**
- * 验证筛选参数
+ * Validate filter parameters
  */
 export const validateFilterParams = (
   params: MetricTemplateFilterParams
 ): boolean => {
-  // 基本验证
+  // Basic validation
   if (params.skip !== undefined && params.skip < 0) {
     return false;
   }
@@ -95,7 +95,7 @@ export const validateFilterParams = (
     return false;
   }
 
-  // 字符串长度验证
+  // String length validation
   if (params.name && params.name.length > 100) {
     return false;
   }

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 订阅管理 UI 组件统一导出
+ * Subscription management UI components unified export
  */
 
 export { default as SubscriptionManagement } from './subscription-management';
@@ -22,6 +22,6 @@ export { default as SubscriptionModal } from './subscription-modal';
 export { getSubscriptionTableColumns } from './subscription-table-columns';
 export { useSubscriptionTableFilters } from './subscription-table-filters';
 
-// 订阅关系页面组件
+// Subscription relation page components
 export { SubscribeRelationForm } from './relation-form';
 export { default as SubscribeRelationManager } from './relation-manager';

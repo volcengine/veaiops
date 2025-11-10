@@ -16,18 +16,18 @@ import { startLogCollection } from '@veaiops/utils';
 import { useEffect } from 'react';
 
 /**
- * 全局日志收集 Hook
- * 在页面加载时自动开始收集日志
- * 并提供日志导出功能
+ * Global log collection Hook
+ * Automatically start collecting logs when page loads
+ * Provides log export functionality
  */
 export const useGlobalLogCollection = () => {
   useEffect(() => {
-    // 页面加载时自动开始收集日志
+    // Automatically start collecting logs when page loads
     startLogCollection();
 
-    // 清理函数：如果需要可以在这里添加停止日志收集的逻辑
+    // Cleanup function: add logic to stop log collection if needed
     return () => {
-      // 可选：页面卸载时停止收集
+      // Optional: stop collection when page unloads
       // stopLogCollection();
     };
   }, []);

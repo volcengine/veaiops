@@ -15,5 +15,5 @@
 export { getCardTemplateColumns } from "./columns";
 export { getCardTemplateFilters } from "./filters";
 
-// 注意：CHANNEL_TYPE_OPTIONS 已迁移到 @veaiops/constants，统一使用 CHANNEL_OPTIONS
-// 使用方式: import { CHANNEL_OPTIONS } from '@veaiops/constants';
+// Note: CHANNEL_TYPE_OPTIONS has been migrated to @veaiops/constants, use CHANNEL_OPTIONS uniformly
+// Usage: import { CHANNEL_OPTIONS } from '@veaiops/constants';

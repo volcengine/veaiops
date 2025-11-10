@@ -18,12 +18,12 @@ import {
   AGENT_OPTIONS_THRESHOLD_FILTER,
 } from '@/pages/event-center/card-template/types';
 import { ModuleType } from '@/types/module';
-import { Card, Form, Input, Select } from '@arco-design/web-react';
+import { Card, DatePicker, Form, Input, Select } from '@arco-design/web-react';
 import type { FormInstance } from '@arco-design/web-react';
-import { RangePicker } from '@veaiops/components';
 import type React from 'react';
 
 const FormItem = Form.Item;
+const { RangePicker } = DatePicker;
 
 /**
  * Basic info form component props interface
@@ -51,7 +51,7 @@ export const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
     if (moduleType === ModuleType.INTELLIGENT_THRESHOLD) {
       return AGENT_OPTIONS_THRESHOLD_FILTER;
     }
-    // Event center module and default case: Content recognition Agent + Intelligent threshold Agent
+    // Event center module and default: Content recognition Agent + Intelligent threshold Agent
     return AGENT_OPTIONS_EVENT_CENTER_SUBSCRIPTION;
   };
 

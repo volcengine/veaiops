@@ -41,9 +41,9 @@ export const Tip = React.forwardRef<HTMLDivElement, TipProps>(
       steps = [],
       showPreviousBtn = false,
       handlePreviousChange,
-      _prevText = '上一步',
+      _prevText = 'Previous',
       handleNextChange,
-      _okText = '确定',
+      _okText = 'OK',
       _closeText,
       showStepInfo = false,
       showAction = false,
@@ -80,7 +80,7 @@ export const Tip = React.forwardRef<HTMLDivElement, TipProps>(
       });
     }, [ref, theme, arrowStyle]);
 
-    // 合并内联样式
+    // Merge inline styles
     const combinedStyle = {
       ...modalStyle,
       ...(isBitsTheme

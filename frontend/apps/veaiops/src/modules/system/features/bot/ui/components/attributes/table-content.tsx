@@ -23,7 +23,7 @@ import { BotAttributeFormModal } from '../bot/attribute-form-modal';
 import { AttributeDetailModal } from './detail-modal';
 
 /**
- * 属性表格内容组件 Props
+ * Attribute table content component Props
  */
 export interface AttributesTableContentProps {
   botId?: string;
@@ -31,25 +31,25 @@ export interface AttributesTableContentProps {
 }
 
 /**
- * 属性表格内容组件
+ * Attribute table content component
  *
- * 架构说明：
- * - 内部使用 useBotAttributesTable Hook 聚合所有表格相关功能（业务逻辑、配置、状态管理）
- * - 完全自包含表格相关的所有 UI 和逻辑：CustomTable、模态框、状态管理
- * - 符合 Feature-Based 架构的内聚原则：表格相关的所有内容都在此组件中
- * - 主组件只需传递必要的 props（botId、channel），无需管理内部状态
+ * Architecture description:
+ * - Internally uses useBotAttributesTable Hook to aggregate all table-related functionality (business logic, configuration, state management)
+ * - Fully self-contained for all table-related UI and logic: CustomTable, modals, state management
+ * - Follows Feature-Based architecture cohesion principle: all table-related content is in this component
+ * - Main component only needs to pass necessary props (botId, channel), no need to manage internal state
  */
 export const AttributesTableContent: React.FC<AttributesTableContentProps> = ({
   botId,
   channel,
 }) => {
-  // 🎯 表格相关功能完全聚合（业务逻辑、配置、事件处理、状态管理）
-  // 所有 table 相关逻辑都内聚在此组件内
+  // 🎯 Table-related functionality fully aggregated (business logic, configuration, event handling, state management)
+  // All table-related logic is cohesive within this component
   const table = useBotAttributesTable({ botId, channel });
 
   return (
     <>
-      {/* 🎯 CustomTable：表格主体 */}
+      {/* 🎯 CustomTable: Table main body */}
       <CustomTable<BotAttribute, BotAttributeFiltersQuery>
         ref={table.tableRef}
         actions={[
@@ -70,7 +70,7 @@ export const AttributesTableContent: React.FC<AttributesTableContentProps> = ({
         tableProps={table.tableProps}
       />
 
-      {/* 🎯 创建/编辑模态框（内聚在表格组件中） */}
+      {/* 🎯 Create/Edit modal (cohesive within table component) */}
       <BotAttributeFormModal
         visible={table.logic.isModalVisible}
         type={table.logic.modalType}
@@ -80,7 +80,7 @@ export const AttributesTableContent: React.FC<AttributesTableContentProps> = ({
         onCancel={table.logic.handleCloseModal}
       />
 
-      {/* 🎯 查看详情弹窗（内聚在表格组件中） */}
+      {/* 🎯 View details popup (cohesive within table component) */}
       <AttributeDetailModal
         visible={table.logic.viewModalVisible}
         attribute={table.logic.viewingAttribute || undefined}

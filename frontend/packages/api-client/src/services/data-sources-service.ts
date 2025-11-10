@@ -696,15 +696,15 @@ export class DataSourcesService {
   }
   /**
    * Get Zabbix Mediatypes
-   * 获取Zabbix数据源的告警通知方式列表
-   * @returns APIResponseZabbixMediatypeList 成功获取告警通知方式列表
+   * Get list of alert notification methods for Zabbix data source
+   * @returns APIResponseZabbixMediatypeList Successfully retrieved alert notification methods list
    * @throws ApiError
    */
   public getApisV1DatasourceZabbixDatasourceMediatypes({
     datasourceId,
   }: {
     /**
-     * 数据源ID
+     * Data source ID
      */
     datasourceId: string,
   }): CancelablePromise<APIResponseZabbixMediatypeList> {
@@ -718,15 +718,15 @@ export class DataSourcesService {
   }
   /**
    * Get Zabbix Usergroups
-   * 获取Zabbix数据源的告警组列表
-   * @returns APIResponseZabbixUserGroupList 成功获取告警组列表
+   * Get list of alert groups for Zabbix data source
+   * @returns APIResponseZabbixUserGroupList Successfully retrieved alert groups list
    * @throws ApiError
    */
   public getApisV1DatasourceZabbixDatasourceUsergroups({
     datasourceId,
   }: {
     /**
-     * 数据源ID
+     * Data source ID
      */
     datasourceId: string,
   }): CancelablePromise<APIResponseZabbixUserGroupList> {
@@ -820,8 +820,8 @@ export class DataSourcesService {
   }
   /**
    * Fetch Data Api
-   * 从数据源获取数据
-   * @returns APIResponse 数据获取成功
+   * Fetch data from data source
+   * @returns APIResponse Data fetched successfully
    * @throws ApiError
    */
   public postApisV1DatasourceFetch({
@@ -829,11 +829,11 @@ export class DataSourcesService {
   }: {
     requestBody: {
       /**
-       * 数据源ID
+       * Data source ID
        */
       datasource_id: string;
       /**
-       * 查询参数
+       * Query parameters
        */
       query: Record<string, any>;
     },

@@ -26,24 +26,24 @@ import {
 import type { UserFormData } from './lib/types';
 
 /**
- * 账号管理逻辑Hook
- * 提供账号管理页面的所有业务逻辑
+ * Account management logic Hook
+ * Provides all business logic for account management page
  */
 export const useAccount = (refreshTable?: () => Promise<boolean>) => {
-  // 使用管理刷新 Hook
+  // Use management refresh Hook
   const { afterCreate, afterUpdate, afterDelete } =
     useManagementRefresh(refreshTable);
   const [form] = Form.useForm();
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 删除用户
+  // Delete user
   const handleDelete = useCallback(
     async (userId: string) => {
       try {
         const success = await deleteUser(userId);
         if (success) {
-          // 删除成功后刷新表格
+          // Refresh table after successful deletion
           const refreshResult = await afterDelete();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
@@ -70,7 +70,7 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
     [afterDelete],
   );
 
-  // 创建用户
+  // Create user
   const handleCreate = useCallback(
     async (values: UserFormData) => {
       try {
@@ -78,7 +78,7 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
         if (success) {
           setModalVisible(false);
           form.resetFields();
-          // 创建成功后刷新表格
+          // Refresh table after successful creation
           const refreshResult = await afterCreate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
@@ -105,7 +105,7 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
     [form, afterCreate],
   );
 
-  // 更新用户
+  // Update user
   const handleUpdate = useCallback(
     async (values: UserFormData) => {
       if (!editingUser || !editingUser._id) {
@@ -122,7 +122,7 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
           setModalVisible(false);
           setEditingUser(null);
           form.resetFields();
-          // 更新成功后刷新表格
+          // Refresh table after successful update
           const refreshResult = await afterUpdate();
           if (!refreshResult.success && refreshResult.error) {
             logger.warn({
@@ -149,7 +149,7 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
     [editingUser, form, afterUpdate],
   );
 
-  // 处理表单提交
+  // Handle form submission
   const handleSubmit = useCallback(
     async (values: UserFormData) => {
       if (editingUser) {
@@ -161,7 +161,7 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
     [editingUser, handleUpdate, handleCreate],
   );
 
-  // 打开编辑弹窗
+  // Open edit modal
   const handleEdit = useCallback(
     (user: User) => {
       setEditingUser(user);
@@ -176,14 +176,14 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
     [form],
   );
 
-  // 打开新增弹窗
+  // Open add modal
   const handleAdd = useCallback(() => {
     setEditingUser(null);
     form.resetFields();
     setModalVisible(true);
   }, [form]);
 
-  // 关闭弹窗
+  // Close modal
   const handleCancel = useCallback(() => {
     setModalVisible(false);
     setEditingUser(null);
@@ -191,12 +191,12 @@ export const useAccount = (refreshTable?: () => Promise<boolean>) => {
   }, [form]);
 
   return {
-    // 状态
+    // State
     modalVisible,
     editingUser,
     form,
 
-    // 事件处理器
+    // Event handlers
     handleEdit,
     handleAdd,
     handleCancel,

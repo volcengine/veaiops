@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// 登录组件统一导出
+// Unified login component exports
 export { default as LoginCard } from './login-card';
 export { default as LoginHeader } from './login-header';
 export { default as LoginForm } from './login-form';

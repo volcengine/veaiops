@@ -20,7 +20,7 @@ import { renderAliyunInstancesList } from '../../../../renderers/providers/aliyu
 import { getConfigData } from '../utils';
 
 /**
- * 创建阿里云特定字段列
+ * Create Aliyun-specific field columns
  */
 export const createAliyunFields = (
   dataSourceType: DataSourceType,

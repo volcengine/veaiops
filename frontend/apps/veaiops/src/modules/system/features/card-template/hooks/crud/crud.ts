@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * Card Template CRUD 操作 Hook
- * @description 卡片模板的创建、更新、删除操作
+ * Card Template CRUD operations Hook
+ * @description Card template create, update, delete operations
  */
 
 import apiClient from '@/utils/api-client';
@@ -30,19 +30,19 @@ import type {
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
- * Card Template CRUD Hook 返回值
+ * Card Template CRUD Hook return value
  */
 export interface UseCardTemplateCRUDReturn {
-  // 状态
+  // State
   form: FormInstance;
   editingTemplate: AgentTemplate | null;
   modalVisible: boolean;
 
-  // 状态管理
+  // State management
   setEditingTemplate: (template: AgentTemplate | null) => void;
   setModalVisible: (visible: boolean) => void;
 
-  // CRUD 操作
+  // CRUD operations
   createTemplate: (
     templateData: AgentTemplateCreateRequest,
   ) => Promise<boolean>;
@@ -52,9 +52,9 @@ export interface UseCardTemplateCRUDReturn {
   }) => Promise<boolean>;
   deleteTemplate: (templateId: string) => Promise<boolean>;
 
-  // 业务处理器
-  handleEdit: (template: AgentTemplate) => void; // 只负责打开弹窗，不需要返回值
-  handleAdd: () => void; // 只负责打开弹窗，不需要返回值
+  // Business handlers
+  handleEdit: (template: AgentTemplate) => void; // Only responsible for opening modal, no return value needed
+  handleAdd: () => void; // Only responsible for opening modal, no return value needed
   handleCancel: () => void;
   handleDelete: (templateId: string) => Promise<boolean>;
   handleCreate: (values: AgentTemplateCreateRequest) => Promise<boolean>;
@@ -68,12 +68,12 @@ export interface UseCardTemplateCRUDReturn {
  * Card Template CRUD Hook
  */
 export const useCardTemplateCRUD = (): UseCardTemplateCRUDReturn => {
-  // 🔍 日志：Hook 执行入口
+  // 🔍 Log: Hook execution entry
   const renderCountRef = useRef(0);
   renderCountRef.current += 1;
 
   logger.info({
-    message: '🟢 [useCardTemplateCRUD] Hook 执行',
+    message: '🟢 [useCardTemplateCRUD] Hook executed',
     data: {
       renderCount: renderCountRef.current,
       timestamp: Date.now(),
@@ -88,25 +88,25 @@ export const useCardTemplateCRUD = (): UseCardTemplateCRUDReturn => {
   );
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 🔍 日志：监控 modalVisible 变化
+  // 🔍 Log: Monitor modalVisible changes
   useEffect(() => {
     logger.info({
-      message: '🔵 [useCardTemplateCRUD] modalVisible 状态变化',
+      message: '🔵 [useCardTemplateCRUD] modalVisible state changed',
       data: {
         modalVisible,
         hasEditingTemplate: Boolean(editingTemplate),
         editingTemplateId: editingTemplate?._id,
         timestamp: Date.now(),
-        stack: new Error().stack?.split('\n').slice(1, 5).join('\n'), // 调用堆栈
+        stack: new Error().stack?.split('\n').slice(1, 5).join('\n'), // Call stack
       },
       source: 'useCardTemplateCRUD',
       component: 'modalVisible-effect',
     });
   }, [modalVisible, editingTemplate]);
 
-  // 🎯 CRUD 操作函数
+  // 🎯 CRUD operation functions
   /**
-   * 创建卡片模版
+   * Create card template
    */
   const createTemplate = useCallback(
     async (templateData: AgentTemplateCreateRequest): Promise<boolean> => {
@@ -135,7 +135,7 @@ export const useCardTemplateCRUD = (): UseCardTemplateCRUDReturn => {
   );
 
   /**
-   * 更新卡片模版
+   * Update card template
    */
   interface UpdateTemplateParams {
     templateId: string;
@@ -173,7 +173,7 @@ export const useCardTemplateCRUD = (): UseCardTemplateCRUDReturn => {
   );
 
   /**
-   * 删除卡片模版
+   * Delete card template
    */
   const deleteTemplate = useCallback(
     async (templateId: string): Promise<boolean> => {
@@ -201,7 +201,7 @@ export const useCardTemplateCRUD = (): UseCardTemplateCRUDReturn => {
     [],
   );
 
-  // 🎯 业务逻辑处理器
+  // 🎯 Business logic handlers
   const handleDelete = useCallback(
     async (templateId: string) => {
       try {
@@ -280,17 +280,17 @@ export const useCardTemplateCRUD = (): UseCardTemplateCRUDReturn => {
   const handleEdit = useCallback(
     (template: AgentTemplate) => {
       logger.info({
-        message: '🟢 [useCardTemplateCRUD] handleEdit 被调用',
+        message: '🟢 [useCardTemplateCRUD] handleEdit called',
         data: {
           timestamp: Date.now(),
           templateId: template._id,
-          stack: new Error().stack?.split('\n').slice(1, 8).join('\n'), // 调用堆栈
+          stack: new Error().stack?.split('\n').slice(1, 8).join('\n'), // Call stack
         },
         source: 'useCardTemplateCRUD',
         component: 'handleEdit',
       });
       setEditingTemplate(template);
-      // ✅ 修复：将后端的 agent_type 字段转换为表单的 agents 数组
+      // ✅ Fix: Convert backend agent_type field to form agents array
       form.setFieldsValue({
         ...template,
         agents: template?.agent_type ? [template?.agent_type] : undefined,
@@ -302,10 +302,10 @@ export const useCardTemplateCRUD = (): UseCardTemplateCRUDReturn => {
 
   const handleAdd = useCallback(() => {
     logger.info({
-      message: '🟢 [useCardTemplateCRUD] handleAdd 被调用',
+      message: '🟢 [useCardTemplateCRUD] handleAdd called',
       data: {
         timestamp: Date.now(),
-        stack: new Error().stack?.split('\n').slice(1, 8).join('\n'), // 调用堆栈
+        stack: new Error().stack?.split('\n').slice(1, 8).join('\n'), // Call stack
       },
       source: 'useCardTemplateCRUD',
       component: 'handleAdd',
@@ -317,7 +317,7 @@ export const useCardTemplateCRUD = (): UseCardTemplateCRUDReturn => {
 
   const handleCancel = useCallback(() => {
     logger.info({
-      message: '🟢 [useCardTemplateCRUD] handleCancel 被调用',
+      message: '🟢 [useCardTemplateCRUD] handleCancel called',
       data: {
         timestamp: Date.now(),
       },

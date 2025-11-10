@@ -12,31 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Button, Typography } from '@arco-design/web-react';
-import { IconClose } from '@arco-design/web-react/icon';
+import { ModuleType } from '@/types/module';
 import type React from 'react';
+import { SubscribeRelationPage } from './ui';
 
-import style from './styles';
-
-const { Title } = Typography;
-
-interface PanelHeaderProps {
-  onClose: () => void;
-}
-
-export const PanelHeader: React.FC<PanelHeaderProps> = ({ onClose }) => {
+/**
+ * Intelligent threshold subscription rules page
+ * @description Reuses common subscription relation component, distinguishes intelligent threshold module through moduleType
+ */
+export const SubscriptionPage: React.FC = () => {
   return (
-    <div className={style.panelHeader}>
-      <Title heading={6} className={style.panelTitle}>
-        全局配置向导
-      </Title>
-      <Button
-        type="text"
-        size="small"
-        icon={<IconClose />}
-        onClick={onClose}
-        className={style.closeBtn}
-      />
-    </div>
+    <SubscribeRelationPage moduleType={ModuleType.INTELLIGENT_THRESHOLD} />
   );
 };

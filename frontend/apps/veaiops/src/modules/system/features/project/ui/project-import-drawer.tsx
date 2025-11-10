@@ -39,7 +39,7 @@ interface ProjectImportDrawerProps {
 }
 
 /**
- * 项目导入抽屉组件
+ * Project import drawer component
  */
 export const ProjectImportDrawer: React.FC<ProjectImportDrawerProps> = ({
   visible,
@@ -67,11 +67,11 @@ export const ProjectImportDrawer: React.FC<ProjectImportDrawerProps> = ({
   };
 
   const downloadTemplate = () => {
-    // 创建CSV模板
+    // Create CSV template
     const csvContent =
       'project_id,name,description\n' +
-      'PROJ001,示例项目1,这是一个示例项目描述\n' +
-      'PROJ002,示例项目2,这是另一个示例项目描述';
+      'PROJ001,Example Project 1,This is an example project description\n' +
+      'PROJ002,Example Project 2,This is another example project description';
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
@@ -90,7 +90,7 @@ export const ProjectImportDrawer: React.FC<ProjectImportDrawerProps> = ({
         <Space>
           <IconUpload />
           <Title heading={6} className="m-0">
-            导入项目数据
+            Import Project Data
           </Title>
         </Space>
       }
@@ -102,35 +102,35 @@ export const ProjectImportDrawer: React.FC<ProjectImportDrawerProps> = ({
       footer={
         <div className="text-right">
           <Space>
-            <Button onClick={handleClose}>取消</Button>
+            <Button onClick={handleClose}>Cancel</Button>
             <Button
               type="primary"
               loading={loading}
               disabled={fileList.length === 0}
               onClick={handleUpload}
             >
-              开始导入
+              Start Import
             </Button>
           </Space>
         </div>
       }
     >
       <Space direction="vertical" size="large" className="w-full">
-        {/* 导入说明 */}
+        {/* Import instructions */}
         <Alert
           type="info"
           content={
             <Space direction="vertical" size="small">
-              <Text>请按照以下要求准备CSV文件：</Text>
-              <Text>• 文件格式：CSV (逗号分隔值)</Text>
-              <Text>• 字符编码：UTF-8</Text>
-              <Text>• 必填字段：project_id, name</Text>
-              <Text>• 可选字段：description</Text>
+              <Text>Please prepare the CSV file according to the following requirements:</Text>
+              <Text>• File format: CSV (Comma-Separated Values)</Text>
+              <Text>• Character encoding: UTF-8</Text>
+              <Text>• Required fields: project_id, name</Text>
+              <Text>• Optional fields: description</Text>
             </Space>
           }
         />
 
-        {/* 模板下载 */}
+        {/* Template download */}
         <div>
           <Space>
             <Button
@@ -138,18 +138,18 @@ export const ProjectImportDrawer: React.FC<ProjectImportDrawerProps> = ({
               icon={<IconDownload />}
               onClick={downloadTemplate}
             >
-              下载模板文件
+              Download Template
             </Button>
-            <Text type="secondary">建议先下载模板文件，按格式填写数据</Text>
+            <Text type="secondary">It is recommended to download the template file first and fill in the data according to the format</Text>
           </Space>
         </div>
 
         <Divider />
 
-        {/* 文件上传 */}
+        {/* File upload */}
         <div>
           <Title heading={6} className="mb-4">
-            选择文件
+            Select File
           </Title>
           <Upload
             fileList={fileList}
@@ -157,32 +157,32 @@ export const ProjectImportDrawer: React.FC<ProjectImportDrawerProps> = ({
             accept=".csv"
             limit={1}
             drag
-            tip="支持拖拽上传，仅支持CSV格式文件"
+            tip="Drag and drop upload supported, CSV format files only"
             autoUpload={false}
             beforeUpload={() => true}
           >
             <div style={{ textAlign: 'center', padding: '40px 0' }}>
               <IconFile style={{ fontSize: '48px', color: '#C9CDD4' }} />
               <div style={{ marginTop: '16px' }}>
-                <Text>点击或拖拽文件到此区域上传</Text>
+                <Text>Click or drag files to this area to upload</Text>
               </div>
               <div style={{ marginTop: '8px' }}>
                 <Text type="secondary" className="text-xs">
-                  支持 .csv 格式，文件大小不超过 10MB
+                  Supports .csv format, file size not exceeding 10MB
                 </Text>
               </div>
             </div>
           </Upload>
         </div>
 
-        {/* 注意事项 */}
+        {/* Important notes */}
         <Alert
           type="warning"
           content={
             <Space direction="vertical" size="small">
-              <Text className="font-bold">注意事项：</Text>
-              <Text>• 导入过程中请勿关闭页面或刷新浏览器</Text>
-              <Text>• 如果项目ID已存在，将跳过该条记录</Text>
+              <Text className="font-bold">Important Notes:</Text>
+              <Text>• Do not close the page or refresh the browser during the import process</Text>
+              <Text>• If a project ID already exists, that record will be skipped</Text>
             </Space>
           }
         />

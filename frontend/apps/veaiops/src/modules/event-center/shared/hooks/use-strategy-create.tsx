@@ -24,28 +24,28 @@ import type {
 } from './types/drawer-management';
 
 /**
- * 策略创建Hook
- * 提供策略创建的完整功能，包括状态管理、API调用和UI渲染
+ * Strategy create Hook
+ * Provides complete functionality for strategy creation, including state management, API calls, and UI rendering
  */
 export const useStrategyCreate = (
   config: UseStrategyCreateConfig = {},
 ): UseStrategyCreateReturn => {
   const { onSuccess, width = 800 } = config;
 
-  // 状态管理
+  // State management
   const [visible, setVisible] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [form] = Form.useForm();
 
   /**
-   * 打开策略创建抽屉
+   * Open strategy create drawer
    */
   const open = () => {
     setVisible(true);
   };
 
   /**
-   * 关闭策略创建抽屉
+   * Close strategy create drawer
    */
   const close = () => {
     setVisible(false);
@@ -53,14 +53,14 @@ export const useStrategyCreate = (
   };
 
   /**
-   * 处理策略创建
+   * Handle strategy creation
    */
   const handleCreate = async (
     values: InformStrategyCreate | InformStrategyUpdate,
   ): Promise<boolean> => {
     try {
-      // 使用策略创建API
-      // 确保传入的是InformStrategyCreate类型
+      // Use strategy create API
+      // Ensure the passed data is InformStrategyCreate type
       const createData: InformStrategyCreate = {
         name: values.name!,
         description: values.description,
@@ -86,9 +86,9 @@ export const useStrategyCreate = (
         Message.success('策略创建成功');
         setVisible(false);
         form.resetFields();
-        // 触发策略列表刷新
+        // Trigger strategy list refresh
         setRefreshTrigger((prev) => prev + 1);
-        // 执行成功回调
+        // Execute success callback
         onSuccess?.();
       } else {
         Message.error('策略创建失败，请重试');
@@ -96,7 +96,7 @@ export const useStrategyCreate = (
 
       return success;
     } catch (error: unknown) {
-      // ✅ 正确：透出实际的错误信息
+      // ✅ Correct: Expose actual error information
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       const errorMessage = errorObj.message || '策略创建失败，请重试';
@@ -106,7 +106,7 @@ export const useStrategyCreate = (
   };
 
   /**
-   * 渲染策略创建抽屉
+   * Render strategy create drawer
    */
   const renderDrawer = () => {
     return (

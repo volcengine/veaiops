@@ -16,7 +16,7 @@ import type { Bot, Chat } from 'api-generate';
 import { useState } from 'react';
 
 /**
- * Bot聊天管理状态管理
+ * Bot chat management state management
  */
 export const useBotChatState = () => {
   const [selectedBotId, setSelectedBotId] = useState<string>('');

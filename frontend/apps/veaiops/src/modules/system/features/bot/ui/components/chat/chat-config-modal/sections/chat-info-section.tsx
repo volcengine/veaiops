@@ -28,21 +28,21 @@ interface ChatInfoSectionProps {
 }
 
 /**
- * 群信息区块组件
+ * Chat info section component
  */
 export const ChatInfoSection: React.FC<ChatInfoSectionProps> = ({ chat }) => {
   const [copySuccess, setCopySuccess] = useState(false);
 
   const handleCopyChatId = async () => {
     if (chat?.chat_id) {
-      // ✅ 正确：检查 safeCopyToClipboard 的返回值
+      // ✅ Correct: check return value of safeCopyToClipboard
       const result = await safeCopyToClipboard(chat.chat_id);
 
       if (result.success) {
         setCopySuccess(true);
         setTimeout(() => setCopySuccess(false), 2000);
       }
-      // 复制失败，静默处理（不显示错误消息）
+      // Copy failed, silently handle (don't show error message)
     }
   };
 

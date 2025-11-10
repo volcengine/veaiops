@@ -41,8 +41,8 @@ export class IntelligentThresholdAlarmService {
   }
   /**
    * Sync Alarm Rules
-   * 同步告警规则
-   * @returns APIResponseSyncAlarmRulesResponse 同步告警规则成功
+   * Sync alarm rules
+   * @returns APIResponseSyncAlarmRulesResponse Sync alarm rules successfully
    * @throws ApiError
    */
   public postApisV1IntelligentThresholdAlarmSync({

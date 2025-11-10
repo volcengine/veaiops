@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 行选择插件默认配置
+ * Row selection plugin default configuration
  */
 import { PluginPriorityEnum } from '@/custom-table/types/core/enums';
 import type { RowSelectionConfig } from './types';

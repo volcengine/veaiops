@@ -14,52 +14,52 @@
 
 import { filterPresetRegistry } from '../presets';
 /**
- * 预设处理器
- * 处理带有预设配置的字段项
+ * Preset processor
+ * Process field items with preset configuration
  */
 import type { FieldItem } from './types';
 
 /**
- * 处理预设配置
- * @param field 字段配置
- * @returns 处理后的字段配置
+ * Process preset configuration
+ * @param field - Field configuration
+ * @returns - Processed field configuration
  */
 export const processPreset = (field: FieldItem): FieldItem => {
-  // 如果没有预设配置，直接返回
+  // If no preset configuration, return directly
   if (!field.preset) {
     return field;
   }
 
-  // 获取预设生成器
+  // Get preset generator
   const presetGenerator = filterPresetRegistry.get(field.preset);
   if (!presetGenerator) {
     return field;
   }
 
-  // 生成预设配置
+  // Generate preset configuration
   const presetConfig = presetGenerator(field.componentProps);
 
-  // 合并配置，用户配置优先
+  // Merge configuration, user configuration takes priority
   const mergedField: FieldItem = {
     ...presetConfig,
     ...field,
-    // 深度合并 componentProps
+    // Deep merge componentProps
     componentProps: {
       ...presetConfig.componentProps,
       ...field.componentProps,
     },
   };
 
-  // 移除 preset 属性，避免重复处理
+  // Remove preset property to avoid duplicate processing
   delete mergedField.preset;
 
   return mergedField;
 };
 
 /**
- * 批量处理预设配置
- * @param fields 字段配置列表
- * @returns 处理后的字段配置列表
+ * Batch process preset configurations
+ * @param fields - Field configuration list
+ * @returns - Processed field configuration list
  */
 export const processPresets = (fields: FieldItem[]): FieldItem[] => {
   return fields.map(processPreset);

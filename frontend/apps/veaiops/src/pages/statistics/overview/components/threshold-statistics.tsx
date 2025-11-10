@@ -33,8 +33,8 @@ interface ThresholdStatisticsProps {
 }
 
 /**
- * 智能阈值任务卡片组件
- * @description 展示智能阈值任务统计信息，采用现代化设计
+ * Intelligent threshold task card component
+ * @description Displays intelligent threshold task statistics with modern design
  */
 const IntelligentThresholdCard: React.FC<{
   statistics: SystemStatistics | null;
@@ -68,8 +68,8 @@ const IntelligentThresholdCard: React.FC<{
 };
 
 /**
- * 智能阈值统计组件
- * @description 展示智能阈值任务统计和趋势表
+ * Intelligent threshold statistics component
+ * @description Displays intelligent threshold task statistics and trend chart
  */
 export const ThresholdStatistics: React.FC<ThresholdStatisticsProps> = ({
   statistics,

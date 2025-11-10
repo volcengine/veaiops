@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 错误处理相关功能统一导出
+ * Error handling related functionality unified export
  */
 
 export * from './error-handler';

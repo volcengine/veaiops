@@ -15,7 +15,7 @@
 import type { AgentTemplate } from 'api-generate';
 
 /**
- * 卡片模板表格数据类型
+ * Card template table data type
  */
 export interface CardTemplateTableData extends AgentTemplate {
   key: string;

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 卡片模版管理引导页面
+ * Card template management guide page
 
  */
 
@@ -114,7 +114,7 @@ const StepCard = ({ onClose: _onClose }: { onClose?: () => void }) => {
                   访问飞书卡片搭建工具
                 </Button>
               </Link>
-              {/* <Button onClick={() => setCurrentStep(2)}>已完成登录</Button> */}
+              {/* <Button onClick={() => setCurrentStep(2)}>Login Completed</Button> */}
             </Space>
           </Space>
         </Card>
@@ -210,7 +210,7 @@ const StepCard = ({ onClose: _onClose }: { onClose?: () => void }) => {
               type="warning"
               content="请务必记录卡片模版ID，这是后续配置消息通知的关键信息。"
             />
-            {/* <Button onClick={() => setCurrentStep(4)}>已完成发布</Button> */}
+            {/* <Button onClick={() => setCurrentStep(4)}>Publish Completed</Button> */}
           </Space>
         </Card>
       ),

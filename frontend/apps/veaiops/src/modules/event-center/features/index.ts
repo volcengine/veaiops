@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /**
- * 事件中心功能模块统一导出
- * 基于 CustomTable 的模范实践改造
+ * Event center feature modules unified export
+ * Refactored based on CustomTable best practices
  */
 
-// 策略管理功能
+// Strategy management feature
 export {
   StrategyDetailDrawer,
   StrategyManagement,
@@ -26,7 +26,7 @@ export {
   useStrategyManagementLogic,
 } from './strategy';
 
-// 订阅管理功能
+// Subscription management feature
 export {
   SubscriptionManagement,
   SubscriptionModal,
@@ -34,7 +34,7 @@ export {
   useSubscriptionManagementLogic,
 } from './subscription';
 
-// 历史事件功能
+// History event feature
 export {
   HistoryDetailDrawer,
   HistoryManagement,
@@ -42,7 +42,7 @@ export {
   useHistoryManagementLogic,
 } from './history';
 
-// 统计管理功能
+// Statistics management feature
 export {
   StatisticsCharts,
   StatisticsManagement,
@@ -50,5 +50,5 @@ export {
   useStatisticsLogic,
 } from './statistics';
 
-// 订阅关系页面组件（单独导出，因为它有默认导出）
+// Subscription relation page component (exported separately because it has default export)
 export { default as SubscribeRelationPage } from './subscription/ui/relation-page';

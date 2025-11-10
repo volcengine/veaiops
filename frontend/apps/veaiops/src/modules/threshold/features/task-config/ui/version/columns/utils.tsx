@@ -31,27 +31,27 @@ import type React from 'react';
 import { ErrorTooltipContent } from '../../components/table-columns';
 
 /**
- * 根据状态值获取对应的颜色
+ * Get corresponding color based on status value
  */
 export const getStatusColor = (statusValue: string): string | undefined => {
   switch (statusValue) {
     case IntelligentThresholdTaskVersion.status.SUCCESS:
-      return 'green'; // 成功 - 绿色
+      return 'green'; // Success - green
     case IntelligentThresholdTaskVersion.status.FAILED:
-      return 'red'; // 失败 - 红色
+      return 'red'; // Failed - red
     case IntelligentThresholdTaskVersion.status.RUNNING:
-      return 'blue'; // 运行中 - 蓝色
+      return 'blue'; // Running - blue
     case IntelligentThresholdTaskVersion.status.LAUNCHING:
-      return 'arcoblue'; // 启动中 - 浅蓝色
+      return 'arcoblue'; // Launching - light blue
     case IntelligentThresholdTaskVersion.status.STOPPED:
-      return 'gray'; // 已停止 - 灰色
+      return 'gray'; // Stopped - gray
     default:
-      return undefined; // 未知状态使用默认样式
+      return undefined; // Unknown status uses default style
   }
 };
 
 /**
- * 根据任务状态和按钮类型生成相应的 Tooltip 提示
+ * Generate corresponding Tooltip based on task status and button type
  */
 export const getTooltipByStatusAndAction = (
   status: string,
@@ -60,16 +60,16 @@ export const getTooltipByStatusAndAction = (
 ): React.ReactNode | string => {
   switch (status) {
     case IntelligentThresholdTaskVersion.status.FAILED:
-      // 如果是查看任务结果操作，且存在错误信息，显示详细的失败原因
+      // If viewing task result and error message exists, show detailed failure reason
       if (action === 'view' && errorMessage) {
-        // 返回错误信息的 Tooltip 内容（ReactNode）
+        // Return error message Tooltip content (ReactNode)
         return <ErrorTooltipContent errorMessage={errorMessage} />;
       }
-      // 如果没有错误信息，返回提示用户可以查看失败原因
+      // If no error message, return prompt for user to view failure reason
       if (action === 'view') {
         return '任务执行失败，无法查看任务结果。请将鼠标悬停在此按钮上查看失败原因';
       }
-      // 创建告警规则操作
+      // Create alarm rule operation
       return '任务执行失败，无法创建告警规则';
     case IntelligentThresholdTaskVersion.status.RUNNING:
       return action === 'view'

@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 向导步骤配置统一导出
- * 按模块拆分，降低单个文件复杂度
+ * Guide step configuration unified export
+ * Split by module to reduce single file complexity
  */
 
 import { basicSteps } from './basic';
@@ -23,8 +23,8 @@ import { systemSteps } from './system';
 import { oncallSteps } from './oncall';
 
 /**
- * 合并所有步骤配置
- * 按顺序：基础设施 -> 智能阈值 -> 系统配置 -> Oncall
+ * Merge all step configurations
+ * In order: Infrastructure -> Intelligent Threshold -> System Configuration -> Oncall
  */
 export const GUIDE_STEPS_CONFIG = [
   ...basicSteps,

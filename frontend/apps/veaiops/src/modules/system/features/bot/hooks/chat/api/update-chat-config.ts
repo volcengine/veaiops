@@ -19,7 +19,7 @@ import { API_RESPONSE_CODE } from '@veaiops/constants';
 import { useCallback } from 'react';
 
 /**
- * 更新群配置的参数接口
+ * Update chat configuration parameters interface
  */
 interface UpdateChatConfigParams {
   uid: string;
@@ -27,15 +27,15 @@ interface UpdateChatConfigParams {
 }
 
 /**
- * 更新群配置Hook
+ * Update chat configuration Hook
  */
 export const useUpdateChatConfig = () => {
   const updateChatConfig = useCallback(
     async ({ uid, config }: UpdateChatConfigParams) => {
       try {
-        // 调用真实API更新群配置
+        // Call actual API to update chat configuration
         const response = await apiClient.chats.putApisV1ConfigChatsConfig({
-          uid, // 这里传入的是 _id
+          uid, // Here we pass _id
           requestBody: {
             enable_func_proactive_reply: config.enable_func_proactive_reply,
             enable_func_interest: config.enable_func_interest,
@@ -46,12 +46,16 @@ export const useUpdateChatConfig = () => {
           Message.success('群配置更新成功');
           return true;
         } else {
-          throw new Error(response.message || '更新群配置失败');
+          throw new Error(
+            response.message || 'Failed to update chat configuration',
+          );
         }
       } catch (error) {
-        // ✅ 正确：透出实际的错误信息
+        // ✅ Correct: Extract actual error information
         const errorMessage =
-          error instanceof Error ? error.message : '更新群配置失败，请重试';
+          error instanceof Error
+            ? error.message
+            : 'Failed to update chat configuration, please retry';
         Message.error(errorMessage);
         return false;
       }

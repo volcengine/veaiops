@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * 连接选择步骤组件导出
+ * Connection selection step component export
  */
 
 export * from './components';

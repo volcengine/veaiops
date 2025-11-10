@@ -13,14 +13,14 @@
 // limitations under the License.
 
 /**
- * 共享资源导出
+ * Shared resources export
  */
 
-// 类型定义
+// Type definitions
 export * from './types';
 
-// 常量
+// Constants
 export * from './constants';
 
-// 工具函数
+// Utility functions
 export * from './utils';

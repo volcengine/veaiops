@@ -21,44 +21,20 @@ import { getMetricTypeTranslation } from '../../lib/metric-type-translations';
 const { StampTime, CustomOutlineTag } = CellRender;
 
 /**
- * 指标模板详情抽屉组件属性接口
+ * Metric template detail drawer component props interface
  */
 export interface MetricTemplateDetailDrawerProps {
-  /** 是否显示抽屉 */
+  /** Whether to show drawer */
   visible: boolean;
-  /** 选中的模板 */
+  /** Selected template */
   selectedTemplate: MetricTemplate | null;
-  /** 关闭抽屉的回调 */
+  /** Callback to close drawer */
   onClose: () => void;
 }
 
 /**
- * 格式化数字显示
- * 对于极大/极小值使用科学计数法，否则使用固定小数位数
- */
-const formatNumberValue = (
-  value: number | null | undefined,
-  precision = 6,
-): string => {
-  if (value === null || value === undefined) {
-    return '-';
-  }
-
-  const absValue = Math.abs(value);
-  const threshold = 1e6; // 阈值：超过100万或小于0.000001使用科学计数法
-
-  if (absValue >= threshold || (absValue > 0 && absValue < 1 / threshold)) {
-    // 使用科学计数法显示，保留 precision 位小数
-    return value.toExponential(precision);
-  } else {
-    // 正常范围内使用 toFixed
-    return value.toFixed(precision);
-  }
-};
-
-/**
- * 指标模板详情抽屉组件
- * 提供指标模板详细信息的查看功能
+ * Metric template detail drawer component
+ * Provides functionality to view metric template detailed information
  */
 export const MetricTemplateDetailDrawer: React.FC<
   MetricTemplateDetailDrawerProps
@@ -93,19 +69,19 @@ export const MetricTemplateDetailDrawer: React.FC<
           },
           {
             label: '指标最小值',
-            value: formatNumberValue(selectedTemplate.min_value),
+            value: selectedTemplate.min_value ?? '-',
           },
           {
             label: '指标最大值',
-            value: formatNumberValue(selectedTemplate.max_value),
+            value: selectedTemplate.max_value ?? '-',
           },
           {
             label: '默认阈值下界',
-            value: formatNumberValue(selectedTemplate.normal_range_start),
+            value: selectedTemplate.normal_range_start ?? '-',
           },
           {
             label: '默认阈值上界',
-            value: formatNumberValue(selectedTemplate.normal_range_end),
+            value: selectedTemplate.normal_range_end ?? '-',
           },
           {
             label: '最小步长',

@@ -96,14 +96,14 @@
         "properties": {
           "code": {
             "type": "integer",
-            "description": "响应状态码"
+            "description": "Response status code"
           },
           "message": {
             "type": "string",
-            "description": "响应消息"
+            "description": "Response message"
           },
           "data": {
-            "description": "响应数据"
+            "description": "Response data"
           }
         },
         "required": ["code", "message"]
@@ -128,12 +128,12 @@
           "skip": {
             "type": "integer",
             "default": 0,
-            "description": "跳过数量"
+            "description": "Number of records to skip"
           },
           "limit": {
             "type": "integer",
             "default": 100,
-            "description": "限制数量"
+            "description": "Maximum number of records to return"
           }
         }
       },
@@ -142,26 +142,26 @@
         "properties": {
           "code": {
             "type": "integer",
-            "description": "响应状态码"
+            "description": "Response status code"
           },
           "message": {
             "type": "string",
-            "description": "响应消息"
+            "description": "Response message"
           },
           "data": {
-            "description": "响应数据"
+            "description": "Response data"
           },
           "limit": {
             "type": "integer",
-            "description": "限制数量"
+            "description": "Maximum number of records to return"
           },
           "skip": {
             "type": "integer",
-            "description": "跳过数量"
+            "description": "Number of records to skip"
           },
           "total": {
             "type": "integer",
-            "description": "总数量"
+            "description": "Total number of records"
           }
         }
       },
@@ -171,11 +171,11 @@
         "properties": {
           "username": {
             "type": "string",
-            "description": "用户名"
+            "description": "Username"
           },
           "password": {
             "type": "string",
-            "description": "密码"
+            "description": "Password"
           }
         }
       },
@@ -184,15 +184,15 @@
         "properties": {
           "access_token": {
             "type": "string",
-            "description": "访问令牌"
+            "description": "Access token"
           },
           "token_type": {
             "type": "string",
-            "description": "令牌类型"
+            "description": "Token type"
           },
           "expires_in": {
             "type": "integer",
-            "description": "过期时间（秒）"
+            "description": "Expiration time in seconds"
           }
         }
       },
@@ -201,39 +201,39 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "数据源ID"
+            "description": "Data source ID"
           },
           "name": {
             "type": "string",
-            "description": "数据源名称"
+            "description": "Data source name"
           },
           "type": {
             "type": "string",
             "enum": ["zabbix", "aliyun", "volcengine"],
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           "config": {
             "type": "object",
-            "description": "数据源配置"
+            "description": "Data source configuration"
           },
           "description": {
             "type": "string",
-            "description": "数据源描述"
+            "description": "Data source description"
           },
           "is_active": {
             "type": "boolean",
             "default": true,
-            "description": "是否激活"
+            "description": "Whether the data source is active"
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "创建时间"
+            "description": "Creation time"
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "description": "更新时间"
+            "description": "Update time"
           }
         },
         "required": ["name", "type", "config"]
@@ -251,20 +251,20 @@
                 "properties": {
                   "url": {
                     "type": "string",
-                    "description": "Zabbix服务器URL"
+                    "description": "Zabbix server URL"
                   },
                   "username": {
                     "type": "string",
-                    "description": "用户名"
+                    "description": "Username"
                   },
                   "password": {
                     "type": "string",
-                    "description": "密码"
+                    "description": "Password"
                   },
                   "timeout": {
                     "type": "integer",
                     "default": 30,
-                    "description": "超时时间（秒）"
+                    "description": "Timeout in seconds"
                   }
                 },
                 "required": ["url", "username", "password"]
@@ -286,19 +286,19 @@
                 "properties": {
                   "access_key_id": {
                     "type": "string",
-                    "description": "阿里云AccessKey ID"
+                    "description": "Alibaba Cloud AccessKey ID"
                   },
                   "access_key_secret": {
                     "type": "string",
-                    "description": "阿里云AccessKey Secret"
+                    "description": "Alibaba Cloud AccessKey Secret"
                   },
                   "region": {
                     "type": "string",
-                    "description": "阿里云地域"
+                    "description": "Alibaba Cloud region"
                   },
                   "endpoint": {
                     "type": "string",
-                    "description": "服务端点"
+                    "description": "Service endpoint"
                   }
                 },
                 "required": ["region"]
@@ -320,19 +320,19 @@
                 "properties": {
                   "access_key": {
                     "type": "string",
-                    "description": "火山引擎AccessKey"
+                    "description": "Volcano Engine AccessKey"
                   },
                   "secret_key": {
                     "type": "string",
-                    "description": "火山引擎SecretKey"
+                    "description": "Volcano Engine SecretKey"
                   },
                   "region": {
                     "type": "string",
-                    "description": "火山引擎地域"
+                    "description": "Volcano Engine region"
                   },
                   "endpoint": {
                     "type": "string",
-                    "description": "服务端点"
+                    "description": "Service endpoint"
                   }
                 },
                 "required": ["region"]
@@ -346,25 +346,25 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "数据源名称"
+            "description": "Data source name"
           },
           "type": {
             "type": "string",
             "enum": ["zabbix", "aliyun", "volcengine"],
-            "description": "数据源类型"
+            "description": "Data source type"
           },
           "config": {
             "type": "object",
-            "description": "数据源配置"
+            "description": "Data source configuration"
           },
           "description": {
             "type": "string",
-            "description": "数据源描述"
+            "description": "Data source description"
           },
           "is_active": {
             "type": "boolean",
             "default": true,
-            "description": "是否激活"
+            "description": "Whether the data source is active"
           }
         },
         "required": ["name", "type", "config"]
@@ -374,19 +374,19 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "数据源名称"
+            "description": "Data source name"
           },
           "config": {
             "type": "object",
-            "description": "数据源配置"
+            "description": "Data source configuration"
           },
           "description": {
             "type": "string",
-            "description": "数据源描述"
+            "description": "Data source description"
           },
           "is_active": {
             "type": "boolean",
-            "description": "是否激活"
+            "description": "Whether the data source is active"
           }
         }
       },

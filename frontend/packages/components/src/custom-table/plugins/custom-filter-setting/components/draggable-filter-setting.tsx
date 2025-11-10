@@ -17,8 +17,8 @@ import { Alert, Divider, Drawer, Message } from '@arco-design/web-react';
 import { IconDragDotVertical } from '@arco-design/web-react/icon';
 import { uniqWith } from 'lodash-es';
 /**
- * 可拖拽的过滤器设置组件
- * 基于 stability 项目的实现
+ * Draggable Filter Setting Component
+ * Based on stability project implementation
  */
 import type React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -63,7 +63,7 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
   selectedOptions = [],
   hiddenOptions = [],
   onChange,
-  title = '搜索项设置',
+  title = 'Search Items Settings',
   saveFun,
   caseSelectText,
   mode = ['select'],
@@ -106,7 +106,9 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
       draggingRef.current = false;
 
       if (loc_selected_divider > loc_hidden_divider) {
-        Message.error('已展示项不可隐藏，请重新调整配置');
+        Message.error(
+          'Displayed items cannot be hidden, please readjust the configuration',
+        );
       } else {
         const fixed_fields = sortTypeList
           .slice(0, loc_selected_divider)
@@ -131,7 +133,7 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
 
   const allOptions = useMemo(() => uniqWith(_allOptions), [_allOptions]);
 
-  // 确保props变化时refs能正确同步
+  // Ensure refs are correctly synchronized when props change
   useEffect(() => {
     selectOptionsRef.current = selectedOptions;
     fixedOptionsRef.current = fixedOptions;
@@ -173,11 +175,13 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
       saveFun?.(saveData);
       setVisible(false);
 
-      Message.success('保存成功');
+      Message.success('Save successful');
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : '保存失败，请重试';
-      Message.error(`保存失败, 原因: ${errorMessage}`);
+        error instanceof Error
+          ? error.message
+          : 'Save failed, please try again';
+      Message.error(`Save failed, reason: ${errorMessage}`);
     }
   };
 
@@ -196,7 +200,7 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
         visible={visible}
         maskClosable
         closable={false}
-        okText="保存"
+        okText="Save"
         onOk={handleSave}
         unmountOnExit
         onCancel={() => setVisible(false)}
@@ -211,7 +215,7 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
         {...restProps}
       >
         <Alert
-          content="请通过「拖拽」选中并排序，若后续仍想使用调整后配置，请务必点击「保存」"
+          content="Please select and sort by dragging. If you want to use the adjusted configuration later, please click 'Save'"
           showIcon={false}
           banner
           style={{ width: 'auto', margin: '-12px -16px 8px -16px' }}
@@ -221,7 +225,7 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
             <>
               <div style={{ fontWeight: 'bolder', marginBottom: 8 }}>
                 <Divider type="vertical" style={dividerStyle} />
-                {`固定项(${fixedOptionsRef.current?.length ?? 0})`}
+                {`Fixed Items (${fixedOptionsRef.current?.length ?? 0})`}
               </div>
               <ResponsiveGridLayout
                 data-id="ResponsiveGridLayoutWithFixed"
@@ -277,7 +281,7 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
                 >
                   <br />
                   <Divider type="vertical" style={dividerStyle} />
-                  {`展示项(${selectOptionsRef?.current?.length ?? 0})`}
+                  {`Display Items (${selectOptionsRef?.current?.length ?? 0})`}
                 </div>
                 {selectOptionsRef?.current
                   ?.filter((item: string) => !fixedOptions.includes(item))
@@ -321,7 +325,7 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
                 >
                   <br />
                   <Divider type="vertical" style={dividerStyle} />
-                  {`隐藏项(${_hiddenOptions?.length ?? 0})`}
+                  {`Hidden Items (${_hiddenOptions?.length ?? 0})`}
                 </div>
                 {_hiddenOptions?.map((item: string, index: number) => (
                   <div
@@ -382,7 +386,7 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
                 >
                   <br />
                   <Divider type="vertical" style={dividerStyle} />
-                  {`展示项(${selectOptionsRef.current?.length ?? 0})`}
+                  {`Display Items (${selectOptionsRef.current?.length ?? 0})`}
                 </div>
                 {selectOptionsRef.current?.map(
                   (item: string, index: number) => (
@@ -418,7 +422,7 @@ const DraggableFilterSetting: React.FC<CustomFilterSettingProps> = ({
                 >
                   <br />
                   <Divider type="vertical" style={dividerStyle} />
-                  {`隐藏项(${_hiddenOptions?.length ?? 0})`}
+                  {`Hidden Items (${_hiddenOptions?.length ?? 0})`}
                 </div>
                 {_hiddenOptions?.map((item: string, index: number) => (
                   <div

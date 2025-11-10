@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * 表格分页插件类型定义
+ * Table pagination plugin type definition
  */
 import type { PluginBaseConfig } from '@/custom-table/types';
 
 /**
- * 分页配置
+ * Pagination configuration
  */
 export interface TablePaginationConfig extends PluginBaseConfig {
   defaultPageSize?: number;
@@ -32,7 +32,7 @@ export interface TablePaginationConfig extends PluginBaseConfig {
 }
 
 /**
- * 分页状态
+ * Pagination state
  */
 export interface TablePaginationState {
   current: number;
@@ -42,7 +42,7 @@ export interface TablePaginationState {
 }
 
 /**
- * 分页方法
+ * Pagination methods
  */
 export interface TablePaginationMethods {
   setCurrent: (page: number) => void;

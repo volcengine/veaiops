@@ -66,7 +66,7 @@ const formatDuration = (props: FormatDurationProps): string => {
 };
 
 /**
- * 时长渲染组件
+ * Duration rendering component
  * @param props
  * @constructor
  */

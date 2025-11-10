@@ -20,8 +20,8 @@ import type {
 } from '@/custom-table/types';
 import { devLog } from '@/custom-table/utils';
 /**
- * 行选择 Hook
- * 基于 Arco Table 的 useRowSelection 增强
+ * Row selection Hook
+ * Enhanced based on Arco Table's useRowSelection
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Key } from 'react';
@@ -29,36 +29,36 @@ import type { Key } from 'react';
 export interface UseRowSelectionOptions<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 表格数据 */
+  /** Table data */
   data: RecordType[];
-  /** 配置 */
+  /** Configuration */
   config: RowSelectionConfig<RecordType>;
-  /** 获取行 key 的函数 */
+  /** Function to get row key */
   getRowKey: (record: RecordType) => Key;
-  /** 当前页数据 */
+  /** Current page data */
   pageData?: RecordType[];
-  /** 总数据量 */
+  /** Total data count */
   totalCount?: number;
 }
 
 export interface UseRowSelectionReturn<
   RecordType extends BaseRecord = BaseRecord,
 > {
-  /** 当前状态 */
+  /** Current state */
   state: RowSelectionState<RecordType>;
-  /** 选择行 */
+  /** Select row */
   selectRow: (params: { key: Key; selected: boolean }) => void;
-  /** 全选/取消全选 */
+  /** Select all / Deselect all */
   selectAll: (selected: boolean) => void;
-  /** 清空选择 */
+  /** Clear selection */
   clearSelection: () => void;
-  /** 获取选中的行数据 */
+  /** Get selected row data */
   getSelectedRows: () => RecordType[];
-  /** 是否选中指定行 */
+  /** Whether specified row is selected */
   isRowSelected: (key: Key) => boolean;
-  /** 执行批量操作 */
+  /** Execute batch action */
   executeBatchAction: (action: BatchActionConfig<RecordType>) => Promise<void>;
-  /** Arco Table 的 rowSelection 配置 */
+  /** Arco Table's rowSelection configuration */
   rowSelectionProps: {
     type?: 'checkbox' | 'radio';
     selectedRowKeys: Key[];
@@ -97,7 +97,7 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
   const [allSelectedKeys, setAllSelectedKeys] = useState<Key[]>([]);
   const selectedRowsCache = useRef<Map<Key, RecordType>>(new Map());
 
-  // 更新缓存
+  // Update cache
   useEffect(() => {
     data.forEach((record) => {
       const key = getRowKey(record);
@@ -107,7 +107,7 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
     });
   }, [data, selectedRowKeys, getRowKey]);
 
-  // 计算选择统计
+  // Calculate selection statistics
   const selectionStat = useMemo(
     () => ({
       selectedCount: selectedRowKeys.length,
@@ -121,7 +121,7 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
     [selectedRowKeys.length, totalCount, pageData.length],
   );
 
-  // 计算状态
+  // Calculate state
   const state: RowSelectionState<RecordType> = useMemo(() => {
     const isAllSelected =
       pageData.length > 0 &&
@@ -133,7 +133,7 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
       selectedRows: selectedRowKeys
         .map((key) => selectedRowsCache.current.get(key))
         .filter(Boolean) as RecordType[],
-      indeterminateKeys: [], // TODO: 实现树形结构的半选状态
+      indeterminateKeys: [], // TODO: Implement half-selected state for tree structure
       allSelectedKeys: config.checkCrossPage
         ? allSelectedKeys
         : selectedRowKeys,
@@ -151,7 +151,7 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
     selectionStat,
   ]);
 
-  // 选择行
+  // Select row
   interface SelectRowParams {
     key: Key;
     selected: boolean;
@@ -162,7 +162,7 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
       setSelectedRowKeys((prev) => {
         let newKeys: Key[];
         if (selected) {
-          // 检查最大选择数量限制
+          // Check maximum selection limit
           if (config.maxSelection && prev.length >= config.maxSelection) {
             devLog.warn({
               component: 'RowSelection',
@@ -178,7 +178,7 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
           newKeys = prev.filter((k) => k !== key);
         }
 
-        // 跨页保持选择
+        // Preserve selection across pages
         if (config.checkCrossPage) {
           setAllSelectedKeys((prevAll) =>
             selected ? [...prevAll, key] : prevAll.filter((k) => k !== key),
@@ -191,13 +191,13 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
     [config.maxSelection, config.checkCrossPage],
   );
 
-  // 全选/取消全选
+  // Select all / Deselect all
   const selectAll = useCallback(
     (selected: boolean) => {
       if (selected) {
         const pageKeys = pageData.map(getRowKey);
 
-        // 检查最大选择数量限制
+        // Check maximum selection limit
         if (config.maxSelection) {
           const availableSlots = config.maxSelection - selectedRowKeys.length;
           if (availableSlots <= 0) {
@@ -216,7 +216,7 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
           setSelectedRowKeys((prev) => [...new Set([...prev, ...pageKeys])]);
         }
 
-        // 跨页保持选择
+        // Preserve selection across pages
         if (config.checkCrossPage) {
           setAllSelectedKeys((prev) => [...new Set([...prev, ...pageKeys])]);
         }
@@ -242,31 +242,31 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
     ],
   );
 
-  // 清空选择
+  // Clear selection
   const clearSelection = useCallback(() => {
     setSelectedRowKeys([]);
     setAllSelectedKeys([]);
     selectedRowsCache.current.clear();
   }, []);
 
-  // 获取选中的行数据
+  // Get selected row data
   const getSelectedRows = useCallback(
     () => state.selectedRows,
     [state.selectedRows],
   );
 
-  // 是否选中指定行
+  // Whether specified row is selected
   const isRowSelected = useCallback(
     (key: Key) => selectedRowKeys.includes(key),
     [selectedRowKeys],
   );
 
-  // 执行批量操作
+  // Execute batch action
   const executeBatchAction = useCallback(
     async (action: BatchActionConfig<RecordType>) => {
       const selectedRows = getSelectedRows();
 
-      // 执行前确认
+      // Confirmation before execution
       const shouldExecute = await config.beforeBatchAction?.(
         action,
         selectedRows,
@@ -303,12 +303,12 @@ export const useRowSelection = <RecordType extends BaseRecord = BaseRecord>({
     [selectedRowKeys, getSelectedRows, config.beforeBatchAction],
   );
 
-  // 选择变化回调
+  // Selection change callback
   useEffect(() => {
     config.onChange?.(selectedRowKeys, state.selectedRows);
   }, [selectedRowKeys, state.selectedRows, config.onChange]);
 
-  // Arco Table 的 rowSelection 配置
+  // Arco Table rowSelection configuration
   const rowSelectionProps = useMemo(
     () => ({
       type: config.type,

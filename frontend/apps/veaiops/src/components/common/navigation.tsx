@@ -23,7 +23,7 @@ interface NavigationProps {
 }
 
 /**
- * 导航组件
+ * Navigation component
  */
 export const Navigation: React.FC<NavigationProps> = ({
   activeModule: _activeModule,
@@ -31,7 +31,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 }) => {
   const location = useLocation();
 
-  // 定义每个模块的默认页面路径
+  // Define default page path for each module
   const moduleDefaultPaths = {
     statistics: '/statistics/overview',
     threshold: '/threshold/template',
@@ -72,7 +72,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 };
 
 /**
- * Logo组件
+ * Logo component
  */
 export const Logo: React.FC = () => {
   return (

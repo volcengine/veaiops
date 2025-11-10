@@ -16,7 +16,7 @@ import { CellRender } from '@veaiops/components';
 import type React from 'react';
 
 /**
- * 描述列渲染组件
+ * Description column render component
  */
 export const DescriptionColumn: React.FC<{ description: string }> = ({
   description,
