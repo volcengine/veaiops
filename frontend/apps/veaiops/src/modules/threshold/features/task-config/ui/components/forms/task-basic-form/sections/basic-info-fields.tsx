@@ -152,7 +152,8 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
           onChange: (value: string) => {
             const previousFormValue = form.getFieldValue('datasourceType');
             logger.info({
-              message: '[BasicInfoFields] Datasource type field onChange triggered',
+              message:
+                '[BasicInfoFields] Datasource type field onChange triggered',
               data: {
                 newDatasourceType: value,
                 previousDatasourceTypeState: datasourceType,
@@ -166,7 +167,8 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
 
             // 🔍 Log state before update
             logger.info({
-              message: '[BasicInfoFields] Preparing to update datasourceType state',
+              message:
+                '[BasicInfoFields] Preparing to update datasourceType state',
               data: {
                 newValue: value,
                 currentState: datasourceType,
@@ -230,7 +232,8 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
             const formDatasourceType = form.getFieldValue('datasourceType');
             const dependencyArray = [datasourceType];
             logger.info({
-              message: '[BasicInfoFields] Datasource field dependency array construction',
+              message:
+                '[BasicInfoFields] Datasource field dependency array construction',
               data: {
                 dependencyArray,
                 datasourceTypeState: datasourceType,

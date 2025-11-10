@@ -91,7 +91,10 @@ export const useSubscriptionTableConfig = ({
                 total: response.total ?? tableData.length,
               };
             } else {
-              throw new Error(response.message || 'Failed to fetch subscription relation list');
+              throw new Error(
+                response.message ||
+                  'Failed to fetch subscription relation list',
+              );
             }
           } catch (error) {
             Message.error('加载订阅关系列表失败，请重试');
