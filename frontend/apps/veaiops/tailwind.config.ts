@@ -63,7 +63,7 @@ const config: Config = {
         },
       },
       width: {
-        // 百分比宽度类
+        // Percentage width classes
         p20: '24.00%',
         p21: '24.00%',
         p22: '24.2%',
@@ -72,11 +72,11 @@ const config: Config = {
         p25: '24.5%',
         p50: '50%',
         p90: '90%',
-        // 固定像素宽度类
+        // Fixed pixel width classes
         '30': '30px',
         '40': '40px',
         '650': '650px',
-        // 特殊宽度类
+        // Special width classes
         'default-control': 'inherit',
         'min-content': 'min-content',
       },

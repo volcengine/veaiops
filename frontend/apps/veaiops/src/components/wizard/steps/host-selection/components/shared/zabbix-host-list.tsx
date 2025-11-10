@@ -41,7 +41,7 @@ export const ZabbixHostList: React.FC<ZabbixHostListProps> = ({
 
   return (
     <>
-      {/* 全选控制 */}
+      {/* Select all control */}
       <div className={styles.selectAllContainer}>
         <Checkbox
           checked={isAllSelected}

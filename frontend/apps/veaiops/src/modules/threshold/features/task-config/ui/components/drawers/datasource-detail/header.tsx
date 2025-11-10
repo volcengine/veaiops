@@ -25,16 +25,16 @@ interface HeaderProps extends ConfigSectionProps {
 }
 
 /**
- * 数据源详情顶部卡片
+ * Datasource detail header card
  *
- * 包含渐变背景、数据源类型、状态等信息
+ * Contains gradient background, datasource type, status, and other information
  */
 export const Header: React.FC<HeaderProps> = ({ datasource, typeConfig }) => {
   return (
     <>
-      {/* 数据源类型卡片 - 带背景图 */}
+      {/* Datasource type card - with background image */}
       <div className="mb-6 rounded-xl overflow-hidden shadow-lg relative">
-        {/* 背景图层 */}
+        {/* Background layer */}
         <div
           className="absolute inset-0 opacity-30 bg-cover bg-center"
           style={{
@@ -42,10 +42,10 @@ export const Header: React.FC<HeaderProps> = ({ datasource, typeConfig }) => {
           }}
         />
 
-        {/* 渐变遮罩层 */}
+        {/* Gradient mask layer */}
         <div className="absolute inset-0 opacity-85" />
 
-        {/* 内容层 */}
+        {/* Content layer */}
         <div className="p-5 relative z-10">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center bg-white/25">
@@ -85,7 +85,7 @@ export const Header: React.FC<HeaderProps> = ({ datasource, typeConfig }) => {
         </div>
       </div>
 
-      {/* 提示信息 */}
+      {/* Information tip */}
       <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
         <div className="flex items-start gap-2">
           <IconInfoCircle className="text-blue-500 text-sm mt-0.5 flex-shrink-0" />

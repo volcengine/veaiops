@@ -25,12 +25,12 @@ interface FetchDatasourceDetailParams {
 }
 
 /**
- * 数据源详情管理 Hook
+ * Datasource detail management Hook
  *
- * 功能：
- * - 根据数据源类型和ID获取数据源详情
- * - 支持 Volcengine、Aliyun、Zabbix 三种数据源类型
- * - 统一的错误处理和日志记录
+ * Features:
+ * - Fetch datasource detail by datasource type and ID
+ * - Supports three datasource types: Volcengine, Aliyun, and Zabbix
+ * - Unified error handling and logging
  */
 export const useDatasourceDetail = () => {
   const [datasource, setDatasource] = useState<DataSource | null>(null);
@@ -38,9 +38,9 @@ export const useDatasourceDetail = () => {
   const [visible, setVisible] = useState(false);
 
   /**
-   * 获取数据源详情
+   * Fetch datasource detail
    *
-   * 根据不同的数据源类型调用对应的 API 接口
+   * Calls corresponding API interface based on datasource type
    */
   const fetchDatasourceDetail = useCallback(
     async ({
@@ -69,7 +69,7 @@ export const useDatasourceDetail = () => {
 
         let response;
 
-        // 根据数据源类型调用对应的 API 接口
+        // Call corresponding API interface based on datasource type
         switch (datasourceType) {
           case 'Volcengine':
             response =
@@ -160,7 +160,7 @@ export const useDatasourceDetail = () => {
   );
 
   /**
-   * 关闭抽屉
+   * Close drawer
    */
   const handleClose = useCallback(() => {
     setVisible(false);

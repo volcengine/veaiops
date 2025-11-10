@@ -42,7 +42,7 @@ const LoginHeader: React.FC<LoginHeaderProps> = ({
         <IconUser className={loginStyles.logo.icon} />
       </div>
 
-      {/* 标题 */}
+      {/* Title */}
       <Title
         className={loginStyles.title.container}
         style={loginStyles.title.style}
@@ -50,7 +50,7 @@ const LoginHeader: React.FC<LoginHeaderProps> = ({
         {title}
       </Title>
 
-      {/* 副标题 */}
+      {/* Subtitle */}
       <Text className={loginStyles.subtitle}>{subtitle}</Text>
     </div>
   );

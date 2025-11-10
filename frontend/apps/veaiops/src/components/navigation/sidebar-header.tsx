@@ -23,7 +23,7 @@ interface SidebarHeaderProps {
 const SidebarHeader: React.FC<SidebarHeaderProps> = ({ collapsed }) => {
   return (
     <div className="flex items-center p-4 border-b border-white/10">
-      {/* Logo区域 */}
+      {/* Logo area */}
       <div className="flex items-center space-x-3">
         <div
           className={`${layoutConfig.logo.gradient} ${layoutConfig.logo.sidebar.size} rounded-lg flex items-center justify-center`}

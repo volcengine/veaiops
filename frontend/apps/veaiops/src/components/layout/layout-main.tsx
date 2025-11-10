@@ -36,7 +36,7 @@ const LayoutMain: React.FC<LayoutMainProps> = ({
         layoutConfig.sidebar.transitionDuration
       } ${collapsed ? 'ml-16' : 'ml-60'}`}
     >
-      {/* 顶部导航 */}
+      {/* Top navigation */}
       <header
         className={`${layoutConfig.header.backgroundColor} ${layoutConfig.header.borderColor} ${layoutConfig.header.padding}`}
       >
@@ -46,7 +46,7 @@ const LayoutMain: React.FC<LayoutMainProps> = ({
         />
       </header>
 
-      {/* 主内容 */}
+      {/* Main content */}
       <main
         className={`flex-1 ${layoutConfig.main.backgroundColor} ${layoutConfig.main.padding}`}
       >

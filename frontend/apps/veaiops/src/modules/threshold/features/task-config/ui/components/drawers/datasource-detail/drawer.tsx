@@ -25,15 +25,15 @@ import { VolcengineConfig } from './volcengine-config';
 import { ZabbixConfig } from './zabbix-config';
 
 /**
- * 数据源详情抽屉组件
+ * Datasource detail drawer component
  *
- * 用于在智能阈值任务配置列表中查看关联数据源的详细信息
+ * Used to view detailed information of associated datasources in the intelligent threshold task configuration list
  *
- * ### 功能特性
- * - 美观的背景图 + 渐变顶部卡片
- * - 支持火山引擎、阿里云、Zabbix 三种数据源类型
- * - 动态展示各类型特定配置信息
- * - 自动翻译数据源类型为中文
+ * ### Features
+ * - Beautiful background image + gradient header card
+ * - Supports three datasource types: Volcengine, Aliyun, and Zabbix
+ * - Dynamically displays type-specific configuration information
+ * - Automatically translates datasource types to Chinese
  */
 export const DatasourceDetailDrawer: React.FC<DatasourceDetailDrawerProps> = ({
   visible,
@@ -65,25 +65,25 @@ export const DatasourceDetailDrawer: React.FC<DatasourceDetailDrawerProps> = ({
       <Spin loading={loading} className="w-full">
         {datasource && typeConfig && (
           <div>
-            {/* 顶部卡片 */}
+            {/* Header card */}
             <Header datasource={datasource} typeConfig={typeConfig} />
 
-            {/* 基础信息 */}
+            {/* Basic information */}
             <BasicInfo datasource={datasource} />
 
-            {/* 连接配置 */}
+            {/* Connection configuration */}
             <ConnectionConfig datasource={datasource} />
 
-            {/* 火山引擎配置 */}
+            {/* Volcengine configuration */}
             <VolcengineConfig datasource={datasource} />
 
-            {/* 阿里云配置 */}
+            {/* Aliyun configuration */}
             <AliyunConfig datasource={datasource} />
 
-            {/* Zabbix 配置 */}
+            {/* Zabbix configuration */}
             <ZabbixConfig datasource={datasource} />
 
-            {/* 时间信息 */}
+            {/* Time information */}
             <TimeInfo datasource={datasource} />
           </div>
         )}

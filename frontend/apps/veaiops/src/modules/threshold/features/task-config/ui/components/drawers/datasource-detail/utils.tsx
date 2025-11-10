@@ -17,10 +17,10 @@ import { DataSourceType } from '@veaiops/api-client';
 import type { TypeConfig } from './types';
 
 /**
- * 获取数据源类型配置
+ * Get datasource type configuration
  *
- * @param type - 数据源类型
- * @returns 类型配置（图标、颜色、渐变等）
+ * @param type - Datasource type
+ * @returns Type configuration (icon, color, gradient, etc.)
  */
 export const getTypeConfig = (type: string): TypeConfig => {
   switch (type) {

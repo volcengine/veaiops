@@ -14,10 +14,10 @@
 
 /**
  * @fileoverview OpenAPI Specifications and Code Generation Tools
- * @description 提供 OpenAPI 规范文件管理和 TypeScript 代码生成功能
+ * @description Provides OpenAPI specification file management and TypeScript code generation functionality
  */
 
-// 导出主要的构建和生成函数
+// Export main build and generation functions
 export {
   buildOpenAPI,
   generateAPICode,
@@ -25,5 +25,5 @@ export {
   main,
 } from './scripts/generate-api';
 
-// 导出类型定义
+// Export type definitions
 export * from './types';

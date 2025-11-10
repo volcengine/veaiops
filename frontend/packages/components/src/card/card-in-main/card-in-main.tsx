@@ -120,7 +120,7 @@ const CardInMain = forwardRef(
               </h4>
               {renderTip}
             </div>
-            {/* 使用 flex 进行包裹并均匀分布 */}
+            {/* Use flex to wrap and distribute evenly */}
             {renderActions && (
               <div className="flex justify-between">
                 {renderActions.map((item, index) => (

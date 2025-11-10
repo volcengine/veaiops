@@ -18,8 +18,8 @@ import { DataSourceType } from "@veaiops/api-client";
 import type { TaskFiltersQuery } from "./types";
 
 /**
- * 数据源类型选项配置
- * 使用 @veaiops/api-client 中生成的 DataSourceType 枚举值
+ * Datasource type options configuration
+ * Uses DataSourceType enum values generated from @veaiops/api-client
  */
 const DATASOURCE_TYPE_OPTIONS = [
   { label: '火山引擎', value: DataSourceType.VOLCENGINE },
@@ -28,7 +28,7 @@ const DATASOURCE_TYPE_OPTIONS = [
 ] as const;
 
 /**
- * 数据源类型筛选器
+ * Datasource type filter
  */
 export const createDatasourceTypeFilter = (
   props: HandleFilterProps<TaskFiltersQuery>,
@@ -42,12 +42,12 @@ export const createDatasourceTypeFilter = (
     componentProps: {
       placeholder: '请选择数据源类型',
       value: (() => {
-        // 优先使用 query 中的值
+        // Prefer value from query
         if (query?.datasource_type) {
           return query.datasource_type as string;
         }
 
-        // 如果 query 中没有，从 URL 参数中获取
+        // If not in query, get from URL parameters
         if (typeof window !== 'undefined') {
           const urlParams = new URLSearchParams(window.location.search);
           const urlDatasourceType = urlParams.get('datasource_type');
@@ -56,13 +56,13 @@ export const createDatasourceTypeFilter = (
           }
         }
 
-        // 最后从 store 中获取
+        // Finally get from store
         const storeDatasourceType = useTaskConfigStore.getState().filterDatasourceType;
         if (storeDatasourceType) {
           return storeDatasourceType;
         }
 
-        // 都为空时，使用默认值 DataSourceType.VOLCENGINE（火山引擎）
+        // Use default value DataSourceType.VOLCENGINE when all are empty
         return DataSourceType.VOLCENGINE;
       })(),
       defaultActiveFirstOption: true,
@@ -71,7 +71,7 @@ export const createDatasourceTypeFilter = (
       onChange: (v: string) => {
         handleChange({ key: 'datasource_type', value: v });
 
-        // 更新 store 中的筛选器数据源类型，用于新建任务时的默认值联动
+        // Update filter datasource type in store for default value linkage when creating new task
         const { setFilterDatasourceType } = useTaskConfigStore.getState();
         setFilterDatasourceType(v);
       },

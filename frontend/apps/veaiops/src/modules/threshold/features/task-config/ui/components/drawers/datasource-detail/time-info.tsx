@@ -18,11 +18,11 @@ import type { ReactNode } from 'react';
 import type { ConfigSectionProps } from './types';
 
 /**
- * 时间信息卡片
+ * Time information card
  *
- * 显示创建时间和更新时间
+ * Displays creation time and update time
  *
- * 注意：StampTime 组件内部已有空值判断逻辑，无需额外判断
+ * Note: StampTime component already has null value check logic, no additional check needed
  */
 export const TimeInfo: React.FC<ConfigSectionProps> = ({ datasource }) => {
   return (

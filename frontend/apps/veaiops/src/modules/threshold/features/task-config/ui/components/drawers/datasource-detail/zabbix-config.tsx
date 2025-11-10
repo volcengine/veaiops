@@ -21,9 +21,9 @@ import type { ConfigSectionProps } from './types';
 const { Text } = Typography;
 
 /**
- * Zabbix 配置卡片
+ * Zabbix configuration card
  *
- * 显示 Zabbix 数据源的配置信息和目标列表
+ * Displays Zabbix datasource configuration information and target list
  */
 export const ZabbixConfig: React.FC<ConfigSectionProps> = ({ datasource }) => {
   if (!isZabbixType(datasource.type) || !datasource.zabbix_config) {
@@ -70,7 +70,7 @@ export const ZabbixConfig: React.FC<ConfigSectionProps> = ({ datasource }) => {
         />
       </CardWithTitle>
 
-      {/* 目标配置 */}
+      {/* Target configuration */}
       {config.targets &&
         Array.isArray(config.targets) &&
         config.targets.length > 0 && (

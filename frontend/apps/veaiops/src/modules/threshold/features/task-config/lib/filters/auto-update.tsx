@@ -16,7 +16,7 @@ import type { FieldItem, HandleFilterProps } from "@veaiops/components";
 import type { TaskFiltersQuery } from "./types";
 
 /**
- * 自动更新筛选器
+ * Auto update filter
  */
 export const createAutoUpdateFilter = (
   props: HandleFilterProps<TaskFiltersQuery>,

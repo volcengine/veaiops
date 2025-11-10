@@ -17,7 +17,7 @@ import type { FieldItem, HandleFilterProps } from "@veaiops/components";
 import type { TaskFiltersQuery } from "./types";
 
 /**
- * 项目名称筛选器
+ * Project name filter
  */
 export const createProjectsFilter = (
   props: HandleFilterProps<TaskFiltersQuery>,

@@ -22,12 +22,12 @@ export interface FrontendFeature {
   name: string;
   description: string;
   selector: string; // CSS selector for the target element
-  tooltipContent?: string; // Content for x-guide tooltip (可选，对于直接触发抽屉等操作可不需要)
-  actionType?: FeatureActionType; // 'direct': 直接触发功能 | 'navigation': 需要跳转并高亮引导
-  targetRoute?: string; // 当actionType为navigation时，需要跳转的目标路由（可选，默认使用step的route）
-  placement?: 'top' | 'bottom' | 'left' | 'right'; // 提示框位置，默认'top'
-  prerequisiteSteps?: string[]; // 前置步骤ID列表，需要先完成这些步骤才能执行当前功能
-  allowDisabled?: boolean; // 是否允许在元素禁用时显示引导（默认false，某些功能如"批量操作"需要提示用户先选择项）
+  tooltipContent?: string; // Content for x-guide tooltip (optional, not needed for direct actions like opening drawers)
+  actionType?: FeatureActionType; // 'direct': Directly trigger function | 'navigation': Navigate and highlight guide
+  targetRoute?: string; // Target route when actionType is 'navigation' (optional, defaults to step's route)
+  placement?: 'top' | 'bottom' | 'left' | 'right'; // Tooltip position, default 'top'
+  prerequisiteSteps?: string[]; // Prerequisite step IDs that must be completed before executing current function
+  allowDisabled?: boolean; // Whether to allow guide display when element is disabled (default false, some functions like "batch operations" need to prompt user to select items first)
 }
 
 export interface GlobalGuideStep {
@@ -35,8 +35,8 @@ export interface GlobalGuideStep {
   title: string;
   description: string;
   route: string;
-  icon: string; // 步骤对应的icon名称
-  frontendFeatures: FrontendFeature[]; // 前端功能列表
+  icon: string; // Icon name corresponding to the step
+  frontendFeatures: FrontendFeature[]; // Frontend feature list
   completionCriteria: string[];
   commonIssues: Array<{
     issue: string;

@@ -20,7 +20,7 @@ import { tailwindcssPlugin } from '@modern-js/plugin-tailwindcss';
 export default defineConfig({
   plugins: [
     appTools({
-      bundler: 'rspack', // 使用rspack以获得更好的代理日志支持
+      bundler: 'rspack', // Use rspack for better proxy log support
     }),
     tailwindcssPlugin(),
   ],
@@ -47,7 +47,7 @@ export default defineConfig({
     port: 8000,
   },
   dev: {
-    // 确保 SPA 路由正常工作
+    // Ensure SPA routing works correctly
     assetPrefix: '/',
   },
   output: {
@@ -61,23 +61,23 @@ export default defineConfig({
         resourcePath.includes('.module.') &&
         ['css', 'less', 'scss'].some((suffix) => resourcePath.endsWith(suffix)),
     },
-    // 确保静态资源正确复制
+    // Ensure static assets are copied correctly
     copy: [
       {
         from: './public',
         to: './',
       },
-      // 文档会在构建后通过 integrate-docs 脚本集成
-      // 不在此处复制，避免构建顺序依赖问题
+      // Documentation will be integrated via integrate-docs script after build
+      // Do not copy here to avoid build order dependency issues
     ],
   },
   resolve: {
     alias: {
-      // ==================== Wizard 组件 ====================
-      // 注意：必须在 @/* 之前定义，确保更具体的别名先匹配
+      // ==================== Wizard Component ====================
+      // Note: Must be defined before @/* to ensure more specific aliases match first
       '@wizard': path.resolve(__dirname, 'src/components/wizard'),
 
-      // ==================== System 模块 (src/modules/system) ====================
+      // ==================== System Module (src/modules/system) ====================
       '@account': path.resolve(
         __dirname,
         'src/modules/system/features/account',
@@ -100,7 +100,7 @@ export default defineConfig({
         'src/modules/system/features/datasource',
       ),
 
-      // ==================== Threshold 模块 (src/modules/threshold) ====================
+      // ==================== Threshold Module (src/modules/threshold) ====================
       '@task-config': path.resolve(
         __dirname,
         'src/modules/threshold/features/task-config',
@@ -110,7 +110,7 @@ export default defineConfig({
         'src/modules/threshold/shared',
       ),
 
-      // ==================== Oncall 模块 (src/modules/oncall) ====================
+      // ==================== Oncall Module (src/modules/oncall) ====================
       '@oncall/api': path.resolve(__dirname, 'src/modules/oncall/api'),
       '@oncall/shared': path.resolve(__dirname, 'src/modules/oncall/shared'),
       '@oncall-config': path.resolve(
@@ -118,7 +118,7 @@ export default defineConfig({
         'src/modules/oncall/features/config',
       ),
 
-      // ==================== Event Center 模块 (src/modules/event-center) ====================
+      // ==================== Event Center Module (src/modules/event-center) ====================
       '@ec/history': path.resolve(
         __dirname,
         'src/modules/event-center/features/history',
@@ -137,14 +137,14 @@ export default defineConfig({
       ),
       '@ec/shared': path.resolve(__dirname, 'src/modules/event-center/shared'),
 
-      // ==================== 包别名 ====================
+      // ==================== Package Aliases ====================
       'api-generate': path.resolve(__dirname, 'api-generate'),
       '@veaiops/components': path.resolve(
         __dirname,
         '../../packages/components/src',
       ),
 
-      // 通用路径别名
+      // Common path aliases
       '@/*': path.resolve(__dirname, 'src/*'),
     },
   },
@@ -153,28 +153,28 @@ export default defineConfig({
       config: './tailwind.config.ts',
     },
     devServer: {
-      // 配置 SPA 路由回退 - 所有非API路径都回退到 index.html
+      // Configure SPA route fallback - all non-API paths fall back to index.html
       historyApiFallback: {
         rewrites: [
-          // 文档路径不回退到 index.html，由代理处理
+          // Documentation paths do not fall back to index.html, handled by proxy
           { from: /^\/docs/, to: (context: any) => context.parsedUrl.pathname },
-          // 其他路径回退到 index.html
+          // Other paths fall back to index.html
           { from: /./, to: '/index.html' },
         ],
       },
       proxy: {
         '/apis/v1': {
-          // API代理目标地址，可通过环境变量 API_PROXY_TARGET 配置
-          // 默认使用本地开发服务器 http://localhost:8000
-          // 生产环境请设置正确的后端API地址
+          // API proxy target address, can be configured via API_PROXY_TARGET environment variable
+          // Defaults to local development server http://localhost:8000
+          // Production environment should set correct backend API address
           target: process.env.API_PROXY_TARGET || 'http://localhost:8000',
           changeOrigin: true,
           secure: false,
           logLevel: 'debug',
-          // 禁用自动跟随重定向，让前端处理重定向以保持 Authorization header
+          // Disable automatic redirect following, let frontend handle redirects to maintain Authorization header
           followRedirects: false,
         },
-        // 文档服务代理 - 开发环境使用
+        // Documentation service proxy - for development environment
         '/docs': {
           target: 'http://localhost:4000',
           changeOrigin: true,
@@ -182,7 +182,7 @@ export default defineConfig({
           logLevel: 'debug',
           pathRewrite: { '^/docs': '/veaiops' },
           onProxyReq: (proxyReq: any, req: any, res: any) => {
-            // 确保接受 HTML
+            // Ensure HTML is accepted
             proxyReq.setHeader(
               'Accept',
               'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -192,7 +192,7 @@ export default defineConfig({
       },
     },
   },
-  // HTML配置 - 添加favicon和meta标签
+  // HTML configuration - add favicon and meta tags
   html: {
     favicon: './config/favicon.svg',
     title: '火山引擎 veaiops',

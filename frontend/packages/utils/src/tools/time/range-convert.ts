@@ -68,7 +68,7 @@ export function convertTimeRangeToUtc(
   // Check if values are Date objects
   if (startValue instanceof Date && endValue instanceof Date) {
     // Convert Date objects to local time string format, then process
-    // ✅ 修复：使用本地时间字符串，避免 toISOString() 的二次UTC转换
+    // ✅ Fix: Use local time string to avoid double UTC conversion with toISOString()
     const formatLocalDate = (date: Date): string => {
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -155,7 +155,7 @@ export function convertLocalTimeRangeToUtc(
     const [startValue, endValue] = dateStrings;
 
     // If Date objects, convert to local time string format
-    // ✅ 修复：使用本地时间字符串，避免 toISOString() 的二次UTC转换
+    // ✅ Fix: Use local time string to avoid double UTC conversion with toISOString()
     if (startValue instanceof Date && endValue instanceof Date) {
       const formatLocalDate = (date: Date): string => {
         const year = date.getFullYear();

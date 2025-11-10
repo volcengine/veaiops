@@ -21,9 +21,9 @@ import type { ConfigSectionProps } from './types';
 const { Text } = Typography;
 
 /**
- * 基础信息卡片
+ * Basic information card
  *
- * 显示数据源ID和名称
+ * Displays datasource ID and name
  */
 export const BasicInfo: React.FC<ConfigSectionProps> = ({ datasource }) => {
   return (

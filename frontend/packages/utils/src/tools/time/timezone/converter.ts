@@ -24,7 +24,7 @@ import utc from 'dayjs/plugin/utc';
 import { logger } from '../../logger/index';
 import { DEFAULT_TIMEZONE } from './constants';
 import { getUserTimezone } from './preference';
-import { isValidTimezone } from './validator.tsx';
+import { isValidTimezone } from './validator';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -226,7 +226,7 @@ export function convertUtcToLocal(
       return dayjs(null);
     }
 
-    // ✅ 详细记录转换结果
+    // ✅ Log conversion result in detail
     logger.info({
       message: 'UTC to local timezone conversion successful',
       data: {

@@ -21,9 +21,9 @@ import type { ConfigSectionProps } from './types';
 const { Text } = Typography;
 
 /**
- * 连接配置卡片
+ * Connection configuration card
  *
- * 显示数据源的连接信息（连接ID、名称、API URL、Access Key等）
+ * Displays datasource connection information (connection ID, name, API URL, Access Key, etc.)
  */
 export const ConnectionConfig: React.FC<ConfigSectionProps> = ({
   datasource,

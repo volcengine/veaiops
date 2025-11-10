@@ -15,7 +15,7 @@
 import type { DataSource } from 'api-generate';
 
 /**
- * 数据源详情抽屉组件 Props
+ * Datasource detail drawer component Props
  */
 export interface DatasourceDetailDrawerProps {
   visible: boolean;
@@ -25,7 +25,7 @@ export interface DatasourceDetailDrawerProps {
 }
 
 /**
- * 数据源类型配置
+ * Datasource type configuration
  */
 export interface TypeConfig {
   label: string;
@@ -35,7 +35,7 @@ export interface TypeConfig {
 }
 
 /**
- * 各配置部分的通用 Props
+ * Common Props for all configuration sections
  */
 export interface ConfigSectionProps {
   datasource: DataSource;
