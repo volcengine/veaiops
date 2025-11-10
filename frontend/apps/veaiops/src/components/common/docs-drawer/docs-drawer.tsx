@@ -22,28 +22,28 @@ interface DocsDrawerProps {
 }
 
 /**
- * 文档抽屉组件
- * 在抽屉中通过 iframe 渲染文档内容
+ * Documentation drawer component
+ * Render documentation content via iframe in drawer
  */
 export const DocsDrawer: React.FC<DocsDrawerProps> = ({ visible, onClose }) => {
   const [loading, setLoading] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const hasLoadedRef = useRef(false);
 
-  // 获取文档 URL（开发环境使用代理，生产环境使用静态文件）
+  // Get documentation URL (use proxy in dev, use static files in production)
   const getDocsUrl = () => {
-    // 开发环境：直接访问文档服务器（避免代理重定向问题）
+    // Development environment: access documentation server directly (avoid proxy redirect issues)
     if (process.env.NODE_ENV === 'development') {
       return 'http://localhost:4000/';
     }
-    // 生产环境：使用绝对路径（避免相对路径在子路由下出错）
-    // 使用 /veaiops/ 路径与文档 baseURL 保持一致
+    // Production environment: use absolute path (avoid relative path errors in sub-routes)
+    // Use /veaiops/ path to keep consistent with documentation baseURL
     return '/veaiops/';
   };
 
   useEffect(() => {
     if (visible) {
-      // 如果之前已经加载过，直接显示内容
+      // If already loaded before, show content directly
       if (hasLoadedRef.current) {
         setLoading(false);
       } else {

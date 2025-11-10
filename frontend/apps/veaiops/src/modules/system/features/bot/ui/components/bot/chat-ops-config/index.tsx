@@ -37,12 +37,12 @@ interface ChatOpsConfigProps {
 }
 
 /**
- * ChatOps配置组件
+ * ChatOps configuration component
  *
- * 拆分说明：
- * - sections/model-config.tsx: 大模型配置区块（模型名称、Embedding模型、API Base URL、API Key）
- * - sections/kb-config.tsx: 知识库配置区块（Access Key、Secret Key、TOS区域、网络类型、知识库集合）
- * - index.tsx: 主入口组件，负责组装和渲染
+ * Component structure:
+ * - sections/model-config.tsx: LLM configuration section (model name, embedding model, API base URL, API key)
+ * - sections/kb-config.tsx: Knowledge base configuration section (access key, secret key, TOS region, network type, knowledge base collections)
+ * - index.tsx: Main entry component, responsible for assembly and rendering
  */
 export const ChatOpsConfig: React.FC<ChatOpsConfigProps> = ({
   showAdvancedConfig,
