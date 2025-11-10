@@ -74,6 +74,8 @@ def get_app():
             whitelist_paths=[
                 "/apis/v1/manager/event-center/event/chatops",
                 "/apis/v1/manager/event-center/event/intelligent_threshold",
+                "/apis/v1/intelligent-threshold/task/auto-refresh/initialize",
+                "/apis/v1/intelligent-threshold/task/auto-refresh/process",
             ],
         ),  # type: ignore
     ]

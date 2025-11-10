@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from typing import List, Optional
 
 from beanie import PydanticObjectId
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, BackgroundTasks, Depends, Query, status
 
 from veaiops.handler.errors import BadRequestError, InternalServerError, RecordNotFoundError
 from veaiops.handler.services.intelligent_threshold.auto_refresh_task import (
@@ -323,6 +323,7 @@ async def initialize_auto_refresh_task_endpoint() -> APIResponse[AutoIntelligent
 
 @task_router.post("/auto-refresh/process", response_model=APIResponse[dict])
 async def process_auto_refresh_task_endpoint(
+    background_tasks: BackgroundTasks,
     max_iterations: int = Query(100, description="Maximum iteration count to prevent infinite loops"),
     gap_time: int = Query(10, description="Gap time between iterations in minutes"),
 ) -> APIResponse[dict]:
@@ -331,11 +332,8 @@ async def process_auto_refresh_task_endpoint(
     This endpoint processes the most recent auto-refresh task record if its status is Processing.
     It handles the threshold calculation and alarm rule injection for each task detail.
     """
-    try:
-        await scheduled_process_record_detail_tasks(max_iterations, gap_time)
-        return APIResponse(message="Auto refresh task processed successfully")
-    except Exception as e:
-        raise InternalServerError(message=f"Failed to process auto refresh task: {e}")
+    background_tasks.add_task(scheduled_process_record_detail_tasks, max_iterations=max_iterations, gap_time=gap_time)
+    return APIResponse(message="scheduled process task processed successfully")
 
 
 @task_router.delete("/{task_id}", response_model=APIResponse[dict])
