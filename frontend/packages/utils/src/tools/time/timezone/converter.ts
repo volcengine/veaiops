@@ -24,7 +24,7 @@ import utc from 'dayjs/plugin/utc';
 import { logger } from '../../logger/index';
 import { DEFAULT_TIMEZONE } from './constants';
 import { getUserTimezone } from './preference';
-import { isValidTimezone } from './validator';
+import { isValidTimezone } from './validator.tsx';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

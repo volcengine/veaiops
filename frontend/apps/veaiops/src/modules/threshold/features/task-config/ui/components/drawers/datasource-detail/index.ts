@@ -13,9 +13,9 @@
 // limitations under the License.
 
 /**
- * 数据源详情抽屉模块
+ * Data source detail drawer module
  *
- * 统一导出数据源详情相关组件和类型
+ * Unified export for data source detail related components and types
  */
 
 export { DatasourceDetailDrawer } from './drawer';

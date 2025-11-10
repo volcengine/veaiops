@@ -103,13 +103,12 @@ async def get_subscribes(
         agents (List[AgentType], optional): The agents to retrieve subscription relations from.
         event_levels (List[str], optional): Available event levels. Defaults to None.
         enable_webhook (bool, optional): Defaults to None.:
+        products (List[str], optional): Interest products. Defaults to None.
         projects (List[str], optional): Interest projects. Defaults to None.
+        customers (List[str], optional): Interest customers. Defaults to None.
         show_all (bool, optional): Defaults to None, not show disabled items.
         skip: The number of items to skip.
         limit: The maximum number of items to return.
-        get_subscribes: The function to retrieve subscription relations.
-        customers (List[str], optional): Interest customers. Defaults to None.
-        products (List[str], optional): Interest products. Defaults to None.
 
     Returns:
         A list of subscription relations with their attributes.

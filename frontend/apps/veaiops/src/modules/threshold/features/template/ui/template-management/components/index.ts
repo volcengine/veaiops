@@ -12,25 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DataSourceType } from '@veaiops/api-client';
-
-/**
- * Type guard: Check if data source type is Volcengine
- */
-export const isVolcengineType = (type: unknown): boolean => {
-  return type === DataSourceType.VOLCENGINE;
-};
-
-/**
- * Type guard: Check if data source type is Aliyun
- */
-export const isAliyunType = (type: unknown): boolean => {
-  return type === DataSourceType.ALIYUN;
-};
-
-/**
- * Type guard: Check if data source type is Zabbix
- */
-export const isZabbixType = (type: unknown): boolean => {
-  return type === DataSourceType.ZABBIX;
-};
+export { TemplatePageHeader } from './page-header';
+export { createTemplateColumns } from './table-columns';

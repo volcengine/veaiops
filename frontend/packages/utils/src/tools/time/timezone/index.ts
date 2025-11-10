@@ -21,7 +21,7 @@
 export * from './constants';
 
 // Export validator
-export * from './validator';
+export * from './validator.tsx';
 
 // Export offset calculator
 export * from './offset';
