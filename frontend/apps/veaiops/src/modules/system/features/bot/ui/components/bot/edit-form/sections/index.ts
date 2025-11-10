@@ -13,5 +13,6 @@
 // limitations under the License.
 
 export { BaseConfig } from './base-config';
+// Note: ChatOpsConfig is only used internally in edit-form, not exported publicly (to avoid naming conflict with chat-ops-config)
 export { ChatOpsConfig } from './chat-ops-config';
 export { FormActions } from './form-actions';
