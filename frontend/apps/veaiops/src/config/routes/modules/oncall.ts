@@ -14,34 +14,34 @@
 
 import type { RouteConfig } from '@/types/route';
 import React from 'react';
-// 直接从 routes/config 目录导入，避免通过 config/index.ts 造成循环引用
-// 使用 ../config 会解析到 routes/config/index.ts，不会经过 config/index.ts
-import { OncallPages } from '../config';
+// Import lazy-loaded components and route paths from config
+// Using ../config resolves to routes/config/index.ts, avoiding circular dependencies
+import { ONCALL_ROUTES_PATH, OncallPages } from '../config';
 
 /**
- * Oncall异动模块路由配置
+ * Oncall module route configuration
  */
 export const oncallRoutes: RouteConfig[] = [
   {
-    path: '/oncall/config',
+    path: ONCALL_ROUTES_PATH.Config,
     element: React.createElement(OncallPages.Config),
     title: 'Oncall异动配置',
     requireAuth: true,
   },
   {
-    path: '/oncall/rules',
+    path: ONCALL_ROUTES_PATH.Rules,
     element: React.createElement(OncallPages.Rules),
     title: 'Oncall异动规则',
     requireAuth: true,
   },
   {
-    path: '/oncall/history',
+    path: ONCALL_ROUTES_PATH.History,
     element: React.createElement(OncallPages.History),
     title: 'Oncall异动历史',
     requireAuth: true,
   },
   {
-    path: '/oncall/stats',
+    path: ONCALL_ROUTES_PATH.Statistics,
     element: React.createElement(OncallPages.Statistics),
     title: 'Oncall异动统计',
     requireAuth: true,

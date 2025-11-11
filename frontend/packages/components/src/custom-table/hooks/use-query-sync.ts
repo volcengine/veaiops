@@ -216,7 +216,26 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
               newParams.append(key, String(item));
             });
           } else {
-            newParams.set(key, String(value));
+            // 🔧 修复：使用 querySearchParamsFormat 格式化参数值
+            const formatter = config.querySearchParamsFormat?.[key];
+            const formattedValue = formatter ? formatter(value) : String(value);
+
+            // 🔍 添加详细日志：记录每个参数的格式化过程
+            if (key === 'channel') {
+              querySyncLogger.info({
+                component: 'syncQueryToUrl',
+                message: '🔧 格式化 channel 参数',
+                data: {
+                  key,
+                  originalValue: value,
+                  hasFormatter: Boolean(formatter),
+                  formattedValue,
+                  valueType: typeof value,
+                },
+              });
+            }
+
+            newParams.set(key, formattedValue);
           }
         });
 
@@ -228,6 +247,12 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
           data: {
             oldUrl: lastNormalizedUrlRef.current,
             newUrl: newUrlStr,
+            normalizedQuery,
+            newParamsObject: Object.fromEntries(newParams.entries()),
+            hasQuerySearchParamsFormat: Boolean(config.querySearchParamsFormat),
+            querySearchParamsFormatKeys: config.querySearchParamsFormat
+              ? Object.keys(config.querySearchParamsFormat)
+              : [],
           },
         });
 
@@ -313,7 +338,11 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
       data: {
         useActiveKeyHook: config.useActiveKeyHook,
         hasQueryFormat: Boolean(config.queryFormat),
+        queryFormatKeys: config.queryFormat
+          ? Object.keys(config.queryFormat)
+          : [],
         actualSearchParamsString: actualSearchParams.toString(),
+        actualSearchParamsEntries: Array.from(actualSearchParams.entries()),
         contextSearchParamsString: searchParams.toString(),
         windowLocationSearch:
           typeof window !== 'undefined' ? window.location.search : 'N/A',
@@ -348,6 +377,18 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
         searchParams: actualSearchParams,
         queryFormat: completeQueryFormat,
       });
+
+      // 🔍 添加日志：记录 queryFormat 格式化后的结果
+      querySyncLogger.info({
+        component: 'syncUrlToQuery',
+        message: '🔧 queryFormat 格式化完成',
+        data: {
+          urlQuery,
+          urlQueryKeys: Object.keys(urlQuery),
+          channelValue: urlQuery.channel,
+          channelType: typeof urlQuery.channel,
+        },
+      });
     } else {
       // 默认解析（所有值作为字符串）
       for (const [key, value] of actualSearchParams.entries()) {
@@ -368,6 +409,7 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
       data: {
         urlQuery,
         urlQueryKeys: Object.keys(urlQuery),
+        urlQueryChannel: urlQuery.channel,
         urlQueryDatasourceType: urlQuery.datasource_type,
         hasAuthQueryPrefix: Boolean(config.authQueryPrefixOnSearchParams),
         authQueryPrefixKeys: config.authQueryPrefixOnSearchParams
@@ -648,6 +690,14 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
         callId: currentCallId,
         syncEnabled: config.syncQueryOnSearchParams,
         useActiveKeyHook: config.useActiveKeyHook,
+        hasQueryFormat: Boolean(config.queryFormat),
+        queryFormatKeys: config.queryFormat
+          ? Object.keys(config.queryFormat)
+          : [],
+        hasQuerySearchParamsFormat: Boolean(config.querySearchParamsFormat),
+        querySearchParamsFormatKeys: config.querySearchParamsFormat
+          ? Object.keys(config.querySearchParamsFormat)
+          : [],
         windowLocationHref:
           typeof window !== 'undefined' ? window.location.href : 'N/A',
         windowLocationSearch:
@@ -936,7 +986,12 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
         message: '📤 query变化，同步到URL',
         data: {
           query: normalizedQuery,
+          queryChannel: normalizedQuery.channel,
           syncCount: syncCountRef.current.queryToUrl,
+          hasQuerySearchParamsFormat: Boolean(config.querySearchParamsFormat),
+          querySearchParamsFormatKeys: config.querySearchParamsFormat
+            ? Object.keys(config.querySearchParamsFormat)
+            : [],
         },
       });
 
@@ -945,6 +1000,17 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
       try {
         syncQueryToUrl(normalizedQuery as QueryType);
         syncCountRef.current.urlToQuery = 0; // 重置反向计数
+
+        // 🔍 添加日志：记录同步后的 URL 状态
+        querySyncLogger.info({
+          component: 'QueryListener',
+          message: '✅ 同步完成，当前 URL',
+          data: {
+            windowLocationHref: window.location.href,
+            windowLocationSearch: window.location.search,
+            searchParamsString: searchParams.toString(),
+          },
+        });
       } finally {
         setTimeout(() => {
           isSyncingToUrlRef.current = false;

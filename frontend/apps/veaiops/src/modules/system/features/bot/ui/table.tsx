@@ -111,11 +111,11 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
       [onEdit, onDelete, onViewAttributes, onGroupManagement, wrappedHandlers],
     );
 
-    // 🔧 修复：添加 querySearchParamsFormat 确保 channel 参数大小写正确
-    // 当用户在地址栏输入 ?channel=Lark 时，确保不会被转换为 lark
-    const querySearchParamsFormat = useMemo(
+    // 🔧 修复：添加 queryFormat 和 querySearchParamsFormat 确保 channel 参数大小写正确
+    // queryFormat: 从 URL 读取时的格式化（syncUrlToQuery）
+    const queryFormat = useMemo(
       () => ({
-        channel: (value: unknown) => {
+        channel: ({ value }: { value: unknown }) => {
           // 规范化：将 URL 参数值映射到正确的 ChannelType 枚举值
           const strValue = String(value);
           const lowerValue = strValue.toLowerCase();
@@ -128,9 +128,17 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
           if (lowerValue === 'wechat') {
             return ChannelType.WE_CHAT; // 'WeChat'
           }
-          // 保持原值（如果已经是正确格式）
           return strValue;
         },
+      }),
+      [],
+    );
+
+    // querySearchParamsFormat: 写入 URL 时的格式化（syncQueryToUrl）
+    // 确保 query 中的 'Lark' 写入 URL 时保持不变
+    const querySearchParamsFormat = useMemo(
+      () => ({
+        channel: (value: unknown) => String(value), // 直接使用枚举值（'Lark'）
       }),
       [],
     );
@@ -146,6 +154,7 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
           handleFilters={getBotFilters}
           initQuery={DEFAULT_BOT_FILTERS}
           syncQueryOnSearchParams
+          queryFormat={queryFormat}
           querySearchParamsFormat={querySearchParamsFormat}
         />
       </div>

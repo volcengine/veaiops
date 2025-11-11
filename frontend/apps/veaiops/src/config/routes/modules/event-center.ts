@@ -14,37 +14,35 @@
 
 import type { RouteConfig } from '@/types/route';
 import React from 'react';
-// 直接从 routes/config 目录导入，避免通过 config/index.ts 造成循环引用
-// 使用 ../config 会解析到 routes/config/index.ts，不会经过 config/index.ts
-import { EventCenterPages } from '../config';
+import { EVENT_CENTER_ROUTES_PATH, EventCenterPages } from '../config';
 
 /**
- * 事件中心路由配置
+ * Event center route configuration
  */
 export const eventCenterRoutes: RouteConfig[] = [
   {
-    path: '/event-center/strategy',
+    path: EVENT_CENTER_ROUTES_PATH.Strategy,
     element: React.createElement(EventCenterPages.Strategy),
     title: '消息卡片通知策略',
     icon: 'IconNotification',
     requireAuth: true,
   },
   {
-    path: '/event-center/subscribe-relation',
+    path: EVENT_CENTER_ROUTES_PATH.SubscribeRelation,
     element: React.createElement(EventCenterPages.SubscribeRelation),
     title: '事件订阅',
     icon: 'IconSubscribe',
     requireAuth: true,
   },
   {
-    path: '/event-center/history',
+    path: EVENT_CENTER_ROUTES_PATH.History,
     element: React.createElement(EventCenterPages.History),
     title: '历史事件',
     icon: 'IconHistory',
     requireAuth: true,
   },
   {
-    path: '/event-center/statistics',
+    path: EVENT_CENTER_ROUTES_PATH.Statistics,
     element: React.createElement(EventCenterPages.Statistics),
     title: '统计分析',
     icon: 'IconBarChart',

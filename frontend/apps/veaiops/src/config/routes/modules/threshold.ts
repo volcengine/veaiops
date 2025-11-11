@@ -14,35 +14,35 @@
 
 import type { RouteConfig } from '@/types/route';
 import React from 'react';
-// 直接从 routes/config 目录导入，避免通过 config/index.ts 造成循环引用
-// 使用 ../config 会解析到 routes/config/index.ts，不会经过 config/index.ts
-import { ThresholdPages } from '../config';
+// Import lazy-loaded components and route paths from config
+// Using ../config resolves to routes/config/index.ts, avoiding circular dependencies
+import { THRESHOLD_ROUTES_PATH, ThresholdPages } from '../config';
 
 /**
- * 智能阈值模块路由配置
+ * Intelligent threshold module route configuration
  */
 export const thresholdRoutes: RouteConfig[] = [
-  // 智能阈值任务配置
+  // Intelligent threshold task configuration
   {
-    path: '/threshold/config',
+    path: THRESHOLD_ROUTES_PATH.Config,
     element: React.createElement(ThresholdPages.Config),
     requireAuth: true,
   },
-  // 指标模版管理
+  // Metric template management
   {
-    path: '/threshold/template',
+    path: THRESHOLD_ROUTES_PATH.Template,
     element: React.createElement(ThresholdPages.Template),
     requireAuth: true,
   },
-  // 订阅规则
+  // Subscription rules
   {
-    path: '/threshold/subscription',
+    path: THRESHOLD_ROUTES_PATH.Subscription,
     element: React.createElement(ThresholdPages.Subscription),
     requireAuth: true,
   },
-  // 历史事件
+  // Historical events
   {
-    path: '/threshold/history',
+    path: THRESHOLD_ROUTES_PATH.History,
     element: React.createElement(ThresholdPages.History),
     requireAuth: true,
   },

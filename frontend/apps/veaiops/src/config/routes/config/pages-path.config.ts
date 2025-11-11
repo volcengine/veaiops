@@ -114,7 +114,6 @@ export const EVENT_CENTER_ROUTES_PATH = {
   Strategy: '/event-center/strategy',
   SubscribeRelation: '/event-center/subscribe-relation',
   History: '/event-center/history',
-  Statistics: '/event-center/statistics',
 } as const;
 
 // Oncall module URL paths
@@ -122,7 +121,6 @@ export const ONCALL_ROUTES_PATH = {
   Config: '/oncall/config',
   History: '/oncall/history',
   Rules: '/oncall/rules',
-  Statistics: '/oncall/statistics',
 } as const;
 
 // Statistics module URL paths
