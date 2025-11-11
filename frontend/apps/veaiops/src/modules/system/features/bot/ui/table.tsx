@@ -22,6 +22,7 @@ import {
   useBotActionConfig,
   useBotTableConfig,
 } from '@bot';
+import { ChannelType } from '@veaiops/api-client';
 import {
   type BaseQuery,
   type BaseRecord,
@@ -33,6 +34,7 @@ import React, {
   forwardRef,
   useCallback,
   useImperativeHandle,
+  useMemo,
   useRef,
 } from 'react';
 
@@ -107,6 +109,29 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
       [onEdit, onDelete, onViewAttributes, onGroupManagement, wrappedHandlers],
     );
 
+    // 🔧 修复：添加 querySearchParamsFormat 确保 channel 参数大小写正确
+    // 当用户在地址栏输入 ?channel=Lark 时，确保不会被转换为 lark
+    const querySearchParamsFormat = useMemo(
+      () => ({
+        channel: (value: string) => {
+          // 规范化：将 URL 参数值映射到正确的 ChannelType 枚举值
+          const lowerValue = value.toLowerCase();
+          if (lowerValue === 'lark') {
+            return ChannelType.LARK; // 'Lark'
+          }
+          if (lowerValue === 'dingtalk') {
+            return ChannelType.DING_TALK; // 'DingTalk'
+          }
+          if (lowerValue === 'wechat') {
+            return ChannelType.WE_CHAT; // 'WeChat'
+          }
+          // 保持原值（如果已经是正确格式）
+          return value;
+        },
+      }),
+      [],
+    );
+
     return (
       <div className="bot-table-container">
         <CustomTable<any>
@@ -118,6 +143,7 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
           handleFilters={getBotFilters}
           initQuery={DEFAULT_BOT_FILTERS}
           syncQueryOnSearchParams
+          querySearchParamsFormat={querySearchParamsFormat}
         />
       </div>
     );

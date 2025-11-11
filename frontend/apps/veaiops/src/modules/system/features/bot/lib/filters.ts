@@ -17,6 +17,7 @@
  */
 import { channelTypeOptions } from '@/modules/event-center/features/strategy/constants/options';
 import type { FieldItem, HandleFilterProps } from '@veaiops/components';
+import { ChannelType } from '@veaiops/api-client';
 
 /**
  * 筛选配置接口
@@ -30,10 +31,14 @@ export interface BotFilters {
 /**
  * 默认筛选配置
  * 默认选择飞书作为企业协同工具
+ *
+ * ⚠️ 注意：使用 ChannelType 枚举而不是硬编码字符串
+ * - ChannelType.LARK = 'Lark'（大写 L）
+ * - 确保与后端枚举值一致
  */
 export const DEFAULT_BOT_FILTERS: BotFilters = {
   status: '',
-  channel: 'Lark', // 默认选择飞书
+  channel: ChannelType.LARK, // ✅ 使用枚举，确保类型安全和一致性
   keyword: '',
 };
 
