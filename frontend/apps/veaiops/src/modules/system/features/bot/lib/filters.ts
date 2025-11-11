@@ -32,17 +32,41 @@ export interface BotFilters {
 }
 
 /**
- * 默认筛选配置
- * 默认选择飞书作为企业协同工具
+ * Default filter configuration
+ * Default to Lark as enterprise collaboration tool
  *
- * ⚠️ 注意：使用 ChannelType 枚举而不是硬编码字符串
- * - ChannelType.LARK = 'Lark'（大写 L）
- * - 确保与后端枚举值一致
+ * Note: Use ChannelType enum instead of hardcoded strings
+ * - ChannelType.LARK = 'Lark' (capital L)
+ * - Ensure consistency with backend enum values
  */
 export const DEFAULT_BOT_FILTERS: BotFilters = {
   status: '',
-  channel: ChannelType.LARK, // ✅ 使用枚举，确保类型安全和一致性
+  channel: ChannelType.LARK, // ✅ Use enum for type safety and consistency
   keyword: '',
+};
+
+/**
+ * Query format configuration for Bot table
+ * Handles URL → Query conversion (normalize channel parameter)
+ */
+export const BOT_QUERY_FORMAT = {
+  channel: ({ value }: { value: unknown }) => {
+    // Normalize: map URL parameter value to correct ChannelType enum value
+    const strValue = String(value);
+    const lowerValue = strValue.toLowerCase();
+    if (lowerValue === 'lark') {
+      return ChannelType.LARK; // 'Lark'
+    }
+    return strValue;
+  },
+};
+
+/**
+ * Query search params format configuration for Bot table
+ * Handles Query → URL conversion (preserve channel parameter)
+ */
+export const BOT_QUERY_SEARCH_PARAMS_FORMAT = {
+  channel: (value: unknown) => String(value), // Keep enum value as-is ('Lark')
 };
 
 /**
