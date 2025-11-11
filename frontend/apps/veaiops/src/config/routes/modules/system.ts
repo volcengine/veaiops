@@ -15,8 +15,6 @@
 import type { RouteConfig } from '@/types/route';
 import { Navigate, useLocation } from '@modern-js/runtime/router';
 import React from 'react';
-// Import lazy-loaded components and route paths from config
-// Using ../config resolves to routes/config/index.ts, avoiding circular dependencies
 import { ROUTES_PATH_CONFIG, SystemPages } from '../config';
 
 /**

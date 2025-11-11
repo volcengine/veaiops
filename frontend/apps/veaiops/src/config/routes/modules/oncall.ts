@@ -14,8 +14,6 @@
 
 import type { RouteConfig } from '@/types/route';
 import React from 'react';
-// Import lazy-loaded components and route paths from config
-// Using ../config resolves to routes/config/index.ts, avoiding circular dependencies
 import { OncallPages, ROUTES_PATH_CONFIG } from '../config';
 
 /**
