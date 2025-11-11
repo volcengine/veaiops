@@ -18,16 +18,27 @@
  * Unified management of all route page import paths and URL paths
  * Reference Modern.js source code configuration approach
  *
+ * This file contains two types of path configurations:
+ * 1. Import Paths (PAGES_PATH_CONFIG): For documentation and type checking
+ *    - ⚠️ NOT used in lazy.ts due to webpack limitation (must use string literals)
+ *    - Used as reference to ensure consistency between lazy.ts and this config
+ * 2. URL Paths (ROUTES_PATH_CONFIG): For route definitions
+ *    - ✅ Used in route modules (e.g., event-center.ts, system.ts)
+ *    - Can use variables because they're not in dynamic import()
+ *
  * Usage:
  * - All page paths must be defined in this configuration file
  * - Use path aliases (@/pages/*) instead of relative paths
  * - Path configuration is grouped by module for easy maintenance
- * - Import paths for lazy loading components
- * - URL paths for route definitions
+ * - Import paths for documentation reference (lazy.ts uses string literals)
+ * - URL paths for route definitions (used via variables)
+ *
+ * See lazy.ts for explanation of why import paths cannot use variables
  */
 
 // ============================================================================
 // Import Paths (for lazy loading components)
+// Documentation reference only - lazy.ts must use string literals
 // ============================================================================
 
 // System management module page paths
@@ -39,7 +50,7 @@ export const SYSTEM_PAGES_PATH = {
   CardTemplate: '@/pages/system/card-template',
 } as const;
 
-// 智能阈值模块页面路径
+// Intelligent threshold module page paths
 export const THRESHOLD_PAGES_PATH = {
   Config: '@/pages/threshold/config',
   History: '@/pages/threshold/history',
@@ -47,7 +58,7 @@ export const THRESHOLD_PAGES_PATH = {
   Subscription: '@/pages/threshold/subscription',
 } as const;
 
-// 事件中心模块页面路径
+// Event center module page paths
 export const EVENT_CENTER_PAGES_PATH = {
   History: '@/pages/event-center/history',
   Statistics: '@/pages/event-center/statistics',
@@ -55,20 +66,19 @@ export const EVENT_CENTER_PAGES_PATH = {
   SubscribeRelation: '@/pages/event-center/subscribe-relation',
 } as const;
 
-// Oncall异动模块页面路径
+// Oncall module page paths
 export const ONCALL_PAGES_PATH = {
   Config: '@/pages/oncall/config',
   History: '@/pages/oncall/history',
   Rules: '@/pages/oncall/rules',
-  Statistics: '@/pages/oncall/statistics',
 } as const;
 
-// 统计模块页面路径
+// Statistics module page paths
 export const STATISTICS_PAGES_PATH = {
   Overview: '@/pages/statistics/overview',
 } as const;
 
-// 通用页面路径
+// Common page paths
 export const COMMON_PAGES_PATH = {
   Login: '@/pages/auth/login',
   NotFound: '@/pages/common/not-found',
