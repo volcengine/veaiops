@@ -15,16 +15,19 @@
 from datetime import timedelta
 
 import pytest
+from beanie.odm.operators.find.comparison import Eq
 
-from veaiops.handler.errors import RecordNotFoundError
+from veaiops.handler.errors import BadRequestError, RecordNotFoundError
 from veaiops.handler.routers.apis.v1.rule_center.oncall import (
+    create_oncall_rules_by_bot_id,
     get_oncall_rules_by_bot_id,
     update_interest_active_status,
     update_interest_rule,
 )
 from veaiops.schema.documents import Interest
-from veaiops.schema.models.chatops.interest import InterestPayload
-from veaiops.schema.types import EventLevel
+from veaiops.schema.documents.meta.user import User
+from veaiops.schema.models.chatops.interest import CreateInterestPayload, InterestPayload
+from veaiops.schema.types import EventLevel, InterestActionType, InterestInspectType
 
 # Note: test_interest and test_semantic_interest fixtures are now available from
 # tests/handler/conftest.py and automatically available to all handler tests
@@ -94,6 +97,136 @@ async def test_update_interest_active_status_activate(test_interest):
     # Verify in database
     updated_interest = await Interest.find_one(Interest.uuid == test_interest.uuid)
     assert updated_interest.is_active is True
+
+@pytest.mark.asyncio
+async def test_create_oncall_rule_success_re(test_bot, test_user: User):
+    """Test successful creation of a new RE interest rule."""
+    # Arrange
+    payload = CreateInterestPayload(
+        name="New RE Rule",
+        description="A new rule for testing RE.",
+        action_category=InterestActionType.Detect,
+        inspect_category=InterestInspectType.RE,
+        regular_expression=r"error.*",
+        level=EventLevel.P1,
+    )
+
+    # Act
+    response = await create_oncall_rules_by_bot_id(
+        channel=test_bot.channel, bot_id=test_bot.bot_id, interest_payload=payload, current_user=test_user
+    )
+
+    # Assert
+    assert response.message == "Oncall Interest Rule Created Successfully"
+    data = response.data
+    assert data is not None
+    assert data.name == "New RE Rule"
+    assert data.regular_expression == r"error.*"
+    assert data.inspect_category == InterestInspectType.RE
+    assert data.examples_positive is None
+    assert data.examples_negative is None
+
+    # Verify in database
+    db_interest = await Interest.get(data.id)
+    assert db_interest is not None
+    assert db_interest.name == "New RE Rule"
+
+    # Clear database after test
+    await db_interest.delete()
+
+
+@pytest.mark.asyncio
+async def test_create_oncall_rule_success_semantic(test_bot, test_user: User):
+    """Test successful creation of a new Semantic interest rule."""
+    # Arrange
+    payload = CreateInterestPayload(
+        name="New Semantic Rule",
+        description="A new rule for testing Semantic.",
+        action_category=InterestActionType.Detect,
+        inspect_category=InterestInspectType.Semantic,
+        examples_positive=["this is a positive example"],
+        examples_negative=["this is a negative example"],
+        level=EventLevel.P2,
+    )
+
+    # Act
+    response = await create_oncall_rules_by_bot_id(
+        channel=test_bot.channel, bot_id=test_bot.bot_id, interest_payload=payload, current_user=test_user
+    )
+
+    # Assert
+    assert response.message == "Oncall Interest Rule Created Successfully"
+    data = response.data
+    assert data is not None
+    assert data.name == "New Semantic Rule"
+    assert data.inspect_category == InterestInspectType.Semantic
+    assert data.regular_expression is None
+    assert data.examples_positive == ["this is a positive example"]
+
+    # Verify in database
+    db_interest = await Interest.get(data.id)
+    assert db_interest is not None
+    assert db_interest.name == "New Semantic Rule"
+
+    # Clear database after test
+    await db_interest.delete()
+
+
+@pytest.mark.asyncio
+async def test_create_oncall_rule_fails_re_missing_regex(test_bot, test_user: User):
+    """Test failure when creating RE rule without regular_expression."""
+    # Arrange
+    payload = CreateInterestPayload(
+        name="Invalid RE Rule",
+        action_category=InterestActionType.Detect,
+        inspect_category=InterestInspectType.RE,
+        regular_expression=None,  # Missing regex
+    )
+
+    # Act & Assert
+    with pytest.raises(BadRequestError) as exc_info:
+        await create_oncall_rules_by_bot_id(
+            channel=test_bot.channel, bot_id=test_bot.bot_id, interest_payload=payload, current_user=test_user
+        )
+    assert "regular_expression must be provided" in str(exc_info.value)
+
+
+@pytest.mark.asyncio
+async def test_create_oncall_rule_fails_bot_not_found(test_user: User):
+    """Test failure when the bot is not found."""
+    # Arrange
+    payload = CreateInterestPayload(
+        name="Rule for Non-existent Bot",
+        action_category=InterestActionType.Detect,
+        inspect_category=InterestInspectType.RE,
+        regular_expression=r".*",
+    )
+
+    # Act & Assert
+    with pytest.raises(BadRequestError) as exc_info:
+        await create_oncall_rules_by_bot_id(
+            channel="Lark", bot_id="non-existent-bot", interest_payload=payload, current_user=test_user
+        )
+    assert "Bot (Lark, non-existent-bot) not found" in str(exc_info.value)
+
+
+@pytest.mark.asyncio
+async def test_create_oncall_rule_fails_already_exists(test_bot, test_interest, test_user: User):
+    """Test failure when an interest rule with the same name already exists."""
+    # Arrange
+    payload = CreateInterestPayload(
+        name=test_interest.name,  # Same name as existing interest
+        action_category=InterestActionType.Detect,
+        inspect_category=test_interest.inspect_category,  # Same category
+        regular_expression=r".*",
+    )
+
+    # Act & Assert
+    with pytest.raises(BadRequestError) as exc_info:
+        await create_oncall_rules_by_bot_id(
+            channel=test_bot.channel, bot_id=test_bot.bot_id, interest_payload=payload, current_user=test_user
+        )
+    assert f"Interest rule with {payload.name} already exists" in str(exc_info.value)
 
 
 @pytest.mark.asyncio
