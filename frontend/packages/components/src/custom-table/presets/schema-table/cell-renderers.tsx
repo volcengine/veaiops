@@ -23,7 +23,7 @@ import {
   Tooltip,
 } from '@arco-design/web-react';
 import { EMPTY_CONTENT_TEXT } from '@veaiops/constants';
-import { formatDateTime } from '@veaiops/utils';
+import { formatDateTime, safeCopyToClipboard } from '@veaiops/utils';
 import type React from 'react';
 
 import type {
@@ -49,14 +49,14 @@ export const renderTextCell = (
       <Tooltip content="Click to copy">
         <span
           style={{ cursor: 'pointer' }}
-          onClick={() => {
+          onClick={async () => {
             let textToCopy = '';
             if (typeof value === 'object' && value !== null) {
               textToCopy = JSON.stringify(value);
             } else if (value != null) {
               textToCopy = String(value as string | number | boolean);
             }
-            navigator.clipboard.writeText(textToCopy);
+            await safeCopyToClipboard(textToCopy);
           }}
         >
           {displayValue}

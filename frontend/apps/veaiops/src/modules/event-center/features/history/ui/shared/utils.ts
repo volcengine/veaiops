@@ -13,28 +13,34 @@
 // limitations under the License.
 
 import { Message } from '@arco-design/web-react';
-import { logger } from '@veaiops/utils';
+import { logger, safeCopyToClipboard } from '@veaiops/utils';
 import type { Event } from 'api-generate';
 
 /**
  * 复制文本到剪贴板
+ *
+ * 使用 safeCopyToClipboard 工具（基于 copy-to-clipboard 包）
+ * - 更好的浏览器兼容性
+ * - 统一的错误处理
  */
 export const copyToClipboard = async (
   text: string,
   label: string,
 ): Promise<boolean> => {
-  try {
-    await navigator.clipboard.writeText(text);
+  const result = await safeCopyToClipboard(text);
+
+  if (result.success) {
     Message.success(`${label} 已复制到剪贴板`);
     return true;
-  } catch (error: unknown) {
+  } else {
     // ✅ 正确：透出实际错误信息
-    const errorObj = error instanceof Error ? error : new Error(String(error));
-    const errorMessage = errorObj.message || '复制失败，请重试';
+    const errorMessage = result.error?.message || '复制失败，请重试';
     logger.error({
       message: '复制失败',
       data: {
-        error: errorObj,
+        error: result.error?.message,
+        stack: result.error?.stack,
+        errorObj: result.error,
         errorMessage,
         text,
         label,

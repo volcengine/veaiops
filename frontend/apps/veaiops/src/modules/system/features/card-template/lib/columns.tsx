@@ -26,6 +26,7 @@ import {
 import { IconCopy, IconDelete, IconEdit } from "@arco-design/web-react/icon";
 import { CellRender } from "@veaiops/components";
 import { AGENT_TYPE_MAP, CHANNEL_OPTIONS, EMPTY_CONTENT_TEXT } from "@veaiops/constants";
+import { safeCopyToClipboard } from "@veaiops/utils";
 import type { AgentTemplate } from "api-generate";
 
 const { CustomOutlineTag, StampTime } = CellRender;
@@ -75,31 +76,14 @@ export const getCardTemplateColumns = (props: ColumnProps = {}) => {
                 type="text"
                 size="mini"
                 icon={<IconCopy />}
-                onClick={() => {
-                  if (navigator.clipboard?.writeText) {
-                    navigator.clipboard.writeText(templateId).then(
-                      () => {
-                        Message.success("复制成功");
-                      },
-                      () => {
-                        Message.error("复制失败");
-                      }
-                    );
+                onClick={async () => {
+                  const result = await safeCopyToClipboard(templateId);
+                  if (result.success) {
+                    Message.success("复制成功");
                   } else {
-                    const textArea = document.createElement("textarea");
-                    textArea.value = templateId;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    try {
-                      document.execCommand("copy");
-                      Message.success("复制成功");
-                    } catch (error) {
-                      // ✅ Correct: expose actual error message
-                      const errorMessage =
-                        error instanceof Error ? error.message : '复制失败';
-                      Message.error(errorMessage);
-                    }
-                    document.body.removeChild(textArea);
+                    const errorMessage =
+                      result.error?.message || "复制失败，请重试";
+                    Message.error(errorMessage);
                   }
                 }}
               />

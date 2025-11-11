@@ -90,8 +90,8 @@ export const TOS_REGION_OPTIONS = [
  * 网络类型选项
  */
 export const NETWORK_TYPE_OPTIONS = [
-  { label: '内网', value: 'internal' },
-  { label: '公网', value: 'public' },
+  { label: '内网（服务部署于火山引擎）', value: 'internal' },
+  { label: '公网（服务未部署于火山引擎）', value: 'public' },
 ] as const;
 
 /**
