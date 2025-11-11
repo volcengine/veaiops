@@ -13,18 +13,24 @@
 // limitations under the License.
 
 /**
- * 页面路径配置
+ * Page path configuration
  *
- * 统一管理所有路由页面的导入路径，实现配置化管理
- * 参考 Modern.js 源码的配置化方式，将路径抽取为配置
+ * Unified management of all route page import paths and URL paths
+ * Reference Modern.js source code configuration approach
  *
- * 使用规范：
- * - 所有页面路径必须在此配置文件中定义
- * - 使用路径别名（@/pages/*）替代相对路径
- * - 路径配置按模块分组，便于维护
+ * Usage:
+ * - All page paths must be defined in this configuration file
+ * - Use path aliases (@/pages/*) instead of relative paths
+ * - Path configuration is grouped by module for easy maintenance
+ * - Import paths for lazy loading components
+ * - URL paths for route definitions
  */
 
-// 系统管理模块页面路径
+// ============================================================================
+// Import Paths (for lazy loading components)
+// ============================================================================
+
+// System management module page paths
 export const SYSTEM_PAGES_PATH = {
   Monitor: '@/pages/system/datasource',
   Account: '@/pages/system/account',
@@ -69,8 +75,8 @@ export const COMMON_PAGES_PATH = {
 } as const;
 
 /**
- * 页面路径配置映射
- * 用于统一管理和访问所有页面路径
+ * Page path configuration mapping (import paths)
+ * Used for unified management and access to all page paths
  */
 export const PAGES_PATH_CONFIG = {
   system: SYSTEM_PAGES_PATH,
@@ -79,4 +85,66 @@ export const PAGES_PATH_CONFIG = {
   oncall: ONCALL_PAGES_PATH,
   statistics: STATISTICS_PAGES_PATH,
   common: COMMON_PAGES_PATH,
+} as const;
+
+// ============================================================================
+// URL Paths (for route definitions)
+// ============================================================================
+
+// System management module URL paths
+export const SYSTEM_ROUTES_PATH = {
+  Root: '/system',
+  BotManagement: '/system/bot-management',
+  CardTemplate: '/system/card-template',
+  Account: '/system/account',
+  Monitor: '/system/datasource',
+  Project: '/system/project',
+} as const;
+
+// Intelligent threshold module URL paths
+export const THRESHOLD_ROUTES_PATH = {
+  Config: '/threshold/config',
+  Template: '/threshold/template',
+  Subscription: '/threshold/subscription',
+  History: '/threshold/history',
+} as const;
+
+// Event center module URL paths
+export const EVENT_CENTER_ROUTES_PATH = {
+  Strategy: '/event-center/strategy',
+  SubscribeRelation: '/event-center/subscribe-relation',
+  History: '/event-center/history',
+  Statistics: '/event-center/statistics',
+} as const;
+
+// Oncall module URL paths
+export const ONCALL_ROUTES_PATH = {
+  Config: '/oncall/config',
+  History: '/oncall/history',
+  Rules: '/oncall/rules',
+  Statistics: '/oncall/statistics',
+} as const;
+
+// Statistics module URL paths
+export const STATISTICS_ROUTES_PATH = {
+  Overview: '/statistics/overview',
+} as const;
+
+// Common page URL paths
+export const COMMON_ROUTES_PATH = {
+  Login: '/login',
+  NotFound: '/404',
+} as const;
+
+/**
+ * Route path configuration mapping (URL paths)
+ * Used for route definitions in modules
+ */
+export const ROUTES_PATH_CONFIG = {
+  system: SYSTEM_ROUTES_PATH,
+  threshold: THRESHOLD_ROUTES_PATH,
+  eventCenter: EVENT_CENTER_ROUTES_PATH,
+  oncall: ONCALL_ROUTES_PATH,
+  statistics: STATISTICS_ROUTES_PATH,
+  common: COMMON_ROUTES_PATH,
 } as const;

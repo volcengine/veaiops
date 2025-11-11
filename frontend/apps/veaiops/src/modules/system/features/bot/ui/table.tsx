@@ -22,7 +22,7 @@ import {
   useBotActionConfig,
   useBotTableConfig,
 } from '@bot';
-import { ChannelType } from '@veaiops/api-client';
+import { type Bot, ChannelType } from '@veaiops/api-client';
 import {
   type BaseQuery,
   type BaseRecord,
@@ -83,7 +83,9 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
             if (!result.success && result.error) {
               throw result.error;
             }
+            return result.success;
           }
+          return false;
         },
       }),
       [operations],
@@ -113,9 +115,10 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
     // 当用户在地址栏输入 ?channel=Lark 时，确保不会被转换为 lark
     const querySearchParamsFormat = useMemo(
       () => ({
-        channel: (value: string) => {
+        channel: (value: unknown) => {
           // 规范化：将 URL 参数值映射到正确的 ChannelType 枚举值
-          const lowerValue = value.toLowerCase();
+          const strValue = String(value);
+          const lowerValue = strValue.toLowerCase();
           if (lowerValue === 'lark') {
             return ChannelType.LARK; // 'Lark'
           }
@@ -126,7 +129,7 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
             return ChannelType.WE_CHAT; // 'WeChat'
           }
           // 保持原值（如果已经是正确格式）
-          return value;
+          return strValue;
         },
       }),
       [],
@@ -134,7 +137,7 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
 
     return (
       <div className="bot-table-container">
-        <CustomTable<any>
+        <CustomTable<Bot>
           {...customTableProps}
           ref={tableActionRef}
           title={BOT_MANAGEMENT_CONFIG.title}

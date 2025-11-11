@@ -95,7 +95,6 @@ export const NETWORK_TYPE_OPTIONS = [
 ] as const;
 
 /**
- * 企业协同工具选项已迁移到 @veaiops/constants
  * @see frontend/packages/constants/src/channel.ts
  *
  * 使用方式：
