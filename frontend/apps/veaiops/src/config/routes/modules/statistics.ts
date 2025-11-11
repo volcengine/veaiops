@@ -16,14 +16,14 @@ import type { RouteConfig } from '@/types/route';
 import React from 'react';
 // Import lazy-loaded components and route paths from config
 // Using ../config resolves to routes/config/index.ts, avoiding circular dependencies
-import { STATISTICS_ROUTES_PATH, StatisticsPages } from '../config';
+import { ROUTES_PATH_CONFIG, StatisticsPages } from '../config';
 
 /**
  * Statistics route configuration
  */
 export const statisticsRoutes: RouteConfig[] = [
   {
-    path: STATISTICS_ROUTES_PATH.Overview,
+    path: ROUTES_PATH_CONFIG.statistics.Overview,
     element: React.createElement(StatisticsPages.Overview),
     title: '概览数据',
     requireAuth: true,

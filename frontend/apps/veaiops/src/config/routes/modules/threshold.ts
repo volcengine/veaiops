@@ -16,7 +16,7 @@ import type { RouteConfig } from '@/types/route';
 import React from 'react';
 // Import lazy-loaded components and route paths from config
 // Using ../config resolves to routes/config/index.ts, avoiding circular dependencies
-import { THRESHOLD_ROUTES_PATH, ThresholdPages } from '../config';
+import { ROUTES_PATH_CONFIG, ThresholdPages } from '../config';
 
 /**
  * Intelligent threshold module route configuration
@@ -24,25 +24,25 @@ import { THRESHOLD_ROUTES_PATH, ThresholdPages } from '../config';
 export const thresholdRoutes: RouteConfig[] = [
   // Intelligent threshold task configuration
   {
-    path: THRESHOLD_ROUTES_PATH.Config,
+    path: ROUTES_PATH_CONFIG.threshold.Config,
     element: React.createElement(ThresholdPages.Config),
     requireAuth: true,
   },
   // Metric template management
   {
-    path: THRESHOLD_ROUTES_PATH.Template,
+    path: ROUTES_PATH_CONFIG.threshold.Template,
     element: React.createElement(ThresholdPages.Template),
     requireAuth: true,
   },
   // Subscription rules
   {
-    path: THRESHOLD_ROUTES_PATH.Subscription,
+    path: ROUTES_PATH_CONFIG.threshold.Subscription,
     element: React.createElement(ThresholdPages.Subscription),
     requireAuth: true,
   },
   // Historical events
   {
-    path: THRESHOLD_ROUTES_PATH.History,
+    path: ROUTES_PATH_CONFIG.threshold.History,
     element: React.createElement(ThresholdPages.History),
     requireAuth: true,
   },

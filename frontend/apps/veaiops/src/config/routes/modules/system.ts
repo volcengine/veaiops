@@ -17,7 +17,7 @@ import { Navigate, useLocation } from '@modern-js/runtime/router';
 import React from 'react';
 // Import lazy-loaded components and route paths from config
 // Using ../config resolves to routes/config/index.ts, avoiding circular dependencies
-import { SYSTEM_ROUTES_PATH, SystemPages } from '../config';
+import { ROUTES_PATH_CONFIG, SystemPages } from '../config';
 
 /**
  * System configuration module route configuration
@@ -25,10 +25,10 @@ import { SYSTEM_ROUTES_PATH, SystemPages } from '../config';
 export const systemRoutes: RouteConfig[] = [
   // Default redirect to Bot management page
   {
-    path: SYSTEM_ROUTES_PATH.Root,
+    path: ROUTES_PATH_CONFIG.system.Root,
     element: React.createElement(() => {
       const location = useLocation();
-      const targetUrl = `${SYSTEM_ROUTES_PATH.BotManagement}${location.search}`;
+      const targetUrl = `${ROUTES_PATH_CONFIG.system.BotManagement}${location.search}`;
 
       return React.createElement(Navigate, {
         to: targetUrl,
@@ -38,32 +38,32 @@ export const systemRoutes: RouteConfig[] = [
     requireAuth: true,
   },
   {
-    path: SYSTEM_ROUTES_PATH.BotManagement,
+    path: ROUTES_PATH_CONFIG.system.BotManagement,
     element: React.createElement(SystemPages.BotManagement),
     title: '群聊机器人管理',
     requireAuth: true,
   },
   {
-    path: SYSTEM_ROUTES_PATH.CardTemplate,
+    path: ROUTES_PATH_CONFIG.system.CardTemplate,
     element: React.createElement(SystemPages.CardTemplate),
     title: '卡片模版管理',
     icon: 'IconCard',
     requireAuth: true,
   },
   {
-    path: SYSTEM_ROUTES_PATH.Account,
+    path: ROUTES_PATH_CONFIG.system.Account,
     element: React.createElement(SystemPages.Account),
     title: '账号管理',
     requireAuth: true,
   },
   {
-    path: SYSTEM_ROUTES_PATH.Monitor,
+    path: ROUTES_PATH_CONFIG.system.Monitor,
     element: React.createElement(SystemPages.Monitor),
     title: '监控数据源管理',
     requireAuth: true,
   },
   {
-    path: SYSTEM_ROUTES_PATH.Project,
+    path: ROUTES_PATH_CONFIG.system.Project,
     element: React.createElement(SystemPages.Project),
     title: '项目管理',
     requireAuth: true,
