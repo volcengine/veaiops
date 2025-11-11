@@ -15,7 +15,6 @@
 from datetime import timedelta
 
 import pytest
-from beanie.odm.operators.find.comparison import Eq
 
 from veaiops.handler.errors import BadRequestError, RecordNotFoundError
 from veaiops.handler.routers.apis.v1.rule_center.oncall import (
@@ -97,6 +96,7 @@ async def test_update_interest_active_status_activate(test_interest):
     # Verify in database
     updated_interest = await Interest.find_one(Interest.uuid == test_interest.uuid)
     assert updated_interest.is_active is True
+
 
 @pytest.mark.asyncio
 async def test_create_oncall_rule_success_re(test_bot, test_user: User):
