@@ -220,21 +220,6 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
             const formatter = config.querySearchParamsFormat?.[key];
             const formattedValue = formatter ? formatter(value) : String(value);
 
-            // 🔍 添加详细日志：记录每个参数的格式化过程
-            if (key === 'channel') {
-              querySyncLogger.info({
-                component: 'syncQueryToUrl',
-                message: '🔧 格式化 channel 参数',
-                data: {
-                  key,
-                  originalValue: value,
-                  hasFormatter: Boolean(formatter),
-                  formattedValue,
-                  valueType: typeof value,
-                },
-              });
-            }
-
             newParams.set(key, formattedValue);
           }
         });
