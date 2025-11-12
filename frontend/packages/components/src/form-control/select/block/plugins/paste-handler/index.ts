@@ -60,12 +60,12 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
   handlePaste(event: ClipboardEvent): void {
     // 防御性检查：确保配置对象和context存在
     if (!this.config) {
-      console.warn('[PasteHandler] 配置对象未初始化，跳过粘贴处理');
+      // ✅ Silent mode: Config not initialized, skip paste handling (expected behavior)
       return;
     }
 
     if (!this.context) {
-      console.warn('[PasteHandler] context已被销毁，跳过粘贴处理');
+      // ✅ Silent mode: Context destroyed, skip paste handling (expected behavior)
       return;
     }
 
@@ -125,7 +125,7 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
   private async updateValue(newValues: string[]): Promise<void> {
     // 🔧 防御性检查：确保context存在，避免组件销毁后的异步操作
     if (!this.context) {
-      console.warn('[PasteHandler] context已被销毁，跳过值更新');
+      // ✅ Silent mode: Context destroyed, skip value update (expected behavior)
       return;
     }
 
@@ -259,7 +259,7 @@ export class PasteHandlerPluginImpl implements PasteHandlerPlugin {
     }
 
     if (!this.context) {
-      console.warn('[PasteHandler] context已被销毁，无法创建粘贴处理器');
+      // ✅ Silent mode: Context destroyed, cannot create paste handler (expected behavior)
       return undefined;
     }
 

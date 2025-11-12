@@ -29,7 +29,7 @@ export class PasteDataFetcher {
   ): Promise<void> {
     // 🔧 防御性检查：确保context存在
     if (!this.context) {
-      console.warn('[PasteDataFetcher] context已被销毁，跳过数据获取');
+      // ✅ Silent mode: Context destroyed, skip data fetching (expected behavior)
       return;
     }
 
@@ -94,8 +94,8 @@ export class PasteDataFetcher {
         });
       }
     } catch (error) {
-      console.warn('[PasteDataFetcher] 粘贴后数据获取失败:', error);
-      // 不显示错误消息，因为这是后台操作
+      // ✅ Silent mode: Background operation failure, no console output
+      // Note: Error is silently handled as this is a background operation
     }
   }
 

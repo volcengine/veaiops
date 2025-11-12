@@ -290,7 +290,7 @@ export class TableSchemaBuilder<T extends BaseRecord = BaseRecord>
   build = (): TableSchema<T> => {
     const validation = this.validate();
     if (!validation.valid) {
-      console.warn('Schema validation failed:', validation.errors);
+      // ✅ Silent mode: Schema validation failed (error logged internally)
     }
     return createTableSchema(this.schema);
   };

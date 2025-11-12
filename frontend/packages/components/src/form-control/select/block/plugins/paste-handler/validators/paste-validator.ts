@@ -157,7 +157,7 @@ export class PasteValidator {
   } {
     // 🔧 防御性检查：确保context存在
     if (!this.context) {
-      console.warn('[PasteValidator] context已被销毁，跳过数量限制检查');
+      // ✅ Silent mode: Context destroyed, skip validation (expected behavior)
       return { isValid: true, finalValues: newValues };
     }
 
@@ -175,7 +175,7 @@ export class PasteValidator {
   }> {
     // 🔧 防御性检查：确保context存在
     if (!this.context) {
-      console.warn('[PasteValidator] context已被销毁，跳过数据源验证');
+      // ✅ Silent mode: Context destroyed, skip validation (expected behavior)
       return { validValues: values, invalidValues: [] };
     }
 

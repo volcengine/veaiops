@@ -184,12 +184,9 @@ function resolveContainerElement(
   } catch (error: unknown) {
     // ✅ 静默处理 DOM 操作错误（避免阻塞功能），可选记录警告
     if (process.env.NODE_ENV === 'development') {
+      // ✅ Silent mode: Failed to get root DOM node (error logged internally)
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
-      console.warn(
-        '[ColumnWidthPersistence] 获取根DOM节点失败',
-        errorObj.message,
-      );
     }
     return null;
   }

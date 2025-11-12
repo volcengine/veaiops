@@ -28,18 +28,7 @@ export function syncUrlToQuery<QueryType extends Record<string, unknown>>(
   // 🐛 Use logger to record detailed debug information
   const { search: windowLocationSearch } = window.location;
 
-  // 🔍 Add detailed logging: Record URL synchronization process
-  if (process.env.NODE_ENV === 'development') {
-    console.log('[syncUrlToQuery] Starting to sync URL to query', {
-      useActiveKeyHook,
-      windowLocationSearch,
-      contextSearchParams: context.searchParams.toString(),
-      querySearchParamsFormat: Object.keys(
-        config.querySearchParamsFormat || {},
-      ),
-      queryFormat: Object.keys(config.queryFormat || {}),
-    });
-  }
+  // ✅ Silent mode: Remove console output
 
   try {
     const searchParams = useActiveKeyHook
@@ -48,14 +37,7 @@ export function syncUrlToQuery<QueryType extends Record<string, unknown>>(
           const { search } = window.location;
           const windowParams = new URLSearchParams(search);
 
-          // 🔍 Add detailed logging
-          if (process.env.NODE_ENV === 'development') {
-            console.log('[syncUrlToQuery] useActiveKeyHook mode', {
-              search,
-              windowParamsEntries: Array.from(windowParams.entries()),
-              contextSearchParams: context.searchParams.toString(),
-            });
-          }
+          // ✅ Silent mode: Remove console output
 
           // If window.location.search has parameters, use it
           if (search) {
@@ -79,15 +61,7 @@ export function syncUrlToQuery<QueryType extends Record<string, unknown>>(
     for (const [key, value] of searchParams.entries()) {
       const { querySearchParamsFormat = {} } = config;
 
-      // 🔍 Add detailed logging: Record conversion process for each parameter
-      if (process.env.NODE_ENV === 'development' && key === 'datasource_type') {
-        console.log('[syncUrlToQuery] Processing datasource_type parameter', {
-          key,
-          value,
-          hasFormatter: Boolean(querySearchParamsFormat?.[key]),
-          formatter: querySearchParamsFormat?.[key],
-        });
-      }
+      // ✅ Silent mode: Remove console output
 
       if (querySearchParamsFormat?.[key]) {
         raw[key] = querySearchParamsFormat[key](value);
@@ -96,35 +70,17 @@ export function syncUrlToQuery<QueryType extends Record<string, unknown>>(
       }
     }
 
-    // 🔍 Add detailed logging: Record converted raw object
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[syncUrlToQuery] Converted raw object', {
-        raw,
-        datasourceType: raw.datasource_type,
-      });
-    }
+    // ✅ Silent mode: Remove console output
 
     // Filter empty value parameters
     const filteredRaw = getParamsObject(raw);
 
-    // 🔍 Add detailed logging: Record filtered results
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[syncUrlToQuery] Filtered filteredRaw', {
-        filteredRaw,
-        datasourceType: filteredRaw.datasource_type,
-      });
-    }
+    // ✅ Silent mode: Remove console output
 
     // Unified formatQuery for secondary formatting (changed to synchronous)
     const result = formatQuerySync(filteredRaw, config.queryFormat || {});
 
-    // 🔍 Add detailed logging: Record final result
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[syncUrlToQuery] Final result', {
-        result,
-        datasourceType: result.datasource_type,
-      });
-    }
+    // ✅ Silent mode: Remove console output
 
     return result;
   } catch (error: unknown) {
