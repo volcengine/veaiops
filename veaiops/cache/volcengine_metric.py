@@ -121,6 +121,9 @@ class VolcengineMetricCache:
 
                         new_metrics = []
                         for metric in metrics_data:
+                            if not metric["TypeAlertEnable"]:
+                                continue
+
                             metric_detail = VolcengineMetricDetail(
                                 metric_name=metric["MetricName"],
                                 metric_tips=metric["MetricTips"],
