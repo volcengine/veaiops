@@ -80,7 +80,8 @@ export const OncallPages = {
   Config: lazy(() => import('@/pages/oncall/config')),
   History: lazy(() => import('@/pages/oncall/history')),
   Rules: lazy(() => import('@/pages/oncall/rules')),
-  Statistics: lazy(() => import('@/pages/oncall/statistics')),
+  // Note: Statistics page removed - page does not exist
+  // TODO: Add Statistics page after creating it
 };
 
 // Statistics module

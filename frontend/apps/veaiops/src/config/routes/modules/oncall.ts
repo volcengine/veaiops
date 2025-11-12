@@ -38,10 +38,6 @@ export const oncallRoutes: RouteConfig[] = [
     title: 'Oncall异动历史',
     requireAuth: true,
   },
-  {
-    path: ROUTES_PATH_CONFIG.oncall.Statistics,
-    element: React.createElement(OncallPages.Statistics),
-    title: 'Oncall异动统计',
-    requireAuth: true,
-  },
+  // Note: Statistics route removed - path not defined in ROUTES_PATH_CONFIG
+  // TODO: Add Statistics route after creating the page and defining the path
 ];

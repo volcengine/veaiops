@@ -22,6 +22,7 @@ import {
 } from '@ec/strategy';
 import {
   type BaseQuery,
+  type CustomTableActionType,
   type FieldItem,
   type HandleFilterProps,
   type ModernTableColumnProps,
@@ -63,7 +64,7 @@ export interface UseStrategyTableConfigOptions {
   onDelete?: (strategyId: string) => Promise<boolean>;
   onCreate?: () => void;
   onRefresh?: () => void;
-  ref?: React.Ref<{ refresh: () => Promise<void> }>; // ✅ 添加 ref 参数
+  ref?: React.Ref<CustomTableActionType<InformStrategy, StrategyQueryParams>>;
 }
 
 /**
@@ -108,10 +109,15 @@ export const useStrategyTableConfig = ({
     if (!bots || !Array.isArray(bots)) {
       return [];
     }
-    return bots.map((bot) => ({
-      label: bot.extra?.name || bot.extra?.bot_id,
-      value: bot.extra?.bot_id,
-    }));
+    return bots
+      .map((bot) => ({
+        label: bot.extra?.name || bot.extra?.bot_id,
+        value: bot.extra?.bot_id,
+      }))
+      .filter(
+        (option): option is { label: string; value: string } =>
+          Boolean(option.label) && Boolean(option.value),
+      );
   }, [bots]);
 
   // 🎯 数据请求逻辑
@@ -163,7 +169,7 @@ export const useStrategyTableConfig = ({
   // 🎯 表格配置
   const tableProps = useMemo(
     () => ({
-      rowKey: '_id',
+      rowKey: 'id',
       scroll: { x: 1200 },
       pagination: {
         pageSize: 10,
@@ -177,24 +183,27 @@ export const useStrategyTableConfig = ({
   );
 
   // 🎯 业务操作包装 - 自动刷新
-  const { customTableProps, customOperations } =
-    useBusinessTable<StrategyQueryParams>({
-      dataSource,
-      tableProps,
-      refreshConfig: {
-        enableRefreshFeedback: true,
-        successMessage: '操作成功',
-        errorMessage: '操作失败，请重试',
-      },
-      operationWrapper: ({ wrapDelete }: OperationWrappers) => ({
-        handleDelete: (..._args: unknown[]) =>
-          wrapDelete(async (_id: string): Promise<boolean> => {
-            // operationWrapper暂不需要实际调用，仅用于自动刷新
-            return true;
-          }),
-      }),
-      ref, // ✅ 传递 ref 给 useBusinessTable
-    });
+  const { customTableProps, customOperations } = useBusinessTable<
+    StrategyQueryParams,
+    InformStrategy,
+    StrategyQueryParams
+  >({
+    dataSource,
+    tableProps,
+    refreshConfig: {
+      enableRefreshFeedback: true,
+      successMessage: '操作成功',
+      errorMessage: '操作失败，请重试',
+    },
+    operationWrapper: ({ wrapDelete }: OperationWrappers) => ({
+      handleDelete: (..._args: unknown[]) =>
+        wrapDelete(async (_id: string): Promise<boolean> => {
+          // operationWrapper暂不需要实际调用，仅用于自动刷新
+          return true;
+        }),
+    }),
+    ref,
+  });
 
   // 🎯 列配置
   const handleColumns = useCallback(

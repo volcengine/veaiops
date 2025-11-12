@@ -20,6 +20,7 @@ import type { Form } from '@arco-design/web-react';
 import type { ProjectFormData } from '@project/types';
 import type {
   BaseQuery,
+  CustomTableActionType,
   FieldItem,
   HandleFilterProps,
   ModernTableColumnProps,
@@ -29,7 +30,16 @@ import type { Project } from 'api-generate';
 import type React from 'react';
 
 /**
- * Project 表格配置 Hook 的选项类型
+ * Project query parameters type (extends BaseQuery)
+ */
+export interface ProjectQueryParams extends BaseQuery {
+  skip?: number;
+  limit?: number;
+  name?: string;
+}
+
+/**
+ * Project table configuration Hook options type
  */
 export interface UseProjectTableConfigOptions {
   onEdit?: (record: Project) => Promise<boolean>;
@@ -37,7 +47,7 @@ export interface UseProjectTableConfigOptions {
   onCreate?: () => void;
   onImport?: () => void;
   onToggleStatus?: (projectId: string, status: boolean) => Promise<boolean>;
-  ref?: React.Ref<{ refresh: () => Promise<void> }>; // ✅ 添加 ref 参数
+  ref?: React.Ref<CustomTableActionType<Project, BaseQuery>>;
 }
 
 /**

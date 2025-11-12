@@ -117,17 +117,8 @@ export const useProjectTableConfig = ({
     [], // ✅ 空依赖数组，request 函数保持稳定
   );
 
-  // 添加渲染日志
-  console.log('[ProjectTableConfig] 🔄 组件渲染', {
-    hasRequest: Boolean(request),
-    timestamp: Date.now(),
-  });
-
   // 🎯 数据源配置 - 使用工具函数
   const dataSource = useMemo(() => {
-    console.log('[ProjectTableConfig] 🔧 创建 dataSource', {
-      timestamp: Date.now(),
-    });
     return createServerPaginationDataSource({ request });
   }, [request]);
 
@@ -144,7 +135,11 @@ export const useProjectTableConfig = ({
 
   // 🎯 业务操作包装 - 自动刷新
   // ✅ 使用 handlers 模式，让 useBusinessTable 自动包装操作函数
-  const { customTableProps, wrappedHandlers } = useBusinessTable({
+  const { customTableProps, wrappedHandlers } = useBusinessTable<
+    Record<string, unknown>,
+    Project,
+    BaseQuery
+  >({
     dataSource,
     tableProps,
     handlers: {
@@ -170,7 +165,7 @@ export const useProjectTableConfig = ({
       successMessage: '操作成功',
       errorMessage: '操作失败，请重试',
     },
-    ref, // ✅ 传递 ref 给 useBusinessTable
+    ref,
   });
 
   // 🎯 使用包装后的删除函数
