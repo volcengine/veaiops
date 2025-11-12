@@ -25,8 +25,7 @@
 
 // ==================== UI 组件导出 ====================
 export { HistoryDetailDrawer } from './ui/components/table/history-detail-drawer';
-export { HistoryTable } from './ui/components/table/history-table';
-export { HistoryManagement } from './ui/pages/history-management';
+// HistoryTable and HistoryManagement removed - all history pages now use EventHistoryTable from @veaiops/components
 
 // ==================== Hooks 导出 ====================
 export {
