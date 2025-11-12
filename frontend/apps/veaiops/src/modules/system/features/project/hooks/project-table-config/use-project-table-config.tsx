@@ -28,16 +28,17 @@ import {
   createTableRequestWithResponseHandler,
 } from '@veaiops/utils';
 import type { Project } from 'api-generate';
-import type React from 'react';
 import { useCallback, useMemo } from 'react';
 import type {
   UseProjectTableConfigOptions,
   UseProjectTableConfigReturn,
 } from '../types';
 import { useProjectCRUD } from '../use-project-crud';
-import { getProjectTableActions } from './lib/actions';
-import { getProjectTableColumns } from './lib/columns';
-import { getProjectTableFilters } from './lib/filters';
+import {
+  getProjectTableActions,
+  getProjectTableColumns,
+  getProjectTableFilters,
+} from './lib';
 
 /**
  * Project 表格配置聚合 Hook
@@ -171,11 +172,6 @@ export const useProjectTableConfig = ({
   // 🎯 使用包装后的删除函数
   const wrappedOnDelete = useCallback(
     async (id: string): Promise<boolean> => {
-      console.log('[ProjectTableConfig] 📞 调用包装后的删除函数', {
-        projectId: id,
-        hasWrappedDelete: Boolean(wrappedHandlers?.delete),
-        timestamp: Date.now(),
-      });
       if (wrappedHandlers?.delete) {
         return await wrappedHandlers.delete(id);
       }
@@ -202,12 +198,6 @@ export const useProjectTableConfig = ({
     },
     [],
   );
-
-  // 🎯 适配 onCreate 类型（void -> Promise<boolean>）
-  const adaptedOnCreate = useCallback(async () => {
-    onCreate?.();
-    return true;
-  }, [onCreate]);
 
   // 🎯 操作配置
   const renderActions = useCallback(
