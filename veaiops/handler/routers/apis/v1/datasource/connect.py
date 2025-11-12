@@ -136,7 +136,12 @@ async def create_connect_endpoint(
         }
 
     # Create connect with user information
-    connect = await create_connect(connect_create.name, connect_create.type, credentials, created_user=user.username)
+    connect = await create_connect(
+        connect_create.name,
+        connect_create.type,
+        credentials,
+        created_user=user.username,
+    )
 
     return APIResponse(
         message="Connect created successfully",
@@ -146,7 +151,9 @@ async def create_connect_endpoint(
 
 @connect_router.put("/{connect_id}", response_model=APIResponse[Connect])
 async def update_connect_endpoint(
-    connect_id: str, connect_update: ConnectUpdatePayload, user: User = Depends(get_current_user)
+    connect_id: str,
+    connect_update: ConnectUpdatePayload,
+    user: User = Depends(get_current_user),
 ) -> APIResponse[Connect]:
     """Update an existing Connect object.
 
@@ -319,7 +326,23 @@ async def describe_aliyun_metric_meta_list(
     total = response_dict.get("body", {}).get("TotalCount", 0)
 
     # Create a list of AliyunMetric objects
-    metrics = [AliyunMetric.model_validate(r) for r in resources]
+    metrics = []
+    for r in resources:
+        metric_labels = json.loads(r["Labels"])
+        is_alarm_supported = False
+        for label in metric_labels:
+            if label.get("name") == "is_alarm" and label.get("value") == "true":
+                is_alarm_supported = True
+                break
+
+        if not is_alarm_supported:
+            continue
+
+        statistics = r.get("Statistics")
+        if not statistics or "Average" not in statistics:
+            continue
+
+        metrics.append(AliyunMetric.model_validate(r))
 
     return PaginatedAPIResponse(
         message="Metric meta list retrieved successfully",
