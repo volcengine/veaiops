@@ -246,7 +246,7 @@ export class DataSourceConnectService {
     connectId,
     requestBody,
     skip,
-    limit = 100,
+    limit = 1000,
   }: {
     /**
      * Connect ID

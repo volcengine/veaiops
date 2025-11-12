@@ -1611,7 +1611,7 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 100
+              "default": 1000
             },
             "description": "Maximum number of records to return"
           }
