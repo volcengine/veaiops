@@ -488,7 +488,9 @@
           },
           "silence_delta": {
             "type": "string",
-            "description": "告警抑制间隔"
+            "format": "duration",
+            "description": "告警抑制间隔（ISO 8601 duration format, e.g., PT6H, PT30M, P1D）",
+            "example": "PT6H"
           },
           "is_active": {
             "type": "boolean",
@@ -530,7 +532,9 @@
           },
           "silence_delta": {
             "type": "string",
-            "description": "告警抑制间隔"
+            "format": "duration",
+            "description": "告警抑制间隔（ISO 8601 duration format, e.g., PT6H, PT30M, P1D）",
+            "example": "PT6H"
           },
           "is_active": {
             "type": "boolean",
@@ -578,7 +582,9 @@
           },
           "silence_delta": {
             "type": "string",
-            "description": "告警抑制间隔"
+            "format": "duration",
+            "description": "告警抑制间隔（ISO 8601 duration format, e.g., PT6H, PT30M, P1D）",
+            "example": "PT6H"
           },
           "is_active": {
             "type": "boolean",

@@ -20,6 +20,7 @@ import {
   type RulesTableRef,
 } from '@oncall-config/components';
 import type { RuleFormData, RuleSubmitData } from '@oncall-config/lib';
+import { convertToISO8601Duration } from '@oncall-config/lib';
 import { oncallRuleService } from '@oncall/api';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
 import { useManagementRefresh } from '@veaiops/hooks';
@@ -180,11 +181,17 @@ export const OncallConfigPage: React.FC = () => {
           ? currentRule?.inspect_category
           : values.inspect_category;
 
+        // Convert silence_delta from human-readable format to ISO 8601 duration
+        // e.g., "2h" → "PT2H", "30m" → "PT30M", "1d" → "P1D"
+        const silenceDeltaISO8601 = values.silence_delta
+          ? convertToISO8601Duration(values.silence_delta)
+          : undefined;
+
         const submitData: RuleSubmitData = {
           name: values.name,
           description: values.description,
           level: values.level,
-          silence_delta: values.silence_delta,
+          silence_delta: silenceDeltaISO8601,
           is_active: values.is_active,
           inspect_history: values.inspect_history,
         };

@@ -14,4 +14,5 @@
 
 export * from "./columns";
 export * from "./renderers";
+export * from "./time-utils";
 export * from "./types";
