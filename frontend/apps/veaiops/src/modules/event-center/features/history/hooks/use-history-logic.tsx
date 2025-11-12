@@ -22,6 +22,7 @@ import {
   createTableRequestWithResponseHandler,
 } from '@veaiops/utils';
 import type { Event, EventShowStatus } from 'api-generate';
+import { EventShowStatus as EventShowStatusEnum } from 'api-generate';
 import { useMemo, useState } from 'react';
 
 /**
@@ -47,9 +48,13 @@ export interface HistoryFilters {
 /**
  * 历史事件管理逻辑Hook
  * 提供历史事件的状态管理和业务逻辑
+ *
+ * ✅ 默认筛选：只显示"发送成功"的事件
  */
 export const useHistoryManagementLogic = () => {
-  const [filters, setFilters] = useState<HistoryFilters>({});
+  const [filters, setFilters] = useState<HistoryFilters>({
+    show_status: [EventShowStatusEnum.SUCCESS], // ✅ 默认只显示"发送成功"的事件
+  });
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<Event | null>(null);
 
