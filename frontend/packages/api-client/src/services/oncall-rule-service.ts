@@ -73,7 +73,7 @@ export class OncallRuleService {
   }): CancelablePromise<APIResponseInterest> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/apis/v1/manager/rule-center/oncall/{channel}/{bot_id}',
+      url: '/apis/v1/manager/rule-center/oncall/{channel}/{bot_id}/',
       path: {
         'channel': channel,
         'bot_id': botId,

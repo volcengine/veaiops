@@ -61,7 +61,7 @@ export const getRulesTableColumns = ({
     title: '描述',
     dataIndex: 'description',
     key: 'description',
-    width: 200,
+    width: 450,
     render: (description: string) => (
       <DescriptionColumn description={description} />
     ),

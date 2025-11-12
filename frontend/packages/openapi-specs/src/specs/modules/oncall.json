@@ -43,7 +43,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/apis/v1/manager/rule-center/oncall/{channel}/{bot_id}/": {
       "post": {
         "summary": "Create Oncall Interest Rule",
         "description": "Create a new oncall interest rule for a specific bot",

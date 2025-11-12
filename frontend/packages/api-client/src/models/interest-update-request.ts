@@ -27,7 +27,7 @@ export type InterestUpdateRequest = {
    */
   level?: InterestUpdateRequest.level;
   /**
-   * 告警抑制间隔
+   * 告警抑制间隔（ISO 8601 duration format, e.g., PT6H, PT30M, P1D）
    */
   silence_delta?: string;
   /**
