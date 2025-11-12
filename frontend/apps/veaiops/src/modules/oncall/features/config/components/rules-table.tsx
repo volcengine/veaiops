@@ -40,22 +40,22 @@ export interface RulesTableRef {
 }
 
 /**
- * Oncall规则表格组件
- * 使用 CustomTable 标准化实现
- * 支持刷新功能，各种操作都会自动刷新表格数据
+ * Oncall Rule Table Component
+ * Standardized implementation using CustomTable
+ * Supports refresh functionality, all operations will automatically refresh table data
  */
 export const RulesTable = forwardRef<RulesTableRef, RulesTableProps>(
   ({ bots, onToggleStatus, onViewDetails, onEdit, onCreateRule }, ref) => {
-    // CustomTable 的内部 ref
+    // Internal ref for CustomTable
     const tableRef = useRef<CustomTableActionType<Interest>>(null);
 
-    // 使用内聚型Hook分离业务逻辑和UI配置
+    // Use cohesive Hook to separate business logic and UI configuration
     const { customTableProps, operations } = useRulesData({
       bots,
       ref: tableRef,
     });
 
-    // 暴露符合 RulesTableRef 接口的 refresh 方法
+    // Expose refresh method that conforms to RulesTableRef interface
     useImperativeHandle(
       ref,
       () => ({

@@ -103,7 +103,7 @@ export const useRuleDrawer = ({
           examples_positive: '',
           examples_negative: '',
         });
-        // 设置初始检测类别为 SEMANTIC
+        // Set initial inspection category to SEMANTIC
         setInspectCategory(Interest.inspect_category.SEMANTIC);
       }
     }

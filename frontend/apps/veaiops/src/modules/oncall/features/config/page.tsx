@@ -52,10 +52,10 @@ export const OncallConfigPage: React.FC = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [form] = Form.useForm();
 
-  // CustomTable ref用于获取刷新函数
+  // CustomTable ref for getting refresh function
   const tableRef = useRef<RulesTableRef>(null);
 
-  // 获取表格刷新函数
+  // Get table refresh function
   const getRefreshTable = useCallback(async () => {
     if (tableRef.current?.refresh) {
       const result = await tableRef.current.refresh();
@@ -74,10 +74,10 @@ export const OncallConfigPage: React.FC = () => {
     }
   }, []);
 
-  // 使用管理刷新 Hook，提供编辑后刷新功能
+  // Use management refresh Hook to provide post-edit refresh functionality
   const { afterUpdate } = useManagementRefresh(getRefreshTable);
 
-  // 状态切换处理 - 实现真实的API调用
+  // Status toggle handler - implements real API call
   interface HandleToggleStatusParams {
     ruleUuid: string;
     isActive: boolean;
@@ -161,9 +161,9 @@ export const OncallConfigPage: React.FC = () => {
     form.resetFields();
   }, [form]);
 
-  // 获取当前选中的 bot 信息（从查询参数或 bots 列表）
+  // Get currently selected bot info (from query params or bots list)
   const getCurrentBot = useCallback(() => {
-    // 从查询参数获取当前 botId
+    // Get current botId from query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const botId =
       urlParams.get('botId') || (bots.length > 0 ? bots[0]?.bot_id : '');
@@ -171,12 +171,12 @@ export const OncallConfigPage: React.FC = () => {
     return { botId: botId || '', channel: bot?.channel || 'lark' };
   }, [bots]);
 
-  // 提交表单 - 实现真实的API调用
+  // Submit form - implements real API call
   const handleSubmit = useCallback(
     async (values: RuleFormData) => {
       setSubmitLoading(true);
       try {
-        // 根据检测类别处理表单数据
+        // Process form data based on inspection category
         const inspectCategory = isEdit
           ? currentRule?.inspect_category
           : values.inspect_category;
@@ -196,13 +196,13 @@ export const OncallConfigPage: React.FC = () => {
           inspect_history: values.inspect_history,
         };
 
-        // 创建模式需要额外的必填字段
+        // Create mode requires additional required fields
         if (!isEdit) {
           submitData.action_category = values.action_category;
           submitData.inspect_category = values.inspect_category;
         }
 
-        // 根据检测类别添加对应的字段
+        // Add fields based on inspection category
         if (inspectCategory === Interest.inspect_category.SEMANTIC) {
           submitData.examples_positive = values.examples_positive
             ? values.examples_positive
@@ -264,7 +264,7 @@ export const OncallConfigPage: React.FC = () => {
             });
           }
         } else {
-          // 创建模式
+          // Create mode
           const { botId, channel } = getCurrentBot();
           if (!botId) {
             Message.error({ content: '请选择机器人', duration: 20000 });
@@ -277,13 +277,13 @@ export const OncallConfigPage: React.FC = () => {
             submitData,
           );
 
-          // ✅ 检查状态码：201 表示创建成功，其他表示失败
+          // ✅ Check status code: 201 means creation success, others mean failure
           if (response.code === API_RESPONSE_CODE.SUCCESS) {
             Message.success({
               content: <span>🎉 规则创建成功！列表正在刷新...</span>,
               duration: 3000,
             });
-            // 刷新表格
+            // Refresh table
             const refreshResult = await afterUpdate();
             if (!refreshResult.success && refreshResult.error) {
               logger.warn({
@@ -299,7 +299,7 @@ export const OncallConfigPage: React.FC = () => {
             }
             handleCloseDrawer();
           } else {
-            // ✅ 非201时，不关闭抽屉，显示错误信息
+            // ✅ When not 201, don't close drawer and show error message
             Message.error({
               content: response.message || '创建规则失败',
               duration: 20000,
@@ -310,7 +310,7 @@ export const OncallConfigPage: React.FC = () => {
               source: 'OncallConfigPage',
               component: 'handleSubmit',
             });
-            // 不调用 handleCloseDrawer()，保持抽屉打开状态
+            // Don't call handleCloseDrawer() to keep drawer open
           }
         }
       } catch (error: unknown) {

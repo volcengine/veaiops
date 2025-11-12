@@ -35,14 +35,14 @@ export interface UseRulesDataProps {
 }
 
 /**
- * 内聚型Hook - 规则数据逻辑
- * 负责业务逻辑：数据源配置、API调用
- * 使用 CustomTable 的自动刷新机制
+ * Cohesive Hook - Rule Data Logic
+ * Responsible for business logic: data source configuration, API calls
+ * Uses CustomTable's automatic refresh mechanism
  */
 export const useRulesData = ({ bots, ref }: UseRulesDataProps) => {
-  // 🎯 数据请求函数 - 使用工具函数
-  // 注意：将复杂对象参数提取为变量，避免 TypeScript 解析错误（TS1136）
-  // 原因：options 对象包含嵌套的 onError 回调，可能导致解析器无法正确识别对象边界
+  // 🎯 Data request function - use utility function
+  // Note: Extract complex object parameters to variables to avoid TypeScript parsing errors (TS1136)
+  // Reason: options object contains nested onError callback, which may cause parser to incorrectly identify object boundaries
   const requestOptions = useMemo(
     () => ({
       errorMessagePrefix: '获取Oncall规则失败',
