@@ -42,7 +42,7 @@ ingress:
   ## @param ingress.className Specify the ingress class name to use for the Ingress resource.(only support nginx now)
   className: nginx
   ## @param ingress.host Specify the host to use for the Ingress resource.
-  host: "veaiops.example-stable.com"
+  host: ""
   ## @param ingress.tlsSecretName Specify the tls secret name to use for the Ingress resource.
   tlsSecretName: ""
 

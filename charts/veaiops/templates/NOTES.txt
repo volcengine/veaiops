@@ -6,7 +6,7 @@
    ██    ███████ ██   ██ ██████    ████     ██        ████████
 
 Thanks for using VeAIOps!
-Your application can be accessed at: {{ .Values.ingress.host }}
+Your can get visit info by: `kubectl get ingress -n {{ include "veaiops.namespace" . }}`
 Admin username: {{ .Values.env.INIT_ADMIN_USERNAME }}
 Admin password: {{ .Values.env.INIT_ADMIN_PASSWORD }}
 Please change the default password after login.
