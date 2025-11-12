@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Space } from '@arco-design/web-react';
 import {
   DescriptionColumn,
   InspectHistoryColumn,
@@ -20,6 +21,7 @@ import {
   RuleNameColumn,
   StatusColumn,
 } from '@oncall-config/ui';
+import { ALERT_LEVEL_OPTIONS } from '@oncall/shared';
 import { CellRender, type ModernTableColumnProps } from "@veaiops/components";
 import type { Interest } from "api-generate";
 import {
@@ -69,12 +71,25 @@ export const getRulesTableColumns = ({
     dataIndex: 'level',
     key: 'level',
     width: 90,
-    render: (level?: string) =>
-      level ? (
-        <CellRender.CustomOutlineTag>{level}</CellRender.CustomOutlineTag>
-      ) : (
-        '-'
-      ),
+    render: (level?: string) => {
+      if (!level) {
+        return '-';
+      }
+
+      // Find color from ALERT_LEVEL_OPTIONS
+      const levelOption = ALERT_LEVEL_OPTIONS.find((opt) => opt.value === level);
+      const color = levelOption?.color || 'var(--color-fill-3)';
+
+      return (
+        <Space>
+          <span
+            className="inline-block w-2 h-2 rounded-full"
+            style={{ background: color }}
+          />
+          <span>{level}</span>
+        </Space>
+      );
+    },
   },
   {
     title: '告警类别',

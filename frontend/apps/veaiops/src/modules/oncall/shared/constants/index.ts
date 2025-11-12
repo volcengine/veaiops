@@ -20,9 +20,9 @@
  * 告警等级选项
  */
 export const ALERT_LEVEL_OPTIONS = [
-  { label: 'P0', value: 'P0', color: 'red' },
-  { label: 'P1', value: 'P1', color: 'orange' },
-  { label: 'P2', value: 'P2', color: 'arcoblue' },
+  { label: 'P0', value: 'P0', color: 'rgb(var(--red-6))' },
+  { label: 'P1', value: 'P1', color: 'rgb(var(--orange-6))' },
+  { label: 'P2', value: 'P2', color: 'rgb(var(--blue-6))' },
 ] as const;
 
 /**

@@ -16,6 +16,7 @@
 import type { APIResponseBoolean } from '../models/api-response-boolean';
 import type { APIResponseInterest } from '../models/api-response-interest';
 import type { APIResponseInterestList } from '../models/api-response-interest-list';
+import type { InterestCreateRequest } from '../models/interest-create-request';
 import type { InterestUpdateRequest } from '../models/interest-update-request';
 import type { CancelablePromise } from '../core/cancelable-promise';
 import type { BaseHttpRequest } from '../core/base-http-request';
@@ -47,6 +48,38 @@ export class OncallRuleService {
         'channel': channel,
         'bot_id': botId,
       },
+    });
+  }
+  /**
+   * Create Oncall Interest Rule
+   * Create a new oncall interest rule for a specific bot
+   * @returns APIResponseInterest Interest rule created successfully
+   * @throws ApiError
+   */
+  public postApisV1ManagerRuleCenterOncall({
+    channel,
+    botId,
+    requestBody,
+  }: {
+    /**
+     * Channel
+     */
+    channel: string,
+    /**
+     * App ID
+     */
+    botId: string,
+    requestBody: InterestCreateRequest,
+  }): CancelablePromise<APIResponseInterest> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/apis/v1/manager/rule-center/oncall/{channel}/{bot_id}',
+      path: {
+        'channel': channel,
+        'bot_id': botId,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
   /**

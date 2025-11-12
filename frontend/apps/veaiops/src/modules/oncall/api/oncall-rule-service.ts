@@ -16,6 +16,7 @@ import apiClient from '@/utils/api-client';
 import type {
   APIResponseInterest,
   APIResponseInterestList,
+  InterestCreateRequest,
   InterestUpdateRequest,
 } from 'api-generate';
 
@@ -23,6 +24,40 @@ import type {
  * Oncall规则服务封装
  */
 export const oncallRuleService = {
+  /**
+   * 创建规则
+   */
+  createInterestRule: async (
+    channel: string,
+    botId: string,
+    data: any, // 使用 any 以便处理表单数据，内部转换为 InterestCreateRequest
+  ): Promise<APIResponseInterest> => {
+    // 将表单数据转换为 InterestCreateRequest
+    const requestBody: InterestCreateRequest = {
+      name: data.name,
+      description: data.description,
+      level: data.level as InterestCreateRequest.level | undefined,
+      silence_delta: data.silence_delta,
+      is_active: data.is_active,
+      inspect_history: data.inspect_history,
+      action_category:
+        data.action_category as InterestCreateRequest.action_category,
+      inspect_category:
+        data.inspect_category as InterestCreateRequest.inspect_category,
+      // 根据检测类别，只包含对应的字段
+      examples_positive: data.examples_positive,
+      examples_negative: data.examples_negative,
+      regular_expression: data.regular_expression,
+    };
+
+    // ✅ 修复：生成的 API 方法使用对象解构参数
+    return await apiClient.oncallRule.postApisV1ManagerRuleCenterOncall({
+      channel,
+      botId,
+      requestBody,
+    });
+  },
+
   /**
    * 更新规则
    */
@@ -46,6 +81,7 @@ export const oncallRuleService = {
       regular_expression: data.regular_expression,
     };
 
+    // ✅ 修复：生成的 API 方法使用对象解构参数，参数名为 interestUuid
     return await apiClient.oncallRule.putApisV1ManagerRuleCenterOncall({
       interestUuid: uuid,
       requestBody,
@@ -59,6 +95,7 @@ export const oncallRuleService = {
     uuid: string,
     isActive: boolean,
   ): Promise<any> => {
+    // ✅ 修复：生成的 API 方法使用对象解构参数，参数名为 interestUuid
     return await apiClient.oncallRule.putApisV1ManagerRuleCenterOncallActive({
       interestUuid: uuid,
       requestBody: {
@@ -73,12 +110,11 @@ export const oncallRuleService = {
   getOncallRulesByAppId: async (
     channel: string,
     botId: string,
-    params?: Record<string, any>,
   ): Promise<APIResponseInterestList> => {
+    // ✅ 修复：生成的 API 方法使用对象解构参数
     return await apiClient.oncallRule.getApisV1ManagerRuleCenterOncall({
       channel,
       botId,
-      ...(params || {}),
     });
   },
 };

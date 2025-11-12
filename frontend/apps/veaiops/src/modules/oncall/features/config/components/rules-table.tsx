@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Button } from '@arco-design/web-react';
+import { IconPlus } from '@arco-design/web-react/icon';
 import { useRulesData, useRulesTable } from '@oncall-config/hooks';
 import { CustomTable, type CustomTableActionType } from '@veaiops/components';
 import type { Bot, Interest } from 'api-generate';
@@ -30,6 +32,7 @@ export interface RulesTableProps {
   onToggleStatus: (params: HandleToggleStatusParams) => Promise<boolean>;
   onViewDetails: (rule: Interest) => void;
   onEdit: (rule: Interest) => void;
+  onCreateRule: () => void;
 }
 
 export interface RulesTableRef {
@@ -42,7 +45,7 @@ export interface RulesTableRef {
  * 支持刷新功能，各种操作都会自动刷新表格数据
  */
 export const RulesTable = forwardRef<RulesTableRef, RulesTableProps>(
-  ({ bots, onToggleStatus, onViewDetails, onEdit }, ref) => {
+  ({ bots, onToggleStatus, onViewDetails, onEdit, onCreateRule }, ref) => {
     // CustomTable 的内部 ref
     const tableRef = useRef<CustomTableActionType<Interest>>(null);
 
@@ -88,12 +91,29 @@ export const RulesTable = forwardRef<RulesTableRef, RulesTableProps>(
       return {};
     }, [bots]);
 
+    // 操作按钮：添加"新增规则"按钮
+    const actions = useMemo(
+      () => [
+        <Button
+          key="create"
+          type="primary"
+          icon={<IconPlus />}
+          onClick={onCreateRule}
+          data-testid="create-oncall-rule-btn"
+        >
+          新增规则
+        </Button>,
+      ],
+      [onCreateRule],
+    );
+
     return (
       <div data-testid="oncall-config-table">
         <CustomTable<Interest>
           {...customTableProps}
           ref={tableRef}
           title="内容识别规则详情"
+          actions={actions}
           handleColumns={handleColumns}
           handleFilters={handleFilters}
           isAlertShow={true}

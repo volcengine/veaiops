@@ -12,29 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Button, Drawer, Space } from '@arco-design/web-react';
+import { Button, Drawer, Space, Tag } from '@arco-design/web-react';
 import { useRuleDrawer } from '@oncall-config/hooks';
 import type { RuleDrawerProps } from '@oncall-config/lib';
 import { DetailView, EditForm } from '@oncall-config/ui';
 import { DrawerFormContent } from '@veaiops/utils';
 
 /**
- * 规则抽屉组件 - 详情查看和编辑
+ * Rule Drawer Component - View details and edit
  *
- * 重构说明：
- * - 原分支 (feat/web-v2): rule-details-drawer.tsx 和 rule-edit-drawer.tsx 分别处理详情和编辑
- * - 当前分支: 重构为统一的 rule-drawer.tsx，支持详情查看和编辑两种模式
- * - 功能等价性: ✅ 已对齐原分支的所有功能
- *   - 告警等级字段 (level) ✅
- *   - 条件显示逻辑 (根据 inspect_category) ✅
- *   - 时间格式支持 (silence_delta) ✅
- *   - 正面/反面示例字段 (SEMANTIC模式) ✅
+ * Refactoring Notes:
+ * - Current branch: Refactored as unified rule-drawer.tsx, supports both view and edit modes
+ * - Feature parity: ✅ Aligned with all features from original branch
+ *   - Alert level field (level) ✅
+ *   - Conditional display logic (based on inspect_category) ✅
+ *   - Time format support (silence_delta) ✅
+ *   - Positive/negative examples fields (SEMANTIC mode) ✅
  *
- * 拆分说明：
- * - lib/types.ts: 类型定义
- * - hooks/use-rule-drawer.ts: 业务逻辑和状态管理
- * - ui/components/rule-detail-view.tsx: 详情查看组件
- * - ui/components/rule-edit-form.tsx: 编辑表单组件
+ * Component Breakdown:
+ * - lib/types.ts: Type definitions
+ * - hooks/use-rule-drawer.ts: Business logic and state management
+ * - ui/components/rule-detail-view.tsx: Detail view component
+ * - ui/components/rule-edit-form.tsx: Edit form component
  */
 export const RuleDrawer = ({
   visible,
@@ -57,7 +56,7 @@ export const RuleDrawer = ({
     form,
   });
 
-  // 详情查看模式
+  // View mode - Display rule details
   if (!isEdit && rule) {
     return (
       <Drawer
@@ -76,40 +75,63 @@ export const RuleDrawer = ({
     );
   }
 
-  // 编辑模式
+  // Edit mode - Create or update rule
   return (
     <Drawer
-      title={isEdit ? '编辑规则' : '新增规则'}
+      title={
+        <div className="flex items-center gap-2">
+          <span
+            className={`inline-block w-1 h-5 rounded ${
+              isEdit
+                ? 'bg-[rgb(var(--blue-6))]'
+                : 'bg-gradient-to-br from-[#667eea] to-[#764ba2]'
+            }`}
+          />
+          <span className="text-base font-semibold">
+            {isEdit ? '编辑规则' : '创建新规则'}
+          </span>
+        </div>
+      }
       visible={visible}
       onCancel={onCancel}
       width={800}
       focusLock={false}
       footer={
-        <Space>
-          <Button onClick={onCancel}>取消</Button>
-          <Button
-            type="primary"
-            loading={loading}
-            onClick={() => {
-              handleSubmit(onSubmit);
-            }}
-          >
-            {isEdit ? '保存' : '创建'}
-          </Button>
-        </Space>
+        <div className="flex justify-between items-center">
+          <div className="text-xs text-[var(--color-text-3)]">
+            {!isEdit && <span>💡 提示：创建后行为类别和检测类别不可修改</span>}
+          </div>
+          <Space>
+            <Button onClick={onCancel} size="large">
+              取消
+            </Button>
+            <Button
+              type="primary"
+              loading={loading}
+              size="large"
+              onClick={() => {
+                handleSubmit(onSubmit);
+              }}
+              className={`min-w-[100px] border-none ${
+                !isEdit ? 'bg-gradient-to-br from-[#667eea] to-[#764ba2]' : ''
+              }`}
+            >
+              {isEdit ? '保存修改' : '立即创建'}
+            </Button>
+          </Space>
+        </div>
       }
     >
-      <DrawerFormContent loading={Boolean(loading)}>
+      <DrawerFormContent loading={loading}>
         <EditForm
           form={form}
           inspectCategory={inspectCategory}
           currentSilenceDelta={currentSilenceDelta}
           rule={rule}
+          isEdit={isEdit}
           onSilenceDeltaChange={setCurrentSilenceDelta}
         />
       </DrawerFormContent>
     </Drawer>
   );
 };
-
-export type { RuleDrawerProps, RuleFormData } from '@oncall-config/lib';

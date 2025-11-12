@@ -13,11 +13,11 @@
 // limitations under the License.
 
 /* generated using openapi-typescript-codegen -- do not edit */
-export type InterestUpdateRequest = {
+export type InterestCreateRequest = {
   /**
    * 规则名称
    */
-  name?: string;
+  name: string;
   /**
    * 描述
    */
@@ -25,7 +25,7 @@ export type InterestUpdateRequest = {
   /**
    * 告警等级
    */
-  level?: InterestUpdateRequest.level;
+  level?: InterestCreateRequest.level;
   /**
    * 告警抑制间隔
    */
@@ -35,23 +35,31 @@ export type InterestUpdateRequest = {
    */
   is_active?: boolean;
   /**
-   * 正面示例（当检测类别为语义分析时可编辑）
+   * 正面示例（当检测类别为语义分析时必填）
    */
   examples_positive?: Array<string>;
   /**
-   * 反面示例（当检测类别为语义分析时可编辑）
+   * 反面示例（当检测类别为语义分析时必填）
    */
   examples_negative?: Array<string>;
   /**
-   * 正则表达式（当检测类别为正则表达式时可编辑）
+   * 正则表达式（当检测类别为正则表达式时必填）
    */
   regular_expression?: string;
   /**
    * 检查历史消息数量
    */
   inspect_history?: number;
+  /**
+   * 行为类别
+   */
+  action_category: InterestCreateRequest.action_category;
+  /**
+   * 检测类别
+   */
+  inspect_category: InterestCreateRequest.inspect_category;
 };
-export namespace InterestUpdateRequest {
+export namespace InterestCreateRequest {
   /**
    * 告警等级
    */
@@ -59,5 +67,19 @@ export namespace InterestUpdateRequest {
     P0 = 'P0',
     P1 = 'P1',
     P2 = 'P2',
+  }
+  /**
+   * 行为类别
+   */
+  export enum action_category {
+    DETECT = 'Detect',
+    FILTER = 'Filter',
+  }
+  /**
+   * 检测类别
+   */
+  export enum inspect_category {
+    SEMANTIC = 'Semantic',
+    RE = 'RE',
   }
 }

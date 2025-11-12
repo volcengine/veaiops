@@ -99,10 +99,10 @@ export const useRulesData = ({ bots, ref }: UseRulesDataProps) => {
               channelValue = String(selectedBot.channel);
             }
           }
+          // ✅ 修复：API 不支持额外参数，只传递 channel 和 botId
           const response = await oncallRuleService.getOncallRulesByAppId(
             channelValue,
             botId,
-            otherParams,
           );
           // 类型转换：APIResponseInterestList 与 StandardApiResponse<Interest[]> 结构兼容
           return response as unknown as StandardApiResponse<Interest[]>;

@@ -15,13 +15,16 @@
 import { useEventHistoryRequest } from '@/hooks/use-event-history-request';
 import { HistoryDetailDrawer } from '@/modules/event-center/features/history/ui/components/table';
 import type { Event } from '@veaiops/api-client';
+import { EventShowStatus } from '@veaiops/api-client';
 import { EventHistoryTable, HistoryModuleType } from '@veaiops/components';
 import type React from 'react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 /**
  * 智能阈值历史事件页面
  * 使用统一的历史事件表格组件，自动过滤只显示智能阈值Agent
+ *
+ * ✅ 默认筛选：只显示"发送成功"的事件
  */
 const History: React.FC = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -41,6 +44,14 @@ const History: React.FC = () => {
     setSelectedRecord(null);
   };
 
+  // ✅ 默认只显示"发送成功"的事件
+  const initQuery = useMemo(
+    () => ({
+      show_status: [EventShowStatus.SUCCESS],
+    }),
+    [],
+  );
+
   return (
     <>
       <EventHistoryTable
@@ -48,6 +59,7 @@ const History: React.FC = () => {
         title="历史事件"
         request={request}
         onViewDetail={handleViewDetail}
+        initQuery={initQuery}
       />
 
       <HistoryDetailDrawer

@@ -12,27 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { FormInstance } from '@arco-design/web-react';
-import type { Interest } from 'api-generate';
-
-/**
- * 编辑表单组件属性
- */
-export interface EditFormProps {
-  form: FormInstance;
-  inspectCategory: Interest['inspect_category'] | undefined;
-  currentSilenceDelta: string | undefined;
-  rule?: Interest;
-  isEdit: boolean;
-  onSilenceDeltaChange: (value: string | undefined) => void;
-}
-
-/**
- * 示例输入组件属性
- */
-export interface ExampleInputProps {
-  value?: string;
-  type: 'positive' | 'negative';
-  placeholder?: string;
-  onChange?: (value: string) => void;
-}
+export { AlertConfig } from './alert-config';
+export { BasicInfo } from './basic-info';
+export { RecognitionConfig } from './recognition-config';
+export { RuleTypeConfig } from './rule-type-config';
