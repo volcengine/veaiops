@@ -16,5 +16,4 @@
  * 表格组件导出
  */
 
-// HistoryTable has been removed - all history pages now use EventHistoryTable
 export { HistoryDetailDrawer } from './history-detail-drawer';

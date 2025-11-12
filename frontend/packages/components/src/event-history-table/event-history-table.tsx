@@ -119,7 +119,7 @@ export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
       queryFormat={queryFormat}
       syncQueryOnSearchParams
       useActiveKeyHook
-      initQuery={initQuery} // ✅ Pass initQuery to CustomTable for default filter
+      initQuery={initQuery}
     />
   );
 };
