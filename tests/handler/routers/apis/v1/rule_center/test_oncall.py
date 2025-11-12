@@ -17,6 +17,7 @@ from datetime import timedelta
 import pytest
 
 from veaiops.handler.errors import BadRequestError, RecordNotFoundError
+from veaiops.handler.errors.errors import AlreadyExistsError
 from veaiops.handler.routers.apis.v1.rule_center.oncall import (
     create_oncall_rules_by_bot_id,
     get_oncall_rules_by_bot_id,
@@ -203,7 +204,7 @@ async def test_create_oncall_rule_fails_bot_not_found(test_user: User):
     )
 
     # Act & Assert
-    with pytest.raises(BadRequestError) as exc_info:
+    with pytest.raises(RecordNotFoundError) as exc_info:
         await create_oncall_rules_by_bot_id(
             channel="Lark", bot_id="non-existent-bot", interest_payload=payload, current_user=test_user
         )
@@ -222,7 +223,7 @@ async def test_create_oncall_rule_fails_already_exists(test_bot, test_interest, 
     )
 
     # Act & Assert
-    with pytest.raises(BadRequestError) as exc_info:
+    with pytest.raises(AlreadyExistsError) as exc_info:
         await create_oncall_rules_by_bot_id(
             channel=test_bot.channel, bot_id=test_bot.bot_id, interest_payload=payload, current_user=test_user
         )

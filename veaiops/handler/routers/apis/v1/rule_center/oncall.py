@@ -22,6 +22,7 @@ from fastapi import APIRouter, Body, Depends, status
 
 from veaiops.agents.chatops.default.default_interest_agent import set_default_interest_agents
 from veaiops.handler.errors import BadRequestError, RecordNotFoundError
+from veaiops.handler.errors.errors import AlreadyExistsError
 from veaiops.handler.services.user import get_current_supervisor
 from veaiops.schema.documents import Bot, Interest, User
 from veaiops.schema.models.base import APIResponse
@@ -85,7 +86,7 @@ async def create_oncall_rules_by_bot_id(
 
     _bot = await Bot.find_one(Bot.channel == channel, Bot.bot_id == bot_id)
     if not _bot:
-        raise BadRequestError(message=f"Bot ({channel}, {bot_id}) not found.")
+        raise RecordNotFoundError(message=f"Bot ({channel}, {bot_id}) not found.")
 
     conditions: List[Any] = [
         Eq(Interest.channel, channel),
@@ -95,7 +96,7 @@ async def create_oncall_rules_by_bot_id(
     query = Interest.find(*conditions)
     total = await query.count()
     if total > 0:
-        raise BadRequestError(message=f"Interest rule with {interest_payload.name} already exists.")
+        raise AlreadyExistsError(message=f"Interest rule with {interest_payload.name} already exists.")
 
     new_interest = Interest(
         channel=channel,
