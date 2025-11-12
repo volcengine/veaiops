@@ -37,12 +37,12 @@ interface ChatOpsConfigProps {
 }
 
 /**
- * ChatOps高级配置组件
+ * ChatOps configuration component
  *
- * 拆分说明：
- * - sections/model-config.tsx: 大模型配置区块（模型名称、Embedding模型、API Base URL、API Key）
- * - sections/kb-config.tsx: 知识库配置区块（Access Key、Secret Key、TOS区域、网络类型、知识库集合）
- * - index.tsx: 主入口组件，负责组装和渲染
+ * Component structure:
+ * - sections/model-config.tsx: LLM configuration section (model name, embedding model, API base URL, API key)
+ * - sections/kb-config.tsx: Knowledge base configuration section (access key, secret key, TOS region, network type, knowledge base collections)
+ * - index.tsx: Main entry component, responsible for assembly and rendering
  */
 export const ChatOpsConfig: React.FC<ChatOpsConfigProps> = ({
   showAdvancedConfig,
@@ -56,17 +56,23 @@ export const ChatOpsConfig: React.FC<ChatOpsConfigProps> = ({
   urlValidator,
 }) => {
   return (
-    <CardWithTitle title="高级配置（可选）" className="mb-4">
+    <CardWithTitle title="高级配置" className="mb-4">
       <div className="mb-4">
         <Space align="center">
           <Switch
             checked={showAdvancedConfig}
             onChange={setShowAdvancedConfig}
           />
-          <Text className="font-medium">配置ChatOps高级功能</Text>
+          <Text className="font-medium">配置ChatOps</Text>
         </Space>
         <Text type="secondary" className="block mt-2">
-          ChatOps功能包括智能问答、内容识别等AI能力。如不配置，将使用系统默认配置，不影响智能阈值服务（包括告警消息推送）。创建后也可以随时在编辑页面补充配置。
+          ChatOps功能包括智能问答、内容识别、主动回复等AI能力，需要配置大模型（LLM）和知识库。
+          <br />• 如不配置：将使用系统默认配置
+          <br />• 如系统未配置有效密钥：ChatOps功能将不可用
+          <br />• 不影响：智能阈值服务和告警消息推送可正常使用
+          <br />
+          <br />
+          创建后也可以随时在编辑页面补充配置。
         </Text>
       </div>
 

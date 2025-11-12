@@ -39,11 +39,15 @@ export type BaseRecordValue =
 /**
  * 基础记录类型
  * 适配 api-generate 生成的所有类型，无需额外索引签名
+ *
+ * ✅ 兼容性更新：支持 null 值
+ * - _id, id, key 字段允许 null（兼容后端可能返回的 null 值）
+ * - 提升类型兼容性，避免类型断言
  */
 export type BaseRecord = {
-  _id?: string;
-  id?: string | number;
-  key?: string | number;
+  _id?: string | null;
+  id?: string | number | null;
+  key?: string | number | null;
   [key: string]: BaseRecordValue;
 };
 

@@ -2,7 +2,8 @@
   "name": "VeAIOps",
   "scripts": {
     "dev": "nuxt dev --extends docus --port 4000",
-    "build": "nuxt build --extends docus"
+    "build": "nuxt build --extends docus",
+    "generate": "nuxt generate --extends docus"
   },
   "dependencies": {
     "docus": "latest",

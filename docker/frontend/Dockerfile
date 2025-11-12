@@ -15,5 +15,22 @@
 # This stage serves the built application using Nginx
 FROM nginx:1.27
 
-# Copy the built files
+# Install curl for health checks (Debian-based image)
+RUN apt-get update && \
+    apt-get install -y curl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Note: Nginx configuration is provided by Kubernetes ConfigMap at runtime
+# See: charts/veaiops/templates/frontend/configmap.yaml
+# The ConfigMap will be mounted to /etc/nginx/conf.d/default.conf
+
+# Copy the built files (includes frontend + docs)
 COPY ./frontend/apps/veaiops/output /var/www
+
+# Expose port 80
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost/health || exit 1

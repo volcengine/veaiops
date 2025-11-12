@@ -15,30 +15,40 @@
 import { lazy } from 'react';
 
 /**
- * 懒加载路由组件配置
+ * Lazy-loaded route component configuration
  *
- * 统一管理所有路由的懒加载组件，实现代码分割，提升首屏加载性能
+ * Unified management of all lazy-loaded components for routes
+ * Implements code splitting to improve first screen loading performance
  *
- * 注意：此处使用 React.lazy(() => import(...)) 是允许的例外情况
- * - React.lazy 是 React 官方推荐的代码分割方式
- * - 用于路由级别的懒加载，提升首屏加载性能
- * - 类型安全由 React.lazy 保证，不会导致类型问题
- * - 这是框架级别的功能，不是业务代码中的动态 import
+ * Note: Using React.lazy(() => import(...)) here is an allowed exception
+ * - React.lazy is the official React-recommended code splitting approach
+ * - Used for route-level lazy loading to improve first screen performance
+ * - Type safety is guaranteed by React.lazy, no type issues
+ * - This is a framework-level feature, not dynamic import in business code
  *
- * ⚠️ 重要：必须使用字符串字面量，不能使用变量
- * - webpack 需要静态分析 import() 路径，无法处理变量表达式
- * - 使用字符串字面量可以消除 "Critical dependency" 警告
- * - 路径配置参考 pages-path.config.ts，但在此文件中直接使用字符串字面量
+ * ⚠️ CRITICAL: Must use string literals, cannot use variables
+ * - Webpack requires static analysis of import() paths, cannot handle variable expressions
+ * - Using string literals eliminates "Critical dependency" warnings
+ * - Cannot use PAGES_PATH_CONFIG because webpack needs compile-time static paths
+ * - Example of INCORRECT usage:
+ *   ❌ lazy(() => import(ONCALL_PAGES_PATH.Config))  // Webpack cannot analyze this
+ * - Example of CORRECT usage:
+ *   ✅ lazy(() => import('@/pages/oncall/config'))   // Webpack can analyze this
  *
- * 使用规范：
- * - 所有路由文件必须从此文件导入懒加载组件
- * - 页面路径统一在 pages-path.config.ts 中配置（用于文档和类型检查）
- * - 在此文件中使用字符串字面量，路径与 pages-path.config.ts 保持一致
- * - 使用路径别名（@/pages/*）替代相对路径，便于维护
- * - 新增页面时，先在 pages-path.config.ts 中添加路径配置，再在此文件中添加懒加载组件
+ * Relationship with pages-path.config.ts:
+ * - PAGES_PATH_CONFIG (import paths): Reference only, not used in code due to webpack limitation
+ * - ROUTES_PATH_CONFIG (URL paths): Used in route modules, CAN use variables
+ * - lazy.ts (import paths): Must use string literals, CANNOT use variables
+ *
+ * Usage guidelines:
+ * - All route files must import lazy-loaded components from this file
+ * - Page paths are defined in pages-path.config.ts (for documentation and type checking)
+ * - Use string literals in this file, paths should match pages-path.config.ts
+ * - Use path aliases (@/pages/*) instead of relative paths for maintainability
+ * - When adding new pages: add path config in pages-path.config.ts first, then add lazy component here
  */
 
-// 系统管理模块
+// System management module
 export const SystemPages = {
   Monitor: lazy(() => import('@/pages/system/datasource')),
   Account: lazy(() => import('@/pages/system/account')),
@@ -47,7 +57,7 @@ export const SystemPages = {
   CardTemplate: lazy(() => import('@/pages/system/card-template')),
 };
 
-// 智能阈值模块
+// Intelligent threshold module
 export const ThresholdPages = {
   Config: lazy(() => import('@/pages/threshold/config')),
   History: lazy(() => import('@/pages/threshold/history')),
@@ -55,7 +65,7 @@ export const ThresholdPages = {
   Subscription: lazy(() => import('@/pages/threshold/subscription')),
 };
 
-// 事件中心模块
+// Event center module
 export const EventCenterPages = {
   History: lazy(() => import('@/pages/event-center/history')),
   Statistics: lazy(() => import('@/pages/event-center/statistics')),
@@ -65,7 +75,7 @@ export const EventCenterPages = {
   ),
 };
 
-// Oncall异动模块
+// Oncall module
 export const OncallPages = {
   Config: lazy(() => import('@/pages/oncall/config')),
   History: lazy(() => import('@/pages/oncall/history')),
@@ -73,12 +83,12 @@ export const OncallPages = {
   Statistics: lazy(() => import('@/pages/oncall/statistics')),
 };
 
-// 统计模块
+// Statistics module
 export const StatisticsPages = {
   Overview: lazy(() => import('@/pages/statistics/overview')),
 };
 
-// 通用页面
+// Common pages
 export const CommonPages = {
   Login: lazy(() => import('@/pages/auth/login')),
   NotFound: lazy(() => import('@/pages/common/not-found')),

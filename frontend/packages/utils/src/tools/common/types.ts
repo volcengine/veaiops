@@ -12,19 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { RouteConfig } from '@/types/route';
-import React from 'react';
-// Import lazy-loaded components and route paths from config
-import { ROUTES_PATH_CONFIG, StatisticsPages } from '../config';
+/**
+ * Common utility types
+ */
 
 /**
- * Statistics route configuration
+ * Parameters interface for removing specified keys from an object
  */
-export const statisticsRoutes: RouteConfig[] = [
-  {
-    path: ROUTES_PATH_CONFIG.statistics.Overview,
-    element: React.createElement(StatisticsPages.Overview),
-    title: '概览数据',
-    requireAuth: true,
-  },
-];
+export interface OmitObjectKeysParams<T extends Record<string, any>> {
+  obj: T;
+  keys: string[];
+}
+
+/**
+ * Form table data properties type
+ */
+export interface FormTableDataProps<
+  RecordType = unknown,
+  FormatRecordType = RecordType,
+> {
+  sourceData?: RecordType[];
+  formattedData?: FormatRecordType[];
+  [key: string]: unknown;
+}
+
+/**
+ * Safe JSON parse parameters interface
+ */
+export interface SafeJSONParseParams {
+  valueString: undefined | string;
+  empty?: unknown;
+  shouldThrow?: boolean;
+}

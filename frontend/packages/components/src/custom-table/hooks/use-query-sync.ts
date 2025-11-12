@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * URL 查询参数同步 Hook
- * 负责将表格的查询状态与 URL 参数进行上下界同步
+ * URL Query Parameters Synchronization Hook
+ * Responsible for bidirectional synchronization between table query state and URL parameters
  */
 
 import type {
@@ -26,35 +26,31 @@ import { getSearchParamsObject, logger } from '@veaiops/utils';
 import { useMount, useUpdateEffect } from 'ahooks';
 import { isEmpty, isEqual } from 'lodash-es';
 import { useCallback, useEffect, useRef } from 'react';
-import { querySyncLogger } from './internal/query-sync-logger';
-
-// 🎯 调试计数器
-let hookCallCount = 0;
 
 /**
- * 规范化query对象，用于准确对比
+ * Normalize query object for accurate comparison
  *
- * 边界case处理：
- * - 移除 undefined/null/空字符串
- * - 数组排序保证顺序一致
- * - 递归处理嵌套对象
+ * Edge case handling:
+ * - Remove undefined/null/empty strings
+ * - Sort arrays to ensure consistent order
+ * - Recursively process nested objects
  */
 const normalizeQuery = (query: Record<string, any>): Record<string, any> => {
   const normalized: Record<string, any> = {};
 
   Object.entries(query || {}).forEach(([key, value]) => {
-    // 跳过无效值
+    // Skip invalid values
     if (value === undefined || value === null || value === '') {
       return;
     }
 
-    // 处理数组：过滤空值并排序
+    // Handle arrays: filter empty values and sort
     if (Array.isArray(value)) {
       const filtered = value.filter(
         (v) => v !== undefined && v !== null && v !== '',
       );
       if (filtered.length > 0) {
-        // 排序保证顺序一致（数字和字符串分别排序）
+        // Sort to ensure consistent order (numbers and strings sorted separately)
         normalized[key] = [...filtered].sort((a, b) => {
           if (typeof a === 'number' && typeof b === 'number') {
             return a - b;
@@ -65,7 +61,7 @@ const normalizeQuery = (query: Record<string, any>): Record<string, any> => {
       return;
     }
 
-    // 处理对象：递归规范化
+    // Handle objects: recursively normalize
     if (typeof value === 'object' && value !== null) {
       const nested = normalizeQuery(value);
       if (!isEmpty(nested)) {
@@ -81,13 +77,13 @@ const normalizeQuery = (query: Record<string, any>): Record<string, any> => {
 };
 
 /**
- * 规范化URL参数字符串，用于准确对比
+ * Normalize URL parameter string for accurate comparison
  */
 const normalizeUrlParams = (searchParams: URLSearchParams): string => {
   const params = new URLSearchParams();
   const entries = Array.from(searchParams.entries());
 
-  // 过滤空值并排序
+  // Filter empty values and sort
   const filtered = entries.filter(([_, value]) => value !== '');
   filtered.sort((a, b) => {
     if (a[0] !== b[0]) {
@@ -96,7 +92,7 @@ const normalizeUrlParams = (searchParams: URLSearchParams): string => {
     return String(a[1]).localeCompare(String(b[1]));
   });
 
-  // 重新构建
+  // Rebuild parameters
   filtered.forEach(([key, value]) => {
     params.append(key, value);
   });
@@ -105,23 +101,7 @@ const normalizeUrlParams = (searchParams: URLSearchParams): string => {
 };
 
 /**
- * 启用日志收集（需在 component 中调用）
- */
-const enableLogging = () => {
-  // 调用方需在 component 中执行：
-  // const { startCollection } = useAutoLogExport({ autoStart: true });
-  // startCollection();
-};
-
-/**
- * 导出日志（需在 component 中调用 useAutoLogExport 后使用）
- */
-const exportLogs = () => {
-  // 调用方需集成 useAutoLogExport 并调用其 exportLogs
-};
-
-/**
- * 查询参数同步 Hook
+ * Query Parameters Synchronization Hook
  */
 export const useQuerySync = <QueryType extends Record<string, any> = any>(
   config: QuerySyncConfig,
@@ -131,76 +111,53 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
   setQuery: (query: QueryType | ((prev: QueryType) => QueryType)) => void;
   syncQueryToUrl: (query: QueryType) => void;
   resetQuery: () => void;
-  enableLogging: () => void;
-  exportLogs: () => void;
 } => {
-  // 🎯 记录 hook 调用（用于调试和日志追踪）
-  hookCallCount++;
-  const currentCallId = hookCallCount;
-
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // 🔧 状态控制标志
-  const isInitializedRef = useRef(false); // 是否已初始化
-  const isResettingRef = useRef(false); // 是否正在重置
+  // State control flags
+  const isInitializedRef = useRef(false); // Whether initialized
+  const isResettingRef = useRef(false); // Whether resetting
 
-  // 🔧 防止循环同步的标志位
-  const isSyncingToUrlRef = useRef(false); // 正在同步query→URL
-  const isSyncingToQueryRef = useRef(false); // 正在同步URL→query
+  // Flags to prevent circular synchronization
+  const isSyncingToUrlRef = useRef(false); // Syncing query→URL
+  const isSyncingToQueryRef = useRef(false); // Syncing URL→query
 
-  // 🔧 真实变化检测：记录规范化后的值
+  // Real change detection: record normalized values
   const lastNormalizedQueryRef = useRef<Record<string, any>>({});
   const lastNormalizedUrlRef = useRef<string>('');
 
-  // 🚨 循环检测和自动熔断
+  // Loop detection and automatic circuit breaker
   const syncCountRef = useRef({ queryToUrl: 0, urlToQuery: 0 });
   const lastResetTimeRef = useRef(Date.now());
-  const SYNC_LIMIT = 5; // 连续同步限制：5次
-  const RESET_INTERVAL = 1000; // 重置间隔：1秒
+  const SYNC_LIMIT = 5; // Consecutive sync limit: 5 times
+  const RESET_INTERVAL = 1000; // Reset interval: 1 second
   /**
-   * 同步查询参数到 URL
+   * Synchronize query parameters to URL
    *
-   * 🎯 边界case处理：
-   * - 规范化query后对比，避免类型转换循环
-   * - 过滤空值（undefined/null/""）
-   * - 数组参数正确序列化
-   * - 保留认证参数
+   * Edge case handling:
+   * - Normalize query before comparison to avoid type conversion loops
+   * - Filter empty values (undefined/null/"")
+   * - Correctly serialize array parameters
+   * - Preserve authentication parameters
    */
   const syncQueryToUrl = useCallback(
     (query: QueryType) => {
       if (!config.syncQueryOnSearchParams) {
-        querySyncLogger.debug({
-          component: 'syncQueryToUrl',
-          message: '跳过 - 未启用URL同步',
-        });
         return;
       }
 
-      // 🔧 规范化query用于对比
+      // Normalize query for comparison
       const normalizedQuery = normalizeQuery(query);
 
-      // 🔧 真实变化检测：使用深度对比
+      // Real change detection: use deep comparison
       if (isEqual(normalizedQuery, lastNormalizedQueryRef.current)) {
-        querySyncLogger.debug({
-          component: 'syncQueryToUrl',
-          message: '⏭️ 跳过 - query未实际变化',
-        });
         return;
       }
-
-      querySyncLogger.info({
-        component: 'syncQueryToUrl',
-        message: '📤 开始同步query到URL',
-        data: {
-          normalizedQuery,
-          lastQuery: lastNormalizedQueryRef.current,
-        },
-      });
 
       try {
         const newParams = new URLSearchParams();
 
-        // 保留认证参数
+        // Preserve authentication parameters
         if (config.authQueryPrefixOnSearchParams) {
           for (const [key, value] of searchParams.entries()) {
             if (key in config.authQueryPrefixOnSearchParams) {
@@ -209,47 +166,43 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
           }
         }
 
-        // 添加规范化后的查询参数
+        // Add normalized query parameters
         Object.entries(normalizedQuery).forEach(([key, value]) => {
           if (Array.isArray(value)) {
             value.forEach((item) => {
               newParams.append(key, String(item));
             });
           } else {
-            newParams.set(key, String(value));
+            // Use querySearchParamsFormat to format parameter values
+            const formatter = config.querySearchParamsFormat?.[key];
+            const formattedValue = formatter ? formatter(value) : String(value);
+
+            newParams.set(key, formattedValue);
           }
         });
 
         const newUrlStr = normalizeUrlParams(newParams);
 
-        querySyncLogger.info({
-          component: 'syncQueryToUrl',
-          message: '📤 设置URL参数',
-          data: {
-            oldUrl: lastNormalizedUrlRef.current,
-            newUrl: newUrlStr,
-          },
-        });
-
         setSearchParams(newParams, { replace: true });
 
-        // 🔧 记录规范化后的值
+        // Record normalized values
         lastNormalizedQueryRef.current = normalizedQuery;
         lastNormalizedUrlRef.current = newUrlStr;
       } catch (error) {
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        querySyncLogger.error({
-          component: 'syncQueryToUrl',
-          message: '同步失败',
+        logger.error({
+          message: 'Failed to sync query to URL',
           data: {
             error: errorObj.message,
             errorObj,
           },
+          source: 'useQuerySync',
+          component: 'syncQueryToUrl',
         });
       }
     },
-    // 🎯 关键：只依赖配置项，不依赖searchParams（通过闭包访问最新值）
+    // Key: only depend on config items, not searchParams (access latest value through closure)
     [
       config.syncQueryOnSearchParams,
       config.authQueryPrefixOnSearchParams,
@@ -258,79 +211,52 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
   );
 
   /**
-   * 从 URL 同步到查询参数
+   * Synchronize from URL to query parameters
    *
-   * 🎯 边界case处理：
-   * - queryFormat 值类型转换
-   * - 空参数过滤
-   * - 认证参数排除
-   * - 为未定义字段添加默认格式化函数
+   * Edge case handling:
+   * - queryFormat value type conversion
+   * - Empty parameter filtering
+   * - Authentication parameter exclusion
+   * - Add default formatting function for undefined fields
    */
   const syncUrlToQuery = useCallback(() => {
     if (!config.syncQueryOnSearchParams) {
-      querySyncLogger.debug({
-        component: 'syncUrlToQuery',
-        message: '跳过 - 未启用URL同步',
-      });
       return {};
     }
 
-    // 🔧 修复：在 useActiveKeyHook 模式下，直接从 window.location.search 获取最新参数
+    // Fix: In useActiveKeyHook mode, directly get latest params from window.location.search
     const actualSearchParams = config.useActiveKeyHook
       ? (() => {
           const { search } = window.location;
           const windowParams = new URLSearchParams(search);
 
-          querySyncLogger.info({
-            component: 'syncUrlToQuery',
-            message: '📥 useActiveKeyHook 模式 - 从 window.location 读取',
-            data: {
-              windowLocationSearch: search,
-              windowParamsEntries: Array.from(windowParams.entries()),
-              contextSearchParams: searchParams.toString(),
-            },
-          });
-
-          // 如果 window.location.search 有参数，使用它
+          // If window.location.search has parameters, use it
           if (search) {
             return windowParams;
           }
 
-          // 如果 window.location.search 为空，但 context.searchParams 有参数，使用 context
+          // If window.location.search is empty but context.searchParams has parameters, use context
           const contextSearch = searchParams.toString();
           if (contextSearch) {
             return searchParams;
           }
 
-          // 都为空，返回空的 URLSearchParams
+          // Both empty, return empty URLSearchParams
           return new URLSearchParams();
         })()
       : searchParams;
 
-    querySyncLogger.info({
-      component: 'syncUrlToQuery',
-      message: '📥 开始从URL同步到query',
-      data: {
-        useActiveKeyHook: config.useActiveKeyHook,
-        hasQueryFormat: Boolean(config.queryFormat),
-        actualSearchParamsString: actualSearchParams.toString(),
-        contextSearchParamsString: searchParams.toString(),
-        windowLocationSearch:
-          typeof window !== 'undefined' ? window.location.search : 'N/A',
-      },
-    });
-
-    // 使用 queryFormat 格式化 URL 参数
+    // Use queryFormat to format URL parameters
     let urlQuery: Record<string, any> = {};
 
     if (config.queryFormat) {
-      // 🔧 为所有URL参数添加格式化函数（包括未定义的）
+      // Add formatting function for all URL parameters (including undefined ones)
       const completeQueryFormat: Record<string, any> = {
         ...config.queryFormat,
       };
 
       for (const [key] of actualSearchParams.entries()) {
-        // 跳过认证参数
+        // Skip authentication parameters
         if (
           config.authQueryPrefixOnSearchParams &&
           key in config.authQueryPrefixOnSearchParams
@@ -338,7 +264,7 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
           continue;
         }
 
-        // 为未定义字段添加默认格式化
+        // Add default formatting for undefined fields
         if (!completeQueryFormat[key]) {
           completeQueryFormat[key] = ({ value }: any) => value;
         }
@@ -349,7 +275,7 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
         queryFormat: completeQueryFormat,
       });
     } else {
-      // 默认解析（所有值作为字符串）
+      // Default parsing (all values as strings)
       for (const [key, value] of actualSearchParams.entries()) {
         if (
           config.authQueryPrefixOnSearchParams &&
@@ -361,70 +287,15 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
       }
     }
 
-    // 🔍 记录过滤认证参数前的状态
-    querySyncLogger.info({
-      component: 'syncUrlToQuery',
-      message: '📥 过滤认证参数前',
-      data: {
-        urlQuery,
-        urlQueryKeys: Object.keys(urlQuery),
-        urlQueryDatasourceType: urlQuery.datasource_type,
-        hasAuthQueryPrefix: Boolean(config.authQueryPrefixOnSearchParams),
-        authQueryPrefixKeys: config.authQueryPrefixOnSearchParams
-          ? Object.keys(config.authQueryPrefixOnSearchParams)
-          : [],
-      },
-    });
-
-    // 过滤认证参数
+    // Filter authentication parameters
     if (config.authQueryPrefixOnSearchParams) {
       Object.keys(config.authQueryPrefixOnSearchParams).forEach((key) => {
         delete urlQuery[key];
       });
     }
 
-    // 🔍 记录过滤认证参数后的状态
-    querySyncLogger.info({
-      component: 'syncUrlToQuery',
-      message: '📥 过滤认证参数后',
-      data: {
-        urlQuery,
-        urlQueryKeys: Object.keys(urlQuery),
-        urlQueryDatasourceType: urlQuery.datasource_type,
-      },
-    });
-
-    // 🔧 规范化后返回
+    // Return after normalization
     const normalizedUrlQuery = normalizeQuery(urlQuery);
-
-    // 🔍 记录规范化过程
-    querySyncLogger.info({
-      component: 'syncUrlToQuery',
-      message: '📥 规范化过程',
-      data: {
-        beforeNormalize: urlQuery,
-        afterNormalize: normalizedUrlQuery,
-        beforeNormalizeDatasourceType: urlQuery.datasource_type,
-        afterNormalizeDatasourceType: normalizedUrlQuery.datasource_type,
-      },
-    });
-
-    // 🔍 详细记录最终结果
-    querySyncLogger.info({
-      component: 'syncUrlToQuery',
-      message: '📥 返回规范化query',
-      data: {
-        urlQuery: normalizedUrlQuery,
-        normalizedUrlQueryKeys: Object.keys(normalizedUrlQuery),
-        normalizedUrlQueryDatasourceType: normalizedUrlQuery.datasource_type,
-        normalizedUrlQueryDatasourceTypeType:
-          typeof normalizedUrlQuery.datasource_type,
-        isEmptyNormalizedUrlQuery: isEmpty(normalizedUrlQuery),
-        rawUrlQuery: urlQuery,
-        beforeNormalize: urlQuery,
-        afterNormalize: normalizedUrlQuery,
-      },
-    });
 
     return normalizedUrlQuery;
   }, [
@@ -436,55 +307,31 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
   ]);
 
   /**
-   * 重置查询参数
-   * 🔧 修复：使用 initQuery 而不是空对象，确保重置到初始状态
-   * 🎯 边界case处理：
-   * - initQuery 为空对象或 undefined：重置为空对象
-   * - preservedFields 与 initQuery 合并：preservedFields 优先级更高
-   * - querySearchParamsFormat 格式化 URL 参数
-   * - 数组参数的 URL 同步
-   * - 认证参数的保留
-   * - syncQueryOnSearchParams 为 false 时不同步到 URL
+   * Reset query parameters
+   * Fix: Use initQuery instead of empty object to ensure reset to initial state
+   * Edge case handling:
+   * - initQuery is empty object or undefined: reset to empty object
+   * - preservedFields merged with initQuery: preservedFields has higher priority
+   * - querySearchParamsFormat formats URL parameters
+   * - URL synchronization of array parameters
+   * - Preservation of authentication parameters
+   * - Don't sync to URL when syncQueryOnSearchParams is false
    */
   const resetQuery = useCallback(
     (resetEmptyData = false, preservedFields?: Record<string, unknown>) => {
       isResettingRef.current = true;
 
-      // 🔍 获取 initQuery（可能为空对象或 undefined）
+      // Get initQuery (may be empty object or undefined)
       const baseInitQuery = config.initQuery || ({} as QueryType);
 
-      // 🔧 合并 preservedFields（preservedFields 优先级更高）
+      // Merge preservedFields (preservedFields has higher priority)
       const resetTargetQuery = {
         ...baseInitQuery,
         ...(preservedFields || {}),
       } as QueryType;
 
-      querySyncLogger.info({
-        component: 'resetQuery',
-        message: '🔄 重置查询参数',
-        data: {
-          hasInitQuery: Boolean(config.initQuery),
-          initQuery: config.initQuery,
-          preservedFields,
-          resetTargetQuery,
-          currentQuery: context.query,
-          hasCustomReset: Boolean(config.customReset),
-          resetEmptyData,
-        },
-      });
-
       if (config.customReset) {
-        querySyncLogger.info({
-          component: 'resetQuery',
-          message: '🔄 使用 customReset',
-          data: {
-            initQuery: config.initQuery,
-            preservedFields,
-            resetTargetQuery,
-          },
-        });
-
-        // 🔧 传递 initQuery 和 preservedFields 给 customReset
+        // Pass initQuery and preservedFields to customReset
         config.customReset({
           resetEmptyData,
           setQuery: context.setQuery as any,
@@ -492,35 +339,20 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
           preservedFields,
         });
       } else {
-        querySyncLogger.info({
-          component: 'resetQuery',
-          message: '🔄 使用默认重置逻辑',
-          data: {
-            initQuery: config.initQuery,
-            preservedFields,
-            resetTargetQuery,
-            currentQuery: context.query,
-          },
-        });
-
-        // 🔧 修复：重置到 resetTargetQuery（initQuery + preservedFields）
+        // Fix: Reset to resetTargetQuery (initQuery + preservedFields)
         context.setQuery(resetTargetQuery);
       }
 
-      // 🔧 同步 URL 参数到 resetTargetQuery（保留认证参数）
-      // 🎯 边界case：如果 syncQueryOnSearchParams 为 false，不同步到 URL
+      // Sync URL parameters to resetTargetQuery (preserve authentication parameters)
+      // Edge case: Don't sync to URL when syncQueryOnSearchParams is false
       let newParams: URLSearchParams | undefined;
       if (!config.syncQueryOnSearchParams) {
-        querySyncLogger.info({
-          component: 'resetQuery',
-          message: '⏭️ 跳过 URL 同步（syncQueryOnSearchParams 为 false）',
-        });
-        // 🎯 边界case：不同步时，newParams 使用当前的 searchParams
+        // Edge case: When not syncing, newParams uses current searchParams
         newParams = searchParams;
       } else {
         newParams = new URLSearchParams();
 
-        // 保留认证参数
+        // Preserve authentication parameters
         if (config.authQueryPrefixOnSearchParams) {
           for (const [key, value] of searchParams.entries()) {
             if (key in config.authQueryPrefixOnSearchParams) {
@@ -529,11 +361,11 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
           }
         }
 
-        // 🔧 将 resetTargetQuery 中的非空值同步到 URL
-        // 🎯 边界case：考虑 querySearchParamsFormat 格式化
+        // Sync non-empty values from resetTargetQuery to URL
+        // Edge case: Consider querySearchParamsFormat formatting
         if (resetTargetQuery && typeof resetTargetQuery === 'object') {
           Object.entries(resetTargetQuery).forEach(([key, value]) => {
-            // 跳过认证参数
+            // Skip authentication parameters
             if (
               config.authQueryPrefixOnSearchParams &&
               key in config.authQueryPrefixOnSearchParams
@@ -541,31 +373,31 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
               return;
             }
 
-            // 🎯 边界case：跳过空值（undefined、null、空字符串）
+            // Edge case: Skip empty values (undefined, null, empty string)
             if (value === undefined || value === null || value === '') {
               return;
             }
 
-            // 🎯 边界case：使用 querySearchParamsFormat 格式化（如果存在）
+            // Edge case: Use querySearchParamsFormat to format (if exists)
             let formattedValue: string;
             const formatter = config.querySearchParamsFormat?.[key];
             if (formatter) {
               formattedValue = formatter(value);
             } else if (Array.isArray(value)) {
-              // 🎯 边界case：数组参数，每个元素单独添加
+              // Edge case: Array parameter, add each element individually
               if (newParams) {
                 value.forEach((item) => {
                   newParams!.append(key, String(item));
                 });
               }
-              return; // 数组已经处理，跳过后续单个值的设置
+              return; // Array already handled, skip subsequent single value setting
             } else if (typeof value === 'object' && value !== null) {
-              // 🎯 边界case：对象值（但不是数组），序列化为 JSON
+              // Edge case: Object value (but not array), serialize to JSON
               formattedValue = JSON.stringify(value);
             } else if (typeof value === 'string') {
               formattedValue = value;
             } else {
-              // 🎯 边界case：数字、布尔值等，转换为字符串
+              // Edge case: Numbers, booleans, etc., convert to string
               formattedValue = String(value);
             }
 
@@ -575,38 +407,17 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
           });
         }
 
-        querySyncLogger.info({
-          component: 'resetQuery',
-          message: '🔄 更新 URL 参数',
-          data: {
-            newParams: newParams.toString(),
-            resetTargetQuery,
-            hasQuerySearchParamsFormat: Boolean(config.querySearchParamsFormat),
-          },
-        });
-
         setSearchParams(newParams, { replace: true });
       }
 
-      // 🔧 重置所有状态（无论是否同步到 URL）
+      // Reset all state (regardless of whether syncing to URL)
       const normalizedResetQuery = normalizeQuery(resetTargetQuery);
       lastNormalizedQueryRef.current = normalizedResetQuery;
-      // 🎯 边界case：使用 newParams（如果同步到 URL 则为新参数，否则为当前 searchParams）
+      // Edge case: Use newParams (new parameters if syncing to URL, otherwise current searchParams)
       lastNormalizedUrlRef.current = normalizeUrlParams(
         newParams || searchParams,
       );
       syncCountRef.current = { queryToUrl: 0, urlToQuery: 0 };
-
-      querySyncLogger.info({
-        component: 'resetQuery',
-        message: '🔄 重置完成',
-        data: {
-          resetTargetQuery,
-          normalizedResetQuery,
-          finalQuery: context.query,
-          finalUrl: window.location.href,
-        },
-      });
 
       setTimeout(() => {
         isResettingRef.current = false;
@@ -626,100 +437,25 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
   );
 
   /**
-   * 初始化：只在挂载时执行一次
+   * Initialization: Execute only once on mount
    */
   useMount(() => {
     if (isInitializedRef.current) {
-      querySyncLogger.info({
-        component: 'useMount',
-        message: '🔄 跳过初始化 - 已初始化',
-        data: {
-          callId: currentCallId,
-        },
-      });
       return;
     }
 
-    // 🔍 详细记录初始化前的状态
-    querySyncLogger.info({
-      component: 'useMount',
-      message: '🔄 ========== QuerySync 初始化开始 ==========',
-      data: {
-        callId: currentCallId,
-        syncEnabled: config.syncQueryOnSearchParams,
-        useActiveKeyHook: config.useActiveKeyHook,
-        windowLocationHref:
-          typeof window !== 'undefined' ? window.location.href : 'N/A',
-        windowLocationSearch:
-          typeof window !== 'undefined' ? window.location.search : 'N/A',
-        contextSearchParams: searchParams.toString(),
-        contextQuery: context.query,
-        normalizedContextQuery: normalizeQuery(context.query),
-        timestamp: new Date().toISOString(),
-      },
-    });
-
     if (!config.syncQueryOnSearchParams) {
-      querySyncLogger.info({
-        component: 'useMount',
-        message: '🔄 跳过初始化 - URL 同步未启用',
-        data: {
-          callId: currentCallId,
-        },
-      });
       isInitializedRef.current = true;
       return;
     }
 
-    // 从URL初始化query
-    querySyncLogger.info({
-      component: 'useMount',
-      message: '🔄 准备调用 syncUrlToQuery',
-      data: {
-        callId: currentCallId,
-        useActiveKeyHook: config.useActiveKeyHook,
-        windowLocationSearch:
-          typeof window !== 'undefined' ? window.location.search : 'N/A',
-        contextSearchParams: searchParams.toString(),
-      },
-    });
+    // Initialize query from URL
 
     const urlQuery = syncUrlToQuery();
     const normalizedCurrentQuery = normalizeQuery(context.query);
 
-    // 🔍 详细记录 syncUrlToQuery 的返回结果
-    querySyncLogger.info({
-      component: 'useMount',
-      message: '🔄 syncUrlToQuery 返回结果',
-      data: {
-        callId: currentCallId,
-        urlQuery,
-        urlQueryKeys: Object.keys(urlQuery),
-        urlQueryDatasourceType: urlQuery.datasource_type,
-        isEmptyUrlQuery: isEmpty(urlQuery),
-        normalizedCurrentQuery,
-        normalizedCurrentQueryKeys: Object.keys(normalizedCurrentQuery),
-        normalizedCurrentQueryDatasourceType:
-          normalizedCurrentQuery.datasource_type,
-        isEmptyNormalizedCurrentQuery: isEmpty(normalizedCurrentQuery),
-      },
-    });
-
     if (!isEmpty(urlQuery)) {
-      querySyncLogger.info({
-        component: 'useMount',
-        message: '📥 从URL初始化query - 开始合并',
-        data: {
-          callId: currentCallId,
-          urlQuery,
-          urlQueryDatasourceType: urlQuery.datasource_type,
-          currentQuery: normalizedCurrentQuery,
-          currentQueryDatasourceType: normalizedCurrentQuery.datasource_type,
-          willMerge: true,
-        },
-      });
-
-      // 🔧 使用规范化后的值合并
+      // Use normalized values to merge
       context.setQuery((prev) => {
         const normalizedPrev = normalizeQuery(prev);
         const merged = {
@@ -727,146 +463,34 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
           ...urlQuery,
         };
 
-        // 🔍 记录合并过程（避免 Circular 引用）
-        const prevQuerySnapshot = {
-          ...prev,
-          datasource_type: prev.datasource_type,
-        };
-        const urlQuerySnapshot = {
-          ...urlQuery,
-          datasource_type: urlQuery.datasource_type,
-        };
-        const mergedSnapshot = {
-          ...merged,
-          datasource_type: merged.datasource_type,
-        };
-
-        querySyncLogger.info({
-          component: 'useMount',
-          message: '📥 合并 query - 执行中',
-          data: {
-            callId: currentCallId,
-            prevQuerySnapshot,
-            prevQueryDatasourceType: prev.datasource_type,
-            normalizedPrev,
-            normalizedPrevDatasourceType: normalizedPrev.datasource_type,
-            urlQuerySnapshot,
-            urlQueryDatasourceType: urlQuery.datasource_type,
-            mergedSnapshot,
-            mergedDatasourceType: merged.datasource_type,
-            mergedDatasourceTypeType: typeof merged.datasource_type,
-          },
-        });
-
         return merged as QueryType;
       });
 
-      // 记录初始状态
+      // Record initial state
       lastNormalizedQueryRef.current = urlQuery;
       lastNormalizedUrlRef.current = normalizeUrlParams(searchParams);
-
-      // 🔍 记录最终状态（避免 Circular 引用）
-      const finalQuerySnapshot = {
-        ...context.query,
-        datasource_type: context.query.datasource_type,
-      };
-      const finalQueryKeys = Object.keys(context.query);
-
-      querySyncLogger.info({
-        component: 'useMount',
-        message: '📥 从URL初始化query - 完成',
-        data: {
-          callId: currentCallId,
-          finalQueryKeys,
-          finalQuerySnapshot,
-          finalQueryDatasourceType: context.query.datasource_type,
-          finalQueryDatasourceTypeType: typeof context.query.datasource_type,
-          lastNormalizedQuery: lastNormalizedQueryRef.current,
-          lastNormalizedQueryDatasourceType:
-            lastNormalizedQueryRef.current?.datasource_type,
-          lastNormalizedUrl: lastNormalizedUrlRef.current,
-        },
-      });
     } else if (!isEmpty(normalizedCurrentQuery)) {
-      querySyncLogger.info({
-        component: 'useMount',
-        message: '📤 从query初始化URL',
-        data: {
-          callId: currentCallId,
-          query: normalizedCurrentQuery,
-          queryDatasourceType: normalizedCurrentQuery.datasource_type,
-        },
-      });
       syncQueryToUrl(normalizedCurrentQuery as QueryType);
-    } else {
-      querySyncLogger.info({
-        component: 'useMount',
-        message: '🔄 URL 和 query 都为空，跳过同步',
-        data: {
-          callId: currentCallId,
-          urlQuery,
-          normalizedCurrentQuery,
-        },
-      });
     }
 
     isInitializedRef.current = true;
-
-    // 🔍 记录最终状态（避免 Circular 引用）
-    const finalQuerySnapshot = {
-      ...context.query,
-      datasource_type: context.query.datasource_type,
-    };
-    const finalQueryKeys = Object.keys(context.query);
-
-    querySyncLogger.info({
-      component: 'useMount',
-      message: '🔄 ========== QuerySync 初始化完成 ==========',
-      data: {
-        callId: currentCallId,
-        finalQueryKeys,
-        finalQuerySnapshot,
-        finalQueryDatasourceType: context.query.datasource_type,
-        finalQueryDatasourceTypeType: typeof context.query.datasource_type,
-        lastNormalizedQuery: lastNormalizedQueryRef.current,
-        lastNormalizedQueryDatasourceType:
-          lastNormalizedQueryRef.current?.datasource_type,
-        windowLocationHref:
-          typeof window !== 'undefined' ? window.location.href : 'N/A',
-        windowLocationSearch:
-          typeof window !== 'undefined' ? window.location.search : 'N/A',
-        timestamp: new Date().toISOString(),
-      },
-    });
   });
 
   /**
-   * 监听query变化 → 同步到URL
+   * Listen for query changes → sync to URL
    *
-   * 🎯 使用 useUpdateEffect 避免初始渲染触发
-   * 🎯 使用规范化对比避免类型转换导致的循环
+   * Use useUpdateEffect to avoid initial render trigger
+   * Use normalized comparison to avoid type conversion loops
    */
   useUpdateEffect(() => {
-    // 跳过条件
+    // Skip conditions
     if (isResettingRef.current || !isInitializedRef.current) {
-      querySyncLogger.debug({
-        component: 'QueryListener',
-        message: '⏭️ 跳过',
-        data: {
-          resetting: isResettingRef.current,
-          initialized: isInitializedRef.current,
-        },
-      });
       syncCountRef.current.queryToUrl = 0;
       return;
     }
 
-    // 防止反向同步触发
+    // Prevent reverse sync trigger
     if (isSyncingToQueryRef.current) {
-      querySyncLogger.warn({
-        component: 'QueryListener',
-        message: '⚠️ 跳过 - 正在从URL同步',
-      });
       return;
     }
 
@@ -874,50 +498,28 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
       return;
     }
 
-    // 🔧 规范化query
+    // Normalize query
     const normalizedQuery = normalizeQuery(context.query);
 
-    // 🔧 真实变化检测：深度对比规范化后的值
+    // Real change detection: deep comparison of normalized values
     if (isEqual(normalizedQuery, lastNormalizedQueryRef.current)) {
-      querySyncLogger.debug({
-        component: 'QueryListener',
-        message: '⏭️ 跳过 - query未变化（深度对比）',
-      });
       syncCountRef.current.queryToUrl = 0;
       return;
     }
 
-    // 🚨 循环检测：时间窗口重置
+    // Loop detection: time window reset
     const now = Date.now();
     if (now - lastResetTimeRef.current > RESET_INTERVAL) {
       syncCountRef.current = { queryToUrl: 0, urlToQuery: 0 };
       lastResetTimeRef.current = now;
-      querySyncLogger.debug({
-        component: 'QueryListener',
-        message: '⏱️ 时间窗口重置计数器',
-      });
     }
 
-    // 🚨 循环检测：连续同步超限熔断
+    // Loop detection: circuit breaker for consecutive sync limit exceeded
     syncCountRef.current.queryToUrl++;
     if (syncCountRef.current.queryToUrl > SYNC_LIMIT) {
-      querySyncLogger.error({
-        component: 'QueryListener',
-        message: '🚨 死循环熔断！query → URL',
-        data: {
-          syncCount: syncCountRef.current.queryToUrl,
-          limit: SYNC_LIMIT,
-          currentQuery: normalizedQuery,
-          lastQuery: lastNormalizedQueryRef.current,
-          diff: Object.keys(normalizedQuery).filter(
-            (key) =>
-              normalizedQuery[key] !== lastNormalizedQueryRef.current[key],
-          ),
-        },
-      });
       logger.error({
         message:
-          '[QuerySync] 🚨 死循环！query → URL 已熔断。检查queryFormat配置！',
+          '[QuerySync] Infinite loop detected! query → URL has been circuit-broken. Check queryFormat configuration!',
         data: {
           syncCount: syncCountRef.current.queryToUrl,
           normalizedQuery,
@@ -929,22 +531,13 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
       return;
     }
 
-    // 同步到URL
+    // Sync to URL
     if (!isEmpty(normalizedQuery)) {
-      querySyncLogger.info({
-        component: 'QueryListener',
-        message: '📤 query变化，同步到URL',
-        data: {
-          query: normalizedQuery,
-          syncCount: syncCountRef.current.queryToUrl,
-        },
-      });
-
       isSyncingToUrlRef.current = true;
 
       try {
         syncQueryToUrl(normalizedQuery as QueryType);
-        syncCountRef.current.urlToQuery = 0; // 重置反向计数
+        syncCountRef.current.urlToQuery = 0; // Reset reverse count
       } finally {
         setTimeout(() => {
           isSyncingToUrlRef.current = false;
@@ -954,32 +547,20 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
   }, [context.query]);
 
   /**
-   * 监听URL变化 → 同步到query
+   * Listen for URL changes → sync to query
    *
-   * 🎯 使用 useEffect（不是useUpdateEffect）因为需要响应URL变化
-   * 🎯 使用规范化对比避免类型转换导致的循环
+   * Use useEffect (not useUpdateEffect) because it needs to respond to URL changes
+   * Use normalized comparison to avoid type conversion loops
    */
   useEffect(() => {
-    // 跳过条件
+    // Skip conditions
     if (isResettingRef.current || !isInitializedRef.current) {
-      querySyncLogger.debug({
-        component: 'URLListener',
-        message: '⏭️ 跳过',
-        data: {
-          resetting: isResettingRef.current,
-          initialized: isInitializedRef.current,
-        },
-      });
       syncCountRef.current.urlToQuery = 0;
       return;
     }
 
-    // 防止反向同步触发
+    // Prevent reverse sync trigger
     if (isSyncingToUrlRef.current) {
-      querySyncLogger.warn({
-        component: 'URLListener',
-        message: '⚠️ 跳过 - 正在从query同步',
-      });
       return;
     }
 
@@ -987,45 +568,28 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
       return;
     }
 
-    // 🔧 规范化URL
+    // Normalize URL
     const normalizedUrl = normalizeUrlParams(searchParams);
 
-    // 🔧 真实变化检测：字符串对比
+    // Real change detection: string comparison
     if (normalizedUrl === lastNormalizedUrlRef.current) {
-      querySyncLogger.debug({
-        component: 'URLListener',
-        message: '⏭️ 跳过 - URL未变化',
-      });
       syncCountRef.current.urlToQuery = 0;
       return;
     }
 
-    // 🚨 循环检测：时间窗口重置
+    // Loop detection: time window reset
     const now = Date.now();
     if (now - lastResetTimeRef.current > RESET_INTERVAL) {
       syncCountRef.current = { queryToUrl: 0, urlToQuery: 0 };
       lastResetTimeRef.current = now;
-      querySyncLogger.debug({
-        component: 'URLListener',
-        message: '⏱️ 时间窗口重置计数器',
-      });
     }
 
-    // 🚨 循环检测：连续同步超限熔断
+    // Loop detection: circuit breaker for consecutive sync limit exceeded
     syncCountRef.current.urlToQuery++;
     if (syncCountRef.current.urlToQuery > SYNC_LIMIT) {
-      querySyncLogger.error({
-        component: 'URLListener',
-        message: '🚨 死循环熔断！URL → query',
-        data: {
-          syncCount: syncCountRef.current.urlToQuery,
-          limit: SYNC_LIMIT,
-          currentUrl: normalizedUrl,
-          lastUrl: lastNormalizedUrlRef.current,
-        },
-      });
       logger.error({
-        message: '[QuerySync] 🚨 死循环！URL → query 已熔断。检查URL参数格式！',
+        message:
+          '[QuerySync] Infinite loop detected! URL → query has been circuit-broken. Check URL parameter format!',
         data: {
           syncCount: syncCountRef.current.urlToQuery,
           currentUrl: normalizedUrl,
@@ -1037,19 +601,10 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
       return;
     }
 
-    // 从URL同步
+    // Sync from URL
     const urlQuery = syncUrlToQuery();
 
     if (!isEmpty(urlQuery)) {
-      querySyncLogger.info({
-        component: 'URLListener',
-        message: '📥 URL变化，同步到query',
-        data: {
-          urlQuery,
-          syncCount: syncCountRef.current.urlToQuery,
-        },
-      });
-
       isSyncingToQueryRef.current = true;
 
       try {
@@ -1060,33 +615,19 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
             ...urlQuery,
           };
 
-          querySyncLogger.debug({
-            component: 'URLListener',
-            message: 'setQuery执行',
-            data: {
-              prev: normalizedPrev,
-              urlQuery,
-              merged,
-            },
-          });
-
           return merged as QueryType;
         });
 
-        // 🔧 记录规范化后的值
+        // Record normalized values
         lastNormalizedUrlRef.current = normalizedUrl;
         lastNormalizedQueryRef.current = urlQuery;
-        syncCountRef.current.queryToUrl = 0; // 重置反向计数
+        syncCountRef.current.queryToUrl = 0; // Reset reverse count
       } finally {
         setTimeout(() => {
           isSyncingToQueryRef.current = false;
         }, 0);
       }
     } else {
-      querySyncLogger.debug({
-        component: 'URLListener',
-        message: '📥 URL为空',
-      });
       lastNormalizedUrlRef.current = normalizedUrl;
       syncCountRef.current.urlToQuery = 0;
     }
@@ -1097,7 +638,5 @@ export const useQuerySync = <QueryType extends Record<string, any> = any>(
     setQuery: context.setQuery,
     syncQueryToUrl,
     resetQuery,
-    enableLogging, // 新增：在 component 中调用以启用日志收集
-    exportLogs, // 新增：在 component 中调用以导出日志（需先 enable）
   };
 };

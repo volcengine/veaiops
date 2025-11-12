@@ -12,19 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { RouteConfig } from '@/types/route';
-import React from 'react';
-// Import lazy-loaded components and route paths from config
-import { ROUTES_PATH_CONFIG, StatisticsPages } from '../config';
-
-/**
- * Statistics route configuration
- */
-export const statisticsRoutes: RouteConfig[] = [
-  {
-    path: ROUTES_PATH_CONFIG.statistics.Overview,
-    element: React.createElement(StatisticsPages.Overview),
-    title: '概览数据',
-    requireAuth: true,
+// docs/nuxt.config.js
+export default {
+  extends: ['docus'],
+  app: {
+    baseURL: '/veaiops/'
   },
-];
+  image: {
+    provider: 'none'
+  }
+}

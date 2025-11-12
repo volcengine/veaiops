@@ -15,20 +15,18 @@
 import type { RouteConfig } from '@/types/route';
 import { Navigate, useLocation } from '@modern-js/runtime/router';
 import React from 'react';
-// 直接从 routes/config 目录导入，避免通过 config/index.ts 造成循环引用
-// 使用 ../config 会解析到 routes/config/index.ts，不会经过 config/index.ts
-import { SystemPages } from '../config';
+import { ROUTES_PATH_CONFIG, SystemPages } from '../config';
 
 /**
- * 系统配置模块路由配置
+ * System configuration module route configuration
  */
 export const systemRoutes: RouteConfig[] = [
-  // 系统模块默认重定向到Bot管理页面
+  // Default redirect to Bot management page
   {
-    path: '/system',
+    path: ROUTES_PATH_CONFIG.system.Root,
     element: React.createElement(() => {
       const location = useLocation();
-      const targetUrl = `/system/bot-management${location.search}`;
+      const targetUrl = `${ROUTES_PATH_CONFIG.system.BotManagement}${location.search}`;
 
       return React.createElement(Navigate, {
         to: targetUrl,
@@ -38,32 +36,32 @@ export const systemRoutes: RouteConfig[] = [
     requireAuth: true,
   },
   {
-    path: '/system/bot-management',
+    path: ROUTES_PATH_CONFIG.system.BotManagement,
     element: React.createElement(SystemPages.BotManagement),
     title: '群聊机器人管理',
     requireAuth: true,
   },
   {
-    path: '/system/card-template',
+    path: ROUTES_PATH_CONFIG.system.CardTemplate,
     element: React.createElement(SystemPages.CardTemplate),
     title: '卡片模版管理',
     icon: 'IconCard',
     requireAuth: true,
   },
   {
-    path: '/system/account',
+    path: ROUTES_PATH_CONFIG.system.Account,
     element: React.createElement(SystemPages.Account),
     title: '账号管理',
     requireAuth: true,
   },
   {
-    path: '/system/datasource',
+    path: ROUTES_PATH_CONFIG.system.Monitor,
     element: React.createElement(SystemPages.Monitor),
     title: '监控数据源管理',
     requireAuth: true,
   },
   {
-    path: '/system/project',
+    path: ROUTES_PATH_CONFIG.system.Project,
     element: React.createElement(SystemPages.Project),
     title: '项目管理',
     requireAuth: true,

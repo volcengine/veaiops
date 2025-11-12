@@ -25,7 +25,12 @@ import type { HandleFilterProps } from '../custom-table/types/core/common';
 import { getEventHistoryColumns } from './columns';
 import { getEventHistoryFilters } from './filters';
 import type { EventHistoryFilters, EventHistoryTableProps } from './types';
-
+// Query format 配置
+const queryFormat = {
+  agent_type: queryArrayFormat,
+  event_level: queryArrayFormat,
+  show_status: queryArrayFormat,
+};
 /**
  * 统一的历史事件表格组件
  *
@@ -101,16 +106,6 @@ export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
     return buttons;
   }, [showExport]);
 
-  // Query format 配置
-  const queryFormat = useMemo(
-    () => ({
-      agent_type: queryArrayFormat,
-      event_level: queryArrayFormat,
-      show_status: queryArrayFormat,
-    }),
-    [],
-  );
-
   return (
     <CustomTable
       title={title}
@@ -120,6 +115,8 @@ export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
       tableProps={tableProps}
       actions={actions}
       queryFormat={queryFormat}
+      syncQueryOnSearchParams
+      useActiveKeyHook
     />
   );
 };

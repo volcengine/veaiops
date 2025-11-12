@@ -17,24 +17,56 @@
  */
 import { channelTypeOptions } from '@/modules/event-center/features/strategy/constants/options';
 import type { FieldItem, HandleFilterProps } from '@veaiops/components';
+import { ChannelType } from '@veaiops/api-client';
 
 /**
  * 筛选配置接口
+ *
+ * ✅ 兼容性更新：添加索引签名以兼容 BaseQuery 类型
  */
 export interface BotFilters {
   status?: string;
   channel?: string;
   keyword?: string;
+  [key: string]: unknown;
 }
 
 /**
- * 默认筛选配置
- * 默认选择飞书作为企业协同工具
+ * Default filter configuration
+ * Default to Lark as enterprise collaboration tool
+ *
+ * Note: Use ChannelType enum instead of hardcoded strings
+ * - ChannelType.LARK = 'Lark' (capital L)
+ * - Ensure consistency with backend enum values
  */
 export const DEFAULT_BOT_FILTERS: BotFilters = {
   status: '',
-  channel: 'Lark', // 默认选择飞书
+  channel: ChannelType.LARK, // ✅ Use enum for type safety and consistency
   keyword: '',
+};
+
+/**
+ * Query format configuration for Bot table
+ * Handles URL → Query conversion (normalize channel parameter)
+ */
+export const BOT_QUERY_FORMAT = {
+  channel: ({ value }: { value: unknown }) => {
+    // Normalize: map URL parameter value to correct ChannelType enum value
+    const strValue = String(value);
+    const lowerValue = strValue.toLowerCase();
+    if (lowerValue === 'lark') {
+      return ChannelType.LARK; // 'Lark'
+    }
+    return strValue;
+  },
+};
+
+/**
+ * Query search params format configuration for Bot table
+ * Handles Query → URL conversion (preserve channel parameter)
+ */
+export const BOT_QUERY_SEARCH_PARAMS_FORMAT = {
+  channel: (value: unknown) => String(value), // Keep enum value as-is ('Lark')
 };
 
 /**

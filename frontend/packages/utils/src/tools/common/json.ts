@@ -12,19 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { RouteConfig } from '@/types/route';
-import React from 'react';
-// Import lazy-loaded components and route paths from config
-import { ROUTES_PATH_CONFIG, StatisticsPages } from '../config';
+/**
+ * JSON utilities
+ */
+
+import type { SafeJSONParseParams } from './types';
 
 /**
- * Statistics route configuration
+ * Safely parse JSON string
  */
-export const statisticsRoutes: RouteConfig[] = [
-  {
-    path: ROUTES_PATH_CONFIG.statistics.Overview,
-    element: React.createElement(StatisticsPages.Overview),
-    title: '概览数据',
-    requireAuth: true,
-  },
-];
+export const safeJSONParse = ({
+  valueString,
+  empty = undefined,
+  shouldThrow = false,
+}: SafeJSONParseParams): unknown => {
+  try {
+    if (valueString !== undefined) {
+      return JSON.parse(valueString);
+    }
+    return empty;
+  } catch (error) {
+    if (shouldThrow) {
+      throw error;
+    }
+    return empty;
+  }
+};

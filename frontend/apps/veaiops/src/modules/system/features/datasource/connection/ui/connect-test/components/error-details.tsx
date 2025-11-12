@@ -23,7 +23,7 @@ import {
   IconEye,
   IconEyeInvisible,
 } from '@arco-design/web-react/icon';
-import { logger } from '@veaiops/utils';
+import { logger, safeCopyToClipboard } from '@veaiops/utils';
 import type React from 'react';
 import { useState } from 'react';
 
@@ -42,20 +42,18 @@ export const ErrorDetails: React.FC<ErrorDetailsProps> = ({
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(JSON.stringify(details, null, 2));
+    const result = await safeCopyToClipboard(JSON.stringify(details, null, 2));
+    if (result.success) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (error: unknown) {
+    } else {
       // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
       logger.error({
         message: '复制失败',
         data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
-          errorObj,
+          error: result.error?.message,
+          stack: result.error?.stack,
+          errorObj: result.error,
         },
         source: 'ErrorDetails',
         component: 'handleCopy',

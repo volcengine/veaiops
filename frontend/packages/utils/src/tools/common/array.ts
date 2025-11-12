@@ -12,19 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { RouteConfig } from '@/types/route';
-import React from 'react';
-// Import lazy-loaded components and route paths from config
-import { ROUTES_PATH_CONFIG, StatisticsPages } from '../config';
+/**
+ * Array utilities
+ */
 
 /**
- * Statistics route configuration
+ * Ensure the input value is an array.
+ * If the value is undefined, return an empty array.
+ * If the value is not an array, return an array containing the value.
+ * If the value is already an array, return it directly.
  */
-export const statisticsRoutes: RouteConfig[] = [
-  {
-    path: ROUTES_PATH_CONFIG.statistics.Overview,
-    element: React.createElement(StatisticsPages.Overview),
-    title: '概览数据',
-    requireAuth: true,
-  },
-];
+export const ensureArray = <T>(value: unknown): T[] => {
+  if (value === undefined || value === null) {
+    return [];
+  }
+  return Array.isArray(value)
+    ? value.filter(Boolean)
+    : [value as T].filter(Boolean);
+};

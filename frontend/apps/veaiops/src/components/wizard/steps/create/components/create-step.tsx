@@ -13,22 +13,18 @@
 // limitations under the License.
 
 /**
- * 数据源创建步骤组件
- * @description 执行数据源创建操作并显示结果
- * @author AI Assistant
- * @date 2025-01-17
+ * Data source creation step component
+ * @description Execute data source creation operation and display results
  */
 
 import { Message } from '@arco-design/web-react';
-import { logger } from '@veaiops/utils';
 import type React from 'react';
-import { useEffect, useState } from 'react';
-import type {
+import { useState } from 'react';
+import {
   DataSourceType,
-  WizardActions,
-  WizardState,
+  type WizardActions,
+  type WizardState,
 } from '../../../types';
-import { DataSourceType } from '../../../types';
 import { CreateUI } from './create-ui';
 import {
   type CreateResult,
@@ -63,7 +59,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
     const isEditMode = Boolean(wizardState.editingDataSourceId);
 
     if (isEditMode && wizardState.editingDataSourceId) {
-      // 编辑模式：调用更新 API
+      // Edit mode: call update API
       switch (type) {
         case DataSourceType.ZABBIX:
           return updateZabbixDataSource(
@@ -88,7 +84,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
           };
       }
     } else {
-      // 创建模式：调用创建 API
+      // Create mode: call create API
       switch (type) {
         case DataSourceType.ZABBIX:
           return createZabbixDataSource(wizardState);
@@ -118,7 +114,7 @@ export const CreateStep: React.FC<CreateStepProps> = ({
     setResult(null);
 
     try {
-      // 模拟进度更新
+      // Simulate progress updates
       const progressInterval = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 90) {

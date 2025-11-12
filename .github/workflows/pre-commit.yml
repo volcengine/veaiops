@@ -16,6 +16,8 @@ name: pre-commit
 
 on:
   push:
+    branches-ignore:
+      - main
   pull_request:
   workflow_dispatch: # manual trigger
 

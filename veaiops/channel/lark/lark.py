@@ -520,6 +520,7 @@ class LarkChannel(BaseChannel):
                             if isinstance(template_variables, TemplateVariable):
                                 template_variables.button_disable = True
                             else:
+                                logger.error(f"template_variables not exist: {template_variables}")
                                 raise ValueError("template_variables must be TemplateVariable.")
                             card = Card(
                                 data=CardData(

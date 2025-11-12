@@ -14,6 +14,8 @@
 
 import {
   BOT_MANAGEMENT_CONFIG,
+  BOT_QUERY_FORMAT,
+  BOT_QUERY_SEARCH_PARAMS_FORMAT,
   type BotTableProps,
   type BotTableRef,
   DEFAULT_BOT_FILTERS,
@@ -22,6 +24,7 @@ import {
   useBotActionConfig,
   useBotTableConfig,
 } from '@bot';
+import type { Bot } from '@veaiops/api-client';
 import {
   type BaseQuery,
   type BaseRecord,
@@ -29,30 +32,25 @@ import {
   type CustomTableActionType,
   useBusinessTable,
 } from '@veaiops/components';
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
 /**
- * Bot表格组件
- * 使用CustomTable标准化实现 - 按照客户管理的标准模式
- * 支持刷新功能，各种操作都会自动刷新表格数据
+ * Bot Table Component
+ * Standardized implementation using CustomTable - following account management pattern
+ * Supports refresh functionality with automatic table refresh after operations
  */
 export const BotTable = forwardRef<BotTableRef, BotTableProps>(
   ({ onEdit, onDelete, onAdd, onViewAttributes, onGroupManagement }, ref) => {
-    // 内部 ref，用于传递给 useBusinessTable
+    // Internal ref to pass to useBusinessTable
     const tableActionRef =
       useRef<CustomTableActionType<BaseRecord, BaseQuery>>(null);
 
-    // 表格配置
+    // Table configuration
     const { dataSource, tableProps } = useBotTableConfig({
       handleDelete: onDelete,
     });
 
-    // 🎯 使用 useBusinessTable 自动处理刷新逻辑
+    // Use useBusinessTable to automatically handle refresh logic
     const { customTableProps, wrappedHandlers, operations } = useBusinessTable({
       dataSource,
       tableProps,
@@ -71,7 +69,7 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
       ref: tableActionRef,
     });
 
-    // 桥接 ref：将 BotTableRef 转换为 CustomTableActionType
+    // Bridge ref: Convert BotTableRef to CustomTableActionType
     useImperativeHandle(
       ref,
       () => ({
@@ -81,22 +79,24 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
             if (!result.success && result.error) {
               throw result.error;
             }
+            return result.success;
           }
+          return false;
         },
       }),
       [operations],
     );
 
-    // 操作按钮配置
+    // Action button configuration
     const { actions } = useBotActionConfig(onAdd);
 
-    // 创建 handleColumns 函数，传递操作回调给列配置
+    // Create handleColumns function to pass operation callbacks to column configuration
     const handleColumns = useCallback(
-      (props: Record<string, unknown>) => {
+      (_props: Record<string, unknown>) => {
         return getBotColumns({
           onEdit,
-          // ✅ 使用 useBusinessTable 自动包装的删除操作
-          // 删除操作会自动刷新表格
+          // Use useBusinessTable auto-wrapped delete operation
+          // Delete operation will automatically refresh table
           onDelete: wrappedHandlers?.delete
             ? (botId: string) => wrappedHandlers.delete!(botId)
             : onDelete,
@@ -109,7 +109,7 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
 
     return (
       <div className="bot-table-container">
-        <CustomTable<any>
+        <CustomTable<Bot>
           {...customTableProps}
           ref={tableActionRef}
           title={BOT_MANAGEMENT_CONFIG.title}
@@ -118,6 +118,8 @@ export const BotTable = forwardRef<BotTableRef, BotTableProps>(
           handleFilters={getBotFilters}
           initQuery={DEFAULT_BOT_FILTERS}
           syncQueryOnSearchParams
+          queryFormat={BOT_QUERY_FORMAT}
+          querySearchParamsFormat={BOT_QUERY_SEARCH_PARAMS_FORMAT}
         />
       </div>
     );

@@ -201,8 +201,9 @@ class Logger {
       this.logs = this.logs.slice(-this.maxLogs);
     }
 
-    // Output to console
-    if (this.enableConsole) {
+    // Output to console (only in development environment)
+    // ✅ Non-development environments: only collect logs, do not print to console
+    if (this.enableConsole && process.env.NODE_ENV === 'development') {
       const timestamp = formatTimestamp(entry.timestamp);
       const prefix = `[${timestamp}][${entry.source}${
         component ? `/${component}` : ''
@@ -243,10 +244,15 @@ class Logger {
 
         localStorage.setItem(storageKey, JSON.stringify(existingLogs));
       } catch (error: unknown) {
-        // ✅ Silently handle localStorage errors (avoid blocking logging functionality), but log warning
+        // ✅ Silently handle localStorage errors (avoid blocking logging functionality), but log warning in dev
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        console.warn('[Logger] localStorage storage failed', errorObj.message);
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(
+            '[Logger] localStorage storage failed',
+            errorObj.message,
+          );
+        }
       }
     }
   }
@@ -343,10 +349,12 @@ class Logger {
         const storageKey = `ve_arch_amap_logs_${this.sessionId}`;
         localStorage.removeItem(storageKey);
       } catch (error: unknown) {
-        // ✅ Silently handle localStorage errors (avoid blocking logging functionality), but log warning
+        // ✅ Silently handle localStorage errors (avoid blocking logging functionality), but log warning in dev
         const errorObj =
           error instanceof Error ? error : new Error(String(error));
-        console.warn('[Logger] localStorage clear failed', errorObj.message);
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('[Logger] localStorage clear failed', errorObj.message);
+        }
       }
     }
   }

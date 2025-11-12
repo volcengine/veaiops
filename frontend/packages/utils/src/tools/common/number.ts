@@ -12,19 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import type { RouteConfig } from '@/types/route';
-import React from 'react';
-// Import lazy-loaded components and route paths from config
-import { ROUTES_PATH_CONFIG, StatisticsPages } from '../config';
+/**
+ * Number conversion utilities
+ */
 
 /**
- * Statistics route configuration
+ * 检查是否可以转换为数字
  */
-export const statisticsRoutes: RouteConfig[] = [
-  {
-    path: ROUTES_PATH_CONFIG.statistics.Overview,
-    element: React.createElement(StatisticsPages.Overview),
-    title: '概览数据',
-    requireAuth: true,
-  },
-];
+export const canConvertToNumber = (value: any): boolean => {
+  return (
+    !Number.isNaN(Number(value)) &&
+    value !== '' &&
+    value !== null &&
+    value !== undefined
+  );
+};
+
+/**
+ * 转换为数字
+ */
+export const toNumber = (value: any): number => {
+  return canConvertToNumber(value) ? Number(value) : value;
+};
