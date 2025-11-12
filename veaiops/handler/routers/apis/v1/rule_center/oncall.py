@@ -15,15 +15,18 @@
 """Interest Agent Interface."""
 
 from datetime import datetime, timezone
+from typing import Any, List
 
 from beanie.odm.operators.find.comparison import Eq
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Depends, status
 
 from veaiops.agents.chatops.default.default_interest_agent import set_default_interest_agents
-from veaiops.handler.errors import RecordNotFoundError
-from veaiops.schema.documents import Interest
+from veaiops.handler.errors import BadRequestError, RecordNotFoundError
+from veaiops.handler.errors.errors import AlreadyExistsError
+from veaiops.handler.services.user import get_current_supervisor
+from veaiops.schema.documents import Bot, Interest, User
 from veaiops.schema.models.base import APIResponse
-from veaiops.schema.models.chatops.interest import InterestPayload
+from veaiops.schema.models.chatops.interest import CreateInterestPayload, InterestPayload
 from veaiops.schema.types import ChannelType, InterestInspectType
 from veaiops.utils.log import logger
 
@@ -51,6 +54,72 @@ async def get_oncall_rules_by_bot_id(channel: ChannelType, bot_id: str) -> APIRe
     return APIResponse(
         message="Oncall rules retrieved successfully",
         data=config,
+    )
+
+
+@oncall_router.post("/{channel}/{bot_id}/", response_model=APIResponse[Interest], status_code=status.HTTP_201_CREATED)
+async def create_oncall_rules_by_bot_id(
+    channel: ChannelType,
+    bot_id: str,
+    interest_payload: CreateInterestPayload,
+    current_user: User = Depends(get_current_supervisor),
+) -> APIResponse[Interest]:
+    """Create new interest rule by channel and bot_id.
+
+    Args:
+        channel (ChannelType): Bot ChannelType.
+        bot_id (str): Bot ID.
+        interest_payload (CreateInterestPayload): The update payload of the interest.
+        current_user (User): The currently authenticated user.
+
+    Returns:
+        APIResponse[Interest]: APIResponse containing the created Interest rule.
+    """
+    if interest_payload.inspect_category == InterestInspectType.RE and not interest_payload.regular_expression:
+        raise BadRequestError(message="regular_expression must be provided when inspect_category is RE.")
+    if interest_payload.inspect_category == InterestInspectType.Semantic and not (
+        interest_payload.examples_positive or interest_payload.examples_negative
+    ):
+        raise BadRequestError(
+            message="examples_positive or examples_negative must be provided when inspect_category is Semantic."
+        )
+
+    _bot = await Bot.find_one(Bot.channel == channel, Bot.bot_id == bot_id)
+    if not _bot:
+        raise RecordNotFoundError(message=f"Bot ({channel}, {bot_id}) not found.")
+
+    conditions: List[Any] = [
+        Eq(Interest.channel, channel),
+        Eq(Interest.bot_id, bot_id),
+        Eq(Interest.name, interest_payload.name),
+    ]
+    query = Interest.find(*conditions)
+    total = await query.count()
+    if total > 0:
+        raise AlreadyExistsError(message=f"Interest rule with {interest_payload.name} already exists.")
+
+    new_interest = Interest(
+        channel=channel,
+        bot_id=bot_id,
+        created_user=current_user.username,
+        updated_user=current_user.username,
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc),
+        version=1,
+        **interest_payload.model_dump(exclude_unset=True),
+    )
+    if new_interest.inspect_category == InterestInspectType.RE:
+        new_interest.examples_negative = None
+        new_interest.examples_positive = None
+    elif new_interest.inspect_category == InterestInspectType.Semantic:
+        new_interest.regular_expression = None
+
+    await new_interest.insert()
+
+    # Return all interest rules
+    return APIResponse(
+        message="Oncall Interest Rule Created Successfully",
+        data=new_interest,
     )
 
 

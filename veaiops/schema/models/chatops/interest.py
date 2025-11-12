@@ -17,7 +17,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from veaiops.schema.types import EventLevel
+from veaiops.schema.types import EventLevel, InterestActionType, InterestInspectType
 
 
 class InterestPayload(BaseModel):
@@ -38,3 +38,10 @@ class InterestPayload(BaseModel):
     inspect_history: int = Field(
         default=1, ge=0, description="History messages need to detect, 0 means all history messages"
     )
+
+
+class CreateInterestPayload(InterestPayload):
+    """Interest rule created payload."""
+
+    action_category: InterestActionType
+    inspect_category: InterestInspectType
