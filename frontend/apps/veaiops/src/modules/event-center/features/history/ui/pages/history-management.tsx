@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import { useHistoryManagementLogic } from '@ec/history';
+import { EventShowStatus } from '@veaiops/api-client';
 import type React from 'react';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { HistoryDetailDrawer, HistoryTable } from '../components/table';
 import type { HistoryTableRef } from '../components/table/history-table';
 
@@ -28,6 +29,8 @@ import type { HistoryTableRef } from '../components/table/history-table';
  * - 状态管理与UI渲染分离
  * - 支持配置化和扩展
  * - 使用CustomTable提供高级表格功能
+ *
+ * ✅ 默认筛选：只显示"发送成功"的事件
  */
 export const HistoryManagement: React.FC = () => {
   const tableRef = useRef<HistoryTableRef>(null);
@@ -41,6 +44,14 @@ export const HistoryManagement: React.FC = () => {
     updateFilters,
   } = useHistoryManagementLogic();
 
+  // ✅ Default filter: show only "Success" events
+  const initQuery = useMemo(
+    () => ({
+      show_status: [EventShowStatus.SUCCESS],
+    }),
+    [],
+  );
+
   return (
     <>
       {/* 历史事件表格组件 - 使用CustomTable */}
@@ -49,6 +60,7 @@ export const HistoryManagement: React.FC = () => {
         onViewDetail={handleViewDetail}
         filters={filters}
         updateFilters={updateFilters}
+        initQuery={initQuery} // ✅ Pass initQuery for default filter
       />
 
       {/* 事件详情抽屉组件 */}

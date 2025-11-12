@@ -29,6 +29,8 @@ interface HistoryTableProps {
   onViewDetail: (record: Event) => void;
   filters: HistoryFilters;
   updateFilters: (filters: Partial<HistoryFilters>) => void;
+  /** Initial query parameters - default filter values */
+  initQuery?: HistoryFilters;
 }
 
 /**
@@ -59,9 +61,14 @@ const queryFormat = {
 /**
  * 历史事件表格组件
  * 使用CustomTable标准化实现 - 按照事件中心的标准模式
+ *
+ * ✅ 支持 initQuery：设置默认筛选条件（如默认只显示"发送成功"的事件）
  */
 export const HistoryTable = forwardRef<HistoryTableRef, HistoryTableProps>(
-  ({ onViewDetail, filters, updateFilters: _updateFilters }, ref) => {
+  (
+    { onViewDetail, filters, updateFilters: _updateFilters, initQuery },
+    ref,
+  ) => {
     // CustomTable 的内部 ref
     const tableRef = useRef<CustomTableActionType<Event>>(null);
 
@@ -110,6 +117,7 @@ export const HistoryTable = forwardRef<HistoryTableRef, HistoryTableProps>(
         // 表格配置
         tableClassName="history-management-table"
         queryFormat={queryFormat}
+        initQuery={initQuery} // ✅ Pass initQuery to CustomTable for default filter
       />
     );
   },
