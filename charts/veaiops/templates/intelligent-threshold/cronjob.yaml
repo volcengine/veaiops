@@ -42,7 +42,7 @@ spec:
             imagePullPolicy: {{ .Values.intelligentThresholdCron.image.pullPolicy }}
             env:
             - name: HOST
-              value: {{ printf "http://%s-intelligent-threshold:6001" (include "veaiops.name" .) | quote }}
+              value: {{ printf "http://%s-backend:8080" (include "veaiops.name" .) | quote }}
             - name: TZ
               value: {{ .Values.timeZone | quote }}
             command:
