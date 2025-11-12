@@ -84,7 +84,10 @@ class Logger {
 
   private maxLogs = 1000;
 
-  private enableConsole = true;
+  // ✅ feat(logger): Disable console output by default, only collect logs
+  // - Silent mode: Do not print logs to console in any environment
+  // - Logs are still collected and can be exported using export tools
+  private enableConsole = false;
 
   private enableStorage = true;
 
@@ -92,7 +95,8 @@ class Logger {
 
   constructor(config: LoggerConfig = {}) {
     this.maxLogs = config.maxLogs || 2000;
-    this.enableConsole = config.enableConsole !== false;
+    // ✅ feat(logger): enableConsole defaults to false (silent mode)
+    this.enableConsole = config.enableConsole === true;
     this.enableStorage = config.enableStorage || false;
     this.sessionId = config.sessionId || this.generateSessionId();
   }
@@ -201,9 +205,11 @@ class Logger {
       this.logs = this.logs.slice(-this.maxLogs);
     }
 
-    // Output to console (only in development environment)
-    // ✅ Non-development environments: only collect logs, do not print to console
-    if (this.enableConsole && process.env.NODE_ENV === 'development') {
+    // ✅ feat(logger): Silent mode - Do not output to console in any environment
+    // - enableConsole defaults to false (silent mode)
+    // - Logs are still collected and can be exported using export tools
+    // - If you need to enable console output, call logger.configure({ enableConsole: true })
+    if (this.enableConsole) {
       const timestamp = formatTimestamp(entry.timestamp);
       const prefix = `[${timestamp}][${entry.source}${
         component ? `/${component}` : ''
@@ -549,10 +555,13 @@ class Logger {
   }
 }
 
-// Create global logger instance
+// ✅ feat(logger): Create global logger instance with silent mode (no console output)
+// - enableConsole: false (silent mode, only collect logs)
+// - enableStorage: false (local storage not enabled by default)
+// - Logs can be exported using: logger.exportLogsAsJSON() or logger.exportLogsAsText()
 export const logger = new Logger({
   maxLogs: 2000,
-  enableConsole: true,
+  enableConsole: false, // ✅ Silent mode: Do not print logs to console
   enableStorage: false, // Default: local storage not enabled
 });
 
