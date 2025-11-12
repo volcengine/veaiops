@@ -26,7 +26,6 @@ export {
   SubscriptionModal,
   useSubscriptionManagementLogic,
   SubscribeRelationPage,
-  // HistoryManagement and HistoryTable removed - all history pages now use EventHistoryTable from @veaiops/components
   HistoryDetailDrawer,
   useHistoryManagementLogic,
   StatisticsManagement,
