@@ -37,10 +37,9 @@ export {
 // 历史事件功能
 export {
   HistoryDetailDrawer,
-  HistoryManagement,
-  HistoryTable,
   useHistoryManagementLogic,
 } from './history';
+// HistoryManagement and HistoryTable removed - all history pages now use EventHistoryTable from @veaiops/components
 
 // 统计管理功能
 export {
