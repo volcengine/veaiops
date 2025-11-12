@@ -17,7 +17,11 @@ import {
   type HistoryFilters,
   useHistoryTableConfigFromTable as useHistoryTableConfig,
 } from '@ec/history';
-import { CustomTable, type CustomTableActionType } from '@veaiops/components';
+import {
+  type BaseQuery,
+  CustomTable,
+  type CustomTableActionType,
+} from '@veaiops/components';
 import { queryArrayFormat, queryNumberArrayFormat } from '@veaiops/utils';
 import type { Event } from 'api-generate';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
@@ -29,8 +33,8 @@ interface HistoryTableProps {
   onViewDetail: (record: Event) => void;
   filters: HistoryFilters;
   updateFilters: (filters: Partial<HistoryFilters>) => void;
-  /** Initial query parameters - default filter values */
-  initQuery?: HistoryFilters;
+  /** Initial query parameters - default filter values, must be BaseQuery type */
+  initQuery?: BaseQuery;
 }
 
 /**
@@ -117,7 +121,7 @@ export const HistoryTable = forwardRef<HistoryTableRef, HistoryTableProps>(
         // 表格配置
         tableClassName="history-management-table"
         queryFormat={queryFormat}
-        initQuery={initQuery} // ✅ Pass initQuery to CustomTable for default filter
+        initQuery={initQuery}
       />
     );
   },
