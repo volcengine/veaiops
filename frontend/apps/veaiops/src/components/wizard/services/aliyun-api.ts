@@ -56,7 +56,7 @@ export const fetchAliyunMetricsAPI = async (
       {
         connectId,
         requestBody: { namespace } as AliyunMetricMetaListPayload,
-        limit: 10,
+        limit: 1000,
       },
     );
 
