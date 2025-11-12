@@ -90,18 +90,13 @@ export const StrategyTable = forwardRef<StrategyTableRef, StrategyTableProps>(
 
     // 表格配置（已使用 useBusinessTable 自动处理刷新）
     // ✅ 传递 tableRef 给 useStrategyTableConfig，让 useBusinessTable 可以使用 ref 刷新
-    const {
-      customTableProps,
-      handleColumns: configHandleColumns,
-      handleFilters: configHandleFilters,
-      operations,
-      renderActions: configRenderActions,
-    } = useStrategyTableConfig({
-      onEdit,
-      onDelete,
-      onCreate: onAdd,
-      ref: tableRef, // ✅ 传递 ref 给 Hook
-    });
+    const { customTableProps, handleFilters: configHandleFilters } =
+      useStrategyTableConfig({
+        onEdit,
+        onDelete,
+        onCreate: onAdd,
+        ref: tableRef, // ✅ 传递 ref 给 Hook
+      });
 
     // 操作按钮配置
     // 注意：创建操作（onAdd）只是打开弹窗，真正的创建提交在弹窗中处理
