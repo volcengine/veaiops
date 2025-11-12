@@ -25,8 +25,8 @@ export interface RuleFormData {
   level?: Interest['level'];
   examples_positive?: string; // 表单中是字符串，换行符分隔
   examples_negative?: string; // 表单中是字符串，换行符分隔
-  action_category?: Interest['action_category'];
-  inspect_category?: Interest['inspect_category'];
+  action_category?: Interest['action_category']; // 创建模式必填
+  inspect_category?: Interest['inspect_category']; // 创建模式必填
   regular_expression?: string;
   inspect_history?: number;
   silence_delta?: string;
@@ -40,8 +40,10 @@ export interface RuleSubmitData {
   name: string;
   description?: string;
   level?: Interest['level'];
-  examples_positive?: string[]; // API 中是数组
-  examples_negative?: string[]; // API 中是数组
+  examples_positive?: string[]; // 提交时是数组
+  examples_negative?: string[]; // 提交时是数组
+  action_category?: Interest['action_category']; // 创建模式必填
+  inspect_category?: Interest['inspect_category']; // 创建模式必填
   regular_expression?: string;
   inspect_history?: number;
   silence_delta?: string;

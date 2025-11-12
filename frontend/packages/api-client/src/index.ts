@@ -129,6 +129,7 @@ export { IntelligentThresholdTaskDetail } from './models/intelligent-threshold-t
 export { IntelligentThresholdTaskStatus } from './models/intelligent-threshold-task-status';
 export { IntelligentThresholdTaskVersion } from './models/intelligent-threshold-task-version';
 export { Interest } from './models/interest';
+export { InterestCreateRequest } from './models/interest-create-request';
 export { InterestUpdateRequest } from './models/interest-update-request';
 export { ListIntelligentThresholdTaskRequest } from './models/list-intelligent-threshold-task-request';
 export type { ListIntelligentThresholdTaskVersionRequest } from './models/list-intelligent-threshold-task-version-request';

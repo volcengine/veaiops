@@ -44,6 +44,55 @@
           }
         }
       }
+      },
+    "/apis/v1/manager/rule-center/oncall/{channel}/{bot_id}/": {
+      "post": {
+        "summary": "Create Oncall Interest Rule",
+        "description": "Create a new oncall interest rule for a specific bot",
+        "tags": ["Oncall Rule"],
+        "parameters": [
+          {
+            "name": "channel",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Channel"
+          },
+          {
+            "name": "bot_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "App ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InterestCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Interest rule created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponseInterest"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/apis/v1/manager/rule-center/oncall/{interest_uuid}": {
       "put": {
@@ -441,7 +490,9 @@
           },
           "silence_delta": {
             "type": "string",
-            "description": "告警抑制间隔"
+            "format": "duration",
+            "description": "告警抑制间隔（ISO 8601 duration format, e.g., PT6H, PT30M, P1D）",
+            "example": "PT6H"
           },
           "is_active": {
             "type": "boolean",
@@ -483,7 +534,9 @@
           },
           "silence_delta": {
             "type": "string",
-            "description": "告警抑制间隔"
+            "format": "duration",
+            "description": "告警抑制间隔（ISO 8601 duration format, e.g., PT6H, PT30M, P1D）",
+            "example": "PT6H"
           },
           "is_active": {
             "type": "boolean",
@@ -506,8 +559,74 @@
           "regular_expression": {
             "type": "string",
             "description": "正则表达式（当检测类别为正则表达式时可编辑）"
+          },
+          "inspect_history": {
+            "type": "integer",
+            "description": "检查历史消息数量"
           }
         }
+      },
+      "InterestCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "规则名称"
+          },
+          "description": {
+            "type": "string",
+            "description": "描述"
+          },
+          "level": {
+            "type": "string",
+            "enum": ["P0", "P1", "P2"],
+            "description": "告警等级"
+          },
+          "silence_delta": {
+            "type": "string",
+            "format": "duration",
+            "description": "告警抑制间隔（ISO 8601 duration format, e.g., PT6H, PT30M, P1D）",
+            "example": "PT6H"
+          },
+          "is_active": {
+            "type": "boolean",
+            "description": "是否启用状态"
+          },
+          "examples_positive": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "正面示例（当检测类别为语义分析时必填）"
+          },
+          "examples_negative": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "反面示例（当检测类别为语义分析时必填）"
+          },
+          "regular_expression": {
+            "type": "string",
+            "description": "正则表达式（当检测类别为正则表达式时必填）"
+          },
+          "inspect_history": {
+            "type": "integer",
+            "default": 1,
+            "description": "检查历史消息数量"
+          },
+          "action_category": {
+            "type": "string",
+            "enum": ["Detect", "Filter"],
+            "description": "行为类别"
+          },
+          "inspect_category": {
+            "type": "string",
+            "enum": ["Semantic", "RE"],
+            "description": "检测类别"
+          }
+        },
+        "required": ["name", "action_category", "inspect_category"]
       },
       "APIResponseInterest": {
         "type": "object",

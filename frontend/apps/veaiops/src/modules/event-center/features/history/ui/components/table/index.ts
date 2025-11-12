@@ -16,5 +16,4 @@
  * 表格组件导出
  */
 
-export { HistoryTable } from './history-table';
 export { HistoryDetailDrawer } from './history-detail-drawer';

@@ -16,23 +16,58 @@ import apiClient from '@/utils/api-client';
 import type {
   APIResponseInterest,
   APIResponseInterestList,
+  InterestCreateRequest,
   InterestUpdateRequest,
 } from 'api-generate';
 
 /**
- * Oncall规则服务封装
+ * Oncall rule service wrapper
  */
 export const oncallRuleService = {
   /**
-   * 更新规则
+   * Create rule
+   */
+  createInterestRule: async (
+    channel: string,
+    botId: string,
+    data: any, // Use any to handle form data, convert to InterestCreateRequest internally
+  ): Promise<APIResponseInterest> => {
+    // Convert form data to InterestCreateRequest
+    const requestBody: InterestCreateRequest = {
+      name: data.name,
+      description: data.description,
+      level: data.level as InterestCreateRequest.level | undefined,
+      silence_delta: data.silence_delta,
+      is_active: data.is_active,
+      inspect_history: data.inspect_history,
+      action_category:
+        data.action_category as InterestCreateRequest.action_category,
+      inspect_category:
+        data.inspect_category as InterestCreateRequest.inspect_category,
+      // Include fields based on inspection category
+      examples_positive: data.examples_positive,
+      examples_negative: data.examples_negative,
+      regular_expression: data.regular_expression,
+    };
+
+    // ✅ Fix: Generated API method uses object destructuring parameters
+    return await apiClient.oncallRule.postApisV1ManagerRuleCenterOncall({
+      channel,
+      botId,
+      requestBody,
+    });
+  },
+
+  /**
+   * Update rule
    */
   updateInterestRule: async (
     uuid: string,
-    data: any, // 注意：UpdateRuleRequest 类型已移除
+    data: any, // Note: UpdateRuleRequest type has been removed
   ): Promise<APIResponseInterest> => {
-    // 将 UpdateRuleRequest 转换为 InterestUpdateRequest
-    // 注意：InterestUpdateRequest 类型定义中缺少 inspect_history 字段，但后端 InterestPayload 支持该字段
-    // TODO: 更新 OpenAPI 规范，在 InterestUpdateRequest 中添加 inspect_history 字段
+    // Convert UpdateRuleRequest to InterestUpdateRequest
+    // Note: InterestUpdateRequest type definition lacks inspect_history field, but backend InterestPayload supports it
+    // TODO: Update OpenAPI spec to add inspect_history field to InterestUpdateRequest
     const requestBody: InterestUpdateRequest & { inspect_history?: number } = {
       name: data.name,
       description: data.description,
@@ -40,12 +75,13 @@ export const oncallRuleService = {
       silence_delta: data.silence_delta,
       is_active: data.is_active,
       inspect_history: data.inspect_history,
-      // 根据检测类别，只包含对应的字段（后端会自动忽略其他字段）
+      // Include fields based on inspection category (backend will automatically ignore other fields)
       examples_positive: data.examples_positive,
       examples_negative: data.examples_negative,
       regular_expression: data.regular_expression,
     };
 
+    // ✅ Fix: Generated API method uses object destructuring parameters, parameter name is interestUuid
     return await apiClient.oncallRule.putApisV1ManagerRuleCenterOncall({
       interestUuid: uuid,
       requestBody,
@@ -53,12 +89,13 @@ export const oncallRuleService = {
   },
 
   /**
-   * 更新规则激活状态
+   * Update rule active status
    */
   updateInterestActiveStatus: async (
     uuid: string,
     isActive: boolean,
   ): Promise<any> => {
+    // ✅ Fix: Generated API method uses object destructuring parameters, parameter name is interestUuid
     return await apiClient.oncallRule.putApisV1ManagerRuleCenterOncallActive({
       interestUuid: uuid,
       requestBody: {
@@ -68,17 +105,16 @@ export const oncallRuleService = {
   },
 
   /**
-   * 获取规则列表
+   * Get rule list
    */
   getOncallRulesByAppId: async (
     channel: string,
     botId: string,
-    params?: Record<string, any>,
   ): Promise<APIResponseInterestList> => {
+    // ✅ Fix: Generated API method uses object destructuring parameters
     return await apiClient.oncallRule.getApisV1ManagerRuleCenterOncall({
       channel,
       botId,
-      ...(params || {}),
     });
   },
 };

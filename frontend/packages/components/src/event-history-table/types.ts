@@ -70,6 +70,8 @@ export interface EventHistoryTableProps {
   request: (
     params: Record<string, unknown>,
   ) => Promise<TableDataResponse<Event>>;
+  /** Initial query parameters - default filter values */
+  initQuery?: Record<string, unknown>;
 }
 
 /**

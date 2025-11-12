@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Button } from '@arco-design/web-react';
+import { IconPlus } from '@arco-design/web-react/icon';
 import { useRulesData, useRulesTable } from '@oncall-config/hooks';
 import { CustomTable, type CustomTableActionType } from '@veaiops/components';
 import type { Bot, Interest } from 'api-generate';
@@ -30,6 +32,7 @@ export interface RulesTableProps {
   onToggleStatus: (params: HandleToggleStatusParams) => Promise<boolean>;
   onViewDetails: (rule: Interest) => void;
   onEdit: (rule: Interest) => void;
+  onCreateRule: () => void;
 }
 
 export interface RulesTableRef {
@@ -37,22 +40,22 @@ export interface RulesTableRef {
 }
 
 /**
- * Oncall规则表格组件
- * 使用 CustomTable 标准化实现
- * 支持刷新功能，各种操作都会自动刷新表格数据
+ * Oncall Rule Table Component
+ * Standardized implementation using CustomTable
+ * Supports refresh functionality, all operations will automatically refresh table data
  */
 export const RulesTable = forwardRef<RulesTableRef, RulesTableProps>(
-  ({ bots, onToggleStatus, onViewDetails, onEdit }, ref) => {
-    // CustomTable 的内部 ref
+  ({ bots, onToggleStatus, onViewDetails, onEdit, onCreateRule }, ref) => {
+    // Internal ref for CustomTable
     const tableRef = useRef<CustomTableActionType<Interest>>(null);
 
-    // 使用内聚型Hook分离业务逻辑和UI配置
+    // Use cohesive Hook to separate business logic and UI configuration
     const { customTableProps, operations } = useRulesData({
       bots,
       ref: tableRef,
     });
 
-    // 暴露符合 RulesTableRef 接口的 refresh 方法
+    // Expose refresh method that conforms to RulesTableRef interface
     useImperativeHandle(
       ref,
       () => ({
@@ -88,12 +91,29 @@ export const RulesTable = forwardRef<RulesTableRef, RulesTableProps>(
       return {};
     }, [bots]);
 
+    // 操作按钮：添加"新增规则"按钮
+    const actions = useMemo(
+      () => [
+        <Button
+          key="create"
+          type="primary"
+          icon={<IconPlus />}
+          onClick={onCreateRule}
+          data-testid="create-oncall-rule-btn"
+        >
+          新增规则
+        </Button>,
+      ],
+      [onCreateRule],
+    );
+
     return (
       <div data-testid="oncall-config-table">
         <CustomTable<Interest>
           {...customTableProps}
           ref={tableRef}
           title="内容识别规则详情"
+          actions={actions}
           handleColumns={handleColumns}
           handleFilters={handleFilters}
           isAlertShow={true}

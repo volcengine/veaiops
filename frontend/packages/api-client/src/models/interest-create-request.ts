@@ -13,69 +13,53 @@
 // limitations under the License.
 
 /* generated using openapi-typescript-codegen -- do not edit */
-export type Interest = {
+export type InterestCreateRequest = {
   /**
-   * Interest rule UUID
-   */
-  uuid?: string;
-  /**
-   * Interest rule name
+   * 规则名称
    */
   name: string;
   /**
-   * Interest rule description
+   * 描述
    */
   description?: string;
   /**
    * 告警等级
    */
-  level?: Interest.level;
-  /**
-   * Positive examples
-   */
-  examples_positive?: Array<string>;
-  /**
-   * Negative examples
-   */
-  examples_negative?: Array<string>;
-  /**
-   * Interest action category
-   */
-  action_category: Interest.action_category;
-  /**
-   * Interest inspect category
-   */
-  inspect_category: Interest.inspect_category;
-  /**
-   * Regular expression for RE inspection
-   */
-  regular_expression?: string;
-  /**
-   * Number of history messages to inspect
-   */
-  inspect_history?: number;
+  level?: InterestCreateRequest.level;
   /**
    * 告警抑制间隔（ISO 8601 duration format, e.g., PT6H, PT30M, P1D）
    */
   silence_delta?: string;
   /**
-   * Whether the interest rule is active
+   * 是否启用状态
    */
   is_active?: boolean;
   /**
-   * Creation timestamp
+   * 正面示例（当检测类别为语义分析时必填）
    */
-  created_at?: string;
+  examples_positive?: Array<string>;
   /**
-   * Last update timestamp
+   * 反面示例（当检测类别为语义分析时必填）
    */
-  updated_at?: string;
+  examples_negative?: Array<string>;
   /**
-   * Version number
+   * 正则表达式（当检测类别为正则表达式时必填）
    */
-  version?: number;
+  regular_expression?: string;
+  /**
+   * 检查历史消息数量
+   */
+  inspect_history?: number;
+  /**
+   * 行为类别
+   */
+  action_category: InterestCreateRequest.action_category;
+  /**
+   * 检测类别
+   */
+  inspect_category: InterestCreateRequest.inspect_category;
 };
-export namespace Interest {
+export namespace InterestCreateRequest {
   /**
    * 告警等级
    */
@@ -85,14 +69,14 @@ export namespace Interest {
     P2 = 'P2',
   }
   /**
-   * Interest action category
+   * 行为类别
    */
   export enum action_category {
     DETECT = 'Detect',
     FILTER = 'Filter',
   }
   /**
-   * Interest inspect category
+   * 检测类别
    */
   export enum inspect_category {
     SEMANTIC = 'Semantic',

@@ -15,6 +15,7 @@
 import apiClient from '@/utils/api-client';
 import { Button, Message } from '@arco-design/web-react';
 import { IconRefresh } from '@arco-design/web-react/icon';
+import type { BaseQuery } from '@veaiops/components';
 import {
   type StandardApiResponse,
   createServerPaginationDataSource,
@@ -28,8 +29,10 @@ import { useMemo, useState } from 'react';
  * 历史事件过滤器类型
  * 使用下划线命名，对应前端 UI 层
  * 与 filter.tsx 中定义的筛选器一一对应
+ *
+ * ✅ Extends BaseQuery from @veaiops/components (Record<string, unknown>)
  */
-export interface HistoryFilters {
+export interface HistoryFilters extends BaseQuery {
   /** 智能体类型 */
   agent_type?: string[];
   /** 事件级别 */

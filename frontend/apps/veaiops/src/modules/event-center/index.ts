@@ -26,8 +26,6 @@ export {
   SubscriptionModal,
   useSubscriptionManagementLogic,
   SubscribeRelationPage,
-  HistoryManagement,
-  HistoryTable,
   HistoryDetailDrawer,
   useHistoryManagementLogic,
   StatisticsManagement,

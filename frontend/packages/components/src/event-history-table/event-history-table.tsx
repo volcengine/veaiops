@@ -44,6 +44,7 @@ const queryFormat = {
  * - 根据模块类型自动过滤智能体选项
  * - 支持自定义操作列
  * - 通过 props 注入 API 请求函数，避免在组件库层直接依赖应用层代码
+ * - 支持 initQuery 设置默认筛选条件
  */
 export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
   moduleType,
@@ -52,6 +53,7 @@ export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
   onViewDetail,
   customActions,
   request,
+  initQuery,
 }) => {
   // 使用传入的 request 函数
   if (!request) {
@@ -117,6 +119,7 @@ export const EventHistoryTable: React.FC<EventHistoryTableProps> = ({
       queryFormat={queryFormat}
       syncQueryOnSearchParams
       useActiveKeyHook
+      initQuery={initQuery}
     />
   );
 };

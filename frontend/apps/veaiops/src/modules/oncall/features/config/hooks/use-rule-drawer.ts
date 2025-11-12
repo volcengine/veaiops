@@ -14,7 +14,7 @@
 
 import { Form, type FormInstance } from '@arco-design/web-react';
 import type { RuleFormData } from '@oncall-config/lib';
-import type { Interest } from 'api-generate';
+import { Interest } from 'api-generate';
 import { useEffect, useState } from 'react';
 
 /**
@@ -66,24 +66,46 @@ export const useRuleDrawer = ({
 
   // 初始化表单值
   useEffect(() => {
-    if (visible && rule && isEdit) {
-      const category = rule.inspect_category;
-      setInspectCategory(category);
-      setCurrentSilenceDelta(rule.silence_delta);
+    if (visible) {
+      if (rule && isEdit) {
+        // 编辑模式：填充规则数据
+        const category = rule.inspect_category;
+        setInspectCategory(category);
+        setCurrentSilenceDelta(rule.silence_delta);
 
-      form.setFieldsValue({
-        name: rule.name,
-        description: rule.description,
-        level: rule.level || undefined,
-        action_category: rule.action_category,
-        inspect_category: rule.inspect_category,
-        regular_expression: rule.regular_expression || '',
-        inspect_history: rule.inspect_history || 1,
-        silence_delta: rule.silence_delta || '',
-        is_active: rule.is_active,
-        examples_positive: rule.examples_positive?.join('\n') || '',
-        examples_negative: rule.examples_negative?.join('\n') || '',
-      });
+        form.setFieldsValue({
+          name: rule.name,
+          description: rule.description,
+          level: rule.level || undefined,
+          action_category: rule.action_category,
+          inspect_category: rule.inspect_category,
+          regular_expression: rule.regular_expression || '',
+          inspect_history: rule.inspect_history || 1,
+          silence_delta: rule.silence_delta || '',
+          is_active: rule.is_active ?? true,
+          examples_positive: rule.examples_positive?.join('\n') || '',
+          examples_negative: rule.examples_negative?.join('\n') || '',
+        });
+      } else if (!isEdit) {
+        // 创建模式：设置默认值
+        setInspectCategory(undefined);
+        setCurrentSilenceDelta(undefined);
+        form.setFieldsValue({
+          name: '',
+          description: '',
+          level: undefined,
+          action_category: Interest.action_category.DETECT,
+          inspect_category: Interest.inspect_category.SEMANTIC,
+          regular_expression: '',
+          inspect_history: 1,
+          silence_delta: '',
+          is_active: true,
+          examples_positive: '',
+          examples_negative: '',
+        });
+        // Set initial inspection category to SEMANTIC
+        setInspectCategory(Interest.inspect_category.SEMANTIC);
+      }
     }
   }, [visible, rule, isEdit, form]);
 

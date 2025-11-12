@@ -27,7 +27,7 @@ export type InterestUpdateRequest = {
    */
   level?: InterestUpdateRequest.level;
   /**
-   * 告警抑制间隔
+   * 告警抑制间隔（ISO 8601 duration format, e.g., PT6H, PT30M, P1D）
    */
   silence_delta?: string;
   /**
@@ -46,6 +46,10 @@ export type InterestUpdateRequest = {
    * 正则表达式（当检测类别为正则表达式时可编辑）
    */
   regular_expression?: string;
+  /**
+   * 检查历史消息数量
+   */
+  inspect_history?: number;
 };
 export namespace InterestUpdateRequest {
   /**

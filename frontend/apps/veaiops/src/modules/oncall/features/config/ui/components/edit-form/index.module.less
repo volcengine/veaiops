@@ -1,0 +1,159 @@
+// Copyright 2025 Beijing Volcano Engine Technology Co., Ltd. and/or its affiliates
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// 编辑表单样式 - 使用 CSS Modules
+.formSection {
+  margin-bottom: 24px;
+
+  .sectionTitle {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--color-text-1);
+    position: relative;
+    padding-left: 12px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 16px;
+      border-radius: 2px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+  }
+}
+
+.infoBox {
+  background: var(--color-fill-2);
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--color-text-2);
+  margin-top: 8px;
+  border-left: 3px solid rgb(var(--blue-6));
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--color-fill-3);
+    border-left-color: rgb(var(--blue-5));
+  }
+
+  &.success {
+    border-left-color: rgb(var(--green-6));
+  }
+
+  &.warning {
+    border-left-color: rgb(var(--orange-6));
+  }
+
+  &.error {
+    border-left-color: rgb(var(--red-6));
+  }
+}
+
+.exampleHint {
+  background: rgba(var(--green-6), 0.1);
+  border: 1px solid rgba(var(--green-6), 0.3);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 8px;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(var(--green-6), 0.15);
+    border-color: rgba(var(--green-6), 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(var(--green-6), 0.2);
+  }
+
+  &.negative {
+    background: rgba(var(--red-6), 0.1);
+    border-color: rgba(var(--red-6), 0.3);
+
+    &:hover {
+      background: rgba(var(--red-6), 0.15);
+      border-color: rgba(var(--red-6), 0.5);
+      box-shadow: 0 2px 8px rgba(var(--red-6), 0.2);
+    }
+  }
+}
+
+.gradientButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.levelIndicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  box-shadow: 0 0 0 3px currentColor;
+  opacity: 0.3;
+}
+
+.typeIndicator {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 8px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
+.slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

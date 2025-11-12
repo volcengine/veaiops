@@ -17,4 +17,4 @@
  */
 
 export { EventCenterHistoryPage } from './history-page';
-export { HistoryManagement } from './history-management';
+// HistoryManagement has been removed - all history pages now use EventHistoryTable

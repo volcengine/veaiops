@@ -15,13 +15,16 @@
 import { useEventHistoryRequest } from '@/hooks/use-event-history-request';
 import { HistoryDetailDrawer } from '@/modules/event-center/features/history/ui/components/table';
 import type { Event } from '@veaiops/api-client';
+import { EventShowStatus } from '@veaiops/api-client';
 import { EventHistoryTable, HistoryModuleType } from '@veaiops/components';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 /**
  * 事件中心 - 历史事件页面
  * 使用统一的历史事件表格组件，支持所有智能体类型
  * 保留事件详情抽屉功能
+ *
+ * ✅ 默认筛选：只显示"发送成功"的事件
  */
 const HistoryPage = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -41,6 +44,14 @@ const HistoryPage = () => {
     setSelectedRecord(null);
   };
 
+  // ✅ 默认只显示"发送成功"的事件
+  const initQuery = useMemo(
+    () => ({
+      show_status: [EventShowStatus.SUCCESS],
+    }),
+    [],
+  );
+
   return (
     <>
       <EventHistoryTable
@@ -48,6 +59,7 @@ const HistoryPage = () => {
         title="历史事件"
         request={request}
         onViewDetail={handleViewDetail}
+        initQuery={initQuery}
       />
 
       <HistoryDetailDrawer

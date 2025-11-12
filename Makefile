@@ -48,7 +48,9 @@ help:
 	@echo ""
 	@echo "API Generation targets:"
 	@echo "  generate-api-frontend  	Generate frontend API client code (使用 pnpm generate:api)"
-	@echo "  generate-api-incremental  Incremental API generation (检测变更的 spec 文件)"
+	@echo "  generate-api-incremental  Incremental API generation (两阶段检测：spec变更 + api-client变更)"
+	@echo "  generate-api-incremental-spec-only  Incremental generation (仅spec变更，忽略api-client)"
+	@echo "  generate-api-incremental-debug  Incremental generation with debug output (故障排查)"
 	@echo "  generate-api-python    	Analyze Python code and generate OpenAPI spec"
 	@echo "  generate-api-complete  	Complete API generation workflow (recommended)"
 	@echo "  build-openapi-spec     	Build OpenAPI spec from modular files"
@@ -130,74 +132,17 @@ setup-frontend: clean-frontend ## Initialize frontend project environment (suppo
 				pnpm --filter '@veaiops/utils' install; \
 				pnpm --filter '@veaiops/hooks' install; \
 				pnpm --filter '@veaiops/theme-ve-o' install; \
-				echo "✓ All workspace dependencies installed"; \
-				if command -v nx >/dev/null 2>&1 || [ -f "node_modules/.bin/nx" ]; then \
-					echo "--> Verifying NX workspace..."; \
-					pnpm nx graph --dry-run >/dev/null 2>&1 && echo "✓ NX workspace verified" || echo "⚠️  NX workspace verification failed"; \
-				fi; \
-				echo "--> Building workspace packages..."; \
-				echo "    🔍 Checking if @veaiops/api-client exists..."; \
-				if [ -d "packages/api-client/src/models" ] && [ -d "packages/api-client/src/services" ]; then \
-					API_CLIENT_FILES=$$(find packages/api-client/src -name '*.ts' -type f 2>/dev/null | wc -l | tr -d ' '); \
-					echo "    📊 Found $$API_CLIENT_FILES TypeScript files in api-client"; \
-					if [ "$$API_CLIENT_FILES" -gt 10 ]; then \
-						echo "    ✓ @veaiops/api-client already exists ($$API_CLIENT_FILES files), skipping API generation"; \
-						echo "    💡 To regenerate API client, run: make generate-api-complete"; \
-						echo "    🔧 Building other packages (excluding openapi-specs)..."; \
-						(pnpm --filter '@veaiops/components' build && \
-						 pnpm --filter '@veaiops/constants' build && \
-						 pnpm --filter '@veaiops/types' build && \
-						 pnpm --filter '@veaiops/utils' build && \
-						 pnpm --filter '@veaiops/hooks' build && \
-						 pnpm --filter '@veaiops/theme-ve-o' build) 2>/dev/null && \
-						echo "    ✓ Workspace packages built (api-client generation skipped)" || \
-						echo "    ⚠️  Some packages may need manual build"; \
-					else \
-						echo "    ℹ️  @veaiops/api-client exists but seems incomplete (only $$API_CLIENT_FILES files)"; \
-						echo "    🔧 Running full build including API generation..."; \
-						pnpm run build:packages 2>/dev/null && echo "    ✓ Workspace packages built" || echo "    ⚠️  Some packages may need manual build"; \
-					fi; \
-				else \
-					echo "    ℹ️  @veaiops/api-client not found or incomplete"; \
-					echo "    🔧 Running full build including API generation..."; \
-					pnpm run build:packages 2>/dev/null && echo "    ✓ Workspace packages built" || echo "    ⚠️  Some packages may need manual build"; \
-				fi; \
-			}); \
-			if [ -d "docs" ]; then \
-				echo "--> Installing documentation dependencies..."; \
-				(cd docs && pnpm install --frozen-lockfile || pnpm install); \
-				echo "✓ Documentation dependencies installed"; \
-				SQLITE_DIR=$$(find docs/node_modules/.pnpm -maxdepth 1 -type d -name "better-sqlite3@*" 2>/dev/null | head -1); \
-				SQLITE_BUILT=0; \
-				if [ -n "$$SQLITE_DIR" ] && [ ! -f "$$SQLITE_DIR/node_modules/better-sqlite3/build/Release/better_sqlite3.node" ]; then \
-					echo "--> Building better-sqlite3 (this may take 1-2 minutes, please wait)..."; \
-					if (cd "$$SQLITE_DIR/node_modules/better-sqlite3" && npm run build-release > /tmp/better-sqlite3-build.log 2>&1); then \
-						echo "✓ better-sqlite3 built successfully"; \
-						SQLITE_BUILT=1; \
-					else \
-						echo "⚠️  better-sqlite3 build failed - documentation generation may not work"; \
-						echo "Build log saved to: /tmp/better-sqlite3-build.log"; \
-						echo "    Common causes:"; \
-						echo "    - Missing Xcode Command Line Tools (run: xcode-select --install)"; \
-						echo "    - Missing Python (install via: brew install python3)"; \
-					fi; \
-				elif [ -n "$$SQLITE_DIR" ]; then \
-					echo "✓ better-sqlite3 already built"; \
-					SQLITE_BUILT=1; \
-				fi; \
-				if [ $$SQLITE_BUILT -eq 1 ]; then \
-					echo "--> Generating documentation (this may take a moment)..."; \
-					if (cd docs && pnpm run generate > /tmp/docs-generate.log 2>&1); then \
-						echo "✓ Documentation generated successfully"; \
-						echo "    Output: docs/.output/public/"; \
-					else \
-						echo "⚠️  Documentation generation failed"; \
-						echo "    Log saved to: /tmp/docs-generate.log"; \
-					fi; \
-				else \
-					echo "⚠️  Skipping documentation generation (better-sqlite3 not available)"; \
-				fi; \
+			echo "✓ All workspace dependencies installed"; \
+			if command -v nx >/dev/null 2>&1 || [ -f "node_modules/.bin/nx" ]; then \
+				echo "--> Verifying NX workspace..."; \
+				pnpm nx graph --dry-run >/dev/null 2>&1 && echo "✓ NX workspace verified" || echo "⚠️  NX workspace verification failed"; \
 			fi; \
+		}); \
+		if [ -d "docs" ]; then \
+			echo "--> Installing documentation dependencies..."; \
+			(cd docs && pnpm install --frozen-lockfile || pnpm install); \
+			echo "✓ Documentation dependencies installed"; \
+		fi; \
 		echo "🎉 Frontend monorepo setup completed!"; \
 	else \
 		echo "⚠️  Frontend environment not available (pnpm not found or frontend directory missing)"; \
@@ -419,10 +364,30 @@ generate-api-complete: ## Complete API generation workflow (Python analysis + Ty
 		echo "⚠️  Frontend environment not available, cannot run complete API generation..."; \
 	fi
 
-generate-api-incremental: ## Incremental API generation (detect changed spec files and generate code)
+generate-api-incremental: ## Incremental API generation (two-phase detection: spec changes + api-client changes against upstream/main)
 	@if [ -d "$(FRONTEND_DIR)" ] && command -v pnpm >/dev/null 2>&1; then \
-		echo "--> Running incremental API generation..."; \
+		echo "--> Running two-phase incremental API generation..."; \
+		echo "    Phase 1: Detecting spec file changes against upstream/main"; \
+		echo "    Phase 2: Detecting api-client changes against upstream/main"; \
 		(cd $(FRONTEND_DIR)/packages/openapi-specs && node src/scripts/generate-api-incremental.js); \
+	else \
+		echo "⚠️  Frontend environment not available, cannot run incremental API generation..."; \
+	fi
+
+generate-api-incremental-debug: ## Incremental API generation with debug output (for troubleshooting)
+	@if [ -d "$(FRONTEND_DIR)" ] && command -v pnpm >/dev/null 2>&1; then \
+		echo "--> Running two-phase incremental API generation (DEBUG mode)..."; \
+		(cd $(FRONTEND_DIR)/packages/openapi-specs && DEBUG_API_GEN=1 node src/scripts/generate-api-incremental.js); \
+	else \
+		echo "⚠️  Frontend environment not available, cannot run incremental API generation..."; \
+	fi
+
+generate-api-incremental-spec-only: ## Incremental API generation (only check spec changes, ignore api-client drift)
+	@if [ -d "$(FRONTEND_DIR)" ] && command -v pnpm >/dev/null 2>&1; then \
+		echo "--> Running incremental API generation (spec changes only)..."; \
+		echo "    ⚠️  Phase 2 (api-client change detection) will be skipped"; \
+		echo "    Use this when api-client changes are expected (e.g., script improvements)"; \
+		(cd $(FRONTEND_DIR)/packages/openapi-specs && node src/scripts/generate-api-incremental.js --ignore-api-client); \
 	else \
 		echo "⚠️  Frontend environment not available, cannot run incremental API generation..."; \
 	fi

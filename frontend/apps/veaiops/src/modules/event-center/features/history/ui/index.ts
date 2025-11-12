@@ -16,8 +16,8 @@
  * 历史事件 UI 组件统一导出
  */
 
-export { HistoryManagement } from './pages';
-export { HistoryTable, HistoryDetailDrawer } from './components/table';
+// HistoryManagement and HistoryTable removed - all history pages now use EventHistoryTable from @veaiops/components
+export { HistoryDetailDrawer } from './components/table';
 
 // 导出子组件
 export * from './components/base';
