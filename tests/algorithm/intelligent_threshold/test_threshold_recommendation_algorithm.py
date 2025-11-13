@@ -146,7 +146,7 @@ def sample_values_periodic():
                     base_value = 70 + 10 * math.sin((hour - 6) * math.pi / 12)
                 else:
                     base_value = 30 + 5 * math.sin((hour + 6) * math.pi / 12)
-                values.append(base_value )
+                values.append(base_value)
     return values
 
 
