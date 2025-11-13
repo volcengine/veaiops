@@ -136,9 +136,6 @@ def sample_timestamps():
 @pytest.fixture
 def sample_values_periodic():
     """Generate sample values with daily periodicity."""
-    # Set fixed random seed for reproducible tests
-    np.random.seed(42)
-
     # Create a pattern that repeats daily with some noise
     values = []
     for day in range(7):
@@ -149,24 +146,17 @@ def sample_values_periodic():
                     base_value = 70 + 10 * math.sin((hour - 6) * math.pi / 12)
                 else:
                     base_value = 30 + 5 * math.sin((hour + 6) * math.pi / 12)
-
-                # Add some noise
-                noise = np.random.normal(0, 2)
-                values.append(base_value + noise)
+                values.append(base_value )
     return values
 
 
 @pytest.fixture
 def sample_values_non_periodic():
     """Generate sample values without daily periodicity."""
-    # Set fixed random seed for reproducible tests
-    np.random.seed(123)
-
     # Random walk without daily pattern
     values = [50.0]  # Starting value
     for _ in range(7 * 24 * 60 - 1):
-        change = np.random.normal(0, 1)
-        values.append(max(0, values[-1] + change))
+        values.append(max(0, values[-1]))
     return values
 
 
@@ -519,13 +509,13 @@ def test_recommend_threshold_with_consolidation_up(threshold_recommender, sample
         # Create values that vary slightly but result in similar thresholds
         hour = (i // 60) % 24
         if hour < 6:
-            values.append(45 + np.random.normal(0, 2))  # Night: around 45
+            values.append(45)  # Night: around 45
         elif hour < 12:
-            values.append(48 + np.random.normal(0, 2))  # Morning: around 48
+            values.append(48)  # Morning: around 48
         elif hour < 18:
-            values.append(52 + np.random.normal(0, 2))  # Afternoon: around 52
+            values.append(52)  # Afternoon: around 52
         else:
-            values.append(47 + np.random.normal(0, 2))  # Evening: around 47
+            values.append(47)  # Evening: around 47
 
     with patch.object(threshold_recommender.period_detector, "detect") as mock_detect:
         mock_detect.return_value = True  # Daily periodicity detected
@@ -564,13 +554,13 @@ def test_recommend_threshold_with_consolidation_down(threshold_recommender, samp
     for i in range(len(sample_timestamps)):
         hour = (i // 60) % 24
         if hour < 6:
-            values.append(25 + np.random.normal(0, 2))  # Night: around 25
+            values.append(25)  # Night: around 25
         elif hour < 12:
-            values.append(23 + np.random.normal(0, 2))  # Morning: around 23
+            values.append(23)  # Morning: around 23
         elif hour < 18:
-            values.append(27 + np.random.normal(0, 2))  # Afternoon: around 27
+            values.append(27)  # Afternoon: around 27
         else:
-            values.append(24 + np.random.normal(0, 2))  # Evening: around 24
+            values.append(24)  # Evening: around 24
 
     with patch.object(threshold_recommender.period_detector, "detect") as mock_detect:
         mock_detect.return_value = True  # Daily periodicity detected
