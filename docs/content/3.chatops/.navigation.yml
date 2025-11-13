@@ -13,3 +13,16 @@
 # limitations under the License.
 
 title: ChatOps
+links:
+  - title: 场景概述
+    url: /3.chatops/1.overview
+  - title: 内容识别 Agent
+    url: /3.chatops/2.interest-agent
+  - title: 主动回复 Agent
+    url: /3.chatops/3.proactive-agent
+  - title: 被动回复 Agent
+    url: /3.chatops/4.reactive-agent
+  - title: ChatOps 配置
+    url: /3.chatops/5.configuration
+  - title: 规则管理
+    url: /3.chatops/6.rule-management
