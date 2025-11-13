@@ -19,6 +19,7 @@ from zoneinfo import ZoneInfo
 
 import numpy as np
 import pytest
+import tzlocal
 
 from veaiops.algorithm.intelligent_threshold.configs import DEFAULT_TIMEZONE
 from veaiops.algorithm.intelligent_threshold.threshold_recommendation_algorithm import ThresholdRecommendAlgorithm
@@ -32,7 +33,7 @@ def threshold_recommender():
 
 def test_get_timestamp_hour(threshold_recommender):
     """Test getting hour from timestamp."""
-    # Test with a known timestamp (2022-01-01 12:30:45 in Asia/Shanghai)
+    # Test with a known timestamp in local timezone
     timezone = ZoneInfo(DEFAULT_TIMEZONE)
     dt = datetime(2022, 1, 1, 12, 30, 45, tzinfo=timezone)
     timestamp = dt.timestamp()
@@ -61,6 +62,21 @@ def test_get_timestamp_hour_end_of_day(threshold_recommender):
     hour = threshold_recommender.get_timestamp_hour(timestamp)
     expected_hour = 23 + 59 / 60 + 59 / 3600
     assert abs(hour - expected_hour) < 0.001
+
+
+def test_local_timezone_detection():
+    """Test that local timezone is properly detected."""
+    # Test that we can create an instance with default timezone
+    recommender = ThresholdRecommendAlgorithm()
+    assert recommender.timezone == DEFAULT_TIMEZONE
+
+    # Test that local timezone is detected (should not raise an exception)
+    try:
+        local_tz = tzlocal.get_localzone_name()
+        assert DEFAULT_TIMEZONE == local_tz
+    except Exception:
+        # If local timezone detection fails, should fallback to Shanghai
+        assert DEFAULT_TIMEZONE == "Asia/Shanghai"
 
 
 def test_normalize_timestamp_to_seconds(threshold_recommender):

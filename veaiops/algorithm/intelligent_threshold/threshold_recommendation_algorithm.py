@@ -403,13 +403,13 @@ class ThresholdRecommendAlgorithm:
         max_threshold = max(thresholds)
         min_threshold = min(thresholds)
 
-        # Check if difference is within 10% of max threshold
         if max_threshold == 0:
-            return None
-
-        threshold_diff_ratio = (max_threshold - min_threshold) / max_threshold
-        if threshold_diff_ratio > 0.1:  # 10% threshold
-            return None
+            if max_threshold != min_threshold:
+                return None
+        else:
+            threshold_diff_ratio = (max_threshold - min_threshold) / max_threshold
+            if threshold_diff_ratio > 0.1:  # 10% threshold
+                return None
 
         # Consolidation is needed - create single group
         consolidated_threshold = max_threshold if direction == "up" else min_threshold
