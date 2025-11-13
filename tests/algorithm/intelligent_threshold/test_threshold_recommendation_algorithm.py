@@ -138,12 +138,13 @@ def sample_values_periodic():
     """Generate sample values with daily periodicity in the algorithm's timezone."""
     from datetime import datetime
     from zoneinfo import ZoneInfo
+
     from veaiops.algorithm.intelligent_threshold.configs import DEFAULT_TIMEZONE
-    
+
     timezone = ZoneInfo(DEFAULT_TIMEZONE)
     # Set fixed random seed for reproducible tests
     np.random.seed(42)
-    
+
     # Create a pattern that repeats daily with some noise
     values = []
     for day in range(7):
@@ -153,13 +154,13 @@ def sample_values_periodic():
                 utc_timestamp = 1640995200 + (day * 24 * 60 + hour * 60 + minute) * 60
                 local_dt = datetime.fromtimestamp(utc_timestamp, tz=timezone)
                 local_hour = local_dt.hour
-                
+
                 # Use local hour for day/night determination (6-18 is daytime)
                 if 6 <= local_hour < 18:
                     base_value = 70 + 10 * math.sin((local_hour - 6) * math.pi / 12)
                 else:
                     base_value = 30 + 5 * math.sin((local_hour + 6) * math.pi / 12)
-                
+
                 # Add some noise
                 noise = np.random.normal(0, 2)
                 values.append(base_value + noise)
