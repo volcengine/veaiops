@@ -135,18 +135,34 @@ def sample_timestamps():
 
 @pytest.fixture
 def sample_values_periodic():
-    """Generate sample values with daily periodicity."""
+    """Generate sample values with daily periodicity in the algorithm's timezone."""
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    from veaiops.algorithm.intelligent_threshold.configs import DEFAULT_TIMEZONE
+    
+    timezone = ZoneInfo(DEFAULT_TIMEZONE)
+    # Set fixed random seed for reproducible tests
+    np.random.seed(42)
+    
     # Create a pattern that repeats daily with some noise
     values = []
     for day in range(7):
         for hour in range(24):
             for minute in range(60):
-                # Base pattern: higher during day (6-18), lower at night
-                if 6 <= hour < 18:
-                    base_value = 70 + 10 * math.sin((hour - 6) * math.pi / 12)
+                # Convert UTC timestamp to local timezone to determine day/night pattern
+                utc_timestamp = 1640995200 + (day * 24 * 60 + hour * 60 + minute) * 60
+                local_dt = datetime.fromtimestamp(utc_timestamp, tz=timezone)
+                local_hour = local_dt.hour
+                
+                # Use local hour for day/night determination (6-18 is daytime)
+                if 6 <= local_hour < 18:
+                    base_value = 70 + 10 * math.sin((local_hour - 6) * math.pi / 12)
                 else:
-                    base_value = 30 + 5 * math.sin((hour + 6) * math.pi / 12)
-                values.append(base_value)
+                    base_value = 30 + 5 * math.sin((local_hour + 6) * math.pi / 12)
+                
+                # Add some noise
+                noise = np.random.normal(0, 2)
+                values.append(base_value + noise)
     return values
 
 
@@ -199,15 +215,15 @@ def test_recommend_threshold_with_time_split(threshold_recommender, sample_times
             mock_sliding_window.side_effect = [(60.0, 5), (70.0, 5), (80.0, 5), (65.0, 5)] * 2
 
             result = threshold_recommender.recommend_threshold(
-                timestamp_list=sample_timestamps[:1000],  # Use subset for faster testing
-                value_list=sample_values_periodic[:1000],
+                timestamp_list=sample_timestamps[:2000],  # Increased from 1000 to ensure all periods have data
+                value_list=sample_values_periodic[:2000],
                 default_window_size=5,
                 time_split=True,
                 auto_window_adjust=False,
                 min_value=0.0,
                 max_value=100.0,
                 normal_threshold=50.0,
-                min_ts_length=50,
+                min_ts_length=30,  # Reduced from 50 to ensure all periods have enough data
                 direction="up",
             )
 
