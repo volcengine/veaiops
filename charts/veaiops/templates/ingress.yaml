@@ -35,20 +35,6 @@ spec:
     - http:
     {{- end }}
         paths:
-          - path: /openapi.json
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: {{ include "veaiops.name" . }}-backend
-                port:
-                  number: 8000
-          - path: /docs
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ include "veaiops.name" . }}-backend
-                port:
-                  number: 8000
           - path: /apis
             pathType: Prefix
             backend:
