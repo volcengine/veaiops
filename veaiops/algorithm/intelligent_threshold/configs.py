@@ -18,6 +18,8 @@ This module contains all configuration constants and parameters used across
 the intelligent threshold algorithm components.
 """
 
+import tzlocal
+
 # =============================================================================
 # Time Constants
 # =============================================================================
@@ -41,7 +43,7 @@ MILLISECOND_THRESHOLD = 10**12
 # =============================================================================
 
 # Default timezone for time-based operations
-DEFAULT_TIMEZONE = "Asia/Shanghai"
+DEFAULT_TIMEZONE = tzlocal.get_localzone_name()
 
 # Default time split ranges for daily analysis (hours)
 DEFAULT_TIME_SPLIT_RANGES = [[0, 6], [6, 12], [12, 18], [18, 24]]
