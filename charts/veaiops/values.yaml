@@ -245,7 +245,7 @@ backend:
   image:
     registry: veaiops-registry-cn-beijing.cr.volces.com
     repository: veaiops/backend
-    tag: latest
+    tag: v0.1.0
     pullPolicy: Always
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -312,7 +312,7 @@ chatops:
   image:
     registry: veaiops-registry-cn-beijing.cr.volces.com
     repository: veaiops/chatops
-    tag: latest
+    tag: v0.1.0
     pullPolicy: Always
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -378,7 +378,7 @@ frontend:
   image:
     registry: veaiops-registry-cn-beijing.cr.volces.com
     repository: veaiops/frontend
-    tag: latest
+    tag: v0.1.0
     pullPolicy: Always
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -445,7 +445,7 @@ intelligentThreshold:
   image:
     registry: veaiops-registry-cn-beijing.cr.volces.com
     repository: veaiops/intelligent-threshold
-    tag: latest
+    tag: v0.1.0
     pullPolicy: Always
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -538,7 +538,7 @@ initial:
   image:
     registry: veaiops-registry-cn-beijing.cr.volces.com
     repository: veaiops/initial
-    tag: latest
+    tag: v0.1.0
     pullPolicy: Always
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
