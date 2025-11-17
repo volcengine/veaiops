@@ -19,26 +19,30 @@ import { useEffect, useRef, useState } from 'react';
 interface DocsDrawerProps {
   visible: boolean;
   onClose: () => void;
+  anchor?: string;
 }
 
 /**
  * Documentation drawer component
  * Render documentation content via iframe in drawer
  */
-export const DocsDrawer: React.FC<DocsDrawerProps> = ({ visible, onClose }) => {
+export const DocsDrawer: React.FC<DocsDrawerProps> = ({
+  visible,
+  onClose,
+  anchor,
+}) => {
   const [loading, setLoading] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const hasLoadedRef = useRef(false);
 
   // Get documentation URL (use proxy in dev, use static files in production)
   const getDocsUrl = () => {
-    // Development environment: access documentation server directly (avoid proxy redirect issues)
-    if (process.env.NODE_ENV === 'development') {
-      return 'http://localhost:4000/';
-    }
-    // Production environment: use absolute path (avoid relative path errors in sub-routes)
-    // Use /veaiops/ path to keep consistent with documentation baseURL
-    return '/veaiops/';
+    const baseUrl =
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:4000/'
+        : '/veaiops/';
+    // Add anchor hash if provided
+    return anchor ? `${baseUrl}#${anchor}` : baseUrl;
   };
 
   useEffect(() => {
@@ -46,11 +50,25 @@ export const DocsDrawer: React.FC<DocsDrawerProps> = ({ visible, onClose }) => {
       // If already loaded before, show content directly
       if (hasLoadedRef.current) {
         setLoading(false);
+        // If anchor is provided, scroll to anchor after iframe loads
+        if (anchor && iframeRef.current?.contentWindow) {
+          const iframeWindow = iframeRef.current.contentWindow;
+          setTimeout(() => {
+            try {
+              const element = iframeWindow.document.querySelector(`#${anchor}`);
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            } catch (error) {
+              // Cross-origin error, anchor will be handled by URL hash
+            }
+          }, 500);
+        }
       } else {
         setLoading(true);
       }
     }
-  }, [visible]);
+  }, [visible, anchor]);
 
   const handleIframeLoad = () => {
     hasLoadedRef.current = true;
