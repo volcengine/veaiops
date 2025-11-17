@@ -55,6 +55,7 @@ async def test_create_task_success(test_datasource, test_user, mock_call_thresho
         metric_template_value=MetricTemplateValue(name="cpu_usage"),
         n_count=10,
         direction=IntelligentThresholdDirection.UP,
+        sensitivity=0.5,
     )
 
     response = await create_task(body=payload, current_user=test_user)
@@ -91,6 +92,7 @@ async def test_create_task_duplicate_name(test_task, test_user, mock_call_thresh
         metric_template_value=MetricTemplateValue(name="cpu_usage"),
         n_count=10,
         direction=IntelligentThresholdDirection.UP,
+        sensitivity=0.5,
     )
 
     with pytest.raises(BadRequestError) as exc_info:
@@ -120,6 +122,7 @@ async def test_create_task_rollback_on_error(test_datasource, test_user, monkeyp
         metric_template_value=MetricTemplateValue(name="cpu_usage"),
         n_count=10,
         direction=IntelligentThresholdDirection.UP,
+        sensitivity=0.5,
     )
 
     with pytest.raises(InternalServerError):
@@ -163,6 +166,7 @@ async def test_rerun_task_success(test_task, test_task_version, test_user, mock_
         metric_template_value=MetricTemplateValue(name="memory_usage"),
         n_count=15,
         direction=IntelligentThresholdDirection.BOTH,
+        sensitivity=0.5,
     )
 
     response = await rerun_task(body=payload, current_user=test_user)
@@ -192,6 +196,7 @@ async def test_rerun_task_not_found(test_user, mock_call_threshold_agent):
         metric_template_value=MetricTemplateValue(name="cpu_usage"),
         n_count=10,
         direction=IntelligentThresholdDirection.UP,
+        sensitivity=0.5,
     )
 
     with pytest.raises(RecordNotFoundError) as exc_info:
@@ -217,6 +222,7 @@ async def test_rerun_task_agent_failure(test_task, test_task_version, test_user,
         metric_template_value=MetricTemplateValue(name="cpu_usage"),
         n_count=10,
         direction=IntelligentThresholdDirection.UP,
+        sensitivity=0.5,
     )
 
     with pytest.raises(InternalServerError):
@@ -287,9 +293,12 @@ async def test_list_task_versions_pagination(test_task):
             metric_template_value=MetricTemplateValue(name=f"cpu_usage_{i}"),
             n_count=10,
             direction=IntelligentThresholdDirection.UP,
+            sensitivity=0.5,
             status=IntelligentThresholdTaskStatus.SUCCESS,
             created_user="test_user",
             updated_user="test_user",
+            result=[],
+            error_message="",
         ).insert()
 
     # Test pagination
@@ -346,7 +355,7 @@ async def test_update_task_result_success(test_task, test_task_version, test_use
     new_results = [
         MetricThresholdResult(
             name="cpu.usage",
-            thresholds=[IntelligentThresholdConfig(start_hour=0, end_hour=24, upper_bound=90.0, window_size=10)],
+            thresholds=[IntelligentThresholdConfig(start_hour=0, end_hour=24, upper_bound=90.0, lower_bound=None, window_size=10)],
             labels={"host": "test"},
             unique_key="cpu.usage_host=test",
             status="Success",
@@ -371,6 +380,7 @@ async def test_update_task_result_success(test_task, test_task_version, test_use
         {"task_id": test_task.id, "version": test_task_version.version}
     )
     assert updated_version is not None
+    assert updated_version.result is not None
     assert len(updated_version.result) == 1
 
 
@@ -385,6 +395,8 @@ async def test_update_task_result_task_not_found(test_user):
         task_id=fake_id,
         task_version=1,
         status=IntelligentThresholdTaskStatus.SUCCESS,
+        results=None,
+        error_message=None,
     )
 
     with pytest.raises(RecordNotFoundError):
@@ -413,11 +425,13 @@ async def test_auto_refresh_switch_success(test_task):
     response = await auto_refresh_switch(body=payload)
 
     assert "Update success" in response.message
+    assert response.data is not None
     assert response.data["matched_count"] == 1
     assert response.data["modified_count"] == 1
 
     # Verify update was applied
     updated_task = await IntelligentThresholdTask.get(test_task.id)
+    assert updated_task is not None
     assert updated_task.auto_update is True
 
     # Reset for cleanup
