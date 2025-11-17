@@ -33,6 +33,7 @@ class IntelligentThresholdTaskVersion(BaseDocument):
     direction: IntelligentThresholdDirection = Field(
         ..., description="Direction for threshold calculation: up, down, or both"
     )
+    sensitivity: float = Field(0.5, description="Sensitivity for threshold calculation")
     status: IntelligentThresholdTaskStatus = Field(..., description="Task status")
     error_message: Optional[str] = Field(None, description="Error message if any")
     version: int = Field(..., description="Version number")

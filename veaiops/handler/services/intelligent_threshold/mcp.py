@@ -31,6 +31,7 @@ async def call_threshold_agent(
     metric_template_value: Any,
     n_count: int,
     direction: str,
+    sensitivity: float = 0.5,
     task_priority: TaskPriority = TaskPriority.NORMAL,
 ) -> None:
     """Call the intelligent threshold mcp via HTTP.
@@ -42,6 +43,7 @@ async def call_threshold_agent(
         metric_template_value: The metric template value
         n_count: The n count
         direction: The direction
+        sensitivity: The sensitivity
         task_priority: The task priority
     """
     async with AsyncClientWithCtx() as client:
@@ -53,6 +55,7 @@ async def call_threshold_agent(
             "metric_template_value": jsonable_encoder(metric_template_value),
             "n_count": n_count,
             "direction": direction,
+            "sensitivity": sensitivity,
             "task_priority": task_priority,
         }
         response = await client.post(f"{agent_url}/apis/v1/intelligent-threshold/agent/", json=payload)
