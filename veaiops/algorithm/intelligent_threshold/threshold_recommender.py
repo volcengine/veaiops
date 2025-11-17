@@ -44,7 +44,6 @@ from veaiops.schema.base import IntelligentThresholdConfig, MetricThresholdResul
 from veaiops.schema.models.template import MetricTemplateValue
 from veaiops.schema.types import IntelligentThresholdTaskStatus, TaskPriority
 from veaiops.utils.log import logger
-from veaiops.utils.webhook import send_bot_notification
 
 
 @dataclass
@@ -561,6 +560,7 @@ class ThresholdRecommender:
             min_value: Minimum value for normalization
             max_value: Maximum value for normalization
             normal_threshold: Normal threshold value
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm
 
         Returns:
             Tuple containing (threshold_results, success_count, data_validation_errors, internal_errors)
@@ -678,6 +678,7 @@ class ThresholdRecommender:
             window_size (int): Size of the sliding window for threshold calculation.
             direction (Literal["up", "down", "both"]): Direction for threshold detection.
                 "up" for upper bound only, "down" for lower bound only, "both" for both bounds.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             Dict[str, Any]: Task response containing status, results, and message.
@@ -702,7 +703,14 @@ class ThresholdRecommender:
                 # Process for upper bounds
                 normal_threshold_up = self._get_normal_threshold(metric_template_value, "up")
                 up_results, up_success, up_data_errors, up_internal_errors = await self._process_time_series_data(
-                    task_data, metric_template_value, window_size, "up", min_value, max_value, normal_threshold_up, sensitivity
+                    task_data,
+                    metric_template_value,
+                    window_size,
+                    "up",
+                    min_value,
+                    max_value,
+                    normal_threshold_up,
+                    sensitivity,
                 )
 
                 # Process for lower bounds
@@ -713,7 +721,14 @@ class ThresholdRecommender:
                     down_data_errors,
                     down_internal_errors,
                 ) = await self._process_time_series_data(
-                    task_data, metric_template_value, window_size, "down", min_value, max_value, normal_threshold_down, sensitivity
+                    task_data,
+                    metric_template_value,
+                    window_size,
+                    "down",
+                    min_value,
+                    max_value,
+                    normal_threshold_down,
+                    sensitivity,
                 )
 
                 # Merge results
@@ -781,7 +796,14 @@ class ThresholdRecommender:
                 data_validation_error_count,
                 internal_server_error_count,
             ) = await self._process_time_series_data(
-                task_data, metric_template_value, window_size, direction, min_value, max_value, normal_threshold, sensitivity
+                task_data,
+                metric_template_value,
+                window_size,
+                direction,
+                min_value,
+                max_value,
+                normal_threshold,
+                sensitivity,
             )
             logger.info(f"Successfully calculated thresholds for {success_instance_count}/{len(task_data)} time series")
 

@@ -131,6 +131,7 @@ class ThresholdRecommendAlgorithm:
             max_value (Optional[float]): Maximum value constraint for the time series data.
             normal_threshold (Optional[float]): Normal threshold baseline for the time series data.
             min_ts_length (int): Minimum required length of the time series data.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
             direction (Literal["up", "down"]): Direction of the threshold recommendation.
 
         Returns:
@@ -201,6 +202,7 @@ class ThresholdRecommendAlgorithm:
             max_value (Optional[float]): Maximum value constraint.
             normal_threshold (Optional[float]): Normal threshold baseline.
             direction (Literal["up", "down"]): Threshold direction.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             List[Dict]: Single threshold group covering 24 hours.
@@ -258,6 +260,7 @@ class ThresholdRecommendAlgorithm:
             normal_threshold (Optional[float]): Normal threshold baseline.
             min_ts_length (int): Minimum required data length.
             direction (Literal["up", "down"]): Threshold direction.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             List[Dict]: Multiple threshold groups for different time periods.
@@ -454,6 +457,7 @@ class ThresholdRecommendAlgorithm:
             normal_threshold (Optional[float]): Normal threshold for the time series data.
             ignore_count (int): Number of data points to ignore at the beginning of the time series.
             direction (Literal["up", "down"]): Direction of the threshold recommendation.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             tuple[float, int]: Tuple of threshold and window size.
@@ -524,6 +528,7 @@ class ThresholdRecommendAlgorithm:
             min_value (Optional[float]): Minimum value of the time series data.
             max_value (Optional[float]): Maximum value of the time series data.
             direction (Literal["up", "down"]): Direction of the threshold recommendation.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             Dict[str, Union[bool, float]]: Dictionary with keys:
