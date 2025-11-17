@@ -355,7 +355,11 @@ async def test_update_task_result_success(test_task, test_task_version, test_use
     new_results = [
         MetricThresholdResult(
             name="cpu.usage",
-            thresholds=[IntelligentThresholdConfig(start_hour=0, end_hour=24, upper_bound=90.0, lower_bound=None, window_size=10)],
+            thresholds=[
+                IntelligentThresholdConfig(
+                    start_hour=0, end_hour=24, upper_bound=90.0, lower_bound=None, window_size=10
+                )
+            ],
             labels={"host": "test"},
             unique_key="cpu.usage_host=test",
             status="Success",

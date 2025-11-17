@@ -21,7 +21,6 @@ from veaiops.schema.models.base import APIResponse
 from veaiops.schema.models.intelligent_threshold.task import (
     IntelligentThresholdMCPPayload,
 )
-from veaiops.utils.log import logger
 
 intelligent_threshold_agent_router = APIRouter(
     prefix="/apis/v1/intelligent-threshold/agent", tags=["IntelligentThresholdAgent"]
@@ -33,11 +32,6 @@ async def calculate(body: IntelligentThresholdMCPPayload) -> APIResponse[dict]:
     """Calculate intelligent thresholds for a task with priority scheduling."""
     # Get the global instance of threshold recommender
     threshold_recommender = get_global_threshold_recommender()
-    logger.info("-" * 100)
-    logger.info(body.sensitivity)
-    logger.info("-" * 100)
-    logger.info(body.metric_template_value)
-    logger.info("-" * 100)
 
     # Convert IntelligentThresholdDirection to Literal type
     direction = cast(Literal["up", "down", "both"], body.direction.value)
