@@ -43,6 +43,7 @@ class CreateIntelligentThresholdTaskPayload(BaseModel):
     direction: IntelligentThresholdDirection = Field(
         ..., description="Direction for threshold calculation: up, down, or both"
     )
+    sensitivity: float = Field(..., ge=0, le=1, description="Sensitivity for threshold calculation")
 
     # Fields for IntelligentThresholdTaskVersion
     metric_template_value: MetricTemplateValue = Field(..., description="Metric template value")
@@ -78,6 +79,7 @@ class BaseIntelligentThresholdTaskPayload(BaseModel):
     direction: IntelligentThresholdDirection = Field(
         ..., description="Direction for threshold calculation: up, down, or both"
     )
+    sensitivity: float = Field(..., ge=0, le=1, description="Sensitivity for threshold calculation")
     task_priority: TaskPriority = Field(default=TaskPriority.NORMAL, description="Task priority level")
 
 
