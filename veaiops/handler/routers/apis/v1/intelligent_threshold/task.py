@@ -80,6 +80,7 @@ async def create_task(
         metric_template_value=body.metric_template_value,
         n_count=body.n_count,
         direction=body.direction,
+        sensitivity=body.sensitivity,
         status=IntelligentThresholdTaskStatus.RUNNING,
         created_user=current_user.username,
         updated_user=current_user.username,

@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import { Space } from '@arco-design/web-react';
-import { type CSSProperties, type FC, useCallback } from 'react';
+import { type CSSProperties, type FC, Fragment, useCallback } from 'react';
 import type React from 'react';
 
-import { CustomOutlineTag } from '../cell-render/custom-outline-tag';
 import styles from './index.module.less';
 
 enum TitleLevel {
@@ -31,7 +30,7 @@ export type WrapperWithTitleProps = {
   contentStyle?: CSSProperties; // 新增内容区域样式配置
   title: string;
   level: 1 | 2 | 3 | 4;
-  children?: JSX.Element | JSX.Element[];
+  children?: React.ReactNode;
   noPadding?: boolean;
   /**
    * Actions to display next to the title (e.g., buttons)
@@ -116,9 +115,7 @@ const WrapperWithTitle: FC<WrapperWithTitleProps> = ({
                   <Space>
                     {Array.isArray(wrapperActions)
                       ? wrapperActions.map((action, index) => (
-                          <React.Fragment key={`action-${index}`}>
-                            {action}
-                          </React.Fragment>
+                          <Fragment key={`action-${index}`}>{action}</Fragment>
                         ))
                       : wrapperActions}
                   </Space>

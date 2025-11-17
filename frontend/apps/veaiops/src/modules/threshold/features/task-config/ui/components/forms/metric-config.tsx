@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { DocsDrawer } from '@/components/common/docs-drawer';
 import {
+  Button,
   Form,
   Input,
   InputNumber,
@@ -21,7 +23,7 @@ import {
 import type { FormInstance } from '@arco-design/web-react/es/Form';
 import { Select, Input as VeInput } from '@veaiops/components';
 import type React from 'react';
-import { MetricDetailSection } from '@threshold/shared/components';
+import { useState } from 'react';
 // 定义指标类型选项
 const metricTypeOptions = [
   { label: 'CPU', value: 'cpu' },
@@ -42,6 +44,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
   form,
   readOnly = false,
 }) => {
+  const [docsDrawerVisible, setDocsDrawerVisible] = useState(false);
 
   return (
     <>
@@ -139,7 +142,19 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
         </div>
 
         {/* 指标详情区域 */}
-        <MetricDetailSection style={{ marginTop: '24px' }} useWrapper={false}>
+        {/* ✅ 修复：将标题和按钮放在 Form 外面，避免事件冒泡导致 Form.Item 接收到 SyntheticEvent */}
+        <div style={{ marginTop: '24px' }}>
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="text-sm font-medium">指标详情</h3>
+            <Button
+              type="text"
+              size="small"
+              onClick={() => setDocsDrawerVisible(true)}
+              className="text-blue-600 hover:text-blue-700"
+            >
+              📖 查看文档
+            </Button>
+          </div>
           <div
             className={`flex flex-wrap justify-between p-4 border border-[#e5e5e5] rounded-md bg-[#f9f9f9] ${readOnly ? 'gap-4' : 'gap-0'}`}
           >
@@ -358,8 +373,13 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
               <div style={{ flex: 1 }} />
             </div>
           </div>
-        </MetricDetailSection>
+        </div>
       </Form>
+      <DocsDrawer
+        visible={docsDrawerVisible}
+        onClose={() => setDocsDrawerVisible(false)}
+        anchor="指标模板管理"
+      />
     </>
   );
 };
