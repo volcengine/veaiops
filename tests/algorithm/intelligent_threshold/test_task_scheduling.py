@@ -64,6 +64,7 @@ async def test_task_priority_ordering(mock_metric_template):
         window_size=5,
         direction="up",
         priority=TaskPriority.LOW,
+        sensitivity=0.5,
         created_at=1000.0,
     )
 
@@ -75,6 +76,7 @@ async def test_task_priority_ordering(mock_metric_template):
         window_size=5,
         direction="up",
         priority=TaskPriority.HIGH,
+        sensitivity=0.5,
         created_at=2000.0,
     )
 
@@ -86,6 +88,7 @@ async def test_task_priority_ordering(mock_metric_template):
         window_size=5,
         direction="up",
         priority=TaskPriority.NORMAL,
+        sensitivity=0.5,
         created_at=1500.0,
     )
 
@@ -103,6 +106,7 @@ async def test_task_priority_ordering(mock_metric_template):
         window_size=5,
         direction="up",
         priority=TaskPriority.HIGH,
+        sensitivity=0.5,
         created_at=1000.0,  # Earlier than task2
     )
 
@@ -130,6 +134,7 @@ async def test_concurrent_task_limit(scheduler, mock_metric_template):
                 window_size=5,
                 direction="up",
                 task_priority=TaskPriority.NORMAL,
+                sensitivity=0.5,
             )
 
         # Check status immediately after submitting
@@ -162,6 +167,7 @@ async def test_priority_queue_processing(scheduler, mock_metric_template):
             window_size=5,
             direction="up",
             task_priority=TaskPriority.LOW,
+            sensitivity=0.5,
         )
 
         await scheduler.handle_task(
@@ -172,6 +178,7 @@ async def test_priority_queue_processing(scheduler, mock_metric_template):
             window_size=5,
             direction="up",
             task_priority=TaskPriority.HIGH,
+            sensitivity=0.5,
         )
 
         await scheduler.handle_task(
@@ -182,6 +189,7 @@ async def test_priority_queue_processing(scheduler, mock_metric_template):
             window_size=5,
             direction="up",
             task_priority=TaskPriority.URGENT,
+            sensitivity=0.5,
         )
 
         # Wait for processing
@@ -218,6 +226,7 @@ async def test_queue_status_reporting(scheduler, mock_metric_template):
                 window_size=5,
                 direction="up",
                 task_priority=priority,
+                sensitivity=0.5,
             )
 
         # Check status immediately after submitting
@@ -286,6 +295,7 @@ async def test_task_failure_handling(scheduler, mock_metric_template):
             window_size=5,
             direction="up",
             task_priority=TaskPriority.NORMAL,
+            sensitivity=0.5,
         )
 
         await scheduler.handle_task(
@@ -296,6 +306,7 @@ async def test_task_failure_handling(scheduler, mock_metric_template):
             window_size=5,
             direction="up",
             task_priority=TaskPriority.NORMAL,
+            sensitivity=0.5,
         )
 
         # Wait for processing

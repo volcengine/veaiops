@@ -98,6 +98,7 @@ async def test_handle_task_success(threshold_recommender, mock_metric_template_v
         window_size=window_size,
         direction=direction,
         task_priority=task_priority,
+        sensitivity=0.5,
     )
 
     # Check queue status
@@ -149,6 +150,7 @@ async def test_calculate_threshold_success(threshold_recommender, mock_metric_te
             metric_template_value=mock_metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         # Verify the result structure
@@ -214,6 +216,7 @@ async def test_calculate_threshold_with_invalid_min_max_values(threshold_recomme
             metric_template_value=metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         # Should still succeed but with swapped min/max values
@@ -270,6 +273,7 @@ async def test_calculate_threshold_with_extreme_values(threshold_recommender, mo
             metric_template_value=metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         assert result["status"] == "Success"
@@ -303,6 +307,7 @@ async def test_calculate_threshold_direction_down(threshold_recommender, mock_me
             metric_template_value=mock_metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         assert result["status"] == "Success"
@@ -312,7 +317,7 @@ async def test_calculate_threshold_direction_down(threshold_recommender, mock_me
         for call in calls:
             args = call[0]
             assert args[7] == 10.0  # normal_threshold should be normal_range_start
-            assert args[9] == "down"  # direction should be 'down'
+            assert args[10] == "down"  # direction should be 'down'
 
 
 @pytest.mark.asyncio
@@ -331,6 +336,7 @@ async def test_calculate_threshold_exception_handling(threshold_recommender, moc
             metric_template_value=mock_metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         # Verify error handling
@@ -472,6 +478,7 @@ async def test_calculate_threshold_with_invalid_normal_range(threshold_recommend
             metric_template_value=metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         assert result["status"] == "Success"
@@ -504,6 +511,7 @@ async def test_calculate_threshold_empty_data(threshold_recommender, mock_metric
             metric_template_value=mock_metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         # Should return NoData status for empty data
@@ -530,7 +538,7 @@ async def test_calculate_threshold_direction_both(threshold_recommender, mock_me
 
         # Mock different thresholds for up and down directions
         def mock_threshold_side_effect(*args, **kwargs):
-            direction_arg = args[9] if len(args) > 9 else kwargs.get("direction", "up")
+            direction_arg = args[10] if len(args) > 10 else kwargs.get("direction", "up")
             if direction_arg == "up":
                 return [
                     {
@@ -560,6 +568,7 @@ async def test_calculate_threshold_direction_both(threshold_recommender, mock_me
             metric_template_value=mock_metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         assert result["status"] == "Success"
@@ -592,6 +601,7 @@ async def test_handle_task_direction_both(threshold_recommender, mock_metric_tem
         window_size=window_size,
         direction=direction,
         task_priority=TaskPriority.NORMAL,
+        sensitivity=0.5,
     )
 
     # Check that task was queued
@@ -977,6 +987,7 @@ async def test_calculate_threshold_with_none_window_size(
             metric_template_value=mock_metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         assert result["status"] == "Success"
@@ -1057,6 +1068,7 @@ async def test_calculate_threshold_fetch_data_timeout(threshold_recommender, moc
             metric_template_value=mock_metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         # Should return Failed status due to timeout
@@ -1064,6 +1076,220 @@ async def test_calculate_threshold_fetch_data_timeout(threshold_recommender, moc
         assert result["result"] == []
         assert "timeout" in result["message"].lower()
         assert "3 seconds" in result["message"]
+
+
+@pytest.mark.asyncio
+async def test_calculate_threshold_with_none_values(threshold_recommender, mock_task_data):
+    """Test threshold calculation when max_value, min_value, normal_range_start and normal_range_end are None."""
+    # Create metric template with None values for the four fields
+    metric_template_value = MetricTemplateValue(
+        name="test_metric",
+        metric_type=MetricType.Count,
+        min_step=1.0,
+        min_value=None,  # Set to None
+        max_value=None,  # Set to None
+        min_violation=5.0,
+        min_violation_ratio=0.1,
+        normal_range_start=None,  # Set to None
+        normal_range_end=None,  # Set to None
+        missing_value=None,
+        failure_interval_expectation=300,
+        display_unit="count",
+        linear_scale=1.0,
+        max_time_gap=600,
+        min_ts_length=100,
+    )
+
+    datasource_id = "test_datasource"
+    window_size = 5
+    direction = "up"
+
+    with (
+        patch("veaiops.algorithm.intelligent_threshold.threshold_recommender.fetch_data") as mock_fetch_data,
+        patch.object(threshold_recommender.threshold_algorithm, "recommend_threshold") as mock_threshold_rec,
+        patch("time.time") as mock_time,
+    ):
+        mock_time.return_value = 1641081600
+        mock_fetch_data.return_value = mock_task_data
+        mock_threshold_rec.return_value = [
+            {
+                "start_hour": 0,
+                "end_hour": 24,
+                "upper_bound": 75.0,
+                "lower_bound": None,
+                "window_size": 5,
+            }
+        ]
+
+        result = await threshold_recommender.calculate_threshold(
+            datasource_id=datasource_id,
+            metric_template_value=metric_template_value,
+            window_size=window_size,
+            direction=direction,
+            sensitivity=0.5,
+        )
+
+        # Should succeed even with None values
+        assert result["status"] == "Success"
+        assert len(result["result"]) == 2  # Two metrics in mock_task_data
+
+        # Verify that recommend_threshold was called with None values
+        calls = mock_threshold_rec.call_args_list
+        for call in calls:
+            args = call[0]
+            assert args[5] is None  # min_value should be None
+            assert args[6] is None  # max_value should be None
+            assert args[7] is None  # normal_threshold should be None (from normal_range_end for direction='up')
+            assert args[9] == 0.5  # sensitivity should be 0.5
+            assert args[10] == "up"  # direction should be 'up'
+
+
+@pytest.mark.asyncio
+async def test_calculate_threshold_with_none_values_direction_down(threshold_recommender, mock_task_data):
+    """Test threshold calculation with None values for direction='down'."""
+    # Create metric template with None values for the four fields
+    metric_template_value = MetricTemplateValue(
+        name="test_metric",
+        metric_type=MetricType.Count,
+        min_step=1.0,
+        min_value=None,  # Set to None
+        max_value=None,  # Set to None
+        min_violation=5.0,
+        min_violation_ratio=0.1,
+        normal_range_start=None,  # Set to None
+        normal_range_end=None,  # Set to None
+        missing_value=None,
+        failure_interval_expectation=300,
+        display_unit="count",
+        linear_scale=1.0,
+        max_time_gap=600,
+        min_ts_length=100,
+    )
+
+    datasource_id = "test_datasource"
+    window_size = 5
+    direction = "down"
+
+    with (
+        patch("veaiops.algorithm.intelligent_threshold.threshold_recommender.fetch_data") as mock_fetch_data,
+        patch.object(threshold_recommender.threshold_algorithm, "recommend_threshold") as mock_threshold_rec,
+        patch("time.time") as mock_time,
+    ):
+        mock_time.return_value = 1641081600
+        mock_fetch_data.return_value = mock_task_data
+        mock_threshold_rec.return_value = [
+            {
+                "start_hour": 0,
+                "end_hour": 24,
+                "upper_bound": None,
+                "lower_bound": 25.0,
+                "window_size": 5,
+            }
+        ]
+
+        result = await threshold_recommender.calculate_threshold(
+            datasource_id=datasource_id,
+            metric_template_value=metric_template_value,
+            window_size=window_size,
+            direction=direction,
+            sensitivity=0.5,
+        )
+
+        # Should succeed even with None values
+        assert result["status"] == "Success"
+        assert len(result["result"]) == 2  # Two metrics in mock_task_data
+
+        # Verify that recommend_threshold was called with None values
+        calls = mock_threshold_rec.call_args_list
+        for call in calls:
+            args = call[0]
+            assert args[5] is None  # min_value should be None
+            assert args[6] is None  # max_value should be None
+            assert args[7] is None  # normal_threshold should be None (from normal_range_start for direction='down')
+            assert args[9] == 0.5  # sensitivity should be 0.5
+            assert args[10] == "down"  # direction should be 'down'
+
+
+@pytest.mark.asyncio
+async def test_calculate_threshold_with_none_values_direction_both(threshold_recommender, mock_task_data):
+    """Test threshold calculation with None values for direction='both'."""
+    # Create metric template with None values for the four fields
+    metric_template_value = MetricTemplateValue(
+        name="test_metric",
+        metric_type=MetricType.Count,
+        min_step=1.0,
+        min_value=None,  # Set to None
+        max_value=None,  # Set to None
+        min_violation=5.0,
+        min_violation_ratio=0.1,
+        normal_range_start=None,  # Set to None
+        normal_range_end=None,  # Set to None
+        missing_value=None,
+        failure_interval_expectation=300,
+        display_unit="count",
+        linear_scale=1.0,
+        max_time_gap=600,
+        min_ts_length=100,
+    )
+
+    datasource_id = "test_datasource"
+    window_size = 5
+    direction = "both"
+
+    with (
+        patch("veaiops.algorithm.intelligent_threshold.threshold_recommender.fetch_data") as mock_fetch_data,
+        patch.object(threshold_recommender.threshold_algorithm, "recommend_threshold") as mock_threshold_rec,
+        patch("time.time") as mock_time,
+    ):
+        mock_time.return_value = 1641081600
+        mock_fetch_data.return_value = mock_task_data
+
+        # Mock different thresholds for up and down directions
+        def mock_threshold_side_effect(*args, **kwargs):
+            direction_arg = args[10] if len(args) > 10 else kwargs.get("direction", "up")
+            if direction_arg == "up":
+                return [
+                    {
+                        "start_hour": 0,
+                        "end_hour": 24,
+                        "upper_bound": 75.0,
+                        "lower_bound": None,
+                        "window_size": 5,
+                    }
+                ]
+            elif direction_arg == "down":
+                return [
+                    {
+                        "start_hour": 0,
+                        "end_hour": 24,
+                        "upper_bound": None,
+                        "lower_bound": 25.0,
+                        "window_size": 5,
+                    }
+                ]
+            return []
+
+        mock_threshold_rec.side_effect = mock_threshold_side_effect
+
+        result = await threshold_recommender.calculate_threshold(
+            datasource_id=datasource_id,
+            metric_template_value=metric_template_value,
+            window_size=window_size,
+            direction=direction,
+            sensitivity=0.5,
+        )
+
+        # Should succeed even with None values
+        assert result["status"] == "Success"
+        assert len(result["result"]) == 2  # Two time series
+
+        # Check that both upper and lower bounds are present
+        for threshold_result in result["result"]:
+            assert len(threshold_result.thresholds) == 1
+            threshold_config = threshold_result.thresholds[0]
+            assert threshold_config.upper_bound == 75.0
+            assert threshold_config.lower_bound == 25.0
+            assert threshold_config.window_size == 5
 
 
 @pytest.mark.asyncio
@@ -1091,6 +1317,7 @@ async def test_calculate_threshold_fetch_data_cancelled(threshold_recommender, m
             metric_template_value=mock_metric_template_value,
             window_size=window_size,
             direction=direction,
+            sensitivity=0.5,
         )
 
         # Should return Failed status due to cancellation
