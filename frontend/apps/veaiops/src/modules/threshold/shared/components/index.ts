@@ -30,3 +30,6 @@ export {
 } from './push-history';
 
 export type { PushHistoryManagerProps } from './push-history';
+
+// 重新导出 Metric Detail Section 组件
+export { MetricDetailSection } from './metric-detail-section';
