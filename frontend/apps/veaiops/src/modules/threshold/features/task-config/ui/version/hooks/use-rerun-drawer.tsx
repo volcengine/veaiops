@@ -71,6 +71,10 @@ export const useRerunDrawer = (
         direction: values.direction,
         n_count: values.n_count,
         metric_template_value: values.metric_template_value,
+        sensitivity:
+          (values.sensitivity as number) ??
+          (values.metric_template_value?.sensitivity as number) ??
+          0.5,
       };
 
       const response =
@@ -124,11 +128,12 @@ export const useRerunDrawer = (
       const formData = {
         direction: rerunData.direction || 'both',
         n_count: rerunData.n_count || 3,
+        sensitivity: rerunData.sensitivity ?? 0.5,
         metric_template_value: {
           normal_range_start:
-            rerunData.metric_template_value?.normal_range_start || 0,
+            rerunData.metric_template_value?.normal_range_start ?? undefined,
           normal_range_end:
-            rerunData.metric_template_value?.normal_range_end || 55,
+            rerunData.metric_template_value?.normal_range_end ?? undefined,
         },
         task_id: rerunData.task_id,
       };

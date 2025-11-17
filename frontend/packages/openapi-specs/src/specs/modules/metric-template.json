@@ -260,10 +260,12 @@
           },
           "max_value": {
             "type": "number",
+            "nullable": true,
             "description": "Maximum value"
           },
           "min_value": {
             "type": "number",
+            "nullable": true,
             "description": "Minimum value"
           },
           "min_violation": {
@@ -276,10 +278,12 @@
           },
           "normal_range_start": {
             "type": "number",
+            "nullable": true,
             "description": "Normal range start"
           },
           "normal_range_end": {
             "type": "number",
+            "nullable": true,
             "description": "Normal range end"
           },
           "missing_value": {
@@ -337,12 +341,8 @@
           "name",
           "metric_type",
           "min_step",
-          "max_value",
-          "min_value",
           "min_violation",
           "min_violation_ratio",
-          "normal_range_start",
-          "normal_range_end",
           "failure_interval_expectation",
           "display_unit",
           "linear_scale",
@@ -367,10 +367,12 @@
           },
           "max_value": {
             "type": "number",
+            "nullable": true,
             "description": "Maximum value"
           },
           "min_value": {
             "type": "number",
+            "nullable": true,
             "description": "Minimum value"
           },
           "min_violation": {
@@ -383,10 +385,12 @@
           },
           "normal_range_start": {
             "type": "number",
+            "nullable": true,
             "description": "Normal range start"
           },
           "normal_range_end": {
             "type": "number",
+            "nullable": true,
             "description": "Normal range end"
           },
           "missing_value": {
@@ -419,12 +423,8 @@
           "name",
           "metric_type",
           "min_step",
-          "max_value",
-          "min_value",
           "min_violation",
           "min_violation_ratio",
-          "normal_range_start",
-          "normal_range_end",
           "failure_interval_expectation",
           "display_unit",
           "linear_scale",
@@ -449,10 +449,12 @@
           },
           "max_value": {
             "type": "number",
+            "nullable": true,
             "description": "Maximum value"
           },
           "min_value": {
             "type": "number",
+            "nullable": true,
             "description": "Minimum value"
           },
           "min_violation": {
@@ -465,10 +467,12 @@
           },
           "normal_range_start": {
             "type": "number",
+            "nullable": true,
             "description": "Normal range start"
           },
           "normal_range_end": {
             "type": "number",
+            "nullable": true,
             "description": "Normal range end"
           },
           "missing_value": {
@@ -501,12 +505,8 @@
           "name",
           "metric_type",
           "min_step",
-          "max_value",
-          "min_value",
           "min_violation",
           "min_violation_ratio",
-          "normal_range_start",
-          "normal_range_end",
           "failure_interval_expectation",
           "display_unit",
           "linear_scale",
@@ -531,10 +531,12 @@
           },
           "max_value": {
             "type": "number",
+            "nullable": true,
             "description": "Maximum value"
           },
           "min_value": {
             "type": "number",
+            "nullable": true,
             "description": "Minimum value"
           },
           "min_violation": {
@@ -547,10 +549,12 @@
           },
           "normal_range_start": {
             "type": "number",
+            "nullable": true,
             "description": "Normal range start"
           },
           "normal_range_end": {
             "type": "number",
+            "nullable": true,
             "description": "Normal range end"
           },
           "missing_value": {

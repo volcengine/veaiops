@@ -213,7 +213,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
             <div className="w-full">
               <Form.Item
                 label="灵敏度"
-                field="metric_template_value.sensitivity"
+                field="sensitivity"
                 extra="算法敏感度参数，范围为0~1，影响异常检测的敏感程度，默认0.5"
                 initialValue={0.5}
                 style={{ flex: 1 }}

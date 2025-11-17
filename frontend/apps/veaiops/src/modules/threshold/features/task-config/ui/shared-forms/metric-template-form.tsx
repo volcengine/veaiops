@@ -14,7 +14,7 @@
 
 import { DocsDrawer } from '@/components/common/docs-drawer';
 import { Button, Form, Slider } from '@arco-design/web-react';
-import { FormItemWrapper, Input, WrapperWithTitle } from '@veaiops/components';
+import { FormItemWrapper, Input } from '@veaiops/components';
 import type { FC } from 'react';
 import { useCallback, useState } from 'react';
 
@@ -110,11 +110,11 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                       disabled: isShow,
                     }}
                   />
-                  {/* 灵敏度字段 */}
+                  {/* 灵敏度字段 - 注意：sensitivity 不在 metric_template_value 中，而是在任务级别 */}
                   <div className="w-full">
                     <Form.Item
                       label="灵敏度"
-                      field={getField('sensitivity')}
+                      field="sensitivity"
                       extra="算法敏感度参数，范围为0~1，影响异常检测的敏感程度，默认0.5"
                       initialValue={0.5}
                       style={{ flex: 1 }}
@@ -176,14 +176,10 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                   {/* 默认阈值下界 */}
                   <Input.Number
                     isControl
-                    required
                     inline
                     formItemProps={{
                       label: '默认阈值下界',
                       field: getField('normal_range_start'),
-                      rules: [
-                        { required: true, message: '请输入默认阈值下界' },
-                      ],
                       extra:
                         '正常范围的下限值，低于此值可能触发异常告警（如：CPU使用率正常起始值为20%）',
                     }}
@@ -195,14 +191,10 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
                   {/* 默认阈值上界 */}
                   <Input.Number
                     isControl
-                    required
                     inline
                     formItemProps={{
                       label: '默认阈值上界',
                       field: getField('normal_range_end'),
-                      rules: [
-                        { required: true, message: '请输入默认阈值上界' },
-                      ],
                       extra:
                         '正常范围的上限值，高于此值可能触发异常告警（如：CPU使用率正常终止值为80%）',
                     }}

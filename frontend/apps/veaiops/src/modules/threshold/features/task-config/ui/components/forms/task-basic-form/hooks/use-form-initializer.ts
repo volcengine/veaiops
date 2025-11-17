@@ -82,6 +82,7 @@ export const useFormInitializer = ({
         // ✅ 使用 latest_version 的数据
         direction: taskDetail.latest_version?.direction || 'both',
         nCount: taskDetail.latest_version?.n_count || 3,
+        sensitivity: taskDetail.latest_version?.sensitivity ?? 0.5,
         // ✅ 关键：设置 metric_template_value（阈值上下界）
         metric_template_value: taskDetail.latest_version?.metric_template_value,
       });
@@ -93,7 +94,11 @@ export const useFormInitializer = ({
     ) {
       // 新建任务时，从筛选器联动数据源类型，如果筛选器未选择则默认为 Volcengine
       const defaultDatasourceType = filterDatasourceType || 'Volcengine';
-      form.setFieldsValue({ nCount: 3, datasourceType: defaultDatasourceType });
+      form.setFieldsValue({
+        nCount: 3,
+        sensitivity: 0.5,
+        datasourceType: defaultDatasourceType,
+      });
       setDatasourceType(defaultDatasourceType);
     }
   }, [

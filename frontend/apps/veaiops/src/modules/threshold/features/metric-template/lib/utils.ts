@@ -77,39 +77,22 @@ export const validateMetricTemplate = (
     errors.push("指标模板类型必须在1-6之间");
   }
 
-  if (template.min_value === undefined || template.min_value === null) {
-    errors.push("指标最小值不能为空");
-  }
-
-  if (template.max_value === undefined || template.max_value === null) {
-    errors.push("指标最大值不能为空");
-  }
-
+  // 这些字段现在是可选的，只在有值时才进行验证
   if (
     template.min_value !== undefined &&
     template.max_value !== undefined &&
+    template.min_value !== null &&
+    template.max_value !== null &&
     template.min_value >= template.max_value
   ) {
     errors.push("指标最小值必须小于指标最大值");
   }
 
   if (
-    template.normal_range_start === undefined ||
-    template.normal_range_start === null
-  ) {
-    errors.push("默认阈值下界不能为空");
-  }
-
-  if (
-    template.normal_range_end === undefined ||
-    template.normal_range_end === null
-  ) {
-    errors.push("默认阈值上界不能为空");
-  }
-
-  if (
     template.normal_range_start !== undefined &&
     template.normal_range_end !== undefined &&
+    template.normal_range_start !== null &&
+    template.normal_range_end !== null &&
     template.normal_range_start >= template.normal_range_end
   ) {
     errors.push("默认阈值下界必须小于默认阈值上界");

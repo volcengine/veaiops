@@ -181,6 +181,10 @@ export const useTaskFormHandlers = ({
             metric_template_value:
               values?.metric_template_value as MetricTemplateValue,
             n_count: (values.nCount as number) || 1,
+            sensitivity:
+              (values.sensitivity as number) ??
+              (values.metric_template_value?.sensitivity as number) ??
+              0.5,
           };
 
           logger.info({

@@ -52,6 +52,10 @@ export type IntelligentThresholdTaskCreateRequest = {
    * N计数
    */
   n_count: number;
+  /**
+   * 灵敏度
+   */
+  sensitivity?: number;
 };
 export namespace IntelligentThresholdTaskCreateRequest {
   /**
