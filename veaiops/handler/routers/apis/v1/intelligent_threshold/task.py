@@ -98,6 +98,7 @@ async def create_task(
             metric_template_value=body.metric_template_value,
             n_count=body.n_count,
             direction=body.direction,
+            sensitivity=body.sensitivity,
             task_priority=TaskPriority.HIGH,
         )
 
@@ -159,6 +160,7 @@ async def rerun_task(
         metric_template_value=body.metric_template_value,
         n_count=body.n_count,
         direction=body.direction,
+        sensitivity=body.sensitivity,
         created_user=current_user.username,  # Use current user instead of copying from latest version
         updated_user=current_user.username,
         status=IntelligentThresholdTaskStatus.RUNNING,
@@ -179,6 +181,7 @@ async def rerun_task(
             metric_template_value=body.metric_template_value,
             n_count=body.n_count,
             direction=body.direction,
+            sensitivity=body.sensitivity,
             task_priority=TaskPriority.HIGH,
         )
     except Exception as e:
