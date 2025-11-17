@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DocsDrawer } from '@/components/common/docs-drawer';
 import {
   Button,
   Drawer,
@@ -26,7 +25,7 @@ import type { FormInstance } from '@arco-design/web-react/es/Form';
 import { DrawerFormContent, useDrawerFormSubmit } from '@veaiops/utils';
 import type { MetricTemplate } from 'api-generate';
 import type React from 'react';
-import { useState } from 'react';
+import { MetricDetailSection } from '@threshold/shared/components';
 import { METRIC_TEMPLATE_MANAGEMENT_CONFIG } from '../lib/config';
 import { getMetricTypeOptions } from '../lib/metric-type-translations';
 
@@ -55,7 +54,6 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
 }) => {
   const isEditing = Boolean(editingTemplate);
   const title = isEditing ? '编辑指标模板' : '新建指标模板';
-  const [docsDrawerVisible, setDocsDrawerVisible] = useState(false);
 
   // 使用公共的抽屉表单提交 Hook
   // 注意：onOk 已经在父组件中处理了表单验证，这里只需要包装为 onSubmit
@@ -69,10 +67,6 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
     resetOnSuccess: true,
     closeOnSuccess: false, // 不自动关闭，由父组件控制
   });
-
-  const handleOpenDocs = () => {
-    setDocsDrawerVisible(true);
-  };
 
   return (
     <Drawer
@@ -129,18 +123,7 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
             </Form.Item>
 
             {/* 指标详情区域 - 只显示核心参数 */}
-            <div>
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-medium">指标详情</h3>
-                <Button
-                  type="text"
-                  size="small"
-                  onClick={handleOpenDocs}
-                  className="text-blue-600 hover:text-blue-700"
-                >
-                  📖 查看文档
-                </Button>
-              </div>
+            <MetricDetailSection useWrapper={false}>
               <div className="flex flex-wrap justify-between p-4 border border-[#e5e5e5] rounded-md bg-[#f9f9f9] gap-4">
                 {/* 第一行 */}
                 <div className="flex gap-4 w-full">
@@ -230,17 +213,10 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
                   </Form.Item>
                 </div>
               </div>
-            </div>
+            </MetricDetailSection>
           </Form>
         </div>
       </DrawerFormContent>
-
-      {/* 文档抽屉 */}
-      <DocsDrawer
-        visible={docsDrawerVisible}
-        onClose={() => setDocsDrawerVisible(false)}
-        anchor="指标模板管理"
-      />
     </Drawer>
   );
 };

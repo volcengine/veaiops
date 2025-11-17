@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DocsDrawer } from '@/components/common/docs-drawer';
 import {
-  Button,
   Form,
   Input,
   InputNumber,
@@ -23,7 +21,7 @@ import {
 import type { FormInstance } from '@arco-design/web-react/es/Form';
 import { Select, Input as VeInput } from '@veaiops/components';
 import type React from 'react';
-import { useState } from 'react';
+import { MetricDetailSection } from '@threshold/shared/components';
 // 定义指标类型选项
 const metricTypeOptions = [
   { label: 'CPU', value: 'cpu' },
@@ -44,11 +42,6 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
   form,
   readOnly = false,
 }) => {
-  const [docsDrawerVisible, setDocsDrawerVisible] = useState(false);
-
-  const handleOpenDocs = () => {
-    setDocsDrawerVisible(true);
-  };
 
   return (
     <>
@@ -92,6 +85,7 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
         </div>
 
         {/* 灵敏度字段 - 放在指标详情上方 */}
+<<<<<<< HEAD
         <div className="mt-6">
           <Form.Item
             label="灵敏度"
@@ -118,18 +112,34 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
         </div>
 
         {/* 指标详情区域 */}
+=======
+>>>>>>> c21cea0 (fix(docs-drawer): use optional chain for anchor check)
         <div className="mt-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-medium">指标详情</h3>
-            <Button
-              type="text"
-              size="small"
-              onClick={handleOpenDocs}
-              className="text-blue-600 hover:text-blue-700"
-            >
-              📖 查看文档
-            </Button>
-          </div>
+          <Form.Item
+            label="灵敏度"
+            field="sensitivity"
+            extra="算法敏感度参数，范围为0~1，影响异常检测的敏感程度，默认0.5"
+          >
+            <Slider
+              min={0}
+              max={1}
+              step={0.1}
+              showTicks
+              marks={{
+                0: '0',
+                0.2: '0.2',
+                0.4: '0.4',
+                0.6: '0.6',
+                0.8: '0.8',
+                1: '1',
+              }}
+              disabled={readOnly}
+            />
+          </Form.Item>
+        </div>
+
+        {/* 指标详情区域 */}
+        <MetricDetailSection style={{ marginTop: '24px' }} useWrapper={false}>
           <div
             className={`flex flex-wrap justify-between p-4 border border-[#e5e5e5] rounded-md bg-[#f9f9f9] ${readOnly ? 'gap-4' : 'gap-0'}`}
           >
@@ -348,15 +358,8 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
               <div style={{ flex: 1 }} />
             </div>
           </div>
-        </div>
+        </MetricDetailSection>
       </Form>
-
-      {/* 文档抽屉 */}
-      <DocsDrawer
-        visible={docsDrawerVisible}
-        onClose={() => setDocsDrawerVisible(false)}
-        anchor="指标模板管理"
-      />
     </>
   );
 };

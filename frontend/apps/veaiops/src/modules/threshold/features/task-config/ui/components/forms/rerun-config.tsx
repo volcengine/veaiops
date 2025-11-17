@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { DocsDrawer } from '@/components/common/docs-drawer';
-import { Button, Form, InputNumber, Slider } from '@arco-design/web-react';
+import { Form, InputNumber, Slider } from '@arco-design/web-react';
 import type { FormInstance } from '@arco-design/web-react/es/Form';
 import { Select, Input as VeInput } from '@veaiops/components';
 import type React from 'react';
-import { useState } from 'react';
+import { MetricDetailSection } from '@threshold/shared/components';
 
 interface RerunFormConfigProps {
   form: FormInstance;
@@ -32,12 +31,6 @@ export const RerunFormConfig: React.FC<RerunFormConfigProps> = ({
   form,
   readOnly = false,
 }) => {
-  const [docsDrawerVisible, setDocsDrawerVisible] = useState(false);
-
-  const handleOpenDocs = () => {
-    setDocsDrawerVisible(true);
-  };
-
   return (
     <>
       <Form form={form} layout="vertical" disabled={readOnly}>
@@ -86,7 +79,6 @@ export const RerunFormConfig: React.FC<RerunFormConfigProps> = ({
           label="灵敏度"
           field="sensitivity"
           extra="算法敏感度参数，范围为0~1，影响异常检测的敏感程度，默认0.5"
-          initialValue={0.5}
         >
           <Slider
             min={0}
@@ -106,18 +98,7 @@ export const RerunFormConfig: React.FC<RerunFormConfigProps> = ({
         </Form.Item>
 
         {/* 指标详情区域 */}
-        <div className="mt-6">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-medium">指标详情</h3>
-            <Button
-              type="text"
-              size="small"
-              onClick={handleOpenDocs}
-              className="text-blue-600 hover:text-blue-700"
-            >
-              📖 查看文档
-            </Button>
-          </div>
+        <MetricDetailSection style={{ marginTop: '24px' }} useWrapper={false}>
           <div className="flex flex-wrap justify-between p-4 border border-[#e5e5e5] rounded-md bg-[#f9f9f9]">
             {/* 正常起始值和正常止值 */}
             <div className="w-full flex flex-col gap-0">
@@ -140,15 +121,8 @@ export const RerunFormConfig: React.FC<RerunFormConfigProps> = ({
               </Form.Item>
             </div>
           </div>
-        </div>
+        </MetricDetailSection>
       </Form>
-
-      {/* 文档抽屉 */}
-      <DocsDrawer
-        visible={docsDrawerVisible}
-        onClose={() => setDocsDrawerVisible(false)}
-        anchor="指标模板管理"
-      />
     </>
   );
 };
