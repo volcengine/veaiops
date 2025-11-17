@@ -91,125 +91,24 @@ const MetricTemplateForm: FC<MetricTemplateFormProps> = ({
               }}
             />
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-              {/* 指标最大值 */}
-              <Input.Number
-                isControl
-                required
-                inline
-                formItemProps={{
-                  label: '指标最大值',
-                  field: getField('max_value'),
-                  rules: [{ required: true, message: '请输入指标最大值' }],
-                  extra:
-                    '指标数据的理论最大值，用于算法边界约束和异常值过滤（如：CPU使用率的最大值为100）',
-                }}
-                controlProps={{
-                  disabled: isShow,
-                }}
-              />
+            {/* 指标最大值 */}
+            <Input.Number
+              isControl
+              required
+              inline
+              formItemProps={{
+                label: '指标最大值',
+                field: getField('max_value'),
+                rules: [{ required: true, message: '请输入指标最大值' }],
+                extra:
+                  '指标数据的理论最大值，用于算法边界约束和异常值过滤（如：CPU使用率的最大值为100）',
+              }}
+              controlProps={{
+                disabled: isShow,
+              }}
+            />
 
-              {/* 默认阈值下界 */}
-              <Input.Number
-                isControl
-                inline
-                formItemProps={{
-                  label: '默认阈值下界',
-                  field: getField('normal_range_start'),
-                  extra:
-                    '正常范围的下限值，低于此值可能触发异常告警（如：CPU使用率正常起始值为20%）',
-                }}
-                controlProps={{
-                  disabled: isShow,
-                }}
-              />
-
-              {/* 默认阈值上界 */}
-              <Input.Number
-                isControl
-                inline
-                formItemProps={{
-                  label: '默认阈值上界',
-                  field: getField('normal_range_end'),
-                  extra:
-                    '正常范围的上限值，高于此值可能触发异常告警（如：CPU使用率正常终止值为80%）',
-                }}
-                controlProps={{
-                  disabled: isShow,
-                }}
-              />
-
-              {/* 展示系数 */}
-              <Input.Number
-                isControl
-                required
-                inline
-                formItemProps={{
-                  label: '展示系数',
-                  field: getField('linear_scale'),
-                  rules: [{ required: true, message: '请输入展示系数' }],
-                  extra:
-                    '用于数据展示的缩放系数，影响阈值在界面上的显示数值（如：1.0表示不缩放，100表示放大100倍）',
-                }}
-                controlProps={{
-                  disabled: isShow,
-                }}
-              />
-
-              {/* 最长无数据时间 */}
-              <Input.Number
-                isControl
-                required
-                inline
-                formItemProps={{
-                  label: '最长无数据时间',
-                  field: getField('max_time_gap'),
-                  rules: [
-                    { required: true, message: '请输入最长无数据时间' },
-                    {
-                      type: 'number',
-                      min: 1,
-                      message: '最长无数据时间必须大于0',
-                    },
-                  ],
-                  extra:
-                    '允许数据源无数据的最长时间间隔，超过此时间将触发异常告警（建议：5-60分钟）',
-                }}
-                controlProps={{
-                  suffix: '分钟',
-                  disabled: isShow,
-                }}
-              />
-
-              {/* 最小数据时间 */}
-              <Input.Number
-                isControl
-                required
-                inline
-                formItemProps={{
-                  label: '最小数据时间',
-                  field: getField('min_ts_length'),
-                  rules: [
-                    { required: true, message: '请输入最小数据时间' },
-                  ],
-                  extra:
-                    '进行阈值计算所需的最小时序数据长度，确保算法有足够的数据进行分析（建议：2880分钟，即2天数据）',
-                }}
-                controlProps={{
-                  suffix: '分钟',
-                  disabled: isShow,
-                }}
-              />
-            </>
-          )}
-        </div>
-      </FormItemWrapper>
-    </MetricDetailSection>
-  );
-};
-
-export default MetricTemplateForm;
+            {/* 默认阈值下界 */}
             <Input.Number
               isControl
               inline
@@ -281,30 +180,6 @@ export default MetricTemplateForm;
               }}
             />
 
-<<<<<<< HEAD
-                {/* 最小数据时间 */}
-                <Input.Number
-                  isControl
-                  required
-                  inline
-                  formItemProps={{
-                    label: '最小数据时间',
-                    field: getField('min_ts_length'),
-                    rules: [{ required: true, message: '请输入最小数据时间' }],
-                    extra:
-                      '进行阈值计算所需的最小时序数据长度，确保算法有足够的数据进行分析（建议：2880分钟，即2天数据）',
-                  }}
-                  controlProps={{
-                    suffix: '分钟',
-                    disabled: isShow,
-                  }}
-                />
-              </>
-            )}
-          </div>
-        </FormItemWrapper>
->>>>>>> aeda184 (feat(threshold): enhance form layout and WrapperWithTitle component)
-=======
             {/* 最小数据时间 */}
             <Input.Number
               isControl
@@ -325,7 +200,6 @@ export default MetricTemplateForm;
           </>
         )}
       </div>
->>>>>>> 45e361f (refactor(threshold): unify error handling with extractApiErrorMessage utility)
     </MetricDetailSection>
   );
 };

@@ -88,40 +88,12 @@ export const MetricDetailConfig: React.FC<MetricDetailConfigProps> = ({
         </div>
 
         {/* 灵敏度字段 - 放在指标详情上方 */}
-<<<<<<< HEAD
         <div className="mt-6">
           <Form.Item
             label="灵敏度"
             field="sensitivity"
             extra="算法敏感度参数，范围为0~1，影响异常检测的敏感程度，默认0.5"
             initialValue={0.5}
-          >
-            <Slider
-              min={0}
-              max={1}
-              step={0.1}
-              showTicks
-              marks={{
-                0: '0',
-                0.2: '0.2',
-                0.4: '0.4',
-                0.6: '0.6',
-                0.8: '0.8',
-                1: '1',
-              }}
-              disabled={readOnly}
-            />
-          </Form.Item>
-        </div>
-
-        {/* 指标详情区域 */}
-=======
->>>>>>> c21cea0 (fix(docs-drawer): use optional chain for anchor check)
-        <div className="mt-6">
-          <Form.Item
-            label="灵敏度"
-            field="sensitivity"
-            extra="算法敏感度参数，范围为0~1，影响异常检测的敏感程度，默认0.5"
           >
             <Slider
               min={0}
