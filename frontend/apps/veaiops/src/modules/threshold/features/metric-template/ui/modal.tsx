@@ -130,7 +130,7 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
 
             {/* 指标详情区域 - 只显示核心参数 */}
             <div>
-              <div className="mb-4 flex items-center justify-between">
+              <div className="flex items-center justify-between">
                 <h3 className="text-sm font-medium">指标详情</h3>
                 <Button
                   type="text"

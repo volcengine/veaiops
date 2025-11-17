@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Space } from '@arco-design/web-react';
 import { type CSSProperties, type FC, useCallback } from 'react';
+import type React from 'react';
 
 import { CustomOutlineTag } from '../cell-render/custom-outline-tag';
 import styles from './index.module.less';
@@ -31,6 +33,11 @@ export type WrapperWithTitleProps = {
   level: 1 | 2 | 3 | 4;
   children?: JSX.Element | JSX.Element[];
   noPadding?: boolean;
+  /**
+   * Actions to display next to the title (e.g., buttons)
+   * Can be a single ReactNode or an array of ReactNodes
+   */
+  actions?: React.ReactNode | React.ReactNode[];
 };
 
 const titleMap: Record<TitleLevel, string> = {
@@ -47,6 +54,7 @@ const WrapperWithTitle: FC<WrapperWithTitleProps> = ({
   title,
   level,
   children,
+  actions,
 }) => {
   const getClassNameByLevel = useCallback(() => {
     let cls;
@@ -72,15 +80,51 @@ const WrapperWithTitle: FC<WrapperWithTitleProps> = ({
       contentStyle: wrapperContentStyle, // 新增参数
       noPadding: wrapperNoPadding,
       children: wrapperChildren,
+      actions: wrapperActions,
     }: WrapperWithTitleProps) => {
       const Tag = (titleMap[wrapperLevel] ||
         'div') as keyof JSX.IntrinsicElements;
+      const hasActions =
+        wrapperActions &&
+        (Array.isArray(wrapperActions) ? wrapperActions.length > 0 : true);
+
       return (
         <div className={'w-[100%]'}>
-          {wrapperTitle && (
-            <Tag style={wrapperStyle} className={getClassNameByLevel()}>
-              {wrapperTitle}
-            </Tag>
+          {(wrapperTitle || hasActions) && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%',
+              }}
+            >
+              {wrapperTitle && (
+                <Tag style={wrapperStyle} className={getClassNameByLevel()}>
+                  {wrapperTitle}
+                </Tag>
+              )}
+              {hasActions && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginLeft: 'auto',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Space>
+                    {Array.isArray(wrapperActions)
+                      ? wrapperActions.map((action, index) => (
+                          <React.Fragment key={`action-${index}`}>
+                            {action}
+                          </React.Fragment>
+                        ))
+                      : wrapperActions}
+                  </Space>
+                </div>
+              )}
+            </div>
           )}
           <div
             style={{
@@ -103,6 +147,7 @@ const WrapperWithTitle: FC<WrapperWithTitleProps> = ({
     contentStyle,
     noPadding,
     children,
+    actions,
   });
 };
 
