@@ -43,7 +43,7 @@ export type {
 };
 
 /**
- * 判断按钮配置数组是否包含 dropdown 配置
+ * Check if button configuration array contains dropdown configuration
  * @param buttonConfigurations
  */
 const isButtonConfigurationsWithDropdown = (
@@ -52,9 +52,9 @@ const isButtonConfigurationsWithDropdown = (
   (buttonConfigurations as ButtonConfigurationWithDropdown).isInDropdown;
 
 /**
- * 渲染按钮组件
- * @param buttonConfigurations 按钮配置数组
- * @returns 渲染后的按钮组件
+ * Render button component
+ * @param buttonConfigurations - Button configuration array
+ * @returns Rendered button component
  */
 const ButtonGroupRender: FC<{
   buttonConfigurations: FinalButtonConfiguration;
@@ -270,9 +270,17 @@ const ButtonGroupRender: FC<{
   const renderButtonConfiguration = (
     buttonConfigurations: ButtonConfiguration[],
   ) =>
-    buttonConfigurations.map(({ supportPopConfirm, ...rest }) =>
-      supportPopConfirm ? renderPopconfirmButton(rest) : renderButton(rest),
-    );
+    buttonConfigurations.map(({ supportPopConfirm, ...rest }, index) => {
+      const buttonElement = supportPopConfirm
+        ? renderPopconfirmButton(rest)
+        : renderButton(rest);
+      // Use dataTestId as key if available, otherwise use text, fallback to index
+      const key = rest.dataTestId || rest.text || `button-${index}`;
+      // Wrap in Fragment with key to ensure each list item has a unique key
+      return buttonElement ? (
+        <React.Fragment key={key}>{buttonElement}</React.Fragment>
+      ) : null;
+    });
 
   const renderButtonConfigurations = (
     buttonConfigurations: ButtonConfiguration[],

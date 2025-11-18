@@ -33,8 +33,8 @@ export interface TaskVersionTableRendererProps {
 }
 
 /**
- * 任务版本表格渲染器 hook
- * 封装表格的核心渲染逻辑和配置
+ * Task version table renderer hook
+ * Encapsulates core rendering logic and configuration for the table
  */
 export const useTaskVersionTableRenderer = ({
   dataSource,
@@ -71,8 +71,8 @@ export const useTaskVersionTableRenderer = ({
         border: { headerCell: true, bodyCell: true },
       }}
       pagination={{
-        defaultPageSize: 20,
-        sizeOptions: [20, 50, 100],
+        pageSize: 50,
+        sizeOptions: [50, 100],
       }}
       showReset
       supportSortColumns
