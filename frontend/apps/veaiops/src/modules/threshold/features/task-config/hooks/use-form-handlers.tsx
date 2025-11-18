@@ -15,7 +15,7 @@
 import apiClient from '@/utils/api-client';
 import { type FormInstance, Message } from '@arco-design/web-react';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
-import { logger } from '@veaiops/utils';
+import { extractApiErrorMessage, logger } from '@veaiops/utils';
 import {
   type IntelligentThresholdTask,
   IntelligentThresholdTaskCreateRequest,
@@ -421,23 +421,8 @@ export const useTaskFormHandlers = ({
 
         return false;
       } catch (error: unknown) {
-        // ✅ Correct: Expose actual error information
-        const errorObj =
-          error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '操作失败，请重试';
-
-        logger.error({
-          message: '[handleSubmit] Task submission failed',
-          data: {
-            error: errorMessage,
-            stack: errorObj.stack,
-            errorObj,
-            operationType,
-          },
-          source: 'TaskFormHandlers',
-          component: 'handleSubmit',
-        });
-
+        // ✅ Use unified utility function to extract error message
+        const errorMessage = extractApiErrorMessage(error, '操作失败，请重试');
         Message.error(`操作失败：${errorMessage}`);
         return false;
       } finally {
@@ -505,21 +490,9 @@ export const useTaskFormHandlers = ({
           throw new Error(response.message || '创建告警规则失败');
         }
       } catch (error: unknown) {
-        // ✅ Correct: Expose actual error information
-        const errorObj =
-          error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '创建告警规则失败';
+        // ✅ Use unified utility function to extract error message
+        const errorMessage = extractApiErrorMessage(error, '创建告警规则失败');
         Message.error(`告警规则创建失败：${errorMessage}`);
-        logger.error({
-          message: 'Alarm rule creation failed',
-          data: {
-            error: errorMessage,
-            stack: errorObj.stack,
-            errorObj,
-          },
-          source: 'TaskFormHandlers',
-          component: 'handleAlarmSubmit',
-        });
         return false;
       } finally {
         setLoading(false);

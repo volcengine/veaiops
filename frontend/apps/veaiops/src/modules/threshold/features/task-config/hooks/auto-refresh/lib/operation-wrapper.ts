@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { logger } from '@veaiops/utils';
+import { extractApiErrorMessage, logger } from '@veaiops/utils';
 import type { CreateOperationWrapperParams } from './types';
 
 /**
@@ -71,21 +71,13 @@ export const createOperationWrapper = <TArgs extends any[], TResult>({
 
       return result;
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      logger.error({
-        message: 'Operation failed',
-        data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
-          errorObj,
-        },
-        source: 'AutoRefreshOperations',
-        component: 'createOperationWrapper',
-      });
+      // ✅ Use unified utility function to extract error message
+      const errorMessage = extractApiErrorMessage(
+        error,
+        '操作失败',
+      );
       // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
-      throw errorObj;
+      throw error instanceof Error ? error : new Error(errorMessage);
     }
   };
 };

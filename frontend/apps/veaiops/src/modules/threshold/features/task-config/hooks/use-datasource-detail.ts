@@ -15,7 +15,7 @@
 import apiClient from '@/utils/api-client';
 import { Message } from '@arco-design/web-react';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
-import { logger } from '@veaiops/utils';
+import { extractApiErrorMessage, logger } from '@veaiops/utils';
 import type { DataSource } from 'api-generate';
 import { useCallback, useState } from 'react';
 
@@ -133,25 +133,17 @@ export const useDatasourceDetail = () => {
           };
         }
       } catch (error: unknown) {
-        const errorObj =
-          error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '获取数据源详情失败，请重试';
+        // ✅ Use unified utility function to extract error message
+        const errorMessage = extractApiErrorMessage(
+          error,
+          '获取数据源详情失败，请重试',
+        );
         Message.error(errorMessage);
 
-        logger.error({
-          message: '获取数据源详情异常',
-          data: {
-            error: errorObj.message,
-            stack: errorObj.stack,
-            errorObj,
-            datasourceId,
-            datasourceType,
-          },
-          source: 'useDatasourceDetail',
-          component: 'fetchDatasourceDetail',
-        });
-
-        return { success: false, error: errorObj };
+        return {
+          success: false,
+          error: error instanceof Error ? error : new Error(errorMessage),
+        };
       } finally {
         setLoading(false);
       }

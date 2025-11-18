@@ -120,24 +120,11 @@ export const rerunTask = async (
       throw new Error(response.message || "重新运行任务失败");
     }
   } catch (error: unknown) {
-    // ✅ Fix: Use unified extractApiErrorMessage utility function to extract error message
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
+    // ✅ Use unified utility function to extract error message
     const errorMessage = extractApiErrorMessage(
       error,
       '重新运行任务失败：未知错误',
     );
-
-    logger.error({
-      message: '重新运行任务失败',
-      data: {
-        error: errorMessage,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: 'TaskAPI',
-      component: 'rerunTask',
-    });
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -166,24 +153,11 @@ export const updateTaskResult = async (
       throw new Error(response.message || "更新任务结果失败：响应数据格式错误");
     }
   } catch (error: unknown) {
-    // ✅ Fix: Use unified extractApiErrorMessage utility function to extract error message
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
+    // ✅ Use unified utility function to extract error message
     const errorMessage = extractApiErrorMessage(
       error,
       '更新任务结果失败：未知错误',
     );
-
-    logger.error({
-      message: '更新任务结果失败',
-      data: {
-        error: errorMessage,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: 'TaskAPI',
-      component: 'updateTaskResult',
-    });
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -214,24 +188,11 @@ export const updateAutoRefreshSwitch = async (
       throw new Error(response.message || "更新自动刷新开关失败");
     }
   } catch (error: unknown) {
-    // ✅ Fix: Use unified extractApiErrorMessage utility function to extract error message
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
+    // ✅ Use unified utility function to extract error message
     const errorMessage = extractApiErrorMessage(
       error,
       '更新自动刷新开关失败：未知错误',
     );
-
-    logger.error({
-      message: '更新自动刷新开关失败',
-      data: {
-        error: errorMessage,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: 'TaskAPI',
-      component: 'updateAutoRefreshSwitch',
-    });
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -280,24 +241,11 @@ export const deleteTask = async (taskId: string): Promise<boolean> => {
       throw new Error(response.message || "删除任务失败");
     }
   } catch (error: unknown) {
-    // ✅ Fix: Use unified extractApiErrorMessage utility function to extract error message
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
+    // ✅ Use unified utility function to extract error message
     const errorMessage = extractApiErrorMessage(
       error,
       '删除任务失败：未知错误',
     );
-
-    logger.error({
-      message: '删除任务失败',
-      data: {
-        error: errorMessage,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: 'TaskAPI',
-      component: 'deleteTask',
-    });
     Message.error(errorMessage);
     return false;
   }

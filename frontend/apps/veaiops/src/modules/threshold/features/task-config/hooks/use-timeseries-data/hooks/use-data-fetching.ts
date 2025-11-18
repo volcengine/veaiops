@@ -14,7 +14,7 @@
 
 import { Message } from '@arco-design/web-react';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
-import { logger } from '@veaiops/utils';
+import { extractApiErrorMessage, logger } from '@veaiops/utils';
 import type { MetricThresholdResult } from 'api-generate';
 import { useCallback, useRef, useState } from 'react';
 import { convertTimeseriesData } from '../../../ui/components/shared/data-utils';
@@ -260,23 +260,8 @@ export const useDataFetching = ({
     } catch (error: unknown) {
       // 只在请求未被取代时显示错误
       if (currentRequestId === requestIdRef.current) {
-        // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-        const errorObj =
-          error instanceof Error ? error : new Error(String(error));
-        logger.error({
-          message: 'fetchTimeseriesData error',
-          data: {
-            error: errorObj.message,
-            stack: errorObj.stack,
-            errorObj,
-          },
-          source: 'useTimeseriesData',
-          component: 'fetchTimeseriesData',
-        });
-
-        // 边界检查：错误对象的类型
-        const errorMessage = errorObj.message || '获取时序数据失败';
-
+        // ✅ Use unified utility function to extract error message
+        const errorMessage = extractApiErrorMessage(error, '获取时序数据失败');
         Message.error(errorMessage);
         setTimeseriesData([]);
       }

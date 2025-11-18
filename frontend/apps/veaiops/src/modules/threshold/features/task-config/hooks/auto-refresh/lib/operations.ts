@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { logger } from '@veaiops/utils';
+import { extractApiErrorMessage, logger } from '@veaiops/utils';
 
 /**
  * 创建删除操作包装器
@@ -51,22 +51,13 @@ export const createDeleteOperation = (
       }
       return false;
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      logger.error({
-        message: 'Delete operation failed',
-        data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
-          errorObj,
-          id,
-        },
-        source: 'AutoRefreshOperations',
-        component: 'delete',
-      });
+      // ✅ Use unified utility function to extract error message
+      const errorMessage = extractApiErrorMessage(
+        error,
+        '删除操作失败',
+      );
       // ✅ 正确：将错误转换为 Error 对象再抛出（符合 @typescript-eslint/only-throw-error 规则）
-      throw errorObj;
+      throw error instanceof Error ? error : new Error(errorMessage);
     }
   };
 };
@@ -121,20 +112,15 @@ export const createUpdateOperation = (
         return { success: false, error: updateError };
       }
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      logger.error({
-        message: 'Update operation failed',
-        data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
-          errorObj,
-        },
-        source: 'AutoRefreshOperations',
-        component: 'update',
-      });
-      return { success: false, error: errorObj };
+      // ✅ Use unified utility function to extract error message
+      const errorMessage = extractApiErrorMessage(
+        error,
+        '更新操作失败',
+      );
+      return {
+        success: false,
+        error: error instanceof Error ? error : new Error(errorMessage),
+      };
     }
   };
 };
@@ -190,21 +176,15 @@ export const createCreateOperation = (
         return { success: false, error: createError };
       }
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      logger.error({
-        message: 'Create operation failed',
-        data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
-          errorObj,
-          data,
-        },
-        source: 'AutoRefreshOperations',
-        component: 'create',
-      });
-      return { success: false, error: errorObj };
+      // ✅ Use unified utility function to extract error message
+      const errorMessage = extractApiErrorMessage(
+        error,
+        '创建操作失败',
+      );
+      return {
+        success: false,
+        error: error instanceof Error ? error : new Error(errorMessage),
+      };
     }
   };
 };

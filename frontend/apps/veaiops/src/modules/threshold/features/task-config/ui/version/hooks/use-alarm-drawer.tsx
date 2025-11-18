@@ -15,7 +15,7 @@
 import apiClient from '@/utils/api-client';
 import { Message } from '@arco-design/web-react';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
-import { logger } from '@veaiops/utils';
+import { extractApiErrorMessage, logger } from '@veaiops/utils';
 import type {
   IntelligentThresholdTask,
   IntelligentThresholdTaskVersion,
@@ -108,22 +108,8 @@ export const useAlarmDrawer = (
           throw new Error(response.message || '创建告警规则失败');
         }
       } catch (error: unknown) {
-        const errorObj =
-          error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '创建告警规则失败';
-        logger.error({
-          message: '创建告警规则失败',
-          data: {
-            error: errorMessage,
-            stack: errorObj.stack,
-            errorObj,
-            taskId: task?._id,
-            version: selectedVersion?.version,
-            timestamp: Date.now(),
-          },
-          source: 'useAlarmDrawer',
-          component: 'handleSubmit',
-        });
+        // ✅ Use unified utility function to extract error message
+        const errorMessage = extractApiErrorMessage(error, '创建告警规则失败');
         const fullErrorMessage = `创建告警规则失败：${errorMessage}`;
         Message.error(fullErrorMessage);
         return { success: false, message: fullErrorMessage };
