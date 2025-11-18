@@ -15,7 +15,7 @@
 import apiClient from '@/utils/api-client';
 import { type FormInstance, Message } from '@arco-design/web-react';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
-import { logger } from '@veaiops/utils';
+import { extractApiErrorMessage, logger } from '@veaiops/utils';
 import {
   type IntelligentThresholdTask,
   IntelligentThresholdTaskCreateRequest,
@@ -181,6 +181,7 @@ export const useTaskFormHandlers = ({
             metric_template_value:
               values?.metric_template_value as MetricTemplateValue,
             n_count: (values.nCount as number) || 1,
+            sensitivity: (values.sensitivity as number) ?? 0.5,
           };
 
           logger.info({
@@ -196,24 +197,29 @@ export const useTaskFormHandlers = ({
             component: 'handleSubmit',
           });
 
-          await createTask(taskData);
+          // ✅ Receive response from createTask to get the created task data
+          const createdTask = await createTask(taskData);
 
           logger.info({
             message: '[handleSubmit] Create task API call successful',
             data: {
               operationType,
-              taskName: taskData.task_name,
+              taskName: createdTask.task_name,
+              createdTaskId: createdTask._id,
+              createdDatasourceType: createdTask.datasource_type,
             },
             source: 'TaskFormHandlers',
             component: 'handleSubmit',
           });
+
+          // ✅ Show success message after task creation
           Message.success(
             operationType === 'copy' ? '任务复制成功' : '任务创建成功',
           );
 
-          // ✅ After successful creation, update URL parameters and refresh page based on datasource_type selected in form
-          // Use taskData.datasource_type, as it's already the correct string value ('Aliyun', 'Volcengine', 'Zabbix')
-          const createdDatasourceType = taskData.datasource_type as string;
+          // ✅ After successful creation, update URL parameters and refresh page based on datasource_type from API response
+          // Use createdTask.datasource_type from API response, which is the actual value returned by backend
+          const createdDatasourceType = createdTask.datasource_type as string;
           if (createdDatasourceType) {
             logger.info({
               message:
@@ -346,11 +352,12 @@ export const useTaskFormHandlers = ({
               // When URL update fails, continue with original logic (refresh table)
             }
           } else {
-            // ✅ If taskData.datasource_type is empty, log warning
+            // ✅ If createdTask.datasource_type is empty, log warning
             logger.warn({
               message:
-                '[handleSubmit] taskData.datasource_type is empty, cannot update URL',
+                '[handleSubmit] createdTask.datasource_type is empty, cannot update URL',
               data: {
+                createdTask,
                 taskData,
                 valuesDatasourceType: values.datasourceType,
                 operationType,
@@ -414,23 +421,8 @@ export const useTaskFormHandlers = ({
 
         return false;
       } catch (error: unknown) {
-        // ✅ Correct: Expose actual error information
-        const errorObj =
-          error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '操作失败，请重试';
-
-        logger.error({
-          message: '[handleSubmit] Task submission failed',
-          data: {
-            error: errorMessage,
-            stack: errorObj.stack,
-            errorObj,
-            operationType,
-          },
-          source: 'TaskFormHandlers',
-          component: 'handleSubmit',
-        });
-
+        // ✅ Use unified utility function to extract error message
+        const errorMessage = extractApiErrorMessage(error, '操作失败，请重试');
         Message.error(`操作失败：${errorMessage}`);
         return false;
       } finally {
@@ -498,21 +490,9 @@ export const useTaskFormHandlers = ({
           throw new Error(response.message || '创建告警规则失败');
         }
       } catch (error: unknown) {
-        // ✅ Correct: Expose actual error information
-        const errorObj =
-          error instanceof Error ? error : new Error(String(error));
-        const errorMessage = errorObj.message || '创建告警规则失败';
+        // ✅ Use unified utility function to extract error message
+        const errorMessage = extractApiErrorMessage(error, '创建告警规则失败');
         Message.error(`告警规则创建失败：${errorMessage}`);
-        logger.error({
-          message: 'Alarm rule creation failed',
-          data: {
-            error: errorMessage,
-            stack: errorObj.stack,
-            errorObj,
-          },
-          source: 'TaskFormHandlers',
-          component: 'handleAlarmSubmit',
-        });
         return false;
       } finally {
         setLoading(false);

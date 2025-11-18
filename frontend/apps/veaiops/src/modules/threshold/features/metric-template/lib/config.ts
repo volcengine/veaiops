@@ -111,19 +111,15 @@ export const FORM_RULES = {
   ],
   metricType: [{ required: true, message: "请选择指标模板类型" }],
   minValue: [
-    { required: true, message: "请输入指标最小值" },
     { type: "number", message: "指标最小值必须是数字" },
   ],
   maxValue: [
-    { required: true, message: "请输入指标最大值" },
     { type: "number", message: "指标最大值必须是数字" },
   ],
   normalRangeStart: [
-    { required: true, message: "请输入默认阈值下界" },
     { type: "number", message: "默认阈值下界必须是数字" },
   ],
   normalRangeEnd: [
-    { required: true, message: "请输入默认阈值上界" },
     { type: "number", message: "默认阈值上界必须是数字" },
   ],
 } as const;

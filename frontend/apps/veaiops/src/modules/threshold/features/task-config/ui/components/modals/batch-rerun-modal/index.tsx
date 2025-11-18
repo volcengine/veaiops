@@ -13,12 +13,10 @@
 // limitations under the License.
 
 import { Alert, Message, Modal, Radio } from '@arco-design/web-react';
-import { API_RESPONSE_CODE } from '@veaiops/constants';
+import { updateAutoRefreshSwitch } from '@task-config/lib/data-source';
 import { logger } from '@veaiops/utils';
 import type React from 'react';
 import { useMemo, useState } from 'react';
-
-import apiClient from '@/utils/api-client';
 
 interface BatchRerunModalProps {
   visible: boolean;
@@ -44,37 +42,29 @@ export const BatchRerunModal: React.FC<BatchRerunModalProps> = ({
     [radioValue],
   );
 
-  const handleConfirm = async () => {
+  const handleConfirm = async (): Promise<{
+    success: boolean;
+    error?: Error;
+  }> => {
     if (taskIds.length === 0) {
       Message.warning(`请选择要${actionText}的任务`);
-      return;
+      return { success: false, error: new Error('请选择要操作的任务') };
     }
 
     try {
       setLoading(true);
 
-      // 批量开启/关闭自动更新
-      const response =
-        await apiClient.intelligentThresholdTask.postApisV1IntelligentThresholdTaskAutoRefreshSwitch(
-          {
-            requestBody: {
-              task_ids: taskIds,
-              auto_update: radioValue,
-            },
-          },
-        );
+      // ✅ Reuse updateAutoRefreshSwitch from api.ts to avoid duplicate API calls
+      await updateAutoRefreshSwitch(taskIds, radioValue);
 
-      if (response.code === API_RESPONSE_CODE.SUCCESS) {
-        Message.success(`批量${actionText}任务成功`);
-      } else {
-        Message.error(`批量${actionText}任务失败`);
-      }
-
-      // 关闭弹窗并刷新
+      // Success message is already shown in updateAutoRefreshSwitch
+      // Close modal and refresh
       onClose();
       onSuccess();
+      return { success: true };
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // Error handling is already done in updateAutoRefreshSwitch (Message.error and logger.error)
+      // Just log additional context for batch operation
       const errorObj =
         error instanceof Error ? error : new Error(String(error));
       logger.error({
@@ -89,7 +79,8 @@ export const BatchRerunModal: React.FC<BatchRerunModalProps> = ({
         source: 'BatchRerunModal',
         component: 'handleConfirm',
       });
-      Message.error(`批量${actionText}任务异常：${errorObj.message}`);
+      // Error message is already shown in updateAutoRefreshSwitch
+      return { success: false, error: errorObj };
     } finally {
       setLoading(false);
     }

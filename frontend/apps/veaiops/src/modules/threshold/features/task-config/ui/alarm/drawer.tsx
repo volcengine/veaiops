@@ -21,7 +21,11 @@ import {
   Space,
 } from '@arco-design/web-react';
 import { TASK_CONFIG_MANAGEMENT_CONFIG } from '@task-config/lib';
-import { DrawerFormContent } from '@veaiops/utils';
+import {
+  DrawerFormContent,
+  extractApiErrorMessage,
+  logger,
+} from '@veaiops/utils';
 import type { SyncAlarmRulesPayload } from 'api-generate';
 import type React from 'react';
 import { AlarmConfigForm, buildAlarmSubmitData } from '../components/alarm';
@@ -89,21 +93,9 @@ export const AlarmDrawer: React.FC<AlarmDrawerProps> = ({
 
       return success;
     } catch (error: unknown) {
-      // ✅ 正确：透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      const errorMessage = errorObj.message || '提交告警规则失败';
+      // ✅ Use unified utility function to extract error message
+      const errorMessage = extractApiErrorMessage(error, '提交告警规则失败');
       Message.error(errorMessage);
-      logger.error({
-        message: '提交告警规则失败',
-        data: {
-          error: errorMessage,
-          stack: errorObj.stack,
-          errorObj,
-        },
-        source: 'AlarmDrawer',
-        component: 'handleSubmit',
-      });
       return false;
     }
   };

@@ -30,11 +30,11 @@ export type MetricTemplateCreateRequest = {
   /**
    * Maximum value
    */
-  max_value: number;
+  max_value?: number | null;
   /**
    * Minimum value
    */
-  min_value: number;
+  min_value?: number | null;
   /**
    * Minimum violation value
    */
@@ -46,11 +46,11 @@ export type MetricTemplateCreateRequest = {
   /**
    * Normal range start
    */
-  normal_range_start: number;
+  normal_range_start?: number | null;
   /**
    * Normal range end
    */
-  normal_range_end: number;
+  normal_range_end?: number | null;
   /**
    * Fill value for missing data
    */

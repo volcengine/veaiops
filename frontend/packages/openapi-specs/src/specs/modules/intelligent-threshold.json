@@ -777,6 +777,11 @@
             "enum": ["up", "down", "both"],
             "description": "阈值计算方向"
           },
+          "sensitivity": {
+            "type": "number",
+            "description": "灵敏度",
+            "default": 0.5
+          },
           "status": {
             "type": "string",
             "enum": [
@@ -1010,6 +1015,11 @@
           "n_count": {
             "type": "integer",
             "description": "N计数"
+          },
+          "sensitivity": {
+            "type": "number",
+            "description": "灵敏度",
+            "default": 0.5
           }
         },
         "required": [
@@ -1039,6 +1049,11 @@
             "type": "string",
             "enum": ["up", "down", "both"],
             "description": "阈值计算方向"
+          },
+          "sensitivity": {
+            "type": "number",
+            "description": "灵敏度",
+            "default": 0.5
           }
         },
         "required": ["task_id", "metric_template_value", "n_count", "direction"]

@@ -25,6 +25,7 @@ import type { FormInstance } from '@arco-design/web-react/es/Form';
 import { DrawerFormContent, useDrawerFormSubmit } from '@veaiops/utils';
 import type { MetricTemplate } from 'api-generate';
 import type React from 'react';
+import { MetricDetailSection } from '@threshold/shared/components';
 import { METRIC_TEMPLATE_MANAGEMENT_CONFIG } from '../lib/config';
 import { getMetricTypeOptions } from '../lib/metric-type-translations';
 
@@ -122,16 +123,13 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
             </Form.Item>
 
             {/* 指标详情区域 - 只显示核心参数 */}
-            <div>
-              <h3 className="mb-4 text-sm font-medium">指标详情</h3>
+            <MetricDetailSection useWrapper={false}>
               <div className="flex flex-wrap justify-between p-4 border border-[#e5e5e5] rounded-md bg-[#f9f9f9] gap-4">
                 {/* 第一行 */}
                 <div className="flex gap-4 w-full">
                   <Form.Item
                     label="指标最小值"
                     field="min_value"
-                    rules={[{ required: true, message: '请输入指标最小值' }]}
-                    required
                     style={{ flex: 1 }}
                     extra="指标数据的理论最小值，用于算法边界约束和异常值过滤"
                   >
@@ -144,8 +142,6 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
                   <Form.Item
                     label="指标最大值"
                     field="max_value"
-                    rules={[{ required: true, message: '请输入指标最大值' }]}
-                    required
                     style={{ flex: 1 }}
                     extra="指标数据的理论最大值，用于算法边界约束和异常值过滤"
                   >
@@ -161,8 +157,6 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
                   <Form.Item
                     label="默认阈值下界"
                     field="normal_range_start"
-                    rules={[{ required: true, message: '请输入默认阈值下界' }]}
-                    required
                     style={{ flex: 1 }}
                     extra="正常范围的下限值，低于此值可能触发异常告警"
                   >
@@ -175,8 +169,6 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
                   <Form.Item
                     label="默认阈值上界"
                     field="normal_range_end"
-                    rules={[{ required: true, message: '请输入默认阈值上界' }]}
-                    required
                     style={{ flex: 1 }}
                     extra="正常范围的上限值，高于此值可能触发异常告警"
                   >
@@ -221,7 +213,7 @@ export const MetricTemplateDrawer: React.FC<MetricTemplateDrawerProps> = ({
                   </Form.Item>
                 </div>
               </div>
-            </div>
+            </MetricDetailSection>
           </Form>
         </div>
       </DrawerFormContent>

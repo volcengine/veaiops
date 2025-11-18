@@ -195,6 +195,7 @@ def test_recommend_threshold_no_time_split(threshold_recommender, sample_timesta
                 max_value=100.0,
                 normal_threshold=50.0,
                 min_ts_length=50,
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -225,6 +226,7 @@ def test_recommend_threshold_with_time_split(threshold_recommender, sample_times
                 max_value=100.0,
                 normal_threshold=50.0,
                 min_ts_length=30,  # Reduced from 50 to ensure all periods have enough data
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -260,6 +262,7 @@ def test_recommend_threshold_direction_down(threshold_recommender, sample_timest
                 max_value=100.0,
                 normal_threshold=30.0,
                 min_ts_length=50,
+                sensitivity=0.5,
                 direction="down",
             )
 
@@ -290,6 +293,7 @@ def test_recommend_threshold_insufficient_data(threshold_recommender, sample_tim
                 max_value=100.0,
                 normal_threshold=50.0,
                 min_ts_length=1000,  # High minimum length
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -320,6 +324,7 @@ def test_threshold_recommendation_with_sliding_window_basic(threshold_recommende
             max_value=100.0,
             normal_threshold=50.0,
             ignore_count=1,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -351,6 +356,7 @@ def test_threshold_recommendation_with_sliding_window_auto_adjust(threshold_reco
             max_value=100.0,
             normal_threshold=50.0,
             ignore_count=1,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -376,6 +382,7 @@ def test_threshold_recommendation_with_sliding_window_normal_threshold_up(thresh
             max_value=100.0,
             normal_threshold=60.0,
             ignore_count=1,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -401,6 +408,7 @@ def test_threshold_recommendation_with_sliding_window_normal_threshold_down(thre
             max_value=100.0,
             normal_threshold=30.0,
             ignore_count=1,
+            sensitivity=0.5,
             direction="down",
         )
 
@@ -552,6 +560,7 @@ def test_recommend_threshold_with_consolidation_up(threshold_recommender, sample
                 max_value=100.0,
                 normal_threshold=None,
                 min_ts_length=50,
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -596,6 +605,7 @@ def test_recommend_threshold_with_consolidation_down(threshold_recommender, samp
                 max_value=100.0,
                 normal_threshold=None,
                 min_ts_length=50,
+                sensitivity=0.5,
                 direction="down",
             )
 
@@ -629,6 +639,7 @@ def test_recommend_threshold_no_consolidation_different_thresholds(
                 max_value=100.0,
                 normal_threshold=None,
                 min_ts_length=50,
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -650,6 +661,7 @@ def test_recommend_general_threshold_basic(threshold_recommender):
             ignore_count=1,
             min_value=0.0,
             max_value=200.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -673,6 +685,7 @@ def test_recommend_general_threshold_direction_down(threshold_recommender):
             ignore_count=1,
             min_value=0.0,
             max_value=100.0,
+            sensitivity=0.5,
             direction="down",
         )
 
@@ -695,6 +708,7 @@ def test_recommend_general_threshold_zero_interval(threshold_recommender):
             ignore_count=1,
             min_value=0.0,
             max_value=100.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -722,6 +736,7 @@ def test_recommend_general_threshold_no_clusters(threshold_recommender):
                 ignore_count=1,
                 min_value=0.0,
                 max_value=100.0,
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -751,6 +766,7 @@ def test_recommend_general_threshold_with_abnormals(threshold_recommender):
             ignore_count=1,  # Ignore one abnormal period
             min_value=0.0,
             max_value=200.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -776,6 +792,7 @@ def test_recommend_general_threshold_empty_data(threshold_recommender):
                 ignore_count=1,
                 min_value=0.0,
                 max_value=100.0,
+                sensitivity=0.5,
                 direction="up",
             )
             # Should handle empty data gracefully with failure status
@@ -799,6 +816,7 @@ def test_recommend_general_threshold_single_value(threshold_recommender):
                 ignore_count=1,
                 min_value=0.0,
                 max_value=100.0,
+                sensitivity=0.5,
                 direction="up",
             )
             # Should handle single value gracefully with failure status
@@ -823,6 +841,7 @@ def test_recommend_general_threshold_no_valid_clusters_fallback(threshold_recomm
             ignore_count=1,
             min_value=0.0,
             max_value=1000.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -843,6 +862,7 @@ def test_recommend_general_threshold_no_valid_clusters_fallback(threshold_recomm
             ignore_count=1,
             min_value=0.0,
             max_value=1000.0,
+            sensitivity=0.5,
             direction="down",
         )
 
@@ -873,6 +893,7 @@ def test_recommend_general_threshold_constant_values_fallback(threshold_recommen
             ignore_count=1,
             min_value=0.0,
             max_value=200.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -892,6 +913,7 @@ def test_recommend_general_threshold_constant_values_fallback(threshold_recommen
             ignore_count=1,
             min_value=0.0,
             max_value=200.0,
+            sensitivity=0.5,
             direction="down",
         )
 

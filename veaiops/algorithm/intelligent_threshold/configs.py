@@ -55,9 +55,6 @@ DEFAULT_TIME_SPLIT_RANGES = [[0, 6], [6, 12], [12, 18], [18, 24]]
 # Mathematical constants
 NEGATIVE_INFINITY = float("-inf")
 
-# Default coefficient for threshold calculation
-DEFAULT_COEFFICIENT = 1.2
-
 # Extreme value threshold for data validation
 EXTREME_VALUE_THRESHOLD = 1e50
 

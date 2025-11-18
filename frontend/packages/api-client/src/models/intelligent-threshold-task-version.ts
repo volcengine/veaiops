@@ -34,6 +34,10 @@ export type IntelligentThresholdTaskVersion = {
    */
   direction: IntelligentThresholdTaskVersion.direction;
   /**
+   * 灵敏度
+   */
+  sensitivity?: number;
+  /**
    * 任务状态
    */
   status: IntelligentThresholdTaskVersion.status;

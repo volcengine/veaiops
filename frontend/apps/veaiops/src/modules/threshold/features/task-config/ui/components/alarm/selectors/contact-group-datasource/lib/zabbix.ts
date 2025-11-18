@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Message } from '@arco-design/web-react';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
-import { logger } from '@veaiops/utils';
+import { extractApiErrorMessage, logger } from '@veaiops/utils';
 import type { ZabbixUserGroup } from 'api-generate';
 import apiClient from '@/utils/api-client';
 import type {
@@ -98,16 +99,17 @@ export const getZabbixAlertMethodsDataSource = (
       });
       return [];
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
+      // ✅ Use unified utility function to extract error message
+      const errorMessage = extractApiErrorMessage(
+        error,
+        '获取媒介类型失败',
+      );
+      Message.error(errorMessage);
       logger.error({
         message: '获取媒介类型失败',
         data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
+          error: errorMessage,
           datasourceId: datasourceIdStr,
-          errorObj,
         },
         source: 'ZabbixAlertMethodsDataSource',
         component: 'getZabbixAlertMethodsDataSource',
@@ -194,16 +196,17 @@ export const getZabbixContactGroupDataSource = (
       });
       return [];
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
+      // ✅ Use unified utility function to extract error message
+      const errorMessage = extractApiErrorMessage(
+        error,
+        '获取联系组失败',
+      );
+      Message.error(errorMessage);
       logger.error({
         message: '获取联系组失败',
         data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
+          error: errorMessage,
           datasourceId,
-          errorObj,
         },
         source: 'ZabbixContactGroupDataSource',
         component: 'getZabbixContactGroupDataSource',

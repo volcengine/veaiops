@@ -44,6 +44,7 @@ async def calculate(body: IntelligentThresholdMCPPayload) -> APIResponse[dict]:
         metric_template_value=body.metric_template_value,
         window_size=body.n_count,
         direction=direction,
+        sensitivity=body.sensitivity,
         task_priority=body.task_priority,
     )
 

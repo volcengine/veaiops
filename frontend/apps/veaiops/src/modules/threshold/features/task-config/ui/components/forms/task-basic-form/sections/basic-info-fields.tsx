@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Alert } from '@arco-design/web-react';
+import { Alert, Form, Slider } from '@arco-design/web-react';
 import type { FormInstance } from '@arco-design/web-react/es/Form';
 import type { OptionInfo } from '@arco-design/web-react/es/Select/interface';
 import {
@@ -392,6 +392,32 @@ export const BasicInfoFields: React.FC<BasicInfoFieldsProps> = ({
           precision: 0,
         }}
       />
+
+      {/* 灵敏度 - 占满整行 */}
+      <Form.Item
+        label="灵敏度"
+        field="sensitivity"
+        extra="算法敏感度参数，范围为0~1，影响异常检测的敏感程度，默认0.5"
+        initialValue={0.5}
+        layout="vertical"
+        style={{ width: '100%' }}
+      >
+        <Slider
+          min={0}
+          max={1}
+          step={0.1}
+          showTicks
+          marks={{
+            0: '0',
+            0.2: '0.2',
+            0.4: '0.4',
+            0.6: '0.6',
+            0.8: '0.8',
+            1: '1',
+          }}
+          disabled={loading}
+        />
+      </Form.Item>
     </WrapperWithTitle>
   );
 };

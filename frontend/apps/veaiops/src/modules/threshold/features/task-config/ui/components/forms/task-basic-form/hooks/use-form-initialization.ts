@@ -49,6 +49,7 @@ export const useFormInitialization = ({
         customers: editingTask.customers || [],
         direction: editingTask.latest_version?.direction || 'both',
         nCount: editingTask.latest_version?.n_count || 7,
+        sensitivity: editingTask.latest_version?.sensitivity ?? 0.5,
         metric_template_value:
           editingTask.latest_version?.metric_template_value,
       });
