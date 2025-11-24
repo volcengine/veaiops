@@ -15,7 +15,7 @@
 import apiClient from "@/utils/api-client";
 import { Message } from "@arco-design/web-react";
 import { API_RESPONSE_CODE } from "@veaiops/constants";
-import { logger } from "@veaiops/utils";
+import { extractApiErrorMessage, logger } from "@veaiops/utils";
 import type {
   IntelligentThresholdTask,
   IntelligentThresholdTaskCreateRequest,
@@ -30,7 +30,7 @@ import {
 import type { TaskQueryParams } from "./types";
 
 /**
- * 真实 API 请求函数
+ * Real API request function
  */
 export const realApiRequest = async (
   query: TaskQueryParams
@@ -55,22 +55,11 @@ export const realApiRequest = async (
     } else {
       throw new Error(response.message || "获取任务列表失败：响应数据格式错误");
     }
-  } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
-    logger.error({
-      message: "获取任务列表失败",
-      data: {
-        error: errorObj.message,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: "TaskAPI",
-      component: "realApiRequest",
-    });
-    const errorMessage =
-      error instanceof Error ? error.message : "获取任务列表失败，请重试";
+  } catch (error: unknown) {
+    const errorMessage = extractApiErrorMessage(
+      error,
+      '获取任务列表失败，请重试',
+    );
     Message.error(errorMessage);
 
     return {
@@ -83,7 +72,7 @@ export const realApiRequest = async (
 };
 
 /**
- * 创建任务
+ * Create task
  */
 export const createTask = async (
   taskData: IntelligentThresholdTaskCreateRequest
@@ -95,37 +84,23 @@ export const createTask = async (
           requestBody: taskData,
         }
       );
-
     if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
       return transformApiResponseToTableData(response.data);
     } else {
       throw new Error(response.message || "创建任务失败：响应数据格式错误");
     }
-  } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
-    logger.error({
-      message: "创建任务失败",
-      data: {
-        error: errorObj.message,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: "TaskAPI",
-      component: "createTask",
-    });
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "创建任务失败：未知错误";
-    Message.error(errorMessage);
+  } catch (error: unknown) {
+    // ✅ Use unified utility function to extract error message
+    const errorMessage = extractApiErrorMessage(
+      error,
+      '创建任务失败：未知错误',
+    );
     throw new Error(errorMessage);
   }
 };
 
 /**
- * 重新运行任务
+ * Rerun task
  */
 export const rerunTask = async (
   taskData: RerunIntelligentThresholdTaskRequest
@@ -144,31 +119,19 @@ export const rerunTask = async (
     } else {
       throw new Error(response.message || "重新运行任务失败");
     }
-  } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
-    logger.error({
-      message: "重新运行任务失败",
-      data: {
-        error: errorObj.message,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: "TaskAPI",
-      component: "rerunTask",
-    });
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "重新运行任务失败：未知错误";
+  } catch (error: unknown) {
+    // ✅ Use unified utility function to extract error message
+    const errorMessage = extractApiErrorMessage(
+      error,
+      '重新运行任务失败：未知错误',
+    );
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 /**
- * 更新任务结果
+ * Update task result
  */
 export const updateTaskResult = async (
   taskId: string,
@@ -189,31 +152,19 @@ export const updateTaskResult = async (
     } else {
       throw new Error(response.message || "更新任务结果失败：响应数据格式错误");
     }
-  } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
-    logger.error({
-      message: "更新任务结果失败",
-      data: {
-        error: errorObj.message,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: "TaskAPI",
-      component: "updateTaskResult",
-    });
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "更新任务结果失败：未知错误";
+  } catch (error: unknown) {
+    // ✅ Use unified utility function to extract error message
+    const errorMessage = extractApiErrorMessage(
+      error,
+      '更新任务结果失败：未知错误',
+    );
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 /**
- * 更新自动刷新开关
+ * Update auto refresh switch
  */
 export const updateAutoRefreshSwitch = async (
   taskIds: string[],
@@ -236,31 +187,19 @@ export const updateAutoRefreshSwitch = async (
     } else {
       throw new Error(response.message || "更新自动刷新开关失败");
     }
-  } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
-    logger.error({
-      message: "更新自动刷新开关失败",
-      data: {
-        error: errorObj.message,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: "TaskAPI",
-      component: "updateAutoRefreshSwitch",
-    });
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "更新自动刷新开关失败：未知错误";
+  } catch (error: unknown) {
+    // ✅ Use unified utility function to extract error message
+    const errorMessage = extractApiErrorMessage(
+      error,
+      '更新自动刷新开关失败：未知错误',
+    );
     Message.error(errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 /**
- * 删除任务
+ * Delete task
  */
 export const deleteTask = async (taskId: string): Promise<boolean> => {
   try {
@@ -301,22 +240,12 @@ export const deleteTask = async (taskId: string): Promise<boolean> => {
     } else {
       throw new Error(response.message || "删除任务失败");
     }
-  } catch (error) {
-    // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-    const errorObj =
-      error instanceof Error ? error : new Error(String(error));
-    logger.error({
-      message: "删除任务失败",
-      data: {
-        error: errorObj.message,
-        stack: errorObj.stack,
-        errorObj,
-      },
-      source: "TaskAPI",
-      component: "deleteTask",
-    });
-    const errorMessage =
-      error instanceof Error ? error.message : "删除任务失败：未知错误";
+  } catch (error: unknown) {
+    // ✅ Use unified utility function to extract error message
+    const errorMessage = extractApiErrorMessage(
+      error,
+      '删除任务失败：未知错误',
+    );
     Message.error(errorMessage);
     return false;
   }

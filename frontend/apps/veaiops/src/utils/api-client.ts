@@ -14,7 +14,11 @@
 
 import { authConfig } from '@/config/auth';
 import { Message } from '@arco-design/web-react';
-import { logger } from '@veaiops/utils';
+import {
+  type ApiErrorResponse,
+  extractApiErrorMessage,
+  logger,
+} from '@veaiops/utils';
 import {
   ApiError,
   type ApiRequestOptions,
@@ -38,6 +42,25 @@ const API_RESPONSE_CODE = {
   SUCCESS: 0,
   // ... other codes
 };
+
+/**
+ * 统一的后端错误响应类型
+ *
+ * 对应 Python 后端的 APIResponse 格式：
+ * - veaiops/schema/models/base.py: APIResponse(code: int, message: str, data: Optional[T])
+ * - veaiops/handler/errors/exception.py: BaseHTTPExc 使用 APIResponse 创建错误响应
+ *
+ * 错误响应格式：
+ * {
+ *   "code": 1,  // BUSINESS_CODE_GENERIC_ERROR
+ *   "message": "Failed to create task: All connection attempts failed",
+ *   "data": null
+ * }
+ *
+ * ✅ 修复：从 @veaiops/utils 导入统一类型，避免重复定义
+ * 注意：保留此处的导出以保持向后兼容性
+ */
+export type { ApiErrorResponse } from '@veaiops/utils';
 
 let refreshPromise: Promise<string> | null = null;
 let refreshAttempts = 0;
@@ -257,12 +280,12 @@ interface HandleUnauthorizedErrorParams<T> {
   error: ApiError;
 }
 
-interface HandleServerErrorParams {
+interface HandleServerErrorParams<T> {
   options: ApiRequestOptions;
   /**
    * Promise resolve 函数
    */
-  resolve: (value: unknown) => void;
+  resolve: (value: T) => void;
   /**
    * Promise reject 函数
    */
@@ -274,13 +297,13 @@ interface HandleServerErrorParams {
   error: ApiError;
 }
 
-interface HandleApiErrorParams {
+interface HandleApiErrorParams<T> {
   error: ApiError;
   options: ApiRequestOptions;
   /**
    * Promise resolve 函数
    */
-  resolve: (value: unknown) => void;
+  resolve: (value: T) => void;
   /**
    * Promise reject 函数
    */
@@ -342,25 +365,26 @@ class CustomFetchHttpRequest extends FetchHttpRequest {
   /**
    * 处理500服务器错误
    */
-  private async handleServerError({
+  private async handleServerError<T>({
     options,
     resolve,
     reject,
     onCancel,
     error,
-  }: HandleServerErrorParams): Promise<void> {
-    // error.body 类型为 unknown，需要类型检查
-    const errorBody =
-      error.body && typeof error.body === 'object'
-        ? (error.body as { message?: string })
-        : null;
+  }: HandleServerErrorParams<T>): Promise<void> {
+    // ✅ 修复：使用统一的 extractApiErrorMessage 工具函数提取错误信息
+    const errorMessage = extractApiErrorMessage(
+      error,
+      '服务器内部错误，请稍后重试',
+    );
 
+    // 检查错误消息中是否包含 401 信息（500错误中包含401信息，也尝试刷新token）
     if (
-      errorBody?.message?.includes('UnauthorizedError') &&
-      errorBody?.message?.includes('status_code=401')
+      errorMessage.includes('UnauthorizedError') &&
+      errorMessage.includes('status_code=401')
     ) {
       // 500错误中包含401信息，也尝试刷新token
-      await this.handleUnauthorizedError({
+      await this.handleUnauthorizedError<T>({
         options,
         resolve,
         reject,
@@ -368,18 +392,15 @@ class CustomFetchHttpRequest extends FetchHttpRequest {
         error,
       });
     } else {
-      // ✅ 正确：优先透出实际错误信息，如果没有则使用默认消息
-      const errorMessage =
-        errorBody?.message || error.message || '服务器内部错误，请稍后重试';
-      Message.error(errorMessage);
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
+      // ✅ 修复：不显示 Message.error，只记录日志
+      // 原因：让业务代码决定如何显示错误消息，避免重复提示
       logger.error({
         message: '服务器内部错误',
         data: {
           error: errorMessage,
           status: error.status,
           url: options.url,
-          errorBody,
+          errorBody: error.body,
           errorObj: error instanceof Error ? error : new Error(String(error)),
         },
         source: 'ApiClient',
@@ -410,68 +431,17 @@ class CustomFetchHttpRequest extends FetchHttpRequest {
       component: 'handleOtherHttpErrors',
     });
 
+    // ✅ 修复：使用统一的 extractApiErrorMessage 工具函数提取错误信息
     // 尝试从 error.body 中提取详细错误信息
-    let errorMessage = '';
-    if (error.body && typeof error.body === 'object') {
-      const errorBody = error.body as {
-        detail?: { message?: string };
-        message?: string;
-        error?: string;
-        code?: number;
-      };
-
-      // 记录 error.body 的详细内容
-      logger.info({
-        message: '[API Client] 正在从 error.body 提取错误信息',
-        data: {
-          hasMessage: Boolean(errorBody.message),
-          hasDetailMessage: Boolean(errorBody.detail?.message),
-          hasError: Boolean(errorBody.error),
-          messageValue: errorBody.message,
-          detailMessage: errorBody.detail?.message,
-          errorValue: errorBody.error,
-          code: errorBody.code,
-        },
-        source: 'ApiClient',
-        component: 'handleOtherHttpErrors',
-      });
-
-      // 根据服务器返回的结构提取错误信息
-      // ✅ 优先从 message 字段提取（后端 APIResponse 结构）
-      if (errorBody.message) {
-        errorMessage = errorBody.message;
-        logger.info({
-          message: '[API Client] 从 errorBody.message 提取到错误信息',
-          data: { extractedMessage: errorMessage },
-          source: 'ApiClient',
-          component: 'handleOtherHttpErrors',
-        });
-      } else if (errorBody.detail?.message) {
-        errorMessage = errorBody.detail.message;
-        logger.info({
-          message: '[API Client] 从 errorBody.detail.message 提取到错误信息',
-          data: { extractedMessage: errorMessage },
-          source: 'ApiClient',
-          component: 'handleOtherHttpErrors',
-        });
-      } else if (errorBody.error) {
-        errorMessage = errorBody.error;
-        logger.info({
-          message: '[API Client] 从 errorBody.error 提取到错误信息',
-          data: { extractedMessage: errorMessage },
-          source: 'ApiClient',
-          component: 'handleOtherHttpErrors',
-        });
-      }
-    }
+    const errorMessage = extractApiErrorMessage(error, '');
 
     // ✅ 正确：优先透出实际错误信息，如果没有则使用默认消息
     let finalErrorMessage = '';
-    if (error.status === 403) {
+    if (error.status === StatusCodes.FORBIDDEN) {
       finalErrorMessage = errorMessage || '权限不足，无法访问该资源';
-    } else if (error.status === 404) {
+    } else if (error.status === StatusCodes.NOT_FOUND) {
       finalErrorMessage = errorMessage || '请求的资源不存在';
-    } else if (error.status === 409) {
+    } else if (error.status === StatusCodes.CONFLICT) {
       // ✅ 特别处理 409 Conflict 错误
       finalErrorMessage = errorMessage || '资源冲突，请检查输入信息';
       logger.warn({
@@ -514,13 +484,13 @@ class CustomFetchHttpRequest extends FetchHttpRequest {
   /**
    * 处理API错误
    */
-  private async handleApiError({
+  private async handleApiError<T>({
     error,
     options,
     resolve,
     reject,
     onCancel,
-  }: HandleApiErrorParams): Promise<void> {
+  }: HandleApiErrorParams<T>): Promise<void> {
     // 记录进入 handleApiError
     logger.info({
       message: '[API Client] handleApiError 被调用',
@@ -557,7 +527,7 @@ class CustomFetchHttpRequest extends FetchHttpRequest {
         source: 'ApiClient',
         component: 'handleApiError',
       });
-      await this.handleServerError({
+      await this.handleServerError<T>({
         options,
         resolve,
         reject,
@@ -717,7 +687,7 @@ class CustomFetchHttpRequest extends FetchHttpRequest {
               });
 
               // 打印完整错误信息，包括 body
-              await this.handleApiError({
+              await this.handleApiError<T>({
                 error,
                 options,
                 resolve,

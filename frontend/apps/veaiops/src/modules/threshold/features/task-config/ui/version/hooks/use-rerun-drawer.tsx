@@ -12,16 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import apiClient from '@/utils/api-client';
 import { Button, Drawer, Form, Message } from '@arco-design/web-react';
-import { API_RESPONSE_CODE } from '@veaiops/constants';
-import { logger } from '@veaiops/utils';
 import type {
   IntelligentThresholdTaskVersion,
   RerunIntelligentThresholdTaskRequest,
 } from 'api-generate';
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { rerunTask } from '../../../lib/data-source';
 import { renderRerunForm } from '../../task';
 
 /**
@@ -66,51 +64,62 @@ export const useRerunDrawer = (
 
     try {
       setLoading(true);
+
+      // Build metric_template_value, setting normal_range_start and normal_range_end to null
+      // if user didn't fill them, so backend won't use default values (10/90)
+      // Note: Backend model default is now None, so sending null or omitting field will result in None
+      const metricTemplateValue = values.metric_template_value || {};
+      const cleanedMetricTemplateValue: Record<string, unknown> = {
+        ...metricTemplateValue,
+      };
+
+      // Set to null if user didn't fill normal_range_start or normal_range_end
+      // Backend will use None (not 10/90) when these fields are null or omitted
+      if (
+        cleanedMetricTemplateValue.normal_range_start === undefined ||
+        cleanedMetricTemplateValue.normal_range_start === null ||
+        cleanedMetricTemplateValue.normal_range_start === ''
+      ) {
+        cleanedMetricTemplateValue.normal_range_start = null;
+      }
+
+      if (
+        cleanedMetricTemplateValue.normal_range_end === undefined ||
+        cleanedMetricTemplateValue.normal_range_end === null ||
+        cleanedMetricTemplateValue.normal_range_end === ''
+      ) {
+        cleanedMetricTemplateValue.normal_range_end = null;
+      }
+
       const requestBody: RerunIntelligentThresholdTaskRequest = {
         task_id,
         direction: values.direction,
         n_count: values.n_count,
-        metric_template_value: values.metric_template_value,
+        metric_template_value:
+          cleanedMetricTemplateValue as RerunIntelligentThresholdTaskRequest['metric_template_value'],
+        sensitivity:
+          (values.sensitivity as number) ??
+          (values.metric_template_value?.sensitivity as number) ??
+          0.5,
       };
 
-      const response =
-        await apiClient.intelligentThresholdTask.postApisV1IntelligentThresholdTaskRerun(
-          {
-            requestBody,
-          },
-        );
+      // ✅ Reuse rerunTask from api.ts to avoid duplicate API calls
+      const success = await rerunTask(requestBody);
 
-      if (response.code === API_RESPONSE_CODE.SUCCESS && response.data) {
-        Message.success('任务重新执行成功');
+      if (success) {
         close();
 
-        // 刷新表格数据以显示新的版本结果
+        // Refresh table data to show new version results
         if (tableRef.current?.refresh) {
           const refreshResult = await tableRef.current.refresh();
           return refreshResult ?? true;
         }
         return true;
-      } else {
-        throw new Error(response.message || '任务重新执行失败');
       }
+      return false;
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      logger.error({
-        message: '任务重新执行失败',
-        data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
-          errorObj,
-          request: values,
-          timestamp: Date.now(),
-        },
-        source: 'useRerunDrawer',
-        component: 'handleSubmit',
-      });
-      const errorMessage = errorObj.message || '任务重新执行失败';
-      Message.error(errorMessage);
+      // Error handling is already done in rerunTask (Message.error and logger.error)
+      // Just return false to indicate failure
       return false;
     } finally {
       setLoading(false);
@@ -124,11 +133,12 @@ export const useRerunDrawer = (
       const formData = {
         direction: rerunData.direction || 'both',
         n_count: rerunData.n_count || 3,
+        sensitivity: rerunData.sensitivity ?? 0.5,
         metric_template_value: {
           normal_range_start:
-            rerunData.metric_template_value?.normal_range_start || 0,
+            rerunData.metric_template_value?.normal_range_start ?? undefined,
           normal_range_end:
-            rerunData.metric_template_value?.normal_range_end || 55,
+            rerunData.metric_template_value?.normal_range_end ?? undefined,
         },
         task_id: rerunData.task_id,
       };

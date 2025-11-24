@@ -16,7 +16,7 @@ import { useTaskConfigStore } from '@/stores/task-config-store';
 import apiClient from '@/utils/api-client';
 import { type FormInstance, Message } from '@arco-design/web-react';
 import { API_RESPONSE_CODE } from '@veaiops/constants';
-import { logger } from '@veaiops/utils';
+import { extractApiErrorMessage, logger } from '@veaiops/utils';
 import type { IntelligentThresholdTask } from 'api-generate';
 import { useCallback } from 'react';
 import { deleteTask } from '../lib/data-source/api';
@@ -148,20 +148,9 @@ export const useTaskOperations = ({
       // 表单会通过 TaskBasicForm 的 useEffect 自动填充
       openTaskDrawer({ type: TaskOperateType.COPY, record: copyRecord });
     } catch (error: unknown) {
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      logger.error({
-        message: '获取任务详情失败',
-        data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
-          errorObj,
-          taskId: task._id,
-        },
-        source: 'useTaskOperations',
-        component: 'handleCopy',
-      });
-      Message.error(`获取任务详情失败：${errorObj.message}`);
+      // ✅ Use unified utility function to extract error message
+      const errorMessage = extractApiErrorMessage(error, '获取任务详情失败');
+      Message.error(`获取任务详情失败：${errorMessage}`);
     }
   }, []);
 
@@ -195,20 +184,11 @@ export const useTaskOperations = ({
       // 🎯 返回 success，wrappedHandlers.delete 会在成功时自动刷新
       return success;
     } catch (error: unknown) {
-      // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-      const errorObj =
-        error instanceof Error ? error : new Error(String(error));
-      logger.error({
-        message: '删除任务失败',
-        data: {
-          error: errorObj.message,
-          stack: errorObj.stack,
-          errorObj,
-          taskId,
-        },
-        source: 'useTaskOperations',
-        component: 'handleDelete',
-      });
+      // ✅ Use unified utility function to extract error message
+      // Note: deleteTask API already shows Message.error in its catch block and returns false,
+      // so this catch block should not be triggered. But we keep it for safety.
+      const errorMessage = extractApiErrorMessage(error, '删除任务失败');
+      // Note: deleteTask already shows Message.error, so we don't show it here to avoid duplicate
       return false;
     }
   }, []);

@@ -57,6 +57,7 @@ class TaskRequest:
     window_size: int
     direction: Literal["up", "down", "both"]
     priority: TaskPriority
+    sensitivity: float = 0.5
     created_at: float = field(default_factory=time.time)
 
     def __lt__(self, other: "TaskRequest") -> bool:
@@ -158,6 +159,7 @@ class ThresholdRecommender:
             task_request.metric_template_value,
             task_request.window_size,
             task_request.direction,
+            task_request.sensitivity,
         )
 
     async def handle_task(
@@ -169,6 +171,7 @@ class ThresholdRecommender:
         window_size: int,
         direction: Literal["up", "down", "both"],
         task_priority: TaskPriority = TaskPriority.NORMAL,
+        sensitivity: float = 0.5,
     ) -> None:
         """Handle intelligent threshold calculation task asynchronously with priority scheduling.
 
@@ -184,6 +187,7 @@ class ThresholdRecommender:
             direction (Literal["up", "down", "both"]): Direction for threshold detection.
                 "up" for upper bound only, "down" for lower bound only, "both" for both bounds.
             task_priority (TaskPriority): Priority level for the task (default: NORMAL).
+            sensitivity (float): Sensitivity parameter for threshold calculation (default: 0.5).
         """
         logger.info(
             f"Queuing threshold calculation task: task_id={task_id}, "
@@ -201,6 +205,7 @@ class ThresholdRecommender:
                 window_size=window_size,
                 direction=direction,
                 priority=task_priority,
+                sensitivity=sensitivity,
             )
 
             # Add to priority queue
@@ -278,7 +283,7 @@ class ThresholdRecommender:
         return {"status": True, "msg": "Input data is valid"}
 
     def _validate_and_normalize_values(
-        self, min_value: float, max_value: float
+        self, min_value: Optional[float], max_value: Optional[float]
     ) -> tuple[Optional[float], Optional[float]]:
         """Validate and normalize min/max values.
 
@@ -290,12 +295,12 @@ class ThresholdRecommender:
             tuple[Optional[float], Optional[float]]: Normalized min and max values.
         """
         # Swap if min > max
-        if min_value > max_value:
+        if min_value is not None and max_value is not None and min_value > max_value:
             min_value, max_value = max_value, min_value
 
         # Handle extreme values
-        normalized_min = None if min_value < -EXTREME_VALUE_THRESHOLD else min_value
-        normalized_max = None if max_value > EXTREME_VALUE_THRESHOLD else max_value
+        normalized_min = None if min_value is not None and min_value < -EXTREME_VALUE_THRESHOLD else min_value
+        normalized_max = None if max_value is not None and max_value > EXTREME_VALUE_THRESHOLD else max_value
 
         return normalized_min, normalized_max
 
@@ -315,9 +320,9 @@ class ThresholdRecommender:
         normal_range_end = metric_template_value.normal_range_end
 
         # Handle extreme values
-        if normal_range_start < -EXTREME_VALUE_THRESHOLD:
+        if normal_range_start is None or normal_range_start < -EXTREME_VALUE_THRESHOLD:
             normal_range_start = None
-        if normal_range_end > EXTREME_VALUE_THRESHOLD:
+        if normal_range_end is None or normal_range_end > EXTREME_VALUE_THRESHOLD:
             normal_range_end = None
 
         return normal_range_end if direction == "up" else normal_range_start
@@ -540,9 +545,10 @@ class ThresholdRecommender:
         metric_template_value: MetricTemplateValue,
         window_size: int,
         direction: Literal["up", "down"],
-        min_value: float,
-        max_value: float,
-        normal_threshold: float,
+        min_value: Optional[float],
+        max_value: Optional[float],
+        normal_threshold: Optional[float],
+        sensitivity: float,
     ) -> Tuple[List[MetricThresholdResult], int, int, int]:
         """Process time series data and calculate thresholds.
 
@@ -554,6 +560,7 @@ class ThresholdRecommender:
             min_value: Minimum value for normalization
             max_value: Maximum value for normalization
             normal_threshold: Normal threshold value
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm
 
         Returns:
             Tuple containing (threshold_results, success_count, data_validation_errors, internal_errors)
@@ -594,6 +601,7 @@ class ThresholdRecommender:
                     max_value,
                     normal_threshold,
                     int(metric_template_value.min_ts_length),
+                    sensitivity,
                     direction,
                 )
 
@@ -657,6 +665,7 @@ class ThresholdRecommender:
         metric_template_value: MetricTemplateValue,
         window_size: int,
         direction: Literal["up", "down", "both"],
+        sensitivity: float,
     ) -> Dict[str, Any]:
         """Calculate intelligent thresholds for time series data.
 
@@ -669,6 +678,7 @@ class ThresholdRecommender:
             window_size (int): Size of the sliding window for threshold calculation.
             direction (Literal["up", "down", "both"]): Direction for threshold detection.
                 "up" for upper bound only, "down" for lower bound only, "both" for both bounds.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             Dict[str, Any]: Task response containing status, results, and message.
@@ -693,7 +703,14 @@ class ThresholdRecommender:
                 # Process for upper bounds
                 normal_threshold_up = self._get_normal_threshold(metric_template_value, "up")
                 up_results, up_success, up_data_errors, up_internal_errors = await self._process_time_series_data(
-                    task_data, metric_template_value, window_size, "up", min_value, max_value, normal_threshold_up
+                    task_data,
+                    metric_template_value,
+                    window_size,
+                    "up",
+                    min_value,
+                    max_value,
+                    normal_threshold_up,
+                    sensitivity,
                 )
 
                 # Process for lower bounds
@@ -704,7 +721,14 @@ class ThresholdRecommender:
                     down_data_errors,
                     down_internal_errors,
                 ) = await self._process_time_series_data(
-                    task_data, metric_template_value, window_size, "down", min_value, max_value, normal_threshold_down
+                    task_data,
+                    metric_template_value,
+                    window_size,
+                    "down",
+                    min_value,
+                    max_value,
+                    normal_threshold_down,
+                    sensitivity,
                 )
 
                 # Merge results
@@ -772,7 +796,14 @@ class ThresholdRecommender:
                 data_validation_error_count,
                 internal_server_error_count,
             ) = await self._process_time_series_data(
-                task_data, metric_template_value, window_size, direction, min_value, max_value, normal_threshold
+                task_data,
+                metric_template_value,
+                window_size,
+                direction,
+                min_value,
+                max_value,
+                normal_threshold,
+                sensitivity,
             )
             logger.info(f"Successfully calculated thresholds for {success_instance_count}/{len(task_data)} time series")
 

@@ -290,6 +290,7 @@ async def process_detail_task_status(record: AutoIntelligentThresholdTaskRecord)
                     metric_template_value=latest_version.metric_template_value,
                     n_count=latest_version.n_count,
                     direction=latest_version.direction,
+                    sensitivity=latest_version.sensitivity,
                     created_user=latest_version.created_user,
                     updated_user=latest_version.updated_user,
                     status=IntelligentThresholdTaskStatus.RUNNING,
@@ -311,6 +312,7 @@ async def process_detail_task_status(record: AutoIntelligentThresholdTaskRecord)
                     metric_template_value=latest_version.metric_template_value,
                     n_count=latest_version.n_count,
                     direction=latest_version.direction,
+                    sensitivity=latest_version.sensitivity,
                     task_priority=TaskPriority.LOW,
                 )
 

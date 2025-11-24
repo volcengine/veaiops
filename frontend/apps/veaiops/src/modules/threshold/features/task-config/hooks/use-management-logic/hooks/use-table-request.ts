@@ -16,6 +16,7 @@ import { taskDataSource } from '@task-config/lib';
 import {
   type CustomTableParams,
   type TableDataResponse,
+  extractApiErrorMessage,
   logger,
 } from '@veaiops/utils';
 import type {
@@ -62,20 +63,13 @@ export const useTableRequest = () => {
             success: true,
           };
         } catch (error: unknown) {
-          // ✅ 正确：使用 logger 记录错误，并透出实际错误信息
-          const errorObj =
-            error instanceof Error ? error : new Error(String(error));
-          logger.error({
-            message: '获取任务列表失败',
-            data: {
-              error: errorObj.message,
-              stack: errorObj.stack,
-              errorObj,
-            },
-            source: 'useManagementLogic',
-            component: 'request',
-          });
-          return { data: [], total: 0, success: false };
+          // ✅ Use unified utility function to extract error message
+          const errorMessage = extractApiErrorMessage(
+            error,
+            '获取任务列表失败',
+          );
+          // ✅ Throw error so CustomTable can handle it and show Message.error
+          throw new Error(errorMessage);
         }
       },
     [],

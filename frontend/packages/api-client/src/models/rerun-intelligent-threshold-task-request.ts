@@ -28,6 +28,10 @@ export type RerunIntelligentThresholdTaskRequest = {
    * 阈值计算方向
    */
   direction: RerunIntelligentThresholdTaskRequest.direction;
+  /**
+   * 灵敏度
+   */
+  sensitivity?: number;
 };
 export namespace RerunIntelligentThresholdTaskRequest {
   /**

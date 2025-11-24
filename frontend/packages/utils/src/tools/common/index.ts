@@ -53,3 +53,7 @@ export { canConvertToNumber, toNumber } from './number';
 
 // Export JSON processing
 export { safeJSONParse } from './json';
+
+// Export error handling
+export type { ApiErrorResponse } from './error';
+export { extractApiErrorMessage } from './error';
