@@ -93,40 +93,50 @@ async def create_notice_details(event: Event, subscribes: List[Subscribe]) -> Li
     """
     logger.info(f"start create notice details. event_id={event.id} matched_subscribes={subscribes}")
     notice_details = []
+    seen_notifications = set()
     for subscribe in subscribes:
         # 2.1 Webhook notification
         if subscribe.enable_webhook is True and subscribe.webhook_endpoint:
-            logger.info(f"create notice detail with webhook endpoint {subscribe.webhook_endpoint} meet")
-            notice_details.append(
-                EventNoticeDetail(
-                    event_main_id=event.id,
-                    notice_channel=ChannelType.Webhook,
-                    target=subscribe.webhook_endpoint,
-                    extra={"headers": subscribe.webhook_headers},
-                    status=EventStatus.INITIAL,
+            key = (event.id, ChannelType.Webhook, subscribe.webhook_endpoint)
+            if key not in seen_notifications:
+                logger.info(f"create notice detail with webhook endpoint {subscribe.webhook_endpoint} meet")
+                notice_details.append(
+                    EventNoticeDetail(
+                        event_main_id=event.id,
+                        notice_channel=ChannelType.Webhook,
+                        target=subscribe.webhook_endpoint,
+                        extra={"headers": subscribe.webhook_headers},
+                        status=EventStatus.INITIAL,
+                    )
                 )
-            )
+                seen_notifications.add(key)
 
         # 2.2 Channel notifications
         for strategy in subscribe.inform_strategy_ids:
             logger.info(f"create notice detail with channel strategy {strategy}")
             for chat_id in strategy.chat_ids:
-                logger.info(
-                    f"create notice detail with channel strategy {strategy} channel{strategy.channel} chat_id {chat_id}"
-                )
-                notice_details.append(
-                    EventNoticeDetail(
-                        event_main_id=event.id,
-                        notice_channel=ChannelType(strategy.channel),
-                        target=chat_id,
-                        extra={
-                            "bot_id": strategy.bot_id,
-                            "msg_id": event.raw_data.msg_id if isinstance(event.raw_data, AgentNotification) else "",
-                            "chat_id": chat_id,
-                        },
-                        status=EventStatus.INITIAL,
+                key = (event.id, ChannelType(strategy.channel), chat_id)
+                if key not in seen_notifications:
+                    logger.info(
+                        f"create notice detail with channel strategy {strategy} "
+                        f"channel {strategy.channel} chat_id {chat_id}"
                     )
-                )
+                    notice_details.append(
+                        EventNoticeDetail(
+                            event_main_id=event.id,
+                            notice_channel=ChannelType(strategy.channel),
+                            target=chat_id,
+                            extra={
+                                "bot_id": strategy.bot_id,
+                                "msg_id": event.raw_data.msg_id
+                                if isinstance(event.raw_data, AgentNotification)
+                                else "",
+                                "chat_id": chat_id,
+                            },
+                            status=EventStatus.INITIAL,
+                        )
+                    )
+                    seen_notifications.add(key)
 
     return notice_details
 
