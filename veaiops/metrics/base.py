@@ -17,10 +17,9 @@ import asyncio
 import functools
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing_extensions import Literal
 
 from veaiops.metrics.timeseries import InputTimeSeries
 from veaiops.schema.documents import (
