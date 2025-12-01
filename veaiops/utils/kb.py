@@ -14,10 +14,9 @@
 
 import json
 from datetime import datetime, timezone
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, override
 
 from tenacity import retry, stop_after_attempt, wait_fixed
-from typing_extensions import override
 from volcengine.ApiInfo import ApiInfo
 from volcengine.viking_knowledgebase import Collection, Doc, Point, VikingKnowledgeBaseService
 
