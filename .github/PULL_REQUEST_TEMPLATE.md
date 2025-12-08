@@ -6,10 +6,9 @@ Fixes # (issue)
 
 ## PR Title Format
 
-Please format the PR title as `{type}: [{modules}] {description}`.
+Please format the PR title as `{type}: {description}`.
 - **Types**: `feat`, `fix`, `refactor`, `chore`, `test`, `docs`.
-- **Modules**: `backend`, `frontend`, `chatops`, `docs`, `charts`, `ci`, `agent`, `algorithm`, etc.
-- **Example**: `feat: [backend, chatops] support new llm provider`
+- **Example**: `feat: support new llm provider`
 
 ## Type of Change
 
