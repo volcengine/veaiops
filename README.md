@@ -84,7 +84,6 @@ helm upgrade veaiops . \
 helm uninstall veaiops -n veaiops-system
 ```
 
-
 ## Technology Stack
 
 - Backend: FastAPI, Beanie (MongoDB ODM), Pydantic Settings, OpenTelemetry
@@ -95,13 +94,13 @@ helm uninstall veaiops -n veaiops-system
 
 ## Contributing
 
-We welcome contributions!
-1. Fork the repo
-2. Create a feature branch (git checkout -b feature/your-feature)
-3. Commit changes (git commit -m "feat: add your feature")
-4. Push your branch (git push origin feature/your-feature)
-5. Open a Pull Request
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
+## Citation
+
+If you use VeAIOps in your research, please cite the following paper:
+
+* [Interest Detection Agent](https://volcengine.github.io/veaiops/chatops/interest-agent): please cite [TickIt: Leveraging Large Language Models for Automated Ticket Escalation](./veaiops/agents/README.md).
 
 ## License
 
