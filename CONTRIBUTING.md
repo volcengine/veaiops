@@ -14,7 +14,7 @@ Before you start, ensure you have the following installed on your machine:
 - **Node.js**: 18+
 - **pnpm**: 8+
 - **uv**: Python package manager (Install via `pip install uv` or see [uv docs](https://github.com/astral-sh/uv))
-- **MongoDB**: 5+ (Required for backend services, Recommended to MongoDB 7+)
+- **MongoDB**: 5+ (7+ recommended)
 - **Helm**: 3+ (Optional, for Kubernetes deployment testing)
 
 ## Getting Started

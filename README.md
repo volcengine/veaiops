@@ -98,9 +98,9 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute to 
 
 ## Citation
 
-If you use VeAIOps in your research, please cite the following paper:
+If you use VeAIOps in your research, please cite the appropriate paper below:
 
-* [Interest Detection Agent](https://volcengine.github.io/veaiops/chatops/interest-agent): please cite [TickIt: Leveraging Large Language Models for Automated Ticket Escalation](./veaiops/agents/README.md).
+* [Interest Detection Agent](https://volcengine.github.io/veaiops/chatops/interest-agent): cite the TickIt paper (see [citation details](./veaiops/agents/README.md) for "TickIt: Leveraging Large Language Models for Automated Ticket Escalation").
 
 ## License
 
