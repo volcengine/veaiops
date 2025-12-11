@@ -22,7 +22,7 @@ from veadk import Runner
 from veaiops.agents.chatops.memory.short_term_memory import STM_SESSION_SVC
 from veaiops.schema.documents import AgentNotification, Bot, Message
 from veaiops.schema.models.chatops import AgentReplyResp, Citation, ProactiveReply
-from veaiops.schema.types import AgentType, ChatType
+from veaiops.schema.types import AgentType
 from veaiops.utils.crypto import decrypt_secret_value
 from veaiops.utils.embedding import embedding_create
 from veaiops.utils.log import logger
@@ -78,10 +78,6 @@ async def run_proactive_reply_agent(bot: Bot, msg: Message) -> None:
     user_id = bot.bot_id
     session_id = msg.msg_id
     bot_id = bot.bot_id
-
-    # If does not in a group chat, skip processing
-    if msg.chat_type != ChatType.Group:
-        return
 
     logger.info(f"Start initializing proactive reply agent for bot_id={bot_id}, chat_id={msg.chat_id}")
 
