@@ -13,21 +13,17 @@
 # limitations under the License.
 
 import asyncio
-import json
 from datetime import datetime
 from typing import Any, Dict, List, cast
 
 from google.genai.types import Content
 from veadk import Agent, Runner
 
-from veaiops.agents.chatops.data_agent.text2query import init_text2query_agent
+from veaiops.agents.chatops.data_agent.data_query import COLLECTIONS, init_data_query_agent
 from veaiops.agents.chatops.memory import STM_SESSION_SVC, init_stm
 from veaiops.schema.documents import (
     AgentNotification,
     Bot,
-    Chat,
-    Event,
-    Interest,
     Message,
     VeKB,
 )
@@ -40,57 +36,21 @@ from veaiops.utils.webhook import send_bot_notification
 
 DATA_AGENT_NAME = "DataAgent"
 
-DB_MAP = {
-    "Chat": Chat,
-    "Interest": Interest,
-    "Message": Message,
-    "AgentNotification": AgentNotification,
-    "Event": Event,
-}
 
 DATA_AGENT_INSTRUCTION = """
 You are a smart Data Agent. Your goal is to answer user questions by retrieving information.
 
 You have access to:
-1. `TextToQueryAgent` (Sub-agent): Delegate tasks to this agent to generate a structured query plan (collection, query, filter) for the user's request.
-2. `query_database(collection_name, query)` (Tool): Execute a MongoDB query.
-3. `search_knowledge_base` (Tool): Search the knowledge base.
+1. `DataQueryAgent` (Sub-agent): Delegate tasks to this agent to query the database. It will generate a structured query plan and execute it.
+2. `search_knowledge_base` (Tool): Search the knowledge base.
 
 Process:
 1. Analyze the user's request.
 2. Determine if you need structured data (Database) or unstructured info (Knowledge Base).
-3. If Database:
-    a. Delegate to `TextToQueryAgent` to get the structured request.
-    b. Convert the structured request (DSL) into a valid MongoDB query dictionary.
-       - The `filter` field in the structured request uses a DSL (e.g., `eq(attr, val)`, `and(...)`).
-       - You must translate this into MongoDB syntax (e.g., `{"attr": "val"}`, `{"$and": [...]}`).
-    c. Execute `query_database(collection_name, mongo_query)`.
-    d. Synthesize the results.
+3. If Database: Delegate to `DataQueryAgent`.
 4. If Knowledge Base: Use `search_knowledge_base`.
 5. Synthesize the information and answer the user.
 """  # noqa: E501
-
-
-async def query_database(collection_name: str, query: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """Query the database for a specific collection with a MongoDB-style query.
-
-    Args:
-        collection_name: The name of the collection to query.
-        query: The MongoDB query dictionary.
-
-    Returns:
-        A list of documents matching the query.
-    """
-    if collection_name not in DB_MAP:
-        return [{"error": f"Collection {collection_name} not found. Available: {list(DB_MAP.keys())}"}]
-
-    doc_cls = DB_MAP[collection_name]
-    try:
-        # Limit to 10 results
-        results = await doc_cls.find(query).limit(10).to_list()
-        return [doc.model_dump(mode="json") for doc in results]
-    except Exception as e:
-        return [{"error": str(e)}]
 
 
 async def run_data_agent(bot: Bot, msg: Message) -> None:
@@ -166,18 +126,37 @@ async def run_data_agent(bot: Bot, msg: Message) -> None:
     )
 
     schemas = {}
-    for name in DB_MAP.keys():
-        schemas[name] = json.dumps(DB_MAP[name].model_json_schema(), indent=2)
 
-    user_query = "".join([p.text for p in msg.msg_llm_compatible if p.text]) if msg.msg_llm_compatible else ""
+    for name, collection in COLLECTIONS.items():
+        model_schema = collection.model_json_schema()
+        db_map = {}
+        title = model_schema.get("title")
+        defs = model_schema.get("$defs")
+        description = model_schema.get("description")
+        properties = model_schema.get("properties")
+        properties.pop("_id") if "_id" in properties else None
+        defs.pop("PydanticObjectId") if "PydanticObjectId" in defs else None
+        if title:
+            db_map["title"] = title
+        else:
+            continue
 
-    db_agent = await init_text2query_agent(bot, schemas, user_query)
+        if defs:
+            db_map["$defs"] = defs
+        if description:
+            db_map["description"] = description
+        if properties:
+            db_map["properties"] = properties
+
+        schemas[title] = db_map
+
+    db_agent = await init_data_query_agent(bot, schemas)
 
     agent = Agent(
         name=DATA_AGENT_NAME,
         description="A data agent that can query database and knowledge base.",
         instruction=DATA_AGENT_INSTRUCTION,
-        tools=[search_knowledge_base, query_database],
+        tools=[search_knowledge_base],
         sub_agents=[db_agent],
         short_term_memory=STM,
         model_name=bot.agent_cfg.name,

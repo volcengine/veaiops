@@ -29,16 +29,18 @@ class Chat(Document):
     """Chat session data model."""
 
     # Message source channel
-    channel: ChannelType = Field(..., description="Channel")
+    channel: ChannelType = Field(..., description="Channel", exclude=True)
     # BotID
-    bot_id: Annotated[str, Indexed()] = Field(..., description="BotID")
+    bot_id: Annotated[str, Indexed()] = Field(..., description="BotID", exclude=True)
     # ChatID, aka. SessionID
-    chat_id: Annotated[str, Indexed()] = Field(..., description="ChatID")
+    chat_id: Annotated[str, Indexed()] = Field(..., description="ChatID, aka. SessionID")
     # Chat name
-    name: str = Field(..., description="ChatName")
+    name: str = Field(..., description="Name of the chat session")
     # Chat start time
     start_time: Optional[datetime] = Field(default=None, description="The timestamp when the chat was start.")
-    is_active: Annotated[bool, Indexed()] = True
+    is_active: Annotated[bool, Indexed()] = Field(
+        default=True, description="Indicates if the chat is active.", exclude=True
+    )
 
     # Link to the chat, if available
     chat_link: Optional[str] = Field(default=None, description="The chat link.")

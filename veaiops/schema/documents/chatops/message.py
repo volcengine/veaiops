@@ -28,29 +28,34 @@ class Message(Document):
     """Message data model."""
 
     # Metadata
-    channel: ChannelType  # Message source channel
-    bot_id: Annotated[str, Indexed()]  # BotID
+    channel: ChannelType = Field(..., description="Message source channel", exclude=True)
+    bot_id: Annotated[str, Indexed()] = Field(..., description="BotID", exclude=True)
     # Chat
-    chat_id: Annotated[str, Indexed()]  # ChatID, aka. SessionID
-    chat_type: ChatType
+    chat_id: Annotated[str, Indexed()] = Field(..., description="ChatID, aka. SessionID")
+    chat_type: ChatType = Field(..., description="Chat type")
     # Message
-    msg: str  # Original message payload
-    msg_id: Annotated[str, Indexed()]  # Message ID for idempotence with channel
-    msg_time: Annotated[datetime, Indexed()]  # Message timestamp
-    msg_sender_id: str
-    msg_sender_type: MsgSenderType
+    msg: str = Field(..., description="Original message payload")
+    msg_id: Annotated[str, Indexed()] = Field(..., description="Message ID for idempotence with channel")
+    msg_time: Annotated[datetime, Indexed()] = Field(..., description="Message timestamp")
+    msg_sender_id: str = Field(..., description="Message sender ID", exclude=True)
+    msg_sender_type: MsgSenderType = Field(..., description="Message sender type", exclude=True)
 
     # Mentions
-    mentions: list[Mention] | None = None
-    is_mentioned: bool = False
+    mentions: list[Mention] | None = Field(
+        default=None, description="List of mentioned people in the message", exclude=True
+    )
+    is_mentioned: bool = Field(default=False, description="Indicates if the bot is mentioned", exclude=True)
 
     # LLM
-    msg_llm_compatible: Optional[List[Part]] = None
-
+    msg_llm_compatible: Optional[List[Part]] = Field(
+        default=None, description="LLM compatible message parts", exclude=True
+    )
     # Proactive reply results
-    proactive_reply: ProactiveReply = Field(default_factory=ProactiveReply)
+    proactive_reply: ProactiveReply = Field(default_factory=ProactiveReply, exclude=True)
     # Extracted links from the message for review
-    extracted_links: List[ExternalLinkReviewResult] = []
+    extracted_links: List[ExternalLinkReviewResult] = Field(
+        default_factory=list, description="Extracted links from the message for review"
+    )
 
     class Settings:
         """Create compound index for idempotence using bot_id + msg_id."""

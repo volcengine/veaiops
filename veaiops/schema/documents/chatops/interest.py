@@ -27,22 +27,22 @@ from veaiops.schema.types import ChannelType, EventLevel, InterestActionType, In
 class Interest(BaseConfigDocument):
     """Interest rule model."""
 
-    name: str
-    description: str
-    uuid: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    examples_positive: Optional[list[str]] = None
-    examples_negative: Optional[list[str]] = None
-    action_category: InterestActionType
-    inspect_category: InterestInspectType
-    regular_expression: Optional[str] = None
-    inspect_history: int = Field(default=1, ge=0)  # 0 for all records, must be >= 0
+    name: str = Field(..., description="Name of the interest rule")
+    description: str = Field(..., description="Description of the interest rule")
+    uuid: str = Field(default_factory=lambda: str(uuid.uuid4()), exclude=True)
+    examples_positive: Optional[list[str]] = Field(default=None, description="Examples of positive cases")
+    examples_negative: Optional[list[str]] = Field(default=None, description="Examples of negative cases")
+    action_category: InterestActionType = Field(..., description="Category of the action")
+    inspect_category: InterestInspectType = Field(..., description="Category of the inspection")
+    regular_expression: Optional[str] = Field(default=None, description="Regular expression rule for inspection")
+    inspect_history: int = Field(default=1, ge=0, description="Number of records to inspect in history, 0 for all")
     # Metadata
-    silence_delta: timedelta = timedelta(hours=6)  # time delta between two alarms
-    version: int = 1  # Configuration version for tracking changes
+    silence_delta: timedelta = Field(default=timedelta(hours=6), description="Time delta between two alarms")
+    version: int = Field(default=1, description="Configuration version for tracking changes", exclude=True)
     level: Optional[EventLevel] = Field(default=None, description="Level of event")
     # Bot related attr.
-    bot_id: Annotated[str, Indexed()]  # Bot ID
-    channel: ChannelType
+    bot_id: Annotated[str, Indexed()] = Field(..., description="Bot ID", exclude=True)
+    channel: ChannelType = Field(..., description="Channel", exclude=True)
 
     @model_validator(mode="after")
     def validate_regular_expression(self) -> "Interest":

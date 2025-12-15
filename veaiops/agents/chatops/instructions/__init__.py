@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from .analysis import load_analysis_instruction
+from .data_query import load_data_query_instruction
 from .identify import load_identify_instruction
 from .interest import load_interest_instruction
 from .query_review import load_query_review_instruction
@@ -30,4 +31,5 @@ __all__ = [
     "load_interest_instruction",
     "load_reactive_instruction",
     "load_query_review_instruction",
+    "load_data_query_instruction",
 ]
