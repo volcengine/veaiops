@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { Button, Drawer, Form, Message } from '@arco-design/web-react';
+import { logger } from '@veaiops/utils';
 import type {
   IntelligentThresholdTaskVersion,
   RerunIntelligentThresholdTaskRequest,
@@ -111,6 +112,11 @@ export const useRerunDrawer = (
 
         // Refresh table data to show new version results
         if (tableRef.current?.refresh) {
+          logger.info({
+            message:
+              '[useRerunDrawer] Rerun successful, triggering single table refresh',
+            source: 'useRerunDrawer',
+          });
           const refreshResult = await tableRef.current.refresh();
           return refreshResult ?? true;
         }

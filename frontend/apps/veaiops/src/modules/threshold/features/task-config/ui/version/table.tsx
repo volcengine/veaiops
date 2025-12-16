@@ -14,6 +14,8 @@
 
 import type { CustomTableActionType } from '@veaiops/components';
 import type { BaseQuery, BaseRecord } from '@veaiops/types';
+import { logger } from '@veaiops/utils';
+import { useInterval } from 'ahooks';
 import { useRef } from 'react';
 import {
   useAlarmDrawer,
@@ -48,6 +50,18 @@ const TaskVersionTable: React.FC<TaskVersionTableProps> = ({
     onRerunOpen: rerunDrawer.open,
     tableRef,
   });
+
+  // Auto refresh table data every 3 seconds to update task status
+  useInterval(() => {
+    // Only refresh when tableRef is available
+    if (tableRef.current?.refresh) {
+      logger.debug({
+        message: '[TaskVersionTable] Auto refreshing task versions',
+        source: 'TaskVersionTable',
+      });
+      tableRef.current.refresh();
+    }
+  }, 3000);
 
   return (
     <>
