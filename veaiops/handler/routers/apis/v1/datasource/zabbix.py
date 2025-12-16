@@ -402,17 +402,60 @@ async def get_metrics_timeseries(
     # Get history type from datasource
     history_type = zabbix_datasource.history_type
 
-    # Fetch data using client.get_metric_data
-    history_data = await zabbix_datasource.client.get_metric_data(
-        item_ids=item_ids,
-        time_from=start_time_ts,
-        time_till=end_time_ts,
-        history_type=history_type,
-        page_size=DEFAULT_PAGE_SIZE,
-    )
+    # Fetch data using pagination to ensure all data is retrieved
+    all_history_data = []
+    last_clock = start_time_ts
+    page_size = DEFAULT_PAGE_SIZE
+
+    # Add maximum iterations limit to prevent infinite loop
+    max_iterations = 100
+    iteration_count = 0
+
+    while iteration_count < max_iterations:
+        page_data = await zabbix_datasource.client.get_metric_data(
+            item_ids=item_ids,
+            time_from=last_clock,
+            time_till=end_time_ts,
+            history_type=history_type,
+            page_size=page_size,
+        )
+
+        if not page_data:
+            break
+
+        # Validate page_data structure before processing
+        if not isinstance(page_data, list) or len(page_data) == 0:
+            raise BadRequestError(message="Received invalid page_data: expected non-empty list")
+
+        # Ensure page_data items have required fields
+        valid_items = [item for item in page_data if isinstance(item, dict) and "clock" in item]
+        if not valid_items:
+            raise BadRequestError(message="Received page_data with no valid items containing 'clock' field")
+
+        all_history_data.extend(page_data)
+
+        # Check if we have a valid last item before accessing its clock
+        if page_data and isinstance(page_data[-1], dict) and "clock" in page_data[-1]:
+            last_clock = int(page_data[-1]["clock"])
+        else:
+            raise BadRequestError(message="Last item in page_data is invalid or missing 'clock' field")
+
+        # If we got less data than the page size, we've reached the end
+        if len(page_data) < page_size:
+            break
+
+        # Increment iteration counter
+        iteration_count += 1
+
+    # Raise exception if we reached maximum iterations
+    if iteration_count >= max_iterations:
+        raise BadRequestError(
+            message=f"Maximum iterations ({max_iterations}) reached while fetching Zabbix data. "
+            f"This might indicate an issue with data retrieval or pagination logic."
+        )
 
     # Convert history data to time series format
-    timeseries_data = zabbix_datasource._convert_history_to_timeseries(history_data)
+    timeseries_data = zabbix_datasource._convert_history_to_timeseries(all_history_data)
 
     return APIResponse(
         message="success",
@@ -420,8 +463,13 @@ async def get_metrics_timeseries(
     )
 
 
-@zabbix_router.get("/datasource/{datasource_id}/mediatypes", response_model=APIResponse[List[ZabbixMediatype]])
-async def get_zabbix_mediatypes(datasource_id: str) -> APIResponse[List[ZabbixMediatype]]:
+@zabbix_router.get(
+    "/datasource/{datasource_id}/mediatypes",
+    response_model=APIResponse[List[ZabbixMediatype]],
+)
+async def get_zabbix_mediatypes(
+    datasource_id: str,
+) -> APIResponse[List[ZabbixMediatype]]:
     """Get Zabbix mediatypes by datasource ID.
 
     Args:
@@ -451,8 +499,13 @@ async def get_zabbix_mediatypes(datasource_id: str) -> APIResponse[List[ZabbixMe
     )
 
 
-@zabbix_router.get("/datasource/{datasource_id}/usergroups", response_model=APIResponse[List[ZabbixUserGroup]])
-async def get_zabbix_usergroups(datasource_id: str) -> APIResponse[List[ZabbixUserGroup]]:
+@zabbix_router.get(
+    "/datasource/{datasource_id}/usergroups",
+    response_model=APIResponse[List[ZabbixUserGroup]],
+)
+async def get_zabbix_usergroups(
+    datasource_id: str,
+) -> APIResponse[List[ZabbixUserGroup]]:
     """Get Zabbix usergroups by datasource ID.
 
     Args:
