@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Tooltip } from '@arco-design/web-react';
 import { CellRender } from '@veaiops/components';
 import type React from 'react';
 
@@ -29,9 +30,13 @@ export const LabelsColumn: React.FC<{
     <div className="space-y-1">
       {Object.entries(labels).map(([key, value]) => (
         <div key={key} className="text-sm">
-          <CellRender.CustomOutlineTag>
-            {`${key}: ${value}`}
-          </CellRender.CustomOutlineTag>
+          <Tooltip content={`${key}: ${value}`}>
+            <span style={{ display: 'inline-block', maxWidth: '100%' }}>
+              <CellRender.CustomOutlineTag maxWidth={220} ellipsis>
+                {`${key}: ${value}`}
+              </CellRender.CustomOutlineTag>
+            </span>
+          </Tooltip>
         </div>
       ))}
     </div>
