@@ -31,7 +31,7 @@ export const LabelsColumn: React.FC<{
       {Object.entries(labels).map(([key, value]) => (
         <div key={key} className="text-sm">
           <Tooltip content={`${key}: ${value}`}>
-            <span style={{ display: 'inline-block', maxWidth: '100%' }}>
+            <span className="inline-block max-w-full">
               <CellRender.CustomOutlineTag maxWidth={220} ellipsis>
                 {`${key}: ${value}`}
               </CellRender.CustomOutlineTag>
