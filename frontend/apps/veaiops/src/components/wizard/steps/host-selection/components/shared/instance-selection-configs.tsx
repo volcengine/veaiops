@@ -18,8 +18,9 @@
  */
 
 import { IconCloud, IconDesktop } from '@arco-design/web-react/icon';
+import type { AliyunInstance, VolcengineInstance } from '@wizard/types';
+import { checkMatch } from '@wizard/utils/filter';
 import type { ZabbixHost } from 'api-generate';
-import type { AliyunInstance, VolcengineInstance } from '../../../../types';
 import type { InstanceSelectionConfig } from './instance-selection-config';
 
 /**
@@ -42,7 +43,7 @@ export const createAliyunConfig = (
       instance.instanceId ||
       instance.dimensions?.instanceId ||
       instance.dimensions?.userId ||
-      instance.userId ||
+      (instance as AliyunInstance & { userId?: string }).userId ||
       '';
     const name =
       instance.instanceName ||
@@ -62,23 +63,23 @@ export const createAliyunConfig = (
   },
   selectionAction,
   searchFilter: (instance, searchValue) => {
-    const searchLower = searchValue.toLowerCase();
     return (
-      (instance.instanceId?.toLowerCase() || '').includes(searchLower) ||
-      (instance.instanceName?.toLowerCase() || '').includes(searchLower) ||
-      (instance.region?.toLowerCase() || '').includes(searchLower) ||
+      checkMatch(instance.instanceId, searchValue) ||
+      checkMatch(instance.instanceName, searchValue) ||
+      checkMatch(instance.region, searchValue) ||
       // 当只有 userId 时，也支持搜索 userId
-      (instance.dimensions?.userId?.toLowerCase() || '').includes(
-        searchLower,
-      ) ||
-      (instance.userId?.toLowerCase() || '').includes(searchLower)
+      checkMatch(instance.dimensions?.userId, searchValue) ||
+      checkMatch(
+        (instance as AliyunInstance & { userId?: string }).userId,
+        searchValue,
+      )
     );
   },
   getId: (instance) =>
     instance.instanceId ||
     instance.dimensions?.instanceId ||
     instance.dimensions?.userId ||
-    instance.userId ||
+    (instance as AliyunInstance & { userId?: string }).userId ||
     '',
 });
 
@@ -104,10 +105,10 @@ export const createVolcengineConfig = (
   }),
   selectionAction,
   searchFilter: (instance, searchValue) =>
-    instance.instanceId.toLowerCase().includes(searchValue) ||
-    (instance.instanceName?.toLowerCase() || '').includes(searchValue) ||
-    (instance.region?.toLowerCase() || '').includes(searchValue) ||
-    (instance.namespace?.toLowerCase() || '').includes(searchValue),
+    checkMatch(instance.instanceId, searchValue) ||
+    checkMatch(instance.instanceName, searchValue) ||
+    checkMatch(instance.region, searchValue) ||
+    checkMatch(instance.namespace, searchValue),
   getId: (instance) => instance.instanceId,
 });
 
@@ -120,7 +121,7 @@ export const createZabbixConfig = (
   title: '选择主机',
   description: '选择要监控的主机，可以选择多个主机',
   emptyDescription: '暂无可用的主机',
-  searchPlaceholder: '搜索主机名称...',
+  searchPlaceholder: '搜索主机名称 (支持正则)...',
   itemType: '主机',
   icon: <IconDesktop />,
   dataTransformer: (host) => ({
@@ -131,8 +132,7 @@ export const createZabbixConfig = (
   }),
   selectionAction,
   searchFilter: (host, searchValue) =>
-    host.host.toLowerCase().includes(searchValue) ||
-    host.name.toLowerCase().includes(searchValue),
+    checkMatch(host.host, searchValue) || checkMatch(host.name, searchValue),
   getId: (host) => host.host, // 使用 host 作为唯一标识
   useHostList: true, // 使用特殊的主机列表组件
 });
