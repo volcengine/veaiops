@@ -90,11 +90,10 @@ export const createVolcengineConfig = (
   selectionAction: (instances: VolcengineInstance[]) => void,
 ): InstanceSelectionConfig<VolcengineInstance> => ({
   title: '选择实例',
-  description:
-    'Select Volcengine instances to monitor. Multiple instances can be selected.',
-  emptyDescription: 'No available instances',
-  searchPlaceholder: 'Search by instance ID or name...',
-  itemType: 'Instance',
+  description: '选择要监控的火山引擎实例，可以选择多个实例',
+  emptyDescription: '暂无可用的实例',
+  searchPlaceholder: '搜索实例ID或名称...',
+  itemType: '实例',
   icon: <IconCloud />,
   dataTransformer: (instance) => ({
     id: instance.instanceId,
