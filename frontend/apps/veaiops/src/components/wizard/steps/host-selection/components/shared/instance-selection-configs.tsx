@@ -31,10 +31,10 @@ export const createAliyunConfig = (
 ): InstanceSelectionConfig<AliyunInstance> => ({
   title: '选择实例',
   description:
-    'Select the Aliyun instances to monitor. Multiple instances can be selected. If no instance is selected, all matching instances will be monitored.',
-  emptyDescription: 'No available instances',
-  searchPlaceholder: 'Search by instance ID or name...',
-  itemType: 'Instance',
+    '选择要监控的阿里云实例，可以选择多个实例。如果不选择实例，将监控所有符合条件的实例。',
+  emptyDescription: '暂无可用的实例',
+  searchPlaceholder: '搜索实例ID或名称...',
+  itemType: '实例',
   icon: <IconCloud />,
   dataTransformer: (instance) => {
     // When only userId exists (no instanceId), use userId as the id
@@ -119,10 +119,10 @@ export const createZabbixConfig = (
   selectionAction: (hosts: ZabbixHost[]) => void,
 ): InstanceSelectionConfig<ZabbixHost> => ({
   title: '选择主机',
-  description: 'Select the hosts to monitor. Multiple hosts can be selected.',
-  emptyDescription: 'No available hosts',
-  searchPlaceholder: 'Search host name (supports regex)...',
-  itemType: 'Host',
+  description: '选择要监控的主机，可以选择多个主机',
+  emptyDescription: '暂无可用的主机',
+  searchPlaceholder: '搜索主机名称 (支持正则)...',
+  itemType: '主机',
   icon: <IconDesktop />,
   dataTransformer: (host) => ({
     id: host.host, // Use host as the unique identifier
