@@ -103,7 +103,7 @@ export const checkMatch = (
   // Using RegExp directly gives maximum flexibility for power users.
 
   try {
-    // 使用 'i' 标志忽略大小写
+    // Use 'i' flag to make the match case-insensitive
     const regex = new RegExp(query, 'i');
     if (regex.test(safeText)) {
       return true;
