@@ -327,6 +327,174 @@ class ThresholdRecommender:
 
         return normal_range_end if direction == "up" else normal_range_start
 
+    @staticmethod
+    def can_merge_threshold_configs(configs: List[IntelligentThresholdConfig]) -> bool:
+        """Check if a list of threshold configurations can be merged.
+
+        Merge conditions:
+        1. window_size must be the same
+        2. upper_bound max-min difference <= 10%
+        3. lower_bound max-min difference <= 10%
+
+        Args:
+            configs: List of threshold configurations
+
+        Returns:
+            bool: Whether the configs can be merged
+        """
+        if len(configs) <= 1:
+            return True
+
+        # Check if all window_sizes are the same
+        window_sizes = [c.window_size for c in configs]
+        if len(set(window_sizes)) != 1:
+            return False
+
+        # Extract upper_bound and lower_bound
+        upper_bounds = [c.upper_bound for c in configs if c.upper_bound is not None]
+        lower_bounds = [c.lower_bound for c in configs if c.lower_bound is not None]
+
+        # Check upper_bound merge condition
+        if upper_bounds:
+            max_upper = max(upper_bounds)
+            min_upper = min(upper_bounds)
+
+            if max_upper == 0:
+                if max_upper != min_upper:
+                    return False
+            else:
+                upper_diff_ratio = (max_upper - min_upper) / max_upper
+                if upper_diff_ratio > 0.1:  # 10% threshold
+                    return False
+
+        # Check lower_bound merge condition
+        if lower_bounds:
+            max_lower = max(lower_bounds)
+            min_lower = min(lower_bounds)
+
+            if max_lower == 0:
+                if max_lower != min_lower:
+                    return False
+            else:
+                lower_diff_ratio = (max_lower - min_lower) / max_lower
+                if lower_diff_ratio > 0.1:  # 10% threshold
+                    return False
+
+        return True
+
+    @staticmethod
+    def merge_threshold_configs(configs: List[IntelligentThresholdConfig]) -> IntelligentThresholdConfig:
+        """Merge multiple threshold configurations into a single configuration.
+
+        Args:
+            configs: List of threshold configurations to merge
+
+        Returns:
+            IntelligentThresholdConfig: Merged threshold configuration
+        """
+        if len(configs) == 1:
+            return configs[0]
+
+        # Extract upper_bound and lower_bound
+        upper_bounds = [c.upper_bound for c in configs if c.upper_bound is not None]
+        lower_bounds = [c.lower_bound for c in configs if c.lower_bound is not None]
+
+        # For upper bound, use max (conservative strategy)
+        merged_upper = max(upper_bounds) if upper_bounds else None
+
+        # For lower bound, use min (conservative strategy)
+        merged_lower = min(lower_bounds) if lower_bounds else None
+
+        return IntelligentThresholdConfig(
+            start_hour=configs[0].start_hour,
+            end_hour=configs[-1].end_hour,
+            upper_bound=merged_upper,
+            lower_bound=merged_lower,
+            window_size=configs[0].window_size,
+        )
+
+    def merge_continuous_thresholds(
+        self, thresholds: List[IntelligentThresholdConfig]
+    ) -> List[IntelligentThresholdConfig]:
+        """Merge continuous threshold configurations.
+
+        Uses greedy algorithm to merge consecutive time periods that satisfy:
+        - Both upper and lower bounds variance within 10%
+        - Same window_size
+
+        Args:
+            thresholds: Original list of threshold configurations
+
+        Returns:
+            List[IntelligentThresholdConfig]: List of merged threshold configurations
+        """
+        # Filter out configs that have neither upper_bound nor lower_bound
+        valid_thresholds = [t for t in thresholds if t.upper_bound is not None or t.lower_bound is not None]
+
+        if len(valid_thresholds) <= 1:
+            return thresholds
+
+        # Sort by start_hour
+        sorted_thresholds = sorted(valid_thresholds, key=lambda x: x.start_hour)
+
+        merged_result = []
+        current_group = [sorted_thresholds[0]]
+
+        for i in range(1, len(sorted_thresholds)):
+            # Check if continuous
+            if current_group[-1].end_hour == sorted_thresholds[i].start_hour:
+                # Try to add current threshold to merge group
+                test_group = current_group + [sorted_thresholds[i]]
+
+                if self.can_merge_threshold_configs(test_group):
+                    # Can merge, add to current group
+                    current_group.append(sorted_thresholds[i])
+                else:
+                    # Cannot merge, finalize current group and start new group
+                    merged_result.append(self.merge_threshold_configs(current_group))
+                    current_group = [sorted_thresholds[i]]
+            else:
+                # Not continuous, finalize current group and start new group
+                merged_result.append(self.merge_threshold_configs(current_group))
+                current_group = [sorted_thresholds[i]]
+
+        # Process the last group
+        merged_result.append(self.merge_threshold_configs(current_group))
+
+        return merged_result
+
+    def merge_metric_threshold_results(self, results: List[MetricThresholdResult]) -> List[MetricThresholdResult]:
+        """Merge threshold configurations in MetricThresholdResult list.
+
+        Merges the thresholds for each metric (MetricThresholdResult),
+        keeping other fields unchanged.
+
+        Args:
+            results: List containing multiple metric threshold results
+
+        Returns:
+            List[MetricThresholdResult]: List of merged results
+        """
+        merged_results = []
+
+        for result in results:
+            # Merge thresholds for each metric
+            merged_thresholds = self.merge_continuous_thresholds(result.thresholds)
+
+            # Create new MetricThresholdResult, keeping other fields unchanged
+            merged_result = MetricThresholdResult(
+                name=result.name,
+                thresholds=merged_thresholds,
+                labels=result.labels,
+                unique_key=result.unique_key,
+                status=result.status,
+                error_message=result.error_message,
+            )
+
+            merged_results.append(merged_result)
+
+        return merged_results
+
     def _merge_threshold_results(
         self, up_results: list[MetricThresholdResult], down_results: list[MetricThresholdResult]
     ) -> list[MetricThresholdResult]:
@@ -351,7 +519,6 @@ class ThresholdRecommender:
 
         for up_result in up_results:
             down_result = down_results_map.get(up_result.unique_key)
-
             if down_result:
                 # Check if either direction failed
                 if up_result.status != "Success" or down_result.status != "Success":
@@ -497,8 +664,8 @@ class ThresholdRecommender:
                 else:
                     # Only down bound available and it succeeded
                     merged_results.append(down_result)
-
-        return merged_results
+        print(merged_results)
+        return self.merge_metric_threshold_results(merged_results)
 
     async def _fetch_and_validate_data(
         self, datasource_id: str

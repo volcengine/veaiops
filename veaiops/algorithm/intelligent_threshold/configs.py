@@ -47,8 +47,8 @@ MILLISECOND_THRESHOLD = 10**12
 # Default timezone for time-based operations
 DEFAULT_TIMEZONE = tzlocal.get_localzone_name()
 
-# Default time split ranges for daily analysis (hours)
-DEFAULT_TIME_SPLIT_RANGES = [[0, 6], [6, 12], [12, 18], [18, 24]]
+# Default number of time split (default = 4)
+DEFAULT_NUMBER_OF_TIME_SPLIT = int(os.getenv("DEFAULT_NUMBER_OF_TIME_SPLIT", 4))
 
 # =============================================================================
 # Algorithm Parameters
@@ -81,7 +81,7 @@ MIN_ANALYSIS_PERIOD_DAYS = 7
 # =============================================================================
 
 # Default correlation threshold for period detection
-DEFAULT_CORRELATION_THRESHOLD = 0.75
+DEFAULT_CORRELATION_THRESHOLD = float(os.getenv("DEFAULT_CORRELATION_THRESHOLD", 0.3))
 
 # Minimum data points per day for analysis
 DEFAULT_MIN_DATA_POINTS_PER_DAY = 720

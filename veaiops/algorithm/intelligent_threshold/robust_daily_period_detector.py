@@ -78,10 +78,13 @@ class RobustDailyPeriodDetector:
             ValueError: If any parameter is outside valid range.
         """
         if not 0 <= correlation_threshold <= 1:
+            print("111")
             raise ValueError("correlation_threshold must be between 0 and 1")
         if min_data_points_per_day <= 0:
+            print("222")
             raise ValueError("min_data_points_per_day must be positive")
         if min_common_points <= 0:
+            print("333")
             raise ValueError("min_common_points must be positive")
 
         self.correlation_threshold = correlation_threshold
@@ -373,6 +376,7 @@ class RobustDailyPeriodDetector:
             return False
 
         avg_correlation = sum(correlations) / len(correlations)
+        print(avg_correlation)
         logger.debug(f"Average correlation: {avg_correlation:.3f} (threshold: {self.correlation_threshold})")
 
         return avg_correlation >= self.correlation_threshold

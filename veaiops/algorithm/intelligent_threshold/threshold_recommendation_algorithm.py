@@ -26,7 +26,7 @@ import numpy as np
 from dbscan1d.core import DBSCAN1D
 
 from veaiops.algorithm.intelligent_threshold.configs import (
-    DEFAULT_TIME_SPLIT_RANGES,
+    DEFAULT_NUMBER_OF_TIME_SPLIT,
     DEFAULT_TIMEZONE,
     MICROSECOND_THRESHOLD,
     MILLISECOND_THRESHOLD,
@@ -51,19 +51,28 @@ class ThresholdRecommendAlgorithm:
 
     Attributes:
         timezone (str): Timezone for timestamp processing.
-        time_split_ranges (List[List[int]]): Time ranges for splitting analysis.
+        time_split_ranges (List[List[float]]): Time ranges for splitting analysis.
         period_detector (RobustDailyPeriodDetector): Daily period detection instance.
     """
 
-    def __init__(self, timezone: str = DEFAULT_TIMEZONE, time_split_ranges: Optional[List[List[int]]] = None) -> None:
+    def __init__(self, timezone: str = DEFAULT_TIMEZONE, time_split_ranges: Optional[List[List[float]]] = None) -> None:
         """Initialize the ThresholdRecommendAlgorithm.
 
         Args:
             timezone (str): Timezone for timestamp processing.
-            time_split_ranges (Optional[List[List[int]]]): Custom time split ranges.
+            time_split_ranges (Optional[List[List[float]]]): Custom time split ranges.
         """
         self.timezone = timezone
-        self.time_split_ranges = time_split_ranges or DEFAULT_TIME_SPLIT_RANGES
+
+        if time_split_ranges is None:
+            self.time_split_ranges = []
+            start_time = 0.0
+            for _ in range(DEFAULT_NUMBER_OF_TIME_SPLIT):
+                end_time = start_time + 24 / DEFAULT_NUMBER_OF_TIME_SPLIT
+                self.time_split_ranges.append([start_time, end_time])
+                start_time = end_time
+        else:
+            self.time_split_ranges = time_split_ranges
         self.period_detector = RobustDailyPeriodDetector()
 
         logger.debug(f"Initialized ThresholdRecommendAlgorithm with timezone={timezone}")
@@ -362,11 +371,6 @@ class ThresholdRecommendAlgorithm:
                 threshold_group["lower_bound"] = threshold
 
             threshold_groups.append(threshold_group)
-
-        # Check if consolidation is needed
-        consolidated_group = self._check_and_consolidate_threshold_groups(threshold_groups, direction)
-        if consolidated_group:
-            return [consolidated_group]
 
         return threshold_groups
 

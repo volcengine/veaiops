@@ -113,7 +113,7 @@ def short_data():
 def test_init_default_parameters():
     """Test initialization with default parameters."""
     detector = RobustDailyPeriodDetector()
-    assert detector.correlation_threshold == 0.75
+    assert detector.correlation_threshold == 0.3
     assert detector.min_data_points_per_day == 720
     assert detector.min_common_points == 720
 
