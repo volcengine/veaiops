@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import os
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -132,7 +133,7 @@ default_media_type = "ve_aiops_media_type"
 default_action = "ve_aiops_action"
 default_tag_key = "managed-by"
 default_tag_value = "ve_aiops"
-default_timeout = 3
+default_timeout = int(os.getenv("ZABBIX_TIMEOUT", 10))
 
 webhook_script = """
 try {
@@ -232,6 +233,7 @@ class ZabbixClient:
         """
 
         def _get_history(*args):
+            logger.debug(f"Fetching history for default_timeout: {default_timeout},item_ids: {item_ids}")
             return self.zapi.history.get(
                 itemids=item_ids,
                 time_from=time_from,
