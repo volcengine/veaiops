@@ -13,10 +13,11 @@
 // limitations under the License.
 
 /**
- * 检查字符串是否匹配搜索值（支持模糊匹配和正则表达式）
- * @param text 要检查的文本
- * @param searchValue 搜索值（普通字符串或正则表达式字符串）
- * @returns 是否匹配
+ * Check whether the given text matches the search value.
+ * Supports both fuzzy substring matching and regular expressions.
+ * @param text Text to check
+ * @param searchValue Search value (plain string or regex pattern string)
+ * @returns Whether the text matches the search condition
  */
 export const isMatch = (
   text: string | undefined | null,
@@ -34,62 +35,51 @@ export const isMatch = (
   }
 
   try {
-    // 优先尝试作为正则表达式匹配
-    // 用户可能会输入 AA-\d+-BB 这样的正则
-    // 也可能输入 AA-* 这样的通配符
-    // 或者只是简单的子串 AA
+    // Try regex matching first
+    // Typical user inputs:
+    // - AA-\d+-BB style regex
+    // - AA-* style wildcard
+    // - Simple substring like AA
 
-    // 策略：
-    // 1. 如果包含正则元字符（除了 *），尝试作为正则解析
-    // 2. 如果只包含 *，作为通配符处理
-    // 3. 否则作为普通字符串包含匹配
+    // Strategy:
+    // 1. Try to interpret the query as regex
+    // 2. If it fails and contains *, treat it as a wildcard
+    // 3. Otherwise fallback to plain substring match
 
-    // 检查是否包含除了 * 以外的正则元字符
-    // const hasRegexMeta = /[.+?^${}()|[\]\\]/.test(safeSearch);
-
-    // 直接尝试构建正则
-    // 为了支持通配符 *，我们可以先尝试将通配符转换为正则
-    // 但这会与用户输入的 \d+ 冲突
-    // 考虑到需求明确提到 "AA-数字-BB 格式正则匹配"，即用户会输入正则语法
-    // 所以优先支持标准正则语法
+    // We directly build RegExp here to fully support regex syntax
 
     const regex = new RegExp(safeSearch, 'i');
     if (regex.test(text)) {
       return true;
     }
   } catch (e) {
-    // 如果标准正则解析失败（例如语法错误），则尝试作为通配符处理
-    // 这种情况可能发生在用户输入了不完整的正则，或者意图是使用通配符但包含了一些会被正则引擎误判的字符
+    // If regex parsing fails (e.g. syntax error), try wildcard handling instead
   }
 
-  // 通配符处理逻辑 (简单的 * 转换)
-  // 仅当包含 * 且不是有效的正则时尝试（或者作为备选策略）
+  // Wildcard handling (simple * to .*)
+  // Only used when query contains * and regex parsing failed
   if (safeSearch.includes('*')) {
     try {
-      // 转义除了 * 以外的所有正则元字符
+      // Escape all regex metacharacters except *
       const pattern = safeSearch
         .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
         .replace(/\*/g, '.*');
-      const wildcardRegex = new RegExp(`^${pattern}$`, 'i'); // 通配符通常意味着全匹配模式，或者用户习惯
+      const wildcardRegex = new RegExp(`^${pattern}$`, 'i'); // Wildcard usually implies full match
       if (wildcardRegex.test(text)) {
         return true;
       }
     } catch (e) {
-      // 忽略
+      // Ignore and continue to substring fallback
     }
   }
 
-  // 最后回退到普通包含匹配
+  // Final fallback: plain substring match
   return safeText.includes(safeSearch);
 };
 
 /**
- * 专门针对 AA-数字-BB 格式优化的匹配逻辑
- * 以及支持普通的正则匹配
- */
-/**
- * 专门针对 AA-数字-BB 格式优化的匹配逻辑
- * 以及支持普通的正则匹配
+ * Matching helper optimized for AA-number-BB style patterns
+ * while still supporting generic regex and wildcard queries.
  */
 export const checkMatch = (
   text: string | undefined | null,
@@ -106,13 +96,11 @@ export const checkMatch = (
     return true;
   }
 
-  // 1. 尝试作为正则表达式匹配
-  // 优化：只有当查询字符串包含正则元字符时才尝试正则匹配
-  // 这可以避免将普通字符串 "server" 作为正则处理的开销（虽然微乎其微），
-  // 但更重要的是明确了匹配意图。
-  // 不过，需求要求 "AA-数字-BB" 这种格式，其中包含 \d 这样的元字符序列，
-  // 或者用户可能直接输入 ^server.* 这样的正则。
-  // 所以直接尝试 RegExp 是最稳妥的。
+  // 1. Try regex match first
+  // Typical usage:
+  // - AA-\d+-BB style patterns with \d for digits
+  // - ^server.* for prefix matching
+  // Using RegExp directly gives maximum flexibility for power users.
 
   try {
     // 使用 'i' 标志忽略大小写
@@ -121,27 +109,27 @@ export const checkMatch = (
       return true;
     }
   } catch (e) {
-    // 正则解析失败（例如输入了未闭合的括号），忽略错误，降级到通配符或普通字符串匹配
+    // If regex parsing fails (e.g. unclosed parenthesis), fall through to wildcard or substring
   }
 
-  // 2. 尝试通配符 * 匹配
-  // 仅当包含 * 且之前不是有效的正则时尝试（或者作为备选策略）
+  // 2. Try wildcard * match
+  // Only used when query contains * and regex parsing did not succeed
   if (query.includes('*')) {
     try {
-      // 转义除了 * 以外的所有正则元字符
+      // Escape all regex metacharacters except *
       const pattern = query
         .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
         .replace(/\*/g, '.*');
-      const wildcardRegex = new RegExp(`^${pattern}$`, 'i'); // 通配符通常意味着全匹配模式
+      const wildcardRegex = new RegExp(`^${pattern}$`, 'i'); // Wildcard usually implies full match
       if (wildcardRegex.test(safeText)) {
         return true;
       }
     } catch (e) {
-      // 忽略
+      // Ignore and fallback to plain substring match
     }
   }
 
-  // 3. 普通字符串包含匹配 (忽略大小写)
-  // 这是为了兜底，比如用户输入了 "server(" 这种在正则中非法但在普通文本中可能存在的字符串
+  // 3. Plain substring match (case-insensitive)
+  // Fallback for queries like "server(" which are invalid regex but valid text
   return safeText.toLowerCase().includes(query.toLowerCase());
 };
