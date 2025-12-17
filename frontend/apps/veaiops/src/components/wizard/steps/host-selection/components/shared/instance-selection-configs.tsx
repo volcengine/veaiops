@@ -13,8 +13,8 @@
 // limitations under the License.
 
 /**
- * 实例选择配置工厂
- * @description 为不同数据源提供预定义的配置
+ * Instance selection config factory.
+ * @description Provides predefined instance selection configs for different data sources.
  */
 
 import { IconCloud, IconDesktop } from '@arco-design/web-react/icon';
@@ -24,21 +24,21 @@ import type { ZabbixHost } from 'api-generate';
 import type { InstanceSelectionConfig } from './instance-selection-config';
 
 /**
- * 阿里云实例选择配置
+ * Aliyun instance selection config.
  */
 export const createAliyunConfig = (
   selectionAction: (instances: AliyunInstance[]) => void,
 ): InstanceSelectionConfig<AliyunInstance> => ({
   title: '选择实例',
   description:
-    '选择要监控的阿里云实例，可以选择多个实例。如果不选择实例，将监控所有符合条件的实例。',
-  emptyDescription: '暂无可用的实例',
-  searchPlaceholder: '搜索实例ID或名称...',
-  itemType: '实例',
+    'Select the Aliyun instances to monitor. Multiple instances can be selected. If no instance is selected, all matching instances will be monitored.',
+  emptyDescription: 'No available instances',
+  searchPlaceholder: 'Search by instance ID or name...',
+  itemType: 'Instance',
   icon: <IconCloud />,
   dataTransformer: (instance) => {
-    // 当只有 userId 而没有 instanceId 时，使用 userId 作为 id
-    // 这样可以确保标题和显示正确
+    // When only userId exists (no instanceId), use userId as the id
+    // This ensures the title and display are still meaningful
     const id =
       instance.instanceId ||
       instance.dimensions?.instanceId ||
@@ -67,7 +67,7 @@ export const createAliyunConfig = (
       checkMatch(instance.instanceId, searchValue) ||
       checkMatch(instance.instanceName, searchValue) ||
       checkMatch(instance.region, searchValue) ||
-      // 当只有 userId 时，也支持搜索 userId
+      // When only userId exists, also allow searching by userId
       checkMatch(instance.dimensions?.userId, searchValue) ||
       checkMatch(
         (instance as AliyunInstance & { userId?: string }).userId,
@@ -84,16 +84,17 @@ export const createAliyunConfig = (
 });
 
 /**
- * 火山引擎实例选择配置
+ * Volcengine instance selection config.
  */
 export const createVolcengineConfig = (
   selectionAction: (instances: VolcengineInstance[]) => void,
 ): InstanceSelectionConfig<VolcengineInstance> => ({
   title: '选择实例',
-  description: '选择要监控的火山引擎实例，可以选择多个实例',
-  emptyDescription: '暂无可用的实例',
-  searchPlaceholder: '搜索实例ID或名称...',
-  itemType: '实例',
+  description:
+    'Select Volcengine instances to monitor. Multiple instances can be selected.',
+  emptyDescription: 'No available instances',
+  searchPlaceholder: 'Search by instance ID or name...',
+  itemType: 'Instance',
   icon: <IconCloud />,
   dataTransformer: (instance) => ({
     id: instance.instanceId,
@@ -113,26 +114,26 @@ export const createVolcengineConfig = (
 });
 
 /**
- * Zabbix主机选择配置
+ * Zabbix host selection config.
  */
 export const createZabbixConfig = (
   selectionAction: (hosts: ZabbixHost[]) => void,
 ): InstanceSelectionConfig<ZabbixHost> => ({
   title: '选择主机',
-  description: '选择要监控的主机，可以选择多个主机',
-  emptyDescription: '暂无可用的主机',
-  searchPlaceholder: '搜索主机名称 (支持正则)...',
-  itemType: '主机',
+  description: 'Select the hosts to monitor. Multiple hosts can be selected.',
+  emptyDescription: 'No available hosts',
+  searchPlaceholder: 'Search host name (supports regex)...',
+  itemType: 'Host',
   icon: <IconDesktop />,
   dataTransformer: (host) => ({
-    id: host.host, // 使用 host 作为唯一标识
+    id: host.host, // Use host as the unique identifier
     name: host.name,
-    region: undefined, // Zabbix没有region概念
-    dimensions: undefined, // Zabbix没有dimensions概念
+    region: undefined, // Zabbix has no region concept
+    dimensions: undefined, // Zabbix has no dimensions concept
   }),
   selectionAction,
   searchFilter: (host, searchValue) =>
     checkMatch(host.host, searchValue) || checkMatch(host.name, searchValue),
-  getId: (host) => host.host, // 使用 host 作为唯一标识
-  useHostList: true, // 使用特殊的主机列表组件
+  getId: (host) => host.host, // Use host as the unique identifier
+  useHostList: true, // Use the specialized host list component
 });
