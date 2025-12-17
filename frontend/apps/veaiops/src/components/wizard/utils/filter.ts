@@ -121,14 +121,27 @@ export const checkMatch = (
       return true;
     }
   } catch (e) {
-    // 正则解析失败（例如输入了未闭合的括号），忽略错误，降级到普通字符串匹配
-    // 在开发环境下可以打印日志
-    if (process.env.NODE_ENV === 'development') {
-      // console.warn('Regex parsing failed:', e);
+    // 正则解析失败（例如输入了未闭合的括号），忽略错误，降级到通配符或普通字符串匹配
+  }
+
+  // 2. 尝试通配符 * 匹配
+  // 仅当包含 * 且之前不是有效的正则时尝试（或者作为备选策略）
+  if (query.includes('*')) {
+    try {
+      // 转义除了 * 以外的所有正则元字符
+      const pattern = query
+        .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+        .replace(/\*/g, '.*');
+      const wildcardRegex = new RegExp(`^${pattern}$`, 'i'); // 通配符通常意味着全匹配模式
+      if (wildcardRegex.test(safeText)) {
+        return true;
+      }
+    } catch (e) {
+      // 忽略
     }
   }
 
-  // 2. 普通字符串包含匹配 (忽略大小写)
+  // 3. 普通字符串包含匹配 (忽略大小写)
   // 这是为了兜底，比如用户输入了 "server(" 这种在正则中非法但在普通文本中可能存在的字符串
   return safeText.toLowerCase().includes(query.toLowerCase());
 };
