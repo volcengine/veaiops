@@ -18,6 +18,8 @@ This module contains all configuration constants and parameters used across
 the intelligent threshold algorithm components.
 """
 
+import os
+
 import tzlocal
 
 # =============================================================================
@@ -94,5 +96,6 @@ DEFAULT_MIN_COMMON_POINTS = 720
 # Timeout Configuration
 # =============================================================================
 
-# Data fetch timeout in seconds (3 minutes for production)
-FETCH_DATA_TIMEOUT = 180
+# Data fetch timeout in seconds (60 minutes for production)
+
+FETCH_DATA_TIMEOUT = int(os.getenv("FETCH_DATA_TIMEOUT", 3600))
