@@ -50,6 +50,9 @@ DEFAULT_TIMEZONE = tzlocal.get_localzone_name()
 # Default number of time split (default = 4)
 DEFAULT_NUMBER_OF_TIME_SPLIT = int(os.getenv("DEFAULT_NUMBER_OF_TIME_SPLIT", 4))
 
+# Maximum number of threshold blocks after merging (default = 8)
+DEFAULT_MAXIMUM_THRESHOLD_BLOCKS = int(os.getenv("DEFAULT_MAXIMUM_THRESHOLD_BLOCKS", 8))
+
 # =============================================================================
 # Algorithm Parameters
 # =============================================================================
