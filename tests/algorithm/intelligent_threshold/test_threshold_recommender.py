@@ -1201,21 +1201,21 @@ def test_merge_threshold_results_consolidation_mismatch_down_consolidated_up_not
                 IntelligentThresholdConfig(
                     start_hour=6,
                     end_hour=12,
-                    upper_bound=75.0,
+                    upper_bound=72.0,
                     lower_bound=None,
                     window_size=5,
                 ),
                 IntelligentThresholdConfig(
                     start_hour=12,
                     end_hour=18,
-                    upper_bound=80.0,
+                    upper_bound=35.0,
                     lower_bound=None,
                     window_size=5,
                 ),
                 IntelligentThresholdConfig(
                     start_hour=18,
                     end_hour=24,
-                    upper_bound=85.0,
+                    upper_bound=36.0,
                     lower_bound=None,
                     window_size=5,
                 ),
@@ -1251,14 +1251,16 @@ def test_merge_threshold_results_consolidation_mismatch_down_consolidated_up_not
     assert len(merged_results) == 1
     result = merged_results[0]
     assert result.status == "Success"
-    assert len(result.thresholds) == 4  # Should match the non-consolidated direction (up)
+    assert len(result.thresholds) == 2  # Should match the non-consolidated direction (up)
 
-    # Check that down threshold (25.0) is distributed across all up periods
-    for i, threshold in enumerate(result.thresholds):
-        assert threshold.upper_bound == up_results[0].thresholds[i].upper_bound  # Keep original up bounds
-        assert threshold.lower_bound == 25.0  # All should have the consolidated down threshold
-        assert threshold.start_hour == up_results[0].thresholds[i].start_hour
-        assert threshold.end_hour == up_results[0].thresholds[i].end_hour
+    assert result.thresholds[0].upper_bound == up_results[0].thresholds[1].upper_bound  # Keep original up bounds
+    assert result.thresholds[0].lower_bound == 25.0  # All should have the consolidated down threshold
+    assert result.thresholds[0].start_hour == up_results[0].thresholds[0].start_hour
+    assert result.thresholds[0].end_hour == up_results[0].thresholds[1].end_hour
+    assert result.thresholds[1].upper_bound == up_results[0].thresholds[3].upper_bound  # Keep original up bounds
+    assert result.thresholds[1].lower_bound == 25.0  # All should have the consolidated down threshold
+    assert result.thresholds[1].start_hour == up_results[0].thresholds[2].start_hour
+    assert result.thresholds[1].end_hour == up_results[0].thresholds[3].end_hour
 
 
 def test_merge_threshold_results_both_consolidated(threshold_recommender):

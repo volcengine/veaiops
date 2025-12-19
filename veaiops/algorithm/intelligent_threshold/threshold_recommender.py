@@ -31,6 +31,7 @@ from beanie import PydanticObjectId
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 from veaiops.algorithm.intelligent_threshold.configs import (
+    DEFAULT_MAXIMUM_THRESHOLD_BLOCKS,
     EXTREME_VALUE_THRESHOLD,
     FETCH_DATA_TIMEOUT,
     HISTORICAL_DAYS,
@@ -83,27 +84,36 @@ class ThresholdRecommender:
     Attributes:
         threshold_algorithm (ThresholdRecommendAlgorithm): Threshold recommendation algorithm instance.
         max_concurrent_tasks (int): Maximum number of concurrent tasks (default: 5).
+        maximum_threshold_blocks (int): Maximum number of threshold blocks after merging (default: 8).
         task_queue (List[TaskRequest]): Priority queue for pending tasks.
         running_tasks (Dict[str, asyncio.Task]): Currently running tasks.
         queue_lock (asyncio.Lock): Lock for thread-safe queue operations.
     """
 
     def __init__(
-        self, threshold_algorithm: Optional[ThresholdRecommendAlgorithm] = None, max_concurrent_tasks: int = 5
+        self,
+        threshold_algorithm: Optional[ThresholdRecommendAlgorithm] = None,
+        max_concurrent_tasks: int = 5,
+        maximum_threshold_blocks: int = DEFAULT_MAXIMUM_THRESHOLD_BLOCKS,
     ) -> None:
         """Initialize the ThresholdRecommender.
 
         Args:
             threshold_algorithm (Optional[ThresholdRecommendAlgorithm]): Threshold recommender algorithm instance.
             max_concurrent_tasks (int): Maximum number of concurrent tasks (default: 5).
+            maximum_threshold_blocks (int): Maximum number of threshold blocks after merging (default: 8).
         """
         self.threshold_algorithm = threshold_algorithm or ThresholdRecommendAlgorithm()
         self.max_concurrent_tasks = max_concurrent_tasks
+        self.maximum_threshold_blocks = maximum_threshold_blocks
         self.task_queue: List[TaskRequest] = []
         self.running_tasks: Dict[str, asyncio.Task] = {}
         self.queue_lock = asyncio.Lock()
 
-        logger.debug(f"Initialized ThresholdRecommender with max_concurrent_tasks={max_concurrent_tasks}")
+        logger.debug(
+            f"Initialized ThresholdRecommender with max_concurrent_tasks={max_concurrent_tasks}, "
+            f"maximum_threshold_blocks={maximum_threshold_blocks}"
+        )
 
     async def _process_queue(self) -> None:
         """Process the task queue and start new tasks if capacity allows."""
@@ -322,6 +332,296 @@ class ThresholdRecommender:
 
         return normal_range_end if direction == "up" else normal_range_start
 
+    @staticmethod
+    def can_merge_threshold_configs(configs: List[IntelligentThresholdConfig]) -> bool:
+        """Check if a list of threshold configurations can be merged.
+
+        Merge conditions:
+        1. window_size must be the same
+        2. upper_bound max-min difference <= 10%
+        3. lower_bound max-min difference <= 10%
+
+        Args:
+            configs: List of threshold configurations
+
+        Returns:
+            bool: Whether the configs can be merged
+        """
+        if len(configs) <= 1:
+            return True
+
+        # Check if all window_sizes are the same
+        window_sizes = [c.window_size for c in configs]
+        if len(set(window_sizes)) != 1:
+            return False
+
+        # Extract upper_bound and lower_bound
+        upper_bounds = [c.upper_bound for c in configs if c.upper_bound is not None]
+        lower_bounds = [c.lower_bound for c in configs if c.lower_bound is not None]
+
+        # Check upper_bound merge condition
+        if upper_bounds:
+            max_upper = max(upper_bounds)
+            min_upper = min(upper_bounds)
+
+            if max_upper == 0:
+                if max_upper != min_upper:
+                    return False
+            else:
+                upper_diff_ratio = (max_upper - min_upper) / max_upper
+                if upper_diff_ratio > 0.1:  # 10% threshold
+                    return False
+
+        # Check lower_bound merge condition
+        if lower_bounds:
+            max_lower = max(lower_bounds)
+            min_lower = min(lower_bounds)
+
+            if max_lower == 0:
+                if max_lower != min_lower:
+                    return False
+            else:
+                lower_diff_ratio = (max_lower - min_lower) / max_lower
+                if lower_diff_ratio > 0.1:  # 10% threshold
+                    return False
+
+        return True
+
+    @staticmethod
+    def merge_threshold_configs(configs: List[IntelligentThresholdConfig]) -> IntelligentThresholdConfig:
+        """Merge multiple threshold configurations into a single configuration.
+
+        Args:
+            configs: List of threshold configurations to merge
+
+        Returns:
+            IntelligentThresholdConfig: Merged threshold configuration
+        """
+        if len(configs) == 1:
+            return configs[0]
+
+        # Extract upper_bound and lower_bound
+        upper_bounds = [c.upper_bound for c in configs if c.upper_bound is not None]
+        lower_bounds = [c.lower_bound for c in configs if c.lower_bound is not None]
+
+        # For upper bound, use max (conservative strategy)
+        merged_upper = max(upper_bounds) if upper_bounds else None
+
+        # For lower bound, use min (conservative strategy)
+        merged_lower = min(lower_bounds) if lower_bounds else None
+
+        return IntelligentThresholdConfig(
+            start_hour=configs[0].start_hour,
+            end_hour=configs[-1].end_hour,
+            upper_bound=merged_upper,
+            lower_bound=merged_lower,
+            window_size=configs[0].window_size,
+        )
+
+    @staticmethod
+    def _calculate_merge_difference(config1: IntelligentThresholdConfig, config2: IntelligentThresholdConfig) -> float:
+        """Calculate the difference between two adjacent threshold configurations for merging.
+
+        The difference is calculated based on the relative change in both upper_bound and lower_bound.
+        Returns a normalized difference value that can be used to determine merge priority.
+
+        Args:
+            config1: First threshold configuration
+            config2: Second threshold configuration
+
+        Returns:
+            float: Normalized difference value (lower is more similar, higher is more different)
+        """
+        differences = []
+
+        # Calculate upper_bound difference
+        if config1.upper_bound is not None and config2.upper_bound is not None:
+            upper1 = config1.upper_bound
+            upper2 = config2.upper_bound
+            max_upper = max(abs(upper1), abs(upper2))
+            if max_upper > 0:
+                upper_diff = abs(upper1 - upper2) / max_upper
+                differences.append(upper_diff)
+
+        # Calculate lower_bound difference
+        if config1.lower_bound is not None and config2.lower_bound is not None:
+            lower1 = config1.lower_bound
+            lower2 = config2.lower_bound
+            max_lower = max(abs(lower1), abs(lower2))
+            if max_lower > 0:
+                lower_diff = abs(lower1 - lower2) / max_lower
+                differences.append(lower_diff)
+
+        # Return average difference, or 0 if no valid differences
+        return sum(differences) / len(differences) if differences else 0.0
+
+    def _hierarchical_merge_thresholds(
+        self, thresholds: List[IntelligentThresholdConfig], max_blocks: int
+    ) -> List[IntelligentThresholdConfig]:
+        """Merge threshold configurations using hierarchical clustering approach.
+
+        This method uses a bottom-up hierarchical clustering approach:
+        1. Start with all individual threshold blocks
+        2. Iteratively merge the two adjacent blocks with smallest difference
+        3. Continue until the number of blocks <= max_blocks
+
+        Args:
+            thresholds: Original list of threshold configurations (must be sorted by start_hour)
+            max_blocks: Maximum number of blocks after merging
+
+        Returns:
+            List[IntelligentThresholdConfig]: List of merged threshold configurations
+        """
+        if len(thresholds) <= max_blocks:
+            return thresholds
+
+        # Create a mutable list of threshold blocks (as lists to track merged ranges)
+        blocks = [[threshold] for threshold in thresholds]
+
+        logger.debug(f"Starting hierarchical merge: {len(blocks)} blocks -> target {max_blocks} blocks")
+
+        # Iteratively merge until we reach the target number of blocks
+        while len(blocks) > max_blocks:
+            # Calculate differences between all adjacent blocks
+            min_diff = float("inf")
+            min_diff_idx = -1
+
+            for i in range(len(blocks) - 1):
+                # Get the last config of current block and first config of next block
+                current_last = blocks[i][-1]
+                next_first = blocks[i + 1][0]
+
+                # Only merge if blocks are continuous
+                if current_last.end_hour == next_first.start_hour:
+                    # Calculate difference between the two blocks
+                    diff = self._calculate_merge_difference(current_last, next_first)
+
+                    if diff < min_diff:
+                        min_diff = diff
+                        min_diff_idx = i
+
+            # If no mergeable adjacent blocks found, break
+            if min_diff_idx == -1:
+                logger.warning(f"Cannot merge further: no continuous blocks found. Current blocks: {len(blocks)}")
+                break
+
+            # Merge the two blocks with minimum difference
+            merged_block = blocks[min_diff_idx] + blocks[min_diff_idx + 1]
+            blocks[min_diff_idx : min_diff_idx + 2] = [merged_block]
+
+            logger.debug(
+                f"Merged blocks at index {min_diff_idx} (diff={min_diff:.4f}), remaining blocks: {len(blocks)}"
+            )
+
+        # Convert blocks back to merged threshold configurations
+        result = []
+        for block in blocks:
+            merged_config = self.merge_threshold_configs(block)
+            result.append(merged_config)
+
+        logger.info(
+            f"Hierarchical merge completed: {len(thresholds)} -> {len(result)} blocks "
+            f"(target: {max_blocks}, maximum_threshold_blocks={self.maximum_threshold_blocks})"
+        )
+
+        return result
+
+    def merge_continuous_thresholds(
+        self, thresholds: List[IntelligentThresholdConfig]
+    ) -> List[IntelligentThresholdConfig]:
+        """Merge continuous threshold configurations with adaptive strategy.
+
+        Strategy:
+        1. First apply greedy algorithm to merge consecutive time periods with variance within 10%
+        2. If result exceeds maximum_threshold_blocks, apply hierarchical clustering to further merge
+
+        Args:
+            thresholds: Original list of threshold configurations
+
+        Returns:
+            List[IntelligentThresholdConfig]: List of merged threshold configurations
+        """
+        # Filter out configs that have neither upper_bound nor lower_bound
+        valid_thresholds = [t for t in thresholds if t.upper_bound is not None or t.lower_bound is not None]
+
+        if len(valid_thresholds) <= 1:
+            return thresholds
+
+        # Sort by start_hour
+        sorted_thresholds = sorted(valid_thresholds, key=lambda x: x.start_hour)
+
+        # Step 1: Apply greedy merge (10% threshold)
+        merged_result = []
+        current_group = [sorted_thresholds[0]]
+
+        for i in range(1, len(sorted_thresholds)):
+            # Check if continuous
+            if current_group[-1].end_hour == sorted_thresholds[i].start_hour:
+                # Try to add current threshold to merge group
+                test_group = current_group + [sorted_thresholds[i]]
+
+                if self.can_merge_threshold_configs(test_group):
+                    # Can merge, add to current group
+                    current_group.append(sorted_thresholds[i])
+                else:
+                    # Cannot merge, finalize current group and start new group
+                    merged_result.append(self.merge_threshold_configs(current_group))
+                    current_group = [sorted_thresholds[i]]
+            else:
+                # Not continuous, finalize current group and start new group
+                merged_result.append(self.merge_threshold_configs(current_group))
+                current_group = [sorted_thresholds[i]]
+
+        # Process the last group
+        merged_result.append(self.merge_threshold_configs(current_group))
+
+        logger.debug(
+            f"Greedy merge completed: {len(valid_thresholds)} -> {len(merged_result)} blocks "
+            f"(maximum_threshold_blocks={self.maximum_threshold_blocks})"
+        )
+
+        # Step 2: If still exceeds maximum_threshold_blocks, apply hierarchical clustering
+        if len(merged_result) > self.maximum_threshold_blocks:
+            logger.info(
+                f"Greedy merge result ({len(merged_result)} blocks) exceeds maximum_threshold_blocks "
+                f"({self.maximum_threshold_blocks}), applying hierarchical clustering"
+            )
+            merged_result = self._hierarchical_merge_thresholds(merged_result, self.maximum_threshold_blocks)
+
+        return merged_result
+
+    def merge_metric_threshold_results(self, results: List[MetricThresholdResult]) -> List[MetricThresholdResult]:
+        """Merge threshold configurations in MetricThresholdResult list.
+
+        Merges the thresholds for each metric (MetricThresholdResult),
+        keeping other fields unchanged.
+
+        Args:
+            results: List containing multiple metric threshold results
+
+        Returns:
+            List[MetricThresholdResult]: List of merged results
+        """
+        merged_results = []
+
+        for result in results:
+            # Merge thresholds for each metric
+            merged_thresholds = self.merge_continuous_thresholds(result.thresholds)
+
+            # Create new MetricThresholdResult, keeping other fields unchanged
+            merged_result = MetricThresholdResult(
+                name=result.name,
+                thresholds=merged_thresholds,
+                labels=result.labels,
+                unique_key=result.unique_key,
+                status=result.status,
+                error_message=result.error_message,
+            )
+
+            merged_results.append(merged_result)
+
+        return merged_results
+
     def _merge_threshold_results(
         self, up_results: list[MetricThresholdResult], down_results: list[MetricThresholdResult]
     ) -> list[MetricThresholdResult]:
@@ -346,7 +646,6 @@ class ThresholdRecommender:
 
         for up_result in up_results:
             down_result = down_results_map.get(up_result.unique_key)
-
             if down_result:
                 # Check if either direction failed
                 if up_result.status != "Success" or down_result.status != "Success":
@@ -492,8 +791,7 @@ class ThresholdRecommender:
                 else:
                     # Only down bound available and it succeeded
                     merged_results.append(down_result)
-
-        return merged_results
+        return self.merge_metric_threshold_results(merged_results)
 
     async def _fetch_and_validate_data(
         self, datasource_id: str
