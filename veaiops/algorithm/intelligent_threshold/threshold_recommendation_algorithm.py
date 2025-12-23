@@ -26,8 +26,7 @@ import numpy as np
 from dbscan1d.core import DBSCAN1D
 
 from veaiops.algorithm.intelligent_threshold.configs import (
-    DEFAULT_COEFFICIENT,
-    DEFAULT_TIME_SPLIT_RANGES,
+    DEFAULT_NUMBER_OF_TIME_SPLIT,
     DEFAULT_TIMEZONE,
     MICROSECOND_THRESHOLD,
     MILLISECOND_THRESHOLD,
@@ -52,19 +51,28 @@ class ThresholdRecommendAlgorithm:
 
     Attributes:
         timezone (str): Timezone for timestamp processing.
-        time_split_ranges (List[List[int]]): Time ranges for splitting analysis.
+        time_split_ranges (List[List[float]]): Time ranges for splitting analysis.
         period_detector (RobustDailyPeriodDetector): Daily period detection instance.
     """
 
-    def __init__(self, timezone: str = DEFAULT_TIMEZONE, time_split_ranges: Optional[List[List[int]]] = None) -> None:
+    def __init__(self, timezone: str = DEFAULT_TIMEZONE, time_split_ranges: Optional[List[List[float]]] = None) -> None:
         """Initialize the ThresholdRecommendAlgorithm.
 
         Args:
             timezone (str): Timezone for timestamp processing.
-            time_split_ranges (Optional[List[List[int]]]): Custom time split ranges.
+            time_split_ranges (Optional[List[List[float]]]): Custom time split ranges.
         """
         self.timezone = timezone
-        self.time_split_ranges = time_split_ranges or DEFAULT_TIME_SPLIT_RANGES
+
+        if time_split_ranges is None:
+            self.time_split_ranges = []
+            start_time = 0.0
+            for _ in range(DEFAULT_NUMBER_OF_TIME_SPLIT):
+                end_time = start_time + 24 / DEFAULT_NUMBER_OF_TIME_SPLIT
+                self.time_split_ranges.append([start_time, end_time])
+                start_time = end_time
+        else:
+            self.time_split_ranges = time_split_ranges
         self.period_detector = RobustDailyPeriodDetector()
 
         logger.debug(f"Initialized ThresholdRecommendAlgorithm with timezone={timezone}")
@@ -114,6 +122,7 @@ class ThresholdRecommendAlgorithm:
         max_value: Optional[float],
         normal_threshold: Optional[float],
         min_ts_length: int,
+        sensitivity: float,
         direction: Literal["up", "down"] = "up",
     ) -> List[Dict]:
         """Recommend thresholds for time series data.
@@ -131,6 +140,7 @@ class ThresholdRecommendAlgorithm:
             max_value (Optional[float]): Maximum value constraint for the time series data.
             normal_threshold (Optional[float]): Normal threshold baseline for the time series data.
             min_ts_length (int): Minimum required length of the time series data.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
             direction (Literal["up", "down"]): Direction of the threshold recommendation.
 
         Returns:
@@ -161,6 +171,7 @@ class ThresholdRecommendAlgorithm:
                 max_value,
                 normal_threshold,
                 direction,
+                sensitivity,
             )
         else:
             # Process with time splitting
@@ -174,6 +185,7 @@ class ThresholdRecommendAlgorithm:
                 normal_threshold,
                 min_ts_length,
                 direction,
+                sensitivity,
             )
 
     def _process_single_time_period(
@@ -186,6 +198,7 @@ class ThresholdRecommendAlgorithm:
         max_value: Optional[float],
         normal_threshold: Optional[float],
         direction: Literal["up", "down"],
+        sensitivity: float,
     ) -> List[Dict]:
         """Process time series as a single time period without splitting.
 
@@ -198,6 +211,7 @@ class ThresholdRecommendAlgorithm:
             max_value (Optional[float]): Maximum value constraint.
             normal_threshold (Optional[float]): Normal threshold baseline.
             direction (Literal["up", "down"]): Threshold direction.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             List[Dict]: Single threshold group covering 24 hours.
@@ -212,6 +226,7 @@ class ThresholdRecommendAlgorithm:
             normal_threshold,
             1,
             direction,
+            sensitivity,
         )
 
         threshold_group = {
@@ -240,6 +255,7 @@ class ThresholdRecommendAlgorithm:
         normal_threshold: Optional[float],
         min_ts_length: int,
         direction: Literal["up", "down"],
+        sensitivity: float,
     ) -> List[Dict]:
         """Process time series with time period splitting.
 
@@ -253,6 +269,7 @@ class ThresholdRecommendAlgorithm:
             normal_threshold (Optional[float]): Normal threshold baseline.
             min_ts_length (int): Minimum required data length.
             direction (Literal["up", "down"]): Threshold direction.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             List[Dict]: Multiple threshold groups for different time periods.
@@ -295,6 +312,7 @@ class ThresholdRecommendAlgorithm:
                     normal_threshold,
                     1,
                     direction,
+                    sensitivity,
                 )
 
                 # Calculate threshold with ignore_count=0
@@ -308,6 +326,7 @@ class ThresholdRecommendAlgorithm:
                     normal_threshold,
                     0,
                     direction,
+                    sensitivity,
                 )
 
                 # Calculate ratio for sorting
@@ -352,11 +371,6 @@ class ThresholdRecommendAlgorithm:
                 threshold_group["lower_bound"] = threshold
 
             threshold_groups.append(threshold_group)
-
-        # Check if consolidation is needed
-        consolidated_group = self._check_and_consolidate_threshold_groups(threshold_groups, direction)
-        if consolidated_group:
-            return [consolidated_group]
 
         return threshold_groups
 
@@ -433,6 +447,7 @@ class ThresholdRecommendAlgorithm:
         normal_threshold: Optional[float],
         ignore_count: int,
         direction: Literal["up", "down"],
+        sensitivity: float,
     ) -> tuple[float, int]:
         """Threshold recommendation with sliding window.
 
@@ -446,6 +461,7 @@ class ThresholdRecommendAlgorithm:
             normal_threshold (Optional[float]): Normal threshold for the time series data.
             ignore_count (int): Number of data points to ignore at the beginning of the time series.
             direction (Literal["up", "down"]): Direction of the threshold recommendation.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             tuple[float, int]: Tuple of threshold and window size.
@@ -466,6 +482,7 @@ class ThresholdRecommendAlgorithm:
                 min_value,
                 max_value,
                 direction,
+                sensitivity,
             )
 
             # If threshold calculation failed, continue with next window size
@@ -503,6 +520,7 @@ class ThresholdRecommendAlgorithm:
         min_value: Optional[float],
         max_value: Optional[float],
         direction: Literal["up", "down"],
+        sensitivity: float,
     ) -> Dict[str, Union[bool, float]]:
         """Recommend general threshold for time series data.
 
@@ -514,6 +532,7 @@ class ThresholdRecommendAlgorithm:
             min_value (Optional[float]): Minimum value of the time series data.
             max_value (Optional[float]): Maximum value of the time series data.
             direction (Literal["up", "down"]): Direction of the threshold recommendation.
+            sensitivity (float): Sensitivity of the threshold recommendation algorithm.
 
         Returns:
             Dict[str, Union[bool, float]]: Dictionary with keys:
@@ -522,6 +541,7 @@ class ThresholdRecommendAlgorithm:
         """
         timestamp_list = timestamp_list_original
         value_list = value_list_original if direction == "up" else [-v for v in value_list_original]
+        coefficient = 1.05 + 0.3 * sensitivity
 
         # Calculate time interval
         intervals = []
@@ -616,26 +636,26 @@ class ThresholdRecommendAlgorithm:
                 if direction == "up":
                     # For up direction, use 95th percentile of original values
                     baseline = float(np.percentile(value_list, 95))
-                    return {"status": True, "threshold": baseline * DEFAULT_COEFFICIENT}
+                    return {"status": True, "threshold": baseline * coefficient}
                 else:
                     # For down direction, value_list is already negated, so use 95th percentile of negated values
                     # which corresponds to the 5th percentile of original values
                     baseline = float(np.percentile(value_list, 95))  # This is the max of negated values
                     # Apply the same logic as the original down direction
                     final_threshold = 0 - baseline  # Convert back to positive
-                    return {"status": True, "threshold": final_threshold / DEFAULT_COEFFICIENT}
+                    return {"status": True, "threshold": final_threshold / coefficient}
             else:
                 # Empty data case - should not happen as we check earlier, but safety fallback
                 return {"status": False, "threshold": -1.0}
 
         if direction == "up":
-            threshold = final_max_value * DEFAULT_COEFFICIENT
+            threshold = final_max_value * coefficient
             if max_value is not None:
                 threshold = min(max_value, threshold)
             return {"status": True, "threshold": threshold}
         else:
             final_max_value = 0 - final_max_value
-            threshold = final_max_value / DEFAULT_COEFFICIENT
+            threshold = final_max_value / coefficient
             if min_value is not None:
                 threshold = max(min_value, threshold)
-            return {"status": True, "threshold": final_max_value / DEFAULT_COEFFICIENT}
+            return {"status": True, "threshold": final_max_value / coefficient}

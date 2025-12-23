@@ -13,17 +13,18 @@
 // limitations under the License.
 
 /**
- * 实例选择配置工厂
- * @description 为不同数据源提供预定义的配置
+ * Instance selection config factory.
+ * @description Provides predefined instance selection configs for different data sources.
  */
 
 import { IconCloud, IconDesktop } from '@arco-design/web-react/icon';
+import type { AliyunInstance, VolcengineInstance } from '@wizard/types';
+import { checkMatch } from '@wizard/utils/filter';
 import type { ZabbixHost } from 'api-generate';
-import type { AliyunInstance, VolcengineInstance } from '../../../../types';
 import type { InstanceSelectionConfig } from './instance-selection-config';
 
 /**
- * 阿里云实例选择配置
+ * Aliyun instance selection config.
  */
 export const createAliyunConfig = (
   selectionAction: (instances: AliyunInstance[]) => void,
@@ -36,13 +37,13 @@ export const createAliyunConfig = (
   itemType: '实例',
   icon: <IconCloud />,
   dataTransformer: (instance) => {
-    // 当只有 userId 而没有 instanceId 时，使用 userId 作为 id
-    // 这样可以确保标题和显示正确
+    // When only userId exists (no instanceId), use userId as the id
+    // This ensures the title and display are still meaningful
     const id =
       instance.instanceId ||
       instance.dimensions?.instanceId ||
       instance.dimensions?.userId ||
-      instance.userId ||
+      (instance as AliyunInstance & { userId?: string }).userId ||
       '';
     const name =
       instance.instanceName ||
@@ -62,28 +63,28 @@ export const createAliyunConfig = (
   },
   selectionAction,
   searchFilter: (instance, searchValue) => {
-    const searchLower = searchValue.toLowerCase();
     return (
-      (instance.instanceId?.toLowerCase() || '').includes(searchLower) ||
-      (instance.instanceName?.toLowerCase() || '').includes(searchLower) ||
-      (instance.region?.toLowerCase() || '').includes(searchLower) ||
-      // 当只有 userId 时，也支持搜索 userId
-      (instance.dimensions?.userId?.toLowerCase() || '').includes(
-        searchLower,
-      ) ||
-      (instance.userId?.toLowerCase() || '').includes(searchLower)
+      checkMatch(instance.instanceId, searchValue) ||
+      checkMatch(instance.instanceName, searchValue) ||
+      checkMatch(instance.region, searchValue) ||
+      // When only userId exists, also allow searching by userId
+      checkMatch(instance.dimensions?.userId, searchValue) ||
+      checkMatch(
+        (instance as AliyunInstance & { userId?: string }).userId,
+        searchValue,
+      )
     );
   },
   getId: (instance) =>
     instance.instanceId ||
     instance.dimensions?.instanceId ||
     instance.dimensions?.userId ||
-    instance.userId ||
+    (instance as AliyunInstance & { userId?: string }).userId ||
     '',
 });
 
 /**
- * 火山引擎实例选择配置
+ * Volcengine instance selection config.
  */
 export const createVolcengineConfig = (
   selectionAction: (instances: VolcengineInstance[]) => void,
@@ -104,15 +105,15 @@ export const createVolcengineConfig = (
   }),
   selectionAction,
   searchFilter: (instance, searchValue) =>
-    instance.instanceId.toLowerCase().includes(searchValue) ||
-    (instance.instanceName?.toLowerCase() || '').includes(searchValue) ||
-    (instance.region?.toLowerCase() || '').includes(searchValue) ||
-    (instance.namespace?.toLowerCase() || '').includes(searchValue),
+    checkMatch(instance.instanceId, searchValue) ||
+    checkMatch(instance.instanceName, searchValue) ||
+    checkMatch(instance.region, searchValue) ||
+    checkMatch(instance.namespace, searchValue),
   getId: (instance) => instance.instanceId,
 });
 
 /**
- * Zabbix主机选择配置
+ * Zabbix host selection config.
  */
 export const createZabbixConfig = (
   selectionAction: (hosts: ZabbixHost[]) => void,
@@ -120,19 +121,18 @@ export const createZabbixConfig = (
   title: '选择主机',
   description: '选择要监控的主机，可以选择多个主机',
   emptyDescription: '暂无可用的主机',
-  searchPlaceholder: '搜索主机名称...',
+  searchPlaceholder: '搜索主机名称 (支持正则)...',
   itemType: '主机',
   icon: <IconDesktop />,
   dataTransformer: (host) => ({
-    id: host.host, // 使用 host 作为唯一标识
+    id: host.host, // Use host as the unique identifier
     name: host.name,
-    region: undefined, // Zabbix没有region概念
-    dimensions: undefined, // Zabbix没有dimensions概念
+    region: undefined, // Zabbix has no region concept
+    dimensions: undefined, // Zabbix has no dimensions concept
   }),
   selectionAction,
   searchFilter: (host, searchValue) =>
-    host.host.toLowerCase().includes(searchValue) ||
-    host.name.toLowerCase().includes(searchValue),
-  getId: (host) => host.host, // 使用 host 作为唯一标识
-  useHostList: true, // 使用特殊的主机列表组件
+    checkMatch(host.host, searchValue) || checkMatch(host.name, searchValue),
+  getId: (host) => host.host, // Use host as the unique identifier
+  useHostList: true, // Use the specialized host list component
 });

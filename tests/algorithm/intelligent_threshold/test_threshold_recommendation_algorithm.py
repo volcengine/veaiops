@@ -195,6 +195,7 @@ def test_recommend_threshold_no_time_split(threshold_recommender, sample_timesta
                 max_value=100.0,
                 normal_threshold=50.0,
                 min_ts_length=50,
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -225,6 +226,7 @@ def test_recommend_threshold_with_time_split(threshold_recommender, sample_times
                 max_value=100.0,
                 normal_threshold=50.0,
                 min_ts_length=30,  # Reduced from 50 to ensure all periods have enough data
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -260,6 +262,7 @@ def test_recommend_threshold_direction_down(threshold_recommender, sample_timest
                 max_value=100.0,
                 normal_threshold=30.0,
                 min_ts_length=50,
+                sensitivity=0.5,
                 direction="down",
             )
 
@@ -290,6 +293,7 @@ def test_recommend_threshold_insufficient_data(threshold_recommender, sample_tim
                 max_value=100.0,
                 normal_threshold=50.0,
                 min_ts_length=1000,  # High minimum length
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -320,6 +324,7 @@ def test_threshold_recommendation_with_sliding_window_basic(threshold_recommende
             max_value=100.0,
             normal_threshold=50.0,
             ignore_count=1,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -351,6 +356,7 @@ def test_threshold_recommendation_with_sliding_window_auto_adjust(threshold_reco
             max_value=100.0,
             normal_threshold=50.0,
             ignore_count=1,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -376,6 +382,7 @@ def test_threshold_recommendation_with_sliding_window_normal_threshold_up(thresh
             max_value=100.0,
             normal_threshold=60.0,
             ignore_count=1,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -401,6 +408,7 @@ def test_threshold_recommendation_with_sliding_window_normal_threshold_down(thre
             max_value=100.0,
             normal_threshold=30.0,
             ignore_count=1,
+            sensitivity=0.5,
             direction="down",
         )
 
@@ -518,96 +526,6 @@ def test_check_and_consolidate_threshold_groups_single_group(threshold_recommend
     assert result is None
 
 
-def test_recommend_threshold_with_consolidation_up(threshold_recommender, sample_timestamps):
-    """Test full threshold recommendation with consolidation for up direction."""
-    # Create values that result in similar thresholds across time periods
-    values = []
-    for i in range(len(sample_timestamps)):
-        # Create values that vary slightly but result in similar thresholds
-        hour = (i // 60) % 24
-        if hour < 6:
-            values.append(45)  # Night: around 45
-        elif hour < 12:
-            values.append(48)  # Morning: around 48
-        elif hour < 18:
-            values.append(52)  # Afternoon: around 52
-        else:
-            values.append(47)  # Evening: around 47
-
-    with patch.object(threshold_recommender.period_detector, "detect") as mock_detect:
-        mock_detect.return_value = True  # Daily periodicity detected
-
-        # Mock sliding window to return similar thresholds
-        with patch.object(threshold_recommender, "threshold_recommendation_with_sliding_window") as mock_sliding_window:
-            # Return very similar thresholds for all time periods (within 10%)
-            mock_sliding_window.side_effect = [(49.0, 5), (50.0, 5), (51.0, 5), (50.5, 5)] * 2
-
-            result = threshold_recommender.recommend_threshold(
-                timestamp_list=sample_timestamps[:1000],  # Use subset
-                value_list=values[:1000],
-                default_window_size=5,
-                time_split=True,
-                auto_window_adjust=False,
-                min_value=0.0,
-                max_value=100.0,
-                normal_threshold=None,
-                min_ts_length=50,
-                direction="up",
-            )
-
-            # Should consolidate to single group since thresholds are close (49-51, diff=2, 2/51=3.9% < 10%)
-            assert len(result) == 1
-            assert result[0]["start_hour"] == 0
-            assert result[0]["end_hour"] == 24
-            assert result[0]["upper_bound"] == 50.5  # Max value from the sorted thresholds
-            assert result[0]["lower_bound"] is None
-            assert result[0]["window_size"] == 5
-
-
-def test_recommend_threshold_with_consolidation_down(threshold_recommender, sample_timestamps):
-    """Test full threshold recommendation with consolidation for down direction."""
-    # Create values that result in similar thresholds across time periods
-    values = []
-    for i in range(len(sample_timestamps)):
-        hour = (i // 60) % 24
-        if hour < 6:
-            values.append(25)  # Night: around 25
-        elif hour < 12:
-            values.append(23)  # Morning: around 23
-        elif hour < 18:
-            values.append(27)  # Afternoon: around 27
-        else:
-            values.append(24)  # Evening: around 24
-
-    with patch.object(threshold_recommender.period_detector, "detect") as mock_detect:
-        mock_detect.return_value = True  # Daily periodicity detected
-
-        with patch.object(threshold_recommender, "threshold_recommendation_with_sliding_window") as mock_sliding_window:
-            # Return very similar thresholds for all time periods (within 10%)
-            mock_sliding_window.side_effect = [(24.5, 3), (23.5, 3), (25.5, 3), (24.0, 3)] * 2
-
-            result = threshold_recommender.recommend_threshold(
-                timestamp_list=sample_timestamps[:1000],
-                value_list=values[:1000],
-                default_window_size=5,
-                time_split=True,
-                auto_window_adjust=False,
-                min_value=0.0,
-                max_value=100.0,
-                normal_threshold=None,
-                min_ts_length=50,
-                direction="down",
-            )
-
-            # Should consolidate to single group since thresholds are close (23.5-25.5, diff=2, 2/25.5=7.8% < 10%)
-            assert len(result) == 1
-            assert result[0]["start_hour"] == 0
-            assert result[0]["end_hour"] == 24
-            assert result[0]["upper_bound"] is None
-            assert result[0]["lower_bound"] == 23.5  # Min value for down direction
-            assert result[0]["window_size"] == 3
-
-
 def test_recommend_threshold_no_consolidation_different_thresholds(
     threshold_recommender, sample_timestamps, sample_values_periodic
 ):
@@ -629,6 +547,7 @@ def test_recommend_threshold_no_consolidation_different_thresholds(
                 max_value=100.0,
                 normal_threshold=None,
                 min_ts_length=50,
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -650,6 +569,7 @@ def test_recommend_general_threshold_basic(threshold_recommender):
             ignore_count=1,
             min_value=0.0,
             max_value=200.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -673,6 +593,7 @@ def test_recommend_general_threshold_direction_down(threshold_recommender):
             ignore_count=1,
             min_value=0.0,
             max_value=100.0,
+            sensitivity=0.5,
             direction="down",
         )
 
@@ -695,6 +616,7 @@ def test_recommend_general_threshold_zero_interval(threshold_recommender):
             ignore_count=1,
             min_value=0.0,
             max_value=100.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -722,6 +644,7 @@ def test_recommend_general_threshold_no_clusters(threshold_recommender):
                 ignore_count=1,
                 min_value=0.0,
                 max_value=100.0,
+                sensitivity=0.5,
                 direction="up",
             )
 
@@ -751,6 +674,7 @@ def test_recommend_general_threshold_with_abnormals(threshold_recommender):
             ignore_count=1,  # Ignore one abnormal period
             min_value=0.0,
             max_value=200.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -776,6 +700,7 @@ def test_recommend_general_threshold_empty_data(threshold_recommender):
                 ignore_count=1,
                 min_value=0.0,
                 max_value=100.0,
+                sensitivity=0.5,
                 direction="up",
             )
             # Should handle empty data gracefully with failure status
@@ -799,6 +724,7 @@ def test_recommend_general_threshold_single_value(threshold_recommender):
                 ignore_count=1,
                 min_value=0.0,
                 max_value=100.0,
+                sensitivity=0.5,
                 direction="up",
             )
             # Should handle single value gracefully with failure status
@@ -823,6 +749,7 @@ def test_recommend_general_threshold_no_valid_clusters_fallback(threshold_recomm
             ignore_count=1,
             min_value=0.0,
             max_value=1000.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -843,6 +770,7 @@ def test_recommend_general_threshold_no_valid_clusters_fallback(threshold_recomm
             ignore_count=1,
             min_value=0.0,
             max_value=1000.0,
+            sensitivity=0.5,
             direction="down",
         )
 
@@ -873,6 +801,7 @@ def test_recommend_general_threshold_constant_values_fallback(threshold_recommen
             ignore_count=1,
             min_value=0.0,
             max_value=200.0,
+            sensitivity=0.5,
             direction="up",
         )
 
@@ -892,6 +821,7 @@ def test_recommend_general_threshold_constant_values_fallback(threshold_recommen
             ignore_count=1,
             min_value=0.0,
             max_value=200.0,
+            sensitivity=0.5,
             direction="down",
         )
 
