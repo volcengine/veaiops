@@ -243,7 +243,6 @@ output/
 # Node.js specific files
 jspm_packages/
 .node_repl_history
-*.tgz
 .parcel-cache
 .storybook-out
 storybook-static
