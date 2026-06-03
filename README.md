@@ -102,6 +102,10 @@ If you use VeAIOps in your research, please cite the appropriate paper below:
 
 * [Interest Detection Agent](https://volcengine.github.io/veaiops/chatops/interest-agent): cite the TickIt paper (see [citation details](./veaiops/agents/README.md) for "TickIt: Leveraging Large Language Models for Automated Ticket Escalation").
 
+## Security and privacy
+This project takes security seriously.
+For vulnerability reporting and supported versions, see [SECURITY.md](SECURITY.md)
+
 ## License
 
 This project is licensed under the [Apache 2.0 License](./LICENSE).
